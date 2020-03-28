@@ -1,0 +1,4 @@
+module.exports = {
+  "UPDATE_YAML": 'UPDATE_YAML',
+  "SET_CURRENT_TAB":"SET_CURRENT_TAB"
+}

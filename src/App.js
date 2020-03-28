@@ -1,26 +1,45 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { DefaultLayout } from './Layouts'
+import LogsView from './Views/LogsView';
+import FlowView from './Views/FlowView';
+import { Store } from './flux';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends React.Component {
+  state = {
+    currentTab: Store.getCurrentTab()
+  }
+
+  componentWillMount = () => {
+    Store.on('update-ui',this.getData);
+  }
+
+  componentWillUnmount = () => {
+    Store.removeListener('update-ui',this.getData);
+  }
+
+  getData = () => {
+    const currentTab = Store.getCurrentTab();
+    this.setState({ currentTab});
+  }
+
+  render = () => {
+    const {currentTab} = this.state;
+    return (
+      <div className="App">
+        <DefaultLayout>
+          {
+            currentTab==='logStream'?
+            <LogsView />
+            :
+            <FlowView />
+          }
+        </DefaultLayout>
+      </div>
+    );
+  }
 }
+
 
 export default App;
