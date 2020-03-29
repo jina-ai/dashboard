@@ -48,3 +48,54 @@
   color: black;
   border-bottom-color: #007bff;
 }
+
+.flow-container{
+  display: flex;
+  flex: 1;
+  max-height: 80vh;
+  border: 1px solid#E8E8EF;
+  border-radius: .25em;
+  
+}
+
+.chart-section-container{
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.chart-container{
+  overflow: hidden;
+  /* box-shadow: inset 0px 0px 20px rgba(0, 0, 0, 0.15); */
+}
+
+.flowchart-sidebar{
+  width: 300px;
+  padding: 10px;
+  background: white;
+  display: flex;
+  flex-direction: column;
+  border-left: 1px solid#E8E8EF;
+  flex-shrink: 0;
+}
+
+.chart-toolbar{
+  padding: 10px;
+  border-top: 1px solid#E8E8EF;
+}
+
+.draggable-item{
+  padding: 10px 10px;
+  font-size: 14px;
+  background: white;
+  cursor: move;
+  margin: 2px;
+  border: 1px solid#E8E8EF;
+  text-align: center;
+  border-radius: .25em;
+}
+
+.chart-node{
+  padding: 10px;
+  font-weight: 500;
+}

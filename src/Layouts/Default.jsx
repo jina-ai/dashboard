@@ -1,8 +1,8 @@
 import React from "react";
 import { Container, Alert,Col,Row,} from "react-bootstrap";
 
-import Navbar from '../components/Navbar';
-import Footer from '../components/Footer';
+import Navbar from '../components/Layout/Navbar';
+import Footer from '../components/Layout/Footer';
 
 
 import { Store, Constants } from '../flux';

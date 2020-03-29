@@ -4,8 +4,8 @@ import { Container, Navbar, Nav } from "react-bootstrap";
 class Footer extends React.Component {
   render = () => {
     return (
-      <Navbar variant="light" expand="lg" fixed="bottom" className="py-0">
-          <Container fluid>
+      <Navbar variant="light" bg="white" expand="lg" fixed="bottom" className="py-0">
+          <Container fluid className="px-0">
             <Navbar.Brand href="#home">
               <b>Jina</b>.ai
           </Navbar.Brand>

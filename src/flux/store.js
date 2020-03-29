@@ -8,7 +8,7 @@ let _store = {
   loading: false,
   modal: false,
   modalParams: null,
-  currentTab: 'logStream',
+  currentTab: 'flowChart',
 };
 
 class Store extends EventEmitter {
