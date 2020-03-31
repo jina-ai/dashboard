@@ -1,20 +1,26 @@
 import { EventEmitter } from "events";
 import Dispatcher from "./dispatcher";
 import Constants from "./constants";
+import {parseYAML,formatForFlowchart} from "../helpers";
 import api from "./api";
+import flow1 from '../data/flow2.yml';
 
 
 let _store = {
-  loading: false,
+  loading: true,
   modal: false,
+  flowchart: {},
+  selectedNode: null,
   modalParams: null,
-  currentTab: 'flowChart',
+  flow:{},
+  currentTab: 'flowchart',
 };
 
 class Store extends EventEmitter {
   constructor() {
     super();
     Dispatcher.register(this.registerActions);
+    this.init()
   }
 
   registerActions = ({ actionType, payload }) => {
@@ -29,8 +35,22 @@ class Store extends EventEmitter {
     }
   }
 
+  init = () =>{
+    const flow = parseYAML(flow1);
+    const parsed = formatForFlowchart(flow.data.pods);
+    console.log('parsed: ',parsed);
+    _store.flowchart = parsed;
+    _store.loading = false;
+    this.emit('update-ui');
+  }
+
   updateYAML = (data) => {
 
+  }
+
+  updateFlowchart = (chart) =>{
+    _store.flowchart = chart;
+    this.emit('update-flowchart');
   }
 
   setCurrentTab = (tab)=>{
@@ -73,6 +93,10 @@ class Store extends EventEmitter {
 
   isLoading = () => {
     return _store.loading;
+  }
+
+  getFlowchart = () =>{
+    return _store.flowchart;
   }
 }
 

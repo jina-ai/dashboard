@@ -1,0 +1,16 @@
+# !Flow
+with: # some properties of this flow
+  driver_yaml_path:
+  sse_logger: false
+pods:  # important
+  chunk_seg:
+    replicas: 3
+  encode1:
+    replicas: 2
+    recv_from: chunk_seg
+  encode2:
+    replicas: 2
+    recv_from: chunk_seg
+  joiner:
+    yaml_path: merge
+    recv_from: [encode1, encode2]

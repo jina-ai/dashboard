@@ -4,23 +4,7 @@ module.exports = {
     y: 0,
   },
   nodes: {
-    node1: {
-      id: 'node1',
-      type: 'output-only',
-      position: {
-        x: 300,
-        y: 100,
-      },
-      ports: {
-        port2: {
-          id: 'port2',
-          type: 'output',
-          properties: {
-            value: 'no',
-          },
-        },
-      },
-    },
+    
     node2: {
       id: 'node2',
       type: 'input-output',
@@ -33,6 +17,19 @@ module.exports = {
           id: 'port1',
           type: 'input',
         },
+        port2: {
+          id: 'port2',
+          type: 'output',
+        },
+      },
+    },
+    node1: {
+      id: 'node1',
+      position: {
+        x: 300,
+        y: 100,
+      },
+      ports: {
         port2: {
           id: 'port2',
           type: 'output',
