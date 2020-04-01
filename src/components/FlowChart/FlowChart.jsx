@@ -16,7 +16,6 @@ class MainFlowChart extends React.Component {
 		this.stateActionCallbacks = Object.keys(actions).reduce((obj, key, idx) => {
 			let { chart } = this.state;
 			obj[key] = (...args) => {
-				console.log('key: '+key);
 				let action = actions[key];
 				let newChartTransformer = action(...args);
 				let newChart = newChartTransformer(chart);
@@ -27,11 +26,23 @@ class MainFlowChart extends React.Component {
 		}, {});
 	}
 
+	cancelChanges = () =>{
+		this.setState((prevState,props)=>{
+			const {chart} = prevState;
+			chart.selected = {};
+			return {chart};
+		})
+	}
+
 	updateChart = (chart) => {
 		this.setState({ chart })
 	}
 
-	selectNode = (nodeId)=>{
+	selectNode = (data)=>{
+		Dispatcher.dispatch({
+			actionType: Constants.SELECT_NODE,
+			payload: data.nodeId
+		})
 	}
 
 	render = () => {
@@ -55,7 +66,7 @@ class MainFlowChart extends React.Component {
 						<Button variant="outline" className="float-right ml-2"><i className="fa fa-copy"></i> Copy YAML</Button>
 					</div>
 				</div>
-				<Sidebar />
+				<Sidebar chart={chart} cancelChanges={this.cancelChanges}/>
 			</div >
 		);
 	}

@@ -1,3 +1,15 @@
+body{
+  background-color: #f6f8fa !important;
+}
+
+h4,h5{
+  /* font-weight: 700 !important; */
+}
+
+.text-bold{
+  font-weight: 700;
+}
+
 .error{
   padding-top: 40vh;
 }
@@ -23,11 +35,11 @@
 }
 
 .navbar{
-  border-bottom: 1px solid #E8E8EF;
+  border-bottom: 1px solid #d1d5da;
 }
 
 .navbar.fixed-bottom{
-  border-top: 1px solid #E8E8EF;
+  border-top: 1px solid #d1d5da;
 }
 
 .center-tabs{
@@ -53,7 +65,7 @@
   display: flex;
   flex: 1;
   max-height: 80vh;
-  border: 1px solid#E8E8EF;
+  border: 1px solid#d1d5da;
   border-radius: .25em;
 }
 
@@ -65,23 +77,23 @@
 
 .chart-container{
   overflow: hidden;
-  box-shadow: inset 0px 0px 8px rgba(0, 0, 0, 0.15);
+  border-radius: .25em 0em 0em 0em;
+
 }
 
 .flowchart-sidebar{
   width: 300px;
-  padding: 10px;
   background: white;
-  display: flex;
-  flex-direction: column;
-  border-left: 1px solid#E8E8EF;
+  border-left: 1px solid#d1d5da;
   border-radius: 0em .25em .25em 0em;
   flex-shrink: 0;
 }
 
 .chart-toolbar{
-  padding: 10px;
-  border-top: 1px solid#E8E8EF;
+  background: white;
+  padding: .5em;
+  border-top: 1px solid#d1d5da;
+  border-radius: 0em 0em 0em .25em;
 }
 
 .draggable-item{
@@ -122,12 +134,7 @@
 }
 
 .btn-outline{
-  border: 1px solid #E8E8EF !important;
-}
-
-.percent-input{
-  text-align: center;
-  max-width: 75px !important;
+  border: 1px solid #d1d5da !important;
 }
 
 .badge{
@@ -139,4 +146,40 @@
 
 .chart-container path{
   stroke: #6c757d !important;
+}
+
+.property-table{
+  overflow-y: scroll;
+  padding: .5em;
+  background-color: #f6f8fa; 
+  border: 1px solid #d1d5da;
+  border-radius: .25em;
+}
+
+.pod-name-input{
+  font-size: 1.25em !important;
+  font-weight: 600 !important;
+  height: 2em !important;
+  color: black !important;
+}
+
+.property-value-input{
+  font-weight: 600 !important;
+}
+
+.property-value-input::placeholder{
+  font-style: italic;
+  opacity: .5 !important;
+}
+
+.property-label{
+  font-weight: 500;
+}
+
+.bg-gray{
+  background-color: #f6f8fa;
+}
+
+.sidebar-bottom{
+  padding: .5em;
 }

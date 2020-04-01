@@ -2,10 +2,10 @@ const YAML = require('yamljs');
 const settings = require('./settings');
 
 module.exports = {
-	parseYAML: (yaml) => {
+	parseYAML: (yamlFilePath) => {
 		try {
-			const data = YAML.load(yaml);
-			console.log(yaml, ':', data);
+			const data = YAML.load(yamlFilePath);
+			console.log(yamlFilePath, ':', data);
 			return { data };
 		}
 		catch (error) {
@@ -56,6 +56,12 @@ module.exports = {
 				},
 				properties: { ...pod }
 			}
+
+			if (node.properties.recv_from)
+				delete node.properties.recv_from
+
+			if (node.properties.send_to)
+				delete node.properties.send_to
 
 			node.ports['inPort'] = { id: 'inPort', type: 'input', }
 			node.ports['outPort'] = { id: 'outPort', type: 'output', }
@@ -123,7 +129,7 @@ module.exports = {
 			if (depth > maxDepth)
 				maxDepth = depth;
 
-			if (depthPopulation[depth]>=0)
+			if (depthPopulation[depth] >= 0)
 				depthPopulation[depth]++;
 			else
 				depthPopulation[depth] = 0;
@@ -133,30 +139,6 @@ module.exports = {
 
 			nodes[id].position = { y: (depth * offsetY) + offsetY, x: (depthPopulation[depth] * offsetX) + offsetX };
 		});
-
-		// const processedOnDepth = {};
-		// const offestForDepth = {};
-		// const maxX = (maxWidth * settings.nodeOffset.x) + settings.nodeOffset.x;
-		// const midpoint = maxX / 2;
-
-		// for (let i = 0; i < maxDepth; ++i) {
-		// 	let numNodes = depthPopulation[i];
-		// 	let startOffset = 
-		// }
-
-
-		//Forth pass: setting x/y coordinates based on depth and offset from center
-		// Object.keys(nodes).map(id=>{
-		// 	nodes[id].position = 
-		// })
-
-		// let midpoint = (maxWidth/2)*100;
-		// let currentY = 100;
-
-		// Object.keys(nodes).map(id=>{
-
-
-		// })
 
 		formatted.nodes = nodes;
 		formatted.links = links;
@@ -177,14 +159,4 @@ function getNodeDepth(nodes, currentId, currentDepth) {
 	}
 
 	return currentDepth + longestDepth;
-}
-
-function getParentPositionInQueue(nodes, currentId) {
-	let node = nodes[currentId];
-	let minPosition = 100000;
-	let parents = Object.keys(node.recv_from);
-	for (let i = 0; i < parents.length; ++i) {
-		let parentId = parents[i];
-
-	}
 }
