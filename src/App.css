@@ -97,17 +97,18 @@ h4,h5{
 }
 
 .draggable-item{
-  padding: 10px 10px;
-  font-size: 14px;
-  background: white;
   cursor: move;
-  margin: 2px;
-  border: 1px solid#E8E8EF;
+  font-size: 1.15em;
   text-align: center;
+  padding: 10px;
+  font-weight: 500;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  border: 3px solid white;
   border-radius: .25em;
 }
 
 .chart-node{
+  cursor: move;
   font-size: 1.15em;
   text-align: center;
   padding: 10px;
@@ -182,4 +183,10 @@ h4,h5{
 
 .sidebar-bottom{
   padding: .5em;
+}
+
+.sidebar-instructions{
+  padding: 1em;
+  padding-top: 40%;
+  text-align: center;
 }

@@ -15,7 +15,7 @@ class SidebarItem extends React.Component {
         className="draggable-item"
         draggable={true}
         onDragStart={(event) => {
-          event.dataTransfer.setData(REACT_FLOW_CHART, JSON.stringify({type, ports, properties }))
+          event.dataTransfer.setData(REACT_FLOW_CHART, JSON.stringify({type,label:'arst',name, ports, properties,label:name}))
         }}
       >
         {name}

@@ -47,6 +47,7 @@ module.exports = {
 			const pod = pods[id];
 			let node = {
 				id,
+				label: id,
 				ports: {},
 				recv_from: {},
 				send_to: {},
