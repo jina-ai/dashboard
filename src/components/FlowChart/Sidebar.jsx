@@ -118,9 +118,22 @@ class FlowChartSidebar extends React.Component {
   }
 
   renderEditLink = (link) => {
+    const { nodes } = this.props.chart;
+    const nodeFrom = nodes[link.from.nodeId].label;
+    const nodeTo = nodes[link.to.nodeId].label;
     return (
-      <div>
-        <h2>Edit link</h2>
+      <div className="h-100 d-flex flex-column">
+        <div className="flex-fill">
+          <div className="p-2 mb-1">
+            <p className="mb-1"><b>From</b></p>
+            <h5>{nodeFrom}</h5>
+            <p className="mb-1"><b>To</b></p>
+            <h5>{nodeTo}</h5>
+          </div>
+        </div>
+        <div className="p-2">
+        <Button variant="danger" className="w-100" onClick={this.props.deleteSelection}>Delete Link</Button>
+        </div>
       </div>
     )
   }
@@ -159,12 +172,11 @@ class FlowChartSidebar extends React.Component {
         {
           hasSelected ?
             selected.type === 'link' ?
-              this.renderEditLink(links[selected.id])
+              this.renderEditLink(links[selected.id], nodes)
               :
               this.renderEditNode(nodes[selected.id])
             :
             this.renderInstructions()
-
         }
       </div>
     )
