@@ -2,10 +2,6 @@ body{
   background-color: #f6f8fa !important;
 }
 
-h4,h5{
-  /* font-weight: 700 !important; */
-}
-
 .text-bold{
   font-weight: 700;
 }
@@ -62,8 +58,6 @@ h4,h5{
 }
 
 .flow-container{
-  display: flex;
-  flex: 1;
   max-height: 80vh;
   border: 1px solid#d1d5da;
   border-radius: .25em;
@@ -78,7 +72,7 @@ h4,h5{
 .chart-container{
   overflow: hidden;
   border-radius: .25em 0em 0em 0em;
-
+  background-color: #E8EBF0;
 }
 
 .flowchart-sidebar{
@@ -100,10 +94,11 @@ h4,h5{
   cursor: move;
   font-size: 1.15em;
   text-align: center;
-  padding: 10px;
-  font-weight: 500;
+  padding: 1em;
+  font-weight: 700;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
-  border: 3px solid white;
+  border: 3px solid #007bff;
+  color: black;
   border-radius: .25em;
 }
 
@@ -111,7 +106,7 @@ h4,h5{
   cursor: move;
   font-size: 1.15em;
   text-align: center;
-  padding: 10px;
+  padding: 5px;
   font-weight: 500;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
   border: 3px solid white;
@@ -123,10 +118,11 @@ h4,h5{
   border: 2px solid #6c757d;
   color: white;
   line-height: 0;
-  padding: 1px;
+  font-size: .85em;
+  padding: 2px;
   /* padding-left: 10px; */
   /* padding-right: 10px; */
-  border-radius: 50%;
+  border-radius: .25em;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
 }
 
@@ -187,6 +183,15 @@ h4,h5{
 
 .sidebar-instructions{
   padding: 1em;
-  padding-top: 40%;
+  padding-top: 50%;
   text-align: center;
+}
+
+i.material-icons{
+  font-size: 1.15em;
+  vertical-align: text-bottom;
+}
+
+.ReactModal__Overlay{
+  z-index: 2040;
 }

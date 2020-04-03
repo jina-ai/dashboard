@@ -28,6 +28,19 @@ class MainFlowChart extends React.Component {
 		}, {});
 	}
 
+	componentWillMount = () =>{
+		Store.on('update-flowchart',this.getData);
+	}
+
+	componentWillUnmount = () =>{
+		Store.removeListener('update-flowchart',this.getData);
+	}
+
+	getData = () =>{
+		const chart = Store.getFlowchart();
+		this.updateChart(chart);
+	}
+
 	updateNode = (node, callback) => {
 		let { chart } = this.state;
 		let newChart = cloneDeep(chart);
@@ -75,25 +88,44 @@ class MainFlowChart extends React.Component {
 		alert('Chart copied to clipboard as YAML')
 	}
 
+	validateChat = ()=>{
+		const {chart} = this.state;
+		let isValid = true;
+	}
+
+	validateLink = ({fromNodeId,toNodeId ,fromPortId,toPortId,chart})=>{
+		if(fromPortId!='outPort' || toPortId!='inPort')
+			return false;
+		if(fromNodeId == toNodeId)
+			return false;
+		return true;
+	}
+
+	showImportModal = () =>{
+		Dispatcher.dispatch({
+			actionType:Constants.SHOW_MODAL,
+			payload:{modal: 'import'}
+		})
+	}
+
 	render = () => {
 		const { chart } = this.state;
 		return (
-			<div className="flow-container">
+			<div className="flow-container d-flex flex-column flex-md-row">
 				<div className="chart-section-container">
 					<div className="chart-container">
-						<FlowChart chart={chart} Components={{ NodeInner: CustomNode, Port: CustomPort }} callbacks={this.stateActionCallbacks} />
+						<FlowChart 
+						chart={chart} 
+						Components={{ NodeInner: CustomNode, Port: CustomPort }}
+						callbacks={this.stateActionCallbacks}
+						config={ {
+							validateLink: this.validateLink}}/>
 					</div>
 					<div className="chart-toolbar">
-						<ButtonGroup >
-							<Button variant="outline"><i className="fa fa-minus"></i></Button>
-							<Button variant="outline">100%</Button>
-							<Button variant="outline"><i className="fa fa-plus"></i></Button>
-						</ButtonGroup>
-						<ButtonGroup className="ml-2">
-							<Button variant="outline"><i className="fa fa-sort-amount-asc"></i></Button>
-							<Button variant="outline"><i className="fa fa-sort-amount-asc fa-rotate-270"></i></Button>
-						</ButtonGroup>
-						<Button variant="outline" className="float-right ml-2" onClick={this.copyChartAsYAML}><i className="fa fa-copy"></i> Copy YAML</Button>
+						<p className="pt-2 mb-0 d-inline-block">{Object.keys(chart.nodes || {}).length} Pods,</p>
+						<p className="pt-2 mb-0 d-inline-block ml-2">{Object.keys(chart.links || {}).length} Connections</p>
+						<Button variant="outline" className="float-right ml-2" onClick={this.copyChartAsYAML}><i className="material-icons">file_copy</i> Copy YAML</Button>
+						<Button variant="outline" className="float-right ml-2" onClick={this.showImportModal}><i className="material-icons">publish</i> Import YAML</Button>
 					</div>
 				</div>
 				<Sidebar chart={chart} cancelChanges={this.cancelChanges} deleteSelection={this.deleteSelection} updateNode={this.updateNode} />

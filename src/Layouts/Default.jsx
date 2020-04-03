@@ -3,6 +3,7 @@ import { Container, Alert,Col,Row,} from "react-bootstrap";
 
 import Navbar from '../components/Layout/Navbar';
 import Footer from '../components/Layout/Footer';
+import PasteYAML from '../modals/PasteYAML';
 
 
 import { Store, Constants } from '../flux';
@@ -57,6 +58,7 @@ class DefaultLayout extends React.Component {
             <Footer />
           </Col>
         </Row>
+        <PasteYAML open={modal==='import'}/>
       </Container>
     )
   }

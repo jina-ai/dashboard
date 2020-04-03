@@ -1,10 +1,9 @@
 import React from "react";
 import SidebarItem from './SidebarItem';
-import { Button, FormControl, Row, Col, ButtonGroup } from 'react-bootstrap';
+import { Button, FormControl} from 'react-bootstrap';
 import { Store } from "../../flux";
 
 class FlowChartSidebar extends React.Component {
-
   state = {
     availableProperties: Store.getAvailableProperties(),
     node: {},
@@ -39,7 +38,7 @@ class FlowChartSidebar extends React.Component {
   }
 
   updateLabel = (label) => {
-    this.setState((prevState, props) => {
+    this.setState((prevState) => {
       const { node } = prevState;
       node.label = label;
       return { node };
@@ -47,7 +46,7 @@ class FlowChartSidebar extends React.Component {
   }
 
   updateExistingValue = (prop, value) => {
-    this.setState((prevState, props) => {
+    this.setState((prevState) => {
       const { node } = prevState;
       node.properties[prop] = value;
       return { node };
@@ -55,7 +54,7 @@ class FlowChartSidebar extends React.Component {
   }
 
   updateNewValue = (prop, value) => {
-    this.setState((prevState, props) => {
+    this.setState((prevState) => {
       const { node } = prevState;
       node.newProperties[prop] = value;
       return { node };
@@ -125,6 +124,8 @@ class FlowChartSidebar extends React.Component {
       <div className="h-100 d-flex flex-column">
         <div className="flex-fill">
           <div className="p-2 mb-1">
+          <p className="mb-1"><b>Type</b></p>
+            <h5>Connection</h5>
             <p className="mb-1"><b>From</b></p>
             <h5>{nodeFrom}</h5>
             <p className="mb-1"><b>To</b></p>
@@ -132,7 +133,7 @@ class FlowChartSidebar extends React.Component {
           </div>
         </div>
         <div className="p-2">
-        <Button variant="danger" className="w-100" onClick={this.props.deleteSelection}>Delete Link</Button>
+        <Button variant="danger" className="w-100" onClick={this.props.deleteSelection}>Delete Connection</Button>
         </div>
       </div>
     )
@@ -140,19 +141,19 @@ class FlowChartSidebar extends React.Component {
 
   renderInstructions = () => {
     return (
-      <div className="sidebar-instructions">
-        <h2>Select a pod to edit properties</h2>
+      <div className="sidebar-instructions text-muted">
+        <h4>Select a pod to edit properties</h4>
         <p>or</p>
-        <h4>Drag a New Pod:</h4>
+        <h4 className="mb-4">Drag a New Pod:</h4>
         <SidebarItem
-          type="Empty Pod"
+          type="New Pod"
           ports={{
-            port1: {
-              id: 'port1',
+            inPort: {
+              id: 'inPort',
               type: 'input',
             },
-            port2: {
-              id: 'port2',
+            outPort: {
+              id: 'outPort',
               type: 'output',
             },
           }}

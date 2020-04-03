@@ -19,6 +19,7 @@ class SidebarItem extends React.Component {
         }}
       >
         {type}
+        
       </div>
     )
   }

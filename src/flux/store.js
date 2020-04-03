@@ -1,15 +1,16 @@
 import { EventEmitter } from "events";
 import Dispatcher from "./dispatcher";
 import Constants from "./constants";
-import { parseYAML, formatForFlowchart,YAMLToString } from "../helpers";
+import { parseYAML, formatForFlowchart } from "../helpers";
 import api from "./api";
 import propertyList from '../data/properties.json';
-import {flow1} from '../data/yaml';
+import { flow1 } from '../data/yaml';
 
 let _store = {
   loading: true,
   modal: false,
   flowchart: {},
+  logs: {},
   selectedNode: null,
   modalParams: null,
   currentTab: 'flowchart',
@@ -27,40 +28,42 @@ class Store extends EventEmitter {
       case Constants.SET_CURRENT_TAB:
         this.setCurrentTab(payload);
         break;
-      case Constants.UPDATE_FLOWCHART:
-        this.updateFlowchart(payload);
-      case Constants.SELECT_NODE:
-        this.selectNode(payload);
+      case Constants.SHOW_MODAL:
+        this.showModal(payload);
+        break;
+      case Constants.IMPORT_CUSTOM_YAML:
+        this.importCustomYAML(payload);
+        break;
       default:
     }
   }
 
-  init = () => {
-    const yamlSTRING = flow1;
-    const flow = parseYAML(yamlSTRING);
-    let canvas;
-    try{
-      canvas = flow.data.with.board.canvas;
-    }
-    catch(e){
-      console.log('could not find canvas');
-      canvas = {};
-    }
-    const parsed = formatForFlowchart(flow.data.pods,canvas);
-    console.log('parsed: ', parsed);
-    _store.flowchart = parsed;
+  init = async () => {
+    await this.initFlowChart();
     _store.loading = false;
     this.emit('update-ui');
   }
 
-  updateFlowchart = (chart) => {
-    _store.flowchart = chart;
-    this.emit('update-flowchart');
+  initFlowChart = (yamlSTRING = flow1) => {
+    const flow = parseYAML(yamlSTRING);
+    let canvas;
+    try {
+      canvas = flow.data.with.board.canvas;
+    }
+    catch (e) {
+      console.log('could not find canvas');
+      canvas = {};
+    }
+    const parsed = formatForFlowchart(flow.data.pods, canvas);
+    console.log('parsed: ', parsed);
+    _store.flowchart = parsed;
+    this.emit('update-ui');
   }
 
-  selectNode = (nodeId) => {
-    _store.selectedNode = nodeId;
-    this.emit('update-flowchart');
+  importCustomYAML = (customYAML) => {
+    this.initFlowChart(customYAML);
+    this.closeModal();
+    this.emit('update-flowchart')
   }
 
   setCurrentTab = (tab) => {
