@@ -11,7 +11,7 @@ class App extends React.Component {
     currentTab: Store.getCurrentTab()
   }
 
-  componentWillMount = () => {
+  componentDidMount = () => {
     Store.on('update-ui',this.getData);
   }
 

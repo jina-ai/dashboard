@@ -1,11 +1,10 @@
 import { EventEmitter } from "events";
 import Dispatcher from "./dispatcher";
 import Constants from "./constants";
-import { parseYAML, formatForFlowchart,parseCSV } from "../helpers";
+import { parseYAML, formatForFlowchart,YAMLToString } from "../helpers";
 import api from "./api";
 import propertyList from '../data/properties.json';
-import flow1 from '../data/flow2.yml';
-
+import {flow1} from '../data/yaml';
 
 let _store = {
   loading: true,
@@ -13,7 +12,6 @@ let _store = {
   flowchart: {},
   selectedNode: null,
   modalParams: null,
-  flow: {},
   currentTab: 'flowchart',
 };
 
@@ -38,8 +36,17 @@ class Store extends EventEmitter {
   }
 
   init = () => {
-    const flow = parseYAML(flow1);
-    const parsed = formatForFlowchart(flow.data.pods);
+    const yamlSTRING = flow1;
+    const flow = parseYAML(yamlSTRING);
+    let canvas;
+    try{
+      canvas = flow.data.with.board.canvas;
+    }
+    catch(e){
+      console.log('could not find canvas');
+      canvas = {};
+    }
+    const parsed = formatForFlowchart(flow.data.pods,canvas);
     console.log('parsed: ', parsed);
     _store.flowchart = parsed;
     _store.loading = false;
@@ -102,7 +109,7 @@ class Store extends EventEmitter {
     return _store.flowchart;
   }
 
-  getAvailableProperties = () =>{
+  getAvailableProperties = () => {
     return propertyList;
   }
 }

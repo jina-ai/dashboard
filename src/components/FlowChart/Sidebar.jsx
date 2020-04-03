@@ -82,7 +82,7 @@ class FlowChartSidebar extends React.Component {
             Object.keys(node.properties).map(prop => {
               const value = node.properties[prop];
               return (
-                <div className="property-item mb-2">
+                <div key={prop} className="property-item mb-2">
                   <p className="property-label mb-1">{prop}</p>
                   <FormControl spellCheck={false} value={value} onChange={(e) => this.updateExistingValue(prop, e.target.value)} className="property-value-input" />
                 </div>
@@ -94,9 +94,9 @@ class FlowChartSidebar extends React.Component {
             availableProperties.map(property => {
               if (typeof node.properties[property.name] == 'undefined')
                 return (
-                  <div className="property-item mb-2">
+                  <div key={property.name} className="property-item mb-2">
                     <p className="property-label mb-1">{property.name}</p>
-                    <FormControl spellCheck={false} placeHolder={property.type} value={node.newProperties[property.name] || ''} onChange={(e) => this.updateNewValue(property.name, e.target.value)} className="property-value-input"></FormControl>
+                    <FormControl spellCheck={false} placeholder={property.type} value={node.newProperties[property.name] || ''} onChange={(e) => this.updateNewValue(property.name, e.target.value)} className="property-value-input"></FormControl>
                   </div>
                 )
             })
@@ -132,9 +132,7 @@ class FlowChartSidebar extends React.Component {
         <p>or</p>
         <h4>Drag a New Pod:</h4>
         <SidebarItem
-          type="top/bottom"
-          id="Empty Pod"
-          name="Empty Pod"
+          type="Empty Pod"
           ports={{
             port1: {
               id: 'port1',
@@ -145,7 +143,8 @@ class FlowChartSidebar extends React.Component {
               type: 'output',
             },
           }}
-          properties={{ id: 'new_node', label: "New Node" }}
+          label="tests"
+          properties={{}}
         />
 
       </div>

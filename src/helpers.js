@@ -1,11 +1,12 @@
-const YAML = require('yamljs');
+const YAML = require('yaml');
 const settings = require('./settings');
 
 module.exports = {
-	parseYAML: (yamlFilePath) => {
+	parseYAML: (yamlSTR) => {
 		try {
-			const data = YAML.load(yamlFilePath);
-			console.log(yamlFilePath, ':', data);
+			yamlSTR = yamlSTR.replace("!Flow", "")
+			const data = YAML.parse(yamlSTR);
+			console.log(yamlSTR, ':', data);
 			return { data };
 		}
 		catch (error) {
@@ -13,17 +14,7 @@ module.exports = {
 			return { error };
 		}
 	},
-	getYAMLString: (jsonData) => {
-		try {
-			const yamlString = YAML.stringify(jsonData, 2);
-			return { yamlString }
-		}
-		catch (error) {
-			alert('Error Encoding YAML:', error);
-			return { error };
-		}
-	},
-	formatForFlowchart: (pods) => {
+	formatForFlowchart: (pods,canvas) => {
 		const formatted = {
 			offset: {
 				x: 0,
@@ -38,8 +29,6 @@ module.exports = {
 		let nodes = {};
 		let links = {};
 
-		let px = 300;
-		let py = 100;
 		let prevNode = false;
 
 		//initial pass: gathering basic node and link information
@@ -51,18 +40,12 @@ module.exports = {
 				ports: {},
 				recv_from: {},
 				send_to: {},
-				position: {
-					x: 100,
-					y: 100,
-				},
+				position:{},
 				properties: { ...pod }
 			}
 
 			if (node.properties.recv_from)
 				delete node.properties.recv_from
-
-			if (node.properties.send_to)
-				delete node.properties.send_to
 
 			node.ports['inPort'] = { id: 'inPort', type: 'input', }
 			node.ports['outPort'] = { id: 'outPort', type: 'output', }
@@ -89,62 +72,75 @@ module.exports = {
 				}
 			}
 
-			if (pod.send_to) {
-				let children = Array.isArray(pod.send_to) ? pod.send_to : [pod.send_to];
-
-				for (let i = 0; i < children.length; ++i) {
-					let nodeTo = children[i];
-					node.send_to[nodeTo] = true;
-
-					let linkId = `${id}-to-${nodeTo}`;
-					let link = {
-						id: linkId,
-						from: { nodeId: id, portId: 'outPort' },
-						to: { nodeId: nodeTo, portId: 'inPort' }
-					}
-					links[linkId] = link;
-				}
+			if(canvas&&canvas[id]){
+				const {x,y} = canvas[id];
+				node.position = {x,y};
 			}
+
 			nodes[id] = node;
 			prevNode = id;
 		});
 
-		//second pass: ensuring each node has recv_from and send_to
-		Object.keys(links).map(id => {
-			const link = links[id];
-			nodes[link.from.nodeId].send_to[link.to.nodeId] = true;
-			nodes[link.to.nodeId].recv_from[link.from.nodeId] = true;
-		});
-
-		let maxDepth = 0;
-		let maxWidth = 0;
 		const depthPopulation = {}; //how many nodes at each depth
 		const offsetX = settings.nodeOffset.x;
 		const offsetY = settings.nodeOffset.y;
 
-		//third pass: setting depth for each node
+		//fallback: if no position encoded on canvas portion of YAML, infer the position using depth and order
 		Object.keys(nodes).map(id => {
 			let depth = getNodeDepth(nodes, id, 0);
 			nodes[id].depth = depth;
-
-			if (depth > maxDepth)
-				maxDepth = depth;
 
 			if (depthPopulation[depth] >= 0)
 				depthPopulation[depth]++;
 			else
 				depthPopulation[depth] = 0;
 
-			if (depthPopulation[depth] > maxWidth)
-				maxWidth = depthPopulation[depth];
-
-			nodes[id].position = { y: (depth * offsetY) + offsetY, x: (depthPopulation[depth] * offsetX) + offsetX };
+			if (!nodes[id].position.x)
+				nodes[id].position = { y: (depth * offsetY) + offsetY, x: (depthPopulation[depth] * offsetX) + offsetX };
 		});
 
 		formatted.nodes = nodes;
 		formatted.links = links;
 
 		return formatted;
+	},
+	formatAsYAML: (chart) => {
+		console.log('chart: ',chart)
+		let output = {
+			with: { board: { canvas: {} } },
+			pods: {}
+		}
+		Object.keys(chart.nodes).map(id => {
+			const node = chart.nodes[id];
+			output.pods[node.label] = {
+				...node.properties
+			}
+			output.with.board.canvas[node.label] = {
+				x: node.position.x,
+				y: node.position.y
+			}
+		});
+		Object.keys(chart.links).map(id => {
+			const link = chart.links[id];
+			const nodeFrom = chart.nodes[link.from.nodeId].label;
+			const nodeTo = chart.nodes[link.to.nodeId].label;
+			if (output.pods[nodeTo].recv_from) {
+				if (!Array.isArray(output.pods[nodeTo].recv_from))
+					output.pods[nodeTo].recv_from = [output.pods[nodeTo].recv_from]
+				output.pods[nodeTo].recv_from.push(nodeFrom)
+			}
+			else
+				output.pods[nodeTo].recv_from = nodeFrom;
+		});
+		return `!Flow\n${YAML.stringify(output)}`;
+	},
+	copyToClipboard: str => {
+		const el = document.createElement('textarea');
+		el.value = str;
+		document.body.appendChild(el);
+		el.select();
+		document.execCommand('copy');
+		document.body.removeChild(el);
 	}
 }
 

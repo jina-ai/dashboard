@@ -6,6 +6,7 @@ import Sidebar from './Sidebar';
 import CustomNode from './ChartNode';
 import CustomPort from './NodePort';
 import { ButtonGroup, Button } from 'react-bootstrap';
+import {formatAsYAML, copyToClipboard} from '../../helpers';
 import { Store, Dispatcher, Constants } from '../../flux';
 
 class MainFlowChart extends React.Component {
@@ -69,6 +70,11 @@ class MainFlowChart extends React.Component {
 		})
 	}
 
+	copyChartAsYAML = () =>{
+		copyToClipboard(formatAsYAML(this.state.chart));
+		alert('Chart copied to clipboard as YAML')
+	}
+
 	render = () => {
 		const { chart } = this.state;
 		return (
@@ -87,7 +93,7 @@ class MainFlowChart extends React.Component {
 							<Button variant="outline"><i className="fa fa-sort-amount-asc"></i></Button>
 							<Button variant="outline"><i className="fa fa-sort-amount-asc fa-rotate-270"></i></Button>
 						</ButtonGroup>
-						<Button variant="outline" className="float-right ml-2"><i className="fa fa-copy"></i> Copy YAML</Button>
+						<Button variant="outline" className="float-right ml-2" onClick={this.copyChartAsYAML}><i className="fa fa-copy"></i> Copy YAML</Button>
 					</div>
 				</div>
 				<Sidebar chart={chart} cancelChanges={this.cancelChanges} deleteSelection={this.deleteSelection} updateNode={this.updateNode} />

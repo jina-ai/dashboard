@@ -8,17 +8,17 @@ class SidebarItem extends React.Component {
     this.ref = React.createRef();
   }
   render = () => {
-    const { name, type, ports, properties } = this.props;
+    const { label, type, ports, properties } = this.props;
     return (
       <div
         ref={this.ref}
         className="draggable-item"
         draggable={true}
         onDragStart={(event) => {
-          event.dataTransfer.setData(REACT_FLOW_CHART, JSON.stringify({type,label:'arst',name, ports, properties,label:name}))
+          event.dataTransfer.setData(REACT_FLOW_CHART, JSON.stringify({ label,type, ports, properties, }))
         }}
       >
-        {name}
+        {type}
       </div>
     )
   }

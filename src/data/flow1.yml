@@ -1,8 +1,20 @@
-# !Flow
-with: # some properties of this flow
-  driver_yaml_path:
-  sse_logger: false
-pods:  # important
+!Flow
+with:
+  board:
+    canvas:
+      chunk_seg:
+        x: 357
+        y: 61
+      encode1:
+        x: 250
+        y: 300
+      encode2:
+        x: 500
+        y: 300
+      joiner:
+        x: 406
+        y: 532
+pods:
   chunk_seg:
     replicas: 3
   encode1:
@@ -13,4 +25,6 @@ pods:  # important
     recv_from: chunk_seg
   joiner:
     yaml_path: merge
-    recv_from: [encode1, encode2]
+    recv_from:
+      - encode1
+      - encode2
