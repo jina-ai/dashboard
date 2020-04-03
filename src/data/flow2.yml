@@ -2,15 +2,36 @@
 with:
   driver_yaml_path: my-driver.yml
   sse_logger: false
+  board:
+    canvas:
+      chunk_seg:
+        x: 377
+        y: 79
+      doc_idx:
+        x: 254
+        y: 225
+      tf_encode:
+        x: 489
+        y: 215
+      chunk_idx:
+        x: 495
+        y: 315
+      join_all:
+        x: 380
+        y: 458
 pods:
   chunk_seg:
     replicas: 2
   doc_idx:
     yaml_path: index/doc.yml
-  tf_encode:
     needs: chunk_seg
+  tf_encode:
     replicas: 2
+    needs: chunk_seg
   chunk_idx:
     yaml_path: index/npvec.yml
+    needs: tf_encode
   join_all:
-    needs: [doc_idx, chunk_idx]
+    needs:
+      - doc_idx
+      - chunk_idx

@@ -46,27 +46,27 @@ export function formatForFlowchart(pods, canvas) {
 			id,
 			label: id,
 			ports: {},
-			recv_from: {},
+			needs: {},
 			send_to: {},
 			position: {},
 			properties: { ...pod }
 		}
 
-		if (node.properties.recv_from)
-			delete node.properties.recv_from
+		if (node.properties.needs)
+			delete node.properties.needs
 
 		node.ports['inPort'] = { id: 'inPort', type: 'input', }
 		node.ports['outPort'] = { id: 'outPort', type: 'output', }
 
-		if (prevNode && !pod.recv_from)
-			pod.recv_from = prevNode;
+		if (prevNode && !pod.needs)
+			pod.needs = prevNode;
 
-		if (pod.recv_from) {
-			let parents = Array.isArray(pod.recv_from) ? pod.recv_from : [pod.recv_from];
+		if (pod.needs) {
+			let parents = Array.isArray(pod.needs) ? pod.needs : [pod.needs];
 
 			for (let i = 0; i < parents.length; ++i) {
 				let nodeFrom = parents[i];
-				node.recv_from[nodeFrom] = true;
+				node.needs[nodeFrom] = true;
 
 				let linkId = `${nodeFrom}-to-${id}`;
 				let link = {
@@ -115,9 +115,10 @@ export function formatForFlowchart(pods, canvas) {
 export function formatAsYAML(chart) {
 	console.log('chart: ', chart)
 	let output = {
-		with: { board: { canvas: {} } },
+		with: chart.with,
 		pods: {}
 	}
+	output.with.board = { canvas: {} };
 	Object.keys(chart.nodes).map(id => {
 		const node = chart.nodes[id];
 		output.pods[node.label] = {
@@ -132,19 +133,19 @@ export function formatAsYAML(chart) {
 		const link = chart.links[id];
 		const nodeFrom = chart.nodes[link.from.nodeId].label;
 		const nodeTo = chart.nodes[link.to.nodeId].label;
-		if (output.pods[nodeTo].recv_from) {
-			if (!Array.isArray(output.pods[nodeTo].recv_from))
-				output.pods[nodeTo].recv_from = [output.pods[nodeTo].recv_from]
-			output.pods[nodeTo].recv_from.push(nodeFrom)
+		if (output.pods[nodeTo].needs) {
+			if (!Array.isArray(output.pods[nodeTo].needs))
+				output.pods[nodeTo].needs = [output.pods[nodeTo].needs]
+			output.pods[nodeTo].needs.push(nodeFrom)
 		}
 		else
-			output.pods[nodeTo].recv_from = nodeFrom;
+			output.pods[nodeTo].needs = nodeFrom;
 	});
 	return `!Flow\n${YAML.stringify(output)}`;
 }
 
 function getNodeDepth(nodes, currentId, currentDepth) {
-	let parents = Object.keys(nodes[currentId].recv_from);
+	let parents = Object.keys(nodes[currentId].needs);
 	let longestDepth = 0;
 
 	for (let i = 0; i < parents.length; ++i) {

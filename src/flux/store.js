@@ -56,6 +56,7 @@ class Store extends EventEmitter {
     }
     const parsed = formatForFlowchart(flow.data.pods, canvas);
     console.log('parsed: ', parsed);
+    parsed.with = flow.data.with;
     _store.flowchart = parsed;
     this.emit('update-ui');
   }

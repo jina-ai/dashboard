@@ -57,20 +57,20 @@ module.exports = {
       replicas: 3
     encode1:
       replicas: 2
-      recv_from: chunk_seg
+      needs: chunk_seg
     encode2:
       replicas: 2
-      recv_from: chunk_seg
+      needs: chunk_seg
     pod_3:
-      recv_from: chunk_seg
+      needs: chunk_seg
     pod_4:
-      recv_from: chunk_seg
+      needs: chunk_seg
     pod_5:
-      recv_from: chunk_seg
+      needs: chunk_seg
     pod_6:
-      recv_from: chunk_seg
+      needs: chunk_seg
     connector:
-      recv_from:
+      needs:
         - encode1
         - encode2
         - pod_3
@@ -79,28 +79,28 @@ module.exports = {
         - pod_6
         - pod_7
     midleft_1:
-      recv_from: connector
+      needs: connector
     midright_1:
-      recv_from: connector
+      needs: connector
     midleft_2:
-      recv_from: midleft_1
+      needs: midleft_1
     midright_2:
-      recv_from: midright_1
+      needs: midright_1
     pod_left:
-      recv_from:
+      needs:
         - midleft_2
         - midleft_1
         - connector
     pod_right:
-      recv_from:
+      needs:
         - midright_2
         - midright_1
         - connector
     end_pod:
-      recv_from:
+      needs:
         - pod_left
         - pod_right
     pod_7:
-      recv_from: chunk_seg
+      needs: chunk_seg
   `
 }
