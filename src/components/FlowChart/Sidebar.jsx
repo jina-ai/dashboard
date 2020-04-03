@@ -169,7 +169,7 @@ class FlowChartSidebar extends React.Component {
     const { selected, nodes, links } = this.props.chart;
     const hasSelected = Object.keys(selected).length > 0;
     return (
-      <div className="flowchart-sidebar d-none d-md-block">
+      <div className="flowchart-sidebar">
         {
           hasSelected ?
             selected.type === 'link' ?

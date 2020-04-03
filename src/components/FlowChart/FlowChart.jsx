@@ -122,8 +122,8 @@ class MainFlowChart extends React.Component {
 							validateLink: this.validateLink}}/>
 					</div>
 					<div className="chart-toolbar">
-						<p className="pt-2 mb-0 d-inline-block">{Object.keys(chart.nodes || {}).length} Pods,</p>
-						<p className="pt-2 mb-0 d-inline-block ml-2">{Object.keys(chart.links || {}).length} Connections</p>
+						<p className="d-none d-md-inline-block pt-2 mb-0">{Object.keys(chart.nodes || {}).length} Pods,</p>
+						<p className="d-none d-md-inline-block pt-2 mb-0 ml-2">{Object.keys(chart.links || {}).length} Connections</p>
 						<Button variant="outline" className="float-right ml-2" onClick={this.copyChartAsYAML}><i className="material-icons">file_copy</i> Copy YAML</Button>
 						<Button variant="outline" className="float-right ml-2" onClick={this.showImportModal}><i className="material-icons">publish</i> Import YAML</Button>
 					</div>
