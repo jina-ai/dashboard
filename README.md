@@ -1,7 +1,7 @@
 # Jina AI Dashboard
 
 ## Getting Started
-1. install dependencies using `yarn add`
+1. install dependencies using command `yarn`
 
 2. Run dashboard
 
