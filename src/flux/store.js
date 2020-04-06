@@ -4,17 +4,25 @@ import Constants from "./constants";
 import { parseYAML, formatForFlowchart } from "../helpers";
 import api from "./api";
 import propertyList from '../data/properties.json';
-import { flow1 } from '../data/yaml';
 
 let _store = {
   loading: true,
   modal: false,
   flowchart: {},
-  logs: {},
+  logs: [],
+  occurences: {
+    current: {},
+    previous: {}
+  },
+  summaryCharts: {},
   selectedNode: null,
   modalParams: null,
-  currentTab: 'flowchart',
+  currentTab: 'logStream',
 };
+
+const NUM_CHART_ELEMENTS = 60;
+const CHART_UPDATE_INTERVAL = 1000;
+const CHART_LEVELS = ['INFO', 'ERROR', 'CRITICAL']
 
 class Store extends EventEmitter {
   constructor() {
@@ -40,12 +48,20 @@ class Store extends EventEmitter {
 
   init = async () => {
     await this.initFlowChart();
+    this.initLogStream();
+    this.initCharts();
     _store.loading = false;
     this.emit('update-ui');
   }
 
-  initFlowChart = (yamlSTRING = flow1) => {
-    const flow = parseYAML(yamlSTRING);
+  initFlowChart = async (yamlSTRING) => {
+    let flow;
+    if (yamlSTRING)
+      flow = parseYAML(yamlSTRING);
+    else {
+      let str = await api.getYAML();
+      flow = parseYAML(str);
+    }
     let canvas;
     try {
       canvas = flow.data.with.board.canvas;
@@ -59,6 +75,40 @@ class Store extends EventEmitter {
     parsed.with = flow.data.with;
     _store.flowchart = parsed;
     this.emit('update-ui');
+  }
+
+  initLogStream = () => {
+    api.onNewLog((log) => {
+      if (log.error)
+        return console.error('Log Stream Error: ' + log.error);
+      console.log('log: ', log)
+      _store.logs.push(log.data);
+      if (_store.occurences[log.levelname])
+        _store.occurences.current[log.levelname]++;
+      else
+        _store.occurences.current[log.levelname] = 1
+
+      this.emit('update-logs');
+    })
+  }
+
+  initCharts = () => {
+    let array = new Array(NUM_CHART_ELEMENTS);
+    CHART_LEVELS.map(level => {
+      _store.occurences.current[level] = 0;
+      _store.occurences.previous[level] = 0;
+      _store.summaryCharts[level] = array.fill(0);
+    });
+    console.log('initial Occurences: ', _store.occurences);
+    console.log('initial summary charts: ', _store.summaryCharts);
+  }
+
+  updateSummaryCharts = () => {
+    const { current, previous } = _store.occurences
+    Object.keys(current).map(level => {
+      const numLogs = current[level];
+      const prevNum = previous[level] || 0;
+    })
   }
 
   importCustomYAML = (customYAML) => {
@@ -103,6 +153,10 @@ class Store extends EventEmitter {
 
   getLogs = () => {
     return _store.logs;
+  }
+
+  getOccurences = () => {
+    return _store.occurences;
   }
 
   isLoading = () => {

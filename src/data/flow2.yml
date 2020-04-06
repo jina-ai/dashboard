@@ -14,11 +14,11 @@ with:
         x: 489
         y: 215
       chunk_idx:
-        x: 495
-        y: 315
+        x: 488
+        y: 331
       join_all:
-        x: 380
-        y: 458
+        x: 378
+        y: 482
 pods:
   chunk_seg:
     replicas: 2

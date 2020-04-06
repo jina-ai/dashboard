@@ -38,8 +38,8 @@ class MainNavbar extends React.Component {
           </Navbar.Brand>
 					<div className="center-tabs d-flex">
 						<div className="mx-auto">
-							<div className={`nav-tab d-inline-block px-2 py-2 ${currentTab==='logStream'&&'active'}`} variant="outline-secondary" onClick={()=>this.setCurrentTab('logStream')}>Log Stream</div>
-							<div className={`nav-tab d-inline-block px-2 py-2 ${currentTab==='flowchart'&&'active'}`} variant="outline-secondary" onClick={()=>this.setCurrentTab('flowchart')}>Flow Chart</div>
+							<div className={`nav-tab d-inline-block px-4 py-2 ${currentTab==='logStream'&&'active'}`} variant="outline-secondary" onClick={()=>this.setCurrentTab('logStream')}>Logs</div>
+							<div className={`nav-tab d-inline-block px-4 py-2 ${currentTab==='flowchart'&&'active'}`} variant="outline-secondary" onClick={()=>this.setCurrentTab('flowchart')}>Flow</div>
 						</div>
 					</div>
 				</Container>
