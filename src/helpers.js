@@ -115,7 +115,7 @@ export function formatForFlowchart(pods, canvas) {
 export function formatAsYAML(chart) {
 	console.log('chart: ', chart)
 	let output = {
-		with: chart.with,
+		with: chart.with || {},
 		pods: {}
 	}
 	output.with.board = { canvas: {} };
@@ -150,7 +150,12 @@ function getNodeDepth(nodes, currentId, currentDepth) {
 
 	for (let i = 0; i < parents.length; ++i) {
 		let parent = parents[i];
-		let depth = nodes[parent].depth || getNodeDepth(nodes, parent, 1);
+		console.log('parent: ',nodes[parent]);
+		let depth;
+		if(nodes[parent].depth )
+			depth = nodes[parent].depth +1;
+		else
+		depth = getNodeDepth(nodes, parent, 1);
 		if (depth > longestDepth)
 			longestDepth = depth;
 	}

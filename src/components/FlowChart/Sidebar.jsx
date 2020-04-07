@@ -73,7 +73,7 @@ class FlowChartSidebar extends React.Component {
       <div className="h-100 d-flex flex-column">
         <div className="p-2 mb-1">
           <p className="mb-1"><b>Pod Name</b></p>
-          <FormControl spellCheck={false} value={node.label} onChange={(e) => this.updateLabel(e.target.value)} className="pod-name-input" />
+          <FormControl spellCheck={false} value={node.label || ""} onChange={(e) => this.updateLabel(e.target.value)} className="pod-name-input" />
         </div>
         <p className="mb-1 px-2"><b>Properties</b></p>
         <div className="property-table flex-fill mx-2">
@@ -83,7 +83,7 @@ class FlowChartSidebar extends React.Component {
               return (
                 <div key={prop} className="property-item mb-2">
                   <p className="property-label mb-1">{prop}</p>
-                  <FormControl spellCheck={false} value={value} onChange={(e) => this.updateExistingValue(prop, e.target.value)} className="property-value-input" />
+                  <FormControl spellCheck={false} value={value || ""} onChange={(e) => this.updateExistingValue(prop, e.target.value)} className="property-value-input" />
                 </div>
 
               )
