@@ -52,7 +52,7 @@ class PasteYAML extends Component {
         ariaHideApp={false}
         isOpen={open}
         contentLabel="Action Modal"
-        className='modal-content tiny-modal p-4'
+        className='modal-content tiny-modal px-4 pt-3 pb-4'
         shouldCloseOnOverlayClick={true}
         style={this.style}
         onRequestClose={this.close}
@@ -62,7 +62,7 @@ class PasteYAML extends Component {
           <h2><b>Import YAML</b></h2>
           <h2><span className="float-right close-icon"><i className="material-icons" onClick={this.close}>close</i></span></h2>
         </div>
-        <div className="modal-body px-0">
+        <div className="modal-body px-0 pb-0">
           <Form.Group>
             <Form.Label>Custom YAML:</Form.Label>
             <Form.Control placeholder="Paste Here" ref={ref=>this.inputRef = ref} as="textarea" rows="10" />
