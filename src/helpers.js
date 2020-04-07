@@ -1,6 +1,9 @@
 const YAML = require('yaml');
 const settings = require('./settings');
+const propertyList = require('./data/properties.json');
 
+const propertyTypes = {};
+propertyList.map(prop => propertyTypes[prop.name] = prop.type);
 
 export function copyToClipboard(str) {
 	const temp = document.createElement('textarea');
@@ -81,7 +84,7 @@ export function formatForFlowchart(pods, canvas) {
 
 		if (canvas && canvas[id]) {
 			const { x, y } = canvas[id];
-			node.position = { x, y };
+			node.position = { x: parseInt(x), y: parseInt(y) };
 		}
 
 		nodes[id] = node;
@@ -121,9 +124,22 @@ export function formatAsYAML(chart) {
 	output.with.board = { canvas: {} };
 	Object.keys(chart.nodes).map(id => {
 		const node = chart.nodes[id];
-		output.pods[node.label] = {
-			...node.properties
-		}
+
+		if (!node.label)
+			return;
+
+		output.pods[node.label] = {};
+
+		Object.keys(node.properties).map(propId => {
+			let type = propertyTypes[propId];
+			if (type === 'bool') {
+				output.pods[node.label][propId] = node.properties[propId] == 'true';
+			}
+			else if (type === 'int')
+				output.pods[node.label][propId] = parseInt(node.properties[propId]);
+			else
+				output.pods[node.label][propId] = node.properties[propId];
+		})
 		output.with.board.canvas[node.label] = {
 			x: node.position.x,
 			y: node.position.y
@@ -133,6 +149,8 @@ export function formatAsYAML(chart) {
 		const link = chart.links[id];
 		const nodeFrom = chart.nodes[link.from.nodeId].label;
 		const nodeTo = chart.nodes[link.to.nodeId].label;
+		if (!nodeFrom || !nodeTo)
+			return;
 		if (output.pods[nodeTo].needs) {
 			if (!Array.isArray(output.pods[nodeTo].needs))
 				output.pods[nodeTo].needs = [output.pods[nodeTo].needs]
@@ -150,12 +168,12 @@ function getNodeDepth(nodes, currentId, currentDepth) {
 
 	for (let i = 0; i < parents.length; ++i) {
 		let parent = parents[i];
-		console.log('parent: ',nodes[parent]);
+		console.log('parent: ', nodes[parent]);
 		let depth;
-		if(nodes[parent].depth )
-			depth = nodes[parent].depth +1;
+		if (nodes[parent].depth)
+			depth = nodes[parent].depth + 1;
 		else
-		depth = getNodeDepth(nodes, parent, 1);
+			depth = getNodeDepth(nodes, parent, 1);
 		if (depth > longestDepth)
 			longestDepth = depth;
 	}
