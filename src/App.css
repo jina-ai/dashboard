@@ -209,8 +209,11 @@ i.material-icons{
 }
 
 .log-stream-container{
-  height: 70vh;
-  overflow-y: scroll
+  height: 55vh;
+}
+
+.ReactVirtualized__Grid{
+  outline: none !important;
 }
 
 .log{
@@ -235,5 +238,11 @@ i.material-icons{
 
 .log-prefix{
   white-space: nowrap;
-  /* text-align: right; */
+  color: black;
+}
+
+.search-container{
+  overflow-y: scroll;
+  height: 100%;
+  padding: 1em;
 }

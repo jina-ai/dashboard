@@ -27,6 +27,7 @@
     "react-dom": "^16.13.1",
     "react-modal": "^3.11.2",
     "react-scripts": "3.4.1",
+    "react-virtualized": "^9.21.2",
     "resize-observer-polyfill": "^1.5.1",
     "typescript": "^3.8.3",
     "yaml": "^1.8.3",

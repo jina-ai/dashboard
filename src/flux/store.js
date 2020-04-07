@@ -22,7 +22,7 @@ let _store = {
 
 const NUM_CHART_ELEMENTS = 60;
 const CHART_UPDATE_INTERVAL = 1000;
-const CHART_LEVELS = ['INFO', 'ERROR', 'CRITICAL']
+const CHART_LEVELS = ['INFO', 'SUCCESS', 'CRITICAL']
 
 class Store extends EventEmitter {
   constructor() {
@@ -81,34 +81,38 @@ class Store extends EventEmitter {
     api.onNewLog((log) => {
       if (log.error)
         return console.error('Log Stream Error: ' + log.error);
-      console.log('log: ', log)
+      // console.log('log: ', log)
       _store.logs.push(log.data);
-      if (_store.occurences[log.levelname])
-        _store.occurences.current[log.levelname]++;
-      else
-        _store.occurences.current[log.levelname] = 1
-
+      if (CHART_LEVELS.includes(log.data.levelname)) {
+        _store.occurences.current[log.data.levelname]++;
+      }
+      // console.log('occurences: ',_store.occurences)
       this.emit('update-logs');
     })
   }
 
   initCharts = () => {
-    let array = new Array(NUM_CHART_ELEMENTS);
     CHART_LEVELS.map(level => {
       _store.occurences.current[level] = 0;
       _store.occurences.previous[level] = 0;
-      _store.summaryCharts[level] = array.fill(0);
+      _store.summaryCharts[level] = (new Array(NUM_CHART_ELEMENTS)).fill(0);
     });
     console.log('initial Occurences: ', _store.occurences);
     console.log('initial summary charts: ', _store.summaryCharts);
+    this.updateChartInterval = setInterval(this.updateSummaryCharts, CHART_UPDATE_INTERVAL);
   }
 
   updateSummaryCharts = () => {
-    const { current, previous } = _store.occurences
-    Object.keys(current).map(level => {
+    const { current, previous } = _store.occurences;
+    CHART_LEVELS.map(level => {
       const numLogs = current[level];
-      const prevNum = previous[level] || 0;
-    })
+      const prevNum = previous[level];
+      _store.summaryCharts[level].push(numLogs - prevNum);
+      _store.summaryCharts[level].shift();
+      _store.occurences.previous[level] = numLogs;
+    });
+    // console.log('summaryCharts:', _store.summaryCharts);
+    this.emit('update-summary-chart');
   }
 
   importCustomYAML = (customYAML) => {
@@ -155,8 +159,8 @@ class Store extends EventEmitter {
     return _store.logs;
   }
 
-  getOccurences = () => {
-    return _store.occurences;
+  getSummaryCharts = () => {
+    return _store.summaryCharts;
   }
 
   isLoading = () => {

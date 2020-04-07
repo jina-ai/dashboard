@@ -1,6 +1,25 @@
 import React from "react";
 import ChartElement from 'chart.js';
 
+const _colors = {
+  INFO: {
+    border: '#007bff',
+    background: 'rgba(0, 123, 255, 0.25)'
+  },
+  SUCCESS: {
+    border: '#4caf50',
+    background: 'rgba(76, 175, 79, 0.25)'
+  },
+  ERROR: {
+    border: '#fb8c00',
+    background: 'rgba(251, 138, 0, 0.25)'
+  },
+  CRITICAL: {
+    border: '#f44336',
+    background: 'rgba(244, 67, 54, 0.25)'
+  }
+}
+
 class Chart extends React.Component {
 
   constructor(props) {
@@ -15,6 +34,8 @@ class Chart extends React.Component {
   renderChart = () => {
     const { data } = this.props;
     const chartOptions = {
+      events: ['click'],
+      onClick:this.onClick,
       maintainAspectRatio: true,
       responsive: true,
       legend: {
@@ -39,10 +60,10 @@ class Chart extends React.Component {
             }
           }
         ],
-        yAxes:[
+        yAxes: [
           {
-            gridLines:{
-              borderDash: [2.5,5],
+            gridLines: {
+              borderDash: [2.5, 5],
               // zeroLineBorderDash: [5,5],
               zeroLineColor: '#6c757d',
               drawBorder: false,
@@ -58,23 +79,31 @@ class Chart extends React.Component {
     };
 
     const chartConfig = {
+      onClick: this.onClick,
       type: "line",
-      labels: this.getLabels(data.length),
+      labels: this.getLabels(60),
       data: {
-        datasets: [{
-          label: "Today",
-          fill: "start",
-          borderWidth: 1.5,
-          borderColor: '#2196f3',
-          backgroundColor:'#2195f325',
-          data
-        }]
+        datasets: Object.keys(data).map(level => {
+          const chartData = data[level];
+          return {
+            label: level,
+            fill: "start",
+            borderWidth: 1.5,
+            borderColor: _colors[level].border,
+            backgroundColor: _colors[level].background,
+            data: chartData
+          }
+        })
       },
       options: chartOptions,
       ...this.props.chartConfig
     };
 
     this.chart = new ChartElement(this.canvasRef.current, chartConfig);
+  }
+
+  onClick = (e) =>{
+    console.log('clicked',e);
   }
 
   getLabels = (amount) => {
@@ -88,15 +117,18 @@ class Chart extends React.Component {
   updateChart = () => {
     const { data } = this.props;
     const chartData = {
-      labels: this.getLabels(data.length),
-      datasets: [{
-        label: "Today",
-        fill: "start",
-        borderWidth: 1.5,
-        borderColor: '#2196f3',
-          backgroundColor:'#2195f325',
-        data
-      }]
+      labels: this.getLabels(60),
+      datasets: Object.keys(data).map(level => {
+        const chartData = data[level];
+        return {
+          label: level,
+          fill: "start",
+          borderWidth: 1.5,
+          borderColor: _colors[level].border,
+          backgroundColor: _colors[level].background,
+          data: chartData
+        }
+      })
     }
     this.chart.data = chartData;
     this.chart.options.animation = false

@@ -22,7 +22,7 @@ function startDemo(req, res) {
 		res.write(`data:${JSON.stringify(log)}\n\n`);
 		console.log('sending message')
 		messageId += 1;
-	}, 1000);
+	}, 500);
 
 	req.on('close', () => {
 		console.log('ending log stream')
