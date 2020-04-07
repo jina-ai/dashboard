@@ -246,3 +246,23 @@ i.material-icons{
   height: 100%;
   padding: 1em;
 }
+
+.back-to-bottom{
+  position: absolute;
+  display: inline-block;
+  right: 1.5em;
+  top: .5em !important;
+  padding: 1em;
+  padding-top: .25em;
+  padding-bottom: .25em;
+  background-color: rgba(255, 255, 255, 0.75);
+  border: 1px solid #d1d5da;
+  z-index: 5;
+  cursor: pointer;
+  opacity: 0;
+  transition: .2s;
+}
+
+.back-to-bottom.active{
+  opacity: 1;
+}

@@ -24,6 +24,7 @@ class StreamContainer extends React.Component {
 		logs: Store.getLogs(),
 		searchQuery: "",
 		searchResults: false,
+		showHelper: false
 	}
 
 	componentWillMount = () => {
@@ -38,8 +39,8 @@ class StreamContainer extends React.Component {
 		const logs = Store.getLogs();
 		this.setState({ logs }, () => {
 			if (this._scrolledToBottom && this._list)
-				this.scrollToLog();
-			if(this.state.searchQuery)
+				this.scrollToBottom();
+			if (this.state.searchQuery)
 				this.search();
 		});
 	}
@@ -77,12 +78,17 @@ class StreamContainer extends React.Component {
 		})
 	}
 
-	scrollToLog = (index = this.state.logs.length) => {
+	scrollToLog = (index) => {
 		this._list.scrollToRow(index);
 	}
 
+	scrollToBottom = () =>{
+		this._list.scrollToRow(this.state.logs.length);
+		this._scrolledToBottom = true;	
+	}
+
 	updateSearchQuery = (e) => {
-		this.setState({ searchQuery: e.target.value },this.search);
+		this.setState({ searchQuery: e.target.value }, this.search);
 	}
 
 	clearSearchResults = () => {
@@ -131,7 +137,7 @@ class StreamContainer extends React.Component {
 	};
 
 	render = () => {
-		const { results, searchQuery, logs } = this.state;
+		const { results, searchQuery, logs, showHelper } = this.state;
 		return (
 			<Card>
 				<Card.Header>
@@ -151,33 +157,39 @@ class StreamContainer extends React.Component {
 				</Card.Header>
 				<Card.Body className="log-stream-container p-0" id="log-stream-container">
 					{
-						searchQuery && results?
-						this.renderSearchResults()
-						:
-						<AutoSizer>
-						{({ height, width }) => {
-							if (this._mostRecentWidth !== width) {
-								this._mostRecentWidth = width;
-								setTimeout(this._resizeAll, 0);
-							}
-							if(this._mostRecentHeight !== height){
-								this._mostRecentHeight = height;
-								setTimeout(this.scrollToLog,0);
-							}
-							return (
-								<List
-									width={width}
-									height={height}
-									ref={ref => this._list = ref}
-									deferredMeasurementCache={this._cache}
-									rowHeight={this._cache.rowHeight}
-									rowCount={logs.length}
-									rowRenderer={this.renderLogRow}
-									onScroll={this._onScroll}
-								/>)
-						}
-						}
-					</AutoSizer>
+						searchQuery && results ?
+							''
+							:
+							<div onClick={this.scrollToBottom} className={`back-to-bottom ${showHelper && 'active'}`}><i className="material-icons">arrow_downward</i> Back to Bottom</div>
+					}
+					{
+						searchQuery && results ?
+							this.renderSearchResults()
+							:
+							<AutoSizer>
+								{({ height, width }) => {
+									if (this._mostRecentWidth !== width) {
+										this._mostRecentWidth = width;
+										setTimeout(this._resizeAll, 0);
+									}
+									if (this._mostRecentHeight !== height) {
+										this._mostRecentHeight = height;
+										setTimeout(this.scrollToBottom, 0);
+									}
+									return (
+										<List
+											width={width}
+											height={height}
+											ref={ref => this._list = ref}
+											deferredMeasurementCache={this._cache}
+											rowHeight={this._cache.rowHeight}
+											rowCount={logs.length}
+											rowRenderer={this.renderLogRow}
+											onScroll={this._onScroll}
+										/>)
+								}
+								}
+							</AutoSizer>
 					}
 				</Card.Body>
 			</Card>
@@ -192,10 +204,18 @@ class StreamContainer extends React.Component {
 	_onScroll = (data) => {
 		const { scrollTop, scrollHeight, clientHeight } = data;
 		this._scrollTop = scrollTop;
-		if (scrollTop + clientHeight === scrollHeight)
+		let difference = scrollHeight-(scrollTop+clientHeight);
+		if (difference === 0)
 			this._scrolledToBottom = true;
-		else
+		else{
 			this._scrolledToBottom = false;
+		}
+			
+
+		if (difference > 75 && !this.state.showHelper)
+			this.setState({ showHelper: true })
+		else if (difference <= 75 && this.state.showHelper)
+			this.setState({ showHelper: false });
 	}
 
 	_resizeAll = () => {

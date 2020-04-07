@@ -1,9 +1,5 @@
 [
   {
-    "name": "name",
-    "type": "str"
-  },
-  {
     "name": "identity",
     "type": "str"
   },

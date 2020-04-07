@@ -48,6 +48,7 @@ class Chart extends React.Component {
       elements: {
         point: {
           radius: 0,
+          hitRadius:5,
         }
       },
       scales: {
@@ -103,7 +104,8 @@ class Chart extends React.Component {
   }
 
   onClick = (e) =>{
-    console.log('clicked',e);
+    const activePoints = this.chart.getElementsAtEvent(e);
+    console.log('activePoints: ',activePoints);
   }
 
   getLabels = (amount) => {

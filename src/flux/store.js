@@ -70,6 +70,7 @@ class Store extends EventEmitter {
       console.log('could not find canvas');
       canvas = {};
     }
+    console.log('pods: ',flow.data.pods)
     const parsed = formatForFlowchart(flow.data.pods, canvas);
     console.log('parsed: ', parsed);
     parsed.with = flow.data.with;

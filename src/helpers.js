@@ -41,7 +41,7 @@ export function formatForFlowchart(pods, canvas) {
 	let prevNode = false;
 
 	Object.keys(pods).map(id => {
-		const pod = pods[id];
+		const pod = pods[id] || {};
 		let node = {
 			id,
 			label: id,

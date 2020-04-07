@@ -24,7 +24,6 @@ pods:
     replicas: 2
   doc_idx:
     yaml_path: index/doc.yml
-    needs: chunk_seg
   tf_encode:
     replicas: 2
     needs: chunk_seg

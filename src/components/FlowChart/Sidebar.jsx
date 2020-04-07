@@ -72,7 +72,7 @@ class FlowChartSidebar extends React.Component {
     return (
       <div className="h-100 d-flex flex-column">
         <div className="p-2 mb-1">
-          <p className="mb-1"><b>Pod Label</b></p>
+          <p className="mb-1"><b>Pod Name</b></p>
           <FormControl spellCheck={false} value={node.label} onChange={(e) => this.updateLabel(e.target.value)} className="pod-name-input" />
         </div>
         <p className="mb-1 px-2"><b>Properties</b></p>
