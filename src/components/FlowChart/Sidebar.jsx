@@ -42,7 +42,7 @@ class FlowChartSidebar extends React.Component {
       const { node } = prevState;
       node.label = label;
       return { node };
-    });
+    },this.saveChanges);
   }
 
   updateExistingValue = (prop, value) => {
@@ -50,7 +50,7 @@ class FlowChartSidebar extends React.Component {
       const { node } = prevState;
       node.properties[prop] = value;
       return { node };
-    });
+    },this.saveChanges);
   }
 
   updateNewValue = (prop, value) => {
@@ -58,13 +58,12 @@ class FlowChartSidebar extends React.Component {
       const { node } = prevState;
       node.newProperties[prop] = value;
       return { node };
-    });
+    },this.saveChanges);
   }
 
   saveChanges = () => {
     const { node } = this.state;
-    const newNode = this.props.updateNode(node);
-    this.setInitialNode(newNode);
+    this.props.updateNode(node);
   }
 
   renderEditNode = () => {
@@ -100,14 +99,6 @@ class FlowChartSidebar extends React.Component {
                 )
             })
           }
-        </div>
-        <div className="px-2 pt-2 d-flex flex-row">
-          <div className="w-50 mr-1">
-            <Button variant="outline" className="w-100" onClick={this.props.cancelChanges}>Cancel</Button>
-          </div>
-          <div className="w-50 ml-1">
-            <Button variant="primary" className="w-100" onClick={this.saveChanges}>Save Changes</Button>
-          </div>
         </div>
         <div className="p-2">
           <Button variant="danger" className="w-100" onClick={this.props.deleteSelection}>Delete Pod</Button>
