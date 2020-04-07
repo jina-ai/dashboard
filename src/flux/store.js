@@ -42,6 +42,9 @@ class Store extends EventEmitter {
       case Constants.IMPORT_CUSTOM_YAML:
         this.importCustomYAML(payload);
         break;
+      case Constants.CLOSE_MODAL:
+        this.closeModal();
+        break;
       default:
     }
   }
@@ -70,7 +73,7 @@ class Store extends EventEmitter {
       console.log('could not find canvas');
       canvas = {};
     }
-    console.log('pods: ',flow.data.pods)
+    console.log('pods: ', flow.data.pods)
     const parsed = formatForFlowchart(flow.data.pods, canvas);
     console.log('parsed: ', parsed);
     parsed.with = flow.data.with;

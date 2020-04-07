@@ -37,7 +37,13 @@ class PasteYAML extends Component {
 			actionType:Constants.IMPORT_CUSTOM_YAML,
 			payload: yamlString
 		})
-	}
+  }
+  
+  close = () =>{
+    Dispatcher.dispatch({
+      actionType: Constants.CLOSE_MODAL
+    })
+  }
 
   render = () => {
     const { open } = this.props;
