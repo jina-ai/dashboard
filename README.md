@@ -6,8 +6,10 @@
 2. Run dashboard
 
 ### Development Mode:
-1. `yarn start`
-2.  dashboard will be served on `http://localhost:3000` by default
+1. `node testServer`
+2.  testServer will be running on `http://localhost:5000` by default
+3. `yarn start`
+4.  dashboard will be served on `http://localhost:3000` by default
 
 ### Live Mode:
 1. `yarn build`
