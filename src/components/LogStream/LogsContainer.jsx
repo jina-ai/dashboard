@@ -12,6 +12,8 @@ import CellMeasurer, {
 
 class StreamContainer extends React.Component {
 	_cache = new CellMeasurerCache({ defaultHeight: 10, fixedWidth: true });
+	_resultsCache = new CellMeasurerCache({ defaultHeight: 10, fixedWidth: true });
+
 	_mostRecentWidth = 0;
 	_mostRecentHeight = 0;
 	_resizeAllFlag = false;
@@ -23,25 +25,26 @@ class StreamContainer extends React.Component {
 	state = {
 		logs: Store.getLogs(),
 		searchQuery: "",
+		prevQuery: "",
 		searchResults: false,
 		showHelper: false
 	}
 
 	componentWillMount = () => {
 		Store.on('update-logs', this.getData);
-		Store.on('show-log',this.getIndexedLog);
+		Store.on('show-log', this.getIndexedLog);
 	}
 
 	componentWillUnmount = () => {
 		Store.removeListener('update-logs', this.getData);
-		Store.removeListener('show-log',this.getIndexedLog);
+		Store.removeListener('show-log', this.getIndexedLog);
 	}
 
 	componentDidMount = () => {
 		setTimeout(() => {
 			if (this._list)
 				this._resizeAll();
-				this.scrollToBottom()
+			this.scrollToBottom()
 		}, 1)
 
 	}
@@ -51,13 +54,11 @@ class StreamContainer extends React.Component {
 		this.setState({ logs });
 		if (this._scrolledToBottom && this._list)
 			this.scrollToBottom();
-		if (this.state.searchQuery)
-			this.search();
 	}
 
-	getIndexedLog = () =>{
+	getIndexedLog = () => {
 		const index = Store.getIndexedLog();
-		console.log('scrolling to index: ',index);
+		console.log('scrolling to index: ', index);
 		this.scrollToLog(index);
 	}
 
@@ -66,7 +67,7 @@ class StreamContainer extends React.Component {
 		console.log('search query: ', query)
 		this.indexLogs();
 		let results = this.index.search(query)
-		this.setState({ results });
+		this.setState({ results },this._resizeSearchResults);
 		console.log('search results: ', results)
 	}
 
@@ -120,22 +121,31 @@ class StreamContainer extends React.Component {
 	}
 
 	renderSearchResults = () => {
-		const { results, searchQuery, logs } = this.state;
+		const { results } = this.state;
 		return (
-			<div className="search-container">
-				<p className="text-muted"><i>results for "{searchQuery}"</i><span className="float-right cursor-pointer"><a onClick={this.clearSearchResults}>← back to log stream</a></span></p>
-				{
-					results.length > 0 ?
-						results.map(result => {
-							const log = logs[parseInt(result.ref)];
-							return (
-								<LogItem data={log} />
-							)
-						})
-						:
-						'no results found'
+			<AutoSizer>
+				{({ height, width }) => {
+					if (this._mostRecentWidth !== width) {
+						this._mostRecentWidth = width;
+						setTimeout(this._resizeSearchResults, 0);
+					}
+					if (this._mostRecentHeight !== height) {
+						this._mostRecentHeight = height;
+						setTimeout(this._resizeSearchResults, 0);
+					}
+					return (
+						<List
+							width={width}
+							height={height}
+							ref={ref => this._resultsList = ref}
+							deferredMeasurementCache={this._resultsCache}
+							rowHeight={this._resultsCache.rowHeight}
+							rowCount={results.length}
+							rowRenderer={this.renderSearchResultRow}
+						/>)
 				}
-			</div>
+				}
+			</AutoSizer>
 		)
 	}
 
@@ -144,6 +154,27 @@ class StreamContainer extends React.Component {
 		return (
 			<CellMeasurer
 				cache={this._cache}
+				columnIndex={0}
+				key={key}
+				parent={parent}
+				rowIndex={index}
+			>
+				<div style={{
+					...style,
+					wordBreak: 'break-word',
+				}}>
+					<LogItem data={log} />
+				</div>
+			</CellMeasurer>
+		)
+	};
+
+	renderSearchResultRow = ({ index, isScrolling, key, parent, style }) => {
+		const result = this.state.results[index];
+		const log = this.state.logs[result.ref];
+		return (
+			<CellMeasurer
+				cache={this._resultsCache}
 				columnIndex={0}
 				key={key}
 				parent={parent}
@@ -247,6 +278,14 @@ class StreamContainer extends React.Component {
 		this._cache.clearAll();
 		if (this._list) {
 			this._list.recomputeRowHeights();
+		}
+	};
+
+	_resizeSearchResults = () => {
+		this._resizeAllFlag = false;
+		this._resultsCache.clearAll();
+		if (this._resultsList) {
+			this._resultsList.recomputeRowHeights();
 		}
 	};
 }
