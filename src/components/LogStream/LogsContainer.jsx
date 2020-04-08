@@ -119,7 +119,6 @@ class StreamContainer extends React.Component {
 	}
 
 	renderLogRow = ({ index, isScrolling, key, parent, style }) => {
-		const { highlighted } = this.state;
 		const log = this.state.logs[index];
 		return (
 			<CellMeasurer
@@ -143,7 +142,7 @@ class StreamContainer extends React.Component {
 				<Card.Header>
 					<Row>
 						<Col className="col-md-8">
-							<h4 className="pt-1 mb-0">Log Stream</h4>
+							<h4 className="pt-1 mb-0"><b>Log Stream</b></h4>
 						</Col>
 						<Col className="col-md-4">
 							<FormControl

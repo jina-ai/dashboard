@@ -116,11 +116,11 @@ body{
 
 .node-port{
   background-color: #6c757d;
-  border: 2px solid #6c757d;
+  border: .15em solid #6c757d;
   color: white;
   line-height: 0;
   font-size: .85em;
-  padding: 2px;
+  padding: .15em;
   /* padding-left: 10px; */
   /* padding-right: 10px; */
   border-radius: .25em;
