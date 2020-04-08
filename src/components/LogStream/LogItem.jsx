@@ -9,7 +9,7 @@ class LogItem extends React.Component {
 		logName = logName.length > 20 ? logName.substring(0, 20) : logName;
 		let levelInitial = String(levelname)[0];
 		return (
-			<div className={`log log-${String(levelname).toLowerCase()} px-4`}>
+			<div className={`log log-${String(levelname).toLowerCase()} px-4 mb-1`}>
 				<Row>
 					<Col lg="3" md="4" className="log-prefix px-0 text-left text-md-right">
 						<b>{logName}@{process}[{levelInitial}]:</b>

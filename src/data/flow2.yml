@@ -1,36 +1,106 @@
 !Flow
 with:
-  driver_yaml_path: my-driver.yml
-  sse_logger: false
   board:
     canvas:
       chunk_seg:
-        x: 377
-        y: 79
-      doc_idx:
-        x: 254
-        y: 225
-      tf_encode:
-        x: 489
-        y: 215
-      chunk_idx:
-        x: 488
-        y: 331
-      join_all:
-        x: 378
-        y: 482
+        x: 862
+        y: 138
+      encode1:
+        x: 198
+        y: 311
+      encode2:
+        x: 428
+        y: 309
+      pod_3:
+        x: 652
+        y: 308
+      pod_4:
+        x: 863
+        y: 307
+      pod_5:
+        x: 1084
+        y: 309
+      pod_6:
+        x: 1305
+        y: 311
+      connector:
+        x: 861
+        y: 477
+      midleft_1:
+        x: 530
+        y: 601
+      midright_1:
+        x: 1210
+        y: 598
+      midleft_2:
+        x: 331
+        y: 739
+      midright_2:
+        x: 1399
+        y: 733
+      pod_left:
+        x: 508
+        y: 862
+      pod_right:
+        x: 1226
+        y: 865
+      end_pod:
+        x: 870
+        y: 1083
+      pod_7:
+        x: 1526
+        y: 311
 pods:
   chunk_seg:
-    replicas: 2
-  doc_idx:
-    yaml_path: index/doc.yml
-  tf_encode:
+    replicas: 3
+  encode1:
     replicas: 2
     needs: chunk_seg
-  chunk_idx:
-    yaml_path: index/npvec.yml
-    needs: tf_encode
-  join_all:
+  encode2:
+    replicas: 2
+    needs: chunk_seg
+  pod_3:
+    needs: chunk_seg
+  pod_4:
+    needs: chunk_seg
+  pod_5:
+    needs: chunk_seg
+  pod_6:
+    needs: chunk_seg
+  connector:
     needs:
-      - doc_idx
-      - chunk_idx
+      - encode1
+      - encode2
+      - pod_3
+      - pod_4
+      - pod_5
+      - pod_6
+      - pod_7
+  midleft_1:
+    needs: connector
+  midright_1:
+    needs: connector
+  midleft_2:
+    needs: midleft_1
+  midright_2:
+    needs: midright_1
+  pod_left:
+    needs:
+      - midleft_2
+      - midleft_1
+      - connector
+  pod_right:
+    needs:
+      - midright_2
+      - midright_1
+      - connector
+  end_pod:
+    pull_latest: false
+    port_in: 22
+    volumes: "22"
+    entrypoint: arst
+    needs:
+      - pod_left
+      - pod_right
+  pod_7:
+    needs: chunk_seg

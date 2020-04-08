@@ -12,8 +12,10 @@ let _store = {
   logs: [],
   occurences: {
     current: {},
-    previous: {}
+    previous: {},
+    lastLog: [],
   },
+  logIndex: false,
   summaryCharts: {},
   selectedNode: null,
   modalParams: null,
@@ -22,7 +24,7 @@ let _store = {
 
 const NUM_CHART_ELEMENTS = 60;
 const CHART_UPDATE_INTERVAL = 1000;
-const CHART_LEVELS = ['INFO', 'SUCCESS', 'CRITICAL']
+const CHART_LEVELS = ['INFO', 'SUCCESS', 'ERROR', 'CRITICAL']
 
 class Store extends EventEmitter {
   constructor() {
@@ -44,6 +46,9 @@ class Store extends EventEmitter {
         break;
       case Constants.CLOSE_MODAL:
         this.closeModal();
+        break;
+      case Constants.SHOW_LOG_AT_INDEX:
+        this.showLogAtIndex(payload);
         break;
       default:
     }
@@ -101,13 +106,14 @@ class Store extends EventEmitter {
       _store.occurences.previous[level] = 0;
       _store.summaryCharts[level] = (new Array(NUM_CHART_ELEMENTS)).fill(0);
     });
+    _store.occurences.lastLog = (new Array(NUM_CHART_ELEMENTS)).fill({});
     console.log('initial Occurences: ', _store.occurences);
     console.log('initial summary charts: ', _store.summaryCharts);
     this.updateChartInterval = setInterval(this.updateSummaryCharts, CHART_UPDATE_INTERVAL);
   }
 
   updateSummaryCharts = () => {
-    const { current, previous } = _store.occurences;
+    const { current, previous, indeces } = _store.occurences;
     CHART_LEVELS.map(level => {
       const numLogs = current[level];
       const prevNum = previous[level];
@@ -115,8 +121,20 @@ class Store extends EventEmitter {
       _store.summaryCharts[level].shift();
       _store.occurences.previous[level] = numLogs;
     });
+    _store.occurences.lastLog.push(_store.logs.length - 1);
+    _store.occurences.lastLog.shift();
     // console.log('summaryCharts:', _store.summaryCharts);
     this.emit('update-summary-chart');
+  }
+
+  showLogAtIndex = (index) => {
+    console.log('index: ',index);
+    let logIndex = _store.occurences.lastLog[index];
+    console.log('logIndex: ',logIndex);
+    if(!logIndex)
+    return;
+    _store.logIndex = _store.occurences.lastLog[index];
+    this.emit('show-log');
   }
 
   importCustomYAML = (customYAML) => {
@@ -177,6 +195,10 @@ class Store extends EventEmitter {
 
   getAvailableProperties = () => {
     return propertyList;
+  }
+
+  getIndexedLog = () => {
+    return _store.logIndex;
   }
 }
 

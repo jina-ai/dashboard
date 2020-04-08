@@ -4,11 +4,11 @@ import ChartElement from 'chart.js';
 const _colors = {
   INFO: {
     border: '#007bff',
-    background: 'rgba(0, 123, 255, 0.25)'
+    background: 'rgba(0, 123, 255, 0.15)'
   },
   SUCCESS: {
     border: '#4caf50',
-    background: 'rgba(76, 175, 79, 0.25)'
+    background: 'rgba(76, 175, 79, 0.15)'
   },
   ERROR: {
     border: '#fb8c00',
@@ -48,7 +48,7 @@ class Chart extends React.Component {
       elements: {
         point: {
           radius: 0,
-          hitRadius:5,
+          hitRadius:10,
         }
       },
       scales: {
@@ -105,7 +105,7 @@ class Chart extends React.Component {
 
   onClick = (e) =>{
     const activePoints = this.chart.getElementsAtEvent(e);
-    console.log('activePoints: ',activePoints);
+    this.props.onClick(activePoints);
   }
 
   getLabels = (amount) => {

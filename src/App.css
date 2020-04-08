@@ -218,6 +218,7 @@ i.material-icons{
 
 .log{
   font-family: 'Roboto Mono', monospace;
+  word-wrap: break-word;
 }
 
 .log-success{
@@ -228,11 +229,11 @@ i.material-icons{
   color: black;
 }
 
-.log-warning{
+.log-error{
   color: #ffc107;
 }
 
-.log-error{
+.log-critical{
   color: #dc3545;
 }
 
@@ -248,8 +249,8 @@ i.material-icons{
 }
 
 .back-to-bottom{
+  display: none;
   position: absolute;
-  display: inline-block;
   right: 1.5em;
   top: .5em !important;
   padding: 1em;
@@ -259,14 +260,14 @@ i.material-icons{
   border: 1px solid #d1d5da;
   z-index: 5;
   cursor: pointer;
-  opacity: 0;
   transition: .2s;
 }
 
 .back-to-bottom.active{
-  opacity: 1;
+  display: inline-block;
 }
 
+.cursor-pointer,
 .close-icon{
   cursor:pointer;
 }

@@ -18,7 +18,6 @@ export function parseYAML(yamlSTR) {
 	try {
 		yamlSTR = yamlSTR.replace("!Flow", "")
 		const data = YAML.parse(yamlSTR);
-		console.log(yamlSTR, ':', data);
 		return { data };
 	}
 	catch (error) {
@@ -116,7 +115,7 @@ export function formatForFlowchart(pods, canvas) {
 }
 
 export function formatAsYAML(chart) {
-	console.log('chart: ', chart)
+	console.log('formatAsYAML input: ', chart)
 	let output = {
 		with: chart.with || {},
 		pods: {}
@@ -168,7 +167,6 @@ function getNodeDepth(nodes, currentId, currentDepth) {
 
 	for (let i = 0; i < parents.length; ++i) {
 		let parent = parents[i];
-		console.log('parent: ', nodes[parent]);
 		let depth;
 		if (nodes[parent].depth)
 			depth = nodes[parent].depth + 1;

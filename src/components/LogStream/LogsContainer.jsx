@@ -29,20 +29,36 @@ class StreamContainer extends React.Component {
 
 	componentWillMount = () => {
 		Store.on('update-logs', this.getData);
+		Store.on('show-log',this.getIndexedLog);
 	}
 
 	componentWillUnmount = () => {
 		Store.removeListener('update-logs', this.getData);
+		Store.removeListener('show-log',this.getIndexedLog);
+	}
+
+	componentDidMount = () => {
+		setTimeout(() => {
+			if (this._list)
+				this._resizeAll();
+				this.scrollToBottom()
+		}, 1)
+
 	}
 
 	getData = () => {
 		const logs = Store.getLogs();
-		this.setState({ logs }, () => {
-			if (this._scrolledToBottom && this._list)
-				this.scrollToBottom();
-			if (this.state.searchQuery)
-				this.search();
-		});
+		this.setState({ logs });
+		if (this._scrolledToBottom && this._list)
+			this.scrollToBottom();
+		if (this.state.searchQuery)
+			this.search();
+	}
+
+	getIndexedLog = () =>{
+		const index = Store.getIndexedLog();
+		console.log('scrolling to index: ',index);
+		this.scrollToLog(index);
 	}
 
 	search = () => {
@@ -82,9 +98,14 @@ class StreamContainer extends React.Component {
 		this._list.scrollToRow(index);
 	}
 
-	scrollToBottom = () =>{
+	scrollToBottom = () => {
 		this._list.scrollToRow(this.state.logs.length);
-		this._scrolledToBottom = true;	
+		this._scrolledToBottom = true;
+	}
+
+	backToBottom = () => {
+		this.scrollToBottom();
+		setTimeout(this.scrollToBottom, 1);
 	}
 
 	updateSearchQuery = (e) => {
@@ -102,7 +123,7 @@ class StreamContainer extends React.Component {
 		const { results, searchQuery, logs } = this.state;
 		return (
 			<div className="search-container">
-				<p className="text-muted"><i>results for "{searchQuery}"</i><span className="float-right"><a onClick={this.clearSearchResults}>← back to log stream</a></span></p>
+				<p className="text-muted"><i>results for "{searchQuery}"</i><span className="float-right cursor-pointer"><a onClick={this.clearSearchResults}>← back to log stream</a></span></p>
 				{
 					results.length > 0 ?
 						results.map(result => {
@@ -128,7 +149,10 @@ class StreamContainer extends React.Component {
 				parent={parent}
 				rowIndex={index}
 			>
-				<div style={style}>
+				<div style={{
+					...style,
+					wordBreak: 'break-word',
+				}}>
 					<LogItem data={log} />
 				</div>
 			</CellMeasurer>
@@ -159,7 +183,7 @@ class StreamContainer extends React.Component {
 						searchQuery && results ?
 							''
 							:
-							<div onClick={this.scrollToBottom} className={`back-to-bottom ${showHelper && 'active'}`}><i className="material-icons">arrow_downward</i> Back to Bottom</div>
+							<div onClick={this.backToBottom} className={`back-to-bottom ${showHelper && 'active'}`}><i className="material-icons">arrow_downward</i> Back to Bottom</div>
 					}
 					{
 						searchQuery && results ?
@@ -185,6 +209,7 @@ class StreamContainer extends React.Component {
 											rowCount={logs.length}
 											rowRenderer={this.renderLogRow}
 											onScroll={this._onScroll}
+											scrollToAlignment="center"
 										/>)
 								}
 								}
@@ -203,13 +228,13 @@ class StreamContainer extends React.Component {
 	_onScroll = (data) => {
 		const { scrollTop, scrollHeight, clientHeight } = data;
 		this._scrollTop = scrollTop;
-		let difference = scrollHeight-(scrollTop+clientHeight);
+		let difference = scrollHeight - (scrollTop + clientHeight);
+
 		if (difference === 0)
 			this._scrolledToBottom = true;
-		else{
+		else {
 			this._scrolledToBottom = false;
 		}
-			
 
 		if (difference > 75 && !this.state.showHelper)
 			this.setState({ showHelper: true })
