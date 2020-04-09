@@ -13,5 +13,5 @@
 
 ### Live Mode:
 1. `yarn build`
-2.  `node dashboard`
-3.  dashboard will be served on `http://localhost:3030` by default
+2. `node dashboard`
+3. dashboard will be served on `http://localhost:3030` by default

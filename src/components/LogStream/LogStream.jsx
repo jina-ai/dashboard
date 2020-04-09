@@ -66,7 +66,7 @@ class StreamContainer extends React.Component {
 		const query = this.state.searchQuery;
 		console.log('search query: ', query)
 		this.indexLogs();
-		let results = this.index.search(query)
+		let results = this.index.search(`${query}*`)
 		this.setState({ results },this._resizeSearchResults);
 		console.log('search results: ', results)
 	}
