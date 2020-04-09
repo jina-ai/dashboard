@@ -23,11 +23,14 @@ class StreamContainer extends React.Component {
 	_scrolledToBottom = true;
 
 	state = {
-		logs: Store.getLogs(),
+		logData: Store.getLogs(),
+		logs: Store.getLogs().all,
+		sources: Store.getLogSources(),
 		searchQuery: "",
 		prevQuery: "",
 		searchResults: false,
-		showHelper: false
+		showHelper: false,
+		selectedSource: 'all',
 	}
 
 	componentWillMount = () => {
@@ -50,16 +53,30 @@ class StreamContainer extends React.Component {
 	}
 
 	getData = () => {
-		const logs = Store.getLogs();
-		this.setState({ logs });
+		const logData = Store.getLogs();
+		const sources = Store.getLogSources();
+		const logs = logData[this.state.selectedSource];
+		this.setState({ logs, sources, logData });
 		if (this._scrolledToBottom && this._list)
 			this.scrollToBottom();
 	}
 
 	getIndexedLog = () => {
 		const index = Store.getIndexedLog();
+		const selectedSource = 'all';
+		const logs = this.state.logData[selectedSource];
+		this.setState({ selectedSource,logs });
 		console.log('scrolling to index: ', index);
 		this.scrollToLog(index);
+	}
+
+	setSelectedSource = (selectedSource) => {
+		const { logData } = this.state;
+		const logs = logData[selectedSource];
+		this.setState({ logs, selectedSource }, () => {
+			this._resizeAll();
+			this.scrollToBottom();
+		})
 	}
 
 	search = () => {
@@ -67,7 +84,7 @@ class StreamContainer extends React.Component {
 		console.log('search query: ', query)
 		this.indexLogs();
 		let results = this.index.search(`${query}*`)
-		this.setState({ results },this._resizeSearchResults);
+		this.setState({ results }, this._resizeSearchResults);
 		console.log('search results: ', results)
 	}
 
@@ -191,15 +208,23 @@ class StreamContainer extends React.Component {
 	};
 
 	render = () => {
-		const { results, searchQuery, logs, showHelper } = this.state;
+		const { results, searchQuery, logs, showHelper, sources } = this.state;
 		return (
 			<Card>
 				<Card.Header>
 					<Row>
-						<Col className="col-md-8">
-							<h4 className="pt-1 mb-0"><b>Log Stream</b></h4>
+						<Col md="4" xs="6">
+							<FormControl as="select" onChange={(e) => this.setSelectedSource(e.target.value)}>
+								<option value="all">All Logs</option>
+								{
+									Object.keys(sources).map(source =>
+										<option value={source}>{source}</option>
+									)
+								}
+							</FormControl>
 						</Col>
-						<Col className="col-md-4">
+						<Col md="4" className="d-none d-md-inline-block" />
+						<Col md="4" xs="6">
 							<FormControl
 								placeholder="search logs..."
 								onKeyPress={this.listenForEnter}

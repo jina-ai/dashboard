@@ -9,7 +9,10 @@ let _store = {
   loading: true,
   modal: false,
   flowchart: {},
-  logs: [],
+  logs: {
+    all:[],
+  },
+  logSources:{},
   occurences: {
     current: {},
     previous: {},
@@ -91,7 +94,17 @@ class Store extends EventEmitter {
       if (log.error)
         return console.error('Log Stream Error: ' + log.error);
       // console.log('log: ', log)
-      _store.logs.push(log.data);
+      _store.logs.all.push(log.data);
+
+      const source = log.data.name;
+
+      if(_store.logs[source])
+        _store.logs[source].push(log.data);
+      else
+        _store.logs[source] = [log.data];
+
+      _store.logSources[source] = true;
+
       if (CHART_LEVELS.includes(log.data.levelname)) {
         _store.occurences.current[log.data.levelname]++;
       }
@@ -121,7 +134,7 @@ class Store extends EventEmitter {
       _store.summaryCharts[level].shift();
       _store.occurences.previous[level] = numLogs;
     });
-    _store.occurences.lastLog.push(_store.logs.length - 1);
+    _store.occurences.lastLog.push(_store.logs.all.length - 1);
     _store.occurences.lastLog.shift();
     // console.log('summaryCharts:', _store.summaryCharts);
     this.emit('update-summary-chart');
@@ -179,6 +192,10 @@ class Store extends EventEmitter {
 
   getLogs = () => {
     return _store.logs;
+  }
+
+  getLogSources = () =>{
+    return _store.logSources;
   }
 
   getSummaryCharts = () => {
