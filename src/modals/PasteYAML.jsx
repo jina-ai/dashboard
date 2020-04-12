@@ -59,8 +59,8 @@ class PasteYAML extends Component {
         closeTimeoutMS={100}
       >
         <div className="modal-header p-0">
-          <h2><b>Import YAML</b></h2>
-          <h2><span className="float-right close-icon"><i className="material-icons" onClick={this.close}>close</i></span></h2>
+          <h4><b>Import YAML</b></h4>
+          <h4><span className="float-right close-icon"><i className="material-icons" onClick={this.close}>close</i></span></h4>
         </div>
         <div className="modal-body px-0 pb-0">
           <Form.Group>
