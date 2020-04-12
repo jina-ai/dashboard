@@ -126,6 +126,7 @@ class Store extends EventEmitter {
     parsed.with = flow.data.with;
     _store.flowchart = parsed;
     this.emit('update-ui');
+    this.emit('update-flowchart')
   }
 
   initLogStream = () => {
@@ -138,6 +139,7 @@ class Store extends EventEmitter {
       }
 
       if (type === 'error') {
+        _store.connected = false;
         return this.showBanner(data, 'danger')
       }
 
@@ -212,7 +214,6 @@ class Store extends EventEmitter {
   }
 
   saveSettings = (settings) => {
-    alert('saving settings')
     Object.keys(settings).map(key => {
       localStorage.setItem(`preferences-${key}`, settings[key]);
     });

@@ -1,6 +1,6 @@
 import React from "react";
 import SidebarItem from './SidebarItem';
-import { Button, FormControl} from 'react-bootstrap';
+import { Button, FormControl,Card} from 'react-bootstrap';
 import { Store } from "../../flux";
 
 class FlowChartSidebar extends React.Component {
@@ -160,7 +160,7 @@ class FlowChartSidebar extends React.Component {
     const { selected, nodes, links } = this.props.chart;
     const hasSelected = Object.keys(selected).length > 0;
     return (
-      <div className="flowchart-sidebar">
+      <Card className="flowchart-sidebar mb-4">
         {
           hasSelected ?
             selected.type === 'link' ?
@@ -170,7 +170,7 @@ class FlowChartSidebar extends React.Component {
             :
             this.renderInstructions()
         }
-      </div>
+      </Card>
     )
   }
 }

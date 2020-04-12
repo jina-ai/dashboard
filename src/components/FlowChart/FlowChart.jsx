@@ -5,8 +5,8 @@ import * as actions from "@mrblenny/react-flow-chart/src/container/actions";
 import Sidebar from './Sidebar';
 import CustomNode from './ChartNode';
 import CustomPort from './NodePort';
-import { ButtonGroup, Button } from 'react-bootstrap';
-import {formatAsYAML, copyToClipboard} from '../../helpers';
+import { ButtonGroup, Button,Card } from 'react-bootstrap';
+import { formatAsYAML, copyToClipboard } from '../../helpers';
 import { Store, Dispatcher, Constants } from '../../flux';
 
 class MainFlowChart extends React.Component {
@@ -28,15 +28,15 @@ class MainFlowChart extends React.Component {
 		}, {});
 	}
 
-	componentWillMount = () =>{
-		Store.on('update-flowchart',this.getData);
+	componentWillMount = () => {
+		Store.on('update-flowchart', this.getData);
 	}
 
-	componentWillUnmount = () =>{
-		Store.removeListener('update-flowchart',this.getData);
+	componentWillUnmount = () => {
+		Store.removeListener('update-flowchart', this.getData);
 	}
 
-	getData = () =>{
+	getData = () => {
 		const chart = Store.getFlowchart();
 		this.updateChart(chart);
 	}
@@ -83,53 +83,48 @@ class MainFlowChart extends React.Component {
 		})
 	}
 
-	copyChartAsYAML = () =>{
+	copyChartAsYAML = () => {
 		copyToClipboard(formatAsYAML(this.state.chart));
 		alert('Chart copied to clipboard as YAML')
 	}
 
-	validateChat = ()=>{
-		const {chart} = this.state;
+	validateChat = () => {
+		const { chart } = this.state;
 		let isValid = true;
 	}
 
-	validateLink = ({fromNodeId,toNodeId ,fromPortId,toPortId,chart})=>{
-		if(fromPortId!='outPort' || toPortId!='inPort')
+	validateLink = ({ fromNodeId, toNodeId, fromPortId, toPortId, chart }) => {
+		if (fromPortId != 'outPort' || toPortId != 'inPort')
 			return false;
-		if(fromNodeId == toNodeId)
+		if (fromNodeId == toNodeId)
 			return false;
 		return true;
 	}
 
-	showImportModal = () =>{
+	showImportModal = () => {
 		Dispatcher.dispatch({
-			actionType:Constants.SHOW_MODAL,
-			payload:{modal: 'import'}
+			actionType: Constants.SHOW_MODAL,
+			payload: { modal: 'import' }
 		})
 	}
 
 	render = () => {
 		const { chart } = this.state;
 		return (
-			<div className="flow-container d-flex flex-column flex-md-row">
-				<div className="chart-section-container">
-					<div className="chart-container">
-						<FlowChart 
-						chart={chart} 
-						Components={{ NodeInner: CustomNode, Port: CustomPort }}
-						callbacks={this.stateActionCallbacks}
-						config={ {
-							validateLink: this.validateLink}}/>
-					</div>
-					<div className="chart-toolbar">
-						<p className="d-none d-md-inline-block pt-2 mb-0">{Object.keys(chart.nodes || {}).length} Pods,</p>
-						<p className="d-none d-md-inline-block pt-2 mb-0 ml-2">{Object.keys(chart.links || {}).length} Connections</p>
-						<Button variant="outline" className="float-right ml-2" onClick={this.copyChartAsYAML}><i className="material-icons">file_copy</i> Copy YAML</Button>
-						<Button variant="outline" className="float-right ml-2" onClick={this.showImportModal}><i className="material-icons">publish</i> Import YAML</Button>
-					</div>
-				</div>
-				<Sidebar chart={chart} cancelChanges={this.cancelChanges} deleteSelection={this.deleteSelection} updateNode={this.updateNode} />
-			</div >
+				<div className="flow-container d-flex flex-column flex-md-row">
+					<Card className="chart-section-container p-1 mr-md-4 mb-4">
+						<div className="chart-container">
+							<FlowChart
+								chart={chart}
+								Components={{ NodeInner: CustomNode, Port: CustomPort }}
+								callbacks={this.stateActionCallbacks}
+								config={{
+									validateLink: this.validateLink
+								}} />
+						</div>
+					</Card>
+					<Sidebar chart={chart} cancelChanges={this.cancelChanges} deleteSelection={this.deleteSelection} updateNode={this.updateNode} />
+				</div >
 		);
 	}
 }

@@ -32,11 +32,11 @@ export default class Notifications extends React.Component {
             <i className="material-icons">language</i>
             {
               connected ?
-                <Badge pill theme="success" className="connection-indicator">
+                <Badge pill theme="success" className="connection-indicator p-1">
                   <i className="material-icons">done</i>
                 </Badge>
                 :
-                <Badge pill theme="danger" className="connection-indicator">
+                <Badge pill theme="danger" className="connection-indicator p-1">
                   <i className="material-icons">close</i>
                 </Badge>
             }

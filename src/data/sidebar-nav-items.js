@@ -8,13 +8,13 @@ export default function () {
       htmlAfter: '',
     },
     {
-      title: 'Logs',
+      title: 'Log Stream',
       to: '/logs',
       htmlBefore: '<i class="material-icons">insert_comment</i>',
       htmlAfter: '',
     },
     {
-      title: 'Flow',
+      title: 'Flow Design',
       to: '/flow',
       htmlBefore: '<i class="material-icons">device_hub</i>',
       htmlAfter: '',

@@ -211,7 +211,7 @@ class StreamContainer extends React.Component {
 		const { results, searchQuery, logs, showHelper, sources } = this.state;
 		return (
 			<Card className="mb-4">
-				<Card.Header>
+				<Card.Header className="p-3">
 					<Row>
 						<Col md="4" xs="6">
 							<FormControl as="select" onChange={(e) => this.setSelectedSource(e.target.value)}>
