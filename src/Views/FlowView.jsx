@@ -90,11 +90,6 @@ class FlowTab extends React.Component {
     alert('Chart copied to clipboard as YAML')
   }
 
-  validateChat = () => {
-    const { chart } = this.state;
-    let isValid = true;
-  }
-
   validateLink = ({ fromNodeId, toNodeId, fromPortId, toPortId, chart }) => {
     if (fromPortId != 'outPort' || toPortId != 'inPort')
       return false;
@@ -120,8 +115,8 @@ class FlowTab extends React.Component {
           <Col className="col d-flex align-items-right">
             <div className="d-none d-md-block flex-fill"/>
             <ButtonGroup className="d-inline-flex mb-3 mb-sm-0 mx-auto py-0">
-              <Button theme="white" to="/analytics">Import YAML</Button>
-              <Button theme="white" to="/ecommerce">Copy YAML</Button>
+              <Button theme="white" to="/analytics" onClick={this.showImportModal}>Import YAML</Button>
+              <Button theme="white" to="/ecommerce" onClick={this.copyChartAsYAML}>Copy YAML</Button>
             </ButtonGroup>
           </Col>
         </Row>

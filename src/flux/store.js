@@ -145,6 +145,9 @@ class Store extends EventEmitter {
 
 
       const log = data;
+
+      log.formattedTimestamp = (new Date(log.created *1000)).toISOString().replace('T',' ').slice(5,22)
+
       // console.log('log: ', log)
       _store.logs.all.push(log);
 

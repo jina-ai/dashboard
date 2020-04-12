@@ -279,3 +279,8 @@ i.material-icons{
   padding-top: .25em;
   padding-bottom: .25em;
 }
+
+.btn-primary{
+  background-color: #009999 !important;
+  border-color: #009999 !important;
+}

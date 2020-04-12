@@ -135,7 +135,7 @@ class FlowChartSidebar extends React.Component {
       <div className="sidebar-instructions text-muted">
         <h4>Select a pod to edit properties</h4>
         <p>or</p>
-        <h4 className="mb-4">Drag a New Pod:</h4>
+        <h4 className="mb-4">Drag a new pod:</h4>
         <SidebarItem
           type="New Pod"
           ports={{

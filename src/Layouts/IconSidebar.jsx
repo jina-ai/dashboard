@@ -5,6 +5,8 @@ import MainNavbar from "../components/Layout/MainNavbar/MainNavbar";
 import MainSidebar from "../components/Layout/MainSidebar/MainSidebar";
 import MainFooter from "../components/Layout/MainFooter";
 
+import PasteYAML from '../modals/PasteYAML';
+
 import { Store } from '../flux';
 
 class IconSidebarLayout extends React.Component {
@@ -47,6 +49,7 @@ class IconSidebarLayout extends React.Component {
           {!noFooter && <MainFooter />}
         </Col>
       </Row>
+      <PasteYAML open={modal==='import'}/>
     </Container>)
   }
 }
