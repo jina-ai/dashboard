@@ -210,7 +210,7 @@ class StreamContainer extends React.Component {
 	render = () => {
 		const { results, searchQuery, logs, showHelper, sources } = this.state;
 		return (
-			<Card>
+			<Card className="mb-4">
 				<Card.Header>
 					<Row>
 						<Col md="4" xs="6">
@@ -234,7 +234,7 @@ class StreamContainer extends React.Component {
 						</Col>
 					</Row>
 				</Card.Header>
-				<Card.Body className="log-stream-container p-0" id="log-stream-container">
+				<Card.Body className="log-stream-container p-1 border-top" id="log-stream-container">
 					{
 						searchQuery && results ?
 							''

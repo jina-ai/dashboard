@@ -1,0 +1,190 @@
+// File manager templates adjustments
+
+.file-manager {
+  &__group-title {
+    display: block;
+    font-size: $fm-group-title-font-size;
+    font-weight: $fm-group-title-font-weight;
+    margin: $fm-group-title-margin;
+  }
+
+  // List file manager.
+  &-list {
+    td, th {
+      border-left: none !important;
+      border-right: none !important;
+    }
+
+    .file-manager {
+      &__item-title,
+      &__item-meta {
+        margin: 0;
+      }
+
+      &__item-title {
+        display: block;
+        font-size: $fm-list-item-title-font-size;
+        line-height: $fm-list-item-title-line-height;
+      }
+
+      &__item-meta {
+        display: inline-block;
+        font-size: $fm-list-item-meta-font-size;
+        color: $fm-list-item-meta-color;
+        line-height: $fm-list-item-meta-line-height;
+      }
+
+      &__item-icon {
+        padding-right: 0 !important;
+
+        div {
+          border-radius: 50%;
+          font-size: $fm-list-item-icon-font-size;
+          text-align: $fm-list-item-icon-text-align;
+          color: $fm-list-item-icon-color;
+          width: $fm-list-item-icon-width;
+          height: $fm-list-item-icon-height;
+          line-height: $fm-list-item-icon-line-height;
+          background: $fm-list-item-icon-background-color;
+          box-shadow: $fm-list-item-icon-box-shadow;
+        }
+
+        i { top: 2px; }
+      }
+    }
+  }
+
+  // Cards file manager.
+  &-cards {
+
+    &__search {
+      max-width: 200px;
+
+      @include media-breakpoint-down(md) {
+        max-width: 100%;
+      }
+    }
+
+    .file-manager {
+      &__item {
+        overflow: hidden;
+        position: relative;
+
+        .card-footer {
+          display: flex;
+        }
+
+        &:hover {
+          cursor: pointer;
+        }
+
+        &:before,
+        &:after {
+          content: '';
+          position: absolute;
+        }
+
+        // (selected) Check-mark
+        &:before {
+          background-repeat: no-repeat;
+          background-position: center center;
+          border-radius: $fm-block-selected-border-radius;
+          background-color: $fm-block-selected-check-bg-color;
+          background-image: $fm-block-selected-check-bg-image;
+          background-size: $fm-block-selected-check-bg-size;
+          width: $fm-block-selected-check-width;
+          height: $fm-block-selected-check-height;
+          right: $fm-block-selected-check-right;
+          top: $fm-block-selected-check-top;
+          transform: $fm-block-selected-transform;
+          will-change: $fm-block-selected-will-change;
+          transition: $fm-block-selected-transition;
+        }
+
+        // (selected) Outline
+        &:after {
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          z-index: 100;
+          border-radius: $fm-block-selected-outline-border-radius;
+          box-shadow: $fm-block-selected-outline-box-shadow;
+          will-change: $fm-block-selected-outline-will-change;
+          transition: $fm-block-selected-outline-transition;
+        }
+
+        // Selected state modifier
+        &--selected {
+          // Check-mark
+          &:before {
+            top: $fm-block-selected-state-check-top;
+            transform: $fm-block-selected-state-check-transform;
+          }
+
+          // Outline
+          &:after {
+            box-shadow: $fm-block-selected-state-outline-box-shadow;
+          }
+        }
+
+        // Adjust the directory elements selected effect
+        &--directory {
+          // Check-mark
+          &:before {
+            width: $fm-block-selected-dir-check-width;
+            height: $fm-block-selected-dir-check-height;
+            top: $fm-block-selected-dir-check-top;
+            transform: $fm-block-selected-dir-check-transform;
+            right: $fm-block-selected-dir-check-right;
+          }
+
+          // (selected) Check-mark
+          &.file-manager__item--selected:before {
+            right: $fm-block-selected-state-dir-check-right;
+            background-size: $fm-block-selected-state-dir-background-size;
+          }
+        }
+      }
+
+      &__item-icon {
+        position: relative;
+        margin-right: $fm-block-item-icon-margin-right;
+        font-size: $fm-block-item-icon-font-size;
+        top: $fm-block-item-icon-top;
+
+        // Adjust material icons.
+        i.material-icons {
+          top: 0;
+        }
+      }
+
+      &__item-title {
+        width: auto;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        margin: 0;
+        font-size: $fm-block-item-title-font-size;
+        padding-right: $fm-block-item-title-padding-right;
+      }
+
+      &__item-size {
+        margin: $fm-block-item-size-margin;
+        font-size: $fm-block-item-size-font-size;
+      }
+
+      &__item-preview {
+        background: $fm-block-item-preview-bg;
+
+        img {
+          width: 80%;
+          margin-left: auto;
+          margin-right: auto;
+          display: table;
+          box-shadow: $fm-block-item-preview-img-box-shadow;
+        }
+      }
+    }
+  }
+}

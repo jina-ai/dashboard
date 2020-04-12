@@ -1,0 +1,7 @@
+// Adjust root CSS variables for the new colors.
+
+:root {
+  @each $color, $value in $new-colors {
+    --#{$color}: #{$value};
+  }
+}

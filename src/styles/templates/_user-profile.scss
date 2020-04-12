@@ -1,0 +1,241 @@
+// User Profile Template
+
+//
+// User details card
+//
+
+.user-details {
+  .card-header {
+    overflow: hidden;
+  }
+
+  .card-body {
+    margin-top: -3.125rem;
+    z-index: 1;
+
+    h4 {
+      font-weight: 500;
+    }
+  }
+
+  // Profile card background image
+  &__bg {
+    width: 100%;
+    position: relative;
+    max-height: $up-user-details-img-max-height;
+
+    img {
+      width: 100%;
+    }
+
+    &:after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: $up-user-details-img-bg;
+    }
+  }
+
+  // User avatar
+  &__avatar {
+    border-radius: 50%;
+    overflow: hidden;
+    max-width: $up-user-details-avatar-max-width;
+    box-shadow: $up-user-details-avatar-box-shadow;
+
+    img {
+      width: 100%;
+    }
+  }
+
+  // Social icons
+  &__social {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+
+    li {
+      display: inline-block;
+    }
+
+    a {
+      display: inline-block;
+      border-radius: 50%;
+      text-align: center;
+      width: $up-user-details-social-icon-width;
+      height: $up-user-details-social-icon-height;
+      line-height: $up-user-details-social-icon-line-height;
+      background: $up-user-details-social-icon-background;
+      color: $up-user-details-social-icon-color;
+    }
+  }
+
+  // User data
+  &__user-data .col span {
+    display: block;
+
+    &:first-child {
+      font-weight: 400;
+      color: $up-user-details-data-title-color;
+    }
+
+    &:last-child {
+      color: $up-user-details-data-value-color;
+    }
+  }
+
+  // User badges / tags
+  &__tags .badge {
+    font-weight: 300;
+  }
+}
+
+
+//
+// User small stats
+//
+
+.user-stats {
+  h4 {
+    font-weight: $up-user-details-stats-title-font-weight;
+  }
+
+  span {
+    font-size: $up-user-details-stats-subtitle-font-size;
+  }
+}
+
+//
+// User teams
+//
+
+.user-teams {
+  &__image {
+    max-width: 3.125rem;
+    img {
+      width: 100%;
+      max-width: $up-user-team-max-width;
+    }
+  }
+
+  &__info {
+    span {
+      &:first-child {
+        font-weight: 400;
+      }
+
+      &:last-child {
+        font-size: 80%;
+      }
+    }
+  }
+
+   .card-body {
+    position: relative;
+    overflow-y: auto;
+    min-height: $up-user-team-body-min-height;
+
+    @media screen and (max-width: 992px) {
+      min-height: $up-user-team-body-sm-min-height;
+    }
+  }
+
+  .container-fluid {
+    position: absolute;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+
+    .row {
+      display: flex;
+      flex: 1;
+      border-bottom: $up-user-team-body-item-border-bottom;
+      min-height: $up-user-team-body-item-min-height;
+
+      &:last-of-type {
+        border-bottom: 0;
+      }
+
+      > div {
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        padding: 0;
+      }
+    }
+  }
+}
+
+//
+// User activity
+//
+
+.user-activity {
+  &__item {
+    display: flex;
+    margin-left: $up-user-activity-item-margin-left;
+    border-left: $up-user-activity-item-border-left;
+    border-bottom: $up-user-activity-item-border-bottom;
+    font-weight: $up-user-activity-item-font-weight;
+
+    &:last-child {
+      border-bottom: 0;
+    }
+
+    @include clearfix();
+
+    &__icon {
+      text-align: center;
+      border-radius: 50%;
+      float: left;
+      width: $up-user-activity-item-icon-width;
+      height: $up-user-activity-item-icon-height;
+      min-width: $up-user-activity-item-icon-min-width;
+      background: $up-user-activity-item-icon-bg;
+      margin-left: $up-user-activity-item-icon-margin-left;
+      margin-right: $up-user-activity-item-icon-margin-right;
+      box-shadow: $up-user-activity-item-icon-box-shadow;
+
+      i {
+        font-size: $up-user-activity-item-icon-font-size;
+        line-height: $up-user-activity-item-icon-line-height;
+        color: $up-user-activity-item-icon-color;
+      }
+    }
+
+    &__content {
+      float: left;
+
+      p {
+        margin: 0;
+      }
+
+      a {
+        font-weight: 400;
+      }
+
+      span {
+        font-size: 80%;
+      }
+    }
+
+    &__action {
+      float: right;
+    }
+
+    &__task-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+
+      // TODO: Decide if this should make it into base Shards.
+      .custom-control {
+        line-height: 1.5rem;
+      }
+    }
+  }
+}
+

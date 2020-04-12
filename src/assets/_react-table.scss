@@ -1,0 +1,108 @@
+// React Table
+
+.ReactTable {
+  border: $rt-border;
+
+  // Head
+  .rt-thead.-header,
+  .-pagination {
+    box-shadow: $rt-head-box-shadow;
+  }
+
+  // Body
+  .rt-tbody {
+    .rt-td {
+      font-size: $rt-body-td-font-size;
+      padding: $rt-body-td-padding;
+      border-left: $rt-body-td-border-left;
+      border-bottom: $rt-body-td-border-bottom;
+      text-align: $rt-body-td-text-align;
+      display: $rt-body-td-display;
+      justify-content: $rt-body-td-justify-content;
+      align-items: $rt-body-td-align-items;
+    }
+
+    .rt-td:first-of-type {
+      border-left: none;
+    }
+
+    .tr-td {
+      border-bottom: none !important;
+    }
+
+    .rt-tr-group {
+      border: none;
+    }
+  }
+
+  .rt-tr-group:last-of-type .rt-td {
+    border-bottom: none !important;
+  }
+
+  // Head
+  .rt-thead {
+    .rt-tr {
+      border-bottom: $rt-head-tr-border-bottom;
+    }
+
+    .rt-th {
+      background-color: $rt-head-th-background-color;
+      font-weight: $rt-head-th-font-weight;
+      padding: $rt-head-th-padding !important;
+      font-size: $rt-head-th-font-size;
+      border: $rt-head-th-border;
+    }
+
+    /* Ascending & Descending Sort */
+    .rt-th.-sort-asc,
+    .rt-td.-sort-asc {
+      box-shadow: $rt-head-asc-box-shadow;
+    }
+
+    .rt-th.-sort-desc,
+    .rt-td.-sort-desc {
+      box-shadow: $rt-head-desc-box-shadow;
+    }
+  }
+
+  /* Pagination */
+  .-pagination {
+    font-size: $rt-pagination-font-size;
+    border: none;
+    border-top: $rt-pagination-border-top;
+    padding: $rt-pagination-padding;
+
+    .-btn {
+      padding: $rt-pagination-btn-padding;
+      width: $rt-pagination-btn-width;
+      color: $rt-pagination-btn-color;
+      font-weight: $rt-pagination-btn-font-weight;
+    }
+
+    .-pageJump input {
+      width: $rt-pagination-jump-input-width;
+    }
+
+    .-next button {
+      margin-left: auto;
+    }
+
+    button {
+      padding: $rt-pagination-button-padding;
+      background: $rt-pagination-button-background !important;
+      border: $rt-pagination-button-border !important;
+      border-radius: $rt-pagination-button-border-radius !important;
+    }
+
+    button:hover {
+      color: $rt-pagination-button-hover-color;
+      background: $rt-pagination-button-hover-background !important;
+    }
+
+    .-btn[disabled],
+    .-btn[disabled]:hover {
+      background-color: $rt-pagination-btn-disabled-background-color !important;
+      color: $rt-pagination-btn-disabled-color;
+    }
+  }
+}

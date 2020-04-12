@@ -1,8 +1,8 @@
 import React from "react";
 import { Container, Alert,Col,Row,} from "react-bootstrap";
 
-import Navbar from '../components/Layout/Navbar';
-import Footer from '../components/Layout/Footer';
+// import Navbar from '../components/Layout/Navbar';
+// import Footer from '../components/Layout/Footer';
 import PasteYAML from '../modals/PasteYAML';
 
 
@@ -40,7 +40,7 @@ class DefaultLayout extends React.Component {
             sm="12"
             tag="main"
           >
-            <Navbar />
+            {/* <Navbar /> */}
             {
               banner &&
               <Alert theme={banner.variant} className="alert-bar py-1">{banner.text}</Alert>
@@ -55,7 +55,7 @@ class DefaultLayout extends React.Component {
                 :
                 children
             }
-            <Footer />
+            {/* <Footer /> */}
           </Col>
         </Row>
         <PasteYAML open={modal==='import'}/>

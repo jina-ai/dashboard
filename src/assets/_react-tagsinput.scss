@@ -1,0 +1,77 @@
+// React TagsInput Styles
+
+.react-tagsinput {
+  height: $rti-height;
+  padding: $rti-padding;
+  font-size: $rti-font-size;
+  line-height: $rti-line-height;
+  color: $rti-color;
+  background-color: $rti-background-color;
+  border: $rti-border;
+  font-weight: $rti-font-weight;
+  will-change: $rti-will-change;
+  border-radius: $rti-border-radius;
+  box-shadow: $rti-box-shadow;
+  transition: $rti-transition;
+
+  &:hover {
+    cursor: text;
+  }
+
+  &--focused {
+    color: $rti-focused-color;
+    background-color: $rti-focused-background-color;
+    border-color: $rti-focused-border-color;
+    box-shadow: $rti-focused-box-shadow;
+  }
+
+  &-tag {
+    display: $rti-tag-display;
+    background: $rti-tag-background;
+    padding: $rti-tag-padding;
+    border-radius: $rti-tag-border-radius;
+    font-size: $rti-tag-font-size;
+    position: $rti-tag-position;
+    text-transform: $rti-tag-text-transform;
+    border: $rti-tag-border;
+    color: $rti-tag-color;
+    margin-right: $rti-tag-margin-right;
+    margin-bottom: $rti-tag-margin-bottom;
+  }
+
+  &-remove {
+    cursor: pointer;
+    font-weight: bold;
+  }
+
+  a::before {
+    content: "";
+    position: absolute;
+    background-image: $rti-tag-link-before-background-image;
+    right: $rti-tag-link-before-right;
+    ;
+    top: $rti-tag-link-before-top;
+    width: $rti-tag-link-before-width;
+    height: $rti-tag-link-before-height;
+    background-repeat: $rti-tag-link-before-background-repeat;
+    background-position: $rti-tag-link-before-background-position;
+    -webkit-transform: $rti-tag-link-before-transform;
+    transform: $rti-tag-link-before-transform;
+    background-size: $rti-tag-link-before-background-size;
+    opacity: $rti-tag-link-before-opacity;
+  }
+
+  &-input {
+    background: $rti-input-background;
+    border: $rti-input-border;
+    color: $rti-input-color;
+    font-family: $rti-input-font-family;
+    font-size: $rti-input-font-size;
+    font-weight: $rti-input-font-weight;
+    margin-bottom: $rti-input-margin-bottom;
+    margin-top: $rti-input-margin-top;
+    outline: $rti-input-outline;
+    padding: $rti-input-padding;
+    width: $rti-input-width;
+  }
+}

@@ -1,0 +1,100 @@
+// Dropzone.js adjustments
+
+.dropzone {
+  color: $reagent-gray;
+
+  // When drag-hover.
+  &.dz-drag-hover .dz-default {
+    background: $white;
+    border-color: darken($athens-gray, 10);
+  }
+
+  // Default message.
+  .dz-default {
+    text-align: center;
+    border: 1px dashed darken($athens-gray, 5);
+    padding: $spacer / 2;
+    position: relative;
+    border-radius: $border-radius;
+    will-change: border-color, background;
+    transition: border-color $transition-duration ease-in-out,
+                background $transition-duration ease-in-out;
+
+    &:hover {
+      cursor: pointer;
+    }
+
+    & + .dz-preview {
+      margin-top: $spacer / 2;
+    }
+  }
+
+  // Preview items.
+  .dz-preview {
+    width: 100%;
+    border: 1px solid $athens-gray;
+    border-radius: $border-radius;
+    background: $white;
+    box-shadow: 0 1px 1px $athens-gray;
+    padding: $spacer / 2;
+    display: flex;
+    justify-content: space-between;
+
+    & + .dz-preview {
+      margin-top: $spacer / 2;;
+    }
+
+    .dz-image {
+      max-width: 50px;
+      border-radius: $border-radius;
+      overflow: hidden;
+      margin-right: 20px;
+
+      img {
+        width: 100%;
+      }
+    }
+
+    .dz-details,
+    .dz-error-message {
+      justify-content: center;
+      display: flex;
+      flex-direction: column-reverse;
+    }
+
+    .dz-details {
+      margin-right: $spacer * 2;
+      flex: 2;
+    }
+
+    .dz-filename {
+      font-weight: 500;
+      color: $fiord-blue;
+      font-size: 0.875rem;
+    }
+
+    .dz-size {
+      font-size: 80%;
+      color: $reagent-gray;
+    }
+
+    .dz-error-message span {
+      background-color: theme-color('danger');
+      color: $white;
+      background-color: #c4183c;
+      color: #fff;
+      padding: 5px 12px;
+      border-radius: 5px;
+      font-size: 12px;
+    }
+
+    &.dz-error .dz-success-mark {
+      display: none;
+    }
+
+    .dz-success-mark,
+    .dz-error-mark {
+      svg { display: none; }
+    }
+  }
+}

@@ -4,30 +4,56 @@ import Constants from "./constants";
 import { parseYAML, formatForFlowchart } from "../helpers";
 import api from "./api";
 import propertyList from '../data/properties.json';
+import getSidebarNavItems from "../data/sidebar-nav-items";
 
-let _store = {
-  loading: true,
-  modal: false,
-  flowchart: {},
-  logs: {
-    all:[],
-  },
-  logSources:{},
-  occurences: {
-    current: {},
-    previous: {},
-    lastLog: [],
-  },
-  logIndex: false,
-  summaryCharts: {},
-  selectedNode: null,
-  modalParams: null,
-  currentTab: 'logStream',
-};
+const HIDE_BANNER_TIMEOUT = 5000;
+
+let _store = getInitialStore();
 
 const NUM_CHART_ELEMENTS = 60;
 const CHART_UPDATE_INTERVAL = 1000;
 const CHART_LEVELS = ['INFO', 'SUCCESS', 'ERROR', 'CRITICAL']
+
+function getInitialStore() {
+  return {
+    settings: {
+      host: localStorage.getItem('preferences-host') || 'http://localhost',
+      port: localStorage.getItem('preferences-port') || 5000,
+      log: localStorage.getItem('preferences-log') || '/log/stream',
+      profile: localStorage.getItem('preferences-profile') || '/stream/profile',
+      yaml: localStorage.getItem('preferences-yaml') || '/data/yaml',
+      shutdown: localStorage.getItem('preferences-shutdown') || '/action/shutdown',
+      ready: localStorage.getItem('preferences-ready') || '/status/ready',
+    },
+    banner: false,
+    connected: false,
+    loading: true,
+    modal: false,
+    menuVisible: false,
+    navItems: getSidebarNavItems(),
+    flowchart: {
+      selected:{},
+      hovered:{},
+      nodes:{},
+      links:{},
+      offset:{x:0,y:0},
+    },
+    logs: {
+      all: [],
+    },
+    logSources: {},
+    occurences: {
+      current: {},
+      previous: {},
+      lastLog: [],
+    },
+    logIndex: false,
+    summaryCharts: {},
+    selectedNode: null,
+    modalParams: null,
+    currentTab: 'logStream',
+  }
+}
 
 class Store extends EventEmitter {
   constructor() {
@@ -38,8 +64,8 @@ class Store extends EventEmitter {
 
   registerActions = ({ actionType, payload }) => {
     switch (actionType) {
-      case Constants.SET_CURRENT_TAB:
-        this.setCurrentTab(payload);
+      case Constants.TOGGLE_SIDEBAR:
+        this.toggleSidebar();
         break;
       case Constants.SHOW_MODAL:
         this.showModal(payload);
@@ -53,16 +79,24 @@ class Store extends EventEmitter {
       case Constants.SHOW_LOG_AT_INDEX:
         this.showLogAtIndex(payload);
         break;
+      case Constants.SAVE_SETTINGS:
+        this.saveSettings(payload);
+        break;
       default:
     }
   }
 
   init = async () => {
+    if (this.updateChartInterval)
+      clearInterval(this.updateChartInterval)
+    _store = getInitialStore();
+    console.log('store settings: ',_store.settings);
     await this.initFlowChart();
     this.initLogStream();
     this.initCharts();
     _store.loading = false;
     this.emit('update-ui');
+    this.emit('update-settings');
   }
 
   initFlowChart = async (yamlSTRING) => {
@@ -70,8 +104,13 @@ class Store extends EventEmitter {
     if (yamlSTRING)
       flow = parseYAML(yamlSTRING);
     else {
-      let str = await api.getYAML();
-      flow = parseYAML(str);
+      try{
+        let str = await api.getYAML(_store.settings);
+        flow = parseYAML(str);
+      }
+      catch(e){
+        return;
+      }
     }
     let canvas;
     try {
@@ -90,23 +129,34 @@ class Store extends EventEmitter {
   }
 
   initLogStream = () => {
-    api.onNewLog((log) => {
-      if (log.error)
-        return console.error('Log Stream Error: ' + log.error);
+    api.connect(_store.settings, (message) => {
+      const { type, data } = message;
+
+      if (type === 'connect') {
+        _store.connected = true;
+        return this.showBanner(data, 'success')
+      }
+
+      if (type === 'error') {
+        return this.showBanner(data, 'danger')
+      }
+
+
+      const log = data;
       // console.log('log: ', log)
-      _store.logs.all.push(log.data);
+      _store.logs.all.push(log);
 
-      const source = log.data.name;
+      const source = log.name;
 
-      if(_store.logs[source])
-        _store.logs[source].push(log.data);
+      if (_store.logs[source])
+        _store.logs[source].push(log);
       else
-        _store.logs[source] = [log.data];
+        _store.logs[source] = [log];
 
       _store.logSources[source] = true;
 
-      if (CHART_LEVELS.includes(log.data.levelname)) {
-        _store.occurences.current[log.data.levelname]++;
+      if (CHART_LEVELS.includes(log.levelname)) {
+        _store.occurences.current[log.levelname]++;
       }
       // console.log('occurences: ',_store.occurences)
       this.emit('update-logs');
@@ -140,12 +190,17 @@ class Store extends EventEmitter {
     this.emit('update-summary-chart');
   }
 
+  toggleSidebar() {
+    _store.menuVisible = !_store.menuVisible;
+    this.emit('update-ui');
+  }
+
   showLogAtIndex = (index) => {
-    console.log('index: ',index);
+    console.log('index: ', index);
     let logIndex = _store.occurences.lastLog[index];
-    console.log('logIndex: ',logIndex);
-    if(!logIndex)
-    return;
+    console.log('logIndex: ', logIndex);
+    if (!logIndex)
+      return;
     _store.logIndex = _store.occurences.lastLog[index];
     this.emit('show-log');
   }
@@ -156,8 +211,22 @@ class Store extends EventEmitter {
     this.emit('update-flowchart')
   }
 
-  setCurrentTab = (tab) => {
-    _store.currentTab = tab;
+  saveSettings = (settings) => {
+    alert('saving settings')
+    Object.keys(settings).map(key => {
+      localStorage.setItem(`preferences-${key}`, settings[key]);
+    });
+    setTimeout(this.init,100);
+  }
+
+  showBanner = (message, theme) => {
+    _store.banner = { message: String(message), theme };
+    setTimeout(this.hideBanner, HIDE_BANNER_TIMEOUT);
+    this.emit('update-ui');
+  }
+
+  hideBanner = () => {
+    _store.banner = false;
     this.emit('update-ui');
   }
 
@@ -178,8 +247,24 @@ class Store extends EventEmitter {
     this.emit('update-ui');
   }
 
+  getMenuState() {
+    return _store.menuVisible;
+  }
+
+  getSidebarItems() {
+    return _store.navItems;
+  }
+
   getCurrentTab = () => {
     return _store.currentTab;
+  }
+
+  getSettings = () => {
+    return _store.settings;
+  }
+
+  getBanner = () => {
+    return _store.banner;
   }
 
   getModal = () => {
@@ -194,12 +279,16 @@ class Store extends EventEmitter {
     return _store.logs;
   }
 
-  getLogSources = () =>{
+  getLogSources = () => {
     return _store.logSources;
   }
 
   getSummaryCharts = () => {
     return _store.summaryCharts;
+  }
+
+  isConnected = () => {
+    return _store.connected;
   }
 
   isLoading = () => {

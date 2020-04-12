@@ -1,0 +1,54 @@
+// Authentication Templates
+//
+// This partial contains the styles for the Register, Login
+// Forgot Password and Reset Password templates.
+
+.auth-form {
+  min-width: $auth-form-min-width;
+  max-width: $auth-form-max-width;
+
+  .card-body {
+    overflow: hidden;
+    box-shadow: $auth-form-card-body-box-shadow;
+    border-radius: $auth-form-card-body-border-radius;
+  }
+
+  &__logo {
+    max-width: $auth-form-logo-max-width;
+  }
+
+  &__title {
+    font-size: $auth-form-title-font-size;
+    font-family: $font-family-poppins-first;
+  }
+
+  &__social-icons {
+    margin: 0;
+    padding: 0;
+
+    li {
+      list-style: none;
+      display: inline-block;
+
+      a {
+        padding: $auth-form-social-icons-link-padding;
+        font-size: $auth-form-social-icons-link-font-size;
+        color: $auth-form-social-icons-link-color;
+        transition: $auth-form-social-icons-link-transition;
+
+        &:hover {
+          color: $auth-form-social-icons-link-hover-color;
+        }
+      }
+    }
+  }
+
+  &__meta a {
+    font-weight: $auth-form-meta-font-weight;
+    color: $auth-form-meta-font-color;
+
+    &:hover {
+      color: $auth-form-meta-hover-font-color;
+    }
+  }
+}

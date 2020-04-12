@@ -1,0 +1,26 @@
+// Alternate styles for the new colors
+@each $color, $value in $new-colors {
+  .alert-#{$color} {
+    color: lighten($value, 48%);
+    background-color: $value;
+
+    .alert-link {
+      color: lighten($value, 48%);
+    }
+  }
+}
+
+// Alternate style for the accent color
+.alert-accent {
+  color: lighten($accent-color, 48%);
+  background-color: $accent-color;
+
+  .alert-link {
+    color: lighten($accent-color, 48%);
+  }
+}
+
+.alert-dismissible .close {
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}

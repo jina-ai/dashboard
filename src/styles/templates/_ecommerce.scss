@@ -1,0 +1,166 @@
+// eCommerce Overview Dashboard Template
+
+// Sales by category block
+.sc-stats {
+  font-size: $sc-stats-font-size;
+  font-weight: $sc-stats-font-weight;
+
+  @media screen and (min-width: 992px) and (max-width: 1170px) {
+    font-size: $sc-stats-responsive-font-size;
+  }
+
+  &__image {
+    max-width: $sc-stats-image-max-width;
+
+    @include media-breakpoint-down(md) {
+      max-width: $sc-stats-image-max-width-md;
+    }
+
+    img {
+      width: $sc-stats-image-width;
+      height: $sc-stats-image-height;
+    }
+  }
+
+  &__title {
+    padding-left: $sc-stats-title-padding-left !important;
+
+    @media screen and (max-width: 1170px)  {
+      padding-left: $sc-stats-responsive-padding-left !important;
+    }
+  }
+
+  &__percentage {
+    color: $sc-stats-percentage-color;
+  }
+
+  .card-body {
+    position: relative;
+    overflow-y: auto;
+    min-height: $sc-stats-card-body-min-height;
+
+    @media screen and (max-width: 992px) {
+      min-height: $sc-stats-card-body-responsive-min-height;
+    }
+  }
+
+  .container-fluid {
+    position: absolute;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 1px; // Fixes scrollbar flicker issue in Chrome
+
+    .row {
+      display: flex;
+      flex: 1;
+      border-bottom: $sc-row-border-bottom;
+      min-height: $sc-row-min-height;
+
+      &:last-of-type {
+        border-bottom: 0;
+      }
+
+      > div {
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        padding: 0;
+      }
+    }
+  }
+}
+
+// Latest orders block
+.lo-stats {
+  font-size: $lo-font-size;
+
+  .container-fluid {
+    overflow-x: auto;
+  }
+
+  table {
+    min-width: 600px;
+  }
+
+  thead th {
+    font-size: $lo-header-font-size;
+    font-weight: 400;
+    border-width: 1px;
+    border-top: none;
+    padding: 0.5rem 0.75rem;
+  }
+
+  td {
+    vertical-align: middle;
+  }
+
+  &__image {
+    width: 70px; // Force image container width in pixels.
+
+    img {
+      width: $lo-image-width;
+      height: $lo-image-height;
+    }
+  }
+
+  &__items,
+  &__total {
+    font-weight: $lo-items-font-weight;
+  }
+
+  &__order-details {
+    span {
+      display: block;
+    }
+    span:first-child {
+      font-weight: $lo-order-number-font-weight;
+      font-size: $lo-order-number-font-size;
+    }
+
+    span:last-child {
+      font-size: $lo-order-date-font-size;
+      color: $lo-order-date-color;
+    }
+  }
+
+  .card-body {
+    position: relative;
+    overflow-x: auto;
+    min-height: $lo-card-body-min-height;
+  }
+
+  .container-fluid {
+    position: absolute;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    min-width: $lo-container-min-width;
+
+    .row:not(.lo-stats__header) {
+      display: flex;
+      flex: 1;
+      border-bottom: $lo-row-border-bottom;
+      min-height: $lo-row-min-height;
+
+      &:last-of-type {
+        border-bottom: 0;
+      }
+
+      > div {
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+      }
+    }
+  }
+}
+
+// Date range
+#sales-overview-date-range {
+  max-width: 350px;
+
+  @include media-breakpoint-down(xs) {
+    max-width: 100%;
+  }
+}

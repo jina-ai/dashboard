@@ -1,3 +1,5 @@
 import DefaultLayout from "./Default";
+import DashboardLayout from "./Dashboard";
+import IconSidebar from "./IconSidebar";
 
-export { DefaultLayout };
+export { DefaultLayout, DashboardLayout,IconSidebar };

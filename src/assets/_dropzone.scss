@@ -1,0 +1,15 @@
+/* Dropzone */
+
+.dropzone {
+  text-align: $dropzone-text-align;
+  font-weight: $dropzone-font-weight;
+  padding: $dropzone-padding;
+  font-size: $dropzone-font-size;
+  border: $dropzone-border;
+  border-radius: $dropzone-border-radius;
+}
+
+.file-manager__dropzone {
+  padding: $fm-dropzone-padding;
+  border-bottom: $fm-dropzone-border-bottom;
+}

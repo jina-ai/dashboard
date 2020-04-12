@@ -1,22 +1,30 @@
-const LOG_URL = 'http://localhost:5000/log/stream';
-const YAML_URL = 'http://localhost:5000/yaml';
-
+let stream;
 export default {
-	onNewLog: (callback) => {
-		const stream = new EventSource(LOG_URL);
+	connect: (settings, callback) => {
+		if(stream)
+		stream.close();
+		const connectionString = `${settings.host}:${settings.port}${settings.log.startsWith('/') ? settings.log : '/' + settings.log}`;
+		console.log('logs connectionString: ',connectionString)
+		stream = new EventSource(connectionString);
+		stream.onopen = () => {
+			callback({ type: 'connect', data: `Connection established at ${settings.host}:${settings.port}` })
+		}
 		stream.onmessage = (m) => {
-			callback({ data: JSON.parse(m.data) });
+			callback({ type: 'log', data: JSON.parse(m.data) });
 		}
 		stream.onerror = (data) => {
-			callback({ error: true, data});
+			callback({ type: 'error', data:`Could not get log data from ${connectionString}` });
 			stream.close()
 		}
 	},
-	getYAML: () => {
+	getYAML: (settings) => {
 		return new Promise((resolve, reject) => {
 			const xhr = new XMLHttpRequest();
-			xhr.open('GET', YAML_URL);
-			xhr.onload = function(){
+			const connectionString = `${settings.host}:${settings.port}${settings.yaml.startsWith('/') ? settings.yaml : '/' + settings.yaml}`;
+			console.log('YAML connectionString: ',connectionString)
+			xhr.open('GET', connectionString);
+			xhr.timeout = 5000;
+			xhr.onload = function () {
 				if (this.status >= 200 && this.status < 300) {
 					resolve(xhr.response);
 				} else {

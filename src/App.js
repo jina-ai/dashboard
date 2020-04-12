@@ -1,45 +1,32 @@
-import React from 'react';
-import './App.css';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import { DefaultLayout } from './Layouts'
-import LogsView from './Views/LogsView';
-import FlowView from './Views/FlowView';
-import { Store } from './flux';
+import React from "react";
+import { BrowserRouter as Router, Route } from "react-router-dom";
 
-class App extends React.Component {
-  state = {
-    currentTab: Store.getCurrentTab()
-  }
+import routes from "./routes";
+import withTracker from "./withTracker";
 
-  componentDidMount = () => {
-    Store.on('update-ui',this.getData);
-  }
+import "bootstrap/dist/css/bootstrap.min.css";
+import "./assets/main.scss";
+import "./App.css";
 
-  componentWillUnmount = () => {
-    Store.removeListener('update-ui',this.getData);
-  }
-
-  getData = () => {
-    const currentTab = Store.getCurrentTab();
-    this.setState({ currentTab});
-  }
-
-  render = () => {
-    const {currentTab} = this.state;
-    return (
-      <div className="App">
-        <DefaultLayout>
-          {
-            currentTab==='logStream'?
-            <LogsView />
-            :
-            <FlowView />
-          }
-        </DefaultLayout>
-      </div>
-    );
-  }
-}
-
-
-export default App;
+export default () => (
+  <Router basename={process.env.REACT_APP_BASENAME || ""}>
+    <div>
+      {routes.map((route, index) => {
+        return (
+          <Route
+            key={index}
+            path={route.path}
+            exact={route.exact}
+            component={withTracker(props => {
+              return (
+                <route.layout {...props}>
+                  <route.component {...props} />
+                </route.layout>
+              );
+            })}
+          />
+        );
+      })}
+    </div>
+  </Router>
+);

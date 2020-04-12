@@ -1,0 +1,7 @@
+// List group new colors variations.
+@each $color, $value in $new-colors {
+  @include list-group-item-variant($color, theme-color-level($color, -9), theme-color-level($color, 6));
+}
+
+// List group accent color variation
+@include list-group-item-variant($accent-color, theme-color-level($accent-color, -9), theme-color-level($accent-color, 6));

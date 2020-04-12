@@ -1,0 +1,19 @@
+// Range DatePicker
+
+.date-range {
+  .react-datepicker-wrapper {
+    display: $rdp-wrapper-display;
+    flex: $rdp-wrapper-flex;
+    max-width: $rdp-wrapper-max-width;
+  }
+
+  .react-datepicker__input-container {
+    width: $rdp-input-container-width;
+  }
+}
+
+@media (max-width: 575px) {
+  .date-range .react-datepicker-wrapper {
+    max-width: $rdp-wrapper-mobile-max-width;
+  }
+}

@@ -1,0 +1,41 @@
+// Analytics Overview Dashboard Template
+
+// Goals overview stats
+.go-stats {
+  .list-group {
+    .list-group-item {
+      padding-top: $go-list-group-item-padding-y;
+      padding-bottom: $go-list-group-item-padding-y;
+    }
+  }
+
+  &__label {
+    margin: 0;
+    padding: 0;
+    font-size: $go-label-font-size;
+    font-weight: $go-label-font-weight;
+  }
+
+  &__meta {
+    font-size: $go-meta-font-size;
+    color: $go-meta-color;
+
+    strong {
+      color: $go-meta-strong-color;
+    }
+  }
+
+  &__value {
+    flex: 1;
+    padding-right: $go-value-padding-right;
+  }
+}
+
+// Date range selectors
+#analytics-overview-date-range {
+  max-width: 350px;
+
+  @include media-breakpoint-down(xs) {
+    max-width: 100%;
+  }
+}

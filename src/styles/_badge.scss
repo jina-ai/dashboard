@@ -1,0 +1,24 @@
+// Contextual variations for the new colors
+@each $color, $value in $new-colors {
+  .badge-#{$color} {
+    @include badge-variant($value);
+  }
+
+  .badge-outline-#{$color} {
+    background: none;
+    border: 1px solid $value;
+    color: $value;
+  }
+}
+
+// Accent color badge variations
+.badge-accent {
+  @include badge-variant($accent-color);
+}
+
+// Accent color outline badge variation
+.badge-outline-accent {
+  background: none;
+  border: 1px solid $accent-color;
+  color: $accent-color;
+}

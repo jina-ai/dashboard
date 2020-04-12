@@ -1,5 +1,5 @@
 import React from "react";
-import { Row, Col } from "react-bootstrap";
+import { Row, Col, Card } from "react-bootstrap";
 import { Store, Dispatcher, Constants } from "../../flux";
 import ChartBase from './ChartBase';
 
@@ -17,7 +17,7 @@ class SummaryChart extends React.Component {
 
 	showLog = (activePoints) => {
 		let index = activePoints[0] && activePoints[0]._index;
-		if(index && typeof index !== 'undefined');
+		if (index && typeof index !== 'undefined');
 		Dispatcher.dispatch({
 			actionType: Constants.SHOW_LOG_AT_INDEX,
 			payload: index
@@ -32,9 +32,14 @@ class SummaryChart extends React.Component {
 	render = () => {
 		const { chartData } = this.state;
 		return (
-			<div>
-				<ChartBase data={chartData} onClick={this.showLog} />
-			</div>
+			<Card className="mb-4">
+				<Card.Body className="d-none d-md-block">
+					<ChartBase data={chartData} height={5} width={70} onClick={this.showLog} />
+				</Card.Body>
+				<Card.Body className="d-md-none">
+					<ChartBase data={chartData} height={10} width={50} onClick={this.showLog} />
+				</Card.Body>
+			</Card>
 		)
 	}
 }

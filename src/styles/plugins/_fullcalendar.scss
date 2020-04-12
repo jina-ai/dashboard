@@ -1,0 +1,81 @@
+// Fullcalendar Adjustments
+
+.fc {
+  .fc-toolbar h2 {
+    text-transform: uppercase;
+    font-size: $fc-toolbar-font-size;
+    font-weight: $fc-toolbar-font-weight;
+    letter-spacing: $fc-toolbar-letter-spacing;
+    color: $fc-toolbar-color;
+  }
+
+  .fc-divider,
+  .fc-popover .fc-header,
+  .fc-list-heading td {
+    background: $fc-day-header-background !important;
+  }
+
+  .fc-day-header {
+    padding: $fc-day-header-padding;
+  }
+
+  .fc-view th,
+  .fc-view td,
+  th,
+  td,
+  thead,
+  tbody,
+  .fc-divider,
+  .fc-row,
+  .fc-content,
+  .fc-popover,
+  .fc-list-view,
+  .fc-list-heading td {
+    border-color: $fc-view-border-color !important;
+  }
+
+  .fc-day-top .fc-day-number {
+    padding: $fc-day-number-padding;
+  }
+
+  // Events
+  .fc-event,
+  .fc-event-dot {
+    background: $fc-event-background;
+    border-color: $fc-event-border-color;
+  }
+
+  .fc-title,
+  .fc-time {
+    color: $fc-tt-color;
+    margin-left: $fc-tt-margin-left;
+  }
+
+  // Today
+  td.fc-today {
+    background: $fc-today-background !important;
+  }
+
+  // Buttons
+  button.fc-button {
+    background: $fc-button-background;
+    box-shadow: $fc-button-box-shadow;
+    border-color: $fc-button-border-color;
+    padding: $fc-button-padding;
+    height: $fc-button-height;
+    font-size: $fc-button-font-size;
+    transition: $fc-button-transition;
+
+    &:focus {
+      outline: 0;
+    }
+
+    &:hover {
+      box-shadow: $fc-button-box-shadow-hover;
+    }
+  }
+
+  .fc-day-grid-event {
+    padding: $fc-day-grid-event-padding;
+  }
+}

@@ -141,7 +141,7 @@ class Chart extends React.Component {
     if (this.canvasRef.current && this.chart) this.updateChart();
     const { width, height } = this.props;
     return (
-      <div className="graph-container mb-4">
+      <div className="graph-container">
         <canvas
           height={height || 10}
           width={width || 100}

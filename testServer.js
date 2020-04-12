@@ -43,7 +43,7 @@ app.get('/log/stream', (req, res) => {
 	startDemo(req, res);
 });
 
-app.get('/yaml', (req, res) => {
+app.get('/data/yaml', (req, res) => {
 	console.log('GET at /yaml');
 	return res.send(yaml);
 });

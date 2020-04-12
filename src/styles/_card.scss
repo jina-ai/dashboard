@@ -1,0 +1,41 @@
+// Card adjustments
+
+// Block handles
+.card-header {
+  position: relative;
+
+  h1, h2, h3, h4, h5, h6 {
+    font-weight: $card-headings-font-weight;
+  }
+
+  .block-handle {
+    position: absolute;
+    background-image: url(data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjMDAwMDAwIiBoZWlnaHQ9IjI0IiB2aWV3Qm94PSIwIDAgMjQgMjQiIHdpZHRoPSIyNCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayI+ICAgIDxkZWZzPiAgICAgICAgPHBhdGggZD0iTTAgMGgyNHYyNEgwVjB6IiBpZD0iYSIvPiAgICA8L2RlZnM+ICAgIDxjbGlwUGF0aCBpZD0iYiI+ICAgICAgICA8dXNlIG92ZXJmbG93PSJ2aXNpYmxlIiB4bGluazpocmVmPSIjYSIvPiAgICA8L2NsaXBQYXRoPiAgICA8cGF0aCBjbGlwLXBhdGg9InVybCgjYikiIGQ9Ik0yMCA5SDR2MmgxNlY5ek00IDE1aDE2di0ySDR2MnoiLz48L3N2Zz4=);
+    background-position: center center;
+    background-size: 95%;
+    width: 1.125rem;
+    height: 0.5rem;
+    top: 50%;
+    right: 0.9375rem;
+    transform: translateY(-50%);
+    opacity: .15;
+
+    &:hover {
+      cursor: -webkit-grab;
+    }
+  }
+}
+
+.card .view-report {
+  margin-top: auto;
+  margin-bottom: auto;
+  font-size: $card-view-report-font-size;
+
+  a {
+    color: $card-view-report-link-color;
+
+    &:hover {
+      color: $card-view-report-link-color-hover;
+    }
+  }
+}

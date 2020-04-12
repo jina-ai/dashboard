@@ -1,0 +1,348 @@
+// DataTables Adjustments
+
+.dataTables_wrapper {
+  background: $dt-wrapper-background-color;
+  border-radius: $dt-wrapper-border-radius;
+  box-shadow: $dt-wrapper-box-shadow;
+
+  @include clearfix();
+
+  table.dataTable {
+    border-top: $dt-border-top;
+    font-size: $dt-font-size;
+    display: table !important;
+    width: 100% !important;
+
+    // Responsive table
+    @include media-breakpoint-down(md) {
+      display: block;
+      width: 100%;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      -ms-overflow-style: -ms-autohiding-scrollbar;
+      border: 0;
+    }
+
+    // Adjust the right padding for the table header cells.
+    thead tr:last-child th {
+      padding-right: $dt-thead-th-padding-x * 1.6;
+    }
+
+    thead th {
+      text-align: center;
+      background-color: $dt-thead-th-background-color;
+      border: $dt-thead-th-border;
+      font-weight: $dt-thead-th-font-weight;
+      padding: $dt-thead-th-padding-y $dt-thead-th-padding-x;
+
+      &:focus {
+        outline: 0;
+      }
+
+      &:first-child {
+        border-left: none;
+      }
+
+      &:last-child {
+        border-right: none;
+      }
+
+      &.hide-sort-icons:after {
+        display: none;
+      }
+
+      &.sorting,
+      &.sorting_asc,
+      &.sorting_desc {
+        position: relative;
+
+        &:after {
+          content: '';
+          position: absolute;
+          background-position: center;
+          right: 7px;
+          top: 50%;
+          transform: translateY(-50%);
+          opacity: .2;
+        }
+      }
+
+      &.sorting:after {
+        width: 10px;
+        height: 13px;
+        background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz48c3ZnIHdpZHRoPSIxMHB4IiBoZWlnaHQ9IjEzcHgiIHZpZXdCb3g9IjAgMCAxMCAxMyIgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIj4gICAgICAgIDx0aXRsZT5pY19hcnJvd19kcm9wX2Rvd25fYmxhY2tfMjRweDwvdGl0bGU+ICAgIDxkZXNjPkNyZWF0ZWQgd2l0aCBTa2V0Y2guPC9kZXNjPiAgICA8ZGVmcz48L2RlZnM+ICAgIDxnIGlkPSJQYWdlLTEiIHN0cm9rZT0ibm9uZSIgc3Ryb2tlLXdpZHRoPSIxIiBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPiAgICAgICAgPGcgaWQ9ImljX2Fycm93X2Ryb3BfZG93bl9ibGFja18yNHB4LSgxKSIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTcuMDAwMDAwLCAtMi4wMDAwMDApIiBmaWxsPSIjMDAwMDAwIiBmaWxsLXJ1bGU9Im5vbnplcm8iPiAgICAgICAgICAgIDxnIGlkPSJpY19hcnJvd19kcm9wX2Rvd25fYmxhY2tfMjRweCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTIuMDAwMDAwLCA4LjUwMDAwMCkgcm90YXRlKC0xODAuMDAwMDAwKSB0cmFuc2xhdGUoLTEyLjAwMDAwMCwgLTguNTAwMDAwKSB0cmFuc2xhdGUoNy4wMDAwMDAsIDIuMDAwMDAwKSI+ICAgICAgICAgICAgICAgIDxwb2x5Z29uIGlkPSJTaGFwZSIgcG9pbnRzPSIxLjQyMTA4NTQ3ZS0xNCA4IDUgMTMgMTAgOCI+PC9wb2x5Z29uPiAgICAgICAgICAgICAgICA8cG9seWdvbiBpZD0iU2hhcGUiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDUuMDAwMDAwLCAzLjMzMzg5Nykgcm90YXRlKC0xODAuMDAwMDAwKSB0cmFuc2xhdGUoLTUuMDAwMDAwLCAtMy4zMzM4OTcpICIgcG9pbnRzPSIxLjQyMTA4NTQ3ZS0xNCAwLjgzMzg5NjkyMiA1IDUuODMzODk2OTIgMTAgMC44MzM4OTY5MjIiPjwvcG9seWdvbj4gICAgICAgICAgICA8L2c+ICAgICAgICA8L2c+ICAgIDwvZz48L3N2Zz4=);
+        background-size: 90%;
+      }
+
+      &.sorting_asc:after {
+        width: 10px;
+        height: 6px;
+        background-image: url(data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjMDAwMDAwIiBoZWlnaHQ9IjI0IiB2aWV3Qm94PSIwIDAgMjQgMjQiIHdpZHRoPSIyNCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4gICAgPHBhdGggZD0iTTcgMTRsNS01IDUgNXoiLz4gICAgPHBhdGggZD0iTTAgMGgyNHYyNEgweiIgZmlsbD0ibm9uZSIvPjwvc3ZnPg==);
+      }
+
+      &.sorting_desc:after {
+        width: 10px;
+        height: 6px;
+        background-image: url(data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjMDAwMDAwIiBoZWlnaHQ9IjI0IiB2aWV3Qm94PSIwIDAgMjQgMjQiIHdpZHRoPSIyNCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4gICAgPHBhdGggZD0iTTcgMTBsNSA1IDUtNXoiLz4gICAgPHBhdGggZD0iTTAgMGgyNHYyNEgweiIgZmlsbD0ibm9uZSIvPjwvc3ZnPg==);
+      }
+    }
+
+    tbody td {
+      padding: $dt-tbody-td-padding-y $dt-tbody-td-padding-x;
+      border: $dt-tbody-td-border;
+      text-align: center;
+
+      &:first-child {
+        border-left: none;
+      }
+
+      &::last-child {
+        border-right: none;
+      }
+
+      &.dataTables_empty {
+        padding: $dt-tbody-td-empty-padding-y $dt-tbody-td-empty-padding-x;
+      }
+    }
+
+    // Responsive DataTables adjustments
+    td.child {
+      padding: 0 !important;
+
+      ul {
+        width: 100%;
+
+        li {
+          padding: 1rem !important;
+          display: flex;
+          @include clearfix();
+        }
+      }
+
+      .dtr-title {
+        float: left;
+        text-align: left;
+        margin: auto 0;
+      }
+
+      .dtr-data {
+        margin-left: auto;
+      }
+    }
+
+    // Override the responsive toggle icon.
+    &.dtr-inline.collapsed tbody > tr[role="row"] > td:first-child:before,
+    &.dtr-inline.collapsed tbody > tr[role="row"] > th:first-child:before {
+      box-shadow: none;
+      text-align: center;
+      width: 1.25rem;
+      height: 1.25rem;
+      line-height: 22px;
+      font-size: 1rem;
+      left: 0;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      font-weight: bold;
+      box-shadow: $card-small-box-shadow;
+    }
+  }
+}
+
+.dataTables_length,
+.dataTables_filter,
+.dataTables_info,
+.dataTables_paginate {
+  width: 50%;
+  float: left;
+  font-size: $dt-elements-font-size;
+  padding: $dt-elements-padding-y $dt-elements-padding-x;
+  color: $dt-elements-color;
+
+  @include media-breakpoint-down(xs) {
+    width: 100%;
+    max-width: 100% !important;
+  }
+
+  label {
+    margin: 0;
+  }
+}
+
+// Responsive styles.
+@include media-breakpoint-down(xs) {
+
+  // Center the length label ("Show X entries").
+  .dataTables_length label {
+    display: table;
+    margin: 0 auto;
+  }
+
+
+  .dataTables_filter {
+    width: 100%;
+
+    label, input {
+      margin: 0 !important;
+      width: 100%;
+      background-size: 5% !important;
+    }
+  }
+}
+
+.dataTables_info,
+.dataTables_paginate {
+  padding: $dt-footer-elements-padding;
+  background: $dt-footer-elements-background-color;
+  border-radius: $dt-footer-elements-border-radius;
+
+  @include media-breakpoint-down(sm) {
+    padding: $dt-footer-elements-padding-sm;
+    width: 100%;
+    text-align: center !important;
+  }
+}
+
+.dataTables_info {
+  @include media-breakpoint-down(sm) {
+    border-bottom: $dt-info-sm-border-bottom;
+    border-radius: 0;
+  }
+}
+
+.dataTables_length select {
+  border: $dt-length-select-border;
+  font-size: $dt-length-select-font-size;
+  color: $dt-length-select-color;
+  height: $dt-length-select-height;
+  background-color: $dt-length-select-bg-color;
+  border-radius: $dt-length-select-border-radius;
+  margin: $dt-length-select-margin-y $dt-length-select-margin-x;
+}
+
+// Pagination
+.dataTables_paginate {
+  text-align: right;
+
+  .paginate_button,
+  .ellipsis {
+    background: $dt-paginate-btn-bg-color;
+    padding: $dt-paginate-btn-padding-y $dt-paginate-btn-padding-x;
+    border: $dt-paginate-btn-border;
+
+    @include media-breakpoint-down(sm) {
+      font-size: $dt-paginate-btn-sm-font-size;
+      padding: $dt-paginate-btn-sm-padding-y $dt-paginate-btn-sm-padding-x;
+    }
+  }
+
+  .paginate_button {
+    border-radius: $dt-paginate-btn-border-radius;
+    color: $dt-paginate-btn-color;
+    will-change: background-color, color, border-color;
+    transition: background-color 250ms ease-in-out,
+                color 250ms ease-in-out,
+                border-color 250ms ease-in-out;
+
+    &:hover {
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    &:not(.disabled):hover,
+    &.current {
+      background: $dt-paginate-btn-active-bg;
+      color: $dt-paginate-btn-active-color;
+      border-color: $dt-paginate-btn-active-border-color;
+    }
+
+    &:focus {
+      outline: 0;
+    }
+
+    &.disabled {
+      background-color: $dt-paginate-btn-disabled-bg;
+
+      &:hover {
+        cursor: not-allowed;
+      }
+    }
+
+    &.previous {
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+
+    &.next {
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+    }
+  }
+
+  .ellipsis {
+    border-left: none;
+  }
+
+  span > .paginate_button {
+    border-radius: 0;
+    border-left: 0;
+
+    &:hover {
+      border-color: $dt-paginate-btn-active-border-color;
+    }
+
+    &:last-child {
+      border-right: 0;
+    }
+  }
+}
+
+.dataTables_filter {
+  padding: $dt-search-filter-padding;
+
+  @include media-breakpoint-down(sm) {
+    max-width: 200px;
+    float: right;
+  }
+
+  label {
+    float: right;
+    font-size: 0; // Sorry, DataTables limitation.
+  }
+
+  input {
+    font-size: $dt-search-filter-font-size;
+    line-height: $dt-search-filter-line-height;
+    color: $dt-search-filter-input-color;
+    background-color: $dt-search-filter-input-bg;
+    border: $dt-search-filter-input-border;
+    font-weight: $dt-search-filter-font-weight;
+    border-radius: $dt-search-filter-border-radius;
+    margin-left: $dt-search-filter-margin-left;
+    padding: $dt-search-filter-input-padding;
+    min-width: $dt-search-filter-input-min-width;
+    background-image: url(data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjQ0FDRURCIiBoZWlnaHQ9IjI0IiB2aWV3Qm94PSIwIDAgMjQgMjQiIHdpZHRoPSIyNCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4gICAgPHBhdGggZD0iTTE1LjUgMTRoLS43OWwtLjI4LS4yN0MxNS40MSAxMi41OSAxNiAxMS4xMSAxNiA5LjUgMTYgNS45MSAxMy4wOSAzIDkuNSAzUzMgNS45MSAzIDkuNSA1LjkxIDE2IDkuNSAxNmMxLjYxIDAgMy4wOS0uNTkgNC4yMy0xLjU3bC4yNy4yOHYuNzlsNSA0Ljk5TDIwLjQ5IDE5bC00Ljk5LTV6bS02IDBDNy4wMSAxNCA1IDExLjk5IDUgOS41UzcuMDEgNSA5LjUgNSAxNCA3LjAxIDE0IDkuNSAxMS45OSAxNCA5LjUgMTR6Ii8+ICAgIDxwYXRoIGQ9Ik0wIDBoMjR2MjRIMHoiIGZpbGw9Im5vbmUiLz48L3N2Zz4=);
+    background-position: left 7px center;
+    background-repeat: no-repeat;
+    background-size: 10%;
+    will-change: border-color, box-shadow;
+
+    @include box-shadow($input-box-shadow);
+    @include transition($input-transition);
+
+    &:hover {
+      border-color: $input-hover-border-color;
+    }
+
+    // Customize the `:focus` state to imitate native WebKit styles.
+    @include form-control-focus();
+
+    &:focus {
+      outline: 0;
+    }
+
+    // Placeholder
+    &::placeholder {
+      color: $input-placeholder-color;
+    }
+  }
+}

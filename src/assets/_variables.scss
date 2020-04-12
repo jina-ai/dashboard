@@ -1,0 +1,280 @@
+// Variables
+
+//
+// Dropzone
+//
+
+$dropzone-text-align   : center !default;
+$dropzone-font-weight  : 400 !default;
+$dropzone-padding      : 0.75rem 1.0625rem !default;
+$dropzone-font-size    : 13px !default;
+$dropzone-border       : 1px dashed #dadfe4 !default;
+$dropzone-border-radius: 0.375rem !default;
+
+$fm-dropzone-padding      : 0.75rem 1.0625rem !default;
+$fm-dropzone-border-bottom: 1px solid #e1e5eb !default;
+
+
+//
+// File Manager :: List
+//
+
+$fml-filters-padding: 0.625rem !default;
+
+$fml-filters-rows-font-size  : 13px !default;
+$fml-filters-rows-font-weight: 400 !default;
+$fml-filters-rows-color      : #818ea3 !default;
+
+$fml-filters-rows-span-line-height : 30px !default;
+$fml-filters-rows-span-margin-right: 5px !default;
+
+$fml-filters-rows-custom-select-display         : table !default;
+$fml-filters-rows-custom-select-width           : auto !default;
+$fml-filters-rows-custom-select-border          : 1px solid #e1e5eb !default;
+$fml-filters-rows-custom-select-font-size       : 0.625rem !default;
+$fml-filters-rows-custom-select-color           : #818ea3 !default;
+$fml-filters-rows-custom-select-height          : 1.5625rem !default;
+$fml-filters-rows-custom-select-background-color: $white !default;
+$fml-filters-rows-custom-select-border-radius   : 0.375rem !default;
+$fml-filters-rows-custom-select-margin          : 0 0.1875rem !default;
+$fml-filters-rows-custom-select-padding         : 0 25px 0 10px !default;
+$fml-filters-rows-custom-select-margin-top      : 3px!default;
+
+$fml-search-input-display    : table !default;
+$fml-search-input-min-width  : 11.25rem !default;
+$fml-search-input-group-width: auto !default;
+
+
+//
+// Quill
+//
+
+$ql-min-height: 400px !default;
+
+
+//
+// Range Date Picker
+//
+
+$rdp-wrapper-display         : flex !default;
+$rdp-wrapper-flex            : 1 !default;
+$rdp-wrapper-max-width       : 160px !default;
+$rdp-input-container-width   : 100% !default;
+$rdp-wrapper-mobile-max-width: 100% !default;
+
+
+//
+// React Big Calendar (RBC)
+//
+
+// RBC :: Toolbar
+$rbc-toolbar-margin-bottom: 1em !default;
+
+$rbc-toolbar-button-background  : $white !default;
+$rbc-toolbar-button-box-shadow  : none !default;
+$rbc-toolbar-button-border-color: #e1e5eb !default;
+$rbc-toolbar-button-padding     : 7px 11px !default;
+$rbc-toolbar-button-height      : auto !default;
+$rbc-toolbar-button-font-size   : .6875rem !default;
+$rbc-toolbar-button-transition  : all 250ms cubic-bezier(.27, .01, .38, 1.06) !default;
+
+$rbc-toolbar-button-focus-outline: 0 !default;
+
+$rbc-toolbar-button-hover-border-color    : #e1e5eb !default;
+$rbc-toolbar-button-hover-background-color: initial !default;
+$rbc-toolbar-button-hover-cursor          : pointer !default;
+$rbc-toolbar-button-hover-box-shadow      : 0 0.125rem 0.625rem rgba(129, 142, 163, .2),
+                                            0 0.0625rem 0.125rem rgba(129, 142, 163, .3) !default;
+
+$rbc-toolbar-button-active-border-color: $accent-color !default;
+$rbc-toolbar-button-active-background  : $accent-color !default;
+$rbc-toolbar-button-active-color       : color-yiq($accent-color) !default;
+
+$rbc-toolbar-md-display: flex !default;
+$rbc-toolbar-md-flex-flow: column !default;
+
+// RBC :: Toolbar Label
+$rbc-toolbar-label-text-transform: uppercase !default;
+$rbc-toolbar-label-font-size     : .875rem !default;
+$rbc-toolbar-label-font-weight   : 400 !default;
+$rbc-toolbar-label-letter-spacing: 1px !default;
+$rbc-toolbar-label-color         : #b9c2cd !default;
+
+$rbc-toolbar-label-md-margin: 10px 0 !default;
+
+// RBC :: Month View
+$rbc-month-view-header-padding: .5rem 0 !default;
+
+// RBC :: Date Cell
+$rbc-date-cell-padding: 5px !default;
+
+// RBC :: Event
+$rbc-event-background   : $accent-color !default;
+$rbc-event-padding      : 3px 1px !default;
+$rbc-event-border-radius: 5px !default;
+
+// RBC :: Event Content
+$rbc-event-content-font-size  : .85em !default;
+$rbc-event-content-margin-left: 3px !default;
+
+// RBC :: Time Indicator
+$rbc-time-indicator-color: #da0000 !default;
+$rbc-time-indicator-size: 6px !default;
+
+$rbc-time-indicator-height          : 2px !default;
+$rbc-time-indicator-background-color: $rbc-time-indicator-color !default;
+
+$rbc-time-indicator-after-content         : "" !default;
+$rbc-time-indicator-after-width           : $rbc-time-indicator-size !default;
+$rbc-time-indicator-after-height          : $rbc-time-indicator-size !default;
+$rbc-time-indicator-after-position        : absolute !default;
+$rbc-time-indicator-after-right           : 0 !default;
+$rbc-time-indicator-after-background-color: $rbc-time-indicator-color !default;
+$rbc-time-indicator-after-border-radius   : 50% !default;
+$rbc-time-indicator-after-top             : 50% !default;
+$rbc-time-indicator-after-margin-top      : -#{$rbc-time-indicator-size / 2} !default;
+
+// RBC :: Table Border Color
+$rbc-border-color: #ededed !default;
+
+// RBC :: Day Slot (Time Slot)
+$rbc-day-slot-border-color          : $accent-color !default;
+$rbc-day-slot-event-padding         : 5px !default;
+$rbc-day-slot-time-slot-border-color: #e3e3e3 !default;
+
+// RBC :: Misc
+$rbc-today-background                     : transparent !default;
+$rbc-timeslot-border-color                : #ecded1 !default;
+$rbc-time-column-today-background         : #fff3e8 !default;
+$rbc-today-month-row-min-height           : 125px !default;
+$rbc-today-off-date-range-background-color: #f7f7f7 !default;
+$rbc-label-font-size                      : 10px !default;
+$rbc-time-content-border-width            : 1px !default;
+
+// RBC :: Time Slot Group
+$rbc-time-slot-group-last-child-border               : none !default;
+$rbc-time-slot-group-time-slot-last-child-border     : none !default;
+$rbc-time-slot-group-time-slot-first-child-border-top: none !default;
+
+// RBC :: Time View
+$rbc-time-view-header-min-height: 25px !default;
+
+$rbc-time-view-header-link-padding: 3px !default;
+$rbc-time-view-header-link-display: inline-block !default;
+
+
+//
+// React Table
+//
+
+$rt-border-color   : #e1e5eb !default;
+$rt-border         : none !default;
+$rt-head-box-shadow: none !default;
+
+// RT :: Body Cell
+$rt-body-td-font-size        : 0.8125rem !default;
+$rt-body-td-padding          : 0.4375rem 1.0625rem !default;
+$rt-body-td-border-left      : 1px solid $rt-border-color !default;
+$rt-body-td-border-bottom    : 1px solid $rt-border-color !default;
+$rt-body-td-text-align       : center !default;
+$rt-body-td-display          : flex !default;
+$rt-body-td-justify-content  : center !default;
+$rt-body-td-align-items      : center !default;
+$rt-body-td-first-border-left: none !default;
+
+// RT :: Head
+$rt-head-tr-border-bottom   : 1px solid $rt-border-color !default;
+$rt-head-th-background-color: #fbfbfb !default;
+$rt-head-th-font-weight     : 400 !default;
+$rt-head-th-padding         : 0.75rem 1.0625rem !important;
+$rt-head-th-font-size       : 13px !important;
+$rt-head-th-border          : 13px !important;
+
+// RT : Sort
+$rt-head-asc-box-shadow : inset 0 3px 0 0 $accent-color !default;
+$rt-head-desc-box-shadow: inset 0 -3px 0 0 $accent-color !default;
+
+// RT :: Pagination
+$rt-pagination-font-size : 13px !default;
+$rt-pagination-border-top: 1px solid #e1e5eb !default;
+$rt-pagination-padding   : 0.4375rem 1.0625rem !default;
+
+$rt-pagination-btn-padding         : 0.4286rem 0.875rem !default;
+$rt-pagination-btn-width           : auto !default;
+$rt-pagination-btn-color           : #3d5170 !default;
+$rt-pagination-btn-font-weight     : 500 !default;
+$rt-pagination-jump-input-width    : 50px !default;
+
+$rt-pagination-button-padding      : 0.4286rem 0.875rem !default;
+$rt-pagination-button-background   : $white !default;
+$rt-pagination-button-border       : 1px solid #e1e5eb !default;
+$rt-pagination-button-border-radius: 0.25rem !default;
+
+$rt-pagination-button-hover-color     : $white !default;
+$rt-pagination-button-hover-background: $accent-color !default;
+
+$rt-pagination-btn-disabled-background-color: #f2f4f5 !default;
+$rt-pagination-btn-disabled-color           : #3d5170 !default;
+
+
+//
+// React TagsInput
+//
+
+$rti-height          : auto !default;
+$rti-padding         : 0.4375rem 0.75rem !default;
+$rti-font-size       : 0.8125rem !default;
+$rti-line-height     : 1.5 !default;
+$rti-color           : #495057 !default;
+$rti-background-color: $white !default;
+$rti-border          : 1px solid #e1e5eb !default;
+$rti-font-weight     : 300 !default;
+$rti-will-change     : border-color, box-shadow !default;
+$rti-border-radius   : 0.25rem !default;
+$rti-box-shadow      : none !default;
+$rti-transition      : box-shadow 250ms cubic-bezier(0.27, 0.01, 0.38, 1.06),
+                       border 250ms cubic-bezier(0.27, 0.01, 0.38, 1.06) !default;
+
+$rti-focused-color           : #495057 !default;
+$rti-focused-background-color: $white !default;
+$rti-focused-border-color    : $accent-color !default;
+$rti-focused-box-shadow      : 0 0.313rem 0.719rem rgba(0, 123, 255, 0.1),
+                               0 0.156rem 0.125rem rgba(0, 0, 0, 0.06) !default;
+
+$rti-tag-display       : inline-block !default;
+$rti-tag-background    : #fbfbfb !default;
+$rti-tag-padding       : 0.125rem 1.375rem 0.125rem 0.625rem !default;
+$rti-tag-border-radius : 1.25rem !default;
+$rti-tag-font-size     : 0.6875rem !default;
+$rti-tag-position      : relative !default;
+$rti-tag-text-transform: uppercase !default;
+$rti-tag-border        : 1px solid #e1e5eb !default;
+$rti-tag-color         : #818ea3 !default;
+$rti-tag-margin-right  : 4px !default;
+$rti-tag-margin-bottom : 4px !default;
+
+$rti-remove-cursor: pointer !default;
+$rti-remove-font-weight: bold !default;
+
+$rti-tag-link-before-background-image   : url(data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjMDAwMDAwIiBoZWlnaHQ9IjI0IiB2aWV3Qm94PSIwIDAgMjQgMjQiIHdpZHRoPSIyNCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4gICAgPHBhdGggZD0iTTE5IDYuNDFMMTcuNTkgNSAxMiAxMC41OSA2LjQxIDUgNSA2LjQxIDEwLjU5IDEyIDUgMTcuNTkgNi40MSAxOSAxMiAxMy40MSAxNy41OSAxOSAxOSAxNy41OSAxMy40MSAxMnoiLz4gICAgPHBhdGggZD0iTTAgMGgyNHYyNEgweiIgZmlsbD0ibm9uZSIvPjwvc3ZnPg==) !default;
+$rti-tag-link-before-right              : 0.5rem !default;
+$rti-tag-link-before-top                : 50% !default;
+$rti-tag-link-before-width              : 0.625rem !default;
+$rti-tag-link-before-height             : 0.625rem !default;
+$rti-tag-link-before-background-repeat  : no-repeat !default;
+$rti-tag-link-before-background-position: center center !default;
+$rti-tag-link-before-background-size    : 100% !default;
+$rti-tag-link-before-transform          : translateY(-50%) !default;
+$rti-tag-link-before-opacity            : 0.5 !default;
+
+$rti-input-background   : transparent !default;
+$rti-input-border       : 0 !default;
+$rti-input-color        : #777 !default;
+$rti-input-font-family  : sans-serif !default;
+$rti-input-font-size    : 13px !default;
+$rti-input-font-weight  : 400 !default;
+$rti-input-margin-bottom: 6px !default;
+$rti-input-margin-top   : 1px !default;
+$rti-input-outline      : none !default;
+$rti-input-padding      : 5px !default;
+$rti-input-width        : 80px !default;
