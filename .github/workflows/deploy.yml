@@ -1,0 +1,25 @@
+name: deploy
+on:
+  push:
+    branches:
+      - master
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [12.x]
+    steps:
+    - uses: actions/checkout@v1
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - name: Install Packages
+      run: npm install
+    - name: Deploy to GH Pages
+      run: |
+        git config --global user.email "dev-bot@jina.ai"
+        git config --global user.name "Jina Dev Bot"
+        git remote set-url origin https://${{secrets.JINA_DEV_BOT}}@github.com/jina-ai/dashboard.git
+        npm run deploy
