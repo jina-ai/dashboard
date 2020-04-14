@@ -19,11 +19,13 @@ jobs:
       run: npm install
     - name: Create Build
       run: npm run build
-    - name: Deploy to GitHub Pages
-      if: success()
-      uses: crazy-max/ghaction-github-pages@v1
+    - name: Push build to gh-pages branch
+      run: |
+        git config --local user.email "dev-bot@jina.ai"
+        git config --local user.name "Jina Dev Bot"
+        git commit -m "build" -a
+      uses: ad-m/github-push-action@master
       with:
-        target_branch: gh-pages
-        build_dir: build
-      env:
-        GITHUB_PAT: ${{ secrets.JINA_DEV_BOT }}
+        github_token: ${{ secrets.JINA_DEV_BOT }}
+        branch: gh-pages
+        directory: build
