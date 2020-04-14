@@ -17,9 +17,10 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - name: Install Packages
       run: npm install
-    - name: Deploy to GH Pages
-      run: |
-        git config --global user.email "dev-bot@jina.ai"
-        git config --global user.name "Jina Dev Bot"
-        git remote set-url origin https://${{secrets.JINA_DEV_BOT}}@github.com/jina-ai/dashboard.git
-        npm run deploy
+    - name: Create Build
+      run: npm run build
+    - name: Deploy to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{secrets.JINA_DEV_BOT}}
+        publish_dir: ./build
