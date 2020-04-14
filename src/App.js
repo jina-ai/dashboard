@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { HashRouter as Router, Route } from "react-router-dom";
 
 import routes from "./routes";
 import withTracker from "./withTracker";
@@ -9,7 +9,7 @@ import "./assets/main.scss";
 import "./App.css";
 
 export default () => (
-  <Router basename={process.env.REACT_APP_BASENAME || ""}>
+  <Router basename={"/"}>
     <div>
       {routes.map((route, index) => {
         return (
