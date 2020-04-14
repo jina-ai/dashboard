@@ -30,3 +30,4 @@ jobs:
         github_token: ${{ secrets.JINA_DEV_BOT }}
         branch: gh-pages
         directory: build
+        force: true
