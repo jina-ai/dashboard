@@ -8,7 +8,7 @@ export default function () {
       htmlAfter: '',
     },
     {
-      title: 'Log Stream',
+      title: 'Log Stream TEST BUILD',
       to: '/logs',
       htmlBefore: '<i class="material-icons">insert_comment</i>',
       htmlAfter: '',
