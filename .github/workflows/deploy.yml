@@ -29,5 +29,5 @@ jobs:
       with:
         github_token: ${{ secrets.JINA_DEV_BOT }}
         branch: gh-pages
-        directory: build
+        directory: ./build
         force: true
