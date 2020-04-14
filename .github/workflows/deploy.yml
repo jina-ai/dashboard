@@ -19,11 +19,12 @@ jobs:
       run: npm install
     - name: Create Build
       run: npm run build
-    - name: Push build to gh-pages branch
+    - name: Commit Build
       run: |
         git config --local user.email "dev-bot@jina.ai"
         git config --local user.name "Jina Dev Bot"
         git commit -m "build" -a
+    - name: Push Build to gh-pages Branch 
       uses: ad-m/github-push-action@master
       with:
         github_token: ${{ secrets.JINA_DEV_BOT }}
