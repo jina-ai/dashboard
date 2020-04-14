@@ -20,9 +20,10 @@ jobs:
     - name: Create Build
       run: npm run build
     - name: Deploy to GitHub Pages
-      uses: peaceiris/actions-gh-pages@v3
+      if: success()
+      uses: crazy-max/ghaction-github-pages@v1
       with:
-        github_token: ${{secrets.JINA_DEV_BOT}}
-        publish_dir: ./build
+        target_branch: gh-pages
+        build_dir: build
       env:
-        CI: false
+        GITHUB_PAT: ${{ secrets.JINA_DEV_BOT }}
