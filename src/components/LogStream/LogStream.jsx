@@ -180,7 +180,7 @@ class StreamContainer extends React.Component {
 					...style,
 					wordBreak: 'break-word',
 				}}>
-					<LogItem data={log} />
+					<LogItem index={index} data={log} />
 				</div>
 			</CellMeasurer>
 		)

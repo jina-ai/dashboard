@@ -32,12 +32,12 @@ class SummaryChart extends React.Component {
 	render = () => {
 		const { chartData } = this.state;
 		return (
-			<Card className="mb-4">
-				<Card.Body className="d-none d-md-block">
-					<ChartBase data={chartData} height={5} width={70} onClick={this.showLog} />
+			<Card className="h-100">
+				<Card.Body className="d-none d-md-block pb-2">
+					<ChartBase data={chartData} height={10} width={70} onClick={this.showLog} />
 				</Card.Body>
-				<Card.Body className="d-md-none">
-					<ChartBase data={chartData} height={10} width={50} onClick={this.showLog} />
+				<Card.Body className="d-md-none pb-2">
+					<ChartBase data={chartData} height={20} width={50} onClick={this.showLog} />
 				</Card.Body>
 			</Card>
 		)

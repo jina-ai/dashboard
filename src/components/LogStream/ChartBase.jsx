@@ -17,6 +17,10 @@ const _colors = {
   CRITICAL: {
     border: '#f44336',
     background: 'rgba(244, 67, 54, 0.25)'
+  },
+  DEBUG: {
+    border: '#9c27b0',
+    background: 'rgba(155, 39, 176, 0.25)'
   }
 }
 
@@ -39,8 +43,12 @@ class Chart extends React.Component {
       maintainAspectRatio: true,
       responsive: true,
       legend: {
-        display: false
-      },
+				position: "bottom",
+				labels: {
+					padding: 10,
+					boxWidth: 20
+				}
+			},
       tooltips: {
         enabled: false,
         custom: false

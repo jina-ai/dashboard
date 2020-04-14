@@ -228,6 +228,10 @@ i.material-icons{
   color: #ff6666;
 }
 
+.log-debug{
+  color: #9c27b0;
+}
+
 .log-prefix{
   white-space: nowrap;
   color: black;

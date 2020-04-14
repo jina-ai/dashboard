@@ -12,7 +12,7 @@ let _store = getInitialStore();
 
 const NUM_CHART_ELEMENTS = 60;
 const CHART_UPDATE_INTERVAL = 1000;
-const CHART_LEVELS = ['INFO', 'SUCCESS', 'ERROR', 'CRITICAL']
+const CHART_LEVELS = ['INFO', 'SUCCESS', 'ERROR', 'CRITICAL','DEBUG']
 
 function getInitialStore() {
   return {
@@ -143,12 +143,11 @@ class Store extends EventEmitter {
         return this.showBanner(data, 'danger')
       }
 
-
       const log = data;
 
-      log.formattedTimestamp = (new Date(log.created *1000)).toISOString().replace('T',' ').slice(5,22)
+      log.formattedTimestamp = (new Date(log.created *1000)).toLocaleString()
 
-      // console.log('log: ', log)
+      log.idx = _store.logs.all.length;
       _store.logs.all.push(log);
 
       const source = log.name;
@@ -289,6 +288,10 @@ class Store extends EventEmitter {
 
   getSummaryCharts = () => {
     return _store.summaryCharts;
+  }
+
+  getTotalOccurences = () =>{
+    return _store.occurences.current;
   }
 
   isConnected = () => {
