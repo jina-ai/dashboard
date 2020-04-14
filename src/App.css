@@ -288,3 +288,7 @@ i.material-icons{
   background-color: #009999 !important;
   border-color: #009999 !important;
 }
+
+.notifications{
+  cursor: pointer;
+}

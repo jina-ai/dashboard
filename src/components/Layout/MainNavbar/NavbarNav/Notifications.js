@@ -1,6 +1,6 @@
 import React from "react";
 import { NavItem, NavLink, Badge, Collapse, DropdownItem } from "shards-react";
-import { Store } from '../../../../flux';
+import { Store, Constants,Dispatcher } from '../../../../flux';
 
 export default class Notifications extends React.Component {
   state = {
@@ -20,10 +20,16 @@ export default class Notifications extends React.Component {
     this.setState({connected});
   }
 
+  reconnect = () =>{
+    Dispatcher.dispatch({
+      actionType: Constants.RECONNECT
+    })
+  }
+
   render() {
     const { connected } = this.state;
     return (
-      <NavItem className="border-right dropdown notifications">
+      <NavItem className="border-right dropdown notifications" onClick={this.reconnect}>
         <NavLink
           className="nav-link-icon text-center"
           onClick={this.toggleNotifications}

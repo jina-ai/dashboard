@@ -29,7 +29,7 @@ class SettingsCard extends React.Component {
 
 	getData = () => {
 		const original = Store.getSettings();
-		this.setState({ original, updates:{} });
+		this.setState({ original, updates: {} });
 	}
 
 	updateSetting = (setting, value) => {
@@ -43,24 +43,13 @@ class SettingsCard extends React.Component {
 
 	saveChanges = () => {
 		const { original, updates } = this.state;
-		let needsUpdate = false;
-		console.log('original: ',original);
-		console.log('updates:',updates);
-		Object.keys(updates).map(key => {
-			if (updates[key] && updates[key]!= original[key])
-				needsUpdate = true;
-		})
 
 		const settings = { ...original, ...updates }
 
-		console.log('needsUpdate: ', needsUpdate);
-		console.log('new settings: ', settings);
-
-		if (needsUpdate)
-			Dispatcher.dispatch({
-				actionType: Constants.SAVE_SETTINGS,
-				payload: settings
-			})
+		Dispatcher.dispatch({
+			actionType: Constants.SAVE_SETTINGS,
+			payload: settings
+		})
 	}
 
 	render = () => {

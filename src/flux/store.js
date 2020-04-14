@@ -82,6 +82,9 @@ class Store extends EventEmitter {
       case Constants.SAVE_SETTINGS:
         this.saveSettings(payload);
         break;
+      case Constants.RECONNECT:
+        this.reconnect(payload);
+        break;
       default:
     }
   }
@@ -192,6 +195,10 @@ class Store extends EventEmitter {
     _store.occurences.lastLog.shift();
     // console.log('summaryCharts:', _store.summaryCharts);
     this.emit('update-summary-chart');
+  }
+
+  reconnect(){
+    this.init();
   }
 
   toggleSidebar() {
