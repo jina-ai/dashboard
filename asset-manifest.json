@@ -1,26 +1,26 @@
 {
   "files": {
-    "main.css": "/dashboard/static/css/main.8ee8c11f.chunk.css",
-    "main.js": "/dashboard/static/js/main.10f04715.chunk.js",
-    "main.js.map": "/dashboard/static/js/main.10f04715.chunk.js.map",
+    "main.css": "/dashboard/static/css/main.33a68b5e.chunk.css",
+    "main.js": "/dashboard/static/js/main.9ce92762.chunk.js",
+    "main.js.map": "/dashboard/static/js/main.9ce92762.chunk.js.map",
     "runtime-main.js": "/dashboard/static/js/runtime-main.35f8d8f9.js",
     "runtime-main.js.map": "/dashboard/static/js/runtime-main.35f8d8f9.js.map",
-    "static/css/2.de424728.chunk.css": "/dashboard/static/css/2.de424728.chunk.css",
-    "static/js/2.6b4cc28d.chunk.js": "/dashboard/static/js/2.6b4cc28d.chunk.js",
-    "static/js/2.6b4cc28d.chunk.js.map": "/dashboard/static/js/2.6b4cc28d.chunk.js.map",
+    "static/css/2.69121389.chunk.css": "/dashboard/static/css/2.69121389.chunk.css",
+    "static/js/2.265b93b7.chunk.js": "/dashboard/static/js/2.265b93b7.chunk.js",
+    "static/js/2.265b93b7.chunk.js.map": "/dashboard/static/js/2.265b93b7.chunk.js.map",
     "index.html": "/dashboard/index.html",
-    "precache-manifest.42ecd8f5a4c7c1cad4ee8f6c77c65bb3.js": "/dashboard/precache-manifest.42ecd8f5a4c7c1cad4ee8f6c77c65bb3.js",
+    "precache-manifest.cc5320c7909d37aef5db33306f44a282.js": "/dashboard/precache-manifest.cc5320c7909d37aef5db33306f44a282.js",
     "service-worker.js": "/dashboard/service-worker.js",
-    "static/css/2.de424728.chunk.css.map": "/dashboard/static/css/2.de424728.chunk.css.map",
-    "static/css/main.8ee8c11f.chunk.css.map": "/dashboard/static/css/main.8ee8c11f.chunk.css.map",
-    "static/js/2.6b4cc28d.chunk.js.LICENSE.txt": "/dashboard/static/js/2.6b4cc28d.chunk.js.LICENSE.txt",
+    "static/css/2.69121389.chunk.css.map": "/dashboard/static/css/2.69121389.chunk.css.map",
+    "static/css/main.33a68b5e.chunk.css.map": "/dashboard/static/css/main.33a68b5e.chunk.css.map",
+    "static/js/2.265b93b7.chunk.js.LICENSE.txt": "/dashboard/static/js/2.265b93b7.chunk.js.LICENSE.txt",
     "static/media/jina-light.svg": "/dashboard/static/media/jina-light.07aba578.svg"
   },
   "entrypoints": [
     "static/js/runtime-main.35f8d8f9.js",
-    "static/css/2.de424728.chunk.css",
-    "static/js/2.6b4cc28d.chunk.js",
-    "static/css/main.8ee8c11f.chunk.css",
-    "static/js/main.10f04715.chunk.js"
+    "static/css/2.69121389.chunk.css",
+    "static/js/2.265b93b7.chunk.js",
+    "static/css/main.33a68b5e.chunk.css",
+    "static/js/main.9ce92762.chunk.js"
   ]
 }
