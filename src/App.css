@@ -9,7 +9,7 @@ body{
 .loader {
   margin: auto;
   border: 2px solid rgba(0, 123, 255, 0.15) ;
-  border-top: 2px solid #007bff; /* Blue */
+  border-top: 2px solid #009999; /* Blue */
   border-radius: 50%;
   width: 100px;
   height: 100px;
@@ -91,7 +91,7 @@ body{
   padding: 1em;
   font-weight: 700;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
-  border: 3px solid #007bff;
+  border: 3px solid #009999;
   color: black;
   border-radius: .25em;
 }
@@ -121,7 +121,7 @@ body{
 }
 
 .lbZxLd .chart-node{
-  border-color: #007bff;
+  border-color: #009999;
 }
 
 .btn-outline{
@@ -213,19 +213,23 @@ i.material-icons{
 }
 
 .log-success{
-  color: #28a745;
+  color: #32c8cd;
 }
 
 .log-info{
-  color: black;
+  color: #009999;
 }
 
-.log-error{
+.log-warning{
   color: #ffcc66;
 }
 
-.log-critical{
+.log-error{
   color: #ff6666;
+}
+
+.log-critical{
+  color: #ff4540;
 }
 
 .log-debug{
@@ -300,6 +304,24 @@ i.material-icons{
   border-color: #009999 !important;
 }
 
+.btn-danger{
+  background-color: #ff4540 !important;
+  border-color: #ff4540 !important;
+}
+
 .notifications{
   cursor: pointer;
+}
+
+.badge-success{
+  background-color: #32c8cd !important;
+}
+
+.badge-primary{
+  background-color: #009999 !important;
+}
+
+
+.badge-danger{
+  background-color: #ff6666 !important;
 }

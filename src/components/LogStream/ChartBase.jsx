@@ -3,28 +3,28 @@ import ChartElement from 'chart.js';
 
 const _colors = {
   INFO: {
-    border: '#007bff',
-    background: 'rgba(0, 123, 255, 0.15)'
+    border: '#009999',
+    background: 'rgba(0, 153, 153, 0.9)'
   },
   SUCCESS: {
-    border: '#4caf50',
-    background: 'rgba(76, 175, 79, 0.15)'
+    border: '#32c8cd',
+    background: 'rgba(50, 200, 205, 0.9)'
   },
   WARNING: {
-    border: '#ffd600',
-    background: 'rgba(255, 213, 0, 0.25)'
+    border: '#ffcc66',
+    background: 'rgba(255, 204, 102, 0.9)'
   },
   ERROR: {
-    border: '#fb8c00',
-    background: 'rgba(251, 138, 0, 0.25)'
+    border: '#ff6666',
+    background: 'rgba(255, 102, 102, 0.9)'
   },
   CRITICAL: {
-    border: '#f44336',
-    background: 'rgba(244, 67, 54, 0.25)'
+    border: '#ff4540',
+    background: 'rgba(255, 70, 64, 0.9)'
   },
   DEBUG: {
     border: '#9c27b0',
-    background: 'rgba(155, 39, 176, 0.25)'
+    background: 'rgba(155, 39, 176, 0.9)'
   },
 }
 

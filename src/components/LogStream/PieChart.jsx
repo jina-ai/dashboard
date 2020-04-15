@@ -3,40 +3,40 @@ import ChartElement from 'chart.js';
 
 const _colors = [
 	{
-		border: '#007bff',
-		background: 'rgba(0, 123, 255, 0.85)'
+		border: '#fff',
+		background: 'rgba(0, 153, 153, 0.85)'
 	},
 	{
-		border: '#007bff',
-		background: 'rgba(0, 123, 255, 0.75)'
+		border: '#fff',
+		background: 'rgba(0, 153, 153, 0.75)'
 	},
 	{
-		border: '#007bff',
-		background: 'rgba(0, 123, 255, 0.65)'
+		border: '#fff',
+		background: 'rgba(0, 153, 153, 0.65)'
 	},
 	{
-		border: '#007bff',
-		background: 'rgba(0, 123, 255, 0.55)'
+		border: '#fff',
+		background: 'rgba(0, 153, 153, 0.55)'
 	},
 	{
-		border: '#007bff',
-		background: 'rgba(0, 123, 255, 0.45)'
+		border: '#fff',
+		background: 'rgba(0, 153, 153, 0.45)'
 	},
 	{
-		border: '#007bff',
-		background: 'rgba(0, 123, 255, 0.35)'
+		border: '#fff',
+		background: 'rgba(0, 153, 153, 0.35)'
 	},
 	{
-		border: '#007bff',
-		background: 'rgba(0, 123, 255, 0.25)'
+		border: '#fff',
+		background: 'rgba(0, 153, 153, 0.25)'
 	},
 	{
-		border: '#007bff',
-		background: 'rgba(0, 123, 255, 0.15)'
+		border: '#fff',
+		background: 'rgba(0, 153, 153, 0.15)'
 	},
 	{
-		border: '#007bff',
-		background: 'rgba(0, 123, 255, 0.05)'
+		border: '#fff',
+		background: 'rgba(0, 153, 153, 0.05)'
 	},
 ]
 
