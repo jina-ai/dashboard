@@ -30,8 +30,8 @@ function startDemo(req, res) {
 	});
 }
 
-app.get('/log/stream', (req, res) => {
-	console.log('GET at /log/stream')
+app.get('/stream/log', (req, res) => {
+	console.log('GET at /stream/log')
 	// SSE Setup
 	res.writeHead(200, {
 		'Content-Type': 'text/event-stream',

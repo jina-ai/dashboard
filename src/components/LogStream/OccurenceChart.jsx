@@ -5,7 +5,7 @@ import ChartBase from './PieChart';
 
 class OccurenceChart extends React.Component {
 	state = {
-		chartData: Store.getTotalOccurences(),
+		chartData: Store.getOccurencesByName(),
 	}
 	componentWillMount = () => {
 		Store.on('update-summary-chart', this.getData);
@@ -16,7 +16,7 @@ class OccurenceChart extends React.Component {
 	}
 
 	getData = () => {
-		const chartData = Store.getTotalOccurences();
+		const chartData = Store.getOccurencesByName();
 		this.setState({ chartData });
 	}
 

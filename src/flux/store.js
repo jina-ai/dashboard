@@ -19,7 +19,7 @@ function getInitialStore() {
     settings: {
       host: localStorage.getItem('preferences-host') || 'http://localhost',
       port: localStorage.getItem('preferences-port') || 5000,
-      log: localStorage.getItem('preferences-log') || '/log/stream',
+      log: localStorage.getItem('preferences-log') || '/stream/log',
       profile: localStorage.getItem('preferences-profile') || '/stream/profile',
       yaml: localStorage.getItem('preferences-yaml') || '/data/yaml',
       shutdown: localStorage.getItem('preferences-shutdown') || '/action/shutdown',
@@ -149,7 +149,6 @@ class Store extends EventEmitter {
       const log = data;
 
       log.formattedTimestamp = (new Date(log.created *1000)).toLocaleString()
-
       log.idx = _store.logs.all.length;
       _store.logs.all.push(log);
 
@@ -297,8 +296,15 @@ class Store extends EventEmitter {
     return _store.summaryCharts;
   }
 
-  getTotalOccurences = () =>{
-    return _store.occurences.current;
+  getOccurencesByName = () =>{
+    let occurences  = {};
+    Object.keys(_store.logs).map(name=>{
+      if(name==='all')
+        return;
+      else
+        occurences[name] = _store.logs[name].length;
+    })
+    return occurences;
   }
 
   isConnected = () => {

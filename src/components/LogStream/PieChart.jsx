@@ -1,30 +1,44 @@
 import React from "react";
 import ChartElement from 'chart.js';
 
-const _colors = {
-	INFO: {
+const _colors = [
+	{
+		border: '#007bff',
+		background: 'rgba(0, 123, 255, 0.85)'
+	},
+	{
+		border: '#007bff',
+		background: 'rgba(0, 123, 255, 0.75)'
+	},
+	{
+		border: '#007bff',
+		background: 'rgba(0, 123, 255, 0.65)'
+	},
+	{
+		border: '#007bff',
+		background: 'rgba(0, 123, 255, 0.55)'
+	},
+	{
+		border: '#007bff',
+		background: 'rgba(0, 123, 255, 0.45)'
+	},
+	{
+		border: '#007bff',
+		background: 'rgba(0, 123, 255, 0.35)'
+	},
+	{
+		border: '#007bff',
+		background: 'rgba(0, 123, 255, 0.25)'
+	},
+	{
 		border: '#007bff',
 		background: 'rgba(0, 123, 255, 0.15)'
 	},
-	SUCCESS: {
-		border: '#4caf50',
-		background: 'rgba(76, 175, 79, 0.15)'
+	{
+		border: '#007bff',
+		background: 'rgba(0, 123, 255, 0.05)'
 	},
-	ERROR: {
-		border: '#fb8c00',
-		background: 'rgba(251, 138, 0, 0.25)'
-	},
-	CRITICAL: {
-		border: '#f44336',
-		background: 'rgba(244, 67, 54, 0.25)'
-	},
-	DEBUG: {
-		border: '#9c27b0',
-		background: 'rgba(155, 39, 176, 0.25)'
-	}
-}
-
-const _logLevels = ['INFO', 'ERROR', 'CRITICAL', 'DEBUG','SUCCESS',];
+]
 
 class Chart extends React.Component {
 
@@ -37,8 +51,20 @@ class Chart extends React.Component {
 		this.renderChart();
 	}
 
+	getColor = (index) => {
+		let color = false;
+		while (!color) {
+			if (_colors[index])
+				color = _colors[index];
+			else
+				index -= (_colors.length);
+		}
+		return color;
+	}
+
 	renderChart = () => {
 		const { data } = this.props;
+		const names = Object.keys(data);
 		const chartOptions = {
 			legend: {
 				display: false,
@@ -57,13 +83,13 @@ class Chart extends React.Component {
 
 		const chartConfig = {
 			type: "pie",
-			labels: _logLevels,
+			labels: names,
 			data: {
 				datasets: [{
-					borderWidth: 1.5,
-					data: _logLevels.map(level => data[level]),
-					borderColor: _logLevels.map(level => _colors[level].border),
-					backgroundColor: _logLevels.map(level => _colors[level].background),
+					borderWidth: 1,
+					data: names.map(name => data[name]),
+					borderColor: names.map((name,idx)=>this.getColor(idx).border),
+					backgroundColor: names.map((name,idx)=>this.getColor(idx).background),
 				}]
 			},
 			options: chartOptions,
@@ -75,13 +101,14 @@ class Chart extends React.Component {
 
 	updateChart = () => {
 		const { data } = this.props;
+		const names = Object.keys(data);
 		const chartData = {
-			labels: _logLevels,
+			labels: names,
 			datasets: [{
-				borderWidth: 1.5,
-				data: _logLevels.map(level => data[level]),
-				borderColor: _logLevels.map(level => _colors[level].border),
-				backgroundColor: _logLevels.map(level => _colors[level].background),
+				borderWidth: 1,
+				data: names.map(name => data[name]),
+				borderColor: names.map((name,idx)=>this.getColor(idx).border),
+				backgroundColor: names.map((name,idx)=>this.getColor(idx).background),
 			}]
 		}
 		this.chart.data = chartData;
