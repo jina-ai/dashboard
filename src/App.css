@@ -282,6 +282,17 @@ i.material-icons{
   width: 100%;
   padding-top: .25em;
   padding-bottom: .25em;
+  overflow: hidden;
+  background-color: red;
+  color: white;
+}
+
+.banner.banner-success{
+  background-color: #32C8CD;
+}
+
+.banner.banner-error{
+  background-color: #ff6666;
 }
 
 .btn-primary{

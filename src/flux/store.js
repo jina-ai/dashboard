@@ -12,7 +12,7 @@ let _store = getInitialStore();
 
 const NUM_CHART_ELEMENTS = 60;
 const CHART_UPDATE_INTERVAL = 1000;
-const CHART_LEVELS = ['INFO', 'SUCCESS', 'ERROR', 'CRITICAL','DEBUG']
+const CHART_LEVELS = ['INFO', 'SUCCESS', 'WARNING', 'ERROR', 'CRITICAL', 'DEBUG']
 
 function getInitialStore() {
   return {
@@ -25,18 +25,24 @@ function getInitialStore() {
       shutdown: localStorage.getItem('preferences-shutdown') || '/action/shutdown',
       ready: localStorage.getItem('preferences-ready') || '/status/ready',
     },
-    banner: false,
-    connected: false,
+    banner: {
+      flow: false,
+      logs: false,
+    },
+    connected: {
+      logs: false,
+      flow: false
+    },
     loading: true,
     modal: false,
     menuVisible: false,
     navItems: getSidebarNavItems(),
     flowchart: {
-      selected:{},
-      hovered:{},
-      nodes:{},
-      links:{},
-      offset:{x:0,y:0},
+      selected: {},
+      hovered: {},
+      nodes: {},
+      links: {},
+      offset: { x: 0, y: 0 },
     },
     logs: {
       all: [],
@@ -93,7 +99,7 @@ class Store extends EventEmitter {
     if (this.updateChartInterval)
       clearInterval(this.updateChartInterval)
     _store = getInitialStore();
-    console.log('store settings: ',_store.settings);
+    console.log('store settings: ', _store.settings);
     await this.initFlowChart();
     this.initLogStream();
     this.initCharts();
@@ -104,14 +110,23 @@ class Store extends EventEmitter {
 
   initFlowChart = async (yamlSTRING) => {
     let flow;
-    if (yamlSTRING)
+    const { settings } = _store;
+    const connectionString = `${settings.host}:${settings.port}${settings.yaml.startsWith('/') ? settings.yaml : '/' + settings.yaml}`;
+
+    if (yamlSTRING) {
       flow = parseYAML(yamlSTRING);
+      _store.connected.flow = false;
+    }
     else {
-      try{
-        let str = await api.getYAML(_store.settings);
+      try {
+        let str = await api.getYAML(connectionString);
         flow = parseYAML(str);
+        _store.connected.flow = true;
+        this.showBanner('flow', `Getting YAML from ${connectionString}`, 'success')
       }
-      catch(e){
+      catch (e) {
+        _store.connected.flow = false;
+        this.showBanner('flow', `Could not get YAML flow from ${connectionString}`, 'error')
         return;
       }
     }
@@ -137,18 +152,18 @@ class Store extends EventEmitter {
       const { type, data } = message;
 
       if (type === 'connect') {
-        _store.connected = true;
-        return this.showBanner(data, 'success')
+        _store.connected.logs = true;
+        return this.showBanner('logs', data, 'success')
       }
 
       if (type === 'error') {
-        _store.connected = false;
-        return this.showBanner(data, 'danger')
+        _store.connected.logs = false;
+        return this.showBanner('logs', data, 'error')
       }
 
       const log = data;
 
-      log.formattedTimestamp = (new Date(log.created *1000)).toLocaleString()
+      log.formattedTimestamp = (new Date(log.created * 1000)).toLocaleString()
       log.idx = _store.logs.all.length;
       _store.logs.all.push(log);
 
@@ -196,7 +211,7 @@ class Store extends EventEmitter {
     this.emit('update-summary-chart');
   }
 
-  reconnect(){
+  reconnect() {
     this.init();
   }
 
@@ -225,17 +240,17 @@ class Store extends EventEmitter {
     Object.keys(settings).map(key => {
       localStorage.setItem(`preferences-${key}`, settings[key]);
     });
-    setTimeout(this.init,100);
+    setTimeout(this.init, 100);
   }
 
-  showBanner = (message, theme) => {
-    _store.banner = { message: String(message), theme };
+  showBanner = (target, message, theme) => {
+    _store.banner[target] = { message: String(message), theme };
     setTimeout(this.hideBanner, HIDE_BANNER_TIMEOUT);
     this.emit('update-ui');
   }
 
   hideBanner = () => {
-    _store.banner = false;
+    _store.banner = { logs: false, flow: false };
     this.emit('update-ui');
   }
 
@@ -272,8 +287,8 @@ class Store extends EventEmitter {
     return _store.settings;
   }
 
-  getBanner = () => {
-    return _store.banner;
+  getBanner = (panel = 'logs') => {
+    return _store.banner[panel];
   }
 
   getModal = () => {
@@ -296,10 +311,10 @@ class Store extends EventEmitter {
     return _store.summaryCharts;
   }
 
-  getOccurencesByName = () =>{
-    let occurences  = {};
-    Object.keys(_store.logs).map(name=>{
-      if(name==='all')
+  getOccurencesByName = () => {
+    let occurences = {};
+    Object.keys(_store.logs).map(name => {
+      if (name === 'all')
         return;
       else
         occurences[name] = _store.logs[name].length;
@@ -307,8 +322,22 @@ class Store extends EventEmitter {
     return occurences;
   }
 
-  isConnected = () => {
-    return _store.connected;
+  getActivePanel = () => {
+    const path = window.location.toString();
+    console.log('path: ', path)
+    if (path.includes('flow'))
+      return 'flow';
+    if (path.includes('logs'))
+      return 'logs';
+    return 'neither'
+  }
+
+  getConnectionStatus = () => {
+    const activePanel = this.getActivePanel();
+    console.log('******** active panel: ', activePanel);
+    const status = _store.connected[activePanel];
+    console.log('******** status: ', status);
+    return _store.connected[activePanel];
   }
 
   isLoading = () => {

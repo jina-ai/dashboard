@@ -14,8 +14,9 @@ import { formatAsYAML, copyToClipboard } from '../helpers';
 class FlowTab extends React.Component {
   constructor(props) {
     super(props);
-    const chart = Store.getFlowchart()
-    this.state = { chart }
+    const chart = Store.getFlowchart();
+    const banner = Store.getBanner('flow');
+    this.state = { chart,banner };
 
     this.stateActionCallbacks = Object.keys(actions).reduce((obj, key, idx) => {
       obj[key] = (...args) => {
@@ -32,15 +33,22 @@ class FlowTab extends React.Component {
 
   componentWillMount = () => {
     Store.on('update-flowchart', this.getData);
+    Store.on('update-ui',this.getBanner);
   }
 
   componentWillUnmount = () => {
     Store.removeListener('update-flowchart', this.getData);
+    Store.removeListener('update-ui',this.getBanner);
   }
 
   getData = () => {
     const chart = Store.getFlowchart();
     this.updateChart(chart);
+  }
+
+  getBanner = () =>{
+    const banner = Store.getBanner('flow');
+    this.setState({banner});
   }
 
   updateNode = (node, callback) => {
@@ -107,33 +115,44 @@ class FlowTab extends React.Component {
 
 
   render = () => {
-    const { chart } = this.state;
+    const { chart,banner } = this.state;
     return (
-      <Container fluid className="main-content-container px-4 flowchart-page">
-        <Row noGutters className="page-header py-4">
-          <PageTitle title="Flow Design" subtitle="Local Network" className="text-sm-left mb-3" />
-          <Col className="col d-flex align-items-right">
-            <div className="d-none d-md-block flex-fill"/>
-            <ButtonGroup className="d-inline-flex mb-3 mb-sm-0 mx-auto py-0">
-              <Button theme="white" to="/analytics" onClick={this.showImportModal}>Import YAML</Button>
-              <Button theme="white" to="/ecommerce" onClick={this.copyChartAsYAML}>Copy YAML</Button>
-            </ButtonGroup>
-          </Col>
-        </Row>
-        <div className="flow-container d-flex flex-column flex-md-row">
-          <Card className="chart-section-container p-1 mr-md-4 mb-4">
-            <div className="chart-container">
-              <FlowChart
-                chart={chart}
-                Components={{ NodeInner: CustomNode, Port: CustomPort }}
-                callbacks={this.stateActionCallbacks}
-                config={{
-                  validateLink: this.validateLink
-                }} />
+      <Container fluid className="main-content-container px-0">
+        {
+          banner &&
+          <div className="mr-4">
+            <div className={`mb-0 banner px-4 banner-${banner.theme}`}>
+              {banner.message}
             </div>
-          </Card>
-          <Sidebar chart={chart} cancelChanges={this.cancelChanges} deleteSelection={this.deleteSelection} updateNode={this.updateNode} />
-        </div >
+          </div>
+
+        }
+        <div className="px-4">
+          <Row noGutters className="page-header py-4">
+            <PageTitle title="Flow Design" subtitle="Local Network" className="text-sm-left mb-3" />
+            <Col className="col d-flex align-items-right">
+              <div className="d-none d-md-block flex-fill" />
+              <ButtonGroup className="d-inline-flex mb-3 mb-sm-0 mx-auto py-0">
+                <Button theme="white" to="/analytics" onClick={this.showImportModal}>Import YAML</Button>
+                <Button theme="white" to="/ecommerce" onClick={this.copyChartAsYAML}>Copy YAML</Button>
+              </ButtonGroup>
+            </Col>
+          </Row>
+          <div className="flow-container d-flex flex-column flex-md-row">
+            <Card className="chart-section-container p-1 mr-md-4 mb-4">
+              <div className="chart-container">
+                <FlowChart
+                  chart={chart}
+                  Components={{ NodeInner: CustomNode, Port: CustomPort }}
+                  callbacks={this.stateActionCallbacks}
+                  config={{
+                    validateLink: this.validateLink
+                  }} />
+              </div>
+            </Card>
+            <Sidebar chart={chart} cancelChanges={this.cancelChanges} deleteSelection={this.deleteSelection} updateNode={this.updateNode} />
+          </div >
+        </div>
       </Container>
     )
   }

@@ -10,6 +10,10 @@ const _colors = {
     border: '#4caf50',
     background: 'rgba(76, 175, 79, 0.15)'
   },
+  WARNING: {
+    border: '#ffd600',
+    background: 'rgba(255, 213, 0, 0.25)'
+  },
   ERROR: {
     border: '#fb8c00',
     background: 'rgba(251, 138, 0, 0.25)'
@@ -21,7 +25,7 @@ const _colors = {
   DEBUG: {
     border: '#9c27b0',
     background: 'rgba(155, 39, 176, 0.25)'
-  }
+  },
 }
 
 class Chart extends React.Component {

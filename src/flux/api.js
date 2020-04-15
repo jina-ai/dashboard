@@ -21,10 +21,9 @@ export default {
 			stream.close()
 		}
 	},
-	getYAML: (settings) => {
+	getYAML: (connectionString) => {
 		return new Promise((resolve, reject) => {
 			const xhr = new XMLHttpRequest();
-			const connectionString = `${settings.host}:${settings.port}${settings.yaml.startsWith('/') ? settings.yaml : '/' + settings.yaml}`;
 			console.log('YAML connectionString: ', connectionString)
 			xhr.open('GET', connectionString);
 			xhr.timeout = 5000;

@@ -4,7 +4,7 @@ import { Store, Constants,Dispatcher } from '../../../../flux';
 
 export default class Notifications extends React.Component {
   state = {
-    connected: Store.isConnected()
+    connected: Store.getConnectionStatus()
   }
 
   componentWillMount = () => {
@@ -16,7 +16,7 @@ export default class Notifications extends React.Component {
   }
 
   getData = () =>{
-    const connected = Store.isConnected();
+    const connected = Store.getConnectionStatus();
     this.setState({connected});
   }
 
