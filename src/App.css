@@ -212,12 +212,16 @@ i.material-icons{
   word-wrap: break-word;
 }
 
+.log:hover{
+  background-color:rgba(0, 153, 153, 0.3);
+}
+
 .log-success{
   color: #32c8cd;
 }
 
 .log-info{
-  color: #009999;
+  color: black;
 }
 
 .log-warning{

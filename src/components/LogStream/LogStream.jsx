@@ -28,7 +28,7 @@ class StreamContainer extends React.Component {
 		sources: Store.getLogSources(),
 		searchQuery: "",
 		prevQuery: "",
-		searchResults: false,
+		results: [],
 		showHelper: false,
 		selectedSource: 'all',
 	}
@@ -45,11 +45,11 @@ class StreamContainer extends React.Component {
 
 	componentDidMount = () => {
 		setTimeout(() => {
-			if (this._list)
+			if (this._list){
 				this._resizeAll();
-			this.scrollToBottom()
+				this.backToBottom();
+			}
 		}, 1)
-
 	}
 
 	getData = () => {
@@ -65,7 +65,7 @@ class StreamContainer extends React.Component {
 		const index = Store.getIndexedLog();
 		const selectedSource = 'all';
 		const logs = this.state.logData[selectedSource];
-		this.setState({ selectedSource,logs });
+		this.setState({ selectedSource, logs });
 		console.log('scrolling to index: ', index);
 		this.scrollToLog(index);
 	}
@@ -75,7 +75,7 @@ class StreamContainer extends React.Component {
 		const logs = logData[selectedSource];
 		this.setState({ logs, selectedSource }, () => {
 			this._resizeAll();
-			this.scrollToBottom();
+			this.backToBottom();
 		})
 	}
 
@@ -121,6 +121,11 @@ class StreamContainer extends React.Component {
 		this._scrolledToBottom = true;
 	}
 
+	scrollToBottomResults = () => {
+		this._resultsList.scrollToRow(this.state.results.length);
+		this._scrolledToBottom = true;
+	}
+
 	backToBottom = () => {
 		this.scrollToBottom();
 		setTimeout(this.scrollToBottom, 1);
@@ -132,7 +137,7 @@ class StreamContainer extends React.Component {
 
 	clearSearchResults = () => {
 		this.setState({
-			searchResults: false,
+			results: false,
 			searchQuery: ""
 		})
 	}
@@ -218,7 +223,7 @@ class StreamContainer extends React.Component {
 								<option value="all">All Logs</option>
 								{
 									Object.keys(sources).map(source =>
-										<option value={source}>{source}</option>
+										<option key={source} value={source}>{source}</option>
 									)
 								}
 							</FormControl>
@@ -250,10 +255,12 @@ class StreamContainer extends React.Component {
 									if (this._mostRecentWidth !== width) {
 										this._mostRecentWidth = width;
 										setTimeout(this._resizeAll, 0);
+										setTimeout(this.backToBottom, 1);
 									}
 									if (this._mostRecentHeight !== height) {
 										this._mostRecentHeight = height;
-										setTimeout(this.scrollToBottom, 0);
+										setTimeout(this._resizeAll, 0);
+										setTimeout(this.backToBottom, 1);
 									}
 									return (
 										<List
@@ -283,10 +290,13 @@ class StreamContainer extends React.Component {
 
 	_onScroll = (data) => {
 		const { scrollTop, scrollHeight, clientHeight } = data;
+		console.log('scrollTop: ', scrollTop);
+		console.log('scrollHeight: ', scrollHeight);
+		console.log('clientHeight: ', clientHeight)
 		this._scrollTop = scrollTop;
 		let difference = scrollHeight - (scrollTop + clientHeight);
 
-		if (difference === 0)
+		if (difference < 10)
 			this._scrolledToBottom = true;
 		else {
 			this._scrolledToBottom = false;

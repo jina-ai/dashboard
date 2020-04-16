@@ -324,7 +324,6 @@ class Store extends EventEmitter {
 
   getActivePanel = () => {
     const path = window.location.toString();
-    console.log('path: ', path)
     if (path.includes('flow'))
       return 'flow';
     if (path.includes('logs'))
@@ -334,10 +333,8 @@ class Store extends EventEmitter {
 
   getConnectionStatus = () => {
     const activePanel = this.getActivePanel();
-    console.log('******** active panel: ', activePanel);
     const status = _store.connected[activePanel];
-    console.log('******** status: ', status);
-    return _store.connected[activePanel];
+    return status;
   }
 
   isLoading = () => {

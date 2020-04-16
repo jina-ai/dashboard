@@ -23,8 +23,8 @@ const _colors = {
     background: 'rgba(255, 70, 64, 0.9)'
   },
   DEBUG: {
-    border: '#9c27b0',
-    background: 'rgba(155, 39, 176, 0.9)'
+    border: '#6E7278',
+    background: 'rgba(110, 114, 120, 0.9)'
   },
 }
 

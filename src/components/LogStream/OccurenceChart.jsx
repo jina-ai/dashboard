@@ -22,7 +22,6 @@ class OccurenceChart extends React.Component {
 
 	render = () => {
 		const { chartData } = this.state;
-		console.log('chartData:',chartData)
 		return (
 			<Card className="h-100">
 				<Card.Body>
