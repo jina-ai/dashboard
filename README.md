@@ -21,7 +21,6 @@
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
 
-- [Features](#features)
 - [Getting started](#getting-started)
 - [Self-host Dashboard](#self-host-dashboard)
 - [Contributing](#contributing)
