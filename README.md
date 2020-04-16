@@ -1,5 +1,7 @@
 # Dashboard (beta)
 
+![CD](https://github.com/jina-ai/dashboard/workflows/CD/badge.svg)
+
 The dashboard helps you get more insights of a running Jina flow. You can analyze logs, design flows and view Jina Hub images.
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
@@ -22,7 +24,12 @@ The dashboard helps you get more insights of a running Jina flow. You can analyz
 
 Log server is a helper thread in Jina flow. It exposes HTTP endpoints to the public which the dashboard can use to fetch logs, visualize the flow.    
 
-#### If you use Flow API in Python,
+
+
+<table>
+<tr>
+<td> If you use Flow API in Python, </td>
+<td>
 
 ```python
 from jina.flow import Flow
@@ -35,7 +42,11 @@ with f.build() as fl:
     fl.index(...)
 ```
 
-#### ...or write a Flow from YAML
+</td>
+</tr>
+<tr>
+<td> ...or write a Flow from YAML </td>
+<td>
 
 ```yaml
 # myflow.yml
@@ -54,13 +65,24 @@ with f.build() as fl:
     fl.index(...)
 ```
 
-#### ...or start a Flow from CLI
+</td>
+</tr>
+
+<tr>
+<td>...or start a Flow from CLI</td>
+<td>
 
 ```bash
-jina flow --logserver --yaml-path myflow.yml 
+jina flow --logserver --yaml-path myflow.yml
 ```
 
-If you see the following logs show up in the console, it means your log server is successfully running. You can now move to the next step.
+
+</td>
+</tr>
+</table>
+
+
+Either way, if you see the following logs show up in the console, then your log server is successfully running. You can now move to the next step.
 
 <p align="center">
 <img src=".github/logserver.png?raw=true" alt="logserver success started" width="80%">
@@ -96,9 +118,24 @@ endpoints:
 ```
 
 You can customize the endpoints of the log server via a YAML, say `mylogserver.yml`. Then pass it to the Flow API via 
+
+
+
+
+<table>
+<tr>
+<td> If you use Flow API in Python, </td>
+<td>
+
 ```python
 f = Flow(logserver=True, logserver_config='mylogserver.yml')
 ```
+
+</td>
+</tr>
+<tr>
+<td> ...or write a Flow from YAML </td>
+<td>
 
 ```yaml
 !Flow
@@ -107,9 +144,27 @@ with:
   logserver_config: mylogserver.yml 
 ```
 
+</td>
+</tr>
+
+<tr>
+<td>...or start a Flow from CLI</td>
+<td>
+
 ```bash
 jina flow --logserver --logserver-config mylogserver.yml ...
 ```
+
+
+</td>
+</tr>
+</table>
+
+
+
+
+
+
 
 Don't forget to update endpoint in the dashboard accordingly.
 
@@ -120,7 +175,6 @@ Don't forget to update endpoint in the dashboard accordingly.
 ## Development Mode
 
 1. Install dependencies using command `yarn`
-
 2. Run dashboard
 
 ### Debugging

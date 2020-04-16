@@ -28,7 +28,7 @@ jobs:
         FOLDER: build
     - uses: technote-space/toc-generator@v2
       with:
-        MAX_HEADER_LEVEL: 3
+        MAX_HEADER_LEVEL: 2
         FOLDING: false
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         TOC_TITLE: ''
