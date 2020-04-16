@@ -45,7 +45,7 @@ class StreamContainer extends React.Component {
 
 	componentDidMount = () => {
 		setTimeout(() => {
-			if (this._list){
+			if (this._list) {
 				this._resizeAll();
 				this.backToBottom();
 			}
@@ -82,6 +82,8 @@ class StreamContainer extends React.Component {
 	search = () => {
 		const query = this.state.searchQuery;
 		console.log('search query: ', query)
+		if (!query)
+			return this.setState({ results: false },this._resizeAll)
 		this.indexLogs();
 		let results = this.index.search(`${query}*`)
 		this.setState({ results }, this._resizeSearchResults);
