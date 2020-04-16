@@ -54,7 +54,7 @@ jina flow --logserver --yaml-path myflow.yml
 ```
 
 <p align="center">
-<img src=".github/logserver.png" alt="logserver success started">
+<img src=".github/logserver.png" alt="logserver success started" width="90%">
 </p>
 
 ### 2. Opening t
