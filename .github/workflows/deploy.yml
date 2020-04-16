@@ -1,10 +1,11 @@
-name: deploy
+name: CD
 on:
   push:
     branches:
       - master
 jobs:
   build:
+    if: "!startsWith(github.event.head_commit.message, 'chore')"
     runs-on: ubuntu-latest
     strategy:
       matrix:

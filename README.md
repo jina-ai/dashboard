@@ -53,12 +53,62 @@ with f.build() as fl:
 jina flow --logserver --yaml-path myflow.yml 
 ```
 
+If you see the following logs show up in the console, it means your log server is successfully running. You can now move to the next step.
+
 <p align="center">
-<img src=".github/logserver.png" alt="logserver success started" width="90%">
+<img src=".github/logserver.png?raw=true" alt="logserver success started" width="80%">
 </p>
 
-### 2. Opening t
+### 2. Connect the Dashboard to your log server
 
+Go to: [https://jina-ai.github.io/dashboard/](https://jina-ai.github.io/dashboard/)
+
+If it has a red cross, click on the globe icon on the top-left corner to connect to the log server.
+
+It should turn into a green check mark, which means the connection is success.
+
+<p align="center">
+<img src=".github/.README_images/2859cc17.png?raw=true" alt="log server settings" width="80%">
+</p>
+
+You should now see the log-streaming and flow visualization.
+
+### Customize the endpoints
+
+By default the configurations of the log server is as follows:
+
+```yaml
+host: 0.0.0.0
+port: 5000
+endpoints:
+  log: /stream/log  # fetching log in SSE stream
+  profile: /stream/profile  # fetching profiling log in SSE stream
+  yaml: /data/yaml  # get the YAML spec of a flow
+  shutdown: /action/shutdown  # shutdown the log server
+  ready: /status/ready  # tell if the log server is ready, return 200 if yes
+```
+
+You can customize the endpoints of the log server via a YAML, say `mylogserver.yml`. Then pass it to the Flow API via 
+```python
+f = Flow(logserver=True, logserver_config='mylogserver.yml')
+```
+
+```yaml
+!Flow
+with:
+  logserver: true
+  logserver_config: mylogserver.yml 
+```
+
+```bash
+jina flow --logserver --logserver-config mylogserver.yml ...
+```
+
+Don't forget to update endpoint in the dashboard accordingly.
+
+<p align="center">
+<img src=".github/.README_images/35e39bdd.png?raw=true" alt="log server settings" width="80%">
+</p>
 
 ## Development Mode
 
