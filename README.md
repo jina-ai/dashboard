@@ -2,7 +2,7 @@
 
 ![CD](https://github.com/jina-ai/dashboard/workflows/CD/badge.svg)
 
-The dashboard helps you get the insights of a running Jina flow. You can analyze logs, design flows and view Jina Hub images on the dashboard.
+**Dashboard** provides the insight of a running task in Jina. With dashboard, one can analyze logs, design flows and view Jina Hub images.
 
 <p align="center">
 <img src=".github/.README_images/flow-demo.gif?raw=true" alt="flow demo" width="80%">
