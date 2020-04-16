@@ -96,7 +96,7 @@ jina flow --logserver --yaml-path myflow.yml
 Either way, if you see the following logs show up in the console, then your log server is successfully running. You can now move to the next step.
 
 <p align="center">
-<img src=".github/logserver.png?raw=true" alt="logserver success started" width="80%">
+<img src=".github/.README_images/logserver.png?raw=true" alt="logserver success started" width="80%">
 </p>
 
 ### 2. Connect the Dashboard to your log server
