@@ -7,6 +7,18 @@ The dashboard helps you get more insights of a running Jina flow. You can analyz
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
+
+- [Features](#features)
+- [Getting started](#getting-started)
+  - [1. Start the log server](#1-start-the-log-server)
+  - [2. Connect the Dashboard to your log server](#2-connect-the-dashboard-to-your-log-server)
+  - [Customize the endpoints](#customize-the-endpoints)
+- [Development Mode](#development-mode)
+  - [Debugging](#debugging)
+  - [Live Mode](#live-mode)
+- [Contributing](#contributing)
+- [License](#license)
+
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 
