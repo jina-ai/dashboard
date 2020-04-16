@@ -1,10 +1,11 @@
-name: deploy
+name: CD
 on:
   push:
     branches:
       - master
 jobs:
   build:
+    if: "!startsWith(github.event.head_commit.message, 'chore')"
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -25,3 +26,11 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.JINA_DEV_BOT }}
         BRANCH: gh-pages
         FOLDER: build
+    - uses: technote-space/toc-generator@v2
+      with:
+        MAX_HEADER_LEVEL: 3
+        FOLDING: false
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        TOC_TITLE: ''
+        TARGET_PATHS: 'README.md'
+        COMMIT_MESSAGE: 'chore(docs): update TOC'
