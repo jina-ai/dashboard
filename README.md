@@ -2,6 +2,13 @@
 
 The dashboard helps you get more insights of a running Jina flow. You can analyze logs, design flows and view Jina Hub images.
 
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
+
+
 ## Features
 
 - Log streaming, real-time chart on log-level.
