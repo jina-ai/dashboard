@@ -2,12 +2,21 @@
 
 ![CD](https://github.com/jina-ai/dashboard/workflows/CD/badge.svg)
 
-**Dashboard** provides the insight of a running task in Jina. With dashboard, one can analyze logs, design flows and view Jina Hub images.
+**Dashboard** offers the insight of running tasks in Jina. With dashboard, one can analyze logs, design flows and view Jina Hub images.
 
 <p align="center">
 <img src=".github/.README_images/flow-demo.gif?raw=true" alt="flow demo" width="80%">
 </p>
 
+## Features
+
+- Log streaming, real-time chart on log-level.
+- Grouping logs by Pods, Executors. Full text search on logs.
+- Drag & drop flow design, setting properties of each Pod via a webform.
+- Flow can be imported from/exported to YAML.
+
+
+## Contents
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
@@ -21,13 +30,6 @@
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 
-
-## Features
-
-- Log streaming, real-time chart on log-level.
-- Grouping logs by Pods, Executors. Full text search on logs.
-- Drag & drop flow design, setting properties of each Pod via a webform.
-- Flow can be imported from/exported to YAML.
 
 ## Getting started
 
