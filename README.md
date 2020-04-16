@@ -4,6 +4,10 @@
 
 The dashboard helps you get the insights of a running Jina flow. You can analyze logs, design flows and view Jina Hub images on the dashboard.
 
+<p align="center">
+<img src=".github/.README_images/flow-demo.gif?raw=true" alt="flow demo" width="80%">
+</p>
+
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
