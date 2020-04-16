@@ -2,7 +2,7 @@
 
 ![CD](https://github.com/jina-ai/dashboard/workflows/CD/badge.svg)
 
-The dashboard helps you get more insights of a running Jina flow. You can analyze logs, design flows and view Jina Hub images.
+The dashboard helps you get the insights of a running Jina flow. You can analyze logs, design flows and view Jina Hub images on the dashboard.
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
@@ -34,9 +34,9 @@ The dashboard helps you get more insights of a running Jina flow. You can analyz
 
 ### 1. Start the log server
 
-Log server is a helper thread in Jina flow. It exposes HTTP endpoints to the public which the dashboard can use to fetch logs, visualize the flow.    
+Log server is a helper thread in Jina flow. It exposes HTTP endpoints to the public which the dashboard can use to fetch logs, visualize the flow. 
 
-
+By default the log server is disabled. To enable it you can,
 
 <table>
 <tr>
@@ -104,7 +104,7 @@ Either way, if you see the following logs show up in the console, then your log 
 
 Go to: [https://jina-ai.github.io/dashboard/](https://jina-ai.github.io/dashboard/)
 
-If it has a red cross, click on the globe icon on the top-left corner to connect to the log server.
+Click on the globe icon on the top-left corner to connect to the log server.
 
 It should turn into a green check mark, which means the connection is success.
 
@@ -112,7 +112,9 @@ It should turn into a green check mark, which means the connection is success.
 <img src=".github/.README_images/2859cc17.png?raw=true" alt="log server settings" width="80%">
 </p>
 
-You should now see the log-streaming and flow visualization.
+You should now see the log-streaming and flow visualization. 
+
+If it has a red cross, it means the connection is lost or the endpoint is not set correctly. Please move to the next step for instruction.
 
 ### Customize the endpoints
 
@@ -184,24 +186,26 @@ Don't forget to update endpoint in the dashboard accordingly.
 <img src=".github/.README_images/35e39bdd.png?raw=true" alt="log server settings" width="80%">
 </p>
 
-## Development Mode
+## Self-host Dashboard
 
-1. Install dependencies using command `yarn`
-2. Run dashboard
+One can self-host a dashboard locally.
 
-### Debugging
+1. `git clone https://github.com/jina-ai/dashboard.git && cd dashboard`.
+2. Install dependencies using command `yarn`.
+3. Run dashboard via the following ways .
+
+### Run in the debug mode
 
 1. `node testServer`
 2.  testServer will be running on `http://localhost:5000` by default
 3. `yarn start`
 4.  dashboard will be served on `http://localhost:3000` by default
 
-### Live Mode
+### Run in the live mode
 
 1. `yarn build`
 2. `node dashboard`
 3. dashboard will be served on `http://localhost:3030` by default
-
 
 ## Contributing
 
