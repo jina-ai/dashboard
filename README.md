@@ -53,8 +53,9 @@ with f.build() as fl:
 jina flow --logserver --yaml-path myflow.yml 
 ```
 
-![logserver](.github/logserver.svg)
-
+<p align="center">
+<img src=".github/logserver.svg" alt="logserver success started">
+</p>
 
 ### 2. Opening t
 
