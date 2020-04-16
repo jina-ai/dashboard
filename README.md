@@ -8,7 +8,7 @@
 <img src=".github/.README_images/flow-demo.gif?raw=true" alt="flow demo" width="80%">
 </p>
 
- 🌟 ** Features **
+ 🌟 **Features:**
 
 - Log streaming, real-time chart on log-level.
 - Grouping logs by Pods, Executors. Full text search on logs.
