@@ -14,7 +14,7 @@ The dashboard helps you get the insights of a running Jina flow. You can analyze
 
 - [Features](#features)
 - [Getting started](#getting-started)
-- [Development Mode](#development-mode)
+- [Self-host Dashboard](#self-host-dashboard)
 - [Contributing](#contributing)
 - [License](#license)
 
