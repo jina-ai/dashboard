@@ -8,6 +8,9 @@ import { DashboardLayout,IconSidebar } from "./layouts";
 import FlowView from "./views/FlowView";
 import LogsView from "./views/LogsView";
 import Settings from "./views/Settings";
+import HubView from "./views/HubView";
+import PackageView from "./views/PackageView";
+
 import NotFound from "./views/NotFound";
 
 export default [
@@ -45,6 +48,11 @@ export default [
   {
     path: "/hub",
     layout: IconSidebar,
-    component: NotFound
+    component: HubView
+  },
+  {
+    path: "/package",
+    layout: IconSidebar,
+    component: PackageView
   },
 ];

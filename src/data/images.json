@@ -1,0 +1,648 @@
+{
+	"hub.examples.mwu_encoder": {
+		"id": "hub.examples.mwu_encoder",
+		"author": "Jina AI Dev-Team (dev-team@jina.ai)",
+		"avatar": "None",
+		"description": "a minimum working unit of a containerized encoder, used for tutorial only",
+		"documentation": "https://github.com/jina-ai/jina-hub",
+		"license": "apache-2.0",
+		"name": "Dummy MWU Encoder",
+		"platform": "['linux/amd64']",
+		"revision": "1b4a764",
+		"source": "https://github.com/jina-ai/jina-hub/commit/1b4a764",
+		"url": "https://jina.ai",
+		"vendor": "Jina AI Limited",
+		"version": "0.0.0",
+		"repoTags": [
+			"jinaai/hub.examples.mwu_encoder:0.0.0"
+		],
+		"repoDigests": [
+			"jinaai/hub.examples.mwu_encoder@sha256:d63c9a54c4372cf0bf1bc09630f340743564e574454d78ba3bfac62f43bddfa8"
+		],
+		"readmeRaw": "# [React](https://reactjs.org/) &middot; [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/facebook/react/blob/master/LICENSE) [![npm version](https://img.shields.io/npm/v/react.svg?style=flat)](https://www.npmjs.com/package/react) [![CircleCI Status](https://circleci.com/gh/facebook/react.svg?style=shield&circle-token=:circle-token)](https://circleci.com/gh/facebook/react) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://reactjs.org/docs/how-to-contribute.html#your-first-pull-request)\n\nReact is a JavaScript library for building user interfaces.\n\n* **Declarative:** React makes it painless to create interactive UIs. Design simple views for each state in your application, and React will efficiently update and render just the right components when your data changes. Declarative views make your code more predictable, simpler to understand, and easier to debug.\n* **Component-Based:** Build encapsulated components that manage their own state, then compose them to make complex UIs. Since component logic is written in JavaScript instead of templates, you can easily pass rich data through your app and keep state out of the DOM.\n* **Learn Once, Write Anywhere:** We don't make assumptions about the rest of your technology stack, so you can develop new features in React without rewriting existing code. React can also render on the server using Node and power mobile apps using [React Native](https://reactnative.dev/).\n\n[Learn how to use React in your own project](https://reactjs.org/docs/getting-started.html).\n\n## Installation\n\nReact has been designed for gradual adoption from the start, and **you can use as little or as much React as you need**:\n\n* Use [Online Playgrounds](https://reactjs.org/docs/getting-started.html#online-playgrounds) to get a taste of React.\n* [Add React to a Website](https://reactjs.org/docs/add-react-to-a-website.html) as a `<script>` tag in one minute.\n* [Create a New React App](https://reactjs.org/docs/create-a-new-react-app.html) if you're looking for a powerful JavaScript toolchain.\n\nYou can use React as a `<script>` tag from a [CDN](https://reactjs.org/docs/cdn-links.html), or as a `react` package on [npm](https://www.npmjs.com/package/react).\n\n## Documentation\n\nYou can find the React documentation [on the website](https://reactjs.org/docs).  \n\nCheck out the [Getting Started](https://reactjs.org/docs/getting-started.html) page for a quick overview.\n\nThe documentation is divided into several sections:\n\n* [Tutorial](https://reactjs.org/tutorial/tutorial.html)\n* [Main Concepts](https://reactjs.org/docs/hello-world.html)\n* [Advanced Guides](https://reactjs.org/docs/jsx-in-depth.html)\n* [API Reference](https://reactjs.org/docs/react-api.html)\n* [Where to Get Support](https://reactjs.org/community/support.html)\n* [Contributing Guide](https://reactjs.org/docs/how-to-contribute.html)\n\nYou can improve it by sending pull requests to [this repository](https://github.com/reactjs/reactjs.org).\n\n## Examples\n\nWe have several examples [on the website](https://reactjs.org/). Here is the first one to get you started:\n\n```jsx\nfunction HelloMessage({ name }) {\n  return <div>Hello {name}</div>;\n}\n\nReactDOM.render(\n  <HelloMessage name=\"Taylor\" />,\n  document.getElementById('container')\n);\n```\n\nThis example will render \"Hello Taylor\" into a container on the page.\n\nYou'll notice that we used an HTML-like syntax; [we call it JSX](https://reactjs.org/docs/introducing-jsx.html). JSX is not required to use React, but it makes code more readable, and writing it feels like writing HTML. If you're using React as a `<script>` tag, read [this section](https://reactjs.org/docs/add-react-to-a-website.html#optional-try-react-with-jsx) on integrating JSX; otherwise, the [recommended JavaScript toolchains](https://reactjs.org/docs/create-a-new-react-app.html) handle it automatically.\n\n## Contributing\n\nThe main purpose of this repository is to continue to evolve React core, making it faster and easier to use. Development of React happens in the open on GitHub, and we are grateful to the community for contributing bugfixes and improvements. Read below to learn how you can take part in improving React.\n\n### [Code of Conduct](https://code.fb.com/codeofconduct)\n\nFacebook has adopted a Code of Conduct that we expect project participants to adhere to. Please read [the full text](https://code.fb.com/codeofconduct) so that you can understand what actions will and will not be tolerated.\n\n### [Contributing Guide](https://reactjs.org/contributing/how-to-contribute.html)\n\nRead our [contributing guide](https://reactjs.org/contributing/how-to-contribute.html) to learn about our development process, how to propose bugfixes and improvements, and how to build and test your changes to React.\n\n### Good First Issues\n\nTo help you get your feet wet and get you familiar with our contribution process, we have a list of [good first issues](https://github.com/facebook/react/labels/good%20first%20issue) that contain bugs which have a relatively limited scope. This is a great place to get started.\n\n### License\n\nReact is [MIT licensed](./LICENSE).\n",
+		"readmeHTML": "<h1>\n<a id=\"user-content-react-----\" class=\"anchor\" href=\"#react-----\" aria-hidden=\"true\"><span aria-hidden=\"true\" class=\"octicon octicon-link\"></span></a><a href=\"https://reactjs.org/\" rel=\"nofollow\">React</a> · <a href=\"https://github.com/facebook/react/blob/master/LICENSE\"><img src=\"https://camo.githubusercontent.com/890acbdcb87868b382af9a4b1fac507b9659d9bf/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f6c6963656e73652d4d49542d626c75652e737667\" alt=\"GitHub license\" data-canonical-src=\"https://img.shields.io/badge/license-MIT-blue.svg\" style=\"max-width:100%;\"></a> <a href=\"https://www.npmjs.com/package/react\" rel=\"nofollow\"><img src=\"https://camo.githubusercontent.com/ecb8a503e646dc22ccb59b73ba287c5229580f49/68747470733a2f2f696d672e736869656c64732e696f2f6e706d2f762f72656163742e7376673f7374796c653d666c6174\" alt=\"npm version\" data-canonical-src=\"https://img.shields.io/npm/v/react.svg?style=flat\" style=\"max-width:100%;\"></a> <a href=\"https://circleci.com/gh/facebook/react\" rel=\"nofollow\"><img src=\"https://camo.githubusercontent.com/bfd84ed5d0e5c8d97aea6d7a83aed84ba1a0b191/68747470733a2f2f636972636c6563692e636f6d2f67682f66616365626f6f6b2f72656163742e7376673f7374796c653d736869656c6426636972636c652d746f6b656e3d3a636972636c652d746f6b656e\" alt=\"CircleCI Status\" data-canonical-src=\"https://circleci.com/gh/facebook/react.svg?style=shield&amp;circle-token=:circle-token\" style=\"max-width:100%;\"></a> <a href=\"https://reactjs.org/docs/how-to-contribute.html#your-first-pull-request\" rel=\"nofollow\"><img src=\"https://camo.githubusercontent.com/d4e0f63e9613ee474a7dfdc23c240b9795712c96/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f5052732d77656c636f6d652d627269676874677265656e2e737667\" alt=\"PRs Welcome\" data-canonical-src=\"https://img.shields.io/badge/PRs-welcome-brightgreen.svg\" style=\"max-width:100%;\"></a>\n</h1>\n<p>React is a JavaScript library for building user interfaces.</p>\n<ul>\n<li>\n<strong>Declarative:</strong> React makes it painless to create interactive UIs. Design simple views for each state in your application, and React will efficiently update and render just the right components when your data changes. Declarative views make your code more predictable, simpler to understand, and easier to debug.</li>\n<li>\n<strong>Component-Based:</strong> Build encapsulated components that manage their own state, then compose them to make complex UIs. Since component logic is written in JavaScript instead of templates, you can easily pass rich data through your app and keep state out of the DOM.</li>\n<li>\n<strong>Learn Once, Write Anywhere:</strong> We don't make assumptions about the rest of your technology stack, so you can develop new features in React without rewriting existing code. React can also render on the server using Node and power mobile apps using <a href=\"https://reactnative.dev/\" rel=\"nofollow\">React Native</a>.</li>\n</ul>\n<p><a href=\"https://reactjs.org/docs/getting-started.html\" rel=\"nofollow\">Learn how to use React in your own project</a>.</p>\n<h2>\n<a id=\"user-content-installation\" class=\"anchor\" href=\"#installation\" aria-hidden=\"true\"><span aria-hidden=\"true\" class=\"octicon octicon-link\"></span></a>Installation</h2>\n<p>React has been designed for gradual adoption from the start, and <strong>you can use as little or as much React as you need</strong>:</p>\n<ul>\n<li>Use <a href=\"https://reactjs.org/docs/getting-started.html#online-playgrounds\" rel=\"nofollow\">Online Playgrounds</a> to get a taste of React.</li>\n<li>\n<a href=\"https://reactjs.org/docs/add-react-to-a-website.html\" rel=\"nofollow\">Add React to a Website</a> as a <code>&lt;script&gt;</code> tag in one minute.</li>\n<li>\n<a href=\"https://reactjs.org/docs/create-a-new-react-app.html\" rel=\"nofollow\">Create a New React App</a> if you're looking for a powerful JavaScript toolchain.</li>\n</ul>\n<p>You can use React as a <code>&lt;script&gt;</code> tag from a <a href=\"https://reactjs.org/docs/cdn-links.html\" rel=\"nofollow\">CDN</a>, or as a <code>react</code> package on <a href=\"https://www.npmjs.com/package/react\" rel=\"nofollow\">npm</a>.</p>\n<h2>\n<a id=\"user-content-documentation\" class=\"anchor\" href=\"#documentation\" aria-hidden=\"true\"><span aria-hidden=\"true\" class=\"octicon octicon-link\"></span></a>Documentation</h2>\n<p>You can find the React documentation <a href=\"https://reactjs.org/docs\" rel=\"nofollow\">on the website</a>.</p>\n<p>Check out the <a href=\"https://reactjs.org/docs/getting-started.html\" rel=\"nofollow\">Getting Started</a> page for a quick overview.</p>\n<p>The documentation is divided into several sections:</p>\n<ul>\n<li><a href=\"https://reactjs.org/tutorial/tutorial.html\" rel=\"nofollow\">Tutorial</a></li>\n<li><a href=\"https://reactjs.org/docs/hello-world.html\" rel=\"nofollow\">Main Concepts</a></li>\n<li><a href=\"https://reactjs.org/docs/jsx-in-depth.html\" rel=\"nofollow\">Advanced Guides</a></li>\n<li><a href=\"https://reactjs.org/docs/react-api.html\" rel=\"nofollow\">API Reference</a></li>\n<li><a href=\"https://reactjs.org/community/support.html\" rel=\"nofollow\">Where to Get Support</a></li>\n<li><a href=\"https://reactjs.org/docs/how-to-contribute.html\" rel=\"nofollow\">Contributing Guide</a></li>\n</ul>\n<p>You can improve it by sending pull requests to <a href=\"https://github.com/reactjs/reactjs.org\">this repository</a>.</p>\n<h2>\n<a id=\"user-content-examples\" class=\"anchor\" href=\"#examples\" aria-hidden=\"true\"><span aria-hidden=\"true\" class=\"octicon octicon-link\"></span></a>Examples</h2>\n<p>We have several examples <a href=\"https://reactjs.org/\" rel=\"nofollow\">on the website</a>. Here is the first one to get you started:</p>\n<div class=\"highlight highlight-source-js-jsx\"><pre><span class=\"pl-k\">function</span> <span class=\"pl-en\">HelloMessage</span>({ <span class=\"pl-smi\">name</span> }) {\n  <span class=\"pl-k\">return</span> &lt;<span class=\"pl-ent\">div</span>&gt;Hello <span class=\"pl-pse\">{</span><span class=\"pl-smi\">name</span><span class=\"pl-pse\">}</span>&lt;/<span class=\"pl-ent\">div</span>&gt;;\n}\n\n<span class=\"pl-smi\">ReactDOM</span><span class=\"pl-k\">.</span><span class=\"pl-en\">render</span>(\n  &lt;<span class=\"pl-ent\">HelloMessage</span> <span class=\"pl-e\">name</span><span class=\"pl-k\">=</span><span class=\"pl-s\"><span class=\"pl-pds\">\"</span>Taylor<span class=\"pl-pds\">\"</span></span> /&gt;,\n  <span class=\"pl-c1\">document</span><span class=\"pl-k\">.</span><span class=\"pl-en\">getElementById</span>(<span class=\"pl-s\"><span class=\"pl-pds\">'</span>container<span class=\"pl-pds\">'</span></span>)\n);</pre></div>\n<p>This example will render \"Hello Taylor\" into a container on the page.</p>\n<p>You'll notice that we used an HTML-like syntax; <a href=\"https://reactjs.org/docs/introducing-jsx.html\" rel=\"nofollow\">we call it JSX</a>. JSX is not required to use React, but it makes code more readable, and writing it feels like writing HTML. If you're using React as a <code>&lt;script&gt;</code> tag, read <a href=\"https://reactjs.org/docs/add-react-to-a-website.html#optional-try-react-with-jsx\" rel=\"nofollow\">this section</a> on integrating JSX; otherwise, the <a href=\"https://reactjs.org/docs/create-a-new-react-app.html\" rel=\"nofollow\">recommended JavaScript toolchains</a> handle it automatically.</p>\n<h2>\n<a id=\"user-content-contributing\" class=\"anchor\" href=\"#contributing\" aria-hidden=\"true\"><span aria-hidden=\"true\" class=\"octicon octicon-link\"></span></a>Contributing</h2>\n<p>The main purpose of this repository is to continue to evolve React core, making it faster and easier to use. Development of React happens in the open on GitHub, and we are grateful to the community for contributing bugfixes and improvements. Read below to learn how you can take part in improving React.</p>\n<h3>\n<a id=\"user-content-code-of-conduct\" class=\"anchor\" href=\"#code-of-conduct\" aria-hidden=\"true\"><span aria-hidden=\"true\" class=\"octicon octicon-link\"></span></a><a href=\"https://code.fb.com/codeofconduct\" rel=\"nofollow\">Code of Conduct</a>\n</h3>\n<p>Facebook has adopted a Code of Conduct that we expect project participants to adhere to. Please read <a href=\"https://code.fb.com/codeofconduct\" rel=\"nofollow\">the full text</a> so that you can understand what actions will and will not be tolerated.</p>\n<h3>\n<a id=\"user-content-contributing-guide\" class=\"anchor\" href=\"#contributing-guide\" aria-hidden=\"true\"><span aria-hidden=\"true\" class=\"octicon octicon-link\"></span></a><a href=\"https://reactjs.org/contributing/how-to-contribute.html\" rel=\"nofollow\">Contributing Guide</a>\n</h3>\n<p>Read our <a href=\"https://reactjs.org/contributing/how-to-contribute.html\" rel=\"nofollow\">contributing guide</a> to learn about our development process, how to propose bugfixes and improvements, and how to build and test your changes to React.</p>\n<h3>\n<a id=\"user-content-good-first-issues\" class=\"anchor\" href=\"#good-first-issues\" aria-hidden=\"true\"><span aria-hidden=\"true\" class=\"octicon octicon-link\"></span></a>Good First Issues</h3>\n<p>To help you get your feet wet and get you familiar with our contribution process, we have a list of <a href=\"https://github.com/facebook/react/labels/good%20first%20issue\">good first issues</a> that contain bugs which have a relatively limited scope. This is a great place to get started.</p>\n<h3>\n<a id=\"user-content-license\" class=\"anchor\" href=\"#license\" aria-hidden=\"true\"><span aria-hidden=\"true\" class=\"octicon octicon-link\"></span></a>License</h3>\n<p>React is <a href=\"./LICENSE\">MIT licensed</a>.</p>\n",
+		"buildHistory": [
+			{
+				"created": "2020-04-18T19:02:56.756203257Z",
+				"os": "linux",
+				"architecture": "amd64",
+				"size": 267191385,
+				"virtualSize": 267191385,
+				"status": true,
+				"repoTags": [
+					"jinaai/hub.examples.mwu_encoder:0.0.0"
+				],
+				"repoDigests": [
+					"jinaai/hub.examples.mwu_encoder@sha256:d63c9a54c4372cf0bf1bc09630f340743564e574454d78ba3bfac62f43bddfa8"
+				]
+			},
+			{
+				"created": "2020-04-18T16:21:56.954494632Z",
+				"os": "linux",
+				"architecture": "amd64",
+				"size": 267186841,
+				"virtualSize": 267186841,
+				"status": true,
+				"repoTags": [
+					"jinaai/hub.examples.mwu_encoder:0.0.0"
+				],
+				"repoDigests": [
+					"jinaai/hub.examples.mwu_encoder@sha256:7dbc8c7bb896e23387921b767eebc8edf46d9e3e48a0c5fbf283d9c1e9c500bc"
+				]
+			},
+			{
+				"created": "2020-04-18T16:02:11.214857354Z",
+				"os": "linux",
+				"architecture": "amd64",
+				"size": 267186841,
+				"virtualSize": 267186841,
+				"status": true,
+				"repoTags": [
+					"jinaai/hub.examples.mwu_encoder:0.0.0"
+				],
+				"repoDigests": [
+					"jinaai/hub.examples.mwu_encoder@sha256:4ca323446332c17a35cbe7d233285024bdcf4a4d013ae66f575580e44d7af72e"
+				]
+			},
+			{
+				"created": "2020-04-18T15:21:46.68523894Z",
+				"os": "linux",
+				"architecture": "amd64",
+				"size": 267186841,
+				"virtualSize": 267186841,
+				"status": true,
+				"repoTags": [
+					"jinaai/hub.examples.mwu_encoder:0.0.0"
+				],
+				"repoDigests": [
+					"jinaai/hub.examples.mwu_encoder@sha256:27eb6a21d04bee0da549b7d40b4d4b673ff2347882e97bec6a272a7327f9fe09"
+				]
+			},
+			{
+				"created": "2020-04-18T14:41:54.495845407Z",
+				"os": "linux",
+				"architecture": "amd64",
+				"size": 267186841,
+				"virtualSize": 267186841,
+				"status": true,
+				"repoTags": [
+					"jinaai/hub.examples.mwu_encoder:0.0.0"
+				],
+				"repoDigests": [
+					"jinaai/hub.examples.mwu_encoder@sha256:8e8b2a015cadc2b9d3da501e28f984b57a7e4ba87a35687e9573955d0c0b9104"
+				]
+			},
+			{
+				"created": "2020-04-18T14:21:56.623045935Z",
+				"os": "linux",
+				"architecture": "amd64",
+				"size": 267186841,
+				"virtualSize": 267186841,
+				"status": true,
+				"repoTags": [
+					"jinaai/hub.examples.mwu_encoder:0.0.0"
+				],
+				"repoDigests": [
+					"jinaai/hub.examples.mwu_encoder@sha256:712909bf8a704403caf11517fd27326bb60ed964bc5d51a5ba93c3fbb61fac82"
+				]
+			},
+			{
+				"created": "2020-04-18T13:42:01.490714725Z",
+				"os": "linux",
+				"architecture": "amd64",
+				"size": 267186841,
+				"virtualSize": 267186841,
+				"status": true,
+				"repoTags": [
+					"jinaai/hub.examples.mwu_encoder:0.0.0"
+				],
+				"repoDigests": [
+					"jinaai/hub.examples.mwu_encoder@sha256:430470c16f735af9c29c9054ed8d83ed258c48f1028beb674a9250e8d49103a9"
+				]
+			},
+			{
+				"created": "2020-04-15T18:30:26.799290473Z",
+				"os": "linux",
+				"architecture": "amd64",
+				"size": 259385605,
+				"virtualSize": 259385605,
+				"status": true,
+				"repoTags": [
+					"jinaai/hub.examples.mwu_encoder:0.0.0"
+				],
+				"repoDigests": [
+					"jinaai/hub.examples.mwu_encoder@sha256:27baac1f71716ace75380d9e4f40318bc6c419453c5337e81e6d181108e21cc5"
+				]
+			},
+			{
+				"created": "2020-04-08T02:25:23.577092558Z",
+				"os": "linux",
+				"architecture": "amd64",
+				"size": 259215470,
+				"virtualSize": 259215470,
+				"status": true,
+				"repoTags": [
+					"jinaai/hub.examples.mwu_encoder:0.0.0"
+				],
+				"repoDigests": [
+					"jinaai/hub.examples.mwu_encoder@sha256:49302f002602732e4c6089888aae34532a5bdedd208564af75ae940e3ad72442"
+				]
+			},
+			{
+				"created": "2020-04-07T16:49:08.209161961Z",
+				"os": "linux",
+				"architecture": "amd64",
+				"size": 259212384,
+				"virtualSize": 259212384,
+				"status": true,
+				"repoTags": [
+					"jinaai/hub.examples.mwu_encoder:0.0.0"
+				],
+				"repoDigests": [
+					"jinaai/hub.examples.mwu_encoder@sha256:caf0a94529e53350693a35fb7964ff8ce0010706e4d1f8828be0e7aa13c6d157"
+				]
+			},
+			{
+				"created": "2020-04-07T11:21:06.090202001Z",
+				"os": "linux",
+				"architecture": "amd64",
+				"size": 259212264,
+				"virtualSize": 259212264,
+				"status": true,
+				"repoTags": [
+					"jinaai/hub.examples.mwu_encoder:0.0.0"
+				],
+				"repoDigests": [
+					"jinaai/hub.examples.mwu_encoder@sha256:4db50a4d39900d0ef2592dc5d180600c02b653a8ae819e26eb8d1c078c8a91d1"
+				]
+			},
+			{
+				"created": "2020-04-05T22:19:51.050316044Z",
+				"os": "linux",
+				"architecture": "amd64",
+				"size": 259574602,
+				"virtualSize": 259574602,
+				"status": true,
+				"repoTags": [
+					"jinaai/hub.examples.mwu_encoder:0.0.0"
+				],
+				"repoDigests": [
+					"jinaai/hub.examples.mwu_encoder@sha256:315c112aa7e445450200bc6c8639af2fc560a41658f88c016151d8509dfb10a0"
+				]
+			},
+			{
+				"created": "2020-04-04T17:23:05.192790097Z",
+				"os": "linux",
+				"architecture": "amd64",
+				"size": 259197343,
+				"virtualSize": 259197343,
+				"status": true,
+				"repoTags": [
+					"jinaai/hub.examples.mwu_encoder:0.0.0"
+				],
+				"repoDigests": [
+					"jinaai/hub.examples.mwu_encoder@sha256:6a890d9bcb2213ed649f147528689b9fcb244c21ca99516e1448f8f0675c1b1f"
+				]
+			},
+			{
+				"created": "2020-03-31T15:14:28.712134189Z",
+				"os": "linux",
+				"architecture": "amd64",
+				"size": 259158590,
+				"virtualSize": 259158590,
+				"status": true,
+				"repoTags": [
+					"jinaai/hub.examples.mwu_encoder:0.0.0"
+				],
+				"repoDigests": [
+					"jinaai/hub.examples.mwu_encoder@sha256:0a1bfaaa259526ecd90b3495a14b6b1b26706bee704d77c322684d76fecd5e21"
+				]
+			},
+			{
+				"created": "2020-03-31T14:09:52.985404433Z",
+				"os": "linux",
+				"architecture": "amd64",
+				"size": 259158590,
+				"virtualSize": 259158590,
+				"status": true,
+				"repoTags": [
+					"jinaai/hub.examples.mwu_encoder:0.0.0"
+				],
+				"repoDigests": [
+					"jinaai/hub.examples.mwu_encoder@sha256:aa14e610342e5c5768c0258f27f94154e0c64fb0e15a3713dc68282da51dd58c"
+				]
+			},
+			{
+				"created": "2020-03-29T21:18:33.914226139Z",
+				"os": "linux",
+				"architecture": "amd64",
+				"size": 310182136,
+				"virtualSize": 310182136,
+				"status": true,
+				"repoTags": [
+					"jinaai/hub.examples.mwu_encoder:0.0.0"
+				],
+				"repoDigests": [
+					"jinaai/hub.examples.mwu_encoder@sha256:5a9649ff508cde0924f43d62b78cd4833b6d3014d8c9f3c8100d8d6d50f3710c"
+				]
+			},
+			{
+				"created": "2020-03-29T12:53:24.502880526Z",
+				"os": "linux",
+				"architecture": "amd64",
+				"size": 310182136,
+				"virtualSize": 310182136,
+				"status": true,
+				"repoTags": [
+					"jinaai/hub.examples.mwu_encoder:0.0.0"
+				],
+				"repoDigests": [
+					"jinaai/hub.examples.mwu_encoder@sha256:a3b4f1c9f149a0e03c296283d58a0510c40053022c35331cb271ca91362fdba1"
+				]
+			}
+		]
+	},
+	"hub.executors.encoders.nlp.transformers-pytorch": {
+		"id": "hub.executors.encoders.nlp.transformers-pytorch",
+		"author": "Jina AI Dev-Team (dev-team@jina.ai)",
+		"avatar": "None",
+		"description": "Just an example to show how simple an executor could be.",
+		"documentation": "https://github.com/jina-ai/jina-hub",
+		"license": "apache-2.0",
+		"name": "Demo Transformer",
+		"platform": "['linux/amd64']",
+		"revision": "1b4a764",
+		"source": "https://github.com/jina-ai/jina-hub/commit/1b4a764",
+		"url": "https://jina.ai",
+		"vendor": "Jina AI Limited",
+		"version": "0.0.0",
+		"repoTags": [
+			"jinaai/hub.executors.encoders.nlp.transformers-pytorch:0.0.0"
+		],
+		"repoDigests": [
+			"jinaai/hub.executors.encoders.nlp.transformers-pytorch@sha256:a7ce8afe6d86d508596b377ad47ce5e12a2cace1b844e15963c65594f9e65945"
+		],
+		"readmeRaw": "# [React](https://reactjs.org/) &middot; [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/facebook/react/blob/master/LICENSE) [![npm version](https://img.shields.io/npm/v/react.svg?style=flat)](https://www.npmjs.com/package/react) [![CircleCI Status](https://circleci.com/gh/facebook/react.svg?style=shield&circle-token=:circle-token)](https://circleci.com/gh/facebook/react) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://reactjs.org/docs/how-to-contribute.html#your-first-pull-request)\n\nReact is a JavaScript library for building user interfaces.\n\n* **Declarative:** React makes it painless to create interactive UIs. Design simple views for each state in your application, and React will efficiently update and render just the right components when your data changes. Declarative views make your code more predictable, simpler to understand, and easier to debug.\n* **Component-Based:** Build encapsulated components that manage their own state, then compose them to make complex UIs. Since component logic is written in JavaScript instead of templates, you can easily pass rich data through your app and keep state out of the DOM.\n* **Learn Once, Write Anywhere:** We don't make assumptions about the rest of your technology stack, so you can develop new features in React without rewriting existing code. React can also render on the server using Node and power mobile apps using [React Native](https://reactnative.dev/).\n\n[Learn how to use React in your own project](https://reactjs.org/docs/getting-started.html).\n\n## Installation\n\nReact has been designed for gradual adoption from the start, and **you can use as little or as much React as you need**:\n\n* Use [Online Playgrounds](https://reactjs.org/docs/getting-started.html#online-playgrounds) to get a taste of React.\n* [Add React to a Website](https://reactjs.org/docs/add-react-to-a-website.html) as a `<script>` tag in one minute.\n* [Create a New React App](https://reactjs.org/docs/create-a-new-react-app.html) if you're looking for a powerful JavaScript toolchain.\n\nYou can use React as a `<script>` tag from a [CDN](https://reactjs.org/docs/cdn-links.html), or as a `react` package on [npm](https://www.npmjs.com/package/react).\n\n## Documentation\n\nYou can find the React documentation [on the website](https://reactjs.org/docs).  \n\nCheck out the [Getting Started](https://reactjs.org/docs/getting-started.html) page for a quick overview.\n\nThe documentation is divided into several sections:\n\n* [Tutorial](https://reactjs.org/tutorial/tutorial.html)\n* [Main Concepts](https://reactjs.org/docs/hello-world.html)\n* [Advanced Guides](https://reactjs.org/docs/jsx-in-depth.html)\n* [API Reference](https://reactjs.org/docs/react-api.html)\n* [Where to Get Support](https://reactjs.org/community/support.html)\n* [Contributing Guide](https://reactjs.org/docs/how-to-contribute.html)\n\nYou can improve it by sending pull requests to [this repository](https://github.com/reactjs/reactjs.org).\n\n## Examples\n\nWe have several examples [on the website](https://reactjs.org/). Here is the first one to get you started:\n\n```jsx\nfunction HelloMessage({ name }) {\n  return <div>Hello {name}</div>;\n}\n\nReactDOM.render(\n  <HelloMessage name=\"Taylor\" />,\n  document.getElementById('container')\n);\n```\n\nThis example will render \"Hello Taylor\" into a container on the page.\n\nYou'll notice that we used an HTML-like syntax; [we call it JSX](https://reactjs.org/docs/introducing-jsx.html). JSX is not required to use React, but it makes code more readable, and writing it feels like writing HTML. If you're using React as a `<script>` tag, read [this section](https://reactjs.org/docs/add-react-to-a-website.html#optional-try-react-with-jsx) on integrating JSX; otherwise, the [recommended JavaScript toolchains](https://reactjs.org/docs/create-a-new-react-app.html) handle it automatically.\n\n## Contributing\n\nThe main purpose of this repository is to continue to evolve React core, making it faster and easier to use. Development of React happens in the open on GitHub, and we are grateful to the community for contributing bugfixes and improvements. Read below to learn how you can take part in improving React.\n\n### [Code of Conduct](https://code.fb.com/codeofconduct)\n\nFacebook has adopted a Code of Conduct that we expect project participants to adhere to. Please read [the full text](https://code.fb.com/codeofconduct) so that you can understand what actions will and will not be tolerated.\n\n### [Contributing Guide](https://reactjs.org/contributing/how-to-contribute.html)\n\nRead our [contributing guide](https://reactjs.org/contributing/how-to-contribute.html) to learn about our development process, how to propose bugfixes and improvements, and how to build and test your changes to React.\n\n### Good First Issues\n\nTo help you get your feet wet and get you familiar with our contribution process, we have a list of [good first issues](https://github.com/facebook/react/labels/good%20first%20issue) that contain bugs which have a relatively limited scope. This is a great place to get started.\n\n### License\n\nReact is [MIT licensed](./LICENSE).\n",
+		"readmeHTML": "<h1>\n<a id=\"user-content-react-----\" class=\"anchor\" href=\"#react-----\" aria-hidden=\"true\"><span aria-hidden=\"true\" class=\"octicon octicon-link\"></span></a><a href=\"https://reactjs.org/\" rel=\"nofollow\">React</a> · <a href=\"https://github.com/facebook/react/blob/master/LICENSE\"><img src=\"https://camo.githubusercontent.com/890acbdcb87868b382af9a4b1fac507b9659d9bf/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f6c6963656e73652d4d49542d626c75652e737667\" alt=\"GitHub license\" data-canonical-src=\"https://img.shields.io/badge/license-MIT-blue.svg\" style=\"max-width:100%;\"></a> <a href=\"https://www.npmjs.com/package/react\" rel=\"nofollow\"><img src=\"https://camo.githubusercontent.com/ecb8a503e646dc22ccb59b73ba287c5229580f49/68747470733a2f2f696d672e736869656c64732e696f2f6e706d2f762f72656163742e7376673f7374796c653d666c6174\" alt=\"npm version\" data-canonical-src=\"https://img.shields.io/npm/v/react.svg?style=flat\" style=\"max-width:100%;\"></a> <a href=\"https://circleci.com/gh/facebook/react\" rel=\"nofollow\"><img src=\"https://camo.githubusercontent.com/bfd84ed5d0e5c8d97aea6d7a83aed84ba1a0b191/68747470733a2f2f636972636c6563692e636f6d2f67682f66616365626f6f6b2f72656163742e7376673f7374796c653d736869656c6426636972636c652d746f6b656e3d3a636972636c652d746f6b656e\" alt=\"CircleCI Status\" data-canonical-src=\"https://circleci.com/gh/facebook/react.svg?style=shield&amp;circle-token=:circle-token\" style=\"max-width:100%;\"></a> <a href=\"https://reactjs.org/docs/how-to-contribute.html#your-first-pull-request\" rel=\"nofollow\"><img src=\"https://camo.githubusercontent.com/d4e0f63e9613ee474a7dfdc23c240b9795712c96/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f5052732d77656c636f6d652d627269676874677265656e2e737667\" alt=\"PRs Welcome\" data-canonical-src=\"https://img.shields.io/badge/PRs-welcome-brightgreen.svg\" style=\"max-width:100%;\"></a>\n</h1>\n<p>React is a JavaScript library for building user interfaces.</p>\n<ul>\n<li>\n<strong>Declarative:</strong> React makes it painless to create interactive UIs. Design simple views for each state in your application, and React will efficiently update and render just the right components when your data changes. Declarative views make your code more predictable, simpler to understand, and easier to debug.</li>\n<li>\n<strong>Component-Based:</strong> Build encapsulated components that manage their own state, then compose them to make complex UIs. Since component logic is written in JavaScript instead of templates, you can easily pass rich data through your app and keep state out of the DOM.</li>\n<li>\n<strong>Learn Once, Write Anywhere:</strong> We don't make assumptions about the rest of your technology stack, so you can develop new features in React without rewriting existing code. React can also render on the server using Node and power mobile apps using <a href=\"https://reactnative.dev/\" rel=\"nofollow\">React Native</a>.</li>\n</ul>\n<p><a href=\"https://reactjs.org/docs/getting-started.html\" rel=\"nofollow\">Learn how to use React in your own project</a>.</p>\n<h2>\n<a id=\"user-content-installation\" class=\"anchor\" href=\"#installation\" aria-hidden=\"true\"><span aria-hidden=\"true\" class=\"octicon octicon-link\"></span></a>Installation</h2>\n<p>React has been designed for gradual adoption from the start, and <strong>you can use as little or as much React as you need</strong>:</p>\n<ul>\n<li>Use <a href=\"https://reactjs.org/docs/getting-started.html#online-playgrounds\" rel=\"nofollow\">Online Playgrounds</a> to get a taste of React.</li>\n<li>\n<a href=\"https://reactjs.org/docs/add-react-to-a-website.html\" rel=\"nofollow\">Add React to a Website</a> as a <code>&lt;script&gt;</code> tag in one minute.</li>\n<li>\n<a href=\"https://reactjs.org/docs/create-a-new-react-app.html\" rel=\"nofollow\">Create a New React App</a> if you're looking for a powerful JavaScript toolchain.</li>\n</ul>\n<p>You can use React as a <code>&lt;script&gt;</code> tag from a <a href=\"https://reactjs.org/docs/cdn-links.html\" rel=\"nofollow\">CDN</a>, or as a <code>react</code> package on <a href=\"https://www.npmjs.com/package/react\" rel=\"nofollow\">npm</a>.</p>\n<h2>\n<a id=\"user-content-documentation\" class=\"anchor\" href=\"#documentation\" aria-hidden=\"true\"><span aria-hidden=\"true\" class=\"octicon octicon-link\"></span></a>Documentation</h2>\n<p>You can find the React documentation <a href=\"https://reactjs.org/docs\" rel=\"nofollow\">on the website</a>.</p>\n<p>Check out the <a href=\"https://reactjs.org/docs/getting-started.html\" rel=\"nofollow\">Getting Started</a> page for a quick overview.</p>\n<p>The documentation is divided into several sections:</p>\n<ul>\n<li><a href=\"https://reactjs.org/tutorial/tutorial.html\" rel=\"nofollow\">Tutorial</a></li>\n<li><a href=\"https://reactjs.org/docs/hello-world.html\" rel=\"nofollow\">Main Concepts</a></li>\n<li><a href=\"https://reactjs.org/docs/jsx-in-depth.html\" rel=\"nofollow\">Advanced Guides</a></li>\n<li><a href=\"https://reactjs.org/docs/react-api.html\" rel=\"nofollow\">API Reference</a></li>\n<li><a href=\"https://reactjs.org/community/support.html\" rel=\"nofollow\">Where to Get Support</a></li>\n<li><a href=\"https://reactjs.org/docs/how-to-contribute.html\" rel=\"nofollow\">Contributing Guide</a></li>\n</ul>\n<p>You can improve it by sending pull requests to <a href=\"https://github.com/reactjs/reactjs.org\">this repository</a>.</p>\n<h2>\n<a id=\"user-content-examples\" class=\"anchor\" href=\"#examples\" aria-hidden=\"true\"><span aria-hidden=\"true\" class=\"octicon octicon-link\"></span></a>Examples</h2>\n<p>We have several examples <a href=\"https://reactjs.org/\" rel=\"nofollow\">on the website</a>. Here is the first one to get you started:</p>\n<div class=\"highlight highlight-source-js-jsx\"><pre><span class=\"pl-k\">function</span> <span class=\"pl-en\">HelloMessage</span>({ <span class=\"pl-smi\">name</span> }) {\n  <span class=\"pl-k\">return</span> &lt;<span class=\"pl-ent\">div</span>&gt;Hello <span class=\"pl-pse\">{</span><span class=\"pl-smi\">name</span><span class=\"pl-pse\">}</span>&lt;/<span class=\"pl-ent\">div</span>&gt;;\n}\n\n<span class=\"pl-smi\">ReactDOM</span><span class=\"pl-k\">.</span><span class=\"pl-en\">render</span>(\n  &lt;<span class=\"pl-ent\">HelloMessage</span> <span class=\"pl-e\">name</span><span class=\"pl-k\">=</span><span class=\"pl-s\"><span class=\"pl-pds\">\"</span>Taylor<span class=\"pl-pds\">\"</span></span> /&gt;,\n  <span class=\"pl-c1\">document</span><span class=\"pl-k\">.</span><span class=\"pl-en\">getElementById</span>(<span class=\"pl-s\"><span class=\"pl-pds\">'</span>container<span class=\"pl-pds\">'</span></span>)\n);</pre></div>\n<p>This example will render \"Hello Taylor\" into a container on the page.</p>\n<p>You'll notice that we used an HTML-like syntax; <a href=\"https://reactjs.org/docs/introducing-jsx.html\" rel=\"nofollow\">we call it JSX</a>. JSX is not required to use React, but it makes code more readable, and writing it feels like writing HTML. If you're using React as a <code>&lt;script&gt;</code> tag, read <a href=\"https://reactjs.org/docs/add-react-to-a-website.html#optional-try-react-with-jsx\" rel=\"nofollow\">this section</a> on integrating JSX; otherwise, the <a href=\"https://reactjs.org/docs/create-a-new-react-app.html\" rel=\"nofollow\">recommended JavaScript toolchains</a> handle it automatically.</p>\n<h2>\n<a id=\"user-content-contributing\" class=\"anchor\" href=\"#contributing\" aria-hidden=\"true\"><span aria-hidden=\"true\" class=\"octicon octicon-link\"></span></a>Contributing</h2>\n<p>The main purpose of this repository is to continue to evolve React core, making it faster and easier to use. Development of React happens in the open on GitHub, and we are grateful to the community for contributing bugfixes and improvements. Read below to learn how you can take part in improving React.</p>\n<h3>\n<a id=\"user-content-code-of-conduct\" class=\"anchor\" href=\"#code-of-conduct\" aria-hidden=\"true\"><span aria-hidden=\"true\" class=\"octicon octicon-link\"></span></a><a href=\"https://code.fb.com/codeofconduct\" rel=\"nofollow\">Code of Conduct</a>\n</h3>\n<p>Facebook has adopted a Code of Conduct that we expect project participants to adhere to. Please read <a href=\"https://code.fb.com/codeofconduct\" rel=\"nofollow\">the full text</a> so that you can understand what actions will and will not be tolerated.</p>\n<h3>\n<a id=\"user-content-contributing-guide\" class=\"anchor\" href=\"#contributing-guide\" aria-hidden=\"true\"><span aria-hidden=\"true\" class=\"octicon octicon-link\"></span></a><a href=\"https://reactjs.org/contributing/how-to-contribute.html\" rel=\"nofollow\">Contributing Guide</a>\n</h3>\n<p>Read our <a href=\"https://reactjs.org/contributing/how-to-contribute.html\" rel=\"nofollow\">contributing guide</a> to learn about our development process, how to propose bugfixes and improvements, and how to build and test your changes to React.</p>\n<h3>\n<a id=\"user-content-good-first-issues\" class=\"anchor\" href=\"#good-first-issues\" aria-hidden=\"true\"><span aria-hidden=\"true\" class=\"octicon octicon-link\"></span></a>Good First Issues</h3>\n<p>To help you get your feet wet and get you familiar with our contribution process, we have a list of <a href=\"https://github.com/facebook/react/labels/good%20first%20issue\">good first issues</a> that contain bugs which have a relatively limited scope. This is a great place to get started.</p>\n<h3>\n<a id=\"user-content-license\" class=\"anchor\" href=\"#license\" aria-hidden=\"true\"><span aria-hidden=\"true\" class=\"octicon octicon-link\"></span></a>License</h3>\n<p>React is <a href=\"./LICENSE\">MIT licensed</a>.</p>\n",
+		"buildHistory": [
+			{
+				"created": "2020-04-18T20:04:33.381835447Z",
+				"os": "linux",
+				"architecture": "amd64",
+				"size": 4722697724,
+				"virtualSize": 4722697724,
+				"status": true,
+				"repoTags": [
+					"jinaai/hub.executors.encoders.nlp.transformers-pytorch:0.0.0"
+				],
+				"repoDigests": [
+					"jinaai/hub.executors.encoders.nlp.transformers-pytorch@sha256:a7ce8afe6d86d508596b377ad47ce5e12a2cace1b844e15963c65594f9e65945"
+				]
+			},
+			{
+				"created": "2020-04-18T15:44:09.657441919Z",
+				"os": "linux",
+				"architecture": "amd64",
+				"size": 4714801411,
+				"virtualSize": 4714801411,
+				"status": true,
+				"repoTags": [
+					"jinaai/hub.executors.encoders.nlp.transformers-pytorch:0.0.0"
+				],
+				"repoDigests": [
+					"jinaai/hub.executors.encoders.nlp.transformers-pytorch@sha256:846e840e19127b313a7af67fd7f9edfc38ac7c3ddc52253785f4cb37b973ba0d"
+				]
+			},
+			{
+				"created": "2020-04-18T14:04:16.95538167Z",
+				"os": "linux",
+				"architecture": "amd64",
+				"size": 4714801483,
+				"virtualSize": 4714801483,
+				"status": true,
+				"repoTags": [
+					"jinaai/hub.executors.encoders.nlp.transformers-pytorch:0.0.0"
+				],
+				"repoDigests": [
+					"jinaai/hub.executors.encoders.nlp.transformers-pytorch@sha256:0a9759bf37703af4c4d6700e1712bda0fc6a441bbc27020b7f25b01f5ec2e28a"
+				]
+			},
+			{
+				"created": "2020-04-08T02:26:08.495502657Z",
+				"os": "linux",
+				"architecture": "amd64",
+				"size": 4710209660,
+				"virtualSize": 4710209660,
+				"status": true,
+				"repoTags": [
+					"jinaai/hub.executors.encoders.nlp.transformers-pytorch:0.0.0"
+				],
+				"repoDigests": [
+					"jinaai/hub.executors.encoders.nlp.transformers-pytorch@sha256:2e3ef556391e6650c0c2e7b56781763752bee26d2c37b98d0bf8c3c2abe0dd36"
+				]
+			},
+			{
+				"created": "2020-04-07T16:51:59.555576089Z",
+				"os": "linux",
+				"architecture": "amd64",
+				"size": 4710204572,
+				"virtualSize": 4710204572,
+				"status": true,
+				"repoTags": [
+					"jinaai/hub.executors.encoders.nlp.transformers-pytorch:0.0.0"
+				],
+				"repoDigests": [
+					"jinaai/hub.executors.encoders.nlp.transformers-pytorch@sha256:ad64db5f67b609b7ce39182bbc3f46ce9e2f50e66972931293a18ddd81993aca"
+				]
+			},
+			{
+				"created": "2020-04-07T11:08:24.68763611Z",
+				"os": "linux",
+				"architecture": "amd64",
+				"size": 4710204024,
+				"virtualSize": 4710204024,
+				"status": true,
+				"repoTags": [
+					"jinaai/hub.executors.encoders.nlp.transformers-pytorch:0.0.0"
+				],
+				"repoDigests": [
+					"jinaai/hub.executors.encoders.nlp.transformers-pytorch@sha256:754ffa3d301ab9991f07bc3e222bdd8ceceb90bc801fe8495b6d355e3dc2f425"
+				]
+			},
+			{
+				"created": "2020-04-05T22:22:43.881061431Z",
+				"os": "linux",
+				"architecture": "amd64",
+				"size": 4709958052,
+				"virtualSize": 4709958052,
+				"status": true,
+				"repoTags": [
+					"jinaai/hub.executors.encoders.nlp.transformers-pytorch:0.0.0"
+				],
+				"repoDigests": [
+					"jinaai/hub.executors.encoders.nlp.transformers-pytorch@sha256:a7fd94fe042016eea96ccec0921be66826b186072f3163de311ae683c84888d0"
+				]
+			},
+			{
+				"created": "2020-04-04T17:25:53.783246017Z",
+				"os": "linux",
+				"architecture": "amd64",
+				"size": 4709869224,
+				"virtualSize": 4709869224,
+				"status": true,
+				"repoTags": [
+					"jinaai/hub.executors.encoders.nlp.transformers-pytorch:0.0.0"
+				],
+				"repoDigests": [
+					"jinaai/hub.executors.encoders.nlp.transformers-pytorch@sha256:4f4632e221916b50d9250b77c773df3c21a12b30995541fb0fabdefafce240f8"
+				]
+			}
+		]
+	},
+	"hub.executors.encoders.nlp.transformers-hitscir": {
+		"id": "hub.executors.encoders.nlp.transformers-hitscir",
+		"author": "Jina AI Dev-Team (dev-team@jina.ai)",
+		"avatar": "None",
+		"description": "it's a roberta base wwm ext model made of hit-scir.",
+		"documentation": "https://github.com/jina-ai/jina-hub",
+		"license": "apache-2.0",
+		"name": "HIT SCIR Roberta Base",
+		"platform": "['linux/amd64']",
+		"revision": "1b4a764",
+		"source": "https://github.com/jina-ai/jina-hub/commit/1b4a764",
+		"url": "https://jina.ai",
+		"vendor": "Jina AI Limited",
+		"version": "0.0.0",
+		"repoTags": [
+			"jinaai/hub.executors.encoders.nlp.transformers-hitscir:0.0.0"
+		],
+		"repoDigests": [
+			"jinaai/hub.executors.encoders.nlp.transformers-hitscir@sha256:db9572faf55b424b5e6e9aa4c62bb9a90c6de19b798414ed8359cb616e2fef50"
+		],
+		"readmeRaw": "# [React](https://reactjs.org/) &middot; [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/facebook/react/blob/master/LICENSE) [![npm version](https://img.shields.io/npm/v/react.svg?style=flat)](https://www.npmjs.com/package/react) [![CircleCI Status](https://circleci.com/gh/facebook/react.svg?style=shield&circle-token=:circle-token)](https://circleci.com/gh/facebook/react) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://reactjs.org/docs/how-to-contribute.html#your-first-pull-request)\n\nReact is a JavaScript library for building user interfaces.\n\n* **Declarative:** React makes it painless to create interactive UIs. Design simple views for each state in your application, and React will efficiently update and render just the right components when your data changes. Declarative views make your code more predictable, simpler to understand, and easier to debug.\n* **Component-Based:** Build encapsulated components that manage their own state, then compose them to make complex UIs. Since component logic is written in JavaScript instead of templates, you can easily pass rich data through your app and keep state out of the DOM.\n* **Learn Once, Write Anywhere:** We don't make assumptions about the rest of your technology stack, so you can develop new features in React without rewriting existing code. React can also render on the server using Node and power mobile apps using [React Native](https://reactnative.dev/).\n\n[Learn how to use React in your own project](https://reactjs.org/docs/getting-started.html).\n\n## Installation\n\nReact has been designed for gradual adoption from the start, and **you can use as little or as much React as you need**:\n\n* Use [Online Playgrounds](https://reactjs.org/docs/getting-started.html#online-playgrounds) to get a taste of React.\n* [Add React to a Website](https://reactjs.org/docs/add-react-to-a-website.html) as a `<script>` tag in one minute.\n* [Create a New React App](https://reactjs.org/docs/create-a-new-react-app.html) if you're looking for a powerful JavaScript toolchain.\n\nYou can use React as a `<script>` tag from a [CDN](https://reactjs.org/docs/cdn-links.html), or as a `react` package on [npm](https://www.npmjs.com/package/react).\n\n## Documentation\n\nYou can find the React documentation [on the website](https://reactjs.org/docs).  \n\nCheck out the [Getting Started](https://reactjs.org/docs/getting-started.html) page for a quick overview.\n\nThe documentation is divided into several sections:\n\n* [Tutorial](https://reactjs.org/tutorial/tutorial.html)\n* [Main Concepts](https://reactjs.org/docs/hello-world.html)\n* [Advanced Guides](https://reactjs.org/docs/jsx-in-depth.html)\n* [API Reference](https://reactjs.org/docs/react-api.html)\n* [Where to Get Support](https://reactjs.org/community/support.html)\n* [Contributing Guide](https://reactjs.org/docs/how-to-contribute.html)\n\nYou can improve it by sending pull requests to [this repository](https://github.com/reactjs/reactjs.org).\n\n## Examples\n\nWe have several examples [on the website](https://reactjs.org/). Here is the first one to get you started:\n\n```jsx\nfunction HelloMessage({ name }) {\n  return <div>Hello {name}</div>;\n}\n\nReactDOM.render(\n  <HelloMessage name=\"Taylor\" />,\n  document.getElementById('container')\n);\n```\n\nThis example will render \"Hello Taylor\" into a container on the page.\n\nYou'll notice that we used an HTML-like syntax; [we call it JSX](https://reactjs.org/docs/introducing-jsx.html). JSX is not required to use React, but it makes code more readable, and writing it feels like writing HTML. If you're using React as a `<script>` tag, read [this section](https://reactjs.org/docs/add-react-to-a-website.html#optional-try-react-with-jsx) on integrating JSX; otherwise, the [recommended JavaScript toolchains](https://reactjs.org/docs/create-a-new-react-app.html) handle it automatically.\n\n## Contributing\n\nThe main purpose of this repository is to continue to evolve React core, making it faster and easier to use. Development of React happens in the open on GitHub, and we are grateful to the community for contributing bugfixes and improvements. Read below to learn how you can take part in improving React.\n\n### [Code of Conduct](https://code.fb.com/codeofconduct)\n\nFacebook has adopted a Code of Conduct that we expect project participants to adhere to. Please read [the full text](https://code.fb.com/codeofconduct) so that you can understand what actions will and will not be tolerated.\n\n### [Contributing Guide](https://reactjs.org/contributing/how-to-contribute.html)\n\nRead our [contributing guide](https://reactjs.org/contributing/how-to-contribute.html) to learn about our development process, how to propose bugfixes and improvements, and how to build and test your changes to React.\n\n### Good First Issues\n\nTo help you get your feet wet and get you familiar with our contribution process, we have a list of [good first issues](https://github.com/facebook/react/labels/good%20first%20issue) that contain bugs which have a relatively limited scope. This is a great place to get started.\n\n### License\n\nReact is [MIT licensed](./LICENSE).\n",
+		"readmeHTML": "<h1>\n<a id=\"user-content-react-----\" class=\"anchor\" href=\"#react-----\" aria-hidden=\"true\"><span aria-hidden=\"true\" class=\"octicon octicon-link\"></span></a><a href=\"https://reactjs.org/\" rel=\"nofollow\">React</a> · <a href=\"https://github.com/facebook/react/blob/master/LICENSE\"><img src=\"https://camo.githubusercontent.com/890acbdcb87868b382af9a4b1fac507b9659d9bf/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f6c6963656e73652d4d49542d626c75652e737667\" alt=\"GitHub license\" data-canonical-src=\"https://img.shields.io/badge/license-MIT-blue.svg\" style=\"max-width:100%;\"></a> <a href=\"https://www.npmjs.com/package/react\" rel=\"nofollow\"><img src=\"https://camo.githubusercontent.com/ecb8a503e646dc22ccb59b73ba287c5229580f49/68747470733a2f2f696d672e736869656c64732e696f2f6e706d2f762f72656163742e7376673f7374796c653d666c6174\" alt=\"npm version\" data-canonical-src=\"https://img.shields.io/npm/v/react.svg?style=flat\" style=\"max-width:100%;\"></a> <a href=\"https://circleci.com/gh/facebook/react\" rel=\"nofollow\"><img src=\"https://camo.githubusercontent.com/bfd84ed5d0e5c8d97aea6d7a83aed84ba1a0b191/68747470733a2f2f636972636c6563692e636f6d2f67682f66616365626f6f6b2f72656163742e7376673f7374796c653d736869656c6426636972636c652d746f6b656e3d3a636972636c652d746f6b656e\" alt=\"CircleCI Status\" data-canonical-src=\"https://circleci.com/gh/facebook/react.svg?style=shield&amp;circle-token=:circle-token\" style=\"max-width:100%;\"></a> <a href=\"https://reactjs.org/docs/how-to-contribute.html#your-first-pull-request\" rel=\"nofollow\"><img src=\"https://camo.githubusercontent.com/d4e0f63e9613ee474a7dfdc23c240b9795712c96/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f5052732d77656c636f6d652d627269676874677265656e2e737667\" alt=\"PRs Welcome\" data-canonical-src=\"https://img.shields.io/badge/PRs-welcome-brightgreen.svg\" style=\"max-width:100%;\"></a>\n</h1>\n<p>React is a JavaScript library for building user interfaces.</p>\n<ul>\n<li>\n<strong>Declarative:</strong> React makes it painless to create interactive UIs. Design simple views for each state in your application, and React will efficiently update and render just the right components when your data changes. Declarative views make your code more predictable, simpler to understand, and easier to debug.</li>\n<li>\n<strong>Component-Based:</strong> Build encapsulated components that manage their own state, then compose them to make complex UIs. Since component logic is written in JavaScript instead of templates, you can easily pass rich data through your app and keep state out of the DOM.</li>\n<li>\n<strong>Learn Once, Write Anywhere:</strong> We don't make assumptions about the rest of your technology stack, so you can develop new features in React without rewriting existing code. React can also render on the server using Node and power mobile apps using <a href=\"https://reactnative.dev/\" rel=\"nofollow\">React Native</a>.</li>\n</ul>\n<p><a href=\"https://reactjs.org/docs/getting-started.html\" rel=\"nofollow\">Learn how to use React in your own project</a>.</p>\n<h2>\n<a id=\"user-content-installation\" class=\"anchor\" href=\"#installation\" aria-hidden=\"true\"><span aria-hidden=\"true\" class=\"octicon octicon-link\"></span></a>Installation</h2>\n<p>React has been designed for gradual adoption from the start, and <strong>you can use as little or as much React as you need</strong>:</p>\n<ul>\n<li>Use <a href=\"https://reactjs.org/docs/getting-started.html#online-playgrounds\" rel=\"nofollow\">Online Playgrounds</a> to get a taste of React.</li>\n<li>\n<a href=\"https://reactjs.org/docs/add-react-to-a-website.html\" rel=\"nofollow\">Add React to a Website</a> as a <code>&lt;script&gt;</code> tag in one minute.</li>\n<li>\n<a href=\"https://reactjs.org/docs/create-a-new-react-app.html\" rel=\"nofollow\">Create a New React App</a> if you're looking for a powerful JavaScript toolchain.</li>\n</ul>\n<p>You can use React as a <code>&lt;script&gt;</code> tag from a <a href=\"https://reactjs.org/docs/cdn-links.html\" rel=\"nofollow\">CDN</a>, or as a <code>react</code> package on <a href=\"https://www.npmjs.com/package/react\" rel=\"nofollow\">npm</a>.</p>\n<h2>\n<a id=\"user-content-documentation\" class=\"anchor\" href=\"#documentation\" aria-hidden=\"true\"><span aria-hidden=\"true\" class=\"octicon octicon-link\"></span></a>Documentation</h2>\n<p>You can find the React documentation <a href=\"https://reactjs.org/docs\" rel=\"nofollow\">on the website</a>.</p>\n<p>Check out the <a href=\"https://reactjs.org/docs/getting-started.html\" rel=\"nofollow\">Getting Started</a> page for a quick overview.</p>\n<p>The documentation is divided into several sections:</p>\n<ul>\n<li><a href=\"https://reactjs.org/tutorial/tutorial.html\" rel=\"nofollow\">Tutorial</a></li>\n<li><a href=\"https://reactjs.org/docs/hello-world.html\" rel=\"nofollow\">Main Concepts</a></li>\n<li><a href=\"https://reactjs.org/docs/jsx-in-depth.html\" rel=\"nofollow\">Advanced Guides</a></li>\n<li><a href=\"https://reactjs.org/docs/react-api.html\" rel=\"nofollow\">API Reference</a></li>\n<li><a href=\"https://reactjs.org/community/support.html\" rel=\"nofollow\">Where to Get Support</a></li>\n<li><a href=\"https://reactjs.org/docs/how-to-contribute.html\" rel=\"nofollow\">Contributing Guide</a></li>\n</ul>\n<p>You can improve it by sending pull requests to <a href=\"https://github.com/reactjs/reactjs.org\">this repository</a>.</p>\n<h2>\n<a id=\"user-content-examples\" class=\"anchor\" href=\"#examples\" aria-hidden=\"true\"><span aria-hidden=\"true\" class=\"octicon octicon-link\"></span></a>Examples</h2>\n<p>We have several examples <a href=\"https://reactjs.org/\" rel=\"nofollow\">on the website</a>. Here is the first one to get you started:</p>\n<div class=\"highlight highlight-source-js-jsx\"><pre><span class=\"pl-k\">function</span> <span class=\"pl-en\">HelloMessage</span>({ <span class=\"pl-smi\">name</span> }) {\n  <span class=\"pl-k\">return</span> &lt;<span class=\"pl-ent\">div</span>&gt;Hello <span class=\"pl-pse\">{</span><span class=\"pl-smi\">name</span><span class=\"pl-pse\">}</span>&lt;/<span class=\"pl-ent\">div</span>&gt;;\n}\n\n<span class=\"pl-smi\">ReactDOM</span><span class=\"pl-k\">.</span><span class=\"pl-en\">render</span>(\n  &lt;<span class=\"pl-ent\">HelloMessage</span> <span class=\"pl-e\">name</span><span class=\"pl-k\">=</span><span class=\"pl-s\"><span class=\"pl-pds\">\"</span>Taylor<span class=\"pl-pds\">\"</span></span> /&gt;,\n  <span class=\"pl-c1\">document</span><span class=\"pl-k\">.</span><span class=\"pl-en\">getElementById</span>(<span class=\"pl-s\"><span class=\"pl-pds\">'</span>container<span class=\"pl-pds\">'</span></span>)\n);</pre></div>\n<p>This example will render \"Hello Taylor\" into a container on the page.</p>\n<p>You'll notice that we used an HTML-like syntax; <a href=\"https://reactjs.org/docs/introducing-jsx.html\" rel=\"nofollow\">we call it JSX</a>. JSX is not required to use React, but it makes code more readable, and writing it feels like writing HTML. If you're using React as a <code>&lt;script&gt;</code> tag, read <a href=\"https://reactjs.org/docs/add-react-to-a-website.html#optional-try-react-with-jsx\" rel=\"nofollow\">this section</a> on integrating JSX; otherwise, the <a href=\"https://reactjs.org/docs/create-a-new-react-app.html\" rel=\"nofollow\">recommended JavaScript toolchains</a> handle it automatically.</p>\n<h2>\n<a id=\"user-content-contributing\" class=\"anchor\" href=\"#contributing\" aria-hidden=\"true\"><span aria-hidden=\"true\" class=\"octicon octicon-link\"></span></a>Contributing</h2>\n<p>The main purpose of this repository is to continue to evolve React core, making it faster and easier to use. Development of React happens in the open on GitHub, and we are grateful to the community for contributing bugfixes and improvements. Read below to learn how you can take part in improving React.</p>\n<h3>\n<a id=\"user-content-code-of-conduct\" class=\"anchor\" href=\"#code-of-conduct\" aria-hidden=\"true\"><span aria-hidden=\"true\" class=\"octicon octicon-link\"></span></a><a href=\"https://code.fb.com/codeofconduct\" rel=\"nofollow\">Code of Conduct</a>\n</h3>\n<p>Facebook has adopted a Code of Conduct that we expect project participants to adhere to. Please read <a href=\"https://code.fb.com/codeofconduct\" rel=\"nofollow\">the full text</a> so that you can understand what actions will and will not be tolerated.</p>\n<h3>\n<a id=\"user-content-contributing-guide\" class=\"anchor\" href=\"#contributing-guide\" aria-hidden=\"true\"><span aria-hidden=\"true\" class=\"octicon octicon-link\"></span></a><a href=\"https://reactjs.org/contributing/how-to-contribute.html\" rel=\"nofollow\">Contributing Guide</a>\n</h3>\n<p>Read our <a href=\"https://reactjs.org/contributing/how-to-contribute.html\" rel=\"nofollow\">contributing guide</a> to learn about our development process, how to propose bugfixes and improvements, and how to build and test your changes to React.</p>\n<h3>\n<a id=\"user-content-good-first-issues\" class=\"anchor\" href=\"#good-first-issues\" aria-hidden=\"true\"><span aria-hidden=\"true\" class=\"octicon octicon-link\"></span></a>Good First Issues</h3>\n<p>To help you get your feet wet and get you familiar with our contribution process, we have a list of <a href=\"https://github.com/facebook/react/labels/good%20first%20issue\">good first issues</a> that contain bugs which have a relatively limited scope. This is a great place to get started.</p>\n<h3>\n<a id=\"user-content-license\" class=\"anchor\" href=\"#license\" aria-hidden=\"true\"><span aria-hidden=\"true\" class=\"octicon octicon-link\"></span></a>License</h3>\n<p>React is <a href=\"./LICENSE\">MIT licensed</a>.</p>\n",
+		"buildHistory": [
+			{
+				"created": "2020-04-18T19:44:20.428151122Z",
+				"os": "linux",
+				"architecture": "amd64",
+				"size": 4693686133,
+				"virtualSize": 4693686133,
+				"status": true,
+				"repoTags": [
+					"jinaai/hub.executors.encoders.nlp.transformers-hitscir:0.0.0"
+				],
+				"repoDigests": [
+					"jinaai/hub.executors.encoders.nlp.transformers-hitscir@sha256:db9572faf55b424b5e6e9aa4c62bb9a90c6de19b798414ed8359cb616e2fef50"
+				]
+			},
+			{
+				"created": "2020-04-18T18:44:25.980267632Z",
+				"os": "linux",
+				"architecture": "amd64",
+				"size": 4693685933,
+				"virtualSize": 4693685933,
+				"status": true,
+				"repoTags": [
+					"jinaai/hub.executors.encoders.nlp.transformers-hitscir:0.0.0"
+				],
+				"repoDigests": [
+					"jinaai/hub.executors.encoders.nlp.transformers-hitscir@sha256:b2ccaeb09257c554f01de01b9af98027e872fb6837cb1f948d6dd0cc20e5de00"
+				]
+			},
+			{
+				"created": "2020-04-18T18:04:59.250203893Z",
+				"os": "linux",
+				"architecture": "amd64",
+				"size": 4693685508,
+				"virtualSize": 4693685508,
+				"status": true,
+				"repoTags": [
+					"jinaai/hub.executors.encoders.nlp.transformers-hitscir:0.0.0"
+				],
+				"repoDigests": [
+					"jinaai/hub.executors.encoders.nlp.transformers-hitscir@sha256:78a3071dc3f9f72a2d8a1e2086cf00d58ce49c092519c9a86dff5fa203d5121d"
+				]
+			},
+			{
+				"created": "2020-04-18T18:04:59.250203893Z",
+				"os": "linux",
+				"architecture": "amd64",
+				"size": 4693685508,
+				"virtualSize": 4693685508,
+				"status": true,
+				"repoTags": [
+					"jinaai/hub.executors.encoders.nlp.transformers-hitscir:0.0.0"
+				],
+				"repoDigests": [
+					"jinaai/hub.executors.encoders.nlp.transformers-hitscir@sha256:78a3071dc3f9f72a2d8a1e2086cf00d58ce49c092519c9a86dff5fa203d5121d"
+				]
+			},
+			{
+				"created": "2020-04-18T17:04:26.757083677Z",
+				"os": "linux",
+				"architecture": "amd64",
+				"size": 4685789491,
+				"virtualSize": 4685789491,
+				"status": true,
+				"repoTags": [
+					"jinaai/hub.executors.encoders.nlp.transformers-hitscir:0.0.0"
+				],
+				"repoDigests": [
+					"jinaai/hub.executors.encoders.nlp.transformers-hitscir@sha256:529393be5ad142214dac77e43c6bf6d8af84f316fdd02f1c2839b5312b03064b"
+				]
+			},
+			{
+				"created": "2020-04-18T15:04:48.003361154Z",
+				"os": "linux",
+				"architecture": "amd64",
+				"size": 4685789493,
+				"virtualSize": 4685789493,
+				"status": true,
+				"repoTags": [
+					"jinaai/hub.executors.encoders.nlp.transformers-hitscir:0.0.0"
+				],
+				"repoDigests": [
+					"jinaai/hub.executors.encoders.nlp.transformers-hitscir@sha256:1cd4b40b5b9b7b003b069812dbe2c024653234d7b567b9c863fd16a0eae15951"
+				]
+			},
+			{
+				"created": "2020-04-08T02:20:09.971273838Z",
+				"os": "linux",
+				"architecture": "amd64",
+				"size": 4681197868,
+				"virtualSize": 4681197868,
+				"status": true,
+				"repoTags": [
+					"jinaai/hub.executors.encoders.nlp.transformers-hitscir:0.0.0"
+				],
+				"repoDigests": [
+					"jinaai/hub.executors.encoders.nlp.transformers-hitscir@sha256:9bce3b486be47b49b1a4aedeb857385dd88169d81091d590bdbd58c755ae1ece"
+				]
+			},
+			{
+				"created": "2020-04-07T16:57:09.141636365Z",
+				"os": "linux",
+				"architecture": "amd64",
+				"size": 4681192780,
+				"virtualSize": 4681192780,
+				"status": true,
+				"repoTags": [
+					"jinaai/hub.executors.encoders.nlp.transformers-hitscir:0.0.0"
+				],
+				"repoDigests": [
+					"jinaai/hub.executors.encoders.nlp.transformers-hitscir@sha256:e24d2c19e6f474da41dbdefce6ee7903986a16e4cd92134dbcdebdb4fa48430d"
+				]
+			},
+			{
+				"created": "2020-04-07T11:13:02.151451583Z",
+				"os": "linux",
+				"architecture": "amd64",
+				"size": 4681192232,
+				"virtualSize": 4681192232,
+				"status": true,
+				"repoTags": [
+					"jinaai/hub.executors.encoders.nlp.transformers-hitscir:0.0.0"
+				],
+				"repoDigests": [
+					"jinaai/hub.executors.encoders.nlp.transformers-hitscir@sha256:ea99a60f30773f45e1b69d7f4efbdc587456f4e41dcb6e3d62fbc8e68eaf41a9"
+				]
+			}
+		]
+	},
+	"hub.executors.encoders.image.torchvision-mobilenet_v2": {
+		"id": "hub.executors.encoders.image.torchvision-mobilenet_v2",
+		"author": "Jina AI Dev-Team (dev-team@jina.ai)",
+		"avatar": "None",
+		"description": "an image with the encoder of mobilenet.v2 from torchvision",
+		"documentation": "https://github.com/jina-ai/jina-hub",
+		"license": "apache-2.0",
+		"name": "torch mobilenet_v2",
+		"platform": "['linux/amd64']",
+		"revision": "1b4a764",
+		"source": "https://github.com/jina-ai/jina-hub/commit/1b4a764",
+		"url": "https://jina.ai",
+		"vendor": "Jina AI Limited",
+		"version": "0.0.1",
+		"repoTags": [
+			"jinaai/hub.executors.encoders.image.torchvision-mobilenet_v2:0.0.1"
+		],
+		"repoDigests": [
+			"jinaai/hub.executors.encoders.image.torchvision-mobilenet_v2@sha256:fdb98c3659f77e5a2555ba80131df9f358cbedc73fbf5aebbd6b57a76968f588"
+		],
+		"readmeRaw": "# [React](https://reactjs.org/) &middot; [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/facebook/react/blob/master/LICENSE) [![npm version](https://img.shields.io/npm/v/react.svg?style=flat)](https://www.npmjs.com/package/react) [![CircleCI Status](https://circleci.com/gh/facebook/react.svg?style=shield&circle-token=:circle-token)](https://circleci.com/gh/facebook/react) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://reactjs.org/docs/how-to-contribute.html#your-first-pull-request)\n\nReact is a JavaScript library for building user interfaces.\n\n* **Declarative:** React makes it painless to create interactive UIs. Design simple views for each state in your application, and React will efficiently update and render just the right components when your data changes. Declarative views make your code more predictable, simpler to understand, and easier to debug.\n* **Component-Based:** Build encapsulated components that manage their own state, then compose them to make complex UIs. Since component logic is written in JavaScript instead of templates, you can easily pass rich data through your app and keep state out of the DOM.\n* **Learn Once, Write Anywhere:** We don't make assumptions about the rest of your technology stack, so you can develop new features in React without rewriting existing code. React can also render on the server using Node and power mobile apps using [React Native](https://reactnative.dev/).\n\n[Learn how to use React in your own project](https://reactjs.org/docs/getting-started.html).\n\n## Installation\n\nReact has been designed for gradual adoption from the start, and **you can use as little or as much React as you need**:\n\n* Use [Online Playgrounds](https://reactjs.org/docs/getting-started.html#online-playgrounds) to get a taste of React.\n* [Add React to a Website](https://reactjs.org/docs/add-react-to-a-website.html) as a `<script>` tag in one minute.\n* [Create a New React App](https://reactjs.org/docs/create-a-new-react-app.html) if you're looking for a powerful JavaScript toolchain.\n\nYou can use React as a `<script>` tag from a [CDN](https://reactjs.org/docs/cdn-links.html), or as a `react` package on [npm](https://www.npmjs.com/package/react).\n\n## Documentation\n\nYou can find the React documentation [on the website](https://reactjs.org/docs).  \n\nCheck out the [Getting Started](https://reactjs.org/docs/getting-started.html) page for a quick overview.\n\nThe documentation is divided into several sections:\n\n* [Tutorial](https://reactjs.org/tutorial/tutorial.html)\n* [Main Concepts](https://reactjs.org/docs/hello-world.html)\n* [Advanced Guides](https://reactjs.org/docs/jsx-in-depth.html)\n* [API Reference](https://reactjs.org/docs/react-api.html)\n* [Where to Get Support](https://reactjs.org/community/support.html)\n* [Contributing Guide](https://reactjs.org/docs/how-to-contribute.html)\n\nYou can improve it by sending pull requests to [this repository](https://github.com/reactjs/reactjs.org).\n\n## Examples\n\nWe have several examples [on the website](https://reactjs.org/). Here is the first one to get you started:\n\n```jsx\nfunction HelloMessage({ name }) {\n  return <div>Hello {name}</div>;\n}\n\nReactDOM.render(\n  <HelloMessage name=\"Taylor\" />,\n  document.getElementById('container')\n);\n```\n\nThis example will render \"Hello Taylor\" into a container on the page.\n\nYou'll notice that we used an HTML-like syntax; [we call it JSX](https://reactjs.org/docs/introducing-jsx.html). JSX is not required to use React, but it makes code more readable, and writing it feels like writing HTML. If you're using React as a `<script>` tag, read [this section](https://reactjs.org/docs/add-react-to-a-website.html#optional-try-react-with-jsx) on integrating JSX; otherwise, the [recommended JavaScript toolchains](https://reactjs.org/docs/create-a-new-react-app.html) handle it automatically.\n\n## Contributing\n\nThe main purpose of this repository is to continue to evolve React core, making it faster and easier to use. Development of React happens in the open on GitHub, and we are grateful to the community for contributing bugfixes and improvements. Read below to learn how you can take part in improving React.\n\n### [Code of Conduct](https://code.fb.com/codeofconduct)\n\nFacebook has adopted a Code of Conduct that we expect project participants to adhere to. Please read [the full text](https://code.fb.com/codeofconduct) so that you can understand what actions will and will not be tolerated.\n\n### [Contributing Guide](https://reactjs.org/contributing/how-to-contribute.html)\n\nRead our [contributing guide](https://reactjs.org/contributing/how-to-contribute.html) to learn about our development process, how to propose bugfixes and improvements, and how to build and test your changes to React.\n\n### Good First Issues\n\nTo help you get your feet wet and get you familiar with our contribution process, we have a list of [good first issues](https://github.com/facebook/react/labels/good%20first%20issue) that contain bugs which have a relatively limited scope. This is a great place to get started.\n\n### License\n\nReact is [MIT licensed](./LICENSE).\n",
+		"readmeHTML": "<h1>\n<a id=\"user-content-react-----\" class=\"anchor\" href=\"#react-----\" aria-hidden=\"true\"><span aria-hidden=\"true\" class=\"octicon octicon-link\"></span></a><a href=\"https://reactjs.org/\" rel=\"nofollow\">React</a> · <a href=\"https://github.com/facebook/react/blob/master/LICENSE\"><img src=\"https://camo.githubusercontent.com/890acbdcb87868b382af9a4b1fac507b9659d9bf/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f6c6963656e73652d4d49542d626c75652e737667\" alt=\"GitHub license\" data-canonical-src=\"https://img.shields.io/badge/license-MIT-blue.svg\" style=\"max-width:100%;\"></a> <a href=\"https://www.npmjs.com/package/react\" rel=\"nofollow\"><img src=\"https://camo.githubusercontent.com/ecb8a503e646dc22ccb59b73ba287c5229580f49/68747470733a2f2f696d672e736869656c64732e696f2f6e706d2f762f72656163742e7376673f7374796c653d666c6174\" alt=\"npm version\" data-canonical-src=\"https://img.shields.io/npm/v/react.svg?style=flat\" style=\"max-width:100%;\"></a> <a href=\"https://circleci.com/gh/facebook/react\" rel=\"nofollow\"><img src=\"https://camo.githubusercontent.com/bfd84ed5d0e5c8d97aea6d7a83aed84ba1a0b191/68747470733a2f2f636972636c6563692e636f6d2f67682f66616365626f6f6b2f72656163742e7376673f7374796c653d736869656c6426636972636c652d746f6b656e3d3a636972636c652d746f6b656e\" alt=\"CircleCI Status\" data-canonical-src=\"https://circleci.com/gh/facebook/react.svg?style=shield&amp;circle-token=:circle-token\" style=\"max-width:100%;\"></a> <a href=\"https://reactjs.org/docs/how-to-contribute.html#your-first-pull-request\" rel=\"nofollow\"><img src=\"https://camo.githubusercontent.com/d4e0f63e9613ee474a7dfdc23c240b9795712c96/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f5052732d77656c636f6d652d627269676874677265656e2e737667\" alt=\"PRs Welcome\" data-canonical-src=\"https://img.shields.io/badge/PRs-welcome-brightgreen.svg\" style=\"max-width:100%;\"></a>\n</h1>\n<p>React is a JavaScript library for building user interfaces.</p>\n<ul>\n<li>\n<strong>Declarative:</strong> React makes it painless to create interactive UIs. Design simple views for each state in your application, and React will efficiently update and render just the right components when your data changes. Declarative views make your code more predictable, simpler to understand, and easier to debug.</li>\n<li>\n<strong>Component-Based:</strong> Build encapsulated components that manage their own state, then compose them to make complex UIs. Since component logic is written in JavaScript instead of templates, you can easily pass rich data through your app and keep state out of the DOM.</li>\n<li>\n<strong>Learn Once, Write Anywhere:</strong> We don't make assumptions about the rest of your technology stack, so you can develop new features in React without rewriting existing code. React can also render on the server using Node and power mobile apps using <a href=\"https://reactnative.dev/\" rel=\"nofollow\">React Native</a>.</li>\n</ul>\n<p><a href=\"https://reactjs.org/docs/getting-started.html\" rel=\"nofollow\">Learn how to use React in your own project</a>.</p>\n<h2>\n<a id=\"user-content-installation\" class=\"anchor\" href=\"#installation\" aria-hidden=\"true\"><span aria-hidden=\"true\" class=\"octicon octicon-link\"></span></a>Installation</h2>\n<p>React has been designed for gradual adoption from the start, and <strong>you can use as little or as much React as you need</strong>:</p>\n<ul>\n<li>Use <a href=\"https://reactjs.org/docs/getting-started.html#online-playgrounds\" rel=\"nofollow\">Online Playgrounds</a> to get a taste of React.</li>\n<li>\n<a href=\"https://reactjs.org/docs/add-react-to-a-website.html\" rel=\"nofollow\">Add React to a Website</a> as a <code>&lt;script&gt;</code> tag in one minute.</li>\n<li>\n<a href=\"https://reactjs.org/docs/create-a-new-react-app.html\" rel=\"nofollow\">Create a New React App</a> if you're looking for a powerful JavaScript toolchain.</li>\n</ul>\n<p>You can use React as a <code>&lt;script&gt;</code> tag from a <a href=\"https://reactjs.org/docs/cdn-links.html\" rel=\"nofollow\">CDN</a>, or as a <code>react</code> package on <a href=\"https://www.npmjs.com/package/react\" rel=\"nofollow\">npm</a>.</p>\n<h2>\n<a id=\"user-content-documentation\" class=\"anchor\" href=\"#documentation\" aria-hidden=\"true\"><span aria-hidden=\"true\" class=\"octicon octicon-link\"></span></a>Documentation</h2>\n<p>You can find the React documentation <a href=\"https://reactjs.org/docs\" rel=\"nofollow\">on the website</a>.</p>\n<p>Check out the <a href=\"https://reactjs.org/docs/getting-started.html\" rel=\"nofollow\">Getting Started</a> page for a quick overview.</p>\n<p>The documentation is divided into several sections:</p>\n<ul>\n<li><a href=\"https://reactjs.org/tutorial/tutorial.html\" rel=\"nofollow\">Tutorial</a></li>\n<li><a href=\"https://reactjs.org/docs/hello-world.html\" rel=\"nofollow\">Main Concepts</a></li>\n<li><a href=\"https://reactjs.org/docs/jsx-in-depth.html\" rel=\"nofollow\">Advanced Guides</a></li>\n<li><a href=\"https://reactjs.org/docs/react-api.html\" rel=\"nofollow\">API Reference</a></li>\n<li><a href=\"https://reactjs.org/community/support.html\" rel=\"nofollow\">Where to Get Support</a></li>\n<li><a href=\"https://reactjs.org/docs/how-to-contribute.html\" rel=\"nofollow\">Contributing Guide</a></li>\n</ul>\n<p>You can improve it by sending pull requests to <a href=\"https://github.com/reactjs/reactjs.org\">this repository</a>.</p>\n<h2>\n<a id=\"user-content-examples\" class=\"anchor\" href=\"#examples\" aria-hidden=\"true\"><span aria-hidden=\"true\" class=\"octicon octicon-link\"></span></a>Examples</h2>\n<p>We have several examples <a href=\"https://reactjs.org/\" rel=\"nofollow\">on the website</a>. Here is the first one to get you started:</p>\n<div class=\"highlight highlight-source-js-jsx\"><pre><span class=\"pl-k\">function</span> <span class=\"pl-en\">HelloMessage</span>({ <span class=\"pl-smi\">name</span> }) {\n  <span class=\"pl-k\">return</span> &lt;<span class=\"pl-ent\">div</span>&gt;Hello <span class=\"pl-pse\">{</span><span class=\"pl-smi\">name</span><span class=\"pl-pse\">}</span>&lt;/<span class=\"pl-ent\">div</span>&gt;;\n}\n\n<span class=\"pl-smi\">ReactDOM</span><span class=\"pl-k\">.</span><span class=\"pl-en\">render</span>(\n  &lt;<span class=\"pl-ent\">HelloMessage</span> <span class=\"pl-e\">name</span><span class=\"pl-k\">=</span><span class=\"pl-s\"><span class=\"pl-pds\">\"</span>Taylor<span class=\"pl-pds\">\"</span></span> /&gt;,\n  <span class=\"pl-c1\">document</span><span class=\"pl-k\">.</span><span class=\"pl-en\">getElementById</span>(<span class=\"pl-s\"><span class=\"pl-pds\">'</span>container<span class=\"pl-pds\">'</span></span>)\n);</pre></div>\n<p>This example will render \"Hello Taylor\" into a container on the page.</p>\n<p>You'll notice that we used an HTML-like syntax; <a href=\"https://reactjs.org/docs/introducing-jsx.html\" rel=\"nofollow\">we call it JSX</a>. JSX is not required to use React, but it makes code more readable, and writing it feels like writing HTML. If you're using React as a <code>&lt;script&gt;</code> tag, read <a href=\"https://reactjs.org/docs/add-react-to-a-website.html#optional-try-react-with-jsx\" rel=\"nofollow\">this section</a> on integrating JSX; otherwise, the <a href=\"https://reactjs.org/docs/create-a-new-react-app.html\" rel=\"nofollow\">recommended JavaScript toolchains</a> handle it automatically.</p>\n<h2>\n<a id=\"user-content-contributing\" class=\"anchor\" href=\"#contributing\" aria-hidden=\"true\"><span aria-hidden=\"true\" class=\"octicon octicon-link\"></span></a>Contributing</h2>\n<p>The main purpose of this repository is to continue to evolve React core, making it faster and easier to use. Development of React happens in the open on GitHub, and we are grateful to the community for contributing bugfixes and improvements. Read below to learn how you can take part in improving React.</p>\n<h3>\n<a id=\"user-content-code-of-conduct\" class=\"anchor\" href=\"#code-of-conduct\" aria-hidden=\"true\"><span aria-hidden=\"true\" class=\"octicon octicon-link\"></span></a><a href=\"https://code.fb.com/codeofconduct\" rel=\"nofollow\">Code of Conduct</a>\n</h3>\n<p>Facebook has adopted a Code of Conduct that we expect project participants to adhere to. Please read <a href=\"https://code.fb.com/codeofconduct\" rel=\"nofollow\">the full text</a> so that you can understand what actions will and will not be tolerated.</p>\n<h3>\n<a id=\"user-content-contributing-guide\" class=\"anchor\" href=\"#contributing-guide\" aria-hidden=\"true\"><span aria-hidden=\"true\" class=\"octicon octicon-link\"></span></a><a href=\"https://reactjs.org/contributing/how-to-contribute.html\" rel=\"nofollow\">Contributing Guide</a>\n</h3>\n<p>Read our <a href=\"https://reactjs.org/contributing/how-to-contribute.html\" rel=\"nofollow\">contributing guide</a> to learn about our development process, how to propose bugfixes and improvements, and how to build and test your changes to React.</p>\n<h3>\n<a id=\"user-content-good-first-issues\" class=\"anchor\" href=\"#good-first-issues\" aria-hidden=\"true\"><span aria-hidden=\"true\" class=\"octicon octicon-link\"></span></a>Good First Issues</h3>\n<p>To help you get your feet wet and get you familiar with our contribution process, we have a list of <a href=\"https://github.com/facebook/react/labels/good%20first%20issue\">good first issues</a> that contain bugs which have a relatively limited scope. This is a great place to get started.</p>\n<h3>\n<a id=\"user-content-license\" class=\"anchor\" href=\"#license\" aria-hidden=\"true\"><span aria-hidden=\"true\" class=\"octicon octicon-link\"></span></a>License</h3>\n<p>React is <a href=\"./LICENSE\">MIT licensed</a>.</p>\n",
+		"buildHistory": [
+			{
+				"created": "2020-04-18T19:23:35.231436521Z",
+				"os": "linux",
+				"architecture": "amd64",
+				"size": 4213872279,
+				"virtualSize": 4213872279,
+				"status": true,
+				"repoTags": [
+					"jinaai/hub.executors.encoders.image.torchvision-mobilenet_v2:0.0.1"
+				],
+				"repoDigests": [
+					"jinaai/hub.executors.encoders.image.torchvision-mobilenet_v2@sha256:fdb98c3659f77e5a2555ba80131df9f358cbedc73fbf5aebbd6b57a76968f588"
+				]
+			},
+			{
+				"created": "2020-04-18T17:44:15.428174279Z",
+				"os": "linux",
+				"architecture": "amd64",
+				"size": 4213882630,
+				"virtualSize": 4213882630,
+				"status": true,
+				"repoTags": [
+					"jinaai/hub.executors.encoders.image.torchvision-mobilenet_v2:0.0.1"
+				],
+				"repoDigests": [
+					"jinaai/hub.executors.encoders.image.torchvision-mobilenet_v2@sha256:40b4eb147978613603c3bfe0e61f7f2c1117c171fd15ce78d17f67d290686003"
+				]
+			},
+			{
+				"created": "2020-04-18T17:24:05.683688641Z",
+				"os": "linux",
+				"architecture": "amd64",
+				"size": 4205975964,
+				"virtualSize": 4205975964,
+				"status": true,
+				"repoTags": [
+					"jinaai/hub.executors.encoders.image.torchvision-mobilenet_v2:0.0.1"
+				],
+				"repoDigests": [
+					"jinaai/hub.executors.encoders.image.torchvision-mobilenet_v2@sha256:ffbb88e28843940944e97f2b24bd322b5356e904dd163a04e98bf9abcbc9d7e7"
+				]
+			},
+			{
+				"created": "2020-04-18T16:44:15.225214539Z",
+				"os": "linux",
+				"architecture": "amd64",
+				"size": 4205975962,
+				"virtualSize": 4205975962,
+				"status": true,
+				"repoTags": [
+					"jinaai/hub.executors.encoders.image.torchvision-mobilenet_v2:0.0.1"
+				],
+				"repoDigests": [
+					"jinaai/hub.executors.encoders.image.torchvision-mobilenet_v2@sha256:7612fef801d36c047a69208cb242cc60e2b3aeaf54900cc45f12a08d2d9b3660"
+				]
+			},
+			{
+				"created": "2020-04-18T10:47:56.290429061Z",
+				"os": "linux",
+				"architecture": "amd64",
+				"size": 4205983185,
+				"virtualSize": 4205983185,
+				"status": true,
+				"repoTags": [
+					"jinaai/hub.executors.encoders.image.torchvision-mobilenet_v2:0.0.1"
+				],
+				"repoDigests": [
+					"jinaai/hub.executors.encoders.image.torchvision-mobilenet_v2@sha256:7c360706b2f3ce0a4b7b50d651290f7f283e96b28473be83ef220d06b6adfa28"
+				]
+			}
+		]
+	}
+}

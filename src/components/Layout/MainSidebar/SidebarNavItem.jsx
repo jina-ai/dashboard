@@ -12,7 +12,6 @@ import { Dispatcher, Constants } from "../../../flux";
 class SidebarNavItem extends React.Component {
   constructor(props) {
     super(props);
-
     this.toggleDropdown = this.toggleDropdown.bind(this);
   }
 
@@ -26,6 +25,13 @@ class SidebarNavItem extends React.Component {
   render() {
     const { item } = this.props;
     const hasSubItems = item.items && item.items.length;
+    const path = window.location.hash.substring(2, window.location.hash.length);
+    let active = false
+    item.matches.map(match => {
+      if (path.startsWith(match))
+        active = true
+    })
+
 
     return (
       <NavItem style={{ position: "relative" }}>
@@ -33,6 +39,7 @@ class SidebarNavItem extends React.Component {
           className={hasSubItems && "dropdown-toggle"}
           tag={RouteNavLink}
           to={item.to}
+          active={active}
           onClick={() => this.toggleDropdown(item)}
         >
           {item.htmlBefore && (

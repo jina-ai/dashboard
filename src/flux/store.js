@@ -25,6 +25,7 @@ function getInitialStore() {
       shutdown: localStorage.getItem('preferences-shutdown') || '/action/shutdown',
       ready: localStorage.getItem('preferences-ready') || '/status/ready',
     },
+    hub:{},
     banner: {
       flow: false,
       logs: false,
@@ -103,6 +104,7 @@ class Store extends EventEmitter {
     await this.initFlowChart();
     this.initLogStream();
     this.initCharts();
+    this.initHub();
     _store.loading = false;
     this.emit('update-ui');
     this.emit('update-settings');
@@ -196,6 +198,13 @@ class Store extends EventEmitter {
     this.updateChartInterval = setInterval(this.updateSummaryCharts, CHART_UPDATE_INTERVAL);
   }
 
+  initHub = async () =>{
+    const images = await api.getImagesStatic();
+    _store.hub = images;
+    console.log('images: ',images);
+    this.emit('update-hub');
+  }
+
   updateSummaryCharts = () => {
     const { current, previous, indeces } = _store.occurences;
     CHART_LEVELS.map(level => {
@@ -283,6 +292,14 @@ class Store extends EventEmitter {
     return _store.currentTab;
   }
 
+  getHubImages = () =>{
+    return _store.hub;
+  }
+
+  getHubImage = imageId =>{
+    return _store.hub[imageId];
+  }
+
   getSettings = () => {
     return _store.settings;
   }
@@ -323,10 +340,10 @@ class Store extends EventEmitter {
   }
 
   getActivePanel = () => {
-    const path = window.location.toString();
-    if (path.includes('flow'))
+    const path = window.location.hash.substring(2,window.location.hash.length);
+    if (path.startsWith('flow'))
       return 'flow';
-    if (path.includes('logs'))
+    if (path.startsWith('logs'))
       return 'logs';
     return 'neither'
   }

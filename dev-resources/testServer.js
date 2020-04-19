@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
-const sampleLogs = require('./src/data/logstream.json').logs;
-const yaml = require('./src/data/yaml').flow1;
+const sampleLogs = require('../src/data/logstream.json').logs;
+const yaml = require('../src/data/yaml').flow1;
 
 const app = express();
 app.use(cors());

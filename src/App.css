@@ -183,8 +183,8 @@ body{
 }
 
 i.material-icons{
-  font-size: 1.15em;
-  vertical-align: text-bottom;
+  /* font-size: 1.15em; */
+  /* vertical-align: text-bottom; */
 }
 
 .ReactModal__Overlay{
@@ -328,4 +328,62 @@ i.material-icons{
 
 .badge-danger{
   background-color: #ff6666 !important;
+}
+
+.app-title{
+  font-size: 1.25em;
+  font-weight: 700;
+  line-height: normal;
+}
+
+.app-subtitle{
+  font-weight: 600;
+  opacity: .5;
+}
+
+.description-container{
+  overflow: hidden;
+  height: 5em;
+}
+
+.description-overlay{
+  position: absolute;
+  z-index: 1;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background: linear-gradient(rgba(255, 255, 255, 0),rgba(255, 255, 255, 0),rgba(255, 255, 255, 0),white);
+}
+
+
+.app-rating{
+  float: right;
+  font-size:1em;
+}
+
+.app-rating i{
+  font-size:.75em;
+  color: #ffc107;
+}
+
+.unstyled-link{
+  text-decoration: none !important;
+  color: inherit !important;
+}
+
+.verified-icon{
+  color: #009999;
+}
+
+.user-activity__item__icon i{
+  margin-top: -2px;
+  margin-left: -.5px;
+}
+
+.installation-command{
+  background: #6e7278;
+  color: white;
+  font-family: 'Roboto Mono', monospace;
+  border-radius: 0em 0em .75em .75em;
 }
