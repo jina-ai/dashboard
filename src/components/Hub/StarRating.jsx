@@ -31,7 +31,7 @@ class StarRating extends React.Component {
 
 	render = () => {
 		const { rating } = this.props;
-		const formatted = Math.round(rating*10)/10;
+		const formatted = Math.round(rating*10 ||0)/10;
 		const stars = this.getStars(formatted);
 		return (
 			<span className="app-rating text-muted">

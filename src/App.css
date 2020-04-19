@@ -363,8 +363,15 @@ i.material-icons{
 }
 
 .app-rating i{
-  font-size:.75em;
-  color: #ffc107;
+  font-size:.85em;
+  color: #ffcc66;
+  vertical-align: middle;
+  margin-top: -.25em;
+}
+
+.rating-num{
+  font-size: .85em;
+  line-height: normal !important;
 }
 
 .unstyled-link{
@@ -386,4 +393,9 @@ i.material-icons{
   color: white;
   font-family: 'Roboto Mono', monospace;
   border-radius: 0em 0em .75em .75em;
+}
+
+.build-history{
+  max-height: 25em;
+  overflow-y: scroll;
 }

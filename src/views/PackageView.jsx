@@ -6,6 +6,8 @@ import PageTitle from '../components/Common/PageTitle';
 import Details from '../components/Hub/ImageDetails';
 import Readme from "../components/Hub/Readme";
 import CopyCommand from "../components/Hub/CopyCommand";
+import StarRating from "../components/Hub/StarRating";
+import ImageReviews from '../components/Hub/ImageReviews';
 
 class HubView extends React.Component {
 
@@ -57,6 +59,10 @@ class HubView extends React.Component {
 				<div className="px-4">
 					<Row noGutters className="page-header py-4">
 						<PageTitle title={imageData.name} subtitle="Image" className="text-sm-left mb-3" />
+						<Col md="6"/>
+						<Col md="3" className="py-sm-2">
+							<h3><StarRating rating={4.5}/></h3>
+						</Col>
 					</Row>
 					<Row>
 						<Col md="8">
@@ -66,6 +72,7 @@ class HubView extends React.Component {
 							<CopyCommand image={imageData}/>
 							<Details image={imageData} />
 							<BuildHistory image={imageData}/>
+							<ImageReviews />
 						</Col>
 					</Row>
 

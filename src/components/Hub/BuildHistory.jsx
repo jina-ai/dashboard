@@ -9,7 +9,7 @@ class BuildHistory extends React.Component {
 				<CardHeader className="border-bottom d-flex flex-row">
 					<h6 className="m-0 d-inline-block">Build History</h6>
 				</CardHeader>
-				<CardBody className="p-0">
+				<CardBody className="p-0 build-history">
 					{
 						buildHistory && buildHistory.map(build =>{
 							const formattedCreated = (new Date(build.created)).toLocaleString();
