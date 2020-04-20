@@ -2,12 +2,26 @@ const express = require('express')
 const fs = require('fs');
 const axios = require('axios');
 const cors = require('cors');
+const db = require('./db');
+// const passport = require('passport');
+// const GitHubStrategy = require('passport-github2').Strategy;
 const app = express();
+
+const { PORT, PRIVATE_MODE, PRIVATE_TOKEN, IMAGES_URL, MONGO_URL } = require('./config');
 
 app.use(cors());
 
-const PORT = 3040;
-let token = 'ACDR7PJE2D6WYQDGDC2BEN26UHYNO';
+// passport.use(new GitHubStrategy({
+// 	clientID: process.env.GITHUB_CLIENT_ID,
+// 	clientSecret: process.env.GITHUB_CLIENT_SECRET,
+// 	callbackURL: "http://127.0.0.1:3000/auth/github/callback"
+// },
+// function(accessToken, refreshToken, profile, done) {
+// 	User.findOrCreate({ githubId: profile.id }, function (err, user) {
+// 		return done(err, user);
+// 	});
+// }
+// ));
 
 const githubRaw = axios.create({
 	baseURL: 'https://raw.githubusercontent.com/',
@@ -21,25 +35,49 @@ const githubRaw = axios.create({
 const githubAPI = axios.create({
 	baseURL: 'https://api.github.com/',
 	timeout: 30000, // 30 secs
-	// headers: {
-	// 	'Content-Type': 'application/json',
-	// },
 });
 
 let _images = {};
-let markdownRaw = '';
-let markdownHTML = '';
+
+//only used in private mode:
+let _markdownRaw = false;
+let _markdownHTML = false;
 
 app.get('/images', function (req, res) {
 	console.log('GET at /images')
 	res.send(_images);
 });
 
+app.get('/search', function (req, res) {
+	console.log('GET at /search')
+	res.send(_images);
+});
+
+app.get('/category', function (req, res) {
+	console.log('GET at /category')
+	res.send(_images);
+});
+
+app.get('/sort', function (req, res) {
+	console.log('GET at /sort')
+	res.send(_images);
+});
+
+app.post('/review', function (req, res) {
+	console.log('POST at /review')
+	res.send(_images);
+});
+
+app.post('/rating', function (req, res) {
+	console.log('POST at /rating')
+	res.send(_images);
+});
+
 initAPI();
 
 async function initAPI() {
+	await db.initMongo(MONGO_URL);
 	await loadHubImages();
-	_images = JSON.parse(await readFile('images.json'));
 	console.log('loaded images');
 	app.listen(PORT, () => {
 		console.log('Hub API is listening on port', PORT);
@@ -47,22 +85,24 @@ async function initAPI() {
 }
 
 async function loadHubImages() {
-	const raw = await githubRaw.get(`jina-ai/hub-status/master/build-history.json?token=${token}`);
+	let url = `${IMAGES_URL}${PRIVATE_MODE ? `?token=${PRIVATE_TOKEN}` : ''}`;
+	const raw = await githubRaw.get(url);
 	const images = raw.data.Images;
 	console.log(`found ${Object.keys(images).length} images`);
 
 	let ids = Object.keys(images);
+
 	for (let i = 0; i < ids.length; ++i) {
 		let id = ids[i];
 		let image = images[id][images[id].length - 1]; //most recent image;
-		let imageDetails = await parseImageDetails(image);
-		_images[id] = {
+		let imageDetails = await getImageDetails(image);
+		let imageData = {
 			id,
 			...imageDetails,
-			buildHistory:images[id].reverse().map(img=>{
+			buildHistory: images[id].reverse().map(img => {
 				return {
-					lastBuildTime:img.lastBuildTime,
-					created:img.Inspect.Created,
+					lastBuildTime: img.lastBuildTime,
+					created: img.Inspect.Created,
 					os: img.Inspect.Os,
 					architecture: img.Inspect.Architecture,
 					size: img.Inspect.Size,
@@ -70,19 +110,21 @@ async function loadHubImages() {
 					status: img.Status,
 					repoTags: img.Inspect.RepoTags,
 					repoDigests: img.Inspect.RepoDigests,
-				}}),
+				}
+			}),
 		}
+		await db.updateImage(id, imageData);
 		console.log('parsed image ', id);
 	}
-	await writeFile('images.json', JSON.stringify(_images));
-	console.log('file written');
+	console.log('images updated');
 	return;
 }
 
-async function parseImageDetails(image) {
+async function getImageDetails(image) {
 	let { Labels } = image.Inspect.Config;
 	let repoTags = image.Inspect.RepoTags;
 	let repoDigests = image.Inspect.RepoDigests;
+
 	let imageData = {
 		author: Labels['ai.jina.hub.author'],
 		avatar: Labels['ai.jina.hub.avatar'],
@@ -100,21 +142,42 @@ async function parseImageDetails(image) {
 		repoDigests
 	}
 
-	// let repoURL = imageData.documentation;
-	let repoURL = 'https://github.com/facebook/react'
+	let repoURL = PRIVATE_MODE ? 'https://github.com/facebook/react' : imageData.documentation;
 	console.log('getting markdown for README.md');
-	repoURL = `${repoURL.replace('github', 'raw.githubusercontent')}/master/README.md`;
-	console.log('url: ', repoURL)
-	let readmeResult = markdownRaw || (await githubRaw.get(repoURL)).data;
-	imageData.readmeRaw = readmeResult;
 
-	if (imageData.readmeRaw) {
-		console.log('getting rendered markdown for README.md');
-		let renderResult = markdownHTML || await githubAPI.post('markdown', { text: imageData.readmeRaw });
-		console.log('POST render:', renderResult.status);
-		if (renderResult.status == 200)
-			imageData.readmeHTML = renderResult.data;
+	repoURL = `${repoURL.replace('github.com', 'raw.githubusercontent.com')}/master/README.md`;
+	console.log('url: ', repoURL)
+
+	let readmeRaw;
+	let readmeRendered;
+
+	if (PRIVATE_MODE) {
+		if (!_markdownRaw) {
+			let readmeResult = await githubRaw.get(repoURL);
+			console.log('GET readme status:', readmeResult.status);
+			_markdownRaw = readmeResult.data;
+		}
+		readmeRaw = _markdownRaw;
+
+		if (!_markdownHTML) {
+			let markdownResult = await githubAPI.post('markdown', { text: readmeRaw });
+			console.log('POST readme status:', markdownResult.status);
+			_markdownHTML = markdownResult.data;
+		}
+		readmeRendered = _markdownHTML;
 	}
+	else {
+		let readmeResult = await githubRaw.get(repoURL);
+		console.log('GET readme status:', readmeResult.status);
+		readmeRaw = readmeResult.data;
+
+		let markdownResult = await githubAPI.post('markdown', { text: readmeRaw });
+		console.log('POST readme status:', markdownResult.status);
+		readmeRendered = markdownResult.data;
+	}
+
+	imageData.readmeHTML = readmeRendered;
+
 	return imageData;
 }
 

@@ -11,6 +11,8 @@
 # production
 /build
 
+hub-resources/config.js
+
 # misc
 .DS_Store
 .env.local
