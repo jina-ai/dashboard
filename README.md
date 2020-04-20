@@ -33,6 +33,16 @@
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
+## Monitor Jina "Hello, World!" with Dashboard
+
+Jina "Hello, World" is a simple demo of image neural search for Fashion-MNIST.
+
+1. Run the following command in the console
+   - `jina hello-world` (Python 3.7 required)
+   - ...or if you use Docker `docker run -p 5000:5000 jinaai/jina:devel hello-world --logserver`
+2. Open https://dashboard.jina.ai in your browser
+
+It should start streaming. If not, please refer to [this step](#2-connect-the-dashboard-to-your-log-server).
 
 
 ## Getting started
@@ -94,6 +104,16 @@ jina flow --logserver --yaml-path myflow.yml
 ```
 
 
+</td>
+</tr>
+
+<tr>
+<td>...or start a Flow with Docker Container</td>
+<td>
+
+```bash
+docker run -p 5000:5000 jina flow --logserver ...
+```
 </td>
 </tr>
 </table>
@@ -175,6 +195,18 @@ jina flow --logserver --logserver-config mylogserver.yml ...
 ```
 
 
+</td>
+</tr>
+
+<tr>
+<td>...or start a Flow with Docker Container</td>
+<td>
+
+```bash
+docker run -p PORT:PORT -v "$(PWD)/mylogserver.yml:/mylogserver.yml" jina flow --logserver --logserver-config /mylogserver.yml ...
+```
+
+where `PORT` is the folow defined in your YAML config
 </td>
 </tr>
 </table>
