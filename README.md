@@ -207,7 +207,6 @@ jina flow --logserver --logserver-config mylogserver.yml ...
 docker run -p PORT:PORT -v "$(PWD)/mylogserver.yml:/mylogserver.yml" jina flow --logserver --logserver-config /mylogserver.yml ...
 ```
 
-where `PORT` is the folow defined in your YAML config
 </td>
 </tr>
 </table>
