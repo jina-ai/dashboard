@@ -1,4 +1,4 @@
-//Before hubAPI can be started, a config.js file is required in this directory
+//Before hubAPI can be started, a config.js file is required in the same directory
 //Below is the format: 
 module.exports = {
 	PORT: '<PORT_NUMBER_INT>',
