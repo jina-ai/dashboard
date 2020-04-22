@@ -101,6 +101,7 @@ app.get('/images', async function (req, res) {
 		sort = false;
 	}
 	const images = await db.getImages(sort, category, q, after);
+	console.log('found ',images.length,' images');
 	res.send(images);
 });
 
@@ -232,8 +233,8 @@ async function loadHubImages() {
 			...imageDetails,
 			buildHistory: images[id].reverse().map(img => {
 				return {
-					lastBuildTime: img.lastBuildTime,
-					created: img.Inspect.Created,
+					lastBuildTime: new Date(img.lastBuildTime),
+					created: new Date(img.Inspect.Created),
 					os: img.Inspect.Os,
 					architecture: img.Inspect.Architecture,
 					size: img.Inspect.Size,
@@ -273,7 +274,7 @@ async function getImageDetails(image) {
 		repoDigests
 	}
 
-	imageData.created = image.Inspect.Created;
+	imageData.created = new Date(image.Inspect.Created);
 
 	let repoURL = PRIVATE_MODE ? 'https://github.com/facebook/react' : imageData.documentation;
 	console.log('getting markdown for README.md');
