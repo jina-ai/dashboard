@@ -11,7 +11,7 @@ async function get(collection, param1, param2, sorted = false) {
 }
 
 async function search(collection, param, project, sort) {
-  return db.collection(collection).find(param).project(project).sort(sort).toArray();
+  return db.collection(collection).find(param).sort(sort).project(project).toArray();
 }
 
 async function getOne(collection, param, param2 = {}) {
@@ -108,10 +108,10 @@ module.exports = {
     let sort;
     switch (sortParam) {
       case 'newest':
-        sort = { sort:{ created: -1 }}
+        sort = { sort: { created: -1 } }
         break;
       case 'highestRated':
-        sort = {sort:{ totalStars: -1 }}
+        sort = { sort: { totalStars: -1 } }
         break;
       default:
         sort = false;
@@ -134,9 +134,9 @@ module.exports = {
       ...searchQuery,
       ...category
     }
-    console.log('DB PARAMS: ',params,options,sort)
+    console.log('DB PARAMS: ', params, options, sort)
     if (searchQuery)
-      return search('images', params, options, sort)
+      return search('images', params, options)
     return get('images', params, sort)
   },
   updateImage(id, updates) {
