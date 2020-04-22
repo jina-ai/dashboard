@@ -108,10 +108,10 @@ module.exports = {
     let sort;
     switch (sortParam) {
       case 'newest':
-        sort = { created: -1 }
+        sort = { sort:{ created: -1 }}
         break;
       case 'highestRated':
-        sort = { totalStars: 1 }
+        sort = {sort:{ totalStars: 1 }}
         break;
       default:
         sort = false;
