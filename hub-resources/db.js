@@ -111,7 +111,7 @@ module.exports = {
         sort = { sort:{ created: -1 }}
         break;
       case 'highestRated':
-        sort = {sort:{ totalStars: 1 }}
+        sort = {sort:{ totalStars: -1 }}
         break;
       default:
         sort = false;
