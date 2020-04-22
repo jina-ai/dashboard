@@ -1,6 +1,17 @@
 import images from '../data/images.json';
+import axios from 'axios';
+import { hubURL } from './config'
 let stream;
-const hubAPI = 'http://localhost:3040';
+
+const hubAPI = axios.create({
+	baseURL: hubURL,
+	withCredentials: true,
+	timeout: 30000, // 30 secs
+	headers: {
+		'Content-Type': 'application/json',
+		Accept: 'application/json',
+	},
+});
 
 export default {
 	connect: (settings, callback) => {
@@ -24,61 +35,42 @@ export default {
 			stream.close()
 		}
 	},
-	getYAML: (connectionString) => {
-		return new Promise((resolve, reject) => {
-			const xhr = new XMLHttpRequest();
-			console.log('YAML connectionString: ', connectionString)
-			xhr.open('GET', connectionString);
-			xhr.timeout = 5000;
-			xhr.onload = function () {
-				if (this.status >= 200 && this.status < 300) {
-					resolve(xhr.response);
-				} else {
-					reject({
-						status: this.status,
-						statusText: xhr.statusText
-					});
-				}
-			}
-			xhr.onerror = function () {
-				reject({
-					status: this.status,
-					statusText: xhr.statusText
-				});
-			};
-			xhr.send();
-		});
+	getProfile: async () => {
+		const result = await hubAPI.get('profile');
+		return result.data;
 	},
-	getImages: () => {
-		console.log('getting images...')
-		return new Promise((resolve, reject) => {
-			const xhr = new XMLHttpRequest();
-			let connectionString = `${hubAPI}/images`;
-			console.log('connection string: ',connectionString)
-			xhr.open('GET', connectionString);
-			xhr.timeout = 5000;
-			xhr.onload = function () {
-				console.log('images: ',this.status);
-				if (this.status >= 200 && this.status < 300) {
-					const data = JSON.parse(xhr.response);
-					resolve(data);
-				} else {
-					reject({
-						status: this.status,
-						statusText: xhr.statusText
-					});
-				}
-			}
-			xhr.onerror = function () {
-				reject({
-					status: this.status,
-					statusText: xhr.statusText
-				});
-			};
-			xhr.send();
-		});
+	getYAML: async (connectionString) => {
+		console.log('YAML connectionString: ', connectionString)
+		const result = await axios.get(connectionString);
+		return result.data;
 	},
-	getImagesStatic: () =>{
-		return images;
+	getImages: async () => {
+		console.log('get images...')
+		const result = await hubAPI.get('images');
+		return result.data;
+	},
+	getImage: async (id) => {
+		console.log('get image', id);
+		const result = await hubAPI.get(`/images/${id}`);
+		return result.data;
+	},
+	postRating: async (imageId, stars) => {
+		console.log('post rating', imageId, stars);
+		const result = await hubAPI.post(`/images/${imageId}/ratings`, { stars })
+		return result.data;
+	},
+	postReview: async (imageId, content) => {
+		console.log('post review', imageId, content);
+		const result = await hubAPI.post(`/images/${imageId}/reviews`, { content })
+		return result.data;
+	},
+	searchHub: async (category, q, sort) => {
+		console.log('search hub', category, q, sort);
+		const result = await hubAPI.get(`/images?category=${category}&q=${q}&sort=${sort}`)
+		return result.data;
+	},
+	logOut: async () => {
+		const result = await hubAPI.post('/auth/logout')
+		return result.data;
 	}
 }

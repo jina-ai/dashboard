@@ -110,7 +110,7 @@ module.exports = {
       case 'newest':
         sort = { created: -1 }
         break;
-      case 'top':
+      case 'highestRated':
         sort = { totalStars: 1 }
         break;
       default:
@@ -134,11 +134,15 @@ module.exports = {
       ...searchQuery,
       ...category
     }
+    console.log('DB PARAMS: ',params,options,sort)
     if (searchQuery)
       return search('images', params, options, sort)
     return get('images', params, sort)
   },
   updateImage(id, updates) {
     return findAndModify('images', { id }, { $set: updates });
+  },
+  updateUser(id, updates) {
+    return findAndModify('users', { id }, { $set: updates });
   },
 }

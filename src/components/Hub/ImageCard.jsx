@@ -12,6 +12,11 @@ class ImageCard extends React.Component {
 
 	render = () => {
 		const { image } = this.props;
+		let { name, official, author, description, totalStars, totalRatings, numReviews } = image;
+		let rating;
+		if (image.totalStars && image.totalRatings) {
+			rating = totalStars / totalRatings
+		}
 		return (
 			<Link className="unstyled-link" to={`/package?id=${image.id}`}>
 				<Card className="clickable mb-4 h-100">
@@ -20,7 +25,7 @@ class ImageCard extends React.Component {
 							<Col xs="12" className="px-0">
 								<div className="app-title">
 									{image.name}
-									{image.official&&<span title="Official Package" className="float-right"><i className="ml-2 material-icons verified-icon">verified_user</i></span>}
+									{image.official && <span title="Official Package" className="float-right"><i className="ml-2 material-icons verified-icon">verified_user</i></span>}
 								</div>
 								<div className="app-subtitle">{image.author}</div>
 							</Col>
@@ -32,13 +37,28 @@ class ImageCard extends React.Component {
 							</Col>
 						</Row>
 					</Card.Body>
-					{/* <Card.Footer className="pt-0 px-4 pb-3">
-						<span className="app-price">{pricingDescription}</span>
-						<StarRating rating={rating || 3.85} />
-					</Card.Footer> */}
+					<Card.Footer className="pt-0 px-3 pb-3">
+						{
+							this.getNumReviews(numReviews)
+						}
+						{
+							rating &&
+							<StarRating rating={rating} />
+						}
+					</Card.Footer>
 				</Card>
 			</Link>
 		)
+	}
+
+	getNumReviews(reviews) {
+		if (!reviews)
+			return <span className="text-muted">no reviews</span>
+
+		if (reviews > 1)
+			return <span>{reviews} reviews</span>
+
+		return <span>{reviews} review</span>
 	}
 }
 

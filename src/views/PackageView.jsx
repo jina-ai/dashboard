@@ -19,9 +19,15 @@ class HubView extends React.Component {
 		const imageId = params.get('id');
 		this.state = {
 			imageId,
-			banner: Store.getBanner('hub'),
-			imageData: Store.getHubImage(imageId) || {}
+			loading: true,
+			banner: {},
+			imageData:{}
 		}
+	}
+
+	componentDidMount = ()=>{
+		this.getData();
+		this.getImageData();
 	}
 
 	componentWillMount = () => {
@@ -34,17 +40,31 @@ class HubView extends React.Component {
 		Store.removeListener('update-hub', this.getImageData);
 	}
 
-	getImageData = () => {
-		const imageData = Store.getHubImage(this.state.imageId) || {}
-		this.setState({ imageData });
+	getImageData = async () => {
+		const imageData = await Store.getHubImage(this.state.imageId) || {}
+		this.setState({ imageData, loading: false });
 	}
 
 	getData = () => {
 		const banner = Store.getBanner('hub');
 		this.setState({ banner });
 	}
+
+	rate = (stars) =>{
+		const {imageId} = this.state;
+		Dispatcher.dispatch({
+			actionType: Constants.POST_RATING,
+			payload: {imageId,stars}
+		})
+	}
+
 	render = () => {
-		const { banner, imageData } = this.state;
+		const { banner, imageData,loading } = this.state;
+		const {name,readmeHTML,documentation,totalStars,totalRatings,userRated,userReviewed,reviews} = imageData;
+		let rating;
+		if(totalStars && totalRatings){
+			rating = totalStars/totalRatings;
+		}
 		return (
 			<Container fluid className="main-content-container px-0">
 				{
@@ -56,27 +76,33 @@ class HubView extends React.Component {
 					</div>
 
 				}
-				<div className="px-4">
-					<Row noGutters className="page-header py-4">
-						<PageTitle title={imageData.name} subtitle="Image" className="text-sm-left mb-3" />
-						<Col md="6"/>
-						<Col md="3" className="py-sm-2">
-							<h3><StarRating rating={4.5}/></h3>
-						</Col>
-					</Row>
-					<Row>
-						<Col md="8">
-							<Readme readme={imageData.readmeHTML} documentation={imageData.documentation}  />
-						</Col>
-						<Col md="4">
-							<CopyCommand image={imageData}/>
-							<Details image={imageData} />
-							<BuildHistory image={imageData}/>
-							<ImageReviews />
-						</Col>
-					</Row>
-
-				</div>
+				{
+					loading ?
+						<div className="error">
+							<div className="loader" />
+						</div>
+						:
+						<div className="px-4">
+							<Row noGutters className="page-header py-4">
+								<PageTitle title={imageData.name} subtitle="Image" className="text-sm-left mb-3" />
+								<Col md="6" />
+								<Col md="3" className="py-sm-2">
+									<h3><StarRating rating={userRated||rating} rate={this.rate} userRated={userRated} /></h3>
+								</Col>
+							</Row>
+							<Row>
+								<Col md="8">
+									<Readme readme={imageData.readmeHTML} documentation={imageData.documentation} />
+								</Col>
+								<Col md="4">
+									<CopyCommand image={imageData} />
+									<Details image={imageData} />
+									<BuildHistory image={imageData} />
+									<ImageReviews reviews={reviews} imageId={imageData.id} />
+								</Col>
+							</Row>
+						</div>
+				}
 			</Container>
 		)
 	}

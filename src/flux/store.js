@@ -25,7 +25,8 @@ function getInitialStore() {
       shutdown: localStorage.getItem('preferences-shutdown') || '/action/shutdown',
       ready: localStorage.getItem('preferences-ready') || '/status/ready',
     },
-    hub:{},
+    images: {},
+    hub: [],
     banner: {
       flow: false,
       logs: false,
@@ -92,6 +93,18 @@ class Store extends EventEmitter {
       case Constants.RECONNECT:
         this.reconnect(payload);
         break;
+      case Constants.POST_RATING:
+        this.postRating(payload);
+        break;
+      case Constants.POST_REVIEW:
+        this.postReview(payload);
+        break;
+      case Constants.SEARCH_HUB:
+        this.searchHub(payload);
+        break;
+      case Constants.LOG_OUT:
+        this.logOut();
+        break;
       default:
     }
   }
@@ -101,10 +114,13 @@ class Store extends EventEmitter {
       clearInterval(this.updateChartInterval)
     _store = getInitialStore();
     console.log('store settings: ', _store.settings);
+
     await this.initFlowChart();
     this.initLogStream();
     this.initCharts();
     this.initHub();
+    this.initUser();
+
     _store.loading = false;
     this.emit('update-ui');
     this.emit('update-settings');
@@ -198,11 +214,18 @@ class Store extends EventEmitter {
     this.updateChartInterval = setInterval(this.updateSummaryCharts, CHART_UPDATE_INTERVAL);
   }
 
-  initHub = async () =>{
-    const images = await api.getImagesStatic();
+  initHub = async () => {
+    const images = await api.getImages();
     _store.hub = images;
-    console.log('images: ',images);
+    console.log('images: ', images);
     this.emit('update-hub');
+  }
+
+  initUser = async () => {
+    const user = await api.getProfile();
+    console.log('user', user);
+    _store.user = user;
+    this.emit('update-user');
   }
 
   updateSummaryCharts = () => {
@@ -252,6 +275,64 @@ class Store extends EventEmitter {
     setTimeout(this.init, 100);
   }
 
+  postRating = async ({ imageId, stars }) => {
+    console.log('posting rating: ', imageId, stars);
+    if (!_store.user)
+      return window.location.hash = '#/login'
+    let result;
+    try {
+      result = await api.postRating(imageId, stars);
+    }
+    catch (e) {
+      if (String(e).includes('409'))
+        e = 'Already Rated';
+      return this.showError(e);
+    }
+    if (result.error)
+      this.showError(result.error);
+    else if (result.data) {
+      const image = result.data;
+      _store.images[image.id] = image;
+    }
+    this.emit('update-hub');
+  }
+
+  postReview = async ({ imageId, content }) => {
+    if (!_store.user) {
+      this.closeModal()
+      return window.location.hash = '#/login'
+    }
+    this.closeModal();
+    let result;
+    try {
+      result = await api.postReview(imageId, content);
+    }
+    catch (e) {
+      if (String(e).includes('409'))
+        e = 'Already Reviewed';
+      return this.showError(e);
+    }
+    if (result.error)
+      this.showError(result.error);
+    else if (result.data) {
+      const image = result.data;
+      _store.images[image.id] = image;
+    }
+    this.emit('update-hub');
+  }
+
+  logOut = async () => {
+    await api.logOut();
+    window.location.reload()
+  }
+
+  searchHub = async  ({ category, q, sort }) => {
+    const images = await api.searchHub(category,q,sort);
+    console.log('found',images.length,'images')
+    _store.hub = images;
+    this.emit('update-hub')
+  }
+
   showBanner = (target, message, theme) => {
     _store.banner[target] = { message: String(message), theme };
     setTimeout(this.hideBanner, HIDE_BANNER_TIMEOUT);
@@ -292,12 +373,19 @@ class Store extends EventEmitter {
     return _store.currentTab;
   }
 
-  getHubImages = () =>{
+  getUser = () => {
+    return _store.user;
+  }
+
+  getHubImages = () => {
     return _store.hub;
   }
 
-  getHubImage = imageId =>{
-    return _store.hub[imageId];
+  getHubImage = async imageId => {
+    if (!_store.images[imageId]) {
+      _store.images[imageId] = await api.getImage(imageId);
+    }
+    return _store.images[imageId];
   }
 
   getSettings = () => {
@@ -340,7 +428,7 @@ class Store extends EventEmitter {
   }
 
   getActivePanel = () => {
-    const path = window.location.hash.substring(2,window.location.hash.length);
+    const path = window.location.hash.substring(2, window.location.hash.length);
     if (path.startsWith('flow'))
       return 'flow';
     if (path.startsWith('logs'))

@@ -15,8 +15,8 @@ class CopyCommand extends React.Component {
 						{
 							image.repoTags &&
 							image.repoTags.map(
-								tag =>
-									<p>{tag}</p>
+								(tag,idx) =>
+									<p key={idx}>{tag}</p>
 							)
 						}</Col>
 						<Col md="3" className="py-2">

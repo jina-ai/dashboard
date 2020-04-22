@@ -6,6 +6,7 @@ import MainSidebar from "../components/Layout/MainSidebar/MainSidebar";
 import MainFooter from "../components/Layout/MainFooter";
 
 import PasteYAML from '../modals/PasteYAML';
+import WriteReview from '../modals/WriteReview';
 
 import { Store } from '../flux';
 
@@ -42,6 +43,7 @@ class IconSidebarLayout extends React.Component {
         </Col>
       </Row>
       <PasteYAML open={modal === 'import'} />
+      <WriteReview open={modal === 'review'} />
     </Container>)
   }
 }

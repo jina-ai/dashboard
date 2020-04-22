@@ -13,29 +13,39 @@ class StarRating extends React.Component {
 		let stars = [];
 		let integer = parseInt(amount);
 		let remainder = amount - integer;
-		for (let i = 0; i < integer; ++i) {
-			stars.push(<i className="material-icons">star</i>);
+		let i;
+		for (i = 0; i < integer; ++i) {
+			let index = i;
+			stars.push(<i key={i} className="material-icons" onClick={()=>this.rate(index)}>star</i>);
 		}
 		if (remainder>=.8){
-			stars.push(<i className="material-icons">star</i>);
+			let index = i;
+			stars.push(<i key={i++} className="material-icons" onClick={()=>this.rate(index)}>star</i>);
 		}
 		else if(remainder>=.25){
-			stars.push(<i className="material-icons">star_half</i>);
+			let index = i;
+			stars.push(<i key={i++} className="material-icons" onClick={()=>this.rate(index)}>star_half</i>);
 		}
 
-		for(let i=stars.length;i<5;++i){
-			stars.push(<i className="material-icons">star_outline</i>);
+		for(let j=stars.length;j<5;++j){
+			let index = i;
+			stars.push(<i key={i++} className="material-icons" onClick={()=>this.rate(index)}>star_outline</i>);
 		}
 			return stars;
 	}
 
+	rate=(index)=>{
+		if(this.props.rate)
+			this.props.rate(index+1);
+	}
+
 	render = () => {
-		const { rating } = this.props;
-		const formatted = Math.round(rating*10 ||0)/10;
+		const { rating,userRated } = this.props;
+		const formatted = parseFloat(Math.round(rating*10 ||0)/10).toFixed(1);
 		const stars = this.getStars(formatted);
 		return (
-			<span className="app-rating text-muted">
-				<span className="rating-num">{formatted}</span>{stars}
+			<span className={`app-rating ${rating?'existing':''} ${userRated?'userRated':''} text-muted`}>
+				<span className="text-faded">{userRated?'You Rated: ':''}</span><span className="rating-num">{rating?formatted:''}</span>{stars}
 			</span>
 		)
 	}

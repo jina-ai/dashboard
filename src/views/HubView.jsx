@@ -10,7 +10,8 @@ class HubView extends React.Component {
 		banner: Store.getBanner('hub'),
 		images: Store.getHubImages(),
 		sortType: 'suggested',
-		category: 'all'
+		category: 'all',
+		searchQuery: ''
 	}
 	componentWillMount = () => {
 		Store.on('update-ui', this.getData);
@@ -33,15 +34,27 @@ class HubView extends React.Component {
 	}
 
 	sortBy = (sortType) => {
-		this.setState({ sortType });
+		this.setState({ sortType },this.search);
 	}
 
 	setCategory = (category) => {
-		this.setState({ category });
+		this.setState({ category },this.search);
+	}
+
+	updateSearch = (searchQuery) => {
+		this.setState({ searchQuery }, this.search);
+	}
+
+	search = () => {
+		const { category, searchQuery, sortType } = this.state;
+		Dispatcher.dispatch({
+			actionType: Constants.SEARCH_HUB,
+			payload: { category, q: searchQuery, sort: sortType }
+		})
 	}
 
 	render = () => {
-		const { banner, images, sortType,category } = this.state;
+		const { banner, images, sortType, category,searchQuery } = this.state;
 		return (
 			<Container fluid className="main-content-container px-0">
 				{
@@ -83,7 +96,7 @@ class HubView extends React.Component {
 						</Col>
 
 						<Col md="3" className="py-sm-2">
-							<FormInput placeholder="search images..." className="mb-3 mb-sm-0 ml-auto py-2" />
+							<FormInput placeholder="search images..." className="mb-3 mb-sm-0 ml-auto py-2" value={searchQuery} onChange={(e)=>this.updateSearch(e.target.value)} />
 						</Col>
 					</Row>
 					<Row>

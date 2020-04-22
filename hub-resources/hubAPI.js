@@ -3,26 +3,45 @@ const fs = require('fs');
 const axios = require('axios');
 const cors = require('cors');
 const db = require('./db');
-// const passport = require('passport');
-// const GitHubStrategy = require('passport-github2').Strategy;
+const passport = require('passport');
+const GitHubStrategy = require('passport-github2').Strategy;
 const app = express();
 
-const { PORT, PRIVATE_MODE, PRIVATE_TOKEN, IMAGES_URL, MONGO_URL } = require('./config');
+const { PORT, PRIVATE_MODE, PRIVATE_TOKEN, IMAGES_URL, MONGO_URL,GITHUB_CLIENT_ID,GITHUB_CLIENT_SECRET,DASHBOARD_URL } = require('./config');
 
-app.use(cors());
+//Express/Passport middleware
+app.use(cors({ origin: DASHBOARD_URL, optionsSuccessStatus: 200, credentials: true }));
+app.use(require('cookie-parser')());
 app.use(express.json());
+app.use(require('express-session')({
+	secret: process.env.SESSION_SECRET || 'dev_secret',
+	resave: true,
+	saveUninitialized: true
+}));
+app.use(passport.initialize());
+app.use(passport.session());
 
-// passport.use(new GitHubStrategy({
-// 	clientID: process.env.GITHUB_CLIENT_ID,
-// 	clientSecret: process.env.GITHUB_CLIENT_SECRET,
-// 	callbackURL: "http://127.0.0.1:3000/auth/github/callback"
-// },
-// function(accessToken, refreshToken, profile, done) {
-// 	User.findOrCreate({ githubId: profile.id }, function (err, user) {
-// 		return done(err, user);
-// 	});
-// }
-// ));
+passport.use(new GitHubStrategy({
+	clientID: GITHUB_CLIENT_ID,
+	clientSecret: GITHUB_CLIENT_SECRET,
+	callbackURL: `${DASHBOARD_URL}/#/login/`
+},
+	async function (accessToken, refreshToken, profile, done) {
+		const { name, email, login, id, avatar_url, url, company } = profile._json;
+		console.log('profile: ',profile)
+		let user = await db.updateUser(id, { id, name, email, login, avatar_url, url, company });
+		console.log('user: ', user);
+		return done(null, profile);
+	}
+));
+
+passport.serializeUser(function (user, done) {
+	done(null, user);
+});
+
+passport.deserializeUser(function (user, done) {
+	done(null, user);
+});
 
 const githubRaw = axios.create({
 	baseURL: 'https://raw.githubusercontent.com/',
@@ -42,26 +61,65 @@ const githubAPI = axios.create({
 let _markdownRaw = false;
 let _markdownHTML = false;
 
+app.get('/auth/github', passport.authenticate('github', { scope: [ 'user:email' ] }), async function (req, res) {
+	console.log('Authentication Successful!!');
+});
+
+app.get('/auth/github/callback', passport.authenticate('github', { failureRedirect: DASHBOARD_URL }), async function (req, res) {
+	console.log('Authentication Successful!!');
+	res.redirect(`${DASHBOARD_URL}/#/hub`)
+});
+
+app.post('/auth/logout',async function (req, res) {
+	req.logout();
+	res.json({status:'logged out'});
+});
+
+app.get('/profile',async function(req,res){
+	const {user} = req;
+	if (user)
+		res.json(user);
+	else
+		res.status(401).json({ error: 'unauthorized' })
+});
+
 app.get('/images', async function (req, res) {
 	console.log('\nGET at /images');
-	const sort = req.query.sort;
-	const category = req.query.category;
-	const after = req.query.after;
-	const q = req.query.q;
+	let sort = req.query.sort;
+	let category = req.query.category;
+	let after = req.query.after;
+	let q = req.query.q;
 	console.log('--query--')
 	console.log('sort:', sort)
 	console.log('category:', category)
 	console.log('after:', after)
 	console.log('q:', q)
-	const images = await db.getImages(sort,category,q,after);
+	if(category==='all'){
+		category = false;
+	}
+	if(sort==='suggested'){
+		sort = false;
+	}
+	const images = await db.getImages(sort, category, q, after);
 	res.send(images);
 });
 
 app.get('/images/:imageId', async function (req, res) {
 	const { imageId } = req.params;
 	console.log(`\nGET at /images/${imageId}`);
-
 	const image = await db.getImage(imageId);
+	image.reviews = await db.getReviews(imageId);
+	if(req.user){
+
+		let rating = await db.getRating(imageId,req.user.id)
+		let review = await db.getReview(imageId,req.user.id);
+		if(rating){
+			image.userRated = rating.stars;
+		}
+		if(review){
+			image.userReviewed = review.content
+		}
+	}
 	res.json(image);
 });
 
@@ -79,17 +137,26 @@ app.post('/images/:imageId/reviews', async function (req, res) {
 	const { imageId } = req.params;
 	console.log(`\nPOST at /images/${imageId}/reviews`);
 
+	if(!req.user)
+		return res.status(401).send({error: 'unauthorized'});
+
 	const image = await db.getImage(imageId);
 	if (!image)
 		return res.status(404).send({ error: 'Image Does Not Exist' });
 
-	const userId = 'user-abc';
+	const userId = req.user.id;
+	const username = req.user.username;
 	const { content } = req.body;
-	let result = await db.newReview({ imageId, content, userId });
+	let result = await db.newReview({ imageId, content, userId,username });
 
 	if (result.ok == 1) {
 		console.log('value updated');
-		res.json({ data: result.value });
+		let rating = await db.getRating(imageId,req.user.id)
+		let image = await db.getImage(imageId);
+		image.userRated = rating.stars;
+		image.userReviewed = content;
+		image.reviews = await db.getReviews(imageId);
+		res.json({ data: image });
 	}
 	else if (result.error) {
 		let { error } = result;
@@ -107,17 +174,22 @@ app.post('/images/:imageId/ratings', async function (req, res) {
 	const { imageId } = req.params;
 	console.log(`\nPOST at /images/${imageId}/ratings`);
 
+	if(!req.user)
+		return res.status(401).send({error: 'unauthorized'});
+
 	const image = await db.getImage(imageId);
 	if (!image)
 		return res.status(404).send({ error: 'Image Does Not Exist' });
 
-	const userId = 'user-abc';
+	const userId = req.user.id;
 	const { stars } = req.body;
 	let result = await db.newRating({ imageId, stars, userId });
 
 	if (result.ok == 1) {
 		console.log('value updated');
-		res.json({ data: result.value });
+		const image = await db.getImage(imageId);
+		image.userRated = stars;
+		res.json({ data: image });
 	}
 	else if (result.error) {
 		let { error } = result;
@@ -135,7 +207,7 @@ initAPI();
 
 async function initAPI() {
 	await db.initMongo(MONGO_URL);
-	// await loadHubImages();
+	await loadHubImages();
 	console.log('loaded images');
 	app.listen(PORT, () => {
 		console.log('Hub API is listening on port', PORT);

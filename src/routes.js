@@ -10,6 +10,7 @@ import LogsView from "./views/LogsView";
 import Settings from "./views/Settings";
 import HubView from "./views/HubView";
 import PackageView from "./views/PackageView";
+import LogIn from "./views/LogIn";
 
 import NotFound from "./views/NotFound";
 
@@ -54,5 +55,10 @@ export default [
     path: "/package",
     layout: IconSidebar,
     component: PackageView
+  },
+  {
+    path: "/login",
+    layout: IconSidebar,
+    component: LogIn
   },
 ];

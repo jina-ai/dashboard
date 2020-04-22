@@ -364,9 +364,18 @@ i.material-icons{
 
 .app-rating i{
   font-size:.85em;
-  color: #ffcc66;
+  color: #6e7278;
   vertical-align: middle;
   margin-top: -.25em;
+  cursor: pointer;
+}
+
+.app-rating.existing i{
+  color: #ffcc66;
+}
+
+.app-rating.userRated i{
+  color: #32c8cd;
 }
 
 .rating-num{
@@ -398,4 +407,18 @@ i.material-icons{
 .build-history{
   max-height: 25em;
   overflow-y: scroll;
+}
+
+.btn-github{
+  font-size: 1.25em;
+  border: 1px solid gray;
+}
+
+.auth-form{
+  margin-top: 25vh;
+}
+
+.text-faded{
+  font-size: .75em;
+  opacity: .5;
 }

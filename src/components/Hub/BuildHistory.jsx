@@ -11,10 +11,10 @@ class BuildHistory extends React.Component {
 				</CardHeader>
 				<CardBody className="p-0 build-history">
 					{
-						buildHistory && buildHistory.map(build =>{
+						buildHistory && buildHistory.map((build,idx) =>{
 							const formattedCreated = (new Date(build.created)).toLocaleString();
 						return (
-							<div className="user-activity__item pr-3 py-3">
+							<div key={idx} className="user-activity__item pr-3 py-3">
 								<div className="user-activity__item__icon mt-2">
 									<i className="material-icons">build</i>
 								</div>
