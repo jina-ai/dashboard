@@ -7,7 +7,7 @@ const passport = require('passport');
 const GitHubStrategy = require('passport-github2').Strategy;
 const app = express();
 
-const { PORT, PRIVATE_MODE, PRIVATE_TOKEN, IMAGES_URL, MONGO_URL,GITHUB_CLIENT_ID,GITHUB_CLIENT_SECRET,DASHBOARD_URL } = require('./config');
+const { PORT, PRIVATE_MODE, PRIVATE_TOKEN, IMAGES_URL, MONGO_URL, GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET, DASHBOARD_URL } = require('./config');
 
 //Express/Passport middleware
 app.use(cors({ origin: DASHBOARD_URL, optionsSuccessStatus: 200, credentials: true }));
@@ -28,7 +28,7 @@ passport.use(new GitHubStrategy({
 },
 	async function (accessToken, refreshToken, profile, done) {
 		const { name, email, login, id, avatar_url, url, company } = profile._json;
-		console.log('profile: ',profile)
+		console.log('profile: ', profile)
 		let user = await db.updateUser(id, { id, name, email, login, avatar_url, url, company });
 		console.log('user: ', user);
 		return done(null, profile);
@@ -61,7 +61,7 @@ const githubAPI = axios.create({
 let _markdownRaw = false;
 let _markdownHTML = false;
 
-app.get('/auth/github', passport.authenticate('github', { scope: [ 'user:email' ] }), async function (req, res) {
+app.get('/auth/github', passport.authenticate('github', { scope: ['user:email'] }), async function (req, res) {
 	console.log('Authentication Successful!!');
 });
 
@@ -70,13 +70,13 @@ app.get('/auth/github/callback', passport.authenticate('github', { failureRedire
 	res.redirect(`${DASHBOARD_URL}/dashboard/#/hub`)
 });
 
-app.post('/auth/logout',async function (req, res) {
+app.post('/auth/logout', async function (req, res) {
 	req.logout();
-	res.json({status:'logged out'});
+	res.json({ status: 'logged out' });
 });
 
-app.get('/profile',async function(req,res){
-	const {user} = req;
+app.get('/profile', async function (req, res) {
+	const { user } = req;
 	if (user)
 		res.json(user);
 	else
@@ -94,14 +94,14 @@ app.get('/images', async function (req, res) {
 	console.log('category:', category)
 	console.log('after:', after)
 	console.log('q:', q)
-	if(category==='all'){
+	if (category === 'all') {
 		category = false;
 	}
-	if(sort==='suggested'){
+	if (sort === 'suggested') {
 		sort = false;
 	}
 	const images = await db.getImages(sort, category, q, after);
-	console.log('found ',images.length,' images');
+	console.log('found ', images.length, ' images');
 	res.send(images);
 });
 
@@ -110,14 +110,14 @@ app.get('/images/:imageId', async function (req, res) {
 	console.log(`\nGET at /images/${imageId}`);
 	const image = await db.getImage(imageId);
 	image.reviews = await db.getReviews(imageId);
-	if(req.user){
+	if (req.user) {
 
-		let rating = await db.getRating(imageId,req.user.id)
-		let review = await db.getReview(imageId,req.user.id);
-		if(rating){
+		let rating = await db.getRating(imageId, req.user.id)
+		let review = await db.getReview(imageId, req.user.id);
+		if (rating) {
 			image.userRated = rating.stars;
 		}
-		if(review){
+		if (review) {
 			image.userReviewed = review.content
 		}
 	}
@@ -138,8 +138,8 @@ app.post('/images/:imageId/reviews', async function (req, res) {
 	const { imageId } = req.params;
 	console.log(`\nPOST at /images/${imageId}/reviews`);
 
-	if(!req.user)
-		return res.status(401).send({error: 'unauthorized'});
+	if (!req.user)
+		return res.status(401).send({ error: 'unauthorized' });
 
 	const image = await db.getImage(imageId);
 	if (!image)
@@ -148,13 +148,13 @@ app.post('/images/:imageId/reviews', async function (req, res) {
 	const userId = req.user.id;
 	const username = req.user.username;
 	const { content } = req.body;
-	let result = await db.newReview({ imageId, content, userId,username });
+	let result = await db.newReview({ imageId, content, userId, username });
 
 	if (result.ok == 1) {
 		console.log('value updated');
-		let rating = await db.getRating(imageId,req.user.id)
-		let image = await db.getImage(imageId);
-		image.userRated = rating.stars;
+		const rating = await db.getRating(imageId, userId)
+		const image = await db.getImage(imageId);
+		image.userRated = rating ? rating.stars : false;
 		image.userReviewed = content;
 		image.reviews = await db.getReviews(imageId);
 		res.json({ data: image });
@@ -175,8 +175,8 @@ app.post('/images/:imageId/ratings', async function (req, res) {
 	const { imageId } = req.params;
 	console.log(`\nPOST at /images/${imageId}/ratings`);
 
-	if(!req.user)
-		return res.status(401).send({error: 'unauthorized'});
+	if (!req.user)
+		return res.status(401).send({ error: 'unauthorized' });
 
 	const image = await db.getImage(imageId);
 	if (!image)
