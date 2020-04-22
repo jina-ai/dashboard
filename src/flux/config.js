@@ -1,3 +1,3 @@
 module.exports = {
-	hubURL: 'http://localhost:3040'
+	hubURL: 'https://hub.jina.ai'
 }
