@@ -21,6 +21,7 @@
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
 
+- [Monitor Jina "Hello, World!" with Dashboard](#monitor-jina-hello-world-with-dashboard)
 - [Getting started](#getting-started)
   - [1. Start the log server](#1-start-the-log-server)
   - [2. Connect the Dashboard to your log server](#2-connect-the-dashboard-to-your-log-server)
@@ -33,6 +34,16 @@
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
+## Monitor Jina "Hello, World!" with Dashboard
+
+Jina "Hello, World" is a simple demo of image neural search for Fashion-MNIST.
+
+1. Run the following command in the console
+   - `jina hello-world` (Python 3.7 required)
+   - ...or if you use Docker `docker run -p 5000:5000 jinaai/jina:devel hello-world --logserver`
+2. Open https://dashboard.jina.ai in your browser
+
+It should start streaming. If not, please refer to [this step](#2-connect-the-dashboard-to-your-log-server).
 
 
 ## Getting started
@@ -94,6 +105,16 @@ jina flow --logserver --yaml-path myflow.yml
 ```
 
 
+</td>
+</tr>
+
+<tr>
+<td>...or start a Flow with Docker Container</td>
+<td>
+
+```bash
+docker run -p 5000:5000 jina flow --logserver ...
+```
 </td>
 </tr>
 </table>
@@ -174,6 +195,17 @@ with:
 jina flow --logserver --logserver-config mylogserver.yml ...
 ```
 
+
+</td>
+</tr>
+
+<tr>
+<td>...or start a Flow with Docker Container</td>
+<td>
+
+```bash
+docker run -p PORT:PORT -v "$(PWD)/mylogserver.yml:/mylogserver.yml" jina flow --logserver --logserver-config /mylogserver.yml ...
+```
 
 </td>
 </tr>
