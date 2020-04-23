@@ -1,7 +1,21 @@
 import React from "react";
 import { Card, CardHeader, CardBody,Row,Col,Button } from 'shards-react';
+import {copyToClipboard} from '../../helpers';
+import {Dispatcher, Constants} from '../../flux';
 
 class CopyCommand extends React.Component {
+	copy = () =>{
+		const {image} = this.props;
+		let content= '';
+		image.repoTags.map(tag=>{
+			content = content.concat(tag);
+		})
+		copyToClipboard(content)
+		Dispatcher.dispatch({
+			actionType: Constants.SHOW_BANNER,
+			payload:['hub','Command copied to clipboard','success']
+		})
+	}
 	render = () => {
 		const { image } = this.props;
 		return (
@@ -20,7 +34,7 @@ class CopyCommand extends React.Component {
 							)
 						}</Col>
 						<Col md="3" className="py-2">
-							<Button theme="light" className="w-100 h-100"><i className="material-icons">file_copy</i> Copy</Button>
+							<Button theme="light" className="w-100 h-100" onClick={this.copy}><i className="material-icons">file_copy</i> Copy</Button>
 							</Col>
 					</Row>
 

@@ -78,6 +78,9 @@ class Store extends EventEmitter {
       case Constants.SHOW_MODAL:
         this.showModal(payload);
         break;
+      case Constants.SHOW_BANNER:
+        this.showBanner(...payload);
+        break;
       case Constants.IMPORT_CUSTOM_YAML:
         this.importCustomYAML(payload);
         break;
