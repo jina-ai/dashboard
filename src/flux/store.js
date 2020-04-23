@@ -215,9 +215,14 @@ class Store extends EventEmitter {
   }
 
   initHub = async () => {
-    const images = await api.getImages();
-    _store.hub = images;
-    console.log('images: ', images);
+    try {
+      const images = await api.getImages();
+      _store.hub = images;
+      _store.connected.hub = true;
+    }
+    catch (e) {
+      _store.connected.hub = false
+    }
     this.emit('update-hub');
   }
 
@@ -293,6 +298,7 @@ class Store extends EventEmitter {
     else if (result.data) {
       const image = result.data;
       _store.images[image.id] = image;
+      this.showBanner('hub', 'Rating successfully posted', 'success')
     }
     this.emit('update-hub');
   }
@@ -317,6 +323,7 @@ class Store extends EventEmitter {
     else if (result.data) {
       const image = result.data;
       _store.images[image.id] = image;
+      this.showBanner('hub', 'Review successfully posted', 'success')
     }
     this.emit('update-hub');
   }
@@ -326,9 +333,9 @@ class Store extends EventEmitter {
     window.location.reload()
   }
 
-  searchHub = async  ({ category, q, sort }) => {
-    const images = await api.searchHub(category,q,sort);
-    console.log('found',images.length,'images')
+  searchHub = async ({ category, q, sort }) => {
+    const images = await api.searchHub(category, q, sort);
+    console.log('found', images.length, 'images')
     _store.hub = images;
     this.emit('update-hub')
   }
@@ -433,6 +440,8 @@ class Store extends EventEmitter {
       return 'flow';
     if (path.startsWith('logs'))
       return 'logs';
+    if (path.startsWith('hub') || path.startsWith('package'))
+      return 'hub';
     return 'neither'
   }
 
