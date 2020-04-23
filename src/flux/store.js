@@ -294,10 +294,10 @@ class Store extends EventEmitter {
     catch (e) {
       if (String(e).includes('409'))
         e = 'Already Rated';
-      return this.showError(e);
+      return this.showError('hub',e);
     }
     if (result.error)
-      this.showError(result.error);
+      this.showError('hub',result.error);
     else if (result.data) {
       const image = result.data;
       _store.images[image.id] = image;
@@ -319,10 +319,10 @@ class Store extends EventEmitter {
     catch (e) {
       if (String(e).includes('409'))
         e = 'Already Reviewed';
-      return this.showError(e);
+      return this.showError('hub',e);
     }
     if (result.error)
-      this.showError(result.error);
+      this.showError('hub',result.error);
     else if (result.data) {
       const image = result.data;
       _store.images[image.id] = image;
@@ -354,8 +354,8 @@ class Store extends EventEmitter {
     this.emit('update-ui');
   }
 
-  showError = (error) => {
-    alert(error);
+  showError = (target,message) => {
+    this.showBanner(target,message,'error');
   }
 
   showModal = (data) => {
