@@ -2,7 +2,7 @@
   "name": "dashboard-v1",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://jina-ai.github.io/dashboard",
+  "homepage": "https://dashboard.jina.ai",
   "dependencies": {
     "@emotion/core": "^10.0.28",
     "@emotion/styled": "^10.0.27",
