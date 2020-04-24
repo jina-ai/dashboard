@@ -24,7 +24,7 @@ app.use(passport.session());
 passport.use(new GitHubStrategy({
 	clientID: GITHUB_CLIENT_ID,
 	clientSecret: GITHUB_CLIENT_SECRET,
-	callbackURL: `${DASHBOARD_URL}/dashboard/#/login/`
+	callbackURL: `${DASHBOARD_URL}/#/login/`
 },
 	async function (accessToken, refreshToken, profile, done) {
 		const { name, email, login, id, avatar_url, url, company } = profile._json;
@@ -65,9 +65,9 @@ app.get('/auth/github', passport.authenticate('github', { scope: ['user:email'] 
 	console.log('Authentication Successful!!');
 });
 
-app.get('/auth/github/callback', passport.authenticate('github', { failureRedirect: `${DASHBOARD_URL}/dashboard` }), async function (req, res) {
+app.get('/auth/github/callback', passport.authenticate('github', { failureRedirect: `${DASHBOARD_URL}` }), async function (req, res) {
 	console.log('Authentication Successful!!');
-	res.redirect(`${DASHBOARD_URL}/dashboard/#/hub`)
+	res.redirect(`${DASHBOARD_URL}/#/hub`)
 });
 
 app.post('/auth/logout', async function (req, res) {
