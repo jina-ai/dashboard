@@ -1,6 +1,14 @@
 # Dashboard (beta)
 
 ![CD](https://github.com/jina-ai/dashboard/workflows/CD/badge.svg)
+[![Jina](https://github.com/jina-ai/jina/blob/master/.github/badges/jina-badge.svg "We fully commit to open-source")](https://jina.ai)
+[![Jina License](https://github.com/jina-ai/jina/blob/master/.github/badges/license-badge.svg "Jina is licensed under Apache-2.0")](#license)
+[![Jina Docs](https://github.com/jina-ai/jina/blob/master/.github/badges/docs-badge.svg "Checkout our docs and learn Jina")](https://docs.jina.ai)
+[![We are hiring](https://github.com/jina-ai/jina/blob/master/.github/badges/jina-corp-badge-hiring.svg "We are hiring full-time position at Jina")](https://jina.ai/jobs)
+<a href="https://twitter.com/intent/tweet?text=%F0%9F%91%8DCheck+out+Jina%3A+the+New+Open-Source+Solution+for+Neural+Information+Retrieval+%F0%9F%94%8D%40JinaAI_&url=https%3A%2F%2Fgithub.com%2Fjina-ai%2Fjina&hashtags=JinaSearch&original_referer=http%3A%2F%2Fgithub.com%2F&tw_p=tweetbutton" target="_blank">
+  <img src="https://github.com/jina-ai/jina/blob/master/.github/badges/twitter-badge.svg"
+       alt="tweet button" title="👍Share Jina with your friends on Twitter"></img>
+</a>
 
 **Dashboard** offers the insight of running tasks in Jina. With dashboard, one can analyze logs, design flows and view Jina Hub images.
 
@@ -246,5 +254,17 @@ One can self-host a dashboard locally.
 
 ## Contributing
 
+We welcome all kinds of contributions from the open-source community, individuals and partners. Without your active involvement, Jina can't be successful.
+
+The following resources help you to make a good first contribution:
+
+- [Contributing guidelines](https://github.com/jina-ai/jina/blob/master/CONTRIBUTING.md)
+- [Release cycles and development stages](https://github.com/jina-ai/jina/blob/master/RELEASE.md)
+
 ## License
 
+Copyright (c) 2020 Jina AI Limited. All rights reserved.
+
+Jina is licensed under the Apache License, Version 2.0. See [LICENSE](LICENSE) for the full license text.
+
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
