@@ -63,7 +63,7 @@ function getInitialStore() {
       qps: 0,
       elapsed: {
         task_name: 'No Current Task',
-        seconds: 0,
+        seconds: '0s',
       },
       progress: {
         currentRequest: 0,
@@ -306,14 +306,26 @@ class Store extends EventEmitter {
     if (speed && speed_unit) {
       _store.taskData.speed.unit = speed_unit;
       _store.taskData.speed.current = parseFloat(speed).toFixed(1);
-      _store.taskData.speed.history.push(parseInt(speed));
+      _store.taskData.speed.history.push(parseFloat(speed).toFixed(3));
       _store.taskData.speed.history.shift();
     }
 
     if (elapsed) {
-      _store.taskData.elapsed.seconds = parseInt(elapsed);
+      _store.taskData.elapsed.seconds = this.formatSeconds(parseInt(elapsed));
       _store.taskData.elapsed.task_name = `Task: ${task_name}`;
     }
+  }
+
+  formatSeconds = (numSeconds) => {
+    let minute = 60;
+    let hour = 60*60;
+
+    if (numSeconds < minute)
+      return `${numSeconds}s`
+    if (numSeconds < hour)
+      return `${parseInt(numSeconds / minute)}m ${parseInt(numSeconds % minute)}s`
+    else
+      return `${parseInt(numSeconds / (hour))}h ${parseInt((numSeconds % hour)/minute )}m ${parseInt(numSeconds % minute)}s`
   }
 
   initCharts = () => {

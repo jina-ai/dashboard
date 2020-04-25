@@ -12,6 +12,10 @@ class SpeedCard extends React.Component {
 
   componentDidMount() {
     const { history } = this.props.speed;
+    let maxValue = Math.max(...history);
+    let minValue = Math.min(...history);
+
+    let difference = maxValue - minValue;
     const chartOptions = {
       ...{
         maintainAspectRatio: true,
@@ -49,7 +53,8 @@ class SpeedCard extends React.Component {
                 display: false,
                 // Avoid getting the graph line cut of at the top of the canvas.
                 // Chart.js bug link: https://github.com/chartjs/Chart.js/issues/4790
-                suggestedMax: Math.max(Math.max(...history) +1, 1),
+                suggestedMax: maxValue + (difference * .1),
+                suggestedMin: minValue - (difference * .1)
               }
             }
           ]
@@ -103,9 +108,14 @@ class SpeedCard extends React.Component {
         ]
       }
     }
-    this.chart.options.scales.yAxes[0].ticks.suggestedMax = Math.max(Math.max(...history) +1 , 1);
+    let maxValue = Math.max(...history);
+    let minValue = Math.min(...history);
+
+    let difference = maxValue - minValue;
+
+    this.chart.options.scales.yAxes[0].ticks.suggestedMax = maxValue + (difference * .1);
+    this.chart.options.scales.yAxes[0].ticks.suggestedMin = minValue - (difference * .1);
     this.chart.data = newChartData;
-    this.chart.resize();
     this.chart.update();
   }
 
