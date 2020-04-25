@@ -104,6 +104,7 @@ class SpeedCard extends React.Component {
         ]
       }
     }
+    this.chart.options.scales.yAxes[0].ticks.suggestedMax = Math.max(Math.max(...history) * 1.1, 1);
     this.chart.data = newChartData;
     this.chart.update();
   }

@@ -12,6 +12,7 @@ let _store = getInitialStore();
 
 const NUM_CHART_ELEMENTS = 60;
 const CHART_UPDATE_INTERVAL = 1000;
+const TASK_UPDATE_INTERVAL = 500;
 const CHART_LEVELS = ['INFO', 'SUCCESS', 'WARNING', 'ERROR', 'CRITICAL', 'DEBUG']
 
 function getInitialStore() {
@@ -72,16 +73,8 @@ function getInitialStore() {
         unit: 'units',
         history: (new Array(30)).fill(0),
       },
-      messages: {
-        labels: [],
-        sent: [],
-        received: []
-      },
-      bytes: {
-        labels: [],
-        sent: [],
-        received: []
-      },
+      messages: [],
+      bytes: [],
     },
     selectedNode: null,
     modalParams: null,
@@ -196,6 +189,7 @@ class Store extends EventEmitter {
 
   initLogStream = () => {
     api.connect(_store.settings, this.handleNewLog, this.handleNewTaskEvent)
+    this.updateTaskInterval = setInterval(()=>this.emit('update-task'),TASK_UPDATE_INTERVAL)
   }
 
   handleNewLog = (message) => {
@@ -272,21 +266,31 @@ class Store extends EventEmitter {
 
     if (msg_recv && msg_sent) {
       console.log('process: ',process);
-      let index = _store.taskData.messages.labels.indexOf(process);
-      if (index < 0) {
-        _store.taskData.messages.labels.push(process);
-        index = _store.taskData.messages.labels.length - 1;
+      let index = _store.taskData.messages.map((obj)=>obj.label).indexOf(process);
+      let msgData = {
+        label: process,
+        sent: msg_sent,
+        received: msg_recv
       }
-      console.log('num labels:', _store.taskData.messages.labels.length)
-      _store.taskData.messages.sent[index] = msg_sent
-      _store.taskData.messages.received[index] = msg_recv;
-      _store.taskData.bytes.sent[index] = bytes_sent;
-      _store.taskData.bytes.received[index] = bytes_recv;
+      let bytesData = {
+        label: process,
+        sent: bytes_sent,
+        received: bytes_recv
+      }
+      if (index < 0) {
+        _store.taskData.messages.push(msgData);
+        _store.taskData.bytes.push(bytesData);
+      }
+      else {
+        _store.taskData.messages[index] = msgData;
+        _store.taskData.bytes[index] = bytesData;
+      }
 
+      _store.taskData.messages = _store.taskData.messages.sort((a,b)=>(b.sent+b.received)-(a.sent+a.received))
+      _store.taskData.bytes = _store.taskData.bytes.sort((a,b)=>(b.sent+b.received)-(a.sent+a.received))
     }
 
     if (speed && speed_unit) {
-      console.log('speed: ',speed);
       _store.taskData.speed.unit = speed_unit;
       _store.taskData.speed.current = parseInt(speed);
       _store.taskData.speed.history.push(parseInt(speed));
@@ -297,8 +301,6 @@ class Store extends EventEmitter {
       _store.taskData.elapsed.seconds = parseInt(elapsed);
       _store.taskData.elapsed.task_name = `Task: ${task_name}`;
     }
-
-    this.emit('update-task');
   }
 
   initCharts = () => {

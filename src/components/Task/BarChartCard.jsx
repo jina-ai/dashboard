@@ -14,7 +14,7 @@ class ProcessReport extends React.Component {
 
   componentDidMount() {
     const chartData = this.props[this.state.tab];
-    
+
     const chartOptions = {
       ...{
         // legend: false,
@@ -50,12 +50,12 @@ class ProcessReport extends React.Component {
       type: "bar",
       options: chartOptions,
       data: {
-        labels: this.props.labels,
+        labels: chartData.map(d => d.label),
         datasets: [
           {
             label: "msg sent",
             fill: "start",
-            data: chartData.sent,
+            data: chartData.map(d => d.sent),
             backgroundColor: "#009999",
             borderColor: "#009999",
             pointBackgroundColor: "#FFFFFF",
@@ -65,7 +65,7 @@ class ProcessReport extends React.Component {
           {
             label: "msg received",
             fill: "start",
-            data: chartData.received,
+            data: chartData.map(d => d.received),
             backgroundColor: "#32C8CD",
             borderColor: "#32C8CD",
             pointBackgroundColor: "#FFFFFF",
@@ -81,12 +81,12 @@ class ProcessReport extends React.Component {
     const { tab } = this.state;
     const chartData = this.props[tab];
     this.chart.data = {
-      labels: this.props.labels,
+      labels: chartData.map(d => d.label),
       datasets: [
         {
-          label: "msg sent",
+          label: `${tab} sent`,
           fill: "start",
-          data: chartData.sent,
+          data: chartData.map(d => d.sent),
           backgroundColor: "#009999",
           borderColor: "#009999",
           pointBackgroundColor: "#FFFFFF",
@@ -94,9 +94,9 @@ class ProcessReport extends React.Component {
           borderWidth: 1.5
         },
         {
-          label: "msg received",
+          label: `${tab} received`,
           fill: "start",
-          data: chartData.received,
+          data: chartData.map(d => d.received),
           backgroundColor: "#32C8CD",
           borderColor: "#32C8CD",
           pointBackgroundColor: "#FFFFFF",
@@ -114,7 +114,7 @@ class ProcessReport extends React.Component {
 
   render() {
     const { tab } = this.state;
-    if(this.chart)
+    if (this.chart)
       this.updateChart()
     return (
       <Card small className="h-100 mb-4">
