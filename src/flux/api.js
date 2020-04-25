@@ -1,7 +1,7 @@
-import images from '../data/images.json';
 import axios from 'axios';
 import { hubURL } from './config'
-let stream;
+let logStream;
+let taskStream;
 
 const hubAPI = axios.create({
 	baseURL: hubURL,
@@ -14,26 +14,37 @@ const hubAPI = axios.create({
 });
 
 export default {
-	connect: (settings, callback) => {
-		let hadPreviousStream = false;
-		if (stream) {
-			hadPreviousStream = true;
-			stream.close();
+	connect: (settings, logUpdate,taskUpdate) => {
+		const logString = `${settings.host}:${settings.port}${settings.log.startsWith('/') ? settings.log : '/' + settings.log}`;
+		console.log('logs connectionString: ', logString)
+		logStream = new EventSource(logString);
+
+		logStream.onopen = () => {
+			logUpdate({ type: 'connect', data: `Log connection established at ${logString}` })
+		}
+		logStream.onmessage = (m) => {
+			logUpdate({ type: 'log', data: JSON.parse(m.data) });
+		}
+		logStream.onerror = (data) => {
+			logUpdate({ type: 'error', data: `Could not get log data from ${logString}` });
+			logStream.close()
 		}
 
-		const connectionString = `${settings.host}:${settings.port}${settings.log.startsWith('/') ? settings.log : '/' + settings.log}`;
-		console.log('logs connectionString: ', connectionString)
-		stream = new EventSource(connectionString);
-		stream.onopen = () => {
-			callback({ type: 'connect', data: `Connection ${hadPreviousStream ? 're-' : ''}established at ${settings.host}:${settings.port}` })
+		const taskString = `${settings.host}:${settings.port}${settings.profile.startsWith('/') ? settings.profile : '/' + settings.profile}`;
+		console.log('task connectionString:',taskString);
+		taskStream = new EventSource(taskString);
+		
+		taskStream.onopen = () => {
+			taskUpdate({ type: 'connect', data: `Task connection established at ${taskString}` })
 		}
-		stream.onmessage = (m) => {
-			callback({ type: 'log', data: JSON.parse(m.data) });
+		taskStream.onmessage = (m) => {
+			taskUpdate({ type: 'event', data: JSON.parse(m.data) });
 		}
-		stream.onerror = (data) => {
-			callback({ type: 'error', data: `Could not get log data from ${connectionString}` });
-			stream.close()
+		taskStream.onerror = (data) => {
+			taskUpdate({ type: 'error', data: `Could not get profile data from ${taskString}` });
+			taskStream.close()
 		}
+
 	},
 	getProfile: async () => {
 		const result = await hubAPI.get('profile');

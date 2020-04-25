@@ -422,3 +422,12 @@ i.material-icons{
   font-size: .75em;
   opacity: .5;
 }
+
+.stats-small__label{
+  font-size: 1em;
+}
+
+.stats-small__label.under{
+  /* color: black; */
+  font-weight: 600;
+}

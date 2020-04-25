@@ -16,6 +16,13 @@ export default function () {
       matches:['logs']
     },
     {
+      title: 'Task',
+      to: '/task',
+      htmlBefore: '<i class="material-icons">assessment</i>',
+      htmlAfter: '',
+      matches:['task']
+    },
+    {
       title: 'Flow Design',
       to: '/flow',
       htmlBefore: '<i class="material-icons">device_hub</i>',

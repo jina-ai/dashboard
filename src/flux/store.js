@@ -57,6 +57,32 @@ function getInitialStore() {
     },
     logIndex: false,
     summaryCharts: {},
+    taskData: {
+      elapsed: {
+        task_name: 'No Current Task',
+        seconds: 0,
+      },
+      progress: {
+        currentRequest: 0,
+        bar_len: 0,
+        num_bars: 0,
+      },
+      speed: {
+        current: 0,
+        unit: 'units',
+        history: (new Array(30)).fill(0),
+      },
+      messages: {
+        labels: [],
+        sent: [],
+        received: []
+      },
+      bytes: {
+        labels: [],
+        sent: [],
+        received: []
+      },
+    },
     selectedNode: null,
     modalParams: null,
     currentTab: 'logStream',
@@ -169,40 +195,110 @@ class Store extends EventEmitter {
   }
 
   initLogStream = () => {
-    api.connect(_store.settings, (message) => {
-      const { type, data } = message;
+    api.connect(_store.settings, this.handleNewLog, this.handleNewTaskEvent)
+  }
 
-      if (type === 'connect') {
-        _store.connected.logs = true;
-        return this.showBanner('logs', data, 'success')
+  handleNewLog = (message) => {
+    const { type, data } = message;
+
+    if (type === 'connect') {
+      _store.connected.logs = true;
+      return this.showBanner('logs', data, 'success')
+    }
+
+    if (type === 'error') {
+      _store.connected.logs = false;
+      return this.showBanner('logs', data, 'error')
+    }
+
+    const log = data;
+
+    log.formattedTimestamp = (new Date(log.created * 1000)).toLocaleString()
+    log.idx = _store.logs.all.length;
+    _store.logs.all.push(log);
+
+    const source = log.name;
+
+    if (_store.logs[source])
+      _store.logs[source].push(log);
+    else
+      _store.logs[source] = [log];
+
+    _store.logSources[source] = true;
+
+    if (CHART_LEVELS.includes(log.levelname)) {
+      _store.occurences.current[log.levelname]++;
+    }
+    // console.log('occurences: ',_store.occurences)
+    this.emit('update-logs');
+  }
+
+  handleNewTaskEvent = (message) => {
+    const { type, data } = message;
+
+    if (type === 'connect') {
+      _store.connected.task = true;
+      return this.showBanner('task', data, 'success')
+    }
+
+    if (type === 'error') {
+      _store.connected.task = false;
+      return this.showBanner('task', data, 'error')
+    }
+
+    const event = data;
+
+    const {
+      task_name,
+      process,
+      bar_len,
+      num_bars,
+      elapsed,
+      speed,
+      speed_unit,
+      bytes_recv,
+      bytes_sent,
+      msg_recv,
+      msg_sent,
+    } = event;
+
+
+    if (bar_len && num_bars) {
+      if (_store.taskData.progress.num_bars > num_bars)
+        _store.taskData.progress.currentRequest++;
+      _store.taskData.progress.bar_len = bar_len;
+      _store.taskData.progress.num_bars = num_bars;
+    }
+
+    if (msg_recv && msg_sent) {
+      console.log('process: ',process);
+      let index = _store.taskData.messages.labels.indexOf(process);
+      if (index < 0) {
+        _store.taskData.messages.labels.push(process);
+        index = _store.taskData.messages.labels.length - 1;
       }
+      console.log('num labels:', _store.taskData.messages.labels.length)
+      _store.taskData.messages.sent[index] = msg_sent
+      _store.taskData.messages.received[index] = msg_recv;
+      _store.taskData.bytes.sent[index] = bytes_sent;
+      _store.taskData.bytes.received[index] = bytes_recv;
 
-      if (type === 'error') {
-        _store.connected.logs = false;
-        return this.showBanner('logs', data, 'error')
-      }
+    }
 
-      const log = data;
+    if (speed && speed_unit) {
+      console.log('speed: ',speed);
+      _store.taskData.speed.unit = speed_unit;
+      _store.taskData.speed.current = parseInt(speed);
+      _store.taskData.speed.history.push(parseInt(speed));
+      _store.taskData.speed.history.shift();
+    }
 
-      log.formattedTimestamp = (new Date(log.created * 1000)).toLocaleString()
-      log.idx = _store.logs.all.length;
-      _store.logs.all.push(log);
+    if (elapsed) {
+      _store.taskData.elapsed.seconds = parseInt(elapsed);
+      _store.taskData.elapsed.task_name = `Task: ${task_name}`;
+    }
 
-      const source = log.name;
-
-      if (_store.logs[source])
-        _store.logs[source].push(log);
-      else
-        _store.logs[source] = [log];
-
-      _store.logSources[source] = true;
-
-      if (CHART_LEVELS.includes(log.levelname)) {
-        _store.occurences.current[log.levelname]++;
-      }
-      // console.log('occurences: ',_store.occurences)
-      this.emit('update-logs');
-    })
+    this.emit('update-task');
   }
 
   initCharts = () => {
@@ -294,10 +390,10 @@ class Store extends EventEmitter {
     catch (e) {
       if (String(e).includes('409'))
         e = 'Already Rated';
-      return this.showError('hub',e);
+      return this.showError('hub', e);
     }
     if (result.error)
-      this.showError('hub',result.error);
+      this.showError('hub', result.error);
     else if (result.data) {
       const image = result.data;
       _store.images[image.id] = image;
@@ -319,10 +415,10 @@ class Store extends EventEmitter {
     catch (e) {
       if (String(e).includes('409'))
         e = 'Already Reviewed';
-      return this.showError('hub',e);
+      return this.showError('hub', e);
     }
     if (result.error)
-      this.showError('hub',result.error);
+      this.showError('hub', result.error);
     else if (result.data) {
       const image = result.data;
       _store.images[image.id] = image;
@@ -354,8 +450,8 @@ class Store extends EventEmitter {
     this.emit('update-ui');
   }
 
-  showError = (target,message) => {
-    this.showBanner(target,message,'error');
+  showError = (target, message) => {
+    this.showBanner(target, message, 'error');
   }
 
   showModal = (data) => {
@@ -437,6 +533,10 @@ class Store extends EventEmitter {
     return occurences;
   }
 
+  getTaskData = () => {
+    return _store.taskData;
+  }
+
   getActivePanel = () => {
     const path = window.location.hash.substring(2, window.location.hash.length);
     if (path.startsWith('flow'))
@@ -445,6 +545,8 @@ class Store extends EventEmitter {
       return 'logs';
     if (path.startsWith('hub') || path.startsWith('package'))
       return 'hub';
+    if (path.startsWith('task'))
+      return 'task';
     return 'neither'
   }
 

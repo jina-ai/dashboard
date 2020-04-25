@@ -7,6 +7,7 @@ import { DashboardLayout,IconSidebar } from "./layouts";
 // Route Views
 import FlowView from "./views/FlowView";
 import LogsView from "./views/LogsView";
+import TaskView from "./views/TaskView";
 import Settings from "./views/Settings";
 import HubView from "./views/HubView";
 import PackageView from "./views/PackageView";
@@ -30,6 +31,11 @@ export default [
     path: "/flow",
     layout: IconSidebar,
     component: FlowView
+  },
+  {
+    path: "/task",
+    layout: IconSidebar,
+    component: TaskView
   },
   {
     path: "/settings",

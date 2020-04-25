@@ -292,9 +292,6 @@ class StreamContainer extends React.Component {
 
 	_onScroll = (data) => {
 		const { scrollTop, scrollHeight, clientHeight } = data;
-		console.log('scrollTop: ', scrollTop);
-		console.log('scrollHeight: ', scrollHeight);
-		console.log('clientHeight: ', clientHeight)
 		this._scrollTop = scrollTop;
 		let difference = scrollHeight - (scrollTop + clientHeight);
 
