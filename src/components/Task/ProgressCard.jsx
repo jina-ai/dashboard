@@ -67,7 +67,7 @@ class SingleGoal extends React.Component {
         <div className="go-stats__chart mx-auto d-flex flex-row">
           <div className="mr-4 mt-3">
             <h6 className="stats-small__label text-uppercase text-center">Request</h6>
-            <h4 className="mb-0">#{progress.currentRequest}</h4>
+            <h4 className="mb-0">{progress.currentRequest}</h4>
 
           </div>
 

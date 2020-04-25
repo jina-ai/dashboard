@@ -7,6 +7,7 @@ import ElapsedCard from "../components/Task/ElapsedCard";
 import ProgressCard from "../components/Task/ProgressCard";
 import SpeedCard from "../components/Task/SpeedCard";
 import BarChartCard from "../components/Task/BarChartCard";
+import QueriesPerSecond from '../components/Task/QueriesPerSecond';
 
 
 class TaskView extends React.Component {
@@ -48,17 +49,20 @@ class TaskView extends React.Component {
             <PageTitle title="Task" subtitle="Local Network" className="text-sm-left mb-3" />
           </Row>
           <Row >
-            <Col md="4" className="mb-4">
+            <Col md="3" className="mb-4">
               <ElapsedCard elapsed={taskData.elapsed} />
             </Col>
-            <Col md="4" className="mb-4">
+            <Col md="3" className="mb-4">
+              <QueriesPerSecond qps={taskData.qps} />
+            </Col>
+            <Col md="3" className="mb-4">
               <ProgressCard progress={taskData.progress} />
             </Col>
-            <Col md="4" className="mb-4">
+            <Col md="3" className="mb-4">
               <SpeedCard speed={taskData.speed} />
             </Col>
           </Row>
-          <BarChartCard messages={taskData.messages} bytes={taskData.bytes} />
+          <BarChartCard messages={taskData.messages} bytes={taskData.bytes} lastUpdate={taskData.lastUpdateChart} />
         </div>
       </Container>
     )

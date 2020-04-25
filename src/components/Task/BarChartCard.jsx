@@ -12,7 +12,12 @@ class ProcessReport extends React.Component {
     }
   }
 
-  componentDidMount() {
+  componentDidUpdate=(prevProps)=>{
+    if(this.props.lastUpdate!=prevProps.lastUpdate)
+      this.updateChart();
+  }
+
+  componentDidMount = () => {
     const chartData = this.props[this.state.tab];
 
     const chartOptions = {
@@ -21,9 +26,22 @@ class ProcessReport extends React.Component {
         // Uncomment the next line in order to disable the animations.
         animation: false,
         tooltips: {
-          // enabled: false,
-          mode: "index",
-          position: "nearest"
+          callbacks: {
+            title: function (tooltipItem, data) {
+              return `Process ${tooltipItem[0].xLabel}`;
+            },
+            label: function (tooltipItem, data) {
+              let label = `${data.datasets[tooltipItem.datasetIndex].label}: ${tooltipItem.value}`
+              return label;
+            },
+            afterLabel: (tooltipItem, data) => {
+              const chartData = this.props[this.state.tab]
+              let text = '\nPods:'
+              const nodes = chartData[tooltipItem.index].nodes;
+              nodes.map(node=>text = text.concat(`\n${node}`));
+              return text;
+            }
+          },
         },
         scales: {
           xAxes: [
@@ -109,17 +127,15 @@ class ProcessReport extends React.Component {
   }
 
   setTab = (tab) => {
-    this.setState({ tab });
+    this.setState({ tab },this.updateChart);
   }
 
   render() {
     const { tab } = this.state;
-    if (this.chart)
-      this.updateChart()
     return (
       <Card small className="h-100 mb-4">
         <CardHeader className="border-bottom">
-          <h6 className="m-0">Process Report</h6>
+          <h6 className="m-0">Network Load</h6>
         </CardHeader>
 
         <CardBody className="pt-0">

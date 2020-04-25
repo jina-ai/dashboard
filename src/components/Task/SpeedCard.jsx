@@ -47,10 +47,9 @@ class SpeedCard extends React.Component {
               scaleLabel: false,
               ticks: {
                 display: false,
-                isplay: false,
                 // Avoid getting the graph line cut of at the top of the canvas.
                 // Chart.js bug link: https://github.com/chartjs/Chart.js/issues/4790
-                suggestedMax: Math.max(Math.max(...history) * 1.55, 1),
+                suggestedMax: Math.max(Math.max(...history) +1, 1),
               }
             }
           ]
@@ -104,8 +103,9 @@ class SpeedCard extends React.Component {
         ]
       }
     }
-    this.chart.options.scales.yAxes[0].ticks.suggestedMax = Math.max(Math.max(...history) * 1.1, 1);
+    this.chart.options.scales.yAxes[0].ticks.suggestedMax = Math.max(Math.max(...history) +1 , 1);
     this.chart.data = newChartData;
+    this.chart.resize();
     this.chart.update();
   }
 
@@ -114,9 +114,9 @@ class SpeedCard extends React.Component {
     if (this.chart)
       this.updateChart();
     return (
-      <Card className="pt-3 h-100 stats-small">
+      <Card className="pt-0 h-100 stats-small">
         <div className="stats-small__data mx-auto">
-          <h6 className="stats-small__label text-uppercase text-center mb-0"><b>Speed</b></h6>
+          <h6 className="stats-small__label text-uppercase text-center mb-0 pt-0 mt-0"><b>Speed</b></h6>
           <h2 className="my-3 mx-auto">{speed.current}</h2>
           <h6 className="stats-small__label under text-uppercase text-center">{speed.unit}/Second</h6>
         </div>

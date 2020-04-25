@@ -58,7 +58,9 @@ function getInitialStore() {
     },
     logIndex: false,
     summaryCharts: {},
+    processes: {},
     taskData: {
+      qps: 0,
       elapsed: {
         task_name: 'No Current Task',
         seconds: 0,
@@ -73,6 +75,7 @@ function getInitialStore() {
         unit: 'units',
         history: (new Array(30)).fill(0),
       },
+      lastUpdateChart: new Date(),
       messages: [],
       bytes: [],
     },
@@ -189,7 +192,7 @@ class Store extends EventEmitter {
 
   initLogStream = () => {
     api.connect(_store.settings, this.handleNewLog, this.handleNewTaskEvent)
-    this.updateTaskInterval = setInterval(()=>this.emit('update-task'),TASK_UPDATE_INTERVAL)
+    this.updateTaskInterval = setInterval(() => this.emit('update-task'), TASK_UPDATE_INTERVAL)
   }
 
   handleNewLog = (message) => {
@@ -212,6 +215,11 @@ class Store extends EventEmitter {
     _store.logs.all.push(log);
 
     const source = log.name;
+
+    if (!_store.processes[log.process])
+      _store.processes[log.process] = [log.name]
+    else if (!_store.processes[log.process].includes(log.name))
+      _store.processes[log.process].push(log.name)
 
     if (_store.logs[source])
       _store.logs[source].push(log);
@@ -254,28 +262,33 @@ class Store extends EventEmitter {
       bytes_sent,
       msg_recv,
       msg_sent,
+      num_reqs,
+      qps,
+      thread
     } = event;
 
 
     if (bar_len && num_bars) {
-      if (_store.taskData.progress.num_bars > num_bars)
-        _store.taskData.progress.currentRequest++;
+      _store.taskData.progress.currentRequest = num_reqs;
       _store.taskData.progress.bar_len = bar_len;
       _store.taskData.progress.num_bars = num_bars;
+      _store.taskData.qps = parseFloat(qps).toFixed(1);
     }
 
     if (msg_recv && msg_sent) {
-      console.log('process: ',process);
-      let index = _store.taskData.messages.map((obj)=>obj.label).indexOf(process);
+      let label = process;
+      let index = _store.taskData.messages.map((obj) => obj.label).indexOf(label);
       let msgData = {
-        label: process,
+        label,
         sent: msg_sent,
-        received: msg_recv
+        received: msg_recv,
+        nodes: _store.processes[process] || []
       }
       let bytesData = {
-        label: process,
+        label,
         sent: bytes_sent,
-        received: bytes_recv
+        received: bytes_recv,
+        nodes: _store.processes[process] || []
       }
       if (index < 0) {
         _store.taskData.messages.push(msgData);
@@ -285,14 +298,14 @@ class Store extends EventEmitter {
         _store.taskData.messages[index] = msgData;
         _store.taskData.bytes[index] = bytesData;
       }
-
-      _store.taskData.messages = _store.taskData.messages.sort((a,b)=>(b.sent+b.received)-(a.sent+a.received))
-      _store.taskData.bytes = _store.taskData.bytes.sort((a,b)=>(b.sent+b.received)-(a.sent+a.received))
+      _store.taskData.messages = _store.taskData.messages.sort((a, b) => (b.sent + b.received) - (a.sent + a.received))
+      _store.taskData.bytes = _store.taskData.bytes.sort((a, b) => (b.sent + b.received) - (a.sent + a.received))
+      _store.taskData.lastUpdateChart = new Date();
     }
 
     if (speed && speed_unit) {
       _store.taskData.speed.unit = speed_unit;
-      _store.taskData.speed.current = parseInt(speed);
+      _store.taskData.speed.current = parseFloat(speed).toFixed(1);
       _store.taskData.speed.history.push(parseInt(speed));
       _store.taskData.speed.history.shift();
     }
