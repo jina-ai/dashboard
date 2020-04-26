@@ -1,5 +1,6 @@
 import React from "react";
 import { Card, CardHeader, CardBody, Row, Col, ButtonGroup, Button } from "shards-react";
+import { formatBytes } from '../../helpers';
 import Chart from "chart.js";
 
 class ProcessReport extends React.Component {
@@ -12,13 +13,14 @@ class ProcessReport extends React.Component {
     }
   }
 
-  componentDidUpdate=(prevProps)=>{
-    if(this.props.lastUpdate!=prevProps.lastUpdate)
+  componentDidUpdate = (prevProps) => {
+    if (this.props.lastUpdate != prevProps.lastUpdate)
       this.updateChart();
   }
 
   componentDidMount = () => {
-    const chartData = this.props[this.state.tab];
+    const { tab } = this.state;
+    const chartData = this.props[tab];
 
     const chartOptions = {
       ...{
@@ -28,17 +30,15 @@ class ProcessReport extends React.Component {
         tooltips: {
           callbacks: {
             title: function (tooltipItem, data) {
-              return `Process ${tooltipItem[0].xLabel}`;
+              return `Pod: ${tooltipItem[0].xLabel}`;
             },
             label: function (tooltipItem, data) {
-              let label = `${data.datasets[tooltipItem.datasetIndex].label}: ${tooltipItem.value}`
+              let label = `${data.datasets[tooltipItem.datasetIndex].label}: ${tab === 'bytes' ? tooltipItem.value : formatBytes(tooltipItem.value)}`
               return label;
             },
             afterLabel: (tooltipItem, data) => {
-              const chartData = this.props[this.state.tab]
-              let text = '\nPods:'
-              const nodes = chartData[tooltipItem.index].nodes;
-              nodes.map(node=>text = text.concat(`\n${node}`));
+              const chartData = this.props[tab]
+              let text = '\nProcess Id: ' + chartData[tooltipItem.index].process
               return text;
             }
           },
@@ -54,9 +54,7 @@ class ProcessReport extends React.Component {
             {
               stacked: true,
               ticks: {
-                userCallback(label) {
-                  return label > 999 ? `${(label / 1000).toFixed(0)}k` : label;
-                }
+                userCallback:this.formatYAxisLabel
               }
             }
           ]
@@ -68,7 +66,7 @@ class ProcessReport extends React.Component {
       type: "bar",
       options: chartOptions,
       data: {
-        labels: chartData.map(d => d.label),
+        labels: chartData.map(d => d.node),
         datasets: [
           {
             label: "msg sent",
@@ -99,7 +97,7 @@ class ProcessReport extends React.Component {
     const { tab } = this.state;
     const chartData = this.props[tab];
     this.chart.data = {
-      labels: chartData.map(d => d.label),
+      labels: chartData.map(d => d.node),
       datasets: [
         {
           label: `${tab} sent`,
@@ -126,8 +124,16 @@ class ProcessReport extends React.Component {
     this.chart.update()
   }
 
+  formatYAxisLabel = (label) => {
+    const {tab} = this.state;
+    return tab === 'bytes' ?
+      formatBytes(label)
+      :
+      label > 999 ? `${(label / 1000).toFixed(0)}k` : label;
+  }
+
   setTab = (tab) => {
-    this.setState({ tab },this.updateChart);
+    this.setState({ tab }, this.updateChart);
   }
 
   render() {

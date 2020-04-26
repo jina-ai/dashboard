@@ -161,6 +161,28 @@ export function formatAsYAML(chart) {
 	return `!Flow\n${YAML.stringify(output)}`;
 }
 
+export function formatSeconds(numSeconds){
+	let minute = 60;
+	let hour = 60 * 60;
+
+	if (numSeconds < minute)
+		return `${numSeconds}s`
+	if (numSeconds < hour)
+		return `${parseInt(numSeconds / minute)}m ${parseInt(numSeconds % minute)}s`
+	else
+		return `${parseInt(numSeconds / (hour))}h ${parseInt((numSeconds % hour) / minute)}m ${parseInt(numSeconds % minute)}s`
+}
+
+export function formatBytes(numBytes){
+	if (numBytes < 1024)
+		return `${numBytes} Bytes`
+	if (numBytes < 1024 ** 2)
+		return `${parseFloat(numBytes).toFixed(1)} KB`
+	if (numBytes < 1024 ** 3)
+		return `${parseFloat(numBytes/(1024 ** 2)).toFixed(1)} MB`
+	return `${parseFloat(numBytes/(1024 ** 3)).toFixed(1)} GB`
+}
+
 function getNodeDepth(nodes, currentId, currentDepth) {
 	let parents = Object.keys(nodes[currentId].needs);
 	let longestDepth = 0;

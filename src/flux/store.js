@@ -1,7 +1,7 @@
 import { EventEmitter } from "events";
 import Dispatcher from "./dispatcher";
 import Constants from "./constants";
-import { parseYAML, formatForFlowchart } from "../helpers";
+import { parseYAML, formatForFlowchart, formatSeconds } from "../helpers";
 import api from "./api";
 import propertyList from '../data/properties.json';
 import getSidebarNavItems from "../data/sidebar-nav-items";
@@ -61,7 +61,7 @@ function getInitialStore() {
     processes: {},
     taskData: {
       qps: {
-        current:0,
+        current: 0,
         history: (new Array(30)).fill(0)
       },
       elapsed: {
@@ -219,10 +219,7 @@ class Store extends EventEmitter {
 
     const source = log.name;
 
-    if (!_store.processes[log.process])
-      _store.processes[log.process] = [log.name]
-    else if (!_store.processes[log.process].includes(log.name))
-      _store.processes[log.process].push(log.name)
+    _store.processes[log.process] = log.name;
 
     if (_store.logs[source])
       _store.logs[source].push(log);
@@ -278,19 +275,18 @@ class Store extends EventEmitter {
     }
 
     if (msg_recv && msg_sent) {
-      let label = process;
-      let index = _store.taskData.messages.map((obj) => obj.label).indexOf(label);
+      let index = _store.taskData.messages.map((obj) => obj.process).indexOf(process);
       let msgData = {
-        label,
+        process,
         sent: msg_sent,
         received: msg_recv,
-        nodes: _store.processes[process] || []
+        node: _store.processes[process]
       }
       let bytesData = {
-        label,
+        process,
         sent: bytes_sent,
         received: bytes_recv,
-        nodes: _store.processes[process] || []
+        node: _store.processes[process]
       }
       if (index < 0) {
         _store.taskData.messages.push(msgData);
@@ -300,12 +296,12 @@ class Store extends EventEmitter {
         _store.taskData.messages[index] = msgData;
         _store.taskData.bytes[index] = bytesData;
       }
-      _store.taskData.messages = _store.taskData.messages.sort((a, b) => (b.sent + b.received) - (a.sent + a.received))
-      _store.taskData.bytes = _store.taskData.bytes.sort((a, b) => (b.sent + b.received) - (a.sent + a.received))
+      _store.taskData.messages = _store.taskData.messages.sort((a, b) => (b.sent + b.received) - (a.sent + a.received)).slice(0,20)
+      _store.taskData.bytes = _store.taskData.bytes.sort((a, b) => (b.sent + b.received) - (a.sent + a.received)).slice(0,20)
       _store.taskData.lastUpdateChart = new Date();
     }
 
-    if(qps){
+    if (qps) {
       _store.taskData.qps.current = parseFloat(qps).toFixed(1);
       _store.taskData.qps.history.push(parseFloat(qps).toFixed(3));
       _store.taskData.qps.history.shift();
@@ -319,22 +315,11 @@ class Store extends EventEmitter {
     }
 
     if (elapsed) {
-      _store.taskData.elapsed.seconds = this.formatSeconds(parseInt(elapsed));
+      _store.taskData.elapsed.seconds = formatSeconds(parseInt(elapsed));
       _store.taskData.elapsed.task_name = `Task: ${task_name}`;
     }
   }
 
-  formatSeconds = (numSeconds) => {
-    let minute = 60;
-    let hour = 60*60;
-
-    if (numSeconds < minute)
-      return `${numSeconds}s`
-    if (numSeconds < hour)
-      return `${parseInt(numSeconds / minute)}m ${parseInt(numSeconds % minute)}s`
-    else
-      return `${parseInt(numSeconds / (hour))}h ${parseInt((numSeconds % hour)/minute )}m ${parseInt(numSeconds % minute)}s`
-  }
 
   initCharts = () => {
     CHART_LEVELS.map(level => {
