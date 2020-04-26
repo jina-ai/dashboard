@@ -32,13 +32,15 @@ class ProcessReport extends React.Component {
             title: function (tooltipItem, data) {
               return `Pod: ${tooltipItem[0].xLabel}`;
             },
-            label: function (tooltipItem, data) {
-              let label = `${data.datasets[tooltipItem.datasetIndex].label}: ${tab === 'bytes' ? tooltipItem.value : formatBytes(tooltipItem.value)}`
+            label: (tooltipItem, data) => {
+              let { tab } = this.state;
+              let label = `${data.datasets[tooltipItem.datasetIndex].label}: ${tab === 'bytes' ? formatBytes(tooltipItem.value):tooltipItem.value}`
               return label;
             },
             afterLabel: (tooltipItem, data) => {
+              let { tab } = this.state;
               const chartData = this.props[tab]
-              let text = '\nProcess Id: ' + chartData[tooltipItem.index].process
+              let text = '\nProcess ID: ' + chartData[tooltipItem.index].process
               return text;
             }
           },
@@ -54,7 +56,7 @@ class ProcessReport extends React.Component {
             {
               stacked: true,
               ticks: {
-                userCallback:this.formatYAxisLabel
+                userCallback: this.formatYAxisLabel
               }
             }
           ]
@@ -125,11 +127,10 @@ class ProcessReport extends React.Component {
   }
 
   formatYAxisLabel = (label) => {
-    const {tab} = this.state;
-    return tab === 'bytes' ?
-      formatBytes(label)
-      :
-      label > 999 ? `${(label / 1000).toFixed(0)}k` : label;
+    const { tab } = this.state;
+    if (tab === 'bytes')
+      return formatBytes(label)
+    return label > 999 ? `${(label / 1000).toFixed(0)}k` : label;
   }
 
   setTab = (tab) => {
