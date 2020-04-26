@@ -76,8 +76,8 @@ class QPSCard extends React.Component {
                 label: "Today",
                 fill: "start",
                 borderWidth: 1.5,
-                backgroundColor: "rgba(0, 153, 153, 0.25)",
-                borderColor: "#009999",
+                backgroundColor: "rgba(50, 200, 205, 0.25)",
+                borderColor: "#32c8cd",
                 data: history
               }
             ]
@@ -101,8 +101,8 @@ class QPSCard extends React.Component {
             label: "Today",
             fill: "start",
             borderWidth: 1.5,
-            backgroundColor: "rgba(0, 153, 153, 0.25)",
-            borderColor: "#009999",
+            backgroundColor: "rgba(50, 200, 205, 0.25)",
+            borderColor: "#32c8cd",
             data: history
           }
         ]
