@@ -227,7 +227,7 @@ async function loadHubImages() {
 	for (let i = 0; i < ids.length; ++i) {
 		let id = ids[i];
 		let image = images[id][images[id].length - 1]; //most recent image;
-		let imageDetails = await getImageDetails(image);
+		let imageDetails = await getImageDetails(image,id);
 		let imageData = {
 			id,
 			...imageDetails,
@@ -252,7 +252,7 @@ async function loadHubImages() {
 	return;
 }
 
-async function getImageDetails(image) {
+async function getImageDetails(image,id) {
 	let { Labels } = image.Inspect.Config;
 	let repoTags = image.Inspect.RepoTags;
 	let repoDigests = image.Inspect.RepoDigests;
@@ -276,18 +276,17 @@ async function getImageDetails(image) {
 
 	imageData.created = new Date(image.Inspect.Created);
 
-	let repoURL = PRIVATE_MODE ? 'https://github.com/facebook/react' : imageData.documentation;
+	let readmeURL = PRIVATE_MODE ? '/facebook/react/master/README.md' : `/jina-ai/jina-hub/master/${id.split('.').join('/')}/README.md`;
 	console.log('getting markdown for README.md');
 
-	repoURL = `${repoURL.replace('github.com', 'raw.githubusercontent.com')}/master/README.md`;
-	console.log('url: ', repoURL)
+	console.log('readmeURL: ',readmeURL);
 
 	let readmeRaw;
 	let readmeRendered;
 
 	if (PRIVATE_MODE) {
 		if (!_markdownRaw) {
-			let readmeResult = await githubRaw.get(repoURL);
+			let readmeResult = await githubRaw.get(readmeURL);
 			console.log('GET readme status:', readmeResult.status);
 			_markdownRaw = readmeResult.data;
 		}
@@ -301,7 +300,7 @@ async function getImageDetails(image) {
 		readmeRendered = _markdownHTML;
 	}
 	else {
-		let readmeResult = await githubRaw.get(repoURL);
+		let readmeResult = await githubRaw.get(readmeURL);
 		console.log('GET readme status:', readmeResult.status);
 		readmeRaw = readmeResult.data;
 

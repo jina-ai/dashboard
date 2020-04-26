@@ -53,10 +53,10 @@ class TaskView extends React.Component {
               <ElapsedCard elapsed={taskData.elapsed} />
             </Col>
             <Col md="3" className="mb-4">
-              <QueriesPerSecond qps={taskData.qps} />
+              <ProgressCard progress={taskData.progress} />
             </Col>
             <Col md="3" className="mb-4">
-              <ProgressCard progress={taskData.progress} />
+              <QueriesPerSecond qps={taskData.qps} />
             </Col>
             <Col md="3" className="mb-4">
               <SpeedCard speed={taskData.speed} />

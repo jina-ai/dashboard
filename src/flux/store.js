@@ -60,7 +60,10 @@ function getInitialStore() {
     summaryCharts: {},
     processes: {},
     taskData: {
-      qps: 0,
+      qps: {
+        current:0,
+        history: (new Array(30)).fill(0)
+      },
       elapsed: {
         task_name: 'No Current Task',
         seconds: '0s',
@@ -272,7 +275,6 @@ class Store extends EventEmitter {
       _store.taskData.progress.currentRequest = num_reqs;
       _store.taskData.progress.bar_len = bar_len;
       _store.taskData.progress.num_bars = num_bars;
-      _store.taskData.qps = parseFloat(qps).toFixed(1);
     }
 
     if (msg_recv && msg_sent) {
@@ -301,6 +303,12 @@ class Store extends EventEmitter {
       _store.taskData.messages = _store.taskData.messages.sort((a, b) => (b.sent + b.received) - (a.sent + a.received))
       _store.taskData.bytes = _store.taskData.bytes.sort((a, b) => (b.sent + b.received) - (a.sent + a.received))
       _store.taskData.lastUpdateChart = new Date();
+    }
+
+    if(qps){
+      _store.taskData.qps.current = parseFloat(qps).toFixed(1);
+      _store.taskData.qps.history.push(parseFloat(qps).toFixed(3));
+      _store.taskData.qps.history.shift();
     }
 
     if (speed && speed_unit) {
