@@ -10,10 +10,10 @@ import {
   NavLink,
   Button
 } from "shards-react";
-import { Store,Dispatcher,Constants } from '../../../../flux';
+import { Store, Dispatcher, Constants } from '../../../../flux';
 
 export default class UserActions extends React.Component {
-  state={
+  state = {
     visible: false,
     user: Store.getUser()
   }
@@ -30,13 +30,13 @@ export default class UserActions extends React.Component {
     this.setState({ user });
   }
 
-  toggleUserActions = () =>{
+  toggleUserActions = () => {
     this.setState({
       visible: !this.state.visible
     });
   }
 
-  logOut = () =>{
+  logOut = () => {
     Dispatcher.dispatch({
       actionType: Constants.LOG_OUT
     })
@@ -57,13 +57,9 @@ export default class UserActions extends React.Component {
               <span className="d-none d-md-inline-block">{user.username}</span>
             </DropdownToggle>
             :
-            <NavLink className="px-2">
-              <Link to="/login">
+            <Link to="/login" className="nav-link px-3">
               <Button className="text-nowrap mb-0 mt-1">Log in</Button>
-              </Link>
-              
-            </NavLink>
-
+            </Link>
         }
 
         <Collapse tag={DropdownMenu} right small open={this.state.visible}>

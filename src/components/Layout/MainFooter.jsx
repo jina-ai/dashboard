@@ -8,13 +8,9 @@ const MainFooter = ({ contained, menuItems, copyright }) => (
       <Row>
         <Nav>
           {menuItems.map((item, idx) => (
-            <NavItem key={idx}>
-              <NavLink>
-                <a href={item.to} target="_blank">
-                  {item.title}
-                </a>
-              </NavLink>
-            </NavItem>
+            <a key={idx} href={item.to} className="nav-link">
+              {item.title}
+            </a>
           ))}
         </Nav>
         <span className="copyright ml-auto my-auto mr-2">{copyright}</span>
