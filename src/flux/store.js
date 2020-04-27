@@ -43,7 +43,24 @@ function getInitialStore() {
     flowchart: {
       selected: {},
       hovered: {},
-      nodes: {},
+      nodes: {
+        gateway: {
+          id: 'gateway',
+          label: 'gateway',
+          ports: {
+            inPort: {
+              id: 'inPort',
+              type: 'input',
+            },
+            outPort: {
+              id: 'outPort',
+              type: 'output',
+            }
+          },
+          properties: {},
+          position: {x: 629,y: 72,}
+        },
+      },
       links: {},
       offset: { x: 0, y: 0 },
     },
@@ -296,8 +313,8 @@ class Store extends EventEmitter {
         _store.taskData.messages[index] = msgData;
         _store.taskData.bytes[index] = bytesData;
       }
-      _store.taskData.messages = _store.taskData.messages.sort((a, b) => (b.sent + b.received) - (a.sent + a.received)).slice(0,20)
-      _store.taskData.bytes = _store.taskData.bytes.sort((a, b) => (b.sent + b.received) - (a.sent + a.received)).slice(0,20)
+      _store.taskData.messages = _store.taskData.messages.sort((a, b) => (b.sent + b.received) - (a.sent + a.received)).slice(0, 20)
+      _store.taskData.bytes = _store.taskData.bytes.sort((a, b) => (b.sent + b.received) - (a.sent + a.received)).slice(0, 20)
       _store.taskData.lastUpdateChart = new Date();
     }
 
