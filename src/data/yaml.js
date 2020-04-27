@@ -53,6 +53,7 @@ module.exports = {
           x: 1526
           y: 311.66666412353516
   pods:
+    gateway:
     chunk_seg:
       replicas: 3
     encode1:
