@@ -30,7 +30,9 @@ jobs:
       with:
         MAX_HEADER_LEVEL: 3
         FOLDING: false
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.JINA_DEV_BOT }}
         TOC_TITLE: ''
         TARGET_PATHS: 'README.md'
         COMMIT_MESSAGE: 'chore(docs): update TOC'
+        COMMIT_NAME: Jina Dev Bot
+        COMMIT_EMAIL: dev-bot@jina.ai

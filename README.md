@@ -276,4 +276,3 @@ Copyright (c) 2020 Jina AI Limited. All rights reserved.
 
 Jina is licensed under the Apache License, Version 2.0. See [LICENSE](LICENSE) for the full license text.
 
-<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
