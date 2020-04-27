@@ -47,8 +47,14 @@
 Jina "Hello, World" is a simple demo of image neural search for Fashion-MNIST.
 
 1. Run the following command in the console
-   - `jina hello-world` (Python 3.7 required)
-   - ...or if you use Docker `docker run -p 5000:5000 jinaai/jina:devel hello-world --logserver`
+   - (Python 3.7 required)
+      ```bash
+      JINA_LOG_PROFILING=1 jina hello-world
+      ``` 
+   - ...or if you use Docker 
+      ```
+      docker run -e "JINA_LOG_PROFILING=1" -p 5000:5000 jinaai/jina:devel hello-world --logserver
+      ```
 2. Open https://dashboard.jina.ai in your browser
 
 It should start streaming. If not, please refer to [this step](#2-connect-the-dashboard-to-your-log-server).
