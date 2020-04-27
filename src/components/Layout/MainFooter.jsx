@@ -9,8 +9,10 @@ const MainFooter = ({ contained, menuItems, copyright }) => (
         <Nav>
           {menuItems.map((item, idx) => (
             <NavItem key={idx}>
-              <NavLink tag={Link} to={item.to}>
-                {item.title}
+              <NavLink>
+                <a href={item.to} target="_blank">
+                  {item.title}
+                </a>
               </NavLink>
             </NavItem>
           ))}
@@ -27,27 +29,27 @@ MainFooter.defaultProps = {
   menuItems: [
     {
       title: "Home",
-      to: "#"
+      to: "https://jina.ai"
     },
     {
-      title: "Products",
-      to: "#"
+      title: "Opensource",
+      to: "https://opensource.jina.ai"
     },
     {
       title: "Learn",
-      to: "#"
+      to: "https://docs.jina.ai"
     },
     {
       title: "Community",
-      to: "#"
-    },
-    {
-      title: "Blog",
-      to: "#"
+      to: "https://twitter.com/JinaAI_"
     },
     {
       title: "Jobs",
-      to: "#"
+      to: "https://www.linkedin.com/company/jinaai/jobs/"
+    },
+    {
+      title: "Privacy & Terms",
+      to: "https://github.com/jina-ai/legal"
     }
   ]
 };
