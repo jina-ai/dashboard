@@ -47,11 +47,11 @@
 Jina "Hello, World" is a simple demo of image neural search for Fashion-MNIST.
 
 1. Run the following command in the console
-   - (Python 3.7 required)
+   - (Python >=3.7 required)
       ```bash
       JINA_LOG_PROFILING=1 jina hello-world
       ``` 
-   - ...or if you use Docker 
+   - ...or if you use Docker (no install required)
       ```
       docker run -e "JINA_LOG_PROFILING=1" -p 5000:5000 jinaai/jina:devel hello-world --logserver
       ```
@@ -63,6 +63,8 @@ It should start streaming. If not, please refer to [this step](#2-connect-the-da
 ## Getting started
 
 ### 1. Start the log server
+
+> Set environment variable `JINA_LOG_PROFILING` to `1` to enable Task tab in the dashboard.
 
 Log server is a helper thread in Jina flow. It exposes HTTP endpoints to the public which the dashboard can use to fetch logs, visualize the flow. 
 
@@ -140,9 +142,10 @@ Either way, if you see the following logs show up in the console, then your log 
 <img src=".github/.README_images/logserver.png?raw=true" alt="logserver success started" width="80%">
 </p>
 
+
 ### 2. Connect the Dashboard to your log server
 
-Go to: [https://jina-ai.github.io/dashboard/](https://jina-ai.github.io/dashboard/)
+Go to: [https://dashboard.jina.ai](https://dashboard.jina.ai)
 
 Click on the globe icon on the top-left corner to connect to the log server.
 
