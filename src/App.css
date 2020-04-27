@@ -130,6 +130,7 @@ body{
   line-height: 0;
   font-size: .85em;
   padding: .15em;
+  padding-bottom: 0em;
   /* padding-left: 10px; */
   /* padding-right: 10px; */
   border-radius: .25em;
@@ -230,6 +231,14 @@ i.material-icons{
 
 .log:hover{
   background-color:rgba(0, 153, 153, 0.3);
+}
+
+.log-linkedin{
+  color: #0077b5
+}
+
+.log-primary{
+  color: #009999;
 }
 
 .log-success{
