@@ -19,9 +19,12 @@ class HubView extends React.Component {
 		const imageId = params.get('id');
 		this.state = {
 			imageId,
-			loading: true,
+			loading: false,
 			banner: {},
-			imageData:{}
+			imageData:{
+				reviews:[],
+				repoTags:[]
+			}
 		}
 	}
 
@@ -93,12 +96,12 @@ class HubView extends React.Component {
 							<Row>
 								<Col md="8">
 									<Readme readme={imageData.readmeHTML} documentation={imageData.documentation} />
+									<ImageReviews reviews={reviews} imageId={imageData.id} />
 								</Col>
 								<Col md="4">
 									<CopyCommand image={imageData} />
 									<Details image={imageData} />
 									<BuildHistory image={imageData} />
-									<ImageReviews reviews={reviews} imageId={imageData.id} />
 								</Col>
 							</Row>
 						</div>

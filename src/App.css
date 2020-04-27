@@ -437,10 +437,11 @@ i.material-icons{
 }
 
 .installation-command{
+  cursor: pointer;
   background: #6e7278;
   color: white;
   font-family: 'Roboto Mono', monospace;
-  border-radius: 0em 0em .75em .75em;
+  border-radius: .25em;
 }
 
 .build-history{
@@ -475,4 +476,11 @@ i.material-icons{
   padding: .25em;
   color: #fff;
   background: #009999;
+}
+code{
+  padding: 0em !important;
+}
+
+.code-usage pre{
+  cursor: pointer;
 }

@@ -477,8 +477,10 @@ class Store extends EventEmitter {
   }
 
   showBanner = (target, message, theme) => {
+    if(this.bannerTimeout)
+      clearTimeout(this.bannerTimeout)
     _store.banner[target] = { message: String(message), theme };
-    setTimeout(this.hideBanner, HIDE_BANNER_TIMEOUT);
+    this.bannerTimeout = setTimeout(this.hideBanner, HIDE_BANNER_TIMEOUT);
     this.emit('update-ui');
   }
 
