@@ -100,11 +100,27 @@ body{
   cursor: move;
   font-size: 1.15em;
   text-align: center;
-  padding: 5px;
+  /* color: white; */
+  background: #fff;
   font-weight: 500;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
-  border: 3px solid white;
+  /* border: 3px solid white; */
   border-radius: .25em;
+}
+
+.chart-node.stacked{
+  box-shadow:
+  /* The top layer shadow */
+  0 1px 1px rgba(0,0,0,0.15),
+  /* The second layer */
+  0 10px 0 -5px #eee,
+  /* The second layer shadow */
+  0 10px 1px -4px rgba(0,0,0,0.15),
+   /* The third layer */
+  0 20px 0 -10px #eee,
+  /* The third layer shadow */
+  0 20px 1px -9px rgba(0,0,0,0.15);
+  /* Padding for demo purposes */
 }
 
 .node-port{
@@ -430,4 +446,11 @@ i.material-icons{
 .stats-small__label.under{
   /* color: black; */
   font-weight: 600;
+}
+
+.node-icons{
+  padding: .25em;
+  border-radius: 0em 0em .25em .25em;
+  color: #fff;
+  background: #009999;
 }
