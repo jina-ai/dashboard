@@ -1,7 +1,7 @@
 import React from "react";
 import { Card, CardHeader, CardBody, Row, Col, Button } from 'shards-react';
 import SyntaxHighlighter from 'react-syntax-highlighter';
-import { atomOneDark } from 'react-syntax-highlighter/dist/esm/styles/hljs';
+import { atomOneLight } from 'react-syntax-highlighter/dist/esm/styles/hljs';
 import { copyToClipboard } from '../../helpers';
 import { Dispatcher, Constants } from '../../flux';
 
@@ -38,31 +38,31 @@ class CopyCommand extends React.Component {
 				</CardHeader>
 				<CardBody className="py-2 px-3 pt-4 code-usage">
 					<p className="mb-1">Use this image in Flow API</p>
-					<SyntaxHighlighter language="python" style={atomOneDark} onClick={()=>this.copyCode(0)}>
+					<SyntaxHighlighter language="python" style={atomOneLight} onClick={()=>this.copyCode(0)}>
 						{this.getCodeAtIndex(0)}
 					</SyntaxHighlighter>
 					<p className="mb-1 mt-4">Use this image in Flow API and override YAML</p>
-					<SyntaxHighlighter language="python" style={atomOneDark} onClick={()=>this.copyCode(1)}>
+					<SyntaxHighlighter language="python" style={atomOneLight} onClick={()=>this.copyCode(1)}>
 						{this.getCodeAtIndex(1)}
 					</SyntaxHighlighter>
 					<p className="mb-1 mt-4">Use this image remotely in Flow API</p>
-					<SyntaxHighlighter language="python" style={atomOneDark} onClick={()=>this.copyCode(2)}>
+					<SyntaxHighlighter language="python" style={atomOneLight} onClick={()=>this.copyCode(2)}>
 						{this.getCodeAtIndex(2)}
 					</SyntaxHighlighter>
 					<p className="mb-1 mt-4">Use this image in Flow YAML</p>
-					<SyntaxHighlighter language="yaml" style={atomOneDark} onClick={()=>this.copyCode(3)}>
+					<SyntaxHighlighter language="yaml" style={atomOneLight} onClick={()=>this.copyCode(3)}>
 						{this.getCodeAtIndex(3)}
 					</SyntaxHighlighter>
 					<p className="mb-1 mt-4">Use this image in Jina CLI</p>
-					<SyntaxHighlighter language="bash" style={atomOneDark} onClick={()=>this.copyCode(4)}>
+					<SyntaxHighlighter language="bash" style={atomOneLight} onClick={()=>this.copyCode(4)}>
 						{this.getCodeAtIndex(4)}
 					</SyntaxHighlighter>
 					<p className="mb-1 mt-4">Use this image in Docker CLI</p>
-					<SyntaxHighlighter language="bash" style={atomOneDark} onClick={()=>this.copyCode(5)}>
+					<SyntaxHighlighter language="bash" style={atomOneLight} onClick={()=>this.copyCode(5)}>
 						{this.getCodeAtIndex(5)}
 					</SyntaxHighlighter>
 					<p className="mb-1 mt-4">Use this image in Docker CLI and override YAML</p>
-					<SyntaxHighlighter language="bash" style={atomOneDark} onClick={()=>this.copyCode(6)}>
+					<SyntaxHighlighter language="bash" style={atomOneLight} onClick={()=>this.copyCode(6)}>
 						{this.getCodeAtIndex(6)}
 					</SyntaxHighlighter>
 				</CardBody>

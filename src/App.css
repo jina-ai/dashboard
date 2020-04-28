@@ -482,5 +482,18 @@ code{
 }
 
 .code-usage pre{
+  border-radius: 5px;
   cursor: pointer;
+}
+
+.cookies-banner{
+  position: fixed;
+  padding: 1.25em;
+  bottom: 0;
+  color: white;
+  background-color: #32C8CD;
+}
+
+.cookies-banner.hidden{
+  display: none;
 }

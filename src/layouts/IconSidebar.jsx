@@ -4,6 +4,7 @@ import { Container, Row, Col, Alert } from "shards-react";
 import MainNavbar from "../components/Layout/MainNavbar/MainNavbar";
 import MainSidebar from "../components/Layout/MainSidebar/MainSidebar";
 import MainFooter from "../components/Layout/MainFooter";
+import CookiesBanner from '../components/Common/CookiesBanner';
 
 import PasteYAML from '../modals/PasteYAML';
 import WriteReview from '../modals/WriteReview';
@@ -39,6 +40,7 @@ class IconSidebarLayout extends React.Component {
         <Col className="main-content col" tag="main">
           {!noNavbar && <MainNavbar />}
           {children}
+          <CookiesBanner/>
           {!noFooter && <MainFooter />}
         </Col>
       </Row>

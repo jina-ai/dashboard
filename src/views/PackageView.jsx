@@ -94,14 +94,14 @@ class HubView extends React.Component {
 								</Col>
 							</Row>
 							<Row>
-								<Col md="8">
-									<Readme readme={imageData.readmeHTML} documentation={imageData.documentation} />
-									<ImageReviews reviews={reviews} imageId={imageData.id} />
-								</Col>
-								<Col md="4">
+								<Col md="6">
 									<CopyCommand image={imageData} />
 									<Details image={imageData} />
 									<BuildHistory image={imageData} />
+								</Col>
+								<Col md="6">
+									<Readme readme={imageData.readmeHTML} documentation={imageData.documentation} />
+									<ImageReviews reviews={reviews} imageId={imageData.id} />
 								</Col>
 							</Row>
 						</div>
