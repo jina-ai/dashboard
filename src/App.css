@@ -497,3 +497,7 @@ code{
 .cookies-banner.hidden{
   display: none;
 }
+
+.markup h1{
+  font-size: 2.5em;
+}
