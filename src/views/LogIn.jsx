@@ -57,7 +57,7 @@ class Login extends React.Component {
 								/>
 								<h5 className="auth-form__title text-center mb-4">Log in</h5>
 								<a href={`${hubURL}/auth/github`} id="github-button" className="btn btn-block btn-social btn-github">
-									<i className="fa fa-github"></i> Sign in with GitHub
+									<i className="fab fa-github"></i> Sign in with GitHub
 								</a>
 							</CardBody>
 						</Card>

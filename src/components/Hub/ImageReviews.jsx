@@ -23,9 +23,12 @@ class Readme extends React.Component {
 					</div>
 				</div>
 				{
+					reviews.length>0?
 					reviews.map((review,idx) => 
 						<ReviewCard key={idx} review={review}/>
 					)
+					:
+					<h2 className="text-muted text-center py-4">No Reviews</h2>
 				}
 			</div>
 
