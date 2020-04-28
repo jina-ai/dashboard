@@ -7,7 +7,7 @@ const passport = require('passport');
 const GitHubStrategy = require('passport-github2').Strategy;
 const app = express();
 
-const { PORT, PRIVATE_MODE, PRIVATE_TOKEN, IMAGES_URL, MONGO_URL, GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET, DASHBOARD_URL } = require('./config');
+const { PORT, PRIVATE_MODE, PRIVATE_TOKEN, IMAGES_URL, MONGO_URL, GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET, DASHBOARD_URL,OAUTH_TOKEN } = require('./config');
 
 //Express/Passport middleware
 app.use(cors({ origin: DASHBOARD_URL, optionsSuccessStatus: 200, credentials: true }));
@@ -54,7 +54,10 @@ const githubRaw = axios.create({
 
 const githubAPI = axios.create({
 	baseURL: 'https://api.github.com/',
-	timeout: 30000, // 30 secs
+	timeout: 30000, // 30 secs,
+	headers:{
+		'Authorization':`Bearer ${OAUTH_TOKEN}`
+	}
 });
 
 //only used in private mode:
@@ -227,7 +230,7 @@ async function loadHubImages() {
 	for (let i = 0; i < ids.length; ++i) {
 		let id = ids[i];
 		let image = images[id][images[id].length - 1]; //most recent image;
-		let imageDetails = await getImageDetails(image,id);
+		let imageDetails = await getImageDetails(image, id);
 		let imageData = {
 			id,
 			...imageDetails,
@@ -252,12 +255,13 @@ async function loadHubImages() {
 	return;
 }
 
-async function getImageDetails(image,id) {
+async function getImageDetails(image, id) {
 	let { Labels } = image.Inspect.Config;
 	let repoTags = image.Inspect.RepoTags;
 	let repoDigests = image.Inspect.RepoDigests;
 
 	let imageData = {
+		official: Labels['org.opencontainers.image.authors'] === 'dev-team@jina.ai',
 		author: Labels['ai.jina.hub.author'],
 		avatar: Labels['ai.jina.hub.avatar'],
 		description: Labels['ai.jina.hub.description'],
@@ -279,7 +283,7 @@ async function getImageDetails(image,id) {
 	let readmeURL = PRIVATE_MODE ? '/facebook/react/master/README.md' : `/jina-ai/jina-hub/master/${id.split('.').join('/')}/README.md`;
 	console.log('getting markdown for README.md');
 
-	console.log('readmeURL: ',readmeURL);
+	console.log('readmeURL: ', readmeURL);
 
 	let readmeRaw;
 	let readmeRendered;
@@ -300,13 +304,20 @@ async function getImageDetails(image,id) {
 		readmeRendered = _markdownHTML;
 	}
 	else {
-		let readmeResult = await githubRaw.get(readmeURL);
-		console.log('GET readme status:', readmeResult.status);
-		readmeRaw = readmeResult.data;
-
-		let markdownResult = await githubAPI.post('markdown', { text: readmeRaw });
-		console.log('POST readme status:', markdownResult.status);
-		readmeRendered = markdownResult.data;
+		try{
+			let readmeResult = await githubRaw.get(readmeURL);
+			console.log('GET readme status:', readmeResult.status);
+			readmeRaw = readmeResult.data;
+	
+			let markdownResult = await githubAPI.post('markdown', { text: readmeRaw });
+			console.log('POST readme status:', markdownResult.status);
+			readmeRendered = markdownResult.data;
+		}
+		catch(e){
+			console.log('could not get readme');
+			readmeRendered = false
+		}
+		
 	}
 
 	imageData.readmeHTML = readmeRendered;
