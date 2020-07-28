@@ -1,7 +1,8 @@
 import React from "react";
-import { Card, FormControl, Row, Col } from 'react-bootstrap';
+import { Card, FormControl, Row, Col, Button, ButtonGroup, DropdownButton, Dropdown } from 'react-bootstrap';
 import LogItem from './LogItem';
 import lunr from 'lunr';
+import { saveAs } from 'file-saver';
 import { Store } from '../../flux';
 
 import List from 'react-virtualized/dist/commonjs/List';
@@ -41,6 +42,31 @@ class StreamContainer extends React.Component {
 	componentWillUnmount = () => {
 		Store.removeListener('update-logs', this.getData);
 		Store.removeListener('show-log', this.getIndexedLog);
+	}
+
+	downloadLogs = (format) => {
+		let logs = this.state.logData.all;
+		let content = '';
+		if (format === 'json')
+			content = '[\n';
+		else if (format === 'csv')
+			content = 'created,formatted timestamp,name,process,level name,message,filename,line number,module,funcname,pathname\n';
+
+		for (let i = 0; i < logs.length; ++i) {
+			let log = logs[i];
+			if (format === 'json')
+				content += (JSON.stringify(logs[i]) + `${i < logs.length - 1 ? ',' : ''}\n`);
+			else if (format === 'csv')
+				content += `${log.created},"${log.formattedTimestamp}",${log.name},${log.process},${log.levelname},"${log.msg}",${log.filename},${log.lineno},${log.module},${log.funcname},${log.pathname}\n`
+			else
+				content += `${log.formattedTimestamp} ${log.name}@${log.process} [${log.levelname}]: ${log.msg}\n`
+		}
+		if (format === 'json')
+			content += ']';
+
+		let filename = `jina-logs-${new Date()}.${format}`;
+		let blob = new Blob([content], { type: 'text,plain;charset=utf-8' });
+		saveAs(blob, filename);
 	}
 
 	componentDidMount = () => {
@@ -83,7 +109,7 @@ class StreamContainer extends React.Component {
 		const query = this.state.searchQuery;
 		console.log('search query: ', query)
 		if (!query)
-			return this.setState({ results: false },this._resizeAll)
+			return this.setState({ results: false }, this._resizeAll)
 		this.indexLogs();
 		let results = this.index.search(`${query}*`)
 		this.setState({ results }, this._resizeSearchResults);
@@ -230,7 +256,13 @@ class StreamContainer extends React.Component {
 								}
 							</FormControl>
 						</Col>
-						<Col md="4" className="d-none d-md-inline-block" />
+						<Col md="4" className="d-none d-md-inline-block">
+							<DropdownButton as={ButtonGroup} title="Download Logs" id="bg-nested-dropdown">
+								<Dropdown.Item onClick={()=>this.downloadLogs('csv')}>Download as CSV</Dropdown.Item>
+								<Dropdown.Item onClick={()=>this.downloadLogs('json')}>Download as JSON</Dropdown.Item>
+								<Dropdown.Item onClick={()=>this.downloadLogs('txt')}>Download as TXT</Dropdown.Item>
+							</DropdownButton>
+						</Col>
 						<Col md="4" xs="6">
 							<FormControl
 								placeholder="search logs..."

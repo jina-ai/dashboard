@@ -16,10 +16,10 @@ class LogItem extends React.Component {
 						<div className="ml-auto">{formattedTimestamp}</div>
 
 					</Col>
-					<Col lg="3" md="3" className="log-prefix px-0 text-left text-md-right text-bold">
+					<Col lg="3" md="4" className="log-prefix px-0 text-left text-md-right text-bold">
 						{logName}@{process}[{levelInitial}]:
 					</Col>
-					<Col className="px-0">
+					<Col sm="12" md="5" lg="7" className="px-0">
 						{msg}
 					</Col>
 				</Row>
