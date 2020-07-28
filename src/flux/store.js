@@ -8,7 +8,7 @@ import getSidebarNavItems from "../data/sidebar-nav-items";
 
 const HIDE_BANNER_TIMEOUT = 5000;
 
-let _store = getInitialStore();
+let _store;
 
 const NUM_CHART_ELEMENTS = 60;
 const CHART_UPDATE_INTERVAL = 1000;
@@ -109,7 +109,7 @@ class Store extends EventEmitter {
   constructor() {
     super();
     Dispatcher.register(this.registerActions);
-    this.init()
+    this.init();
   }
 
   registerActions = ({ actionType, payload }) => {
@@ -339,7 +339,7 @@ class Store extends EventEmitter {
 
 
   initCharts = () => {
-    CHART_LEVELS.map(level => {
+    CHART_LEVELS.forEach(level => {
       _store.occurences.current[level] = 0;
       _store.occurences.previous[level] = 0;
       _store.summaryCharts[level] = (new Array(NUM_CHART_ELEMENTS)).fill(0);
@@ -371,7 +371,7 @@ class Store extends EventEmitter {
 
   updateSummaryCharts = () => {
     const { current, previous, indeces } = _store.occurences;
-    CHART_LEVELS.map(level => {
+    CHART_LEVELS.forEach(level => {
       const numLogs = current[level];
       const prevNum = previous[level];
       _store.summaryCharts[level].push(numLogs - prevNum);
@@ -410,7 +410,7 @@ class Store extends EventEmitter {
   }
 
   saveSettings = (settings) => {
-    Object.keys(settings).map(key => {
+    Object.keys(settings).forEach(key => {
       localStorage.setItem(`preferences-${key}`, settings[key]);
     });
     setTimeout(this.init, 100);
@@ -563,7 +563,7 @@ class Store extends EventEmitter {
 
   getOccurencesByName = () => {
     let occurences = {};
-    Object.keys(_store.logs).map(name => {
+    Object.keys(_store.logs).forEach(name => {
       if (name === 'all')
         return;
       else

@@ -6,7 +6,7 @@
   "dependencies": {
     "@emotion/core": "^10.0.28",
     "@emotion/styled": "^10.0.27",
-    "@mrblenny/react-flow-chart": "^0.0.11",
+    "@mrblenny/react-flow-chart": "^0.0.13",
     "@projectstorm/react-diagrams": "^6.0.1-beta.7",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
@@ -42,6 +42,7 @@
     "react-virtualized": "^9.21.2",
     "resize-observer-polyfill": "^1.5.1",
     "shards-react": "^1.0.3",
+    "styled-components": "^5.1.1",
     "typescript": "^3.8.3",
     "yaml": "^1.8.3",
     "yamljs": "^0.3.0"
