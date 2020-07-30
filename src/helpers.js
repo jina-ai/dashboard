@@ -125,6 +125,8 @@ export function formatAsYAML(chart) {
 	Object.keys(chart.nodes).forEach(id=>{
 		let node = chart.nodes[id];
 		node.label = node.label || node.properties.name;
+		if(node.properties.name)
+			delete node.properties.name;
 	})
 
 	Object.keys(chart.nodes).map(id => {
