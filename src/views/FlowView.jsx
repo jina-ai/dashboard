@@ -18,6 +18,7 @@ class FlowTab extends React.Component {
     const banner = Store.getBanner('flow');
     this.state = { chart,banner };
 
+    console.log('actions:',actions);
     this.stateActionCallbacks = Object.keys(actions).reduce((obj, key, idx) => {
       obj[key] = (...args) => {
         let { chart } = this.state;
@@ -34,6 +35,10 @@ class FlowTab extends React.Component {
   componentWillMount = () => {
     Store.on('update-flowchart', this.getData);
     Store.on('update-ui',this.getBanner);
+  }
+
+  componentDidMount= ()=>{
+    // document.addEventListener('contextmenu', (e)=>e.preventDefault()) 
   }
 
   componentWillUnmount = () => {

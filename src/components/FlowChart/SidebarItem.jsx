@@ -1,6 +1,7 @@
 
 import * as React from 'react'
 import { REACT_FLOW_CHART } from '@mrblenny/react-flow-chart'
+import ChartNode from './ChartNode';
 
 class SidebarItem extends React.Component {
   constructor(props) {
@@ -8,18 +9,17 @@ class SidebarItem extends React.Component {
     this.ref = React.createRef();
   }
   render = () => {
-    const { label, type, ports, properties } = this.props;
+    const { label, ports, properties } = this.props;
     return (
       <div
         ref={this.ref}
-        className="draggable-item"
+        className="mb-3 draggable-container"
         draggable={true}
         onDragStart={(event) => {
-          event.dataTransfer.setData(REACT_FLOW_CHART, JSON.stringify({ label,type, ports, properties, }))
+          event.dataTransfer.setData(REACT_FLOW_CHART, JSON.stringify({label, ports, properties,type:'hello world'}))
         }}
       >
-        {type}
-        
+        <ChartNode node={{properties}}/>
       </div>
     )
   }

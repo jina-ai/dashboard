@@ -109,6 +109,10 @@ body{
   transition: .2s;
 }
 
+.draggable-container{
+  border-radius: .25em;
+}
+
 .sc-AxiKw.iBtNbm.react-draggable{
   background-color: transparent !important;
 }

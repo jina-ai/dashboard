@@ -30,15 +30,16 @@ class ChartNode extends React.Component {
     return icons;
   }
   render = () => {
-    const { label, type, properties } = this.props.node;
+    const { label, properties } = this.props.node;
     const propSTR = this.getPropertiesString();
     const icons = this.getIcons();
     const isSpecial = Object.keys(properties).length>0;
     const isGateway = label==='gateway';
+    let labelText = typeof label === 'undefined' ? properties.name : label || ''
     return (
       <div className={`chart-node ${isSpecial?'special':''} ${properties.replicas ? 'stacked' : ''} ${isGateway ? 'gateway' : ''}`}>
         <div className="p-2">
-          <p className="m-1"><b>{label || <span className="text-warning">Unnamed Pod</span>}</b><Badge variant="primary" className="ml-2 mt-1">{properties.replicas}</Badge></p>
+          <p className="m-1"><b>{labelText || <span className="text-warning">Empty Pod</span>}</b><Badge variant="primary" className="ml-2 mt-1">{properties.replicas}</Badge></p>
         </div>
         {
           icons.length > 0 &&

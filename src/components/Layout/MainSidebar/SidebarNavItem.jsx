@@ -32,13 +32,12 @@ class SidebarNavItem extends React.Component {
         active = true
     })
 
-
     return (
       <NavItem style={{ position: "relative" }}>
         <NavLink
           className={hasSubItems && "dropdown-toggle"}
-          tag={RouteNavLink}
-          to={item.to}
+          tag={hasSubItems ? "a" : RouteNavLink}
+          to={hasSubItems ? "#" : item.to}
           active={active}
           onClick={() => this.toggleDropdown(item)}
         >

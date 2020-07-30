@@ -26,6 +26,7 @@ class FlowChartSidebar extends React.Component {
   }
 
   setInitialNode = (node) => {
+    console.log('setInititailNode:',node);
     const properties = {};
     const newProperties = {};
     const label = node.label;
@@ -64,21 +65,27 @@ class FlowChartSidebar extends React.Component {
   saveChanges = () => {
     const { node } = this.state;
     this.props.updateNode(node);
+    console.log('save changes: ',node)
   }
 
   renderEditNode = () => {
     const { availableProperties, node } = this.state;
+    console.log('rendering')
+    console.log('label:',node.label)
+    let label = typeof node.label === 'undefined' ? node.properties.name : node.label || ''
     return (
       <div className="h-100 d-flex flex-column">
         <div className="p-2 mb-1">
           <p className="mb-1"><b>Pod Name</b></p>
-          <FormControl spellCheck={false} value={node.label || ""} onChange={(e) => this.updateLabel(e.target.value)} className="pod-name-input" />
+          <FormControl spellCheck={false} value={label} onChange={(e) => this.updateLabel(e.target.value)} className="pod-name-input" />
         </div>
         <p className="mb-1 px-2"><b>Properties</b></p>
         <div className="property-table flex-fill mx-2">
           {
             Object.keys(node.properties).map(prop => {
               const value = node.properties[prop];
+              if(prop==='name')
+                return;
               return (
                 <div key={prop} className="property-item mb-2">
                   <p className="property-label mb-1">{prop}</p>
@@ -130,14 +137,10 @@ class FlowChartSidebar extends React.Component {
     )
   }
 
-  renderInstructions = () => {
+  renderPodMenu = () => {
     return (
-      <div className="sidebar-instructions text-muted">
-        <h4>Select a pod to edit properties</h4>
-        <p>or</p>
-        <h4 className="mb-4">Drag a new pod:</h4>
+      <div className="p-3 text-muted">
         <SidebarItem
-          type="New Pod"
           ports={{
             inPort: {
               id: 'inPort',
@@ -148,10 +151,23 @@ class FlowChartSidebar extends React.Component {
               type: 'output',
             },
           }}
-          label="tests"
+          label="Hello World"
           properties={{}}
         />
-
+        <SidebarItem
+          ports={{
+            inPort: {
+              id: 'inPort',
+              type: 'input',
+            },
+            outPort: {
+              id: 'outPort',
+              type: 'output',
+            },
+          }}
+          label="hello"
+          properties={{name:"Indexer", replicas: 3}}
+        />
       </div>
     )
   }
@@ -168,7 +184,7 @@ class FlowChartSidebar extends React.Component {
               :
               this.renderEditNode(nodes[selected.id])
             :
-            this.renderInstructions()
+            this.renderPodMenu()
         }
       </Card>
     )

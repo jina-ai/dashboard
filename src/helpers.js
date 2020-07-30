@@ -121,6 +121,12 @@ export function formatAsYAML(chart) {
 		pods: {}
 	}
 	output.with.board = { canvas: {} };
+
+	Object.keys(chart.nodes).forEach(id=>{
+		let node = chart.nodes[id];
+		node.label = node.label || node.properties.name;
+	})
+
 	Object.keys(chart.nodes).map(id => {
 		const node = chart.nodes[id];
 
