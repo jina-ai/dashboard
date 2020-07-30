@@ -140,7 +140,7 @@ class FlowChartSidebar extends React.Component {
 
   renderPodMenu = () => {
     return (
-      <div className="p-3 text-muted">
+      <div className="p-3 text-muted scrollable">
         <SidebarItem
           ports={{
             inPort: {

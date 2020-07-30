@@ -505,3 +505,7 @@ code{
 .markup h1{
   font-size: 2.5em;
 }
+
+.scrollable{
+  overflow-y: auto;
+}
