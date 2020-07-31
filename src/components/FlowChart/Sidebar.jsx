@@ -140,38 +140,40 @@ class FlowChartSidebar extends React.Component {
 
   renderPodMenu = () => {
     return (
-      <div className="p-3 text-muted scrollable">
-        <SidebarItem
-          ports={{
-            inPort: {
-              id: 'inPort',
-              type: 'input',
-            },
-            outPort: {
-              id: 'outPort',
-              type: 'output',
-            },
-          }}
-          properties={{}}
-        />
-        {
-          defaultPods.map(pod =>
-            <SidebarItem
-              ports={{
-                inPort: {
-                  id: 'inPort',
-                  type: 'input',
-                },
-                outPort: {
-                  id: 'outPort',
-                  type: 'output',
-                },
-              }}
-              properties={pod}
-            />
-          )
-        }
-
+      <div className="d-flex flex-column h-100">
+        <h5 className="px-3 py-2 mb-0 border-bottom"><b>Add Pods</b></h5>
+        <div className="p-3 scrollable flex-fill">
+          <SidebarItem
+            ports={{
+              inPort: {
+                id: 'inPort',
+                type: 'input',
+              },
+              outPort: {
+                id: 'outPort',
+                type: 'output',
+              },
+            }}
+            properties={{}}
+          />
+          {
+            defaultPods.map(pod =>
+              <SidebarItem
+                ports={{
+                  inPort: {
+                    id: 'inPort',
+                    type: 'input',
+                  },
+                  outPort: {
+                    id: 'outPort',
+                    type: 'output',
+                  },
+                }}
+                properties={pod}
+              />
+            )
+          }
+        </div>
       </div>
     )
   }
