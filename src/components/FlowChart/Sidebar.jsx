@@ -129,7 +129,7 @@ class FlowChartSidebar extends React.Component {
         <div className="flex-fill px-2">
           <div className="p-2 mb-1">
             <p className="mb-1"><b>From</b></p>
-            <FormControl className="mb-4" as="select" onChange={(e) => this.props.updateLink(link.id,e.target.value,nodeTo.id)} value={nodeFrom.id}>
+            <FormControl className="mb-2" as="select" onChange={(e) => this.props.updateLink(link.id,e.target.value,nodeTo.id)} value={nodeFrom.id}>
               {
                 choices.map(choice =>
                   <option key={choice.id} value={choice.id}>{choice.label}</option>
@@ -137,7 +137,7 @@ class FlowChartSidebar extends React.Component {
               }
             </FormControl>
             <p className="mb-1"><b>To</b></p>
-            <FormControl className="mb-4" as="select" onChange={(e) => this.props.updateLink(link.id,nodeFrom.id,e.target.value)} value={nodeTo.id}>
+            <FormControl className="mb-2" as="select" onChange={(e) => this.props.updateLink(link.id,nodeFrom.id,e.target.value)} value={nodeTo.id}>
               {
                 choices.map(choice =>
                   <option key={choice.id} value={choice.id}>{choice.label}</option>
