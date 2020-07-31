@@ -1,6 +1,6 @@
 import React from "react";
 import SidebarItem from './SidebarItem';
-import defaultPods from '../../data/defaultPods';
+import defaultPods from '../../data/defaultPods.json';
 import { Button, FormControl, Card } from 'react-bootstrap';
 import { Store } from "../../flux";
 
@@ -71,8 +71,6 @@ class FlowChartSidebar extends React.Component {
 
   renderEditNode = () => {
     const { availableProperties, node } = this.state;
-    console.log('rendering')
-    console.log('label:', node.label)
     let label = typeof node.label === 'undefined' ? node.properties.name : node.label || ''
     return (
       <div className="h-100 d-flex flex-column">
@@ -117,18 +115,17 @@ class FlowChartSidebar extends React.Component {
 
   renderEditLink = (link) => {
     const { nodes } = this.props.chart;
-    const nodeFrom = nodes[link.from.nodeId].label;
-    const nodeTo = nodes[link.to.nodeId].label;
+    const nodeFrom = nodes[link.from.nodeId];
+    const nodeTo = nodes[link.to.nodeId];
     return (
       <div className="h-100 d-flex flex-column">
-        <div className="flex-fill">
+        <h5 className="px-3 py-2 mb-0 border-bottom"><b>Edit Connection</b></h5>
+        <div className="flex-fill px-2">
           <div className="p-2 mb-1">
-            <p className="mb-1"><b>Type</b></p>
-            <h5>Connection</h5>
             <p className="mb-1"><b>From</b></p>
-            <h5>{nodeFrom}</h5>
+            <h5>{nodeFrom.label}</h5>
             <p className="mb-1"><b>To</b></p>
-            <h5>{nodeTo}</h5>
+            <h5>{nodeTo.label || nodeTo.properties.name || 'Empty Pod'}</h5>
           </div>
         </div>
         <div className="p-2">
