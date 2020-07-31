@@ -114,18 +114,36 @@ class FlowChartSidebar extends React.Component {
   }
 
   renderEditLink = (link) => {
-    const { nodes } = this.props.chart;
+    const { nodes, links } = this.props.chart;
     const nodeFrom = nodes[link.from.nodeId];
     const nodeTo = nodes[link.to.nodeId];
+
+    let choices = Object.keys(nodes).map(id => {
+      return {label: nodes[id].label || nodes[id].properties.name,id}
+    })
+
+    console.log('links:', links, '\nlink:', link, '\nnodes:', nodes);
     return (
       <div className="h-100 d-flex flex-column">
         <h5 className="px-3 py-2 mb-0 border-bottom"><b>Edit Connection</b></h5>
         <div className="flex-fill px-2">
           <div className="p-2 mb-1">
             <p className="mb-1"><b>From</b></p>
-            <h5>{nodeFrom.label}</h5>
+            <FormControl className="mb-4" as="select" onChange={(e) => this.props.updateLink(link.id,e.target.value,nodeTo.id)} value={nodeFrom.id}>
+              {
+                choices.map(choice =>
+                  <option key={choice.id} value={choice.id}>{choice.label}</option>
+                )
+              }
+            </FormControl>
             <p className="mb-1"><b>To</b></p>
-            <h5>{nodeTo.label || nodeTo.properties.name || 'Empty Pod'}</h5>
+            <FormControl className="mb-4" as="select" onChange={(e) => this.props.updateLink(link.id,nodeFrom.id,e.target.value)} value={nodeTo.id}>
+              {
+                choices.map(choice =>
+                  <option key={choice.id} value={choice.id}>{choice.label}</option>
+                )
+              }
+            </FormControl>
           </div>
         </div>
         <div className="p-2">

@@ -79,6 +79,19 @@ class FlowTab extends React.Component {
     return newChart.nodes[node.id];
   }
 
+  updateLink = (linkId, fromId, toId) =>{
+    if(fromId===toId)
+      return;
+    let {chart} = this.state;
+    let newChart = cloneDeep(chart);
+
+    newChart.links[linkId].from.nodeId = fromId;
+    newChart.links[linkId].to.nodeId = toId;
+
+    this.updateChart({ ...chart, ...newChart });
+  }
+
+
   cancelChanges = () => {
     this.stateActionCallbacks.onCanvasClick({})
   }
@@ -155,7 +168,7 @@ class FlowTab extends React.Component {
                   }} />
               </div>
             </Card>
-            <Sidebar chart={chart} cancelChanges={this.cancelChanges} deleteSelection={this.deleteSelection} updateNode={this.updateNode} />
+            <Sidebar chart={chart} cancelChanges={this.cancelChanges} deleteSelection={this.deleteSelection} updateNode={this.updateNode} updateLink={this.updateLink} />
           </div >
         </div>
       </Container>
