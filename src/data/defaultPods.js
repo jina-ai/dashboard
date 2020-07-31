@@ -7,7 +7,7 @@ export default [
 		name: 'loader',
 		yaml_path: 'yaml/craft-load.yml',
 		replicas: 3,
-		read_only: true
+		read_only: 'true'
 	},
 	{
 		name: 'splittor',
@@ -45,18 +45,18 @@ export default [
 		name: 'flipper',
 		yaml_path: 'yaml/craft-flip.yml',
 		replicas: 3,
-		read_only: true
+		read_only: 'true'
 	},
 	{
 		name: 'normalizer',
 		yaml_path: 'yaml/craft-normalize.yml',
 		replicas: 3,
-		read_only: true,
+		read_only: 'true',
 	},
 	{
 		name: 'crafter',
 		yaml_path: 'pods/craft.yml',
-		read_only: true,
+		read_only: 'true',
 	},
 	{
 		name: 'chunk_seg',
