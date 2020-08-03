@@ -509,3 +509,12 @@ code{
 .scrollable{
   overflow-y: auto;
 }
+
+.logstream-select{
+  height: auto !important;
+  width: auto;
+  width: 15em;
+  max-width: 100%;
+  display: inline-block;
+  vertical-align: middle;
+}

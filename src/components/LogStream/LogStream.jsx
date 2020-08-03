@@ -246,8 +246,8 @@ class StreamContainer extends React.Component {
 			<Card className="mb-4">
 				<Card.Header className="p-3">
 					<Row>
-						<Col md="4" xs="6">
-							<FormControl as="select" onChange={(e) => this.setSelectedSource(e.target.value)}>
+						<Col md="8" xs="6">
+							<FormControl as="select" onChange={(e) => this.setSelectedSource(e.target.value)} className="logstream-select mb-2 mr-0 mb-md-0 mr-md-2">
 								<option value="all">All Logs</option>
 								{
 									Object.keys(sources).map(source =>
@@ -255,8 +255,14 @@ class StreamContainer extends React.Component {
 									)
 								}
 							</FormControl>
-						</Col>
-						<Col md="4" className="d-none d-md-inline-block">
+							<FormControl as="select" onChange={(e) => this.setSelectedSource(e.target.value)} className="logstream-select mb-2 mr-0 mb-md-0 mr-md-2">
+								<option value="all">All Types</option>
+								{
+									Object.keys(sources).map(source =>
+										<option key={source} value={source}>{source}</option>
+									)
+								}
+							</FormControl>
 							<DropdownButton as={ButtonGroup} title="Download Logs" id="bg-nested-dropdown">
 								<Dropdown.Item onClick={()=>this.downloadLogs('csv')}>Download as CSV</Dropdown.Item>
 								<Dropdown.Item onClick={()=>this.downloadLogs('json')}>Download as JSON</Dropdown.Item>
