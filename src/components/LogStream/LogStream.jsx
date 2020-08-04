@@ -24,14 +24,16 @@ class StreamContainer extends React.Component {
 	_scrolledToBottom = true;
 
 	state = {
-		logData: Store.getLogs(),
-		logs: Store.getLogs().all,
+		allLogs: Store.getLogs(),
+		logs: Store.getLogs(),
 		sources: Store.getLogSources(),
+		levels: Store.getLogLevels(),
 		searchQuery: "",
 		prevQuery: "",
 		results: [],
 		showHelper: false,
-		selectedSource: 'all',
+		selectedSource: false,
+		selectedLevel: false,
 	}
 
 	componentWillMount = () => {
@@ -45,7 +47,7 @@ class StreamContainer extends React.Component {
 	}
 
 	downloadLogs = (format) => {
-		let logs = this.state.logData.all;
+		let logs = this.state.allLogs;
 		let content = '';
 		if (format === 'json')
 			content = '[\n';
@@ -79,30 +81,51 @@ class StreamContainer extends React.Component {
 	}
 
 	getData = () => {
-		const logData = Store.getLogs();
+		const allLogs = Store.getLogs();
 		const sources = Store.getLogSources();
-		const logs = logData[this.state.selectedSource];
-		this.setState({ logs, sources, logData });
+		const levels = Store.getLogLevels();
+		this.setState({ sources,levels, allLogs },this.filterLogs);
 		if (this._scrolledToBottom && this._list)
 			this.scrollToBottom();
 	}
 
 	getIndexedLog = () => {
 		const index = Store.getIndexedLog();
-		const selectedSource = 'all';
-		const logs = this.state.logData[selectedSource];
-		this.setState({ selectedSource, logs });
+		const selectedSource = false;
+		const selectedLevel = false;
+		const logs = this.state.allLogs;
+		this.setState({ selectedSource,selectedLevel, logs });
 		console.log('scrolling to index: ', index);
 		this.scrollToLog(index);
 	}
 
+	filterLogs = () =>{
+		let {allLogs, selectedSource, selectedLevel} = this.state;
+		if(selectedSource==='false')
+			selectedSource = false;
+		if(selectedLevel ==='false')
+			selectedLevel = false;
+
+		if(!selectedSource && !selectedLevel)
+			return this.setState({logs: allLogs})
+		let logs = allLogs.filter(log=>{
+			if(selectedSource && selectedLevel)
+				return log.levelname === selectedLevel && log.name === selectedSource;
+			else if (selectedSource)
+				return log.name === selectedSource;
+			else if(selectedLevel)
+				return log.levelname === selectedLevel;
+		});
+		
+		this.setState({logs},this._resizeAll);
+	}
+
 	setSelectedSource = (selectedSource) => {
-		const { logData } = this.state;
-		const logs = logData[selectedSource];
-		this.setState({ logs, selectedSource }, () => {
-			this._resizeAll();
-			this.backToBottom();
-		})
+		this.setState({selectedSource},this.filterLogs);
+	}
+
+	setSelectedLevel = (selectedLevel) => {
+		this.setState({selectedLevel},this.filterLogs);
 	}
 
 	search = () => {
@@ -241,25 +264,25 @@ class StreamContainer extends React.Component {
 	};
 
 	render = () => {
-		const { results, searchQuery, logs, showHelper, sources } = this.state;
+		const { results, searchQuery, logs, showHelper, sources,levels } = this.state;
 		return (
 			<Card className="mb-4">
 				<Card.Header className="p-3">
 					<Row>
 						<Col md="8" xs="6">
 							<FormControl as="select" onChange={(e) => this.setSelectedSource(e.target.value)} className="logstream-select mb-2 mr-0 mb-md-0 mr-md-2">
-								<option value="all">All Logs</option>
+								<option value={false}>All Logs</option>
 								{
 									Object.keys(sources).map(source =>
 										<option key={source} value={source}>{source}</option>
 									)
 								}
 							</FormControl>
-							<FormControl as="select" onChange={(e) => this.setSelectedSource(e.target.value)} className="logstream-select mb-2 mr-0 mb-md-0 mr-md-2">
-								<option value="all">All Types</option>
+							<FormControl as="select" onChange={(e) => this.setSelectedLevel(e.target.value)} className="logstream-select mb-2 mr-0 mb-md-0 mr-md-2">
+								<option value={false}>All Levels</option>
 								{
-									Object.keys(sources).map(source =>
-										<option key={source} value={source}>{source}</option>
+									Object.keys(levels).map(level =>
+										<option key={level} value={level}>{level}</option>
 									)
 								}
 							</FormControl>

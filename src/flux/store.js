@@ -13,7 +13,7 @@ let _store;
 const NUM_CHART_ELEMENTS = 60;
 const CHART_UPDATE_INTERVAL = 1000;
 const TASK_UPDATE_INTERVAL = 500;
-const CHART_LEVELS = ['INFO', 'SUCCESS', 'WARNING', 'ERROR', 'CRITICAL', 'DEBUG']
+const CHART_LEVELS = ['INFO', 'SUCCESS', 'WARNING', 'ERROR', 'CRITICAL', 'DEBUG'];
 
 function getInitialStore() {
   return {
@@ -55,16 +55,15 @@ function getInitialStore() {
             }
           },
           properties: {},
-          position: {x: 629,y: 72}
+          position: { x: 629, y: 72 }
         },
       },
       links: {},
       offset: { x: 0, y: 0 },
     },
-    logs: {
-      all: [],
-    },
+    logs: [],
     logSources: {},
+    logLevels: {},
     occurences: {
       current: {},
       previous: {},
@@ -228,24 +227,17 @@ class Store extends EventEmitter {
     const log = data;
 
     log.formattedTimestamp = (new Date(log.created * 1000)).toLocaleString()
-    log.idx = _store.logs.all.length;
-    _store.logs.all.push(log);
+    log.idx = _store.logs.length;
 
-    const source = log.name;
-
+    _store.logs.push(log);
     _store.processes[log.process] = log.name;
-
-    if (_store.logs[source])
-      _store.logs[source].push(log);
-    else
-      _store.logs[source] = [log];
-
-    _store.logSources[source] = true;
+    _store.logSources[log.name] = true;
+    _store.logLevels[log.levelname] = true;
 
     if (CHART_LEVELS.includes(log.levelname)) {
       _store.occurences.current[log.levelname]++;
     }
-    // console.log('occurences: ',_store.occurences)
+
     this.emit('update-logs');
   }
 
@@ -375,7 +367,7 @@ class Store extends EventEmitter {
       _store.summaryCharts[level].shift();
       _store.occurences.previous[level] = numLogs;
     });
-    _store.occurences.lastLog.push(_store.logs.all.length - 1);
+    _store.occurences.lastLog.push(_store.logs.length - 1);
     _store.occurences.lastLog.shift();
     // console.log('summaryCharts:', _store.summaryCharts);
     this.emit('update-summary-chart');
@@ -474,7 +466,7 @@ class Store extends EventEmitter {
   }
 
   showBanner = (target, message, theme) => {
-    if(this.bannerTimeout)
+    if (this.bannerTimeout)
       clearTimeout(this.bannerTimeout)
     _store.banner[target] = { message: String(message), theme };
     this.bannerTimeout = setTimeout(this.hideBanner, HIDE_BANNER_TIMEOUT);
@@ -554,19 +546,16 @@ class Store extends EventEmitter {
     return _store.logSources;
   }
 
+  getLogLevels = () => {
+    return _store.logLevels;
+  }
+
   getSummaryCharts = () => {
     return _store.summaryCharts;
   }
 
   getOccurencesByName = () => {
-    let occurences = {};
-    Object.keys(_store.logs).forEach(name => {
-      if (name === 'all')
-        return;
-      else
-        occurences[name] = _store.logs[name].length;
-    })
-    return occurences;
+    return _store.occurences.current;
   }
 
   getTaskData = () => {
