@@ -3,7 +3,7 @@ const settings = require('./settings');
 const propertyList = require('./data/properties.json');
 
 const propertyTypes = {};
-propertyList.map(prop => propertyTypes[prop.name] = prop.type);
+propertyList.forEach(prop => propertyTypes[prop.name] = prop.type);
 
 export function copyToClipboard(str) {
 	const temp = document.createElement('textarea');
@@ -16,8 +16,8 @@ export function copyToClipboard(str) {
 }
 export function parseYAML(yamlSTR) {
 	try {
-		yamlSTR = yamlSTR.replace("!Flow", "")
 		const data = YAML.parse(yamlSTR);
+		console.log('data:',data)
 		return { data };
 	}
 	catch (error) {
@@ -35,6 +35,7 @@ export function formatForFlowchart(pods, canvas) {
 		links: {},
 		selected: {},
 		hovered: {},
+		scale: 1,
 	}
 
 	let nodes = {};
@@ -42,7 +43,16 @@ export function formatForFlowchart(pods, canvas) {
 
 	let prevNode = false;
 
-	Object.keys(pods).map(id => {
+	if(!pods.gateway){
+		let newPods = {}
+		newPods = {
+			gateway: null,
+			...pods
+		}
+		pods = newPods;
+	}
+
+	Object.keys(pods).forEach(id => {
 		const pod = pods[id] || {};
 		let node = {
 			id,
@@ -60,7 +70,7 @@ export function formatForFlowchart(pods, canvas) {
 		node.ports['inPort'] = { id: 'inPort', type: 'input', }
 		node.ports['outPort'] = { id: 'outPort', type: 'output', }
 
-		if (prevNode && !pod.needs)
+		if (prevNode && !pod.needs && id!=='gateway')
 			pod.needs = prevNode;
 
 		if (pod.needs) {
@@ -95,8 +105,9 @@ export function formatForFlowchart(pods, canvas) {
 	const offsetY = settings.nodeOffset.y;
 
 	//fallback: if no position encoded on canvas portion of YAML, infer the position using depth and order
-	Object.keys(nodes).map(id => {
+	Object.keys(nodes).forEach(id => {
 		let depth = getNodeDepth(nodes, id, 0);
+		// let depth = 1;
 		nodes[id].depth = depth;
 
 		if (depthPopulation[depth] >= 0)
@@ -129,7 +140,7 @@ export function formatAsYAML(chart) {
 			delete node.properties.name;
 	})
 
-	Object.keys(chart.nodes).map(id => {
+	Object.keys(chart.nodes).forEach(id => {
 		const node = chart.nodes[id];
 
 		if (!node.label)
@@ -137,7 +148,7 @@ export function formatAsYAML(chart) {
 
 		output.pods[node.label] = {};
 
-		Object.keys(node.properties).map(propId => {
+		Object.keys(node.properties).forEach(propId => {
 			let type = propertyTypes[propId];
 			if (type === 'bool') {
 				output.pods[node.label][propId] = node.properties[propId] == 'true';
@@ -152,7 +163,7 @@ export function formatAsYAML(chart) {
 			y: node.position.y
 		}
 	});
-	Object.keys(chart.links).map(id => {
+	Object.keys(chart.links).forEach(id => {
 		const link = chart.links[id];
 		const nodeFrom = chart.nodes[link.from.nodeId].label;
 		const nodeTo = chart.nodes[link.to.nodeId].label;
@@ -195,8 +206,14 @@ function getNodeDepth(nodes, currentId, currentDepth) {
 	let parents = Object.keys(nodes[currentId].needs);
 	let longestDepth = 0;
 
+	// console.log('nodes: ',nodes)
+	// console.log('currentId: ',currentId);
+	// console.log('parents: ',parents);
+	// console.log('currentDepth: ',currentDepth);
+
 	for (let i = 0; i < parents.length; ++i) {
 		let parent = parents[i];
+		console.log('\tparent:',parent)
 		let depth;
 		if (nodes[parent].depth)
 			depth = nodes[parent].depth + 1;
