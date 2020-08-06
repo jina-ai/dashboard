@@ -3,7 +3,7 @@ import { hubURL } from './config'
 let logStream;
 let taskStream;
 
-const hubAPI = axios.create({
+const hub = axios.create({
 	baseURL: hubURL,
 	withCredentials: true,
 	timeout: 30000, // 30 secs
@@ -14,6 +14,10 @@ const hubAPI = axios.create({
 });
 
 export default {
+	checkConnection: (settings) =>{
+		let connectionString = `${settings.host}:${settings.port}${settings.ready.startsWith('/') ? settings.ready : '/' + settings.ready}`;
+		return axios.get(connectionString);
+	},
 	connect: (settings, logUpdate,taskUpdate) => {
 		const logString = `${settings.host}:${settings.port}${settings.log.startsWith('/') ? settings.log : '/' + settings.log}`;
 		console.log('logs connectionString: ', logString)
@@ -47,7 +51,7 @@ export default {
 
 	},
 	getProfile: async () => {
-		const result = await hubAPI.get('profile');
+		const result = await hub.get('profile');
 		return result.data;
 	},
 	getYAML: async (connectionString) => {
@@ -57,31 +61,31 @@ export default {
 	},
 	getImages: async () => {
 		console.log('get images...')
-		const result = await hubAPI.get('images');
+		const result = await hub.get('images');
 		return result.data;
 	},
 	getImage: async (id) => {
 		console.log('get image', id);
-		const result = await hubAPI.get(`/images/${id}`);
+		const result = await hub.get(`/images/${id}`);
 		return result.data;
 	},
 	postRating: async (imageId, stars) => {
 		console.log('post rating', imageId, stars);
-		const result = await hubAPI.post(`/images/${imageId}/ratings`, { stars })
+		const result = await hub.post(`/images/${imageId}/ratings`, { stars })
 		return result.data;
 	},
 	postReview: async (imageId, content) => {
 		console.log('post review', imageId, content);
-		const result = await hubAPI.post(`/images/${imageId}/reviews`, { content })
+		const result = await hub.post(`/images/${imageId}/reviews`, { content })
 		return result.data;
 	},
 	searchHub: async (category, q, sort) => {
 		console.log('search hub', category, q, sort);
-		const result = await hubAPI.get(`/images?category=${category}&q=${q}&sort=${sort}`)
+		const result = await hub.get(`/images?category=${category}&q=${q}&sort=${sort}`)
 		return result.data;
 	},
 	logOut: async () => {
-		const result = await hubAPI.post('/auth/logout')
+		const result = await hub.post('/auth/logout')
 		return result.data;
 	}
 }

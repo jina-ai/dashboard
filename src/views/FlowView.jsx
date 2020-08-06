@@ -147,7 +147,7 @@ class FlowTab extends React.Component {
         }
         <div className="px-4">
           <Row noGutters className="page-header py-4">
-            <PageTitle title="Flow Design" subtitle="Local Network" className="text-sm-left mb-3" />
+            <PageTitle title="Flow Design" subtitle="Network" className="text-sm-left mb-3" />
             <Col className="col d-flex align-items-right">
               <div className="d-none d-md-block flex-fill" />
               <ButtonGroup className="d-inline-flex mb-3 mb-sm-0 mx-auto py-0">

@@ -13,6 +13,7 @@ let _store;
 const NUM_CHART_ELEMENTS = 60;
 const CHART_UPDATE_INTERVAL = 1000;
 const TASK_UPDATE_INTERVAL = 500;
+const CHECK_NETWORK_INTERVAL = 1000;
 const CHART_LEVELS = ['INFO', 'SUCCESS', 'WARNING', 'ERROR', 'CRITICAL', 'DEBUG'];
 
 function getInitialStore() {
@@ -151,11 +152,11 @@ class Store extends EventEmitter {
   }
 
   init = async () => {
-    if (this.updateChartInterval)
-      clearInterval(this.updateChartInterval)
     _store = getInitialStore();
-    console.log('store settings: ', _store.settings);
+    this.clearIntervals()
+    console.log('settings: ', _store.settings);
 
+    this.initNetwork();
     await this.initFlowChart();
     this.initLogStream();
     this.initCharts();
@@ -165,6 +166,23 @@ class Store extends EventEmitter {
     _store.loading = false;
     this.emit('update-ui');
     this.emit('update-settings');
+  }
+
+  clearIntervals = () => {
+    if (this.updateChartInterval)
+      clearInterval(this.updateChartInterval)
+    if (this.updateTaskInterval)
+      clearInterval(this.updateTaskInterval)
+  }
+
+  initNetwork = async ()=>{
+    try{
+      await api.checkConnection(_store.settings);
+      this.init();
+    }
+    catch(e){
+      setTimeout(this.initNetwork,CHECK_NETWORK_INTERVAL)
+    }
   }
 
   initFlowChart = async (yamlSTRING) => {

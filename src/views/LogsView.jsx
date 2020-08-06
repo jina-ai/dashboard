@@ -37,7 +37,7 @@ class LogsView extends React.Component {
         }
         <div className="px-4">
           <Row noGutters className="page-header py-4">
-            <PageTitle title="Log Stream" subtitle="Local Network" className="text-sm-left mb-3" />
+            <PageTitle title="Log Stream" subtitle="Network" className="text-sm-left mb-3" />
           </Row>
           <Row>
             <Col md="10" className="mb-4"><SummaryChart /></Col>

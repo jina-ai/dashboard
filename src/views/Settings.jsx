@@ -9,7 +9,7 @@ class LogsView extends React.Component {
     return (
       <Container fluid className="main-content-container px-4">
         <Row noGutters className="page-header py-4">
-          <PageTitle title="Settings" subtitle="Local Network" className="text-sm-left mb-3" />
+          <PageTitle title="Settings" subtitle="Network" className="text-sm-left mb-3" />
         </Row>
 				<SettingsCard/>
       </Container>

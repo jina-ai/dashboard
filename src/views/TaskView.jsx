@@ -46,7 +46,7 @@ class TaskView extends React.Component {
         }
         <div className="px-4">
           <Row noGutters className="page-header py-4">
-            <PageTitle title="Task" subtitle="Local Network" className="text-sm-left mb-3" />
+            <PageTitle title="Task" subtitle="Network" className="text-sm-left mb-3" />
           </Row>
           <Row >
             <Col md="3" className="mb-4">
