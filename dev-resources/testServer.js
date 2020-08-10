@@ -44,7 +44,7 @@ app.get('/stream/log', (req, res) => {
 });
 
 app.get('/status/ready',(req,res)=>{
-	console.log('GET at /stream/log')
+	console.log('GET at /status/ready')
 	res.send('hello world');
 });
 

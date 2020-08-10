@@ -14,13 +14,17 @@ const hub = axios.create({
 });
 
 export default {
-	checkConnection: (settings) =>{
+	checkConnection: (settings) => {
+		console.log('checking connection');
 		let connectionString = `${settings.host}:${settings.port}${settings.ready.startsWith('/') ? settings.ready : '/' + settings.ready}`;
+		console.log('checkConnection string:',connectionString)
 		return axios.get(connectionString);
 	},
-	connect: (settings, logUpdate,taskUpdate) => {
+	connect: (settings, logUpdate, taskUpdate) => {
 		const logString = `${settings.host}:${settings.port}${settings.log.startsWith('/') ? settings.log : '/' + settings.log}`;
 		console.log('logs connectionString: ', logString)
+		if (logStream)
+			logStream.close();
 		logStream = new EventSource(logString);
 
 		logStream.onopen = () => {
@@ -35,9 +39,11 @@ export default {
 		}
 
 		const taskString = `${settings.host}:${settings.port}${settings.profile.startsWith('/') ? settings.profile : '/' + settings.profile}`;
-		console.log('task connectionString:',taskString);
+		console.log('task connectionString:', taskString);
+		if (taskStream)
+			taskStream.close();
 		taskStream = new EventSource(taskString);
-		
+
 		taskStream.onopen = () => {
 			taskUpdate({ type: 'connect', data: `Task connection established at ${taskString}` })
 		}

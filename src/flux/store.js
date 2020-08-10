@@ -35,7 +35,8 @@ function getInitialStore() {
     },
     connected: {
       logs: false,
-      flow: false
+      flow: false,
+      status: false,
     },
     loading: true,
     modal: false,
@@ -151,12 +152,27 @@ class Store extends EventEmitter {
     }
   }
 
+  checkNetwork = async () => {
+    let prevStatus = this.connected;
+    try {
+      await api.checkConnection(_store.settings);
+      this.connected = true;
+    }
+    catch (e) {
+      this.connected = false;
+    }
+    console.log('prevStatus:', prevStatus, 'connected:', this.connected)
+    if (prevStatus !== this.connected)
+      return this.init();
+
+  }
+
   init = async () => {
     _store = getInitialStore();
     this.clearIntervals()
     console.log('settings: ', _store.settings);
 
-    this.initNetwork();
+    this.startNetworkMonitor();
     await this.initFlowChart();
     this.initLogStream();
     this.initCharts();
@@ -168,21 +184,16 @@ class Store extends EventEmitter {
     this.emit('update-settings');
   }
 
+  startNetworkMonitor = async () => {
+    if (!this.checkNetworkInterval)
+      this.checkNetworkInterval = setInterval(this.checkNetwork, CHECK_NETWORK_INTERVAL);
+  }
+
   clearIntervals = () => {
     if (this.updateChartInterval)
       clearInterval(this.updateChartInterval)
     if (this.updateTaskInterval)
       clearInterval(this.updateTaskInterval)
-  }
-
-  initNetwork = async ()=>{
-    try{
-      await api.checkConnection(_store.settings);
-      this.init();
-    }
-    catch(e){
-      setTimeout(this.initNetwork,CHECK_NETWORK_INTERVAL)
-    }
   }
 
   initFlowChart = async (yamlSTRING) => {
