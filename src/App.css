@@ -100,6 +100,7 @@ body{
   cursor: move;
   font-size: 1.15em;
   text-align: center;
+  font-size: 14px;
   /* color: white; */
   background: #fff;
   font-weight: 500;
@@ -107,6 +108,12 @@ body{
   border: 3px solid transparent;
   border-radius: .25em;
   transition: .2s;
+  border: 1px solid #d1d5da;
+}
+
+.node-header{
+  font-size: 1.25em;
+  background: rgba(209, 213, 218, 0.25);
 }
 
 .draggable-container{
@@ -131,11 +138,11 @@ body{
   /* The top layer shadow */
   0 1px 1px rgba(0,0,0,0.15),
   /* The second layer */
-  0 10px 0 -5px #2db3b8,
+  0 10px 0 -5px #fff,
   /* The second layer shadow */
   0 10px 1px -4px rgba(0,0,0,0.15),
    /* The third layer */
-  0 20px 0 -10px #2db3b8,
+  0 20px 0 -10px #fff,
   /* The third layer shadow */
   0 20px 1px -9px rgba(0,0,0,0.15);
   /* Padding for demo purposes */
@@ -351,6 +358,10 @@ i.material-icons{
   border-color: #009999 !important;
 }
 
+.text-primary{
+  color: #009999 !important;
+}
+
 .btn-danger{
   background-color: #ff4540 !important;
   border-color: #ff4540 !important;
@@ -476,10 +487,9 @@ i.material-icons{
   font-weight: 600;
 }
 
-.node-icons{
+.node-info{
+  text-align: left;
   padding: .25em;
-  color: #fff;
-  background: #009999;
 }
 code{
   padding: 0em !important;
