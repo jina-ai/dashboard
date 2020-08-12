@@ -1,10 +1,30 @@
 [
   {
-    "name": "identity",
+    "name": "uses",
     "type": "str"
   },
   {
-    "name": "yaml_path",
+    "name": "replicas",
+    "type": "int"
+  },
+  {
+    "name": "read_only",
+    "type": "bool"
+  },
+  {
+    "name": "separated_workspace",
+    "type": "bool"
+  },
+  {
+    "name": "host",
+    "type": "str"
+  },
+  {
+    "name": "port_grpc",
+    "type": "int"
+  },
+  {
+    "name": "identity",
     "type": "str"
   },
   {
@@ -76,14 +96,6 @@
     "type": "bool"
   },
   {
-    "name": "read_only",
-    "type": "bool"
-  },
-  {
-    "name": "separated_workspace",
-    "type": "bool"
-  },
-  {
     "name": "replica_id",
     "type": "int"
   },
@@ -124,24 +136,12 @@
     "type": "bool"
   },
   {
-    "name": "host",
-    "type": "str"
-  },
-  {
-    "name": "port_grpc",
-    "type": "int"
-  },
-  {
     "name": "max_message_size",
     "type": "int"
   },
   {
     "name": "proxy",
     "type": "bool"
-  },
-  {
-    "name": "replicas",
-    "type": "int"
   },
   {
     "name": "replica_type",
