@@ -1,6 +1,7 @@
 import React from "react";
 import SidebarItem from './SidebarItem';
 import defaultPods from '../../data/defaultPods.json';
+import lunr from 'lunr';
 import { Button, FormControl, Card } from 'react-bootstrap';
 import { Store } from "../../flux";
 
@@ -8,6 +9,8 @@ class FlowChartSidebar extends React.Component {
   state = {
     availableProperties: Store.getAvailableProperties(),
     node: {},
+    searchResults: [],
+    searchQuery: '',
   }
 
   componentWillReceiveProps = (nextProps) => {
@@ -16,6 +19,9 @@ class FlowChartSidebar extends React.Component {
 
     if (id === this.state.node.id)
       return;
+    
+    this.setState({searchResults:[],searchQuery:'' });
+    console.log('test')
 
     if (!id)
       return;
@@ -36,7 +42,7 @@ class FlowChartSidebar extends React.Component {
       properties[key] = node.properties[key];
     });
 
-    this.setState({ node: { label, id: node.id, properties, newProperties } });
+    this.setState({ node: { label, id: node.id, properties, newProperties }});
   }
 
   updateLabel = (label) => {
@@ -69,8 +75,37 @@ class FlowChartSidebar extends React.Component {
     console.log('save changes: ', node)
   }
 
-  renderEditNode = () => {
+  updateSearchQuery = (e) => {
+    this.setState({ searchQuery: e.target.value }, this.searchProperties);
+  }
+
+  searchProperties = () => {
+    const query = this.state.searchQuery;
+    console.log('search query: ', query)
+    if (!query)
+      return this.setState({ searchResults: false })
+    this.indexProperties();
+    let searchResults = this.index.search(`${query} ${query}*`)
+    this.setState({ searchResults });
+    console.log('search results: ', searchResults)
+  }
+
+  indexProperties = () => {
     const { availableProperties, node } = this.state;
+    const { properties } = node;
+    console.log('indexing', availableProperties.length, 'properties for search')
+    this.index = lunr(function () {
+      this.field('name');
+
+      availableProperties.forEach((prop, idx) => {
+        prop.id = parseInt(idx);
+        this.add(prop);
+      });
+    })
+  }
+
+  renderEditNode = () => {
+    const { availableProperties, node, searchQuery, searchResults } = this.state;
     let label = typeof node.label === 'undefined' ? node.properties.name : node.label || ''
     return (
       <div className="h-100 d-flex flex-column">
@@ -78,33 +113,63 @@ class FlowChartSidebar extends React.Component {
           <p className="mb-1"><b>Pod Name</b></p>
           <FormControl spellCheck={false} value={label} onChange={(e) => this.updateLabel(e.target.value)} className="pod-name-input" />
         </div>
-        <p className="mb-1 px-2"><b>Properties</b></p>
+        <p className="mb-0 px-2"><b>Properties</b></p>
+        <div className="m-2">
+          <FormControl spellCheck={false} placeholder="search properties..." value={searchQuery} onChange={this.updateSearchQuery} />
+        </div>
         <div className="property-table flex-fill mx-2">
           {
-            Object.keys(node.properties).map(prop => {
-              const value = node.properties[prop];
-              if (prop === 'name')
-                return;
-              return (
-                <div key={prop} className="property-item mb-2">
-                  <p className="property-label mb-1">{prop}</p>
-                  <FormControl spellCheck={false} value={value || ""} onChange={(e) => this.updateExistingValue(prop, e.target.value)} className="property-value-input" />
-                </div>
-
-              )
-            })
-          }
-          {
-            availableProperties.map(property => {
-              if (typeof node.properties[property.name] == 'undefined')
+            searchQuery && searchResults ?
+            searchResults.map(result => {
+                const property = availableProperties[result.ref]
+                const {name,type} = property;
+                const value = node.properties[name];
+                
+                if (typeof value == 'undefined')
                 return (
-                  <div key={property.name} className="property-item mb-2">
-                    <p className="property-label mb-1">{property.name}</p>
-                    <FormControl spellCheck={false} placeholder={property.type} value={node.newProperties[property.name] || ''} onChange={(e) => this.updateNewValue(property.name, e.target.value)} className="property-value-input"></FormControl>
+                  <div key={name} className="property-item mb-2">
+                    <p className="property-label mb-1">{name}</p>
+                    <FormControl spellCheck={false} placeholder={type} value={node.newProperties[name] || ''} onChange={(e) => this.updateNewValue(name, e.target.value)} className="property-value-input"></FormControl>
                   </div>
                 )
-            })
+                return (
+                  <div key={name} className="property-item mb-2">
+                    <p className="property-label mb-1">{name}</p>
+                    <FormControl spellCheck={false} value={value || ""} onChange={(e) => this.updateExistingValue(name, e.target.value)} className="property-value-input" />
+                  </div>
+                )
+
+
+              })
+              :
+              <div>
+                {
+                  Object.keys(node.properties).map(prop => {
+                    const value = node.properties[prop];
+                    if (prop === 'name')
+                      return;
+                    return (
+                      <div key={prop} className="property-item mb-2">
+                        <p className="property-label mb-1">{prop}</p>
+                        <FormControl spellCheck={false} value={value || ""} onChange={(e) => this.updateExistingValue(prop, e.target.value)} className="property-value-input" />
+                      </div>
+                    )
+                  })
+                }
+                {
+                  availableProperties.map(property => {
+                    if (typeof node.properties[property.name] == 'undefined')
+                      return (
+                        <div key={property.name} className="property-item mb-2">
+                          <p className="property-label mb-1">{property.name}</p>
+                          <FormControl spellCheck={false} placeholder={property.type} value={node.newProperties[property.name] || ''} onChange={(e) => this.updateNewValue(property.name, e.target.value)} className="property-value-input"></FormControl>
+                        </div>
+                      )
+                  })
+                }
+              </div>
           }
+
         </div>
         <div className="p-2">
           <Button variant="danger" className="w-100" onClick={this.props.deleteSelection}>Delete Pod</Button>
@@ -119,7 +184,7 @@ class FlowChartSidebar extends React.Component {
     const nodeTo = nodes[link.to.nodeId];
 
     let choices = Object.keys(nodes).map(id => {
-      return {label: nodes[id].label || nodes[id].properties.name,id}
+      return { label: nodes[id].label || nodes[id].properties.name, id }
     })
 
     console.log('links:', links, '\nlink:', link, '\nnodes:', nodes);
@@ -129,7 +194,7 @@ class FlowChartSidebar extends React.Component {
         <div className="flex-fill px-2">
           <div className="p-2 mb-1">
             <p className="mb-1"><b>From</b></p>
-            <FormControl className="mb-2" as="select" onChange={(e) => this.props.updateLink(link.id,e.target.value,nodeTo.id)} value={nodeFrom.id}>
+            <FormControl className="mb-2" as="select" onChange={(e) => this.props.updateLink(link.id, e.target.value, nodeTo.id)} value={nodeFrom.id}>
               {
                 choices.map(choice =>
                   <option key={choice.id} value={choice.id}>{choice.label}</option>
@@ -137,7 +202,7 @@ class FlowChartSidebar extends React.Component {
               }
             </FormControl>
             <p className="mb-1"><b>To</b></p>
-            <FormControl className="mb-2" as="select" onChange={(e) => this.props.updateLink(link.id,nodeFrom.id,e.target.value)} value={nodeTo.id}>
+            <FormControl className="mb-2" as="select" onChange={(e) => this.props.updateLink(link.id, nodeFrom.id, e.target.value)} value={nodeTo.id}>
               {
                 choices.map(choice =>
                   <option key={choice.id} value={choice.id}>{choice.label}</option>
