@@ -14,11 +14,12 @@
   line-height: 1.5rem;
 }
 
-
 // Adjust custom controls disabled states.
 
 // Custom checkboxes
-.custom-checkbox .custom-control-input:disabled:checked ~ .custom-control-label {
+.custom-checkbox
+  .custom-control-input:disabled:checked
+  ~ .custom-control-label {
   &::after {
     border-color: $custom-control-disabled-color;
   }

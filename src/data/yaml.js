@@ -1,6 +1,5 @@
 module.exports = {
-	flow1:
-	`!Flow
+  flow1: `!Flow
   with:
     board:
       canvas:
@@ -103,5 +102,5 @@ module.exports = {
         - pod_right
     pod_7:
       needs: chunk_seg
-  `
-}
+  `,
+};

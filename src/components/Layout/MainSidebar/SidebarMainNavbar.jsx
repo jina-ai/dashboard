@@ -12,7 +12,7 @@ class SidebarMainNavbar extends React.Component {
 
   handleToggleSidebar() {
     Dispatcher.dispatch({
-      actionType: Constants.TOGGLE_SIDEBAR
+      actionType: Constants.TOGGLE_SIDEBAR,
     });
   }
 
@@ -34,7 +34,7 @@ class SidebarMainNavbar extends React.Component {
                 id="main-logo"
                 className="d-inline-block align-top"
                 style={{ maxWidth: "50px" }}
-                src={require('../../../images/jina-light.svg')}
+                src={require("../../../images/jina-light.svg")}
                 alt="Jina Dashboard"
               />
             </div>

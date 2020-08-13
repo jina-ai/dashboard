@@ -19,56 +19,52 @@ class SingleGoal extends React.Component {
           {
             hoverBorderColor: "#fff",
             data: [0, 100],
-            backgroundColor: [
-              '#32c8cd',
-              '#E9ECEF'
-            ]
-          }
+            backgroundColor: ["#32c8cd", "#E9ECEF"],
+          },
         ],
-        labels: ["Label 1", "Label 2"]
+        labels: ["Label 1", "Label 2"],
       },
       options: {
         legend: false,
         responsive: false,
         cutoutPercentage: 70,
         animation: false,
-        tooltips: false
-      }
+        tooltips: false,
+      },
     });
   }
 
-  updateChart = () =>{
-    const {progress} = this.props;
-    const percent = (progress.num_bars/progress.bar_len||1)*100;
+  updateChart = () => {
+    const { progress } = this.props;
+    const percent = (progress.num_bars / progress.bar_len || 1) * 100;
     let newData = {
       datasets: [
         {
           hoverBorderColor: "#fff",
-          data: [percent, 100-percent],
-          backgroundColor: [
-            '#32c8cd',
-            '#E9ECEF'
-          ]
-        }
+          data: [percent, 100 - percent],
+          backgroundColor: ["#32c8cd", "#E9ECEF"],
+        },
       ],
-      labels: ["Label 1", "Label 2"]
-    }
+      labels: ["Label 1", "Label 2"],
+    };
     this.chart.data = newData;
     this.chart.update();
-  }
+  };
 
   render() {
     const { progress } = this.props;
-    if(this.chart)
-      this.updateChart();
+    if (this.chart) this.updateChart();
     return (
       <Card className="p-3 h-100">
-        <h6 className="stats-small__label text-uppercase text-center"><b>Progress</b></h6>
+        <h6 className="stats-small__label text-uppercase text-center">
+          <b>Progress</b>
+        </h6>
         <div className="go-stats__chart mx-auto d-flex flex-row">
           <div className="mr-4 mt-3">
-            <h6 className="stats-small__label text-uppercase text-center">Request</h6>
+            <h6 className="stats-small__label text-uppercase text-center">
+              Request
+            </h6>
             <h4 className="mb-0">{progress.currentRequest}</h4>
-
           </div>
 
           <canvas

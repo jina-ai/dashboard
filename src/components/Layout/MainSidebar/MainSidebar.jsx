@@ -14,25 +14,25 @@ class MainSidebar extends React.Component {
 
     this.state = {
       menuVisible: false,
-      sidebarNavItems: Store.getSidebarItems()
+      sidebarNavItems: Store.getSidebarItems(),
     };
 
     this.onChange = this.onChange.bind(this);
   }
 
   componentWillMount() {
-    Store.on('update-ui',this.onChange);
+    Store.on("update-ui", this.onChange);
   }
 
   componentWillUnmount() {
-    Store.removeListener('update-ui',this.onChange);
+    Store.removeListener("update-ui", this.onChange);
   }
 
   onChange() {
     this.setState({
       ...this.state,
       menuVisible: Store.getMenuState(),
-      sidebarNavItems: Store.getSidebarItems()
+      sidebarNavItems: Store.getSidebarItems(),
     });
   }
 
@@ -45,12 +45,7 @@ class MainSidebar extends React.Component {
     );
 
     return (
-      <Col
-        tag="aside"
-        className={classes}
-        lg={{ size: 2 }}
-        md={{ size: 3 }}
-      >
+      <Col tag="aside" className={classes} lg={{ size: 2 }} md={{ size: 3 }}>
         <SidebarMainNavbar hideLogoText={this.props.hideLogoText} />
         {/* <SidebarSearch /> */}
         <SidebarNavItems />

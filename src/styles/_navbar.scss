@@ -6,26 +6,26 @@
 }
 
 .nav-link {
-    font-size: $nav-link-font-size;
-    font-weight: $nav-link-font-weight;
+  font-size: $nav-link-font-size;
+  font-weight: $nav-link-font-weight;
 
-    &-icon {
-      color: $nav-link-icon-color;
+  &-icon {
+    color: $nav-link-icon-color;
 
-      @include hover-focus {
-        color: darken($nav-link-icon-color, 10);
-      }
+    @include hover-focus {
+      color: darken($nav-link-icon-color, 10);
+    }
 
-      &__wrapper {
-        position: relative;
-      }
+    &__wrapper {
+      position: relative;
+    }
 
-      i {
-        font-size: $nav-link-icon-font-size;
+    i {
+      font-size: $nav-link-icon-font-size;
 
-        &.material-icons {
-          font-size: $nav-link-material-icons-font-size;
-        }
+      &.material-icons {
+        font-size: $nav-link-material-icons-font-size;
       }
     }
   }
+}

@@ -3,7 +3,7 @@ import Dispatcher from "./dispatcher";
 import Constants from "./constants";
 import { parseYAML, formatForFlowchart, formatSeconds } from "../helpers";
 import api from "./api";
-import propertyList from '../data/properties.json';
+import propertyList from "../data/properties.json";
 import getSidebarNavItems from "../data/sidebar-nav-items";
 
 const HIDE_BANNER_TIMEOUT = 5000;
@@ -14,18 +14,26 @@ const NUM_CHART_ELEMENTS = 60;
 const CHART_UPDATE_INTERVAL = 1000;
 const TASK_UPDATE_INTERVAL = 500;
 const CHECK_NETWORK_INTERVAL = 1000;
-const CHART_LEVELS = ['INFO', 'SUCCESS', 'WARNING', 'ERROR', 'CRITICAL', 'DEBUG'];
+const CHART_LEVELS = [
+  "INFO",
+  "SUCCESS",
+  "WARNING",
+  "ERROR",
+  "CRITICAL",
+  "DEBUG",
+];
 
 function getInitialStore() {
   return {
     settings: {
-      host: localStorage.getItem('preferences-host') || 'http://localhost',
-      port: localStorage.getItem('preferences-port') || 5000,
-      log: localStorage.getItem('preferences-log') || '/stream/log',
-      profile: localStorage.getItem('preferences-profile') || '/stream/profile',
-      yaml: localStorage.getItem('preferences-yaml') || '/data/yaml',
-      shutdown: localStorage.getItem('preferences-shutdown') || '/action/shutdown',
-      ready: localStorage.getItem('preferences-ready') || '/status/ready',
+      host: localStorage.getItem("preferences-host") || "http://localhost",
+      port: localStorage.getItem("preferences-port") || 5000,
+      log: localStorage.getItem("preferences-log") || "/stream/log",
+      profile: localStorage.getItem("preferences-profile") || "/stream/profile",
+      yaml: localStorage.getItem("preferences-yaml") || "/data/yaml",
+      shutdown:
+        localStorage.getItem("preferences-shutdown") || "/action/shutdown",
+      ready: localStorage.getItem("preferences-ready") || "/status/ready",
     },
     images: {},
     hub: [],
@@ -48,16 +56,16 @@ function getInitialStore() {
       scale: 1,
       nodes: {
         gateway: {
-          id: 'gateway',
-          label: 'gateway',
+          id: "gateway",
+          label: "gateway",
           ports: {
             outPort: {
-              id: 'outPort',
-              type: 'output',
-            }
+              id: "outPort",
+              type: "output",
+            },
           },
           properties: {},
-          position: { x: 629, y: 72 }
+          position: { x: 629, y: 72 },
         },
       },
       links: {},
@@ -77,11 +85,11 @@ function getInitialStore() {
     taskData: {
       qps: {
         current: 0,
-        history: (new Array(30)).fill(0)
+        history: new Array(30).fill(0),
       },
       elapsed: {
-        task_name: 'No Current Task',
-        seconds: '0s',
+        task_name: "No Current Task",
+        seconds: "0s",
       },
       progress: {
         currentRequest: 0,
@@ -90,8 +98,8 @@ function getInitialStore() {
       },
       speed: {
         current: 0,
-        unit: 'units',
-        history: (new Array(30)).fill(0),
+        unit: "units",
+        history: new Array(30).fill(0),
       },
       lastUpdateChart: new Date(),
       messages: [],
@@ -99,8 +107,8 @@ function getInitialStore() {
     },
     selectedNode: null,
     modalParams: null,
-    currentTab: 'logStream',
-  }
+    currentTab: "logStream",
+  };
 }
 
 class Store extends EventEmitter {
@@ -150,27 +158,24 @@ class Store extends EventEmitter {
         break;
       default:
     }
-  }
+  };
 
   checkNetwork = async () => {
     let prevStatus = this.connected;
     try {
       await api.checkConnection(_store.settings);
       this.connected = true;
-    }
-    catch (e) {
+    } catch (e) {
       this.connected = false;
     }
-    console.log('prevStatus:', prevStatus, 'connected:', this.connected)
-    if (prevStatus !== this.connected)
-      return this.init();
-
-  }
+    console.log("prevStatus:", prevStatus, "connected:", this.connected);
+    if (prevStatus !== this.connected) return this.init();
+  };
 
   init = async () => {
     _store = getInitialStore();
-    this.clearIntervals()
-    console.log('settings: ', _store.settings);
+    this.clearIntervals();
+    console.log("settings: ", _store.settings);
 
     this.startNetworkMonitor();
     await this.initFlowChart();
@@ -180,82 +185,93 @@ class Store extends EventEmitter {
     this.initUser();
 
     _store.loading = false;
-    this.emit('update-ui');
-    this.emit('update-settings');
-  }
+    this.emit("update-ui");
+    this.emit("update-settings");
+  };
 
   startNetworkMonitor = async () => {
     if (!this.checkNetworkInterval)
-      this.checkNetworkInterval = setInterval(this.checkNetwork, CHECK_NETWORK_INTERVAL);
-  }
+      this.checkNetworkInterval = setInterval(
+        this.checkNetwork,
+        CHECK_NETWORK_INTERVAL
+      );
+  };
 
   clearIntervals = () => {
-    if (this.updateChartInterval)
-      clearInterval(this.updateChartInterval)
-    if (this.updateTaskInterval)
-      clearInterval(this.updateTaskInterval)
-  }
+    if (this.updateChartInterval) clearInterval(this.updateChartInterval);
+    if (this.updateTaskInterval) clearInterval(this.updateTaskInterval);
+  };
 
   initFlowChart = async (yamlSTRING) => {
     let flow;
     const { settings } = _store;
-    const connectionString = `${settings.host}:${settings.port}${settings.yaml.startsWith('/') ? settings.yaml : '/' + settings.yaml}`;
+    const connectionString = `${settings.host}:${settings.port}${
+      settings.yaml.startsWith("/") ? settings.yaml : "/" + settings.yaml
+    }`;
 
     if (yamlSTRING) {
       flow = parseYAML(yamlSTRING);
       _store.connected.flow = false;
-    }
-    else {
+    } else {
       try {
         let str = await api.getYAML(connectionString);
         flow = parseYAML(str);
         _store.connected.flow = true;
-        this.showBanner('flow', `Getting YAML from ${connectionString}`, 'success')
-      }
-      catch (e) {
+        this.showBanner(
+          "flow",
+          `Getting YAML from ${connectionString}`,
+          "success"
+        );
+      } catch (e) {
         _store.connected.flow = false;
-        this.showBanner('flow', `Could not get YAML flow from ${connectionString}`, 'error')
+        this.showBanner(
+          "flow",
+          `Could not get YAML flow from ${connectionString}`,
+          "error"
+        );
         return;
       }
     }
     let canvas;
     try {
       canvas = flow.data.with.board.canvas;
-    }
-    catch (e) {
-      console.log('could not find canvas');
+    } catch (e) {
+      console.log("could not find canvas");
       canvas = {};
     }
-    console.log('pods: ', flow.data.pods)
+    console.log("pods: ", flow.data.pods);
     const parsed = formatForFlowchart(flow.data.pods, canvas);
-    console.log('parsed: ', parsed);
+    console.log("parsed: ", parsed);
     parsed.with = flow.data.with;
     _store.flowchart = parsed;
-    this.emit('update-ui');
-    this.emit('update-flowchart')
-  }
+    this.emit("update-ui");
+    this.emit("update-flowchart");
+  };
 
   initLogStream = () => {
-    api.connect(_store.settings, this.handleNewLog, this.handleNewTaskEvent)
-    this.updateTaskInterval = setInterval(() => this.emit('update-task'), TASK_UPDATE_INTERVAL)
-  }
+    api.connect(_store.settings, this.handleNewLog, this.handleNewTaskEvent);
+    this.updateTaskInterval = setInterval(
+      () => this.emit("update-task"),
+      TASK_UPDATE_INTERVAL
+    );
+  };
 
   handleNewLog = (message) => {
     const { type, data } = message;
 
-    if (type === 'connect') {
+    if (type === "connect") {
       _store.connected.logs = true;
-      return this.showBanner('logs', data, 'success')
+      return this.showBanner("logs", data, "success");
     }
 
-    if (type === 'error') {
+    if (type === "error") {
       _store.connected.logs = false;
-      return this.showBanner('logs', data, 'error')
+      return this.showBanner("logs", data, "error");
     }
 
     const log = data;
 
-    log.formattedTimestamp = (new Date(log.created * 1000)).toLocaleString()
+    log.formattedTimestamp = new Date(log.created * 1000).toLocaleString();
     log.idx = _store.logs.length;
 
     _store.logs.push(log);
@@ -267,20 +283,20 @@ class Store extends EventEmitter {
       _store.occurences.current[log.levelname]++;
     }
 
-    this.emit('update-logs');
-  }
+    this.emit("update-logs");
+  };
 
   handleNewTaskEvent = (message) => {
     const { type, data } = message;
 
-    if (type === 'connect') {
+    if (type === "connect") {
       _store.connected.task = true;
-      return this.showBanner('task', data, 'success')
+      return this.showBanner("task", data, "success");
     }
 
-    if (type === 'error') {
+    if (type === "error") {
       _store.connected.task = false;
-      return this.showBanner('task', data, 'error')
+      return this.showBanner("task", data, "error");
     }
 
     const event = data;
@@ -299,9 +315,8 @@ class Store extends EventEmitter {
       msg_sent,
       num_reqs,
       qps,
-      thread
+      thread,
     } = event;
-
 
     if (bar_len && num_bars) {
       _store.taskData.progress.currentRequest = num_reqs;
@@ -310,29 +325,34 @@ class Store extends EventEmitter {
     }
 
     if (msg_recv && msg_sent) {
-      let index = _store.taskData.messages.map((obj) => obj.process).indexOf(process);
+      let index = _store.taskData.messages
+        .map((obj) => obj.process)
+        .indexOf(process);
       let msgData = {
         process,
         sent: msg_sent,
         received: msg_recv,
-        node: _store.processes[process]
-      }
+        node: _store.processes[process],
+      };
       let bytesData = {
         process,
         sent: bytes_sent,
         received: bytes_recv,
-        node: _store.processes[process]
-      }
+        node: _store.processes[process],
+      };
       if (index < 0) {
         _store.taskData.messages.push(msgData);
         _store.taskData.bytes.push(bytesData);
-      }
-      else {
+      } else {
         _store.taskData.messages[index] = msgData;
         _store.taskData.bytes[index] = bytesData;
       }
-      _store.taskData.messages = _store.taskData.messages.sort((a, b) => (b.sent + b.received) - (a.sent + a.received)).slice(0, 20)
-      _store.taskData.bytes = _store.taskData.bytes.sort((a, b) => (b.sent + b.received) - (a.sent + a.received)).slice(0, 20)
+      _store.taskData.messages = _store.taskData.messages
+        .sort((a, b) => b.sent + b.received - (a.sent + a.received))
+        .slice(0, 20);
+      _store.taskData.bytes = _store.taskData.bytes
+        .sort((a, b) => b.sent + b.received - (a.sent + a.received))
+        .slice(0, 20);
       _store.taskData.lastUpdateChart = new Date();
     }
 
@@ -353,43 +373,44 @@ class Store extends EventEmitter {
       _store.taskData.elapsed.seconds = formatSeconds(parseInt(elapsed));
       _store.taskData.elapsed.task_name = `Task: ${task_name}`;
     }
-  }
-
+  };
 
   initCharts = () => {
-    CHART_LEVELS.forEach(level => {
+    CHART_LEVELS.forEach((level) => {
       _store.occurences.current[level] = 0;
       _store.occurences.previous[level] = 0;
-      _store.summaryCharts[level] = (new Array(NUM_CHART_ELEMENTS)).fill(0);
+      _store.summaryCharts[level] = new Array(NUM_CHART_ELEMENTS).fill(0);
     });
-    _store.occurences.lastLog = (new Array(NUM_CHART_ELEMENTS)).fill({});
-    console.log('initial Occurences: ', _store.occurences);
-    console.log('initial summary charts: ', _store.summaryCharts);
-    this.updateChartInterval = setInterval(this.updateSummaryCharts, CHART_UPDATE_INTERVAL);
-  }
+    _store.occurences.lastLog = new Array(NUM_CHART_ELEMENTS).fill({});
+    console.log("initial Occurences: ", _store.occurences);
+    console.log("initial summary charts: ", _store.summaryCharts);
+    this.updateChartInterval = setInterval(
+      this.updateSummaryCharts,
+      CHART_UPDATE_INTERVAL
+    );
+  };
 
   initHub = async () => {
     try {
       const images = await api.getImages();
       _store.hub = images;
       _store.connected.hub = true;
+    } catch (e) {
+      _store.connected.hub = false;
     }
-    catch (e) {
-      _store.connected.hub = false
-    }
-    this.emit('update-hub');
-  }
+    this.emit("update-hub");
+  };
 
   initUser = async () => {
     const user = await api.getProfile();
-    console.log('user', user);
+    console.log("user", user);
     _store.user = user;
-    this.emit('update-user');
-  }
+    this.emit("update-user");
+  };
 
   updateSummaryCharts = () => {
     const { current, previous, indeces } = _store.occurences;
-    CHART_LEVELS.forEach(level => {
+    CHART_LEVELS.forEach((level) => {
       const numLogs = current[level];
       const prevNum = previous[level];
       _store.summaryCharts[level].push(numLogs - prevNum);
@@ -399,8 +420,8 @@ class Store extends EventEmitter {
     _store.occurences.lastLog.push(_store.logs.length - 1);
     _store.occurences.lastLog.shift();
     // console.log('summaryCharts:', _store.summaryCharts);
-    this.emit('update-summary-chart');
-  }
+    this.emit("update-summary-chart");
+  };
 
   reconnect() {
     this.init();
@@ -408,121 +429,112 @@ class Store extends EventEmitter {
 
   toggleSidebar() {
     _store.menuVisible = !_store.menuVisible;
-    this.emit('update-ui');
+    this.emit("update-ui");
   }
 
   showLogAtIndex = (index) => {
-    console.log('index: ', index);
+    console.log("index: ", index);
     let logIndex = _store.occurences.lastLog[index];
-    console.log('logIndex: ', logIndex);
-    if (!logIndex)
-      return;
+    console.log("logIndex: ", logIndex);
+    if (!logIndex) return;
     _store.logIndex = _store.occurences.lastLog[index];
-    this.emit('show-log');
-  }
+    this.emit("show-log");
+  };
 
   importCustomYAML = (customYAML) => {
     this.initFlowChart(customYAML);
     this.closeModal();
-    this.emit('update-flowchart')
-  }
+    this.emit("update-flowchart");
+  };
 
   saveSettings = (settings) => {
-    Object.keys(settings).forEach(key => {
+    Object.keys(settings).forEach((key) => {
       localStorage.setItem(`preferences-${key}`, settings[key]);
     });
     setTimeout(this.init, 100);
-  }
+  };
 
   postRating = async ({ imageId, stars }) => {
-    console.log('posting rating: ', imageId, stars);
-    if (!_store.user)
-      return window.location.hash = '#/login'
+    console.log("posting rating: ", imageId, stars);
+    if (!_store.user) return (window.location.hash = "#/login");
     let result;
     try {
       result = await api.postRating(imageId, stars);
+    } catch (e) {
+      if (String(e).includes("409")) e = "Already Rated";
+      return this.showError("hub", e);
     }
-    catch (e) {
-      if (String(e).includes('409'))
-        e = 'Already Rated';
-      return this.showError('hub', e);
-    }
-    if (result.error)
-      this.showError('hub', result.error);
+    if (result.error) this.showError("hub", result.error);
     else if (result.data) {
       const image = result.data;
       _store.images[image.id] = image;
-      this.showBanner('hub', 'Rating successfully posted', 'success')
+      this.showBanner("hub", "Rating successfully posted", "success");
     }
-    this.emit('update-hub');
-  }
+    this.emit("update-hub");
+  };
 
   postReview = async ({ imageId, content }) => {
     if (!_store.user) {
-      this.closeModal()
-      return window.location.hash = '#/login'
+      this.closeModal();
+      return (window.location.hash = "#/login");
     }
     this.closeModal();
     let result;
     try {
       result = await api.postReview(imageId, content);
+    } catch (e) {
+      if (String(e).includes("409")) e = "Already Reviewed";
+      return this.showError("hub", e);
     }
-    catch (e) {
-      if (String(e).includes('409'))
-        e = 'Already Reviewed';
-      return this.showError('hub', e);
-    }
-    if (result.error)
-      this.showError('hub', result.error);
+    if (result.error) this.showError("hub", result.error);
     else if (result.data) {
       const image = result.data;
       _store.images[image.id] = image;
-      this.showBanner('hub', 'Review successfully posted', 'success')
+      this.showBanner("hub", "Review successfully posted", "success");
     }
-    this.emit('update-hub');
-  }
+    this.emit("update-hub");
+  };
 
   logOut = async () => {
     await api.logOut();
-    window.location.reload()
-  }
+    window.location.reload();
+  };
 
   searchHub = async ({ category, q, sort }) => {
     const images = await api.searchHub(category, q, sort);
-    console.log('found', images.length, 'images')
+    console.log("found", images.length, "images");
     _store.hub = images;
-    this.emit('update-hub')
-  }
+    this.emit("update-hub");
+  };
 
   showBanner = (target, message, theme) => {
-    if (this.bannerTimeout)
-      clearTimeout(this.bannerTimeout)
+    if (this.bannerTimeout) clearTimeout(this.bannerTimeout);
     _store.banner[target] = { message: String(message), theme };
     this.bannerTimeout = setTimeout(this.hideBanner, HIDE_BANNER_TIMEOUT);
-    this.emit('update-ui');
-  }
+    this.emit("update-ui");
+  };
 
   hideBanner = () => {
     _store.banner = { logs: false, flow: false };
-    this.emit('update-ui');
-  }
+    this.emit("update-ui");
+  };
 
   showError = (target, message) => {
-    this.showBanner(target, message, 'error');
-  }
+    this.showBanner(target, message, "error");
+  };
 
   showModal = (data) => {
     const { modal, params } = data;
     _store.modal = modal;
     _store.modalParams = params;
-    this.emit('update-ui');
-  }
+    this.emit("update-ui");
+  };
 
   closeModal = () => {
     _store.modal = false;
-    _store.modalParams = '';
-    this.emit('update-ui');
-  }
+    _store.modalParams = "";
+    this.emit("update-ui");
+  };
 
   getMenuState() {
     return _store.menuVisible;
@@ -534,97 +546,93 @@ class Store extends EventEmitter {
 
   getCurrentTab = () => {
     return _store.currentTab;
-  }
+  };
 
   getUser = () => {
     return _store.user;
-  }
+  };
 
   getHubImages = () => {
     return _store.hub;
-  }
+  };
 
-  getHubImage = async imageId => {
+  getHubImage = async (imageId) => {
     if (!_store.images[imageId]) {
       _store.images[imageId] = await api.getImage(imageId);
     }
     return _store.images[imageId];
-  }
+  };
 
   getSettings = () => {
     return _store.settings;
-  }
+  };
 
-  getBanner = (panel = 'logs') => {
+  getBanner = (panel = "logs") => {
     return _store.banner[panel];
-  }
+  };
 
   getModal = () => {
     return _store.modal;
-  }
+  };
 
   getModalParams = () => {
     return _store.modalParams;
-  }
+  };
 
   getLogs = () => {
     return _store.logs;
-  }
+  };
 
   getLogSources = () => {
     return _store.logSources;
-  }
+  };
 
   getLogLevels = () => {
     return _store.logLevels;
-  }
+  };
 
   getSummaryCharts = () => {
     return _store.summaryCharts;
-  }
+  };
 
   getOccurencesByName = () => {
     return _store.occurences.current;
-  }
+  };
 
   getTaskData = () => {
     return _store.taskData;
-  }
+  };
 
   getActivePanel = () => {
     const path = window.location.hash.substring(2, window.location.hash.length);
-    if (path.startsWith('flow'))
-      return 'flow';
-    if (path.startsWith('logs'))
-      return 'logs';
-    if (path.startsWith('hub') || path.startsWith('package'))
-      return 'hub';
-    if (path.startsWith('task'))
-      return 'task';
-    return 'neither'
-  }
+    if (path.startsWith("flow")) return "flow";
+    if (path.startsWith("logs")) return "logs";
+    if (path.startsWith("hub") || path.startsWith("package")) return "hub";
+    if (path.startsWith("task")) return "task";
+    return "neither";
+  };
 
   getConnectionStatus = () => {
     const activePanel = this.getActivePanel();
     const status = _store.connected[activePanel];
     return status;
-  }
+  };
 
   isLoading = () => {
     return _store.loading;
-  }
+  };
 
   getFlowchart = () => {
     return _store.flowchart;
-  }
+  };
 
   getAvailableProperties = () => {
     return propertyList;
-  }
+  };
 
   getIndexedLog = () => {
     return _store.logIndex;
-  }
+  };
 }
 
 export default new Store();

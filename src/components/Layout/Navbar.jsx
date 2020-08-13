@@ -2,51 +2,66 @@ import React from "react";
 import { Container, Navbar } from "react-bootstrap";
 import { Store, Dispatcher, Constants } from "../../flux";
 
-
 class MainNavbar extends React.Component {
-	state = {
-		currentTab: Store.getCurrentTab(),
-	}
+  state = {
+    currentTab: Store.getCurrentTab(),
+  };
 
-	componentWillMount = () => {
-		Store.on('update-ui', this.getData)
-	}
+  componentWillMount = () => {
+    Store.on("update-ui", this.getData);
+  };
 
-	componentWillUnmount = () => {
-		Store.removeListener('update-ui', this.getData)
-	}
+  componentWillUnmount = () => {
+    Store.removeListener("update-ui", this.getData);
+  };
 
-	getData = () => {
-		const currentTab = Store.getCurrentTab();
-		this.setState({ currentTab });
-	}
+  getData = () => {
+    const currentTab = Store.getCurrentTab();
+    this.setState({ currentTab });
+  };
 
-	setCurrentTab = (tab) => {
-		Dispatcher.dispatch({
-			actionType: Constants.SET_CURRENT_TAB,
-			payload: tab
-		})
-	}
+  setCurrentTab = (tab) => {
+    Dispatcher.dispatch({
+      actionType: Constants.SET_CURRENT_TAB,
+      payload: tab,
+    });
+  };
 
-	render = () => {
-		const { currentTab } = this.state;
-		return (
-			<Navbar bg="white" expand="lg" sticky="top">
-				<Container fluid className="px-0">
-					<Navbar.Brand href="/">
-						<b>Jina </b><span className="d-none d-md-inline">Dashboard</span>
+  render = () => {
+    const { currentTab } = this.state;
+    return (
+      <Navbar bg="white" expand="lg" sticky="top">
+        <Container fluid className="px-0">
+          <Navbar.Brand href="/">
+            <b>Jina </b>
+            <span className="d-none d-md-inline">Dashboard</span>
           </Navbar.Brand>
-					<div className="center-tabs d-flex">
-						<div className="mx-auto">
-							<div className={`nav-tab d-inline-block px-4 py-2 ${currentTab==='logStream'&&'active'}`} variant="outline-secondary" onClick={()=>this.setCurrentTab('logStream')}>Logs</div>
-							<div className={`nav-tab d-inline-block px-4 py-2 ${currentTab==='flowchart'&&'active'}`} variant="outline-secondary" onClick={()=>this.setCurrentTab('flowchart')}>Flow</div>
-						</div>
-					</div>
-				</Container>
-			</Navbar>
-		)
-	}
+          <div className="center-tabs d-flex">
+            <div className="mx-auto">
+              <div
+                className={`nav-tab d-inline-block px-4 py-2 ${
+                  currentTab === "logStream" && "active"
+                }`}
+                variant="outline-secondary"
+                onClick={() => this.setCurrentTab("logStream")}
+              >
+                Logs
+              </div>
+              <div
+                className={`nav-tab d-inline-block px-4 py-2 ${
+                  currentTab === "flowchart" && "active"
+                }`}
+                variant="outline-secondary"
+                onClick={() => this.setCurrentTab("flowchart")}
+              >
+                Flow
+              </div>
+            </div>
+          </div>
+        </Container>
+      </Navbar>
+    );
+  };
 }
 
 export default MainNavbar;
-

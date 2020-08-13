@@ -29,7 +29,7 @@
     }
 
     &:after {
-      content: '';
+      content: "";
       position: absolute;
       top: 0;
       left: 0;
@@ -93,7 +93,6 @@
   }
 }
 
-
 //
 // User small stats
 //
@@ -133,7 +132,7 @@
     }
   }
 
-   .card-body {
+  .card-body {
     position: relative;
     overflow-y: auto;
     min-height: $up-user-team-body-min-height;
@@ -238,4 +237,3 @@
     }
   }
 }
-

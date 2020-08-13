@@ -6,13 +6,11 @@ html {
   font-weight: 500;
 
   // Adjust font sizes for 144dpi+ (including retina).
-  @media (-webkit-min-device-pixel-ratio: 1.5),
-  (min-resolution: 144dpi) {
+  @media (-webkit-min-device-pixel-ratio: 1.5), (min-resolution: 144dpi) {
     font-size: 16px;
     font-weight: 400;
   }
 }
-
 
 // Body
 body {
@@ -20,13 +18,11 @@ body {
   font-size: 15px;
   font-weight: 500;
 
-  @media (-webkit-min-device-pixel-ratio: 2),
-  (min-resolution: 192dpi) {
+  @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
     font-size: 13px;
     font-weight: 400;
   }
 }
-
 
 // Links
 a {
@@ -37,16 +33,14 @@ a {
   }
 }
 
-
 // Labels
 label {
   font-weight: 400;
 }
 
-
 // Datepicker adjustments
 .datepicker {
-  font-size: .75rem;
+  font-size: 0.75rem;
   padding: 0.625rem;
 
   table tr td,

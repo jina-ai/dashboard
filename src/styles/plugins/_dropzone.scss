@@ -18,7 +18,7 @@
     border-radius: $border-radius;
     will-change: border-color, background;
     transition: border-color $transition-duration ease-in-out,
-                background $transition-duration ease-in-out;
+      background $transition-duration ease-in-out;
 
     &:hover {
       cursor: pointer;
@@ -41,7 +41,7 @@
     justify-content: space-between;
 
     & + .dz-preview {
-      margin-top: $spacer / 2;;
+      margin-top: $spacer / 2;
     }
 
     .dz-image {
@@ -79,7 +79,7 @@
     }
 
     .dz-error-message span {
-      background-color: theme-color('danger');
+      background-color: theme-color("danger");
       color: $white;
       background-color: #c4183c;
       color: #fff;
@@ -94,7 +94,9 @@
 
     .dz-success-mark,
     .dz-error-mark {
-      svg { display: none; }
+      svg {
+        display: none;
+      }
     }
   }
 }

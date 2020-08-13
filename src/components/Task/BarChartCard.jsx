@@ -1,6 +1,14 @@
 import React from "react";
-import { Card, CardHeader, CardBody, Row, Col, ButtonGroup, Button } from "shards-react";
-import { formatBytes } from '../../helpers';
+import {
+  Card,
+  CardHeader,
+  CardBody,
+  Row,
+  Col,
+  ButtonGroup,
+  Button,
+} from "shards-react";
+import { formatBytes } from "../../helpers";
 import Chart from "chart.js";
 
 class ProcessReport extends React.Component {
@@ -9,14 +17,13 @@ class ProcessReport extends React.Component {
     // this.legendRef = React.createRef();
     this.canvasRef = React.createRef();
     this.state = {
-      tab: 'messages',
-    }
+      tab: "messages",
+    };
   }
 
   componentDidUpdate = (prevProps) => {
-    if (this.props.lastUpdate != prevProps.lastUpdate)
-      this.updateChart();
-  }
+    if (this.props.lastUpdate != prevProps.lastUpdate) this.updateChart();
+  };
 
   componentDidMount = () => {
     const { tab } = this.state;
@@ -34,33 +41,38 @@ class ProcessReport extends React.Component {
             },
             label: (tooltipItem, data) => {
               let { tab } = this.state;
-              let label = `${data.datasets[tooltipItem.datasetIndex].label}: ${tab === 'bytes' ? formatBytes(tooltipItem.value):tooltipItem.value}`
+              let label = `${data.datasets[tooltipItem.datasetIndex].label}: ${
+                tab === "bytes"
+                  ? formatBytes(tooltipItem.value)
+                  : tooltipItem.value
+              }`;
               return label;
             },
             afterLabel: (tooltipItem, data) => {
               let { tab } = this.state;
-              const chartData = this.props[tab]
-              let text = '\nProcess ID: ' + chartData[tooltipItem.index].process
+              const chartData = this.props[tab];
+              let text =
+                "\nProcess ID: " + chartData[tooltipItem.index].process;
               return text;
-            }
+            },
           },
         },
         scales: {
           xAxes: [
             {
               stacked: true,
-              gridLines: false
-            }
+              gridLines: false,
+            },
           ],
           yAxes: [
             {
               stacked: true,
               ticks: {
-                userCallback: this.formatYAxisLabel
-              }
-            }
-          ]
-        }
+                userCallback: this.formatYAxisLabel,
+              },
+            },
+          ],
+        },
       },
     };
 
@@ -68,74 +80,73 @@ class ProcessReport extends React.Component {
       type: "bar",
       options: chartOptions,
       data: {
-        labels: chartData.map(d => d.node),
+        labels: chartData.map((d) => d.node),
         datasets: [
           {
             label: "msg sent",
             fill: "start",
-            data: chartData.map(d => d.sent),
+            data: chartData.map((d) => d.sent),
             backgroundColor: "#009999",
             borderColor: "#009999",
             pointBackgroundColor: "#FFFFFF",
             pointHoverBackgroundColor: "#009999",
-            borderWidth: 1.5
+            borderWidth: 1.5,
           },
           {
             label: "msg received",
             fill: "start",
-            data: chartData.map(d => d.received),
+            data: chartData.map((d) => d.received),
             backgroundColor: "#32C8CD",
             borderColor: "#32C8CD",
             pointBackgroundColor: "#FFFFFF",
             pointHoverBackgroundColor: "#32C8CD",
-            borderWidth: 1.5
-          }
-        ]
-      }
+            borderWidth: 1.5,
+          },
+        ],
+      },
     });
-  }
+  };
 
   updateChart = () => {
     const { tab } = this.state;
     const chartData = this.props[tab];
     this.chart.data = {
-      labels: chartData.map(d => d.node),
+      labels: chartData.map((d) => d.node),
       datasets: [
         {
           label: `${tab} sent`,
           fill: "start",
-          data: chartData.map(d => d.sent),
+          data: chartData.map((d) => d.sent),
           backgroundColor: "#009999",
           borderColor: "#009999",
           pointBackgroundColor: "#FFFFFF",
           pointHoverBackgroundColor: "#009999",
-          borderWidth: 1.5
+          borderWidth: 1.5,
         },
         {
           label: `${tab} received`,
           fill: "start",
-          data: chartData.map(d => d.received),
+          data: chartData.map((d) => d.received),
           backgroundColor: "#32C8CD",
           borderColor: "#32C8CD",
           pointBackgroundColor: "#FFFFFF",
           pointHoverBackgroundColor: "#32C8CD",
-          borderWidth: 1.5
-        }
-      ]
-    }
-    this.chart.update()
-  }
+          borderWidth: 1.5,
+        },
+      ],
+    };
+    this.chart.update();
+  };
 
   formatYAxisLabel = (label) => {
     const { tab } = this.state;
-    if (tab === 'bytes')
-      return formatBytes(label)
+    if (tab === "bytes") return formatBytes(label);
     return label > 999 ? `${(label / 1000).toFixed(0)}k` : label;
-  }
+  };
 
   setTab = (tab) => {
     this.setState({ tab }, this.updateChart);
-  }
+  };
 
   render() {
     const { tab } = this.state;
@@ -149,8 +160,20 @@ class ProcessReport extends React.Component {
           <Row className="border-bottom py-2 bg-light">
             <Col sm="6" className="col d-flex mb-2 mb-sm-0">
               <ButtonGroup>
-                <Button theme="white" active={tab === 'messages'} onClick={() => this.setTab('messages')}>Messages</Button>
-                <Button theme="white" active={tab === 'bytes'} onClick={() => this.setTab('bytes')}>Bytes</Button>
+                <Button
+                  theme="white"
+                  active={tab === "messages"}
+                  onClick={() => this.setTab("messages")}
+                >
+                  Messages
+                </Button>
+                <Button
+                  theme="white"
+                  active={tab === "bytes"}
+                  onClick={() => this.setTab("bytes")}
+                >
+                  Bytes
+                </Button>
               </ButtonGroup>
             </Col>
           </Row>

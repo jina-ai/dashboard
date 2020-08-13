@@ -8,11 +8,7 @@ import NavbarToggle from "./NavbarToggle";
 
 const MainNavbar = ({ layout, stickyTop }) => {
   const isHeaderNav = false;
-  const classes = classNames(
-    "main-navbar",
-    "bg-white",
-    "sticky-top"
-  );
+  const classes = classNames("main-navbar", "bg-white", "sticky-top");
 
   return (
     <div className={classes}>
@@ -25,12 +21,10 @@ const MainNavbar = ({ layout, stickyTop }) => {
                   id="main-logo"
                   className="d-inline-block align-top mr-1 ml-3"
                   style={{ maxWidth: "25px" }}
-                  src={require('../../../images/jina-light.svg')}
+                  src={require("../../../images/jina-light.svg")}
                   alt="Jina.ai"
                 />
-                <span className="d-none d-md-inline ml-1">
-                  Dashboard
-                </span>
+                <span className="d-none d-md-inline ml-1">Dashboard</span>
               </div>
             </NavbarBrand>
           )}

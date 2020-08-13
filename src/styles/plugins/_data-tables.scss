@@ -57,13 +57,13 @@
         position: relative;
 
         &:after {
-          content: '';
+          content: "";
           position: absolute;
           background-position: center;
           right: 7px;
           top: 50%;
           transform: translateY(-50%);
-          opacity: .2;
+          opacity: 0.2;
         }
       }
 
@@ -170,18 +170,17 @@
 
 // Responsive styles.
 @include media-breakpoint-down(xs) {
-
   // Center the length label ("Show X entries").
   .dataTables_length label {
     display: table;
     margin: 0 auto;
   }
 
-
   .dataTables_filter {
     width: 100%;
 
-    label, input {
+    label,
+    input {
       margin: 0 !important;
       width: 100%;
       background-size: 5% !important;
@@ -239,9 +238,8 @@
     border-radius: $dt-paginate-btn-border-radius;
     color: $dt-paginate-btn-color;
     will-change: background-color, color, border-color;
-    transition: background-color 250ms ease-in-out,
-                color 250ms ease-in-out,
-                border-color 250ms ease-in-out;
+    transition: background-color 250ms ease-in-out, color 250ms ease-in-out,
+      border-color 250ms ease-in-out;
 
     &:hover {
       cursor: pointer;

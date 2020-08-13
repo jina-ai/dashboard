@@ -1,5 +1,5 @@
 import React from "react";
-import {Badge} from "react-bootstrap";
+import { Badge } from "react-bootstrap";
 
 class ChartNode extends React.Component {
   render = () => {
@@ -7,8 +7,8 @@ class ChartNode extends React.Component {
       <div className="node-port">
         <i className="fa fa-chevron-down"></i>
       </div>
-    )
-  }
+    );
+  };
 }
 
 export default ChartNode;
