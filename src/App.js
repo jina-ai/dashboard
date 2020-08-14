@@ -17,7 +17,7 @@ export default () => (
             key={index}
             path={route.path}
             exact={route.exact}
-            component={withTracker(props => {
+            component={withTracker((props) => {
               return (
                 <route.layout {...props}>
                   <route.component {...props} />

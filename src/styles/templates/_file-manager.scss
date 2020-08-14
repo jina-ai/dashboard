@@ -10,7 +10,8 @@
 
   // List file manager.
   &-list {
-    td, th {
+    td,
+    th {
       border-left: none !important;
       border-right: none !important;
     }
@@ -49,14 +50,15 @@
           box-shadow: $fm-list-item-icon-box-shadow;
         }
 
-        i { top: 2px; }
+        i {
+          top: 2px;
+        }
       }
     }
   }
 
   // Cards file manager.
   &-cards {
-
     &__search {
       max-width: 200px;
 
@@ -80,7 +82,7 @@
 
         &:before,
         &:after {
-          content: '';
+          content: "";
           position: absolute;
         }
 

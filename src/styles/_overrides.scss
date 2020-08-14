@@ -1,13 +1,11 @@
 // Shards Variables Overrides
 
 // Colors
-$light: #FBFBFB;
+$light: #fbfbfb;
 $border-color: #e1e5eb;
-
 
 // Cards
 $card-cap-bg: #fff;
-
 
 // Typography & Fonts
 
@@ -15,18 +13,17 @@ $card-cap-bg: #fff;
 $enable-fonts-import: false;
 
 // Use the System UI font instead of Poppins.
-$font-family-poppins-first:  -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+$font-family-poppins-first: -apple-system, BlinkMacSystemFont, "Segoe UI",
+  Roboto, "Helvetica Neue", Arial, sans-serif;
 
-$headings-color: #3D5170;
+$headings-color: #3d5170;
 $font-size-sm: 0.6875rem;
 
-
 // Body
-$body-background: #F5F6F8;
+$body-background: #f5f6f8;
 
 $font-size-sm: 0.6875rem;
 $font-size-lg: 0.875rem;
-
 
 // Buttons
 $btn-font-size: 0.75rem;
@@ -41,14 +38,12 @@ $btn-padding-x-sm: 0.875rem;
 
 $btn-border-radius-sm: $btn-border-radius;
 
-
 // Inputs
-$input-btn-padding-y:       0.4375rem;
-$input-btn-padding-x:       0.75rem;
+$input-btn-padding-y: 0.4375rem;
+$input-btn-padding-x: 0.75rem;
 
 $input-group-padding-y: 0.75rem;
 $input-group-padding-x: 0.625rem;
-
 
 // Forms
 $input-font-size: 0.8125rem;
@@ -74,7 +69,6 @@ $custom-file-border-radius: $input-border-radius;
 
 // Navs
 $nav-link-padding-x: 0.625rem;
-
 
 // Navbar brand
 $navbar-brand-font-size: 0.9rem;

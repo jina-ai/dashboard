@@ -25,7 +25,7 @@
   &__title {
     padding-left: $sc-stats-title-padding-left !important;
 
-    @media screen and (max-width: 1170px)  {
+    @media screen and (max-width: 1170px) {
       padding-left: $sc-stats-responsive-padding-left !important;
     }
   }

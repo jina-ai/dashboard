@@ -28,7 +28,7 @@
 
   .tag {
     display: inline-block;
-    background: theme-color('light');
+    background: theme-color("light");
     padding: 0.125rem 1.375rem 0.125rem 0.625rem;
     margin-bottom: 0.3125rem;
     border-radius: 1.25rem;
@@ -49,7 +49,7 @@
       background-position: center center;
       transform: translateY(-50%);
       background-size: 100%;
-      opacity: .5;
+      opacity: 0.5;
 
       &:hover {
         cursor: pointer;

@@ -22,28 +22,28 @@ class SpeedCard extends React.Component {
         responsive: true,
         animation: false,
         legend: {
-          display: false
+          display: false,
         },
         tooltips: {
           enabled: false,
-          custom: false
+          custom: false,
         },
         elements: {
           point: {
-            radius: 0
+            radius: 0,
           },
           line: {
-            tension: 0.33
-          }
+            tension: 0.33,
+          },
         },
         scales: {
           xAxes: [
             {
               gridLines: false,
               ticks: {
-                display: false
-              }
-            }
+                display: false,
+              },
+            },
           ],
           yAxes: [
             {
@@ -53,14 +53,14 @@ class SpeedCard extends React.Component {
                 display: false,
                 // Avoid getting the graph line cut of at the top of the canvas.
                 // Chart.js bug link: https://github.com/chartjs/Chart.js/issues/4790
-                suggestedMax: maxValue + (difference * .1),
-                suggestedMin: minValue - (difference * .1)
-              }
-            }
-          ]
-        }
+                suggestedMax: maxValue + difference * 0.1,
+                suggestedMin: minValue - difference * 0.1,
+              },
+            },
+          ],
+        },
       },
-      ...this.props.chartOptions
+      ...this.props.chartOptions,
     };
 
     const chartConfig = {
@@ -68,7 +68,7 @@ class SpeedCard extends React.Component {
         type: "line",
         data: {
           ...{
-            labels: (new Array(history.length)).fill(null)
+            labels: new Array(history.length).fill(null),
           },
           ...{
             datasets: [
@@ -78,14 +78,14 @@ class SpeedCard extends React.Component {
                 borderWidth: 1.5,
                 backgroundColor: "rgba(0, 153, 153, 0.25)",
                 borderColor: "#009999",
-                data: history
-              }
-            ]
-          }
+                data: history,
+              },
+            ],
+          },
         },
-        options: chartOptions
+        options: chartOptions,
       },
-      ...this.props.chartConfig
+      ...this.props.chartConfig,
     };
 
     this.chart = new Chart(this.canvasRef.current, chartConfig);
@@ -103,38 +103,39 @@ class SpeedCard extends React.Component {
             borderWidth: 1.5,
             backgroundColor: "rgba(0, 153, 153, 0.25)",
             borderColor: "#009999",
-            data: history
-          }
-        ]
-      }
-    }
+            data: history,
+          },
+        ],
+      },
+    };
     let maxValue = Math.max(...history);
     let minValue = Math.min(...history);
 
     let difference = maxValue - minValue;
 
-    this.chart.options.scales.yAxes[0].ticks.suggestedMax = maxValue + (difference * .1);
-    this.chart.options.scales.yAxes[0].ticks.suggestedMin = minValue - (difference * .1);
+    this.chart.options.scales.yAxes[0].ticks.suggestedMax =
+      maxValue + difference * 0.1;
+    this.chart.options.scales.yAxes[0].ticks.suggestedMin =
+      minValue - difference * 0.1;
     this.chart.data = newChartData;
     this.chart.update();
-  }
+  };
 
   render() {
     const { speed } = this.props;
-    if (this.chart)
-      this.updateChart();
+    if (this.chart) this.updateChart();
     return (
       <Card className="pt-0 h-100 stats-small">
         <div className="stats-small__data mx-auto">
-          <h6 className="stats-small__label text-uppercase text-center mb-0 pt-0 mt-0"><b>Speed</b></h6>
+          <h6 className="stats-small__label text-uppercase text-center mb-0 pt-0 mt-0">
+            <b>Speed</b>
+          </h6>
           <h2 className="my-3 mx-auto">{speed.current}</h2>
-          <h6 className="stats-small__label under text-uppercase text-center">{speed.unit}/Second</h6>
+          <h6 className="stats-small__label under text-uppercase text-center">
+            {speed.unit}/Second
+          </h6>
         </div>
-        <canvas
-          height="100"
-          ref={this.canvasRef}
-          className={`stats-small-1`}
-        />
+        <canvas height="100" ref={this.canvasRef} className={`stats-small-1`} />
       </Card>
     );
   }
@@ -144,7 +145,7 @@ SpeedCard.propTypes = {
   /**
    * The goal object.
    */
-  goal: PropTypes.object
+  goal: PropTypes.object,
 };
 
 SpeedCard.defaultProps = {
@@ -161,9 +162,9 @@ SpeedCard.defaultProps = {
       borderWidth: 1.5,
       backgroundColor: "rgba(0, 153, 153, 0.25)",
       borderColor: "#009999",
-      data: [1, 7, 1, 3, 1, 4, 8]
-    }
-  ]
-}
+      data: [1, 7, 1, 3, 1, 4, 8],
+    },
+  ],
+};
 
 export default SpeedCard;

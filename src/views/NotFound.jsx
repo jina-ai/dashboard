@@ -1,12 +1,16 @@
 import React from "react";
 import { Container, Row, Col } from "shards-react";
-import HelpCard from '../components/Common/HelpCard';
-import PageTitle from '../components/Common/PageTitle';
+import HelpCard from "../components/Common/HelpCard";
+import PageTitle from "../components/Common/PageTitle";
 
 const Errors = () => (
   <Container fluid className="main-content-container px-4">
     <Row noGutters className="page-header py-4">
-      <PageTitle title="Resources" subtitle="Jina.ai" className="text-sm-left mb-3" />
+      <PageTitle
+        title="Resources"
+        subtitle="Jina.ai"
+        className="text-sm-left mb-3"
+      />
     </Row>
     <Row>
       <Col md="3" className="mb-4">
@@ -38,7 +42,7 @@ const Errors = () => (
       </Col>
       <Col md="3" className="mb-4">
         <HelpCard
-          title='Visit us on Github!'
+          title="Visit us on Github!"
           content="Explore more exciting open-source projects from us."
           link="https://opensource.jina.ai"
           icon="fab fa-github"
@@ -47,7 +51,7 @@ const Errors = () => (
       </Col>
       <Col md="3" className="mb-4">
         <HelpCard
-          title='We are hiring!'
+          title="We are hiring!"
           content="Join us and build the next neural search eco system!"
           link="https://www.linkedin.com/company/jinaai/jobs/"
           icon="fab fa-linkedin"
@@ -55,7 +59,6 @@ const Errors = () => (
         />
       </Col>
     </Row>
-
   </Container>
 );
 

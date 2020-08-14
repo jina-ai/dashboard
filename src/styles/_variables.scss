@@ -1,16 +1,15 @@
 // Shards Dashboards Variables
 
 // New Colors
-$fiord-blue:   #3D5170 !default;
-$shuttle-gray: #5A6169 !default;
-$reagent-gray: #818EA3 !default;
-$mischka:      #CACEDB !default;
-$athens-gray:  #E9ECEF !default;
+$fiord-blue: #3d5170 !default;
+$shuttle-gray: #5a6169 !default;
+$reagent-gray: #818ea3 !default;
+$mischka: #cacedb !default;
+$athens-gray: #e9ecef !default;
 
-$salmon:       #FF4169 !default;
-$royal-blue:   #674EEC !default;
-$java:         #1ADBA2 !default;
-
+$salmon: #ff4169 !default;
+$royal-blue: #674eec !default;
+$java: #1adba2 !default;
 
 // New color maps
 // Note: The $new-colors and $new-grays maps are not merged
@@ -19,28 +18,32 @@ $java:         #1ADBA2 !default;
 
 // New colors map
 $new-colors: () !default;
-$new-colors: map-merge((
-  "salmon"     : $salmon,
-  "royal-blue" : $royal-blue,
-  "java"       : $java,
-), $new-colors);
+$new-colors: map-merge(
+  (
+    "salmon": $salmon,
+    "royal-blue": $royal-blue,
+    "java": $java,
+  ),
+  $new-colors
+);
 
 // New grays map
 $new-grays: () !default;
-$new-grays: map-merge((
-  "fiord-blue"  : $fiord-blue,
-  "shuttle-gray": $shuttle-gray,
-  "reagent-gray": $reagent-gray,
-  "mischka"     : $mischka,
-  "athens-gray" : $athens-gray,
-), $new-grays);
-
+$new-grays: map-merge(
+  (
+    "fiord-blue": $fiord-blue,
+    "shuttle-gray": $shuttle-gray,
+    "reagent-gray": $reagent-gray,
+    "mischka": $mischka,
+    "athens-gray": $athens-gray,
+  ),
+  $new-grays
+);
 
 // Accent color
 // Override this color and recompile the package to quickly change
 // the general accent color theme.
-$accent-color:  #009999 !default;
-
+$accent-color: #009999 !default;
 
 // Text color adjustments
 $text-light-color: $reagent-gray !default;
@@ -49,10 +52,12 @@ $text-light-color: $reagent-gray !default;
 $text-semibold-font-weight: 400 !default;
 
 // Fonts
-$font-family-system-first: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !default;
-$font-family-roboto-mono-first: "Roboto Mono", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace !default;
-$font-family-roboto-first: Roboto, -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif !default;
-
+$font-family-system-first: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+  "Helvetica Neue", Arial, sans-serif !default;
+$font-family-roboto-mono-first: "Roboto Mono", Menlo, Monaco, Consolas,
+  "Liberation Mono", "Courier New", monospace !default;
+$font-family-roboto-first: Roboto, -apple-system, BlinkMacSystemFont, "Segoe UI",
+  "Helvetica Neue", Arial, sans-serif !default;
 
 // Icons
 $icon-color: $mischka !default;
@@ -60,18 +65,15 @@ $icon-color: $mischka !default;
 $clear-white: url(data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjRkZGRkZGIiBoZWlnaHQ9IjI0IiB2aWV3Qm94PSIwIDAgMjQgMjQiIHdpZHRoPSIyNCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4gICAgPHBhdGggZD0iTTE5IDYuNDFMMTcuNTkgNSAxMiAxMC41OSA2LjQxIDUgNSA2LjQxIDEwLjU5IDEyIDUgMTcuNTkgNi40MSAxOSAxMiAxMy40MSAxNy41OSAxOSAxOSAxNy41OSAxMy40MSAxMnoiLz4gICAgPHBhdGggZD0iTTAgMGgyNHYyNEgweiIgZmlsbD0ibm9uZSIvPjwvc3ZnPg==);
 $check-white: url(data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjRkZGRkZGIiBoZWlnaHQ9IjI0IiB2aWV3Qm94PSIwIDAgMjQgMjQiIHdpZHRoPSIyNCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4gICAgPHBhdGggZD0iTTAgMGgyNHYyNEgweiIgZmlsbD0ibm9uZSIvPiAgICA8cGF0aCBkPSJNOSAxNi4xN0w0LjgzIDEybC0xLjQyIDEuNDFMOSAxOSAyMSA3bC0xLjQxLTEuNDF6Ii8+PC9zdmc+);
 
-
 // Shadows
-$side-shadow: 0 0.125rem 9.375rem rgba($shuttle-gray, .1),
-              0 0.25rem 0.5rem rgba($shuttle-gray, .12),
-              0 0.9375rem 1.375rem rgba($shuttle-gray, .10),
-              0 0.4375rem 2.1875rem rgba(#A5B6C9, .10);
-
+$side-shadow: 0 0.125rem 9.375rem rgba($shuttle-gray, 0.1),
+  0 0.25rem 0.5rem rgba($shuttle-gray, 0.12),
+  0 0.9375rem 1.375rem rgba($shuttle-gray, 0.1),
+  0 0.4375rem 2.1875rem rgba(#a5b6c9, 0.1);
 
 // Body
-$body-background: #F5F6F8 !default;
+$body-background: #f5f6f8 !default;
 $body-font-size: 15px !default;
-
 
 // Cards
 $card-headings-font-weight: 500 !default;
@@ -81,10 +83,8 @@ $card-view-report-font-size: 0.75rem !default;
 $card-view-report-link-color: $fiord-blue !default;
 $card-view-report-link-color-hover: $accent-color !default;
 
-
 // Forms
 $custom-control-disabled-color: #becad6 !default;
-
 
 // Navbar
 $navbar-brand-color: $fiord-blue !default;
@@ -101,10 +101,9 @@ $nav-link-material-icons-font-size: 1.5625rem !default;
 $nav-link-font-size: 0.8125rem !default;
 $nav-link-font-weight: 400 !default;
 
-
 // Main Navbar
 $main-navbar-height: 3.75rem !default;
-$main-navbar-box-shadow: 0 0.125rem 0.625rem rgba(90,97,105,.12) !default;
+$main-navbar-box-shadow: 0 0.125rem 0.625rem rgba(90, 97, 105, 0.12) !default;
 $main-navbar-nav-link-min-width: 3.75rem !default;
 $main-navbar-actions-link-border: 1px solid #e3e6ec !default;
 $main-navbar-nav-link-icon-line-height: 2.5rem !default;
@@ -127,7 +126,7 @@ $notifications-icon-color: $text-light-color !default;
 $notifications-icon-line-height: 2.0625rem !default;
 $notifications-icon-font-size: 1.0625rem !default;
 $notifications-icon-box-shadow: 0 0 0 1px white,
-                                inset 0 0 3px rgba(0, 0, 0, 0.2);
+  inset 0 0 3px rgba(0, 0, 0, 0.2);
 
 $notification-content-padding: 0 0.625rem !default;
 $notification-content-paragraph-font-size: 0.75rem !default;
@@ -138,7 +137,6 @@ $notification-category-letter-spacing: 0.0938rem !default;
 
 // Main Navbar -> User Avatar
 $user-avatar-max-width: 2.5rem !default;
-
 
 // Header Navigation
 $header-navbar-icon-font-size: 0.875rem !default;
@@ -168,7 +166,6 @@ $header-navbar-dropdown-item-md-font-size: 0.875rem !default;
 $header-navbar-dropdown-item-md-padding: 0.625rem 1.375rem !default;
 $header-navbar-dropdown-item-md-font-weight: 400 !default;
 
-
 // Page Header
 $page-title-font-size: 1.625rem !default;
 $page-title-sm-font-size: 2rem !default;
@@ -183,11 +180,9 @@ $page-subtitle-font-size: 0.625rem !default;
 $page-subtitle-font-size-sm: 0.8125rem !default;
 $page-subtitle-font-weight-sm: 400 !default;
 
-
 // Main footer
 $main-footer-height: $main-navbar-height !default;
 $main-footer-copyright-color: $reagent-gray !default;
-
 
 // Main sidebar
 $dropdown-icon-image: url(data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjMDAwMDAwIiBoZWlnaHQ9IjI0IiB2aWV3Qm94PSIwIDAgMjQgMjQiIHdpZHRoPSIyNCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4gICAgPHBhdGggZD0iTTcuNDEgNy44NEwxMiAxMi40Mmw0LjU5LTQuNThMMTggOS4yNWwtNiA2LTYtNnoiLz4gICAgPHBhdGggZD0iTTAtLjc1aDI0djI0SDB6IiBmaWxsPSJub25lIi8+PC9zdmc+);
@@ -218,7 +213,7 @@ $main-sidebar-nav-title-font-weight: 500 !default;
 $main-sidebar-nav-title-color: lighten($reagent-gray, 10) !default;
 $main-sidebar-nav-title-border-bottom: 1px solid $border-color !default;
 
-$main-sidebar-nav-link-active-background-color: #FBFBFB !default;
+$main-sidebar-nav-link-active-background-color: #fbfbfb !default;
 $main-sidebar-nav-link-active-color: $accent-color !default;
 $main-sidebar-nav-link-active-box-shadow: inset 0.1875rem 0 0 $accent-color !default;
 $main-sidebar-nav-link-active-icon-color: $accent-color !default;
@@ -231,16 +226,15 @@ $main-sidebar-nav-link-padding-y: 0.9375rem !default;
 $main-sidebar-nav-link-color: $fiord-blue !default;
 $main-sidebar-nav-link-font-family: $font-family-system-first !default;
 $main-sidebar-nav-link-will-change: background-color, box-shadow, color !default;
-$main-sidebar-nav-link-transition: box-shadow 200ms ease,
-                                   color 200ms ease,
-                                   background-color 200ms ease !default;
+$main-sidebar-nav-link-transition: box-shadow 200ms ease, color 200ms ease,
+  background-color 200ms ease !default;
 
 $main-sidebar-nav-link-icon-transition: color 200ms ease !default;
 $main-sidebar-nav-link-icon-margin-right: 0.375rem !default;
 $main-sidebar-nav-link-icon-color: $icon-color !default;
 $main-sidebar-nav-link-icon-will-change: color !default;
 
-$main-sidebar-dropdown-menu-box-shadow: inset 0 -0.1875rem 0.1875rem rgba($fiord-blue, .08) !default;
+$main-sidebar-dropdown-menu-box-shadow: inset 0 -0.1875rem 0.1875rem rgba($fiord-blue, 0.08) !default;
 
 $main-sidebar-dropdown-item-background-color-active: $main-sidebar-nav-link-active-background-color !default;
 $main-sidebar-dropdown-item-background-hover: none !default;
@@ -252,7 +246,8 @@ $main-sidebar-dropdown-item-color: $fiord-blue !default;
 $main-sidebar-dropdown-item-active-color: $accent-color !default;
 
 $main-sidebar-nav-no-borders-nav-link-border-bottom: 0 !default;
-$main-sidebar-nav-no-borders-dropdown-menu-box-shadow: inset 0 0 0.4375rem rgba($fiord-blue, .2) !default;
+$main-sidebar-nav-no-borders-dropdown-menu-box-shadow: inset 0 0 0.4375rem
+  rgba($fiord-blue, 0.2) !default;
 $main-sidebar-nav-no-borders-dropdown-item-first-border-top: $main-sidebar-dropdown-item-last-border !default;
 
 $main-sidebar-dropdown-item-font-size: 0.8125rem !default;
@@ -260,8 +255,8 @@ $main-sidebar-dropdown-item-font-weight: 400 !default;
 $main-sidebar-dropdown-item-font-weight-retina: 300 !default;
 
 $main-sidebar-icon-nav-width: 4.75rem !default;
-$main-sidebar-icon-nav-transition: transform 200ms ease-in-out, width 200ms ease-in-out !default;
-
+$main-sidebar-icon-nav-transition: transform 200ms ease-in-out,
+  width 200ms ease-in-out !default;
 
 // Components -> Card Post
 $card-post-padding-x: 1.5625rem !default;
@@ -270,39 +265,37 @@ $card-post-padding: $card-post-padding-y $card-post-padding-x !default;
 
 $card-post-image-min-height: 10.3125rem !default;
 
-$card-post-author-avatar-width: 2.8125rem !default;        // 45px
-$card-post-author-avatar-height: 2.8125rem !default;       // 45px
-$card-post-author-avatar-small-width: 2.1875rem !default;  // 35px
+$card-post-author-avatar-width: 2.8125rem !default; // 45px
+$card-post-author-avatar-height: 2.8125rem !default; // 45px
+$card-post-author-avatar-small-width: 2.1875rem !default; // 35px
 $card-post-author-avatar-small-height: 2.1875rem !default; // 35px
-$card-post-author-avatar-box-shadow: 0 0 0 0.125rem $white, 0 0.1875rem 0.4375rem rgba($blueish-grey, 0.5) !default;
-
+$card-post-author-avatar-box-shadow: 0 0 0 0.125rem $white,
+  0 0.1875rem 0.4375rem rgba($blueish-grey, 0.5) !default;
 
 // Components -> Card Post -> Variation 1
 $card-post-v1-author-transform: translateY(50%) !default;
-$card-post-v1-author-margin-left: 1.5625rem !default;       // 25px
-$card-post-v1-category-top: 0.9375rem !default;             // 15px
-$card-post-v1-category-right: 0.9375rem !default;           // 15px
-$card-post-v1-body-padding-top: 2.1875rem !default;         // 35px
+$card-post-v1-author-margin-left: 1.5625rem !default; // 25px
+$card-post-v1-category-top: 0.9375rem !default; // 15px
+$card-post-v1-category-right: 0.9375rem !default; // 15px
+$card-post-v1-body-padding-top: 2.1875rem !default; // 35px
 
 $card-post-aside-v1-body-padding: $card-post-padding !default;
-$card-post-aside-v1-author-left: 0.9375rem !default;        // 15px
-$card-post-aside-v1-author-bottom: 0.9375rem !default;      // 15px
-$card-post-aside-v1-category-top: 0.9375rem !default;       // 15px
-$card-post-aside-v1-category-left: 0.9375rem !default;      // 15px
-
+$card-post-aside-v1-author-left: 0.9375rem !default; // 15px
+$card-post-aside-v1-author-bottom: 0.9375rem !default; // 15px
+$card-post-aside-v1-category-top: 0.9375rem !default; // 15px
+$card-post-aside-v1-category-left: 0.9375rem !default; // 15px
 
 // Components -> Sliders
 // Core Shards UI sliders adjustments.
 $slider-accent-background: $accent-color !default;
-$slider-pips-font-size: 0.625rem !default;                  // 10px
-$slider-tooltip-font-size: 0.6875rem !default;              // 11px
-$slider-tooltip-padding: 0.1875rem 0.5rem !default;         // 3,8px
-$slider-horizontal-tooltip-bottom: 1.625rem !default;       // 26px
-$slider-horizontal-handle-left: -0.625rem !default;         // -10px
-$slider-horizontal-handle-top: -0.5rem !default;            // -8px
-$slider-handle-width: 1.1875rem !default;                   // 19px
-$slider-handle-height: 1.1875rem !default;                  // 19px
-
+$slider-pips-font-size: 0.625rem !default; // 10px
+$slider-tooltip-font-size: 0.6875rem !default; // 11px
+$slider-tooltip-padding: 0.1875rem 0.5rem !default; // 3,8px
+$slider-horizontal-tooltip-bottom: 1.625rem !default; // 26px
+$slider-horizontal-handle-left: -0.625rem !default; // -10px
+$slider-horizontal-handle-top: -0.5rem !default; // -8px
+$slider-handle-width: 1.1875rem !default; // 19px
+$slider-handle-height: 1.1875rem !default; // 19px
 
 //
 // Statistics Blocks and Charts Styles
@@ -313,11 +306,9 @@ $chart-tooltip-background-color: $white !default;
 $chart-tooltip-border-radius: 7px !default;
 $chart-tooltip-spacer-x: 10px !default;
 $chart-tooltip-spacer-y: 5px !default;
-$chart-tooltip-box-shadow:  0 2px 0 rgba(90, 97, 105, 0.11),
-                            0 4px 8px rgba(90, 97, 105, 0.12),
-                            0 10px 10px rgba(90, 97, 105, 0.06),
-                            0 7px 70px rgba(90, 97, 105, 0.1) !default;
-
+$chart-tooltip-box-shadow: 0 2px 0 rgba(90, 97, 105, 0.11),
+  0 4px 8px rgba(90, 97, 105, 0.12), 0 10px 10px rgba(90, 97, 105, 0.06),
+  0 7px 70px rgba(90, 97, 105, 0.1) !default;
 
 // Small stats block
 // Used in: Analytics, eCommerce, Blog overview page templates.
@@ -338,11 +329,10 @@ $small-stats-percentage-padding-left: 0.9375rem !default;
 // Small Stats -- 1
 $small-stats-1-data-max-width: 100% !default;
 $small-stats-1-percentage-margin: 0 auto !default;
-$small-stats-1-value-font-size: 2.0625rem !default;     // 33px
-$small-stats-1-label-font-size: 0.75rem !default;       // 12px
-$small-stats-1-percentage-font-size: 0.75rem !default;  // 12px
+$small-stats-1-value-font-size: 2.0625rem !default; // 33px
+$small-stats-1-label-font-size: 0.75rem !default; // 12px
+$small-stats-1-percentage-font-size: 0.75rem !default; // 12px
 $small-stats-1-chart-opacity: 0.5 !default;
-
 
 // Users by device stats
 // Used in: Analytics overview page template.
@@ -358,12 +348,11 @@ $ubd-stats-value-font-size: 1.0625rem !default;
 $ubd-stats-value-font-weight: 500 !default;
 $ubd-stats-value-line-height: 1rem !default;
 
-
 // Goals overview stats
 // Used in: Analytics overview page template.
 $go-list-group-item-padding-y: 1rem !default;
 
-$go-label-font-size: .95rem !default;
+$go-label-font-size: 0.95rem !default;
 $go-label-font-weight: 500 !default;
 
 $go-value-padding-right: 0.625rem !default;
@@ -371,7 +360,6 @@ $go-value-padding-right: 0.625rem !default;
 $go-meta-color: $reagent-gray !default;
 $go-meta-font-size: 0.75rem !default;
 $go-meta-strong-color: $fiord-blue !default;
-
 
 // Country stats
 // Used in: Analytics overview page template.
@@ -381,7 +369,6 @@ $country-stats-td-font-size: 0.75rem !default;
 $country-stats-td-color-dark: $fiord-blue !default;
 $country-stats-td-color-light: $reagent-gray !default;
 $country-stats-flag-max-width: 1.25rem !default;
-
 
 // Sales by Category
 // Used in: eCommerce page template
@@ -405,7 +392,6 @@ $sc-stats-card-body-responsive-min-height: 21rem !default;
 $sc-row-border-bottom: 1px solid $border-color !default;
 $sc-row-min-height: 3.75rem !default;
 
-
 // Quick Post Form
 // Used in: Blog Overview
 $qp-form-display: flex !default;
@@ -414,18 +400,16 @@ $qp-form-flex: 1 !default;
 
 $qp-form-textarea-min-height: 100px !default;
 
-
 // Blog Comments Component
 // Used in: Blog Overview
-$bc-avatar-img-width: 3.125rem !default;          // 50px
-$bc-avatar-img-height: 3.125rem !default;         // 50px
-$bc-avatar-img-border-radius: 0.25rem !default;   // 4px
+$bc-avatar-img-width: 3.125rem !default; // 50px
+$bc-avatar-img-height: 3.125rem !default; // 50px
+$bc-avatar-img-border-radius: 0.25rem !default; // 4px
 
 $bc-item-border-bottom: 1px solid $border-color !default;
 
 $bc-actions-font-size: 95% !default;
 $bc-actions-button-group-padding: 0.25rem 0.5625rem !default;
-
 
 // Latest orders block
 // Used in: eCommerce page template
@@ -447,7 +431,6 @@ $lo-row-min-height: 3.75rem !default;
 $lo-items-font-weight: 400 !default;
 $lo-order-number-font-size: 1rem !default;
 
-
 // File Manager Template
 $fm-group-title-font-size: 0.75rem !default;
 $fm-group-title-font-weight: 500 !default;
@@ -468,7 +451,8 @@ $fm-list-item-icon-width: 2.1875rem !default;
 $fm-list-item-icon-height: 2.1875rem !default;
 $fm-list-item-icon-line-height: 2.1875rem !default;
 $fm-list-item-icon-background-color: #f5f6f8 !default;
-$fm-list-item-icon-box-shadow: 0 0 0 2px $white, inset 0 0 3px rgba(0, 0, 0, 0.2) !default;
+$fm-list-item-icon-box-shadow: 0 0 0 2px $white,
+  inset 0 0 3px rgba(0, 0, 0, 0.2) !default;
 
 // File Manager -> Blocks/Cards
 $fm-block-selected-check-bg-color: $accent-color !default;
@@ -482,21 +466,21 @@ $fm-block-selected-transform: rotate(-90deg) !default;
 $fm-block-selected-border-radius: 50% !default;
 $fm-block-selected-will-change: top, right, opacity, transform !default;
 $fm-block-selected-transition: top 150ms $ease-in-out-circ,
-                               right 150ms $ease-in-out-circ,
-                               opacity 150ms $ease-in-out-circ,
-                               transform 150ms $ease-in-out-circ !default;
+  right 150ms $ease-in-out-circ, opacity 150ms $ease-in-out-circ,
+  transform 150ms $ease-in-out-circ !default;
 
 $fm-block-selected-state-check-top: 0.625rem !default;
 $fm-block-selected-state-check-transform: rotate(0) !default;
 
 $fm-block-selected-outline-border-radius: $card-border-radius !default;
-$fm-block-selected-outline-box-shadow: inset 0 0 0 0px rgba($accent-color, .2) !default;
+$fm-block-selected-outline-box-shadow: inset 0 0 0 0px rgba($accent-color, 0.2) !default;
 $fm-block-selected-outline-will-change: box-shadow !default;
 $fm-block-selected-outline-transition: box-shadow 250ms ease-in-out !default;
 
-$fm-block-selected-state-outline-box-shadow: inset 0 0 3.125rem rgba($accent-color, .2),
-                                             inset 0 0 0.625rem rgba($accent-color, .4),
-                                             inset 0 0 0 0.125rem rgba($accent-color, .75) !default;
+$fm-block-selected-state-outline-box-shadow: inset 0 0 3.125rem
+    rgba($accent-color, 0.2),
+  inset 0 0 0.625rem rgba($accent-color, 0.4),
+  inset 0 0 0 0.125rem rgba($accent-color, 0.75) !default;
 
 $fm-block-selected-dir-check-width: 1.25rem !default;
 $fm-block-selected-dir-check-height: 1.25rem !default;
@@ -517,14 +501,13 @@ $fm-block-item-title-padding-right: 1.25rem !default;
 $fm-block-item-size-margin: auto 0 !default;
 $fm-block-item-size-font-size: 0.6875rem !default;
 
-$fm-block-item-preview-bg: #F8F8F8 !default;
+$fm-block-item-preview-bg: #f8f8f8 !default;
 
-$fm-block-item-preview-img-box-shadow: 0 0.125rem 0.5625rem rgba(#000, .13) !default;
-
+$fm-block-item-preview-img-box-shadow: 0 0.125rem 0.5625rem rgba(#000, 0.13) !default;
 
 // User profile template
 $up-user-details-img-max-height: 7.1875rem !default;
-$up-user-details-img-bg: rgba($shuttle-gray, .3) !default;
+$up-user-details-img-bg: rgba($shuttle-gray, 0.3) !default;
 
 $up-user-details-avatar-max-width: 6.25rem !default;
 $up-user-details-avatar-box-shadow: $card-small-box-shadow !default;
@@ -558,29 +541,31 @@ $up-user-activity-item-icon-min-width: 1.875rem !default;
 $up-user-activity-item-icon-bg: lighten($athens-gray, 4) !default;
 $up-user-activity-item-icon-margin-left: -0.9375rem !default;
 $up-user-activity-item-icon-margin-right: 0.9375rem !default;
-$up-user-activity-item-icon-box-shadow: 0 0 0 2px rgba($white, 1), inset 0 0 3px rgba($black, .2) !default;
+$up-user-activity-item-icon-box-shadow: 0 0 0 2px rgba($white, 1),
+  inset 0 0 3px rgba($black, 0.2) !default;
 $up-user-activity-item-icon-font-size: 1rem !default;
 $up-user-activity-item-icon-line-height: 1.875rem !default;
 $up-user-activity-item-icon-color: darken($athens-gray, 20) !default;
 
-
 // Edit user profile template
 $eu-bg-image-max-height: 7.1875rem !default;
 
-$eu-bg-image-overlay-bg-color: rgba($shuttle-gray, .5) !default;
+$eu-bg-image-overlay-bg-color: rgba($shuttle-gray, 0.5) !default;
 $eu-bg-image-overlay-will-change: background-color !default;
-$eu-bg-image-overlay-transition: background-color $transition-duration ease-in-out !default;
+$eu-bg-image-overlay-transition: background-color $transition-duration
+  ease-in-out !default;
 
 $eu-bg-change-image-transform: translate(-50%, -50%) !default;
 $eu-bg-change-image-bg-color: rgba($white, 0.06) !default;
-$eu-bg-change-image-border: 1px dashed rgba(#E9ECEF, 0.3) !default;
+$eu-bg-change-image-border: 1px dashed rgba(#e9ecef, 0.3) !default;
 $eu-bg-change-image-padding: 0.4375rem 0.9375rem !default;
 $eu-bg-change-image-color: $white !default;
 $eu-bg-change-image-border-radius: $border-radius !default;
 $eu-bg-change-image-box-shadow: $card-small-box-shadow !default;
 $eu-bg-change-image-font-size: 0.75rem !default;
 $eu-bg-change-image-will-change: opacity !default;
-$eu-bg-change-image-transition: opacity $transition-duration ease-in-out, transform $transition-duration ease-in-out !default;
+$eu-bg-change-image-transition: opacity $transition-duration ease-in-out,
+  transform $transition-duration ease-in-out !default;
 
 $eu-bg-change-image-hover-transform: translate(-50%, -50%) scale(1.05) !default;
 
@@ -592,11 +577,10 @@ $eu-avatar-box-shadow: $card-small-box-shadow !default;
 
 $eu-avatar-change-font-size: 1.875rem !default;
 $eu-avatar-change-transition: all $transition-duration $ease-in-out-circ !default;
-$eu-avatar-change-background: rgba(#fff, .95) !default;
+$eu-avatar-change-background: rgba(#fff, 0.95) !default;
 
 $eu-avatar-change-icon-color: lighten($reagent-gray, 10) !default;
 $eu-avatar-change-icon-line-height: 7.5rem !default;
-
 
 // Authentication templates
 // Used for: Login, Register, Forgot and Reset password templates.
@@ -613,29 +597,28 @@ $auth-form-social-icons-link-padding: 0 0.75rem !default;
 $auth-form-social-icons-link-font-size: 1.25rem !default;
 $auth-form-social-icons-link-color: $mischka !default;
 $auth-form-social-icons-link-hover-color: $accent-color !default;
-$auth-form-social-icons-link-transition: color $transition-duration $ease-in-out-circ !default;
+$auth-form-social-icons-link-transition: color $transition-duration
+  $ease-in-out-circ !default;
 
 $auth-form-meta-font-weight: 400 !default;
 $auth-form-meta-font-color: $reagent-gray !default;
 $auth-form-meta-hover-font-color: $fiord-blue !default;
 
-
 // Error(s) templates
 $error-tpl-height: calc(100vh - #{$main-navbar-height}) !default;
 
-$error-tpl-content-padding: 0 0.9375rem !default;               // 0,15px
+$error-tpl-content-padding: 0 0.9375rem !default; // 0,15px
 
 $error-tpl-content-heading-color: $mischka !default;
 $error-tpl-content-heading-font-weight: 700 !default;
-$error-tpl-content-heading-font-size: 3.75rem !default;         // 60px
-$error-tpl-content-heading-margin-bottom: 1.5625rem !default;   // 25px
+$error-tpl-content-heading-font-size: 3.75rem !default; // 60px
+$error-tpl-content-heading-margin-bottom: 1.5625rem !default; // 25px
 
 $error-tpl-content-subheading-font-weight: 500 !default;
-$error-tpl-content-subheading-font-size: 2.1875rem !default;    // 35px
+$error-tpl-content-subheading-font-size: 2.1875rem !default; // 35px
 $error-tpl-content-subheading-margin-bottom: 0.625rem !default; // 10px
 
 $error-tpl-content-paragraph-color: $reagent-gray !default;
-
 
 //
 // Plugins & Integrations
@@ -645,13 +628,12 @@ $error-tpl-content-paragraph-color: $reagent-gray !default;
 // Used in: User profile page template.
 $bootstrap-tagsinput-border: 1px solid $border-color !default;
 
-
 // DataTables
 // Used in: Transaction History, File Manager (List) templates.
 $dt-border-top: 1px solid $border-color !default;
 $dt-font-size: 0.8125rem !default;
 
-$dt-thead-th-background-color: #FBFBFB !default;
+$dt-thead-th-background-color: #fbfbfb !default;
 $dt-thead-th-border: 1px solid $border-color !default;
 $dt-thead-th-font-weight: 400 !default;
 $dt-thead-th-padding-y: 0.75rem !default;
@@ -670,7 +652,7 @@ $dt-wrapper-box-shadow: $card-small-box-shadow !default;
 
 $dt-footer-elements-padding: 20px !default;
 $dt-footer-elements-padding-sm: 14px !default;
-$dt-footer-elements-background-color: #FBFBFB !default;
+$dt-footer-elements-background-color: #fbfbfb !default;
 $dt-footer-elements-border-radius: 0 0 $border-radius $border-radius !default;
 
 $dt-elements-color: $reagent-gray !default;
@@ -748,6 +730,7 @@ $fc-button-padding: 7px 11px !default;
 $fc-button-height: auto !default;
 $fc-button-font-size: 0.6875rem !default;
 $fc-button-transition: all 250ms cubic-bezier(0.27, 0.01, 0.38, 1.06) !default;
-$fc-button-box-shadow-hover: 0px 0.125rem 0.625rem rgba(129, 142, 163, 0.2), 0 0.0625rem 0.125rem rgba(129, 142, 163, 0.3) !default;
+$fc-button-box-shadow-hover: 0px 0.125rem 0.625rem rgba(129, 142, 163, 0.2),
+  0 0.0625rem 0.125rem rgba(129, 142, 163, 0.3) !default;
 
 $fc-day-grid-event-padding: 3px 1px !default;
