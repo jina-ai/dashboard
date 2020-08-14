@@ -530,3 +530,23 @@ code {
   display: inline-block;
   vertical-align: middle;
 }
+
+.command-bar-container{
+  position: absolute;
+  left: 0;
+  top: 0;
+  padding: 1em;
+  z-index: 5;
+}
+
+.command-bar i{
+  font-size: 1.5em;
+}
+
+.flip-180{
+  transform: rotate(180deg);
+}
+
+.flip-270{
+  transform: rotate(270deg);
+}

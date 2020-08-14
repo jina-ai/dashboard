@@ -14,6 +14,7 @@ import {
 import { Dispatcher, Constants, Store } from "../flux";
 import PageTitle from "../components/Common/PageTitle";
 
+import CommandBar from '../components/FlowChart/CommandBar';
 import Sidebar from "../components/FlowChart/Sidebar";
 import CustomNode from "../components/FlowChart/ChartNode";
 import CustomPort from "../components/FlowChart/NodePort";
@@ -176,6 +177,10 @@ class FlowTab extends React.Component {
           <div className="flow-container d-flex flex-column flex-md-row">
             <Card className="chart-section-container p-1 mr-md-4 mb-4">
               <div className="chart-container">
+                <CommandBar
+                copyChart={this.copyChartAsYAML}
+                importChart={this.showImportModal}
+                />
                 <FlowChart
                   chart={chart}
                   Components={{ NodeInner: CustomNode, Port: CustomPort }}
