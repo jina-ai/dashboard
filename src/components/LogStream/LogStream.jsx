@@ -162,7 +162,7 @@ class StreamContainer extends React.Component {
       this.field("module");
       this.field("pathname");
 
-      logs.map((log, idx) => {
+      logs.forEach((log, idx) => {
         log.id = parseInt(idx);
         this.add(log);
       });

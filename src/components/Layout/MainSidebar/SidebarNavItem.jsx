@@ -27,7 +27,7 @@ class SidebarNavItem extends React.Component {
     const hasSubItems = item.items && item.items.length;
     const path = window.location.hash.substring(2, window.location.hash.length);
     let active = false;
-    item.matches.map((match) => {
+    item.matches.forEach((match) => {
       if (path.startsWith(match)) active = true;
     });
 

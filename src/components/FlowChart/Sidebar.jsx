@@ -36,7 +36,7 @@ class FlowChartSidebar extends React.Component {
     const newProperties = {};
     const label = node.label;
 
-    Object.keys(node.properties).map((key) => {
+    Object.keys(node.properties).forEach((key) => {
       properties[key] = node.properties[key];
     });
 

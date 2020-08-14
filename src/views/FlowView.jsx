@@ -76,7 +76,7 @@ class FlowTab extends React.Component {
       ...node.newProperties,
     };
 
-    Object.keys(props).map((id) => {
+    Object.keys(props).forEach((id) => {
       if (props[id] == "" || typeof props[id] == "undefined") {
         delete props[id];
       }

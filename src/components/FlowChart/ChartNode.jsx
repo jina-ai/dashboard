@@ -5,7 +5,7 @@ class ChartNode extends React.Component {
   getPropertiesString = () => {
     const properties = this.props.node.properties || {};
     let str = "";
-    Object.keys(properties).map((propId) => {
+    Object.keys(properties).forEach((propId) => {
       str = str.concat(`pod-${propId}-${properties[propId]} `);
     });
     return str;
