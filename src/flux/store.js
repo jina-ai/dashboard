@@ -173,8 +173,9 @@ class Store extends EventEmitter {
   };
 
   init = async () => {
-    _store = getInitialStore();
     this.clearIntervals();
+    _store = getInitialStore();
+    
     console.log("settings: ", _store.settings);
 
     this.startNetworkMonitor();
@@ -207,7 +208,7 @@ class Store extends EventEmitter {
     const { settings } = _store;
     const connectionString = `${settings.host}:${settings.port}${
       settings.yaml.startsWith("/") ? settings.yaml : "/" + settings.yaml
-    }`;
+      }`;
 
     if (yamlSTRING) {
       flow = parseYAML(yamlSTRING);
@@ -376,11 +377,12 @@ class Store extends EventEmitter {
   };
 
   initCharts = () => {
-    CHART_LEVELS.forEach((level) => {
+    for (let i = 0; i < CHART_LEVELS.length; ++i) {
+      let level = CHART_LEVELS[i];
       _store.occurences.current[level] = 0;
       _store.occurences.previous[level] = 0;
       _store.summaryCharts[level] = new Array(NUM_CHART_ELEMENTS).fill(0);
-    });
+    }
     _store.occurences.lastLog = new Array(NUM_CHART_ELEMENTS).fill({});
     console.log("initial Occurences: ", _store.occurences);
     console.log("initial summary charts: ", _store.summaryCharts);
@@ -410,13 +412,14 @@ class Store extends EventEmitter {
 
   updateSummaryCharts = () => {
     const { current, previous, indeces } = _store.occurences;
-    CHART_LEVELS.forEach((level) => {
+    for (let i = 0; i < CHART_LEVELS.length; ++i) {
+      let level = CHART_LEVELS[i];
       const numLogs = current[level];
       const prevNum = previous[level];
       _store.summaryCharts[level].push(numLogs - prevNum);
       _store.summaryCharts[level].shift();
       _store.occurences.previous[level] = numLogs;
-    });
+    }
     _store.occurences.lastLog.push(_store.logs.length - 1);
     _store.occurences.lastLog.shift();
     // console.log('summaryCharts:', _store.summaryCharts);
