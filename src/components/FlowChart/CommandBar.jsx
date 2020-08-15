@@ -7,10 +7,10 @@ class CommandBar extends React.Component {
 			<div className="command-bar-container">
 				<div className="command-bar">
 					<ButtonGroup>
-						<Button variant="secondary">
+						<Button variant="secondary" disabled>
 							<i className="material-icons">play_arrow</i>
             </Button>
-						<Button variant="secondary">
+						<Button variant="secondary" disabled>
 							<i className="material-icons">stop</i>
             </Button>
 						<Button variant="secondary">
