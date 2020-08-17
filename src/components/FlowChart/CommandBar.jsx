@@ -13,7 +13,7 @@ class CommandBar extends React.Component {
 						<Button variant="secondary" disabled>
 							<i className="material-icons">stop</i>
             </Button>
-						<Button variant="secondary">
+						<Button variant="secondary" disabled>
 							<i className="material-icons">schedule</i>
             </Button>
 						<Button variant="secondary" onClick={this.props.importChart}>
