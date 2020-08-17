@@ -154,25 +154,6 @@ class FlowTab extends React.Component {
               subtitle="Network"
               className="text-sm-left mb-3"
             />
-            <Col className="col d-flex align-items-right">
-              <div className="d-none d-md-block flex-fill" />
-              <ButtonGroup className="d-inline-flex mb-3 mb-sm-0 mx-auto py-0">
-                <Button
-                  theme="white"
-                  to="/analytics"
-                  onClick={this.showImportModal}
-                >
-                  Import YAML
-                </Button>
-                <Button
-                  theme="white"
-                  to="/ecommerce"
-                  onClick={this.copyChartAsYAML}
-                >
-                  Copy YAML
-                </Button>
-              </ButtonGroup>
-            </Col>
           </Row>
           <div className="flow-container d-flex flex-column flex-md-row">
             <Card className="chart-section-container p-1 mr-md-4 mb-4">
