@@ -1,4 +1,5 @@
 import React from "react";
+import { logger } from "../../logger";
 import PropTypes from "prop-types";
 import {
   Card,
@@ -38,7 +39,7 @@ class SettingsCard extends React.Component {
       updates[setting] = value;
       return { updates };
     });
-    console.log("updates: ", this.state.updates);
+    logger.info("updates: ", this.state.updates);
   };
 
   saveChanges = () => {

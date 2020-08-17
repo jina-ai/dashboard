@@ -4,6 +4,7 @@ import defaultPods from "../../data/defaultPods.json";
 import lunr from "lunr";
 import { Button, FormControl, Card } from "react-bootstrap";
 import { Store } from "../../flux";
+import { logger } from "../../logger";
 
 class FlowChartSidebar extends React.Component {
   state = {
@@ -20,7 +21,7 @@ class FlowChartSidebar extends React.Component {
     if (id === this.state.node.id) return;
 
     this.setState({ searchResults: [], searchQuery: "" });
-    console.log("test");
+    logger.info("test");
 
     if (!id) return;
 
@@ -31,7 +32,7 @@ class FlowChartSidebar extends React.Component {
   };
 
   setInitialNode = (node) => {
-    console.log("setInititailNode:", node);
+    logger.info("setInititailNode:", node);
     const properties = {};
     const newProperties = {};
     const label = node.label;
@@ -70,7 +71,7 @@ class FlowChartSidebar extends React.Component {
   saveChanges = () => {
     const { node } = this.state;
     this.props.updateNode(node);
-    console.log("save changes: ", node);
+    logger.info("save changes: ", node);
   };
 
   updateSearchQuery = (e) => {
@@ -79,18 +80,18 @@ class FlowChartSidebar extends React.Component {
 
   searchProperties = () => {
     const query = this.state.searchQuery;
-    console.log("search query: ", query);
+    logger.info("search query: ", query);
     if (!query) return this.setState({ searchResults: false });
     this.indexProperties();
     let searchResults = this.index.search(`${query} ${query}*`);
     this.setState({ searchResults });
-    console.log("search results: ", searchResults);
+    logger.info("search results: ", searchResults);
   };
 
   indexProperties = () => {
     const { availableProperties, node } = this.state;
     const { properties } = node;
-    console.log(
+    logger.info(
       "indexing",
       availableProperties.length,
       "properties for search"
@@ -237,7 +238,7 @@ class FlowChartSidebar extends React.Component {
       return { label: nodes[id].label || nodes[id].properties.name, id };
     });
 
-    console.log("links:", links, "\nlink:", link, "\nnodes:", nodes);
+    logger.info("links:", links, "\nlink:", link, "\nnodes:", nodes);
     return (
       <div className="h-100 d-flex flex-column">
         <h5 className="px-3 py-2 mb-0 border-bottom">

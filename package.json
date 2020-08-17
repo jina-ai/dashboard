@@ -32,6 +32,7 @@
     "passport-github2": "^0.1.12",
     "pathfinding": "^0.4.18",
     "paths-js": "^0.4.10",
+    "pino": "^6.5.1",
     "react": "^16.13.1",
     "react-bootstrap": "^1.0.0",
     "react-dom": "^16.13.1",
@@ -57,16 +58,16 @@
     "deploy": "gh-pages -d build",
     "format": "prettier --write \"src/**/*.{js,jsx, ts, tsx}\""
   },
-    "husky": {
+  "husky": {
     "hooks": {
       "pre-commit": "lint-staged"
     }
   },
- "lint-staged": {
-   "src/**/*.{js,jsx,ts,tsx,json,css,scss,md}": [
-     "prettier --write"
-   ]
- },
+  "lint-staged": {
+    "src/**/*.{js,jsx,ts,tsx,json,css,scss,md}": [
+      "prettier --write"
+    ]
+  },
   "eslintConfig": {
     "extends": "react-app"
   },

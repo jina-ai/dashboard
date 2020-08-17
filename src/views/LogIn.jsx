@@ -4,34 +4,35 @@ import { hubURL } from "../flux/config";
 
 import React from "react";
 import { Link } from "react-router-dom";
+import { logger } from "../logger";
 import { Container, Row, Col, Card, CardBody } from "shards-react";
 
 class Login extends React.Component {
   componentDidMount = () => {
     let hash = window.location.href;
     if (hash.indexOf("code") > 0) {
-      console.log("hash: ", hash);
+      logger.info("hash: ", hash);
       let code = hash.substring(hash.indexOf("code") + 5, hash.length);
-      console.log("code:", code);
+      logger.info("code:", code);
       window.location = `${hubURL}/auth/github/callback?code=${code}`;
     }
   };
   testAuthentication = () => {
     const xhr = new XMLHttpRequest();
     const connectionString = `${hubURL}/auth/test`;
-    console.log("test connectionString: ", connectionString);
+    logger.info("test connectionString: ", connectionString);
     xhr.open("POST", connectionString);
     xhr.timeout = 5000;
     xhr.withCredentials = true;
     xhr.onload = function () {
       if (this.status >= 200 && this.status < 300) {
-        console.log("test: SUCCESS");
+        logger.info("test: SUCCESS");
       } else {
-        console.log("test: FAIL");
+        logger.info("test: FAIL");
       }
     };
     xhr.onerror = function () {
-      console.log("test: ERROR");
+      logger.info("test: ERROR");
     };
     xhr.send();
   };

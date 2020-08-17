@@ -1,5 +1,9 @@
 import axios from "axios";
 import { hubURL } from "./config";
+import { logger } from "../logger";
+
+const moduleLogger = logger.child({ module: "api.js" });
+
 let logStream;
 let taskStream;
 
@@ -15,18 +19,18 @@ const hub = axios.create({
 
 export default {
   checkConnection: (settings) => {
-    console.log("checking connection");
+    moduleLogger.info("checking connection");
     let connectionString = `${settings.host}:${settings.port}${
       settings.ready.startsWith("/") ? settings.ready : "/" + settings.ready
     }`;
-    console.log("checkConnection string:", connectionString);
+    moduleLogger.info("checkConnection string:", connectionString);
     return axios.get(connectionString);
   },
   connect: (settings, logUpdate, taskUpdate) => {
     const logString = `${settings.host}:${settings.port}${
       settings.log.startsWith("/") ? settings.log : "/" + settings.log
     }`;
-    console.log("logs connectionString: ", logString);
+    moduleLogger.info("logs connectionString: ", logString);
     if (logStream) logStream.close();
     logStream = new EventSource(logString);
 
@@ -52,7 +56,7 @@ export default {
         ? settings.profile
         : "/" + settings.profile
     }`;
-    console.log("task connectionString:", taskString);
+    moduleLogger.info("task connectionString:", taskString);
     if (taskStream) taskStream.close();
     taskStream = new EventSource(taskString);
 
@@ -78,32 +82,32 @@ export default {
     return result.data;
   },
   getYAML: async (connectionString) => {
-    console.log("YAML connectionString: ", connectionString);
+    moduleLogger.info("YAML connectionString: ", connectionString);
     const result = await axios.get(connectionString);
     return result.data;
   },
   getImages: async () => {
-    console.log("get images...");
+    moduleLogger.info("get images...");
     const result = await hub.get("images");
     return result.data;
   },
   getImage: async (id) => {
-    console.log("get image", id);
+    moduleLogger.info("get image", id);
     const result = await hub.get(`/images/${id}`);
     return result.data;
   },
   postRating: async (imageId, stars) => {
-    console.log("post rating", imageId, stars);
+    moduleLogger.info("post rating", imageId, stars);
     const result = await hub.post(`/images/${imageId}/ratings`, { stars });
     return result.data;
   },
   postReview: async (imageId, content) => {
-    console.log("post review", imageId, content);
+    moduleLogger.info("post review", imageId, content);
     const result = await hub.post(`/images/${imageId}/reviews`, { content });
     return result.data;
   },
   searchHub: async (category, q, sort) => {
-    console.log("search hub", category, q, sort);
+    moduleLogger.info("search hub", category, q, sort);
     const result = await hub.get(
       `/images?category=${category}&q=${q}&sort=${sort}`
     );

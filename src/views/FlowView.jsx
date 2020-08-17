@@ -14,11 +14,12 @@ import {
 import { Dispatcher, Constants, Store } from "../flux";
 import PageTitle from "../components/Common/PageTitle";
 
-import CommandBar from '../components/FlowChart/CommandBar';
+import CommandBar from "../components/FlowChart/CommandBar";
 import Sidebar from "../components/FlowChart/Sidebar";
 import CustomNode from "../components/FlowChart/ChartNode";
 import CustomPort from "../components/FlowChart/NodePort";
 import { formatAsYAML, copyToClipboard } from "../helpers";
+import { logger } from "../logger";
 
 class FlowTab extends React.Component {
   constructor(props) {
@@ -27,7 +28,7 @@ class FlowTab extends React.Component {
     const banner = Store.getBanner("flow");
     this.state = { chart, banner };
 
-    console.log("actions:", actions);
+    logger.info("actions:", actions);
     this.stateActionCallbacks = Object.keys(actions).reduce((obj, key, idx) => {
       obj[key] = (...args) => {
         let { chart } = this.state;
@@ -68,7 +69,7 @@ class FlowTab extends React.Component {
   updateNode = (node, callback) => {
     let { chart } = this.state;
     let newChart = cloneDeep(chart);
-    console.log("newChart: ", newChart);
+    logger.info("newChart: ", newChart);
     newChart.nodes[node.id].label = node.label;
 
     let props = {
@@ -178,8 +179,8 @@ class FlowTab extends React.Component {
             <Card className="chart-section-container p-1 mr-md-4 mb-4">
               <div className="chart-container">
                 <CommandBar
-                copyChart={this.copyChartAsYAML}
-                importChart={this.showImportModal}
+                  copyChart={this.copyChartAsYAML}
+                  importChart={this.showImportModal}
                 />
                 <FlowChart
                   chart={chart}

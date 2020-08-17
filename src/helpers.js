@@ -1,6 +1,7 @@
 const YAML = require("yaml");
 const settings = require("./settings");
 const propertyList = require("./data/properties.json");
+const { logger } = require("./logger");
 
 const propertyTypes = {};
 propertyList.forEach((prop) => (propertyTypes[prop.name] = prop.type));
@@ -17,7 +18,7 @@ export function copyToClipboard(str) {
 export function parseYAML(yamlSTR) {
   try {
     const data = YAML.parse(yamlSTR);
-    console.log("data:", data);
+    logger.info("data:", data);
     return { data };
   } catch (error) {
     alert("Error Parsing YAML:\n" + error);
@@ -124,7 +125,7 @@ export function formatForFlowchart(pods, canvas) {
 }
 
 export function formatAsYAML(chart) {
-  console.log("formatAsYAML input: ", chart);
+  logger.info("formatAsYAML input: ", chart);
   let output = {
     with: chart.with || {},
     pods: {},
@@ -198,14 +199,14 @@ function getNodeDepth(nodes, currentId, currentDepth) {
   let parents = Object.keys(nodes[currentId].needs);
   let longestDepth = 0;
 
-  // console.log('nodes: ',nodes)
-  // console.log('currentId: ',currentId);
-  // console.log('parents: ',parents);
-  // console.log('currentDepth: ',currentDepth);
+  // logger.info('nodes: ',nodes)
+  // logger.info('currentId: ',currentId);
+  // logger.info('parents: ',parents);
+  // logger.info('currentDepth: ',currentDepth);
 
   for (let i = 0; i < parents.length; ++i) {
     let parent = parents[i];
-    console.log("\tparent:", parent);
+    logger.info("\tparent:", parent);
     let depth;
     if (nodes[parent].depth) depth = nodes[parent].depth + 1;
     else depth = getNodeDepth(nodes, parent, 1);

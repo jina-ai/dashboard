@@ -13,6 +13,7 @@ import LogItem from "./LogItem";
 import lunr from "lunr";
 import { saveAs } from "file-saver";
 import { Store } from "../../flux";
+import { logger } from "../../logger";
 
 import List from "react-virtualized/dist/commonjs/List";
 import AutoSizer from "react-virtualized/dist/commonjs/AutoSizer";
@@ -106,7 +107,7 @@ class StreamContainer extends React.Component {
     const selectedLevel = false;
     const logs = this.state.allLogs;
     this.setState({ selectedSource, selectedLevel, logs });
-    console.log("scrolling to index: ", index);
+    logger.info("scrolling to index: ", index);
     this.scrollToLog(index);
   };
 
@@ -137,12 +138,12 @@ class StreamContainer extends React.Component {
 
   search = () => {
     const query = this.state.searchQuery;
-    console.log("search query: ", query);
+    logger.info("search query: ", query);
     if (!query) return this.setState({ results: false }, this._resizeAll);
     this.indexLogs();
     let results = this.index.search(`${query}*`);
     this.setState({ results }, this._resizeSearchResults);
-    console.log("search results: ", results);
+    logger.info("search results: ", results);
   };
 
   listenForEnter = (key) => {
@@ -153,7 +154,7 @@ class StreamContainer extends React.Component {
 
   indexLogs = () => {
     const { logs } = this.state;
-    console.log("indexing", logs.length, "logs for search");
+    logger.info("indexing", logs.length, "logs for search");
     this.index = lunr(function () {
       this.field("filename");
       this.field("funcName");
