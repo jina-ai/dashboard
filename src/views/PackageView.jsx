@@ -1,5 +1,5 @@
 import React from "react";
-import { Container, Row, Col, Form, Button } from "react-bootstrap";
+import { Container, Row, Col} from "react-bootstrap";
 import { Dispatcher, Constants, Store } from "../flux";
 import BuildHistory from "../components/Hub/BuildHistory";
 import PageTitle from "../components/Common/PageTitle";
@@ -67,12 +67,12 @@ class HubView extends React.Component {
     const { banner, imageData, loading } = this.state;
     const {
       name,
+      id,
       readmeHTML,
       documentation,
       totalStars,
       totalRatings,
       userRated,
-      userReviewed,
       reviews,
     } = imageData;
     let rating;
@@ -96,7 +96,7 @@ class HubView extends React.Component {
           <div className="px-4">
             <Row noGutters className="page-header py-4">
               <PageTitle
-                title={imageData.name}
+                title={name}
                 subtitle="Image"
                 className="text-sm-left mb-3"
               />
@@ -119,10 +119,10 @@ class HubView extends React.Component {
               </Col>
               <Col md="6">
                 <Readme
-                  readme={imageData.readmeHTML}
-                  documentation={imageData.documentation}
+                  readme={readmeHTML}
+                  documentation={documentation}
                 />
-                <ImageReviews reviews={reviews} imageId={imageData.id} />
+                <ImageReviews reviews={reviews} imageId={id} />
               </Col>
             </Row>
           </div>

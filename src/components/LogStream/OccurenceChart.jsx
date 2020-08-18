@@ -1,6 +1,6 @@
 import React from "react";
-import { Row, Col, Card } from "react-bootstrap";
-import { Store, Dispatcher, Constants } from "../../flux";
+import { Card } from "react-bootstrap";
+import { Store } from "../../flux";
 import ChartBase from "./PieChart";
 
 class OccurenceChart extends React.Component {

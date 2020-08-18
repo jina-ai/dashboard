@@ -1,6 +1,5 @@
 import React from "react";
-import { Container, Row, Col, Form, Button } from "react-bootstrap";
-import { Dispatcher, Constants, Store } from "../flux";
+import { Container, Row} from "react-bootstrap";
 import PageTitle from "../components/Common/PageTitle";
 import SettingsCard from "../components/Settings/Settings";
 

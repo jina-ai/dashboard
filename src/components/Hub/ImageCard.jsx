@@ -2,16 +2,10 @@ import React from "react";
 import {
   Row,
   Col,
-  Collapse,
-  Form,
-  InputGroup,
-  Button,
-  Carousel,
   Card,
 } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import StarRating from "./StarRating";
-import { Dispatcher, Constants } from "../../flux";
 
 class ImageCard extends React.Component {
   state = {
@@ -23,6 +17,7 @@ class ImageCard extends React.Component {
     const { image } = this.props;
     let {
       name,
+      id,
       official,
       author,
       description,
@@ -35,14 +30,14 @@ class ImageCard extends React.Component {
       rating = totalStars / totalRatings;
     }
     return (
-      <Link className="unstyled-link" to={`/package?id=${image.id}`}>
+      <Link className="unstyled-link" to={`/package?id=${id}`}>
         <Card className="clickable mb-4 h-100">
           <Card.Body className="pb-0 mb-0 pt-3">
             <Row>
               <Col xs="12" className="px-0">
                 <div className="app-title">
-                  {image.name}
-                  {image.official && (
+                  {name}
+                  {official && (
                     <span title="Official Package" className="float-right">
                       <i className="ml-2 material-icons verified-icon">
                         verified_user
@@ -50,12 +45,12 @@ class ImageCard extends React.Component {
                     </span>
                   )}
                 </div>
-                <div className="app-subtitle">{image.author}</div>
+                <div className="app-subtitle">{author}</div>
               </Col>
               <Col sm="12" className="px-0 pt-3 pb-0">
                 <div className="description-container">
                   <div className="description-overlay" />
-                  <div className="app-description">{image.description}</div>
+                  <div className="app-description">{description}</div>
                 </div>
               </Col>
             </Row>

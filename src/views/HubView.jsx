@@ -3,12 +3,8 @@ import {
   Container,
   Row,
   Col,
-  Form,
-  Button,
-  FormControl,
 } from "react-bootstrap";
 import {
-  Alert,
   FormInput,
   InputGroup,
   InputGroupAddon,

@@ -1,5 +1,5 @@
 import React from "react";
-import { NavItem, NavLink, Badge, Collapse, DropdownItem } from "shards-react";
+import { NavItem, NavLink, Badge } from "shards-react";
 import { Store, Constants, Dispatcher } from "../../../../flux";
 
 export default class Notifications extends React.Component {

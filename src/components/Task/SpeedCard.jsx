@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Card, Col } from "shards-react";
+import { Card } from "shards-react";
 
 import Chart from "chart.js";
 

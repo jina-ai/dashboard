@@ -1,5 +1,5 @@
 import React from "react";
-import { Container, Row, Col, Alert } from "shards-react";
+import { Container, Row, Col } from "shards-react";
 
 import MainNavbar from "../components/Layout/MainNavbar/MainNavbar";
 import MainSidebar from "../components/Layout/MainSidebar/MainSidebar";
@@ -32,7 +32,7 @@ class IconSidebarLayout extends React.Component {
   };
 
   render = () => {
-    const { modal, loading } = this.state;
+    const { modal } = this.state;
     const { noNavbar, children, noFooter } = this.props;
     return (
       <Container fluid className="icon-sidebar-nav">

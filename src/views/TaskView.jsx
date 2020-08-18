@@ -1,8 +1,7 @@
 import React from "react";
-import { Container, Row, Col, Form, Button } from "react-bootstrap";
-import { Dispatcher, Constants, Store } from "../flux";
+import { Container, Row, Col} from "react-bootstrap";
+import {Store } from "../flux";
 import PageTitle from "../components/Common/PageTitle";
-import SettingsCard from "../components/Settings/Settings";
 import ElapsedCard from "../components/Task/ElapsedCard";
 import ProgressCard from "../components/Task/ProgressCard";
 import SpeedCard from "../components/Task/SpeedCard";

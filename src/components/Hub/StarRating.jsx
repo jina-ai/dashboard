@@ -1,16 +1,4 @@
 import React from "react";
-import {
-  Row,
-  Col,
-  Collapse,
-  Form,
-  InputGroup,
-  Button,
-  Carousel,
-  Card,
-} from "react-bootstrap";
-import { copyToClipboard } from "../../helpers";
-import { Dispatcher, Constants } from "../../flux";
 
 class StarRating extends React.Component {
   state = {

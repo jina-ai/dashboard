@@ -5,7 +5,7 @@ import { Container, Alert, Col, Row } from "react-bootstrap";
 // import Footer from '../components/Layout/Footer';
 import PasteYAML from "../modals/PasteYAML";
 
-import { Store, Constants } from "../flux";
+import { Store } from "../flux";
 
 class DefaultLayout extends React.Component {
   state = {

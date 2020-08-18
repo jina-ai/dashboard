@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Button, Form } from "react-bootstrap";
 import ReactModal from "react-modal";
-import { Dispatcher, Constants, Store } from "../flux";
+import { Dispatcher, Constants } from "../flux";
 
 class PasteYAML extends Component {
   state = {};

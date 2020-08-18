@@ -88,8 +88,7 @@ class FlowChartSidebar extends React.Component {
   };
 
   indexProperties = () => {
-    const { availableProperties, node } = this.state;
-    const { properties } = node;
+    const { availableProperties } = this.state;
     console.log(
       "indexing",
       availableProperties.length,

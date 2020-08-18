@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, CardHeader, CardBody, Badge } from "shards-react";
+import { Card, CardHeader, CardBody } from "shards-react";
 
 class BuildHistory extends React.Component {
   render = () => {

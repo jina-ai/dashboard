@@ -3,7 +3,6 @@
 import { hubURL } from "../flux/config";
 
 import React from "react";
-import { Link } from "react-router-dom";
 import { Container, Row, Col, Card, CardBody } from "shards-react";
 
 class Login extends React.Component {

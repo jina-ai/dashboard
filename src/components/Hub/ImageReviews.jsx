@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, CardHeader, CardBody, Button } from "shards-react";
+import { Button } from "shards-react";
 import ReviewCard from "./ReviewCard";
 import { Dispatcher, Constants } from "../../flux";
 

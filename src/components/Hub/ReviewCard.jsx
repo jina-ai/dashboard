@@ -1,6 +1,5 @@
 import React from "react";
 import { Card, CardHeader, CardBody } from "shards-react";
-import StarRating from "./StarRating";
 
 class ReviewCard extends React.Component {
   render = () => {

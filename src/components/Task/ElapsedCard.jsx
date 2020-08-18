@@ -1,8 +1,5 @@
 import React from "react";
-import PropTypes from "prop-types";
-import { Card, Col } from "shards-react";
-
-import Chart from "chart.js";
+import { Card } from "shards-react";
 
 class ElapsedCard extends React.Component {
   render() {

@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, CardHeader, CardBody, Row, Col, Button } from "shards-react";
+import { Card, CardHeader, CardBody} from "shards-react";
 import SyntaxHighlighter from "react-syntax-highlighter";
 import { atomOneLight } from "react-syntax-highlighter/dist/esm/styles/hljs";
 import { copyToClipboard } from "../../helpers";
@@ -29,7 +29,6 @@ class CopyCommand extends React.Component {
     });
   };
   render = () => {
-    const { image } = this.props;
     return (
       <Card className="mb-4">
         <CardHeader className="p-3 border-bottom d-flex flex-row">
