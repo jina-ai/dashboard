@@ -12,6 +12,7 @@ class Readme extends React.Component {
           <a
             href={documentation}
             target="_blank"
+            rel="noopener noreferrer"
             className="cursor-pointer text-primary"
           >
             <i className="fab fa-github"></i> View on GitHub

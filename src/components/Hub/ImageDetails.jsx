@@ -29,7 +29,7 @@ class Readme extends React.Component {
           <Row className="border-bottom py-2">
             <Col>Documentation</Col>
             <Col>
-              <a href={image.documentation} target="_blank">
+              <a href={image.documentation} target="_blank" rel="noopener noreferrer">
                 {image.documentation}
               </a>
             </Col>
@@ -37,7 +37,7 @@ class Readme extends React.Component {
           <Row className="border-bottom py-2">
             <Col>Source</Col>
             <Col>
-              <a href={image.source} target="_blank">
+              <a href={image.source} target="_blank" rel="noopener noreferrer">
                 {image.source}
               </a>
             </Col>
@@ -53,7 +53,7 @@ class Readme extends React.Component {
           <Row className="py-2">
             <Col>URL</Col>
             <Col>
-              <a href={image.url} target="_blank">
+              <a href={image.url} target="_blank" rel="noopener noreferrer">
                 {image.url}
               </a>
             </Col>
