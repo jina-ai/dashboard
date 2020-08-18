@@ -121,6 +121,7 @@ class StreamContainer extends React.Component {
         return log.levelname === selectedLevel && log.name === selectedSource;
       else if (selectedSource) return log.name === selectedSource;
       else if (selectedLevel) return log.levelname === selectedLevel;
+      return false;
     });
 
     this.setState({ logs }, this._resizeAll);

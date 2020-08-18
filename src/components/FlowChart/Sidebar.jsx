@@ -179,7 +179,7 @@ class FlowChartSidebar extends React.Component {
             <div>
               {Object.keys(node.properties).map((prop) => {
                 const value = node.properties[prop];
-                if (prop === "name") return;
+                if (prop === "name") return '';
                 return (
                   <div key={prop} className="property-item mb-2">
                     <p className="property-label mb-1">{prop}</p>
@@ -194,9 +194,8 @@ class FlowChartSidebar extends React.Component {
                   </div>
                 );
               })}
-              {availableProperties.map((property) => {
-                if (typeof node.properties[property.name] == "undefined")
-                  return (
+              {availableProperties.map((property) => 
+                typeof node.properties[property.name] == "undefined"?
                     <div key={property.name} className="property-item mb-2">
                       <p className="property-label mb-1">{property.name}</p>
                       <FormControl
@@ -209,8 +208,9 @@ class FlowChartSidebar extends React.Component {
                         className="property-value-input"
                       ></FormControl>
                     </div>
-                  );
-              })}
+                  : 
+                  ''
+              )}
             </div>
           )}
         </div>
