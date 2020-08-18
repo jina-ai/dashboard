@@ -14,17 +14,17 @@ class ChartNode extends React.Component {
     const { properties } = this.props.node;
     let icons = [];
     Object.keys(properties).forEach((prop) => {
-      if (prop == "image" && properties[prop])
+      if (prop === "image" && properties[prop])
         icons.push(<span className="fab fa-docker mx-1" />);
-      if (prop == "num_part" && properties[prop])
+      if (prop === "num_part" && properties[prop])
         icons.push(<span className="fas fa-code-branch mx-1" />);
-      if (prop == "read_only" && properties[prop])
+      if (prop === "read_only" && properties[prop])
         icons.push(<span className="fas fa-lock mx-1" />);
-      if (prop == "host" && properties[prop])
+      if (prop === "host" && properties[prop])
         icons.push(<span className="fas fa-network-wired mx-1" />);
-      if (prop == "separated_workspace" && properties[prop])
+      if (prop === "separated_workspace" && properties[prop])
         icons.push(<span className="fas fa-columns mx-1" />);
-      if (prop == "py_modules" && properties[prop])
+      if (prop === "py_modules" && properties[prop])
         icons.push(<span className="fab fa-python mx-1" />);
     });
     return icons;

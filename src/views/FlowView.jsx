@@ -73,7 +73,7 @@ class FlowTab extends React.Component {
     };
 
     Object.keys(props).forEach((id) => {
-      if (props[id] == "" || typeof props[id] == "undefined") {
+      if (props[id] === "" || typeof props[id] === "undefined") {
         delete props[id];
       }
     });
@@ -120,8 +120,8 @@ class FlowTab extends React.Component {
   };
 
   validateLink = ({ fromNodeId, toNodeId, fromPortId, toPortId, chart }) => {
-    if (fromPortId != "outPort" || toPortId != "inPort") return false;
-    if (fromNodeId == toNodeId) return false;
+    if (fromPortId !== "outPort" || toPortId !== "inPort") return false;
+    if (fromNodeId === toNodeId) return false;
     return true;
   };
 

@@ -146,7 +146,7 @@ class StreamContainer extends React.Component {
   };
 
   listenForEnter = (key) => {
-    if (key.charCode == 13) {
+    if (parseInt(key.charCode) === 13) {
       this.search();
     }
   };

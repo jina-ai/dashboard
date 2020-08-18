@@ -24,7 +24,7 @@ class FlowChartSidebar extends React.Component {
 
     if (!id) return;
 
-    if (type === "node" && id != this.state.node.id) {
+    if (type === "node" && id !== this.state.node.id) {
       const node = nodes[id];
       this.setInitialNode(node);
     }

@@ -22,7 +22,7 @@ class ProcessReport extends React.Component {
   }
 
   componentDidUpdate = (prevProps) => {
-    if (this.props.lastUpdate != prevProps.lastUpdate) this.updateChart();
+    if (this.props.lastUpdate !== prevProps.lastUpdate) this.updateChart();
   };
 
   componentDidMount = () => {

@@ -26,7 +26,7 @@ class PasteYAML extends Component {
   };
 
   listenForEnter = (key) => {
-    if (key.charCode == 13) {
+    if (parseInt(key.charCode) === 13) {
       this.importYAML();
     }
   };
