@@ -316,7 +316,6 @@ class Store extends EventEmitter {
       msg_sent,
       num_reqs,
       qps,
-      thread,
     } = event;
 
     if (bar_len && num_bars) {
@@ -411,7 +410,7 @@ class Store extends EventEmitter {
   };
 
   updateSummaryCharts = () => {
-    const { current, previous, indeces } = _store.occurences;
+    const { current, previous } = _store.occurences;
     for (let i = 0; i < CHART_LEVELS.length; ++i) {
       let level = CHART_LEVELS[i];
       const numLogs = current[level];

@@ -45,8 +45,6 @@ class ChartNode extends React.Component {
   };
   render = () => {
     const { label, properties } = this.props.node;
-    const propSTR = this.getPropertiesString();
-    const icons = this.getIcons();
     const list = this.getPropertiesList();
     const isSpecial = Object.keys(properties).length > 0;
     const isGateway = label === "gateway";
