@@ -463,8 +463,8 @@ class Store extends EventEmitter {
     try {
       result = await api.postRating(imageId, stars);
     } catch (e) {
-      if (String(e).includes("409")) e = "Already Rated";
-      return this.showError("hub", e);
+      let error = String(e).includes("409")?"Already Rated": e;
+      return this.showError("hub", error);
     }
     if (result.error) this.showError("hub", result.error);
     else if (result.data) {
@@ -485,8 +485,8 @@ class Store extends EventEmitter {
     try {
       result = await api.postReview(imageId, content);
     } catch (e) {
-      if (String(e).includes("409")) e = "Already Reviewed";
-      return this.showError("hub", e);
+      let error = String(e).includes("409")?"Already Reviewed":e;
+      return this.showError("hub", error);
     }
     if (result.error) this.showError("hub", result.error);
     else if (result.data) {
