@@ -2,15 +2,12 @@ import React from "react";
 import { cloneDeep } from "lodash";
 import { FlowChart } from "@mrblenny/react-flow-chart";
 import * as actions from "@mrblenny/react-flow-chart/src/container/actions";
-import {
-  Container,
-  Row,
-  Card,
-} from "shards-react";
+import { Container, Row, Card } from "shards-react";
 import { Dispatcher, Constants, Store } from "../flux";
 import PageTitle from "../components/Common/PageTitle";
+import html2canvas from "html2canvas";
 
-import CommandBar from '../components/FlowChart/CommandBar';
+import CommandBar from "../components/FlowChart/CommandBar";
 import Sidebar from "../components/FlowChart/Sidebar";
 import CustomNode from "../components/FlowChart/ChartNode";
 import CustomPort from "../components/FlowChart/NodePort";
@@ -49,6 +46,29 @@ class FlowTab extends React.Component {
   componentWillUnmount = () => {
     Store.removeListener("update-flowchart", this.getData);
     Store.removeListener("update-ui", this.getBanner);
+  };
+
+  takeScreenshot = () => {
+    let canvasParams = {
+      foreignObjectRendering: true,
+      logging: true,
+      x: 0,
+      y: 0,
+      scrollX: 0,
+      scrollY: 0,
+      scale: 5,
+    };
+    html2canvas(document.querySelector(".chart-container"), canvasParams).then(
+      (canvas) => {
+        var image = canvas
+          .toDataURL("image/png")
+          .replace("image/png", "image/octet-stream");
+        var link = document.getElementById("download-link");
+        link.setAttribute("download", "jina-flowchart.png");
+        link.setAttribute("href", image);
+        link.click();
+      }
+    );
   };
 
   getData = () => {
@@ -144,6 +164,7 @@ class FlowTab extends React.Component {
           </div>
         )}
         <div className="px-4">
+          <a id="download-link" style={{ display: "hidden" }}></a>
           <Row noGutters className="page-header py-4">
             <PageTitle
               title="Flow Design"
@@ -153,11 +174,12 @@ class FlowTab extends React.Component {
           </Row>
           <div className="flow-container d-flex flex-column flex-md-row">
             <Card className="chart-section-container p-1 mr-md-4 mb-4">
-              <div className="chart-container">
-                <CommandBar
+              <CommandBar
                 copyChart={this.copyChartAsYAML}
                 importChart={this.showImportModal}
-                />
+                takeScreenshot={this.takeScreenshot}
+              />
+              <div className="chart-container">
                 <FlowChart
                   chart={chart}
                   Components={{ NodeInner: CustomNode, Port: CustomPort }}
