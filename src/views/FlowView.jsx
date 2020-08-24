@@ -48,7 +48,7 @@ class FlowTab extends React.Component {
     Store.removeListener("update-ui", this.getBanner);
   };
 
-  takeScreenshot = () => {
+  exportImage = (extension = "png") => {
     let canvasParams = {
       foreignObjectRendering: true,
       logging: true,
@@ -61,10 +61,10 @@ class FlowTab extends React.Component {
     html2canvas(document.querySelector(".chart-container"), canvasParams).then(
       (canvas) => {
         var image = canvas
-          .toDataURL("image/png")
-          .replace("image/png", "image/octet-stream");
+          .toDataURL(`image/${extension}`)
+          .replace(`image/${extension}`, "data:image/svg+xml,");
         var link = document.getElementById("download-link");
-        link.setAttribute("download", "jina-flowchart.png");
+        link.setAttribute("download", `jina-flowchart.${extension}`);
         link.setAttribute("href", image);
         link.click();
       }
@@ -164,7 +164,9 @@ class FlowTab extends React.Component {
           </div>
         )}
         <div className="px-4">
-          <a id="download-link" style={{ display: "hidden" }}></a>
+          <a href="/#" id="download-link" style={{ display: "hidden" }}>
+            download
+          </a>
           <Row noGutters className="page-header py-4">
             <PageTitle
               title="Flow Design"
@@ -177,7 +179,7 @@ class FlowTab extends React.Component {
               <CommandBar
                 copyChart={this.copyChartAsYAML}
                 importChart={this.showImportModal}
-                takeScreenshot={this.takeScreenshot}
+                exportImage={this.exportImage}
               />
               <div className="chart-container">
                 <FlowChart
@@ -203,5 +205,4 @@ class FlowTab extends React.Component {
     );
   };
 }
-
 export default FlowTab;
