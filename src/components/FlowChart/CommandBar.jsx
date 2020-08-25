@@ -1,5 +1,5 @@
 import React from "react";
-import { ButtonGroup, Button, Dropdown, DropdownButton } from "react-bootstrap";
+import { ButtonGroup, Button } from "react-bootstrap";
 
 class CommandBar extends React.Component {
   render = () => {
@@ -22,22 +22,12 @@ class CommandBar extends React.Component {
             <Button variant="secondary" onClick={this.props.copyChart}>
               <i className="material-icons">assignment</i>
             </Button>
-            <DropdownButton
+            <Button
               variant="secondary"
-              as={ButtonGroup}
-              title={<i className="material-icons text-white">camera_alt</i>}
-              id="bg-nested-dropdown"
+              onClick={() => this.props.exportImage("png")}
             >
-              <Dropdown.Item onClick={() => this.props.exportImage("png")}>
-                Capture as PNG
-              </Dropdown.Item>
-              <Dropdown.Item onClick={() => this.props.exportImage("jpg")}>
-                Capture as JPG
-              </Dropdown.Item>
-              <Dropdown.Item onClick={() => this.props.exportImage("svg")}>
-                Capture as SVG
-              </Dropdown.Item>
-            </DropdownButton>
+              <i className="material-icons">camera_alt</i>
+            </Button>
           </ButtonGroup>
         </div>
       </div>
