@@ -62,7 +62,7 @@ class FlowTab extends React.Component {
       (canvas) => {
         var image = canvas.toDataURL(`image/${extension}`);
         var link = document.getElementById("download-link");
-        link.setAttribute("download", `jina-flowchart.${extension}`);
+        link.setAttribute("download", `jina-flow-visual.${extension}`);
         link.setAttribute("href", image);
         link.click();
       }
