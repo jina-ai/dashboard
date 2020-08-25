@@ -18,7 +18,7 @@ class FlowTab extends React.Component {
     super(props);
     const chart = Store.getFlowchart();
     const banner = Store.getBanner("flow");
-    this.state = { chart, banner };
+    this.state = { chart, banner, showOverlay: false };
 
     console.log("actions:", actions);
     this.stateActionCallbacks = Object.keys(actions).reduce((obj, key, idx) => {
@@ -49,6 +49,9 @@ class FlowTab extends React.Component {
   };
 
   exportImage = (extension = "png") => {
+    document.querySelector(".capture-overlay").classList.add("fade-out");
+    this.showCaptureOverlay();
+    setTimeout(() => this.showCaptureOverlay(false), 500);
     let canvasParams = {
       foreignObjectRendering: true,
       logging: true,
@@ -67,6 +70,10 @@ class FlowTab extends React.Component {
         link.click();
       }
     );
+  };
+
+  showCaptureOverlay = (showOverlay = true) => {
+    this.setState({ showOverlay });
   };
 
   getData = () => {
@@ -151,7 +158,7 @@ class FlowTab extends React.Component {
   };
 
   render = () => {
-    const { chart, banner } = this.state;
+    const { chart, banner, showOverlay } = this.state;
     return (
       <Container fluid className="main-content-container px-0">
         {banner && (
@@ -180,6 +187,13 @@ class FlowTab extends React.Component {
                 exportImage={this.exportImage}
               />
               <div className="chart-container">
+                <div
+                  className="capture-overlay"
+                  style={{ display: showOverlay ? "" : "none" }}
+                >
+                  <div className="capture-overlay-top"></div>
+                  <div className="capture-overlay-bottom"></div>
+                </div>
                 <FlowChart
                   chart={chart}
                   Components={{ NodeInner: CustomNode, Port: CustomPort }}
