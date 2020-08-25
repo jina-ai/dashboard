@@ -60,9 +60,7 @@ class FlowTab extends React.Component {
     };
     html2canvas(document.querySelector(".chart-container"), canvasParams).then(
       (canvas) => {
-        var image = canvas
-          .toDataURL(`image/${extension}`)
-          .replace(`image/${extension}`, "data:image/svg+xml,");
+        var image = canvas.toDataURL(`image/${extension}`);
         var link = document.getElementById("download-link");
         link.setAttribute("download", `jina-flowchart.${extension}`);
         link.setAttribute("href", image);
