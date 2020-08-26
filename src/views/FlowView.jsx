@@ -11,6 +11,7 @@ import CommandBar from "../components/FlowChart/CommandBar";
 import Sidebar from "../components/FlowChart/Sidebar";
 import CustomNode from "../components/FlowChart/ChartNode";
 import CustomPort from "../components/FlowChart/NodePort";
+import ExampleSelection from "../components/FlowChart/ExampleSelection";
 import { formatAsYAML, copyToClipboard } from "../helpers";
 
 class FlowTab extends React.Component {
@@ -157,6 +158,10 @@ class FlowTab extends React.Component {
     });
   };
 
+  loadExample = (example) => {
+    console.log("example:", example);
+  };
+
   render = () => {
     const { chart, banner, showOverlay } = this.state;
     return (
@@ -181,6 +186,7 @@ class FlowTab extends React.Component {
           </Row>
           <div className="flow-container d-flex flex-column flex-md-row">
             <Card className="chart-section-container p-1 mr-md-4 mb-4">
+              <ExampleSelection loadExample={this.loadExample} />
               <CommandBar
                 copyChart={this.copyChartAsYAML}
                 importChart={this.showImportModal}

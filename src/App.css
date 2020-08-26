@@ -547,6 +547,14 @@ code {
   z-index: 5;
 }
 
+.example-selection {
+  position: absolute;
+  right: 0;
+  top: 0;
+  padding: 1em;
+  z-index: 5;
+}
+
 .command-bar i {
   font-size: 1.5em;
 }
