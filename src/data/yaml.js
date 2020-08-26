@@ -103,4 +103,82 @@ module.exports = {
     pod_7:
       needs: chunk_seg
   `,
+  pokedex: `!Flow
+  with:
+    read_only: true  # better add this in the query time
+    rest_api: true
+    port_expose: $JINA_PORT
+  pods:
+    chunk_seg:
+      uses: pods/craft.yml
+      parallel: $PARALLEL
+    tf_encode:
+      uses: pods/encode.yml
+      parallel: $PARALLEL
+      timeout_ready: 600000
+    chunk_idx:
+      uses: pods/chunk.yml
+      shards: $SHARDS
+      separated_workspace: true
+      polling: all
+      uses_reducing: _merge_all
+      timeout_ready: 100000 # larger timeout as in query time will read all the data
+    ranker:
+      uses: BiMatchRanker
+    doc_idx:
+      uses: pods/doc.yml
+  `,
+  flower: `!Flow
+  with:
+    read_only: true
+    port_expose: $JINA_PORT
+  pods:
+    loader:
+      uses: yaml/craft-load.yml
+      read_only: true
+    flipper:
+      uses: yaml/craft-flip.yml
+      read_only: true
+    normalizer:
+      uses: yaml/craft-normalize.yml
+      read_only: true
+    encoder:
+      uses: $ENCODER
+      timeout_ready: 600000
+      read_only: true
+    chunk_indexer:
+      uses: yaml/index-chunk.yml
+      separated_workspace: true
+      polling: all
+      uses_reducing: _merge_all
+    ranker:
+      uses: MinRanker
+    doc_indexer:
+      uses: yaml/index-doc.yml
+  `,
+  southpark: `!Flow
+  with:
+    read_only: true
+    port_expose: $JINA_PORT
+  pods:
+    splittor:
+      uses: pods/craft-split.yml
+      parallel: $PARALLEL
+      read_only: true
+    encoder:
+      uses: pods/encode.yml
+      parallel: $PARALLEL
+      timeout_ready: 60000
+      read_only: true
+    chunk_indexer:
+      uses: pods/index-chunk.yml
+      shards: $SHARDS
+      separated_workspace: true
+      polling: all
+      reducing_uses: _merge_all
+    ranker:
+      uses: MinRanker
+    doc_indexer:
+      uses: pods/index-doc.yml
+  `,
 };
