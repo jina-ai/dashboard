@@ -11,13 +11,13 @@ class ExampleSelection extends React.Component {
           id="bg-nested-dropdown"
         >
           <Dropdown.Item onClick={() => this.props.loadExample("pokedex")}>
-            Pokedex
+            Pokedex Query
           </Dropdown.Item>
           <Dropdown.Item onClick={() => this.props.loadExample("southpark")}>
-            South Park
+            South Park Query
           </Dropdown.Item>
           <Dropdown.Item onClick={() => this.props.loadExample("flower")}>
-            Flower Search
+            Flower Search Query
           </Dropdown.Item>
         </DropdownButton>
       </div>
