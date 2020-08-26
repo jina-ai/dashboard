@@ -5,6 +5,7 @@ import { parseYAML, formatForFlowchart, formatSeconds } from "../helpers";
 import api from "./api";
 import propertyList from "../data/properties.json";
 import getSidebarNavItems from "../data/sidebar-nav-items";
+import exampleYAML from "../data/yaml";
 
 const HIDE_BANNER_TIMEOUT = 5000;
 
@@ -156,6 +157,9 @@ class Store extends EventEmitter {
       case Constants.LOG_OUT:
         this.logOut();
         break;
+      case Constants.LOAD_EXAMPLE:
+        this.loadExample(payload);
+        break;
       default:
     }
   };
@@ -175,7 +179,7 @@ class Store extends EventEmitter {
   init = async () => {
     this.clearIntervals();
     _store = getInitialStore();
-    
+
     console.log("settings: ", _store.settings);
 
     this.startNetworkMonitor();
@@ -208,7 +212,7 @@ class Store extends EventEmitter {
     const { settings } = _store;
     const connectionString = `${settings.host}:${settings.port}${
       settings.yaml.startsWith("/") ? settings.yaml : "/" + settings.yaml
-      }`;
+    }`;
 
     if (yamlSTRING) {
       flow = parseYAML(yamlSTRING);
@@ -449,6 +453,12 @@ class Store extends EventEmitter {
     this.emit("update-flowchart");
   };
 
+  loadExample = (exampleName) => {
+    const flow = exampleYAML[exampleName];
+    this.initFlowChart(flow);
+    this.emit("update-flowchart");
+  };
+
   saveSettings = (settings) => {
     Object.keys(settings).forEach((key) => {
       localStorage.setItem(`preferences-${key}`, settings[key]);
@@ -463,7 +473,7 @@ class Store extends EventEmitter {
     try {
       result = await api.postRating(imageId, stars);
     } catch (e) {
-      let error = String(e).includes("409")?"Already Rated": e;
+      let error = String(e).includes("409") ? "Already Rated" : e;
       return this.showError("hub", error);
     }
     if (result.error) this.showError("hub", result.error);
@@ -485,7 +495,7 @@ class Store extends EventEmitter {
     try {
       result = await api.postReview(imageId, content);
     } catch (e) {
-      let error = String(e).includes("409")?"Already Reviewed":e;
+      let error = String(e).includes("409") ? "Already Reviewed" : e;
       return this.showError("hub", error);
     }
     if (result.error) this.showError("hub", result.error);

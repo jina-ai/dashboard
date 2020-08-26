@@ -159,7 +159,10 @@ class FlowTab extends React.Component {
   };
 
   loadExample = (example) => {
-    console.log("example:", example);
+    Dispatcher.dispatch({
+      actionType: Constants.LOAD_EXAMPLE,
+      payload: example,
+    });
   };
 
   render = () => {

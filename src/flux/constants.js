@@ -13,4 +13,5 @@ module.exports = {
   LOG_OUT: "LOG_OUT",
   SEARCH_HUB: "SEARCH_HUB",
   SHOW_BANNER: "SHOW_BANNER",
+  LOAD_EXAMPLE: "LOAD_EXAMPLE",
 };
