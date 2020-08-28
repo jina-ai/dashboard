@@ -11,7 +11,7 @@ import {
 import { formatBytes } from "../../helpers";
 import Chart from "chart.js";
 
-class ProcessReport extends React.Component {
+class BarChartCard extends React.Component {
   constructor(props) {
     super(props);
     // this.legendRef = React.createRef();
@@ -190,4 +190,4 @@ class ProcessReport extends React.Component {
   }
 }
 
-export default ProcessReport;
+export default BarChartCard;

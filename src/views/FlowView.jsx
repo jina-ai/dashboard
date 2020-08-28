@@ -14,7 +14,7 @@ import CustomPort from "../components/FlowChart/NodePort";
 import ExampleSelection from "../components/FlowChart/ExampleSelection";
 import { formatAsYAML, copyToClipboard } from "../helpers";
 
-class FlowTab extends React.Component {
+class FlowView extends React.Component {
   constructor(props) {
     super(props);
     const chart = Store.getFlowchart();
@@ -226,4 +226,4 @@ class FlowTab extends React.Component {
     );
   };
 }
-export default FlowTab;
+export default FlowView;

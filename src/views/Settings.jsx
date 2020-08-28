@@ -1,9 +1,9 @@
 import React from "react";
-import { Container, Row} from "react-bootstrap";
+import { Container, Row } from "react-bootstrap";
 import PageTitle from "../components/Common/PageTitle";
 import SettingsCard from "../components/Settings/Settings";
 
-class LogsView extends React.Component {
+class SettingsView extends React.Component {
   render = () => {
     return (
       <Container fluid className="main-content-container px-4">
@@ -20,4 +20,4 @@ class LogsView extends React.Component {
   };
 }
 
-export default LogsView;
+export default SettingsView;

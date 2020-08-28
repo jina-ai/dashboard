@@ -1,6 +1,6 @@
 import React from "react";
 
-class ChartNode extends React.Component {
+class NodePort extends React.Component {
   render = () => {
     return (
       <div className="node-port">
@@ -10,4 +10,4 @@ class ChartNode extends React.Component {
   };
 }
 
-export default ChartNode;
+export default NodePort;

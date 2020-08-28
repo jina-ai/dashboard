@@ -3,7 +3,7 @@ import { Button } from "shards-react";
 import ReviewCard from "./ReviewCard";
 import { Dispatcher, Constants } from "../../flux";
 
-class Readme extends React.Component {
+class ImageReviews extends React.Component {
   newReview = () => {
     const { imageId } = this.props;
     const modal = "review";
@@ -34,4 +34,4 @@ class Readme extends React.Component {
   };
 }
 
-export default Readme;
+export default ImageReviews;

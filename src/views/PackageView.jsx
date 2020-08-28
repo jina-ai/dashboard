@@ -1,5 +1,5 @@
 import React from "react";
-import { Container, Row, Col} from "react-bootstrap";
+import { Container, Row, Col } from "react-bootstrap";
 import { Dispatcher, Constants, Store } from "../flux";
 import BuildHistory from "../components/Hub/BuildHistory";
 import PageTitle from "../components/Common/PageTitle";
@@ -9,7 +9,7 @@ import CopyCommand from "../components/Hub/CopyCommand";
 import StarRating from "../components/Hub/StarRating";
 import ImageReviews from "../components/Hub/ImageReviews";
 
-class HubView extends React.Component {
+class PackageView extends React.Component {
   constructor() {
     super();
     let windowHash = window.location.hash;
@@ -118,10 +118,7 @@ class HubView extends React.Component {
                 <BuildHistory image={imageData} />
               </Col>
               <Col md="6">
-                <Readme
-                  readme={readmeHTML}
-                  documentation={documentation}
-                />
+                <Readme readme={readmeHTML} documentation={documentation} />
                 <ImageReviews reviews={reviews} imageId={id} />
               </Col>
             </Row>
@@ -132,4 +129,4 @@ class HubView extends React.Component {
   };
 }
 
-export default HubView;
+export default PackageView;

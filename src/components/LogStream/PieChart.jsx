@@ -40,7 +40,7 @@ const _colors = [
   },
 ];
 
-class Chart extends React.Component {
+class PieChart extends React.Component {
   constructor(props) {
     super(props);
     this.canvasRef = React.createRef();
@@ -136,4 +136,4 @@ class Chart extends React.Component {
   };
 }
 
-export default Chart;
+export default PieChart;

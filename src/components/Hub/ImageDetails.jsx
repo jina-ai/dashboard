@@ -1,7 +1,7 @@
 import React from "react";
 import { Card, CardHeader, CardBody, Row, Col } from "shards-react";
 
-class Readme extends React.Component {
+class ImageDetails extends React.Component {
   render = () => {
     const { image } = this.props;
     return (
@@ -29,7 +29,11 @@ class Readme extends React.Component {
           <Row className="border-bottom py-2">
             <Col>Documentation</Col>
             <Col>
-              <a href={image.documentation} target="_blank" rel="noopener noreferrer">
+              <a
+                href={image.documentation}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 {image.documentation}
               </a>
             </Col>
@@ -64,4 +68,4 @@ class Readme extends React.Component {
   };
 }
 
-export default Readme;
+export default ImageDetails;

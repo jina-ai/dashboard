@@ -5,7 +5,7 @@ import MainNavbar from "../components/Layout/MainNavbar/MainNavbar";
 import MainSidebar from "../components/Layout/MainSidebar/MainSidebar";
 import MainFooter from "../components/Layout/MainFooter";
 
-const DefaultLayout = ({ children, noNavbar, noFooter }) => (
+const DashboardLayout = ({ children, noNavbar, noFooter }) => (
   <Container fluid>
     <Row>
       <MainSidebar />
@@ -24,4 +24,4 @@ const DefaultLayout = ({ children, noNavbar, noFooter }) => (
   </Container>
 );
 
-export default DefaultLayout;
+export default DashboardLayout;

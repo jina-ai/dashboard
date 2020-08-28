@@ -4,7 +4,7 @@ import { Card } from "shards-react";
 
 import Chart from "chart.js";
 
-class QPSCard extends React.Component {
+class QueriesPerSecondCard extends React.Component {
   constructor(props) {
     super(props);
     this.canvasRef = React.createRef();
@@ -141,14 +141,14 @@ class QPSCard extends React.Component {
   }
 }
 
-QPSCard.propTypes = {
+QueriesPerSecondCard.propTypes = {
   /**
    * The goal object.
    */
   goal: PropTypes.object,
 };
 
-QPSCard.defaultProps = {
+QueriesPerSecondCard.defaultProps = {
   label: "New Customers",
   value: "29",
   percentage: "2.71%",
@@ -167,4 +167,4 @@ QPSCard.defaultProps = {
   ],
 };
 
-export default QPSCard;
+export default QueriesPerSecondCard;

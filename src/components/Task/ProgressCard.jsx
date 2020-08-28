@@ -3,7 +3,7 @@ import { Card } from "shards-react";
 
 import Chart from "chart.js";
 
-class SingleGoal extends React.Component {
+class ProgressCard extends React.Component {
   constructor(props) {
     super(props);
 
@@ -77,4 +77,4 @@ class SingleGoal extends React.Component {
   }
 }
 
-export default SingleGoal;
+export default ProgressCard;

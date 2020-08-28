@@ -1,7 +1,7 @@
 import React from "react";
 import { Card, Row, Col } from "react-bootstrap";
 
-class ChartNode extends React.Component {
+class HelpCard extends React.Component {
   render = () => {
     const { title, content, icon, theme, link } = this.props;
     return (
@@ -26,4 +26,4 @@ class ChartNode extends React.Component {
   };
 }
 
-export default ChartNode;
+export default HelpCard;
