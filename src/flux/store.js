@@ -452,10 +452,10 @@ class Store extends EventEmitter {
 
   showPodByLabel = (label) => {
     window.location.hash = "#/flow";
-    setTimeout(
-      () => document.getElementById(`chart-node-${label}`).click(),
-      10
-    );
+    setTimeout(() => {
+      let chartNode = document.getElementById(`chart-node-${label}`);
+      if (chartNode) chartNode.click();
+    }, 10);
   };
 
   importCustomYAML = (customYAML) => {
