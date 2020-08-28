@@ -15,6 +15,7 @@ class IconSidebarLayout extends React.Component {
   state = {
     modal: Store.getModal(),
     loading: Store.isLoading(),
+    acceptedCookies: localStorage.getItem("accepted-cookies"),
   };
 
   componentWillMount = () => {
@@ -31,8 +32,13 @@ class IconSidebarLayout extends React.Component {
     this.setState({ modal, loading });
   };
 
+  acceptCookies = () => {
+    localStorage.setItem("accepted-cookies", true);
+    this.setState({ accepted: true });
+  };
+
   render = () => {
-    const { modal } = this.state;
+    const { modal, acceptedCookies } = this.state;
     const { noNavbar, children, noFooter } = this.props;
     return (
       <Container fluid className="icon-sidebar-nav">
@@ -41,7 +47,10 @@ class IconSidebarLayout extends React.Component {
           <Col className="main-content col" tag="main">
             {!noNavbar && <MainNavbar />}
             {children}
-            <CookiesBanner />
+            <CookiesBanner
+              show={!acceptedCookies}
+              acceptCookies={this.acceptCookies}
+            />
             {!noFooter && <MainFooter />}
           </Col>
         </Row>

@@ -2,7 +2,7 @@ import React from "react";
 import classNames from "classnames";
 import { Col } from "shards-react";
 
-const PageTitle = ({ title, subtitle, className, ...attrs }) => {
+export default ({ title, subtitle, className, ...attrs }) => {
   const classes = classNames(
     className,
     "text-center",
@@ -17,5 +17,3 @@ const PageTitle = ({ title, subtitle, className, ...attrs }) => {
     </Col>
   );
 };
-
-export default PageTitle;
