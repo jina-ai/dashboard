@@ -177,7 +177,7 @@ class FlowTab extends React.Component {
           </div>
         )}
         <div className="px-4">
-          <a href="/#" id="download-link" style={{ display: "hidden" }}>
+          <a href="/#" id="download-link" style={{ display: "none" }}>
             download
           </a>
           <Row noGutters className="page-header py-4">
