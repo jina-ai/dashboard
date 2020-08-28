@@ -160,6 +160,9 @@ class Store extends EventEmitter {
       case Constants.LOAD_EXAMPLE:
         this.loadExample(payload);
         break;
+      case Constants.SHOW_POD_IN_FLOW:
+        this.showPodByLabel(payload);
+        break;
       default:
     }
   };
@@ -445,6 +448,14 @@ class Store extends EventEmitter {
     if (!logIndex) return;
     _store.logIndex = _store.occurences.lastLog[index];
     this.emit("show-log");
+  };
+
+  showPodByLabel = (label) => {
+    window.location.hash = "#/flow";
+    setTimeout(
+      () => document.getElementById(`chart-node-${label}`).click(),
+      10
+    );
   };
 
   importCustomYAML = (customYAML) => {

@@ -19,6 +19,8 @@ import CellMeasurer, {
   CellMeasurerCache,
 } from "react-virtualized/dist/commonjs/CellMeasurer";
 
+import { Dispatcher, Constants } from "../../flux";
+
 class StreamContainer extends React.Component {
   _cache = new CellMeasurerCache({ defaultHeight: 10, fixedWidth: true });
   _resultsCache = new CellMeasurerCache({
@@ -199,6 +201,13 @@ class StreamContainer extends React.Component {
     });
   };
 
+  showPodInFlow = (podLabel) => {
+    Dispatcher.dispatch({
+      actionType: Constants.SHOW_POD_IN_FLOW,
+      payload: podLabel,
+    });
+  };
+
   renderSearchResults = () => {
     const { results } = this.state;
     return (
@@ -244,7 +253,11 @@ class StreamContainer extends React.Component {
             wordBreak: "break-word",
           }}
         >
-          <LogItem index={index} data={log} />
+          <LogItem
+            showPodInFlow={this.showPodInFlow}
+            index={index}
+            data={log}
+          />
         </div>
       </CellMeasurer>
     );
@@ -267,7 +280,7 @@ class StreamContainer extends React.Component {
             wordBreak: "break-word",
           }}
         >
-          <LogItem data={log} />
+          <LogItem showPodInFlow={this.showPodInFlow} data={log} />
         </div>
       </CellMeasurer>
     );

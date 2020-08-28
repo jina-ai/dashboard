@@ -51,7 +51,10 @@ class ChartNode extends React.Component {
     let labelText =
       typeof label === "undefined" ? properties.name : label || "";
     return (
-      <div className={`chart-node ${isGateway ? "gateway" : ""}`}>
+      <div
+        className={`chart-node ${isGateway ? "gateway" : ""}`}
+        id={`chart-node-${label}`}
+      >
         <div className="node-header">
           <div className={`p-1 ${isSpecial ? "special" : ""}`}>
             <p className="m-1">
