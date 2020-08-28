@@ -1,6 +1,6 @@
 const YAML = require("yaml");
 const settings = require("./settings");
-const propertyList = require("./data/properties.json");
+const propertyList = require("./data/podProperties.json");
 
 const propertyTypes = {};
 propertyList.forEach((prop) => (propertyTypes[prop.name] = prop.type));
@@ -147,7 +147,8 @@ export function formatAsYAML(chart) {
     Object.keys(node.properties).forEach((propId) => {
       let type = propertyTypes[propId];
       if (type === "bool") {
-        output.pods[node.label][propId] = String(node.properties[propId]) === "true";
+        output.pods[node.label][propId] =
+          String(node.properties[propId]) === "true";
       } else if (type === "int")
         output.pods[node.label][propId] = parseInt(node.properties[propId]);
       else output.pods[node.label][propId] = node.properties[propId];
