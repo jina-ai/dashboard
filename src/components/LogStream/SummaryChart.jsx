@@ -4,12 +4,13 @@ import { Store, Dispatcher, Constants } from "../../flux";
 import ChartBase from "./ChartBase";
 
 class SummaryChart extends React.Component {
-  state = {
-    chartData: Store.getSummaryCharts(),
-  };
-  componentWillMount = () => {
+  constructor() {
+    super();
+    this.state = {
+      chartData: Store.getSummaryCharts(),
+    };
     Store.on("update-summary-chart", this.getData);
-  };
+  }
 
   componentWillUnmount = () => {
     Store.removeListener("update-summary-chart", this.getData);

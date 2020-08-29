@@ -12,10 +12,6 @@ class SidebarNavItems extends React.Component {
       navItems: Store.getSidebarItems(),
     };
 
-    this.onChange = this.onChange.bind(this);
-  }
-
-  componentWillMount() {
     Store.on("update-ui", this.onChange);
   }
 
@@ -23,12 +19,12 @@ class SidebarNavItems extends React.Component {
     Store.removeListener("update-ui", this.onChange);
   }
 
-  onChange() {
+  onChange = () => {
     this.setState({
       ...this.state,
       navItems: Store.getSidebarItems(),
     });
-  }
+  };
 
   render() {
     const { navItems: items } = this.state;

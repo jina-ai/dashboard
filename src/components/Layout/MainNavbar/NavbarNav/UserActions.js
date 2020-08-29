@@ -13,13 +13,14 @@ import {
 import { Store, Dispatcher, Constants } from "../../../../flux";
 
 export default class UserActions extends React.Component {
-  state = {
-    visible: false,
-    user: Store.getUser(),
-  };
-  componentWillMount = () => {
+  constructor() {
+    super();
+    this.state = {
+      visible: false,
+      user: Store.getUser(),
+    };
     Store.on("update-user", this.getData);
-  };
+  }
 
   componentWillUnmount = () => {
     Store.removeListener("update-user", this.getData);

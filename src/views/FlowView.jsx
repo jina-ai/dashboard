@@ -33,15 +33,15 @@ class FlowView extends React.Component {
       };
       return obj;
     }, {});
-  }
 
-  componentWillMount = () => {
     Store.on("update-flowchart", this.getData);
     Store.on("update-ui", this.getBanner);
-  };
+  }
 
   componentDidMount = () => {
-    // document.addEventListener('contextmenu', (e)=>e.preventDefault())
+    document
+      .querySelector(".chart-container")
+      .addEventListener("contextmenu", (e) => e.preventDefault());
   };
 
   componentWillUnmount = () => {

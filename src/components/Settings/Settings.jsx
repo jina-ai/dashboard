@@ -13,14 +13,14 @@ import {
 import { Store, Dispatcher, Constants } from "../../flux";
 
 class SettingsCard extends React.Component {
-  state = {
-    original: Store.getSettings(),
-    updates: {},
-  };
-
-  componentWillMount = () => {
+  constructor() {
+    super();
+    this.state = {
+      original: Store.getSettings(),
+      updates: {},
+    };
     Store.on("update-settings", this.getData);
-  };
+  }
 
   componentWillUnmount = () => {
     Store.removeListener("update-settings", this.getData);
@@ -78,7 +78,7 @@ class SettingsCard extends React.Component {
                 />
               </Col>
             </Row>
-            <strong class="text-muted d-block mb-3">Endpoints</strong>
+            <strong className="text-muted d-block mb-3">Endpoints</strong>
             <Row form>
               {/* Email */}
               <Col md="6" className="form-group">

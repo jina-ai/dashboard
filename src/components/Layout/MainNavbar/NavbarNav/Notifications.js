@@ -3,13 +3,13 @@ import { NavItem, NavLink, Badge } from "shards-react";
 import { Store, Constants, Dispatcher } from "../../../../flux";
 
 export default class Notifications extends React.Component {
-  state = {
-    connected: Store.getConnectionStatus(),
-  };
-
-  componentWillMount = () => {
+  constructor() {
+    super();
+    this.state = {
+      connected: Store.getConnectionStatus(),
+    };
     Store.on("update-ui", this.getData);
-  };
+  }
 
   componentWillUnmount = () => {
     Store.removeListener("update-ui", this.getData);

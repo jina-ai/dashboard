@@ -3,13 +3,13 @@ import { Container, Navbar } from "react-bootstrap";
 import { Store, Dispatcher, Constants } from "../../flux";
 
 class MainNavbar extends React.Component {
-  state = {
-    currentTab: Store.getCurrentTab(),
-  };
-
-  componentWillMount = () => {
+  constructor() {
+    super();
+    this.state = {
+      currentTab: Store.getCurrentTab(),
+    };
     Store.on("update-ui", this.getData);
-  };
+  }
 
   componentWillUnmount = () => {
     Store.removeListener("update-ui", this.getData);

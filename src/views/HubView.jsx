@@ -1,9 +1,5 @@
 import React from "react";
-import {
-  Container,
-  Row,
-  Col,
-} from "react-bootstrap";
+import { Container, Row, Col } from "react-bootstrap";
 import {
   FormInput,
   InputGroup,
@@ -16,17 +12,19 @@ import PageTitle from "../components/Common/PageTitle";
 import ImageCard from "../components/Hub/ImageCard";
 
 class HubView extends React.Component {
-  state = {
-    banner: Store.getBanner("hub"),
-    images: Store.getHubImages(),
-    sortType: "suggested",
-    category: "all",
-    searchQuery: "",
-  };
-  componentWillMount = () => {
+  constructor() {
+    super();
+    this.state = {
+      banner: Store.getBanner("hub"),
+      images: Store.getHubImages(),
+      sortType: "suggested",
+      category: "all",
+      searchQuery: "",
+    };
+
     Store.on("update-ui", this.getData);
     Store.on("update-hub", this.getHubImages);
-  };
+  }
 
   componentWillUnmount = () => {
     Store.removeListener("update-ui", this.getData);

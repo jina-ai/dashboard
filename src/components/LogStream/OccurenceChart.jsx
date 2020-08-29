@@ -4,12 +4,13 @@ import { Store } from "../../flux";
 import ChartBase from "./PieChart";
 
 class OccurenceChart extends React.Component {
-  state = {
-    chartData: Store.getOccurencesByName(),
-  };
-  componentWillMount = () => {
+  constructor() {
+    super();
+    this.state = {
+      chartData: Store.getOccurencesByName(),
+    };
     Store.on("update-summary-chart", this.getData);
-  };
+  }
 
   componentWillUnmount = () => {
     Store.removeListener("update-summary-chart", this.getData);

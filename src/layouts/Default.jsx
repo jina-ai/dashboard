@@ -8,14 +8,14 @@ import PasteYAML from "../modals/PasteYAML";
 import { Store } from "../flux";
 
 class DefaultLayout extends React.Component {
-  state = {
-    modal: Store.getModal(),
-    loading: Store.isLoading(),
-  };
-
-  componentWillMount = () => {
+  constructor() {
+    super();
+    this.state = {
+      modal: Store.getModal(),
+      loading: Store.isLoading(),
+    };
     Store.on("update-ui", this.getData);
-  };
+  }
 
   componentWillUnmount = () => {
     Store.removeListener("update-ui", this.getData);

@@ -36,23 +36,25 @@ class StreamContainer extends React.Component {
   _scrollTop = 0;
   _scrolledToBottom = true;
 
-  state = {
-    allLogs: Store.getLogs(),
-    logs: Store.getLogs(),
-    sources: Store.getLogSources(),
-    levels: Store.getLogLevels(),
-    searchQuery: "",
-    prevQuery: "",
-    results: [],
-    showHelper: false,
-    selectedSource: false,
-    selectedLevel: false,
-  };
+  constructor() {
+    super();
 
-  componentWillMount = () => {
+    this.state = {
+      allLogs: Store.getLogs(),
+      logs: Store.getLogs(),
+      sources: Store.getLogSources(),
+      levels: Store.getLogLevels(),
+      searchQuery: "",
+      prevQuery: "",
+      results: [],
+      showHelper: false,
+      selectedSource: false,
+      selectedLevel: false,
+    };
+
     Store.on("update-logs", this.getData);
     Store.on("show-log", this.getIndexedLog);
-  };
+  }
 
   componentWillUnmount = () => {
     Store.removeListener("update-logs", this.getData);

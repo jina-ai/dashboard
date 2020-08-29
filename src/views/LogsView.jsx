@@ -1,18 +1,19 @@
 import React from "react";
-import { Container, Row, Col} from "react-bootstrap";
-import {Store } from "../flux";
+import { Container, Row, Col } from "react-bootstrap";
+import { Store } from "../flux";
 import LogStream from "../components/LogStream/LogStream";
 import SummaryChart from "../components/LogStream/SummaryChart";
 import PageTitle from "../components/Common/PageTitle";
 import OccurenceChart from "../components/LogStream/OccurenceChart";
 
 class LogsView extends React.Component {
-  state = {
-    banner: Store.getBanner("logs"),
-  };
-  componentWillMount = () => {
+  constructor() {
+    super();
+    this.state = {
+      banner: Store.getBanner("logs"),
+    };
     Store.on("update-ui", this.getData);
-  };
+  }
 
   componentWillUnmount = () => {
     Store.removeListener("update-ui", this.getData);

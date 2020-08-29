@@ -12,15 +12,15 @@ import WriteReview from "../modals/WriteReview";
 import { Store } from "../flux";
 
 class IconSidebarLayout extends React.Component {
-  state = {
-    modal: Store.getModal(),
-    loading: Store.isLoading(),
-    acceptedCookies: localStorage.getItem("accepted-cookies"),
-  };
-
-  componentWillMount = () => {
+  constructor() {
+    super();
+    this.state = {
+      modal: Store.getModal(),
+      loading: Store.isLoading(),
+      acceptedCookies: localStorage.getItem("accepted-cookies"),
+    };
     Store.on("update-ui", this.getData);
-  };
+  }
 
   componentWillUnmount = () => {
     Store.removeListener("update-ui", this.getData);

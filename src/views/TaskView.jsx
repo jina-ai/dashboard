@@ -1,6 +1,6 @@
 import React from "react";
-import { Container, Row, Col} from "react-bootstrap";
-import {Store } from "../flux";
+import { Container, Row, Col } from "react-bootstrap";
+import { Store } from "../flux";
 import PageTitle from "../components/Common/PageTitle";
 import ElapsedCard from "../components/Task/ElapsedCard";
 import ProgressCard from "../components/Task/ProgressCard";
@@ -9,14 +9,16 @@ import BarChartCard from "../components/Task/BarChartCard";
 import QueriesPerSecond from "../components/Task/QueriesPerSecond";
 
 class TaskView extends React.Component {
-  state = {
-    taskData: Store.getTaskData(),
-    banner: Store.getBanner("task"),
-  };
-  componentWillMount = () => {
+  constructor() {
+    super();
+    this.state = {
+      taskData: Store.getTaskData(),
+      banner: Store.getBanner("task"),
+    };
     Store.on("update-task", this.getData);
     Store.on("update-ui", this.getBanner);
-  };
+  }
+
   componentWillUnmount = () => {
     Store.removeListener("update-task", this.getData);
     Store.removeListener("update-ui", this.getBanner);

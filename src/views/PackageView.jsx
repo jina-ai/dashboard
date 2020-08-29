@@ -28,16 +28,13 @@ class PackageView extends React.Component {
         repoTags: [],
       },
     };
+    Store.on("update-ui", this.getData);
+    Store.on("update-hub", this.getImageData);
   }
 
   componentDidMount = () => {
     this.getData();
     this.getImageData();
-  };
-
-  componentWillMount = () => {
-    Store.on("update-ui", this.getData);
-    Store.on("update-hub", this.getImageData);
   };
 
   componentWillUnmount = () => {

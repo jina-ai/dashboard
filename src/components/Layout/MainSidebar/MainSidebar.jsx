@@ -10,17 +10,13 @@ import { Store } from "../../../flux";
 class MainSidebar extends React.Component {
   constructor(props) {
     super(props);
-
     this.state = {
       menuVisible: false,
       sidebarNavItems: Store.getSidebarItems(),
     };
 
     this.onChange = this.onChange.bind(this);
-  }
-
-  componentWillMount() {
-    Store.on("update-ui", this.onChange);
+    // Store.on("update-ui", this.onChange);
   }
 
   componentWillUnmount() {
