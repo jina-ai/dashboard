@@ -9,7 +9,7 @@ import CookiesBanner from "../components/Common/CookiesBanner";
 import PasteYAML from "../modals/PasteYAML";
 import WriteReview from "../modals/WriteReview";
 
-import { Store } from "../flux";
+import { Store, Dispatcher, Constants } from "../flux";
 
 class IconSidebarLayout extends React.Component {
   constructor() {
@@ -37,33 +37,58 @@ class IconSidebarLayout extends React.Component {
     this.setState({ accepted: true });
   };
 
+  closeModal = () => {
+    Dispatcher.dispatch({
+      actionType: Constants.CLOSE_MODAL,
+    });
+  };
+
+  importYAML = (yamlString) => {
+    Dispatcher.dispatch({
+      actionType: Constants.IMPORT_CUSTOM_YAML,
+      payload: yamlString,
+    });
+  };
+
+  submitReview = (content) => {
+    const params = Store.getModalParams();
+    const { imageId } = params;
+    Dispatcher.dispatch({
+      actionType: Constants.POST_REVIEW,
+      payload: { content, imageId },
+    });
+  };
+
   render = () => {
     const { modal, acceptedCookies } = this.state;
-    const { noNavbar, children, noFooter } = this.props;
+    const { children } = this.props;
     return (
       <Container fluid className="icon-sidebar-nav">
         <Row>
           <MainSidebar hideLogoText />
           <Col className="main-content col" tag="main">
-            {!noNavbar && <MainNavbar />}
+            <MainNavbar />
             {children}
             <CookiesBanner
               show={!acceptedCookies}
               acceptCookies={this.acceptCookies}
             />
-            {!noFooter && <MainFooter />}
+            <MainFooter />
           </Col>
         </Row>
-        <PasteYAML open={modal === "import"} />
-        <WriteReview open={modal === "review"} />
+        <PasteYAML
+          open={modal === "import"}
+          closeModal={this.closeModal}
+          importYAML={this.importYAML}
+        />
+        <WriteReview
+          open={modal === "review"}
+          closeModal={this.closeModal}
+          submitReview={this.submitReview}
+        />
       </Container>
     );
   };
 }
-
-IconSidebarLayout.defaultProps = {
-  noNavbar: false,
-  noFooter: false,
-};
 
 export default IconSidebarLayout;
