@@ -14,22 +14,20 @@ class MainSidebar extends React.Component {
       menuVisible: false,
       sidebarNavItems: Store.getSidebarItems(),
     };
-
-    this.onChange = this.onChange.bind(this);
-    // Store.on("update-ui", this.onChange);
+    Store.on("update-ui", this.onChange);
   }
 
   componentWillUnmount() {
     Store.removeListener("update-ui", this.onChange);
   }
 
-  onChange() {
+  onChange = () => {
     this.setState({
       ...this.state,
       menuVisible: Store.getMenuState(),
       sidebarNavItems: Store.getSidebarItems(),
     });
-  }
+  };
 
   render() {
     const classes = classNames(
