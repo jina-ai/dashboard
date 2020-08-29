@@ -44,7 +44,7 @@ class Login extends React.Component {
                 <img
                   onClick={this.testAuthentication}
                   className="auth-form__logo d-table mx-auto mb-3"
-                  src={require("../images/jina-light.svg")}
+                  src="/jina-light.svg"
                   style={{ maxWidth: "100px" }}
                   alt="Jina"
                 />

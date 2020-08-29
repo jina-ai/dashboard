@@ -18,7 +18,7 @@ export default ({ toggleSidebar }) => {
               id="main-logo"
               className="d-inline-block align-top"
               style={{ maxWidth: "50px" }}
-              src={require("../../../images/jina-light.svg")}
+              src="/jina-light.svg"
               alt="Jina Dashboard"
             />
           </div>

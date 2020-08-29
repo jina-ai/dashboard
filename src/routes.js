@@ -2,7 +2,7 @@ import React from "react";
 import { Redirect } from "react-router-dom";
 
 // Layout Types
-import { DashboardLayout, IconSidebar } from "./layouts";
+import { DefaultLayout, IconSidebar } from "./layouts";
 
 // Route Views
 import FlowView from "./views/FlowView";
@@ -19,7 +19,7 @@ export default [
   {
     path: "/",
     exact: true,
-    layout: DashboardLayout,
+    layout: DefaultLayout,
     component: () => <Redirect to="/logs" />,
   },
   {
