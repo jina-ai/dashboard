@@ -1,7 +1,7 @@
 import React from "react";
 import { Container, Row, Nav } from "shards-react";
 
-const MainFooter = ({ contained, menuItems, copyright }) => (
+const MainFooter = ({ menuItems, copyright }) => (
   <footer className="main-footer d-flex p-2 px-3 bg-white border-top">
     <Container fluid>
       <Row>

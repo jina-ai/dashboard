@@ -5,13 +5,13 @@ import { Col } from "shards-react";
 import SidebarMainNavbar from "./SidebarMainNavbar";
 import SidebarNavItems from "./SidebarNavItems";
 
-import { Store } from "../../../flux";
+import { Store, Dispatcher, Constants } from "../../../flux";
 
 class MainSidebar extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      menuVisible: false,
+      menuVisible: Store.getMenuState(),
       sidebarNavItems: Store.getSidebarItems(),
     };
     Store.on("update-ui", this.onChange);
@@ -29,7 +29,14 @@ class MainSidebar extends React.Component {
     });
   };
 
+  toggleSidebar = () => {
+    Dispatcher.dispatch({
+      actionType: Constants.TOGGLE_SIDEBAR,
+    });
+  };
+
   render() {
+    const { sidebarNavItems } = this.state;
     const classes = classNames(
       "main-sidebar",
       "px-0",
@@ -39,9 +46,11 @@ class MainSidebar extends React.Component {
 
     return (
       <Col tag="aside" className={classes} lg={{ size: 2 }} md={{ size: 3 }}>
-        <SidebarMainNavbar hideLogoText={this.props.hideLogoText} />
-        {/* <SidebarSearch /> */}
-        <SidebarNavItems />
+        <SidebarMainNavbar toggleSidebar={this.toggleSidebar} />
+        <SidebarNavItems
+          navItems={sidebarNavItems}
+          toggleSidebar={this.toggleSidebar}
+        />
       </Col>
     );
   }

@@ -1,40 +1,83 @@
 import React from "react";
-import classNames from "classnames";
-import { Container, Navbar, NavbarBrand } from "shards-react";
+import { Container, Navbar, Nav } from "shards-react";
 
 import NavbarSpacer from "./NavbarSpacer";
-import NavbarNav from "./NavbarNav/NavbarNav";
 import NavbarToggle from "./NavbarToggle";
+import Notifications from "./Notifications";
+import UserActions from "./UserActions";
+import { Store, Dispatcher, Constants } from "../../../flux";
 
-const MainNavbar = ({ layout, stickyTop }) => {
-  const isHeaderNav = false;
-  const classes = classNames("main-navbar", "bg-white", "sticky-top");
+class MainNavbar extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      userActionsVisible: false,
+      connected: Store.getConnectionStatus(),
+      user: Store.getUser(),
+    };
+    Store.on("update-ui", this.getData);
+    Store.on("update-user", this.getData);
+  }
 
-  return (
-    <div className={classes}>
-      <Container fluid={!isHeaderNav || null} className="p-0">
-        <Navbar type="light" className="align-items-stretch flex-md-nowrap p-0">
-          {isHeaderNav && (
-            <NavbarBrand href="#" style={{ lineHeight: "25px" }}>
-              <div className="d-table m-auto">
-                <img
-                  id="main-logo"
-                  className="d-inline-block align-top mr-1 ml-3"
-                  style={{ maxWidth: "25px" }}
-                  src={require("../../../images/jina-light.svg")}
-                  alt="Jina.ai"
-                />
-                <span className="d-none d-md-inline ml-1">Dashboard</span>
-              </div>
-            </NavbarBrand>
-          )}
-          <NavbarSpacer />
-          <NavbarNav />
-          <NavbarToggle />
-        </Navbar>
-      </Container>
-    </div>
-  );
-};
+  componentWillUnmount = () => {
+    Store.removeListener("update-ui", this.getData);
+    Store.removeListener("update-user", this.getData);
+  };
+
+  getData = () => {
+    const connected = Store.getConnectionStatus();
+    const user = Store.getUser();
+    this.setState({ connected, user });
+  };
+
+  reconnect = () => {
+    Dispatcher.dispatch({
+      actionType: Constants.RECONNECT,
+    });
+  };
+
+  toggleUserActions = () => {
+    this.setState({
+      userActionsVisible: !this.state.userActionsVisible,
+    });
+  };
+
+  logOut = () => {
+    Dispatcher.dispatch({
+      actionType: Constants.LOG_OUT,
+    });
+  };
+
+  toggleSidebar = () => {
+    Dispatcher.dispatch({
+      actionType: Constants.TOGGLE_SIDEBAR,
+    });
+  };
+  render = () => {
+    const { connected, user, userActionsVisible } = this.state;
+    return (
+      <div className="main-navbar bg-white sticky-top">
+        <Container fluid className="p-0">
+          <Navbar
+            type="light"
+            className="align-items-stretch flex-md-nowrap p-0"
+          >
+            <NavbarSpacer />
+            <Nav navbar className="border-left flex-row">
+              <Notifications reconnect={this.reconnect} connected={connected} />
+              <UserActions
+                user={user}
+                userActionsVisible={userActionsVisible}
+                toggleUserActions={this.toggleUserActions}
+                logOut={this.logOut}
+              />
+            </Nav>
+            <NavbarToggle toggleSidebar={this.toggleSidebar} />
+          </Navbar>
+        </Container>
+      </div>
+    );
+  };
+}
 
 export default MainNavbar;
