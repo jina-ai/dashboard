@@ -37,7 +37,6 @@ class SettingsCard extends React.Component {
       updates[setting] = value;
       return { updates };
     });
-    console.log("updates: ", this.state.updates);
   };
 
   saveChanges = () => {

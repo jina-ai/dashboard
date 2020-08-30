@@ -20,7 +20,6 @@ class FlowChartSidebar extends React.Component {
     if (id === this.state.node.id) return;
 
     this.setState({ searchResults: [], searchQuery: "" });
-    console.log("test");
 
     if (!id) return;
 
@@ -31,7 +30,6 @@ class FlowChartSidebar extends React.Component {
   };
 
   setInitialNode = (node) => {
-    console.log("setInititailNode:", node);
     const properties = {};
     const newProperties = {};
     const label = node.label;
@@ -70,7 +68,6 @@ class FlowChartSidebar extends React.Component {
   saveChanges = () => {
     const { node } = this.state;
     this.props.updateNode(node);
-    console.log("save changes: ", node);
   };
 
   updateSearchQuery = (e) => {
@@ -79,21 +76,14 @@ class FlowChartSidebar extends React.Component {
 
   searchProperties = () => {
     const query = this.state.searchQuery;
-    console.log("search query: ", query);
     if (!query) return this.setState({ searchResults: false });
     this.indexProperties();
     let searchResults = this.index.search(`${query} ${query}*`);
     this.setState({ searchResults });
-    console.log("search results: ", searchResults);
   };
 
   indexProperties = () => {
     const { availableProperties } = this.state;
-    console.log(
-      "indexing",
-      availableProperties.length,
-      "properties for search"
-    );
     this.index = lunr(function () {
       this.field("name");
 
@@ -179,7 +169,7 @@ class FlowChartSidebar extends React.Component {
             <div>
               {Object.keys(node.properties).map((prop) => {
                 const value = node.properties[prop];
-                if (prop === "name") return '';
+                if (prop === "name") return "";
                 return (
                   <div key={prop} className="property-item mb-2">
                     <p className="property-label mb-1">{prop}</p>
@@ -194,22 +184,23 @@ class FlowChartSidebar extends React.Component {
                   </div>
                 );
               })}
-              {availableProperties.map((property) => 
-                typeof node.properties[property.name] == "undefined"?
-                    <div key={property.name} className="property-item mb-2">
-                      <p className="property-label mb-1">{property.name}</p>
-                      <FormControl
-                        spellCheck={false}
-                        placeholder={property.type}
-                        value={node.newProperties[property.name] || ""}
-                        onChange={(e) =>
-                          this.updateNewValue(property.name, e.target.value)
-                        }
-                        className="property-value-input"
-                      ></FormControl>
-                    </div>
-                  : 
-                  ''
+              {availableProperties.map((property) =>
+                typeof node.properties[property.name] == "undefined" ? (
+                  <div key={property.name} className="property-item mb-2">
+                    <p className="property-label mb-1">{property.name}</p>
+                    <FormControl
+                      spellCheck={false}
+                      placeholder={property.type}
+                      value={node.newProperties[property.name] || ""}
+                      onChange={(e) =>
+                        this.updateNewValue(property.name, e.target.value)
+                      }
+                      className="property-value-input"
+                    ></FormControl>
+                  </div>
+                ) : (
+                  ""
+                )
               )}
             </div>
           )}
@@ -228,7 +219,7 @@ class FlowChartSidebar extends React.Component {
   };
 
   renderEditLink = (link) => {
-    const { nodes, links } = this.props.chart;
+    const { nodes } = this.props.chart;
     const nodeFrom = nodes[link.from.nodeId];
     const nodeTo = nodes[link.to.nodeId];
 
@@ -236,7 +227,6 @@ class FlowChartSidebar extends React.Component {
       return { label: nodes[id].label || nodes[id].properties.name, id };
     });
 
-    console.log("links:", links, "\nlink:", link, "\nnodes:", nodes);
     return (
       <div className="h-100 d-flex flex-column">
         <h5 className="px-3 py-2 mb-0 border-bottom">

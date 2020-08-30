@@ -7,10 +7,9 @@ import propertyList from "../data/podProperties.json";
 import getSidebarNavItems from "../data/sidebar-nav-items";
 import exampleYAML from "../data/yaml";
 
-const HIDE_BANNER_TIMEOUT = 5000;
-
 let _store;
 
+const HIDE_BANNER_TIMEOUT = 5000;
 const NUM_CHART_ELEMENTS = 60;
 const CHART_UPDATE_INTERVAL = 1000;
 const TASK_UPDATE_INTERVAL = 500;
@@ -175,7 +174,6 @@ class Store extends EventEmitter {
     } catch (e) {
       this.connected = false;
     }
-    console.log("prevStatus:", prevStatus, "connected:", this.connected);
     if (prevStatus !== this.connected) return this.init();
   };
 

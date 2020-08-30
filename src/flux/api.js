@@ -15,11 +15,9 @@ const hub = axios.create({
 
 export default {
   checkConnection: (settings) => {
-    console.log("checking connection");
     let connectionString = `${settings.host}:${settings.port}${
       settings.ready.startsWith("/") ? settings.ready : "/" + settings.ready
     }`;
-    console.log("checkConnection string:", connectionString);
     return axios.get(connectionString);
   },
   connect: (settings, logUpdate, taskUpdate) => {

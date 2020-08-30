@@ -21,7 +21,6 @@ class FlowView extends React.Component {
     const banner = Store.getBanner("flow");
     this.state = { chart, banner, showOverlay: false };
 
-    console.log("actions:", actions);
     this.stateActionCallbacks = Object.keys(actions).reduce((obj, key, idx) => {
       obj[key] = (...args) => {
         let { chart } = this.state;
@@ -90,7 +89,6 @@ class FlowView extends React.Component {
   updateNode = (node, callback) => {
     let { chart } = this.state;
     let newChart = cloneDeep(chart);
-    console.log("newChart: ", newChart);
     newChart.nodes[node.id].label = node.label;
 
     let props = {

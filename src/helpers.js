@@ -200,7 +200,6 @@ function getNodeDepth(nodes, currentId, currentDepth) {
 
   for (let i = 0; i < parents.length; ++i) {
     let parent = parents[i];
-    console.log("\tparent:", parent);
     let depth;
     if (nodes[parent].depth) depth = nodes[parent].depth + 1;
     else depth = getNodeDepth(nodes, parent, 1);
