@@ -1,5 +1,4 @@
 import React from "react";
-import PropTypes from "prop-types";
 import { Card } from "shards-react";
 
 import Chart from "chart.js";
@@ -140,13 +139,6 @@ class SpeedCard extends React.Component {
     );
   }
 }
-
-SpeedCard.propTypes = {
-  /**
-   * The goal object.
-   */
-  goal: PropTypes.object,
-};
 
 SpeedCard.defaultProps = {
   label: "New Customers",

@@ -428,7 +428,6 @@ class Store extends EventEmitter {
     }
     _store.occurences.lastLog.push(_store.logs.length - 1);
     _store.occurences.lastLog.shift();
-    // console.log('summaryCharts:', _store.summaryCharts);
     this.emit("update-summary-chart");
   };
 

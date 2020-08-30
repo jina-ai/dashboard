@@ -14,7 +14,6 @@ import Chart from "chart.js";
 class BarChartCard extends React.Component {
   constructor(props) {
     super(props);
-    // this.legendRef = React.createRef();
     this.canvasRef = React.createRef();
     this.state = {
       tab: "messages",
@@ -177,7 +176,6 @@ class BarChartCard extends React.Component {
               </ButtonGroup>
             </Col>
           </Row>
-          {/* <div ref={this.legendRef} /> */}
           <canvas
             height="100"
             ref={this.canvasRef}

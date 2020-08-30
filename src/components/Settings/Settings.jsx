@@ -80,7 +80,6 @@ class SettingsCard extends React.Component {
             </Row>
             <strong className="text-muted d-block mb-3">Endpoints</strong>
             <Row form>
-              {/* Email */}
               <Col md="6" className="form-group">
                 <label>Log</label>
                 <FormInput
@@ -89,7 +88,6 @@ class SettingsCard extends React.Component {
                   onChange={(e) => this.updateSetting("log", e.target.value)}
                 />
               </Col>
-              {/* Password */}
               <Col md="6" className="form-group">
                 <label>Profile</label>
                 <FormInput

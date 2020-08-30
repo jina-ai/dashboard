@@ -9,7 +9,7 @@ body {
 .loader {
   margin: auto;
   border: 2px solid rgba(0, 123, 255, 0.15);
-  border-top: 2px solid #009999; /* Blue */
+  border-top: 2px solid #009999;
   border-radius: 50%;
   width: 100px;
   height: 100px;
@@ -111,7 +111,6 @@ body {
   font-size: 1.15em;
   text-align: center;
   font-size: 14px;
-  /* color: white; */
   background: #fff;
   font-weight: 500;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
@@ -150,7 +149,6 @@ body {
     /* The second layer shadow */ 0 10px 1px -4px rgba(0, 0, 0, 0.15),
     /* The third layer */ 0 20px 0 -10px #fff,
     /* The third layer shadow */ 0 20px 1px -9px rgba(0, 0, 0, 0.15);
-  /* Padding for demo purposes */
 }
 
 .node-port {
@@ -161,8 +159,6 @@ body {
   font-size: 0.85em;
   padding: 0.15em;
   padding-bottom: 0em;
-  /* padding-left: 10px; */
-  /* padding-right: 10px; */
   border-radius: 0.25em;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
 }
@@ -174,13 +170,6 @@ body {
 .btn-outline {
   border: 1px solid #d1d5da !important;
 }
-
-/* .badge{
-  line-height: 0 !important;
-  padding: 10px !important;
-  border-radius: .25em !important;
-  vertical-align: text-bottom;
-} */
 
 .chart-container path {
   stroke: #6c757d !important;
@@ -229,11 +218,6 @@ body {
   padding: 1em;
   padding-top: 50%;
   text-align: center;
-}
-
-i.material-icons {
-  /* font-size: 1.15em; */
-  /* vertical-align: text-bottom; */
 }
 
 .ReactModal__Overlay {
@@ -493,7 +477,6 @@ i.material-icons {
 }
 
 .stats-small__label.under {
-  /* color: black; */
   font-weight: 600;
 }
 
@@ -575,7 +558,6 @@ code {
   right: 0;
   top: 0;
   bottom: 0;
-  /* background-color: yellow !important; */
 }
 
 .capture-overlay-bottom:before,
