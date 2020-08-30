@@ -8,6 +8,7 @@ import Readme from "../components/Hub/Readme";
 import CopyCommand from "../components/Hub/CopyCommand";
 import StarRating from "../components/Hub/StarRating";
 import ImageReviews from "../components/Hub/ImageReviews";
+import { copyToClipboard } from "../helpers";
 
 class PackageView extends React.Component {
   constructor() {
@@ -60,11 +61,27 @@ class PackageView extends React.Component {
     });
   };
 
+  copyCode = (content) => {
+    copyToClipboard(content);
+    Dispatcher.dispatch({
+      actionType: Constants.SHOW_BANNER,
+      payload: ["hub", "Content copied to clipboard", "success"],
+    });
+  };
+
+  newReview = () => {
+    const imageId = this.state.imageData.id;
+    const modal = "review";
+    Dispatcher.dispatch({
+      actionType: Constants.SHOW_MODAL,
+      payload: { modal, params: { imageId } },
+    });
+  };
+
   render = () => {
     const { banner, imageData, loading } = this.state;
     const {
       name,
-      id,
       readmeHTML,
       documentation,
       totalStars,
@@ -110,13 +127,13 @@ class PackageView extends React.Component {
             </Row>
             <Row>
               <Col md="6">
-                <CopyCommand image={imageData} />
+                <CopyCommand image={imageData} copyCode={this.copyCode} />
                 <Details image={imageData} />
                 <BuildHistory image={imageData} />
               </Col>
               <Col md="6">
                 <Readme readme={readmeHTML} documentation={documentation} />
-                <ImageReviews reviews={reviews} imageId={id} />
+                <ImageReviews reviews={reviews} newReview={this.newReview} />
               </Col>
             </Row>
           </div>

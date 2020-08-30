@@ -12,6 +12,7 @@ export default (props) => {
         {buildHistory &&
           buildHistory.map((build, idx) => {
             const formattedCreated = new Date(build.created).toLocaleString();
+            const buildSize = parseFloat(build.size / 1e6).toFixed(2);
             return (
               <div key={idx} className="user-activity__item pr-3 py-3">
                 <div className="user-activity__item__icon mt-2">
@@ -20,8 +21,7 @@ export default (props) => {
                 <div className="user-activity__item__content">
                   <span className="text-light">{formattedCreated}</span>
                   <p>
-                    [{build.os}/{build.architecture}]{" "}
-                    {parseFloat(build.size / 1e6).toFixed(2)} MB
+                    [{build.os}/{build.architecture}] {buildSize} MB
                   </p>
                 </div>
               </div>
