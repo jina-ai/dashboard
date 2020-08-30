@@ -76,7 +76,6 @@ class ChartBase extends React.Component {
           {
             gridLines: {
               borderDash: [2.5, 5],
-              // zeroLineBorderDash: [5,5],
               zeroLineColor: "#6c757d",
               drawBorder: false,
               color: "#6c757d",

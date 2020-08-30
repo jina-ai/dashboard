@@ -104,7 +104,6 @@ export function formatForFlowchart(pods, canvas) {
   //fallback: if no position encoded on canvas portion of YAML, infer the position using depth and order
   Object.keys(nodes).forEach((id) => {
     let depth = getNodeDepth(nodes, id, 0);
-    // let depth = 1;
     nodes[id].depth = depth;
 
     if (depthPopulation[depth] >= 0) depthPopulation[depth]++;
@@ -198,11 +197,6 @@ export function formatBytes(numBytes) {
 function getNodeDepth(nodes, currentId, currentDepth) {
   let parents = Object.keys(nodes[currentId].needs);
   let longestDepth = 0;
-
-  // console.log('nodes: ',nodes)
-  // console.log('currentId: ',currentId);
-  // console.log('parents: ',parents);
-  // console.log('currentDepth: ',currentDepth);
 
   for (let i = 0; i < parents.length; ++i) {
     let parent = parents[i];

@@ -30,8 +30,6 @@ class BarChartCard extends React.Component {
 
     const chartOptions = {
       ...{
-        // legend: false,
-        // Uncomment the next line in order to disable the animations.
         animation: false,
         tooltips: {
           callbacks: {
