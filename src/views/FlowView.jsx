@@ -165,7 +165,6 @@ class FlowView extends React.Component {
 
   render = () => {
     const { chart, banner, showOverlay } = this.state;
-    console.log("chart:", chart);
     return (
       <Container fluid className="main-content-container px-0">
         {banner && (

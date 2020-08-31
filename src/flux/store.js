@@ -446,7 +446,6 @@ class Store extends EventEmitter {
       }
     }
     _store.flowchart.selected = selected;
-    console.log("selected: ", _store.flowchart.selected);
     this.emit("update-flowchart");
     window.location.hash = "#/flow";
   };
