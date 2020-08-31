@@ -17,7 +17,6 @@ export function copyToClipboard(str) {
 export function parseYAML(yamlSTR) {
   try {
     const data = YAML.parse(yamlSTR);
-    console.log("data:", data);
     return { data };
   } catch (error) {
     alert("Error Parsing YAML:\n" + error);
@@ -123,7 +122,6 @@ export function formatForFlowchart(pods, canvas) {
 }
 
 export function formatAsYAML(chart) {
-  console.log("formatAsYAML input: ", chart);
   let output = {
     with: chart.with || {},
     pods: {},

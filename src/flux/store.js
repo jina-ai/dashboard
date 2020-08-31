@@ -181,8 +181,6 @@ class Store extends EventEmitter {
     this.clearIntervals();
     _store = getInitialStore();
 
-    console.log("settings: ", _store.settings);
-
     this.startNetworkMonitor();
     await this.initFlowChart();
     this.initLogStream();
@@ -242,12 +240,9 @@ class Store extends EventEmitter {
     try {
       canvas = flow.data.with.board.canvas;
     } catch (e) {
-      console.log("could not find canvas");
       canvas = {};
     }
-    console.log("pods: ", flow.data.pods);
     const parsed = formatForFlowchart(flow.data.pods, canvas);
-    console.log("parsed: ", parsed);
     parsed.with = flow.data.with;
     _store.flowchart = parsed;
     this.emit("update-ui");
@@ -388,8 +383,6 @@ class Store extends EventEmitter {
       _store.summaryCharts[level] = new Array(NUM_CHART_ELEMENTS).fill(0);
     }
     _store.occurences.lastLog = new Array(NUM_CHART_ELEMENTS).fill({});
-    console.log("initial Occurences: ", _store.occurences);
-    console.log("initial summary charts: ", _store.summaryCharts);
     this.updateChartInterval = setInterval(
       this.updateSummaryCharts,
       CHART_UPDATE_INTERVAL
@@ -409,7 +402,6 @@ class Store extends EventEmitter {
 
   initUser = async () => {
     const user = await api.getProfile();
-    console.log("user", user);
     _store.user = user;
     this.emit("update-user");
   };
@@ -439,9 +431,7 @@ class Store extends EventEmitter {
   }
 
   showLogAtIndex = (index) => {
-    console.log("index: ", index);
     let logIndex = _store.occurences.lastLog[index];
-    console.log("logIndex: ", logIndex);
     if (!logIndex) return;
     _store.logIndex = _store.occurences.lastLog[index];
     this.emit("show-log");
@@ -475,7 +465,6 @@ class Store extends EventEmitter {
   };
 
   postRating = async ({ imageId, stars }) => {
-    console.log("posting rating: ", imageId, stars);
     if (!_store.user) return (window.location.hash = "#/login");
     let result;
     try {
@@ -522,7 +511,6 @@ class Store extends EventEmitter {
 
   searchHub = async ({ category, q, sort }) => {
     const images = await api.searchHub(category, q, sort);
-    console.log("found", images.length, "images");
     _store.hub = images;
     this.emit("update-hub");
   };
