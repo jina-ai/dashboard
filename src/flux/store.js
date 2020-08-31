@@ -439,13 +439,18 @@ class Store extends EventEmitter {
 
   showPodByLabel = (label) => {
     let selected = {};
+    let x = 0;
+    let y = 0;
     for (const [key, value] of Object.entries(_store.flowchart.nodes)) {
       if (value.label === label) {
         selected.id = key;
         selected.type = "node";
+        x = value.position.x * -1 + 40;
+        y = value.position.y * -1 + 100;
       }
     }
     _store.flowchart.selected = selected;
+    _store.flowchart.offset = { x, y };
     this.emit("update-flowchart");
     window.location.hash = "#/flow";
   };

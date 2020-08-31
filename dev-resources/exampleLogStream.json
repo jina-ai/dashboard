@@ -9,7 +9,7 @@
       "lineno": 206,
       "module": "__init__",
       "msg": "initialize Flow from a yaml config",
-      "name": "Flow",
+      "name": "gateway",
       "pathname": "/Users/hanxiao/Documents/_jina/jina/flow/__init__.py",
       "process": 25131,
       "thread": 4406160832
@@ -23,7 +23,7 @@
       "lineno": 466,
       "module": "__init__",
       "msg": "start logserver...",
-      "name": "Flow",
+      "name": "connector",
       "pathname": "/Users/hanxiao/Documents/_jina/jina/flow/__init__.py",
       "process": 25131,
       "thread": 4406160832
