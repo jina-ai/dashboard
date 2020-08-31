@@ -303,8 +303,9 @@ class FlowChartSidebar extends React.Component {
             }}
             properties={{}}
           />
-          {defaultPods.map((pod) => (
+          {defaultPods.map((pod, idx) => (
             <SidebarItem
+              key={idx}
               ports={{
                 inPort: {
                   id: "inPort",

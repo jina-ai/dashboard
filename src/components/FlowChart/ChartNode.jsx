@@ -4,10 +4,10 @@ import { Badge } from "react-bootstrap";
 export default (props) => {
   const { properties, label } = props.node;
   const list = [];
-  Object.keys(properties).forEach((prop) => {
+  Object.keys(properties).forEach((prop, idx) => {
     if (properties[prop] && prop !== "name")
       list.push(
-        <div>
+        <div key={idx}>
           <span className="text-bold mr-1">{prop}:</span>
           {properties[prop]}
         </div>
