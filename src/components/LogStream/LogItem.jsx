@@ -2,7 +2,7 @@ import React from "react";
 import { Row, Col } from "react-bootstrap";
 
 export default ({ data, showPodInFlow }) => {
-  const { name, msg, levelname, process, formattedTimestamp, idx, pod } = data;
+  const { name, msg, levelname, process, formattedTimestamp, idx } = data;
   let logName = String(name);
   logName = logName.length > 20 ? logName.substring(0, 20) : logName;
   let levelInitial = String(levelname)[0];
@@ -25,7 +25,7 @@ export default ({ data, showPodInFlow }) => {
           lg="3"
           md="4"
           className="log-prefix px-0 text-left text-md-right text-bold cursor-pointer"
-          onClick={() => showPodInFlow(pod)}
+          onClick={() => showPodInFlow(logName)}
         >
           {logName}@{process}[{levelInitial}]:
         </Col>
