@@ -6,11 +6,32 @@ import { Button, FormControl, Card } from "react-bootstrap";
 import { Store } from "../../flux";
 
 class FlowChartSidebar extends React.Component {
-  state = {
-    availableProperties: Store.getAvailableProperties(),
-    node: {},
-    searchResults: [],
-    searchQuery: "",
+  constructor(props) {
+    super();
+    let node = {};
+    if (props.chart.selected.id) {
+      const selectedNode = props.chart.nodes[props.chart.selected.id];
+      node = this.getInitialNodeState(selectedNode);
+    }
+
+    this.state = {
+      availableProperties: Store.getAvailableProperties(),
+      node,
+      searchResults: [],
+      searchQuery: "",
+    };
+  }
+
+  getInitialNodeState = (node) => {
+    const properties = {};
+    const newProperties = {};
+    const label = node.label;
+
+    Object.keys(node.properties).forEach((key) => {
+      properties[key] = node.properties[key];
+    });
+
+    return { label, id: node.id, properties, newProperties };
   };
 
   componentWillReceiveProps = (nextProps) => {
@@ -25,20 +46,8 @@ class FlowChartSidebar extends React.Component {
 
     if (type === "node" && id !== this.state.node.id) {
       const node = nodes[id];
-      this.setInitialNode(node);
+      this.setState({ node: this.getInitialNodeState(node) });
     }
-  };
-
-  setInitialNode = (node) => {
-    const properties = {};
-    const newProperties = {};
-    const label = node.label;
-
-    Object.keys(node.properties).forEach((key) => {
-      properties[key] = node.properties[key];
-    });
-
-    this.setState({ node: { label, id: node.id, properties, newProperties } });
   };
 
   updateLabel = (label) => {

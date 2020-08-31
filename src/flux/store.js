@@ -438,11 +438,17 @@ class Store extends EventEmitter {
   };
 
   showPodByLabel = (label) => {
+    let selected = {};
+    for (const [key, value] of Object.entries(_store.flowchart.nodes)) {
+      if (value.label === label) {
+        selected.id = key;
+        selected.type = "node";
+      }
+    }
+    _store.flowchart.selected = selected;
+    console.log("selected: ", _store.flowchart.selected);
+    this.emit("update-flowchart");
     window.location.hash = "#/flow";
-    setTimeout(() => {
-      let chartNode = document.getElementById(`chart-node-${label}`);
-      if (chartNode) chartNode.click();
-    }, 10);
   };
 
   importCustomYAML = (customYAML) => {
