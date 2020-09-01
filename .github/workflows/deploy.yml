@@ -11,28 +11,28 @@ jobs:
       matrix:
         node-version: [12.x]
     steps:
-    - uses: actions/checkout@v1
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
-      with:
-        node-version: ${{ matrix.node-version }}
-    - name: Install Packages
-      run: npm install
-    - name: Create Build
-      run: npm run build
-    - name: Deploy Build
-      uses: JamesIves/github-pages-deploy-action@releases/v3
-      with:
-        GITHUB_TOKEN: ${{ secrets.JINA_DEV_BOT }}
-        BRANCH: gh-pages
-        FOLDER: build
-    - uses: technote-space/toc-generator@v2
-      with:
-        MAX_HEADER_LEVEL: 3
-        FOLDING: false
-        GITHUB_TOKEN: ${{ secrets.JINA_DEV_BOT }}
-        TOC_TITLE: ''
-        TARGET_PATHS: 'README.md'
-        COMMIT_MESSAGE: 'chore(docs): update TOC'
-        COMMIT_NAME: Jina Dev Bot
-        COMMIT_EMAIL: dev-bot@jina.ai
+      - uses: actions/checkout@v1
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Install Packages
+        run: npm ci
+      - name: Create Build
+        run: npm run build
+      - name: Deploy Build
+        uses: JamesIves/github-pages-deploy-action@releases/v3
+        with:
+          GITHUB_TOKEN: ${{ secrets.JINA_DEV_BOT }}
+          BRANCH: gh-pages
+          FOLDER: build
+      - uses: technote-space/toc-generator@v2
+        with:
+          MAX_HEADER_LEVEL: 3
+          FOLDING: false
+          GITHUB_TOKEN: ${{ secrets.JINA_DEV_BOT }}
+          TOC_TITLE: ""
+          TARGET_PATHS: "README.md"
+          COMMIT_MESSAGE: "chore(docs): update TOC"
+          COMMIT_NAME: Jina Dev Bot
+          COMMIT_EMAIL: dev-bot@jina.ai
