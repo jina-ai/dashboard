@@ -1,5 +1,4 @@
 const MongoClient = require('mongodb').MongoClient;
-const ObjectId = require('mongodb').ObjectID;
 
 let db;
 
@@ -25,22 +24,6 @@ async function insert(collection, data) {
 
 async function findAndModify(collection, param, data) {
   return db.collection(collection).findOneAndUpdate(param, data, { upsert: true, returnNewDocument: true });
-}
-
-async function insertMany(collection, data) {
-  return db.collection(collection).insertMany(data);
-}
-
-async function update(collection, params, data) {
-  return db.collection(collection).findOneAndUpdate(params, data, { returnOriginal: false });
-}
-
-async function remove(collection, params) {
-  return db.collection(collection).deleteOne(params);
-}
-
-async function removeMany(collection, params) {
-  return db.collection(collection).deleteMany(params);
 }
 
 module.exports = {

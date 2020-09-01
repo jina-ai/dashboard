@@ -1,5 +1,4 @@
 const express = require('express')
-const fs = require('fs');
 const axios = require('axios');
 const cors = require('cors');
 const db = require('./db');
@@ -323,22 +322,4 @@ async function getImageDetails(image, id) {
 	imageData.readmeHTML = readmeRendered;
 
 	return imageData;
-}
-
-function promisify(inner) {
-	return new Promise((resolve, reject) =>
-		inner((err, res) => {
-			if (err) { reject(err) }
-
-			resolve(res);
-		})
-	);
-}
-
-function readFile(filename) {
-	return promisify(cb => fs.readFile(filename, cb));
-}
-
-function writeFile(filename, data) {
-	return promisify(cb => fs.writeFile(filename, data, cb));
 }
