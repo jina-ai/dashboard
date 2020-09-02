@@ -72,8 +72,8 @@ function getInitialStore() {
       offset: { x: 0, y: 0 },
     },
     logs: [],
-    logSources: {},
-    logLevels: {},
+    logSources: new Set(),
+    logLevels: new Set(),
     occurences: {
       current: {},
       previous: {},
@@ -275,10 +275,10 @@ class Store extends EventEmitter {
     log.formattedTimestamp = new Date(log.created * 1000).toLocaleString();
     log.idx = _store.logs.length;
 
-    _store.logs.push(log);
+    _store.logs.push({ ...log, pod: log.name.split("_")[0] });
     _store.processes[log.process] = log.name;
-    _store.logSources[log.name] = true;
-    _store.logLevels[log.levelname] = true;
+    _store.logSources.add(log.name);
+    _store.logLevels.add(log.levelname);
 
     if (CHART_LEVELS.includes(log.levelname)) {
       _store.occurences.current[log.levelname]++;
@@ -602,11 +602,14 @@ class Store extends EventEmitter {
   };
 
   getLogSources = () => {
-    return _store.logSources;
+    return Array.from(_store.logSources);
+  };
+  getCurrentFlowChartNodeNames = () => {
+    return Object.keys(_store.flowchart.nodes);
   };
 
   getLogLevels = () => {
-    return _store.logLevels;
+    return Array.from(_store.logLevels);
   };
 
   getSummaryCharts = () => {
@@ -653,4 +656,7 @@ class Store extends EventEmitter {
   };
 }
 
-export default new Store();
+const store = new Store();
+console.log(window);
+window._store = _store;
+export default store;

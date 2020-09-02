@@ -1,4 +1,6 @@
+/** @jsx jsx */
 import React from "react";
+import { jsx } from "@emotion/core";
 import {
   Card,
   FormControl,
@@ -8,6 +10,7 @@ import {
   DropdownButton,
   Dropdown,
 } from "react-bootstrap";
+import { MultiSelect } from "../Common/MultiSelect";
 import LogItem from "./LogItem";
 import lunr from "lunr";
 import { saveAs } from "file-saver";
@@ -20,6 +23,21 @@ import CellMeasurer, {
 } from "react-virtualized/dist/commonjs/CellMeasurer";
 
 import { Dispatcher, Constants } from "../../flux";
+
+const isSelectedSourceLog = (selectedSources, log) => {
+  return (
+    !(selectedSources && selectedSources.length === 0) ||
+    selectedSources.map(({ value }) => value).includes(log.name)
+  );
+};
+const isSelectedLevelLog = (selectedLevels, log) => {
+  return (
+    !(selectedLevels && selectedLevels.length === 0) ||
+    selectedLevels.map(({ value }) => value).includes(log.levelname)
+  );
+};
+
+const LOG_LEVELS = ["INFO", "SUCCESS", "WARNING", "ERROR", "CRITICAL", "DEBUG"];
 
 class StreamContainer extends React.Component {
   _cache = new CellMeasurerCache({ defaultHeight: 10, fixedWidth: true });
@@ -40,16 +58,16 @@ class StreamContainer extends React.Component {
     super();
 
     this.state = {
-      allLogs: Store.getLogs(),
       logs: Store.getLogs(),
-      sources: Store.getLogSources(),
-      levels: Store.getLogLevels(),
+      logSources: Store.getLogSources(),
+      logLevels: Store.getLogLevels(),
+      allNodes: Store.getCurrentFlowChartNodeNames(),
       searchQuery: "",
       prevQuery: "",
       results: [],
       showHelper: false,
-      selectedSource: false,
-      selectedLevel: false,
+      selectedSources: [],
+      selectedLevels: [],
     };
 
     Store.on("update-logs", this.getData);
@@ -59,6 +77,13 @@ class StreamContainer extends React.Component {
   componentWillUnmount = () => {
     Store.removeListener("update-logs", this.getData);
     Store.removeListener("show-log", this.getIndexedLog);
+  };
+
+  handleSelectSource = (value) => {
+    this.setState({ selectedSources: value });
+  };
+  handleSelectLevel = (value) => {
+    this.setState({ selectedLevels: value });
   };
 
   downloadLogs = (format) => {
@@ -96,10 +121,10 @@ class StreamContainer extends React.Component {
   };
 
   getData = () => {
-    const allLogs = Store.getLogs();
-    const sources = Store.getLogSources();
-    const levels = Store.getLogLevels();
-    this.setState({ sources, levels, allLogs }, this.filterLogs);
+    const logs = Store.getLogs();
+    const logSources = Store.getLogSources();
+    const allNodes = Store.getCurrentFlowChartNodeNames();
+    this.setState({ logs, logSources, allNodes });
     if (this._scrolledToBottom && this._list) this.scrollToBottom();
   };
 
@@ -110,32 +135,6 @@ class StreamContainer extends React.Component {
     const logs = this.state.allLogs;
     this.setState({ selectedSource, selectedLevel, logs });
     this.scrollToLog(index);
-  };
-
-  filterLogs = () => {
-    let { allLogs, selectedSource, selectedLevel } = this.state;
-    if (selectedSource === "false") selectedSource = false;
-    if (selectedLevel === "false") selectedLevel = false;
-
-    if (!selectedSource && !selectedLevel)
-      return this.setState({ logs: allLogs });
-    let logs = allLogs.filter((log) => {
-      if (selectedSource && selectedLevel)
-        return log.levelname === selectedLevel && log.name === selectedSource;
-      else if (selectedSource) return log.name === selectedSource;
-      else if (selectedLevel) return log.levelname === selectedLevel;
-      return false;
-    });
-
-    this.setState({ logs }, this._resizeAll);
-  };
-
-  setSelectedSource = (selectedSource) => {
-    this.setState({ selectedSource }, this.filterLogs);
-  };
-
-  setSelectedLevel = (selectedLevel) => {
-    this.setState({ selectedLevel }, this.filterLogs);
   };
 
   search = () => {
@@ -235,32 +234,6 @@ class StreamContainer extends React.Component {
     );
   };
 
-  renderLogRow = ({ index, isScrolling, key, parent, style }) => {
-    const log = this.state.logs[index];
-    return (
-      <CellMeasurer
-        cache={this._cache}
-        columnIndex={0}
-        key={key}
-        parent={parent}
-        rowIndex={index}
-      >
-        <div
-          style={{
-            ...style,
-            wordBreak: "break-word",
-          }}
-        >
-          <LogItem
-            showPodInFlow={this.showPodInFlow}
-            index={index}
-            data={log}
-          />
-        </div>
-      </CellMeasurer>
-    );
-  };
-
   renderSearchResultRow = ({ index, isScrolling, key, parent, style }) => {
     const result = this.state.results[index];
     const log = this.state.logs[result.ref];
@@ -290,38 +263,73 @@ class StreamContainer extends React.Component {
       searchQuery,
       logs,
       showHelper,
-      sources,
-      levels,
+      selectedLevels,
+      selectedSources,
+      logSources,
     } = this.state;
+
+    const displayedLogs = logs.filter((log) => {
+      return (
+        isSelectedSourceLog(selectedSources, log) &&
+        isSelectedLevelLog(selectedLevels, log)
+      );
+    });
+
+    const renderLogRow = ({ index, isScrolling, key, parent, style }) => {
+      const log = displayedLogs[index];
+      return (
+        <CellMeasurer
+          cache={this._cache}
+          columnIndex={0}
+          key={key}
+          parent={parent}
+          rowIndex={index}
+        >
+          <div
+            style={{
+              ...style,
+              wordBreak: "break-word",
+            }}
+          >
+            <LogItem
+              showPodInFlow={this.showPodInFlow}
+              index={index}
+              data={log}
+            />
+          </div>
+        </CellMeasurer>
+      );
+    };
+
     return (
       <Card className="mb-4">
         <Card.Header className="p-3">
           <Row>
             <Col md="8" xs="6">
-              <FormControl
-                as="select"
-                onChange={(e) => this.setSelectedSource(e.target.value)}
+              <MultiSelect
+                key="sources"
+                defaultValue={{ label: "", value: [] }}
+                options={logSources.map((source) => {
+                  return {
+                    label: source,
+                    value: source,
+                  };
+                })}
+                placeholder="All Logsources"
                 className="logstream-select mb-2 mr-0 mb-md-0 mr-md-2"
-              >
-                <option value={false}>All Logs</option>
-                {Object.keys(sources).map((source) => (
-                  <option key={source} value={source}>
-                    {source}
-                  </option>
-                ))}
-              </FormControl>
-              <FormControl
-                as="select"
-                onChange={(e) => this.setSelectedLevel(e.target.value)}
+                onChange={this.handleSelectSource}
+              />
+              <MultiSelect
+                key="levels"
+                defaultValue={{ label: "", value: [] }}
+                options={LOG_LEVELS.map((level) => ({
+                  label: level,
+                  value: level,
+                }))}
+                placeholder="All Levels"
                 className="logstream-select mb-2 mr-0 mb-md-0 mr-md-2"
-              >
-                <option value={false}>All Levels</option>
-                {Object.keys(levels).map((level) => (
-                  <option key={level} value={level}>
-                    {level}
-                  </option>
-                ))}
-              </FormControl>
+                onChange={this.handleSelectLevel}
+              />
               <DropdownButton
                 as={ButtonGroup}
                 title="Download Logs"
@@ -384,8 +392,8 @@ class StreamContainer extends React.Component {
                     ref={(ref) => (this._list = ref)}
                     deferredMeasurementCache={this._cache}
                     rowHeight={this._cache.rowHeight}
-                    rowCount={logs.length}
-                    rowRenderer={this.renderLogRow}
+                    rowCount={displayedLogs.length}
+                    rowRenderer={renderLogRow}
                     onScroll={this._onScroll}
                     scrollToAlignment="center"
                   />
