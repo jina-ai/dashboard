@@ -13,7 +13,6 @@ const HIDE_BANNER_TIMEOUT = 5000;
 const NUM_CHART_ELEMENTS = 60;
 const CHART_UPDATE_INTERVAL = 1000;
 const TASK_UPDATE_INTERVAL = 500;
-const CHECK_NETWORK_INTERVAL = 1000;
 const CHART_LEVELS = [
   "INFO",
   "SUCCESS",
@@ -166,22 +165,10 @@ class Store extends EventEmitter {
     }
   };
 
-  checkNetwork = async () => {
-    let prevStatus = this.connected;
-    try {
-      await api.checkConnection(_store.settings);
-      this.connected = true;
-    } catch (e) {
-      this.connected = false;
-    }
-    if (prevStatus !== this.connected) return this.init();
-  };
-
   init = async () => {
     this.clearIntervals();
     _store = getInitialStore();
 
-    this.startNetworkMonitor();
     await this.initFlowChart();
     this.initLogStream();
     this.initCharts();
@@ -191,14 +178,6 @@ class Store extends EventEmitter {
     _store.loading = false;
     this.emit("update-ui");
     this.emit("update-settings");
-  };
-
-  startNetworkMonitor = async () => {
-    if (!this.checkNetworkInterval)
-      this.checkNetworkInterval = setInterval(
-        this.checkNetwork,
-        CHECK_NETWORK_INTERVAL
-      );
   };
 
   clearIntervals = () => {
