@@ -159,6 +159,7 @@ class Store extends EventEmitter {
   };
 
   init = async () => {
+    console.log("initializing");
     this.clearIntervals();
     _store = getInitialStore();
 
@@ -585,9 +586,7 @@ class Store extends EventEmitter {
   };
 
   getConnectionStatus = () => {
-    const activePanel = this.getActivePanel();
-    const status = _store.connected[activePanel];
-    return status;
+    return _store.connected;
   };
 
   isLoading = () => {

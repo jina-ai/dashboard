@@ -20,6 +20,7 @@ class IconSidebarLayout extends React.Component {
       modal: Store.getModal(),
       loading: Store.isLoading(),
       banner: Store.getBanner(),
+      connected: Store.getConnectionStatus(),
       acceptedCookies: localStorage.getItem("accepted-cookies"),
     };
     Store.on("update-ui", this.getData);
@@ -63,8 +64,14 @@ class IconSidebarLayout extends React.Component {
     });
   };
 
+  reconnect = () => {
+    Dispatcher.dispatch({
+      actionType: Constants.RECONNECT,
+    });
+  };
+
   render = () => {
-    const { modal, acceptedCookies, banner } = this.state;
+    const { modal, acceptedCookies, banner, connected } = this.state;
     const { children } = this.props;
     return (
       <Container fluid className="icon-sidebar-nav">
@@ -73,6 +80,10 @@ class IconSidebarLayout extends React.Component {
           <Col className="main-content col" tag="main">
             <MainNavbar />
             <InfoBanner data={banner} />
+            <ConnectionBanner
+              connected={connected}
+              reconnect={this.reconnect}
+            />
             {children}
             <CookiesBanner
               show={!acceptedCookies}
