@@ -23,13 +23,11 @@ class PackageView extends React.Component {
     this.state = {
       imageId,
       loading: false,
-      banner: {},
       imageData: {
         reviews: [],
         repoTags: [],
       },
     };
-    Store.on("update-ui", this.getData);
     Store.on("update-hub", this.getImageData);
   }
 
@@ -39,18 +37,12 @@ class PackageView extends React.Component {
   };
 
   componentWillUnmount = () => {
-    Store.removeListener("update-ui", this.getData);
     Store.removeListener("update-hub", this.getImageData);
   };
 
   getImageData = async () => {
     const imageData = (await Store.getHubImage(this.state.imageId)) || {};
     this.setState({ imageData, loading: false });
-  };
-
-  getData = () => {
-    const banner = Store.getBanner("hub");
-    this.setState({ banner });
   };
 
   rate = (stars) => {
@@ -79,7 +71,7 @@ class PackageView extends React.Component {
   };
 
   render = () => {
-    const { banner, imageData, loading } = this.state;
+    const { imageData, loading } = this.state;
     const {
       name,
       readmeHTML,
@@ -95,13 +87,6 @@ class PackageView extends React.Component {
     }
     return (
       <Container fluid className="main-content-container px-0">
-        {banner && (
-          <div className="mr-4">
-            <div className={`mb-0 banner px-4 banner-${banner.theme}`}>
-              {banner.message}
-            </div>
-          </div>
-        )}
         {loading ? (
           <div className="error">
             <div className="loader" />

@@ -5,6 +5,8 @@ import MainNavbar from "../components/Layout/MainNavbar/MainNavbar";
 import MainSidebar from "../components/Layout/MainSidebar/MainSidebar";
 import MainFooter from "../components/Layout/MainFooter";
 import CookiesBanner from "../components/Common/CookiesBanner";
+import InfoBanner from "../components/Common/InfoBanner";
+import ConnectionBanner from "../components/Common/ConnectionBanner";
 
 import PasteYAML from "../modals/PasteYAML";
 import WriteReview from "../modals/WriteReview";
@@ -17,6 +19,7 @@ class IconSidebarLayout extends React.Component {
     this.state = {
       modal: Store.getModal(),
       loading: Store.isLoading(),
+      banner: Store.getBanner(),
       acceptedCookies: localStorage.getItem("accepted-cookies"),
     };
     Store.on("update-ui", this.getData);
@@ -29,7 +32,8 @@ class IconSidebarLayout extends React.Component {
   getData = () => {
     const modal = Store.getModal();
     const loading = Store.isLoading();
-    this.setState({ modal, loading });
+    const banner = Store.getBanner();
+    this.setState({ modal, loading, banner });
   };
 
   acceptCookies = () => {
@@ -60,7 +64,7 @@ class IconSidebarLayout extends React.Component {
   };
 
   render = () => {
-    const { modal, acceptedCookies } = this.state;
+    const { modal, acceptedCookies, banner } = this.state;
     const { children } = this.props;
     return (
       <Container fluid className="icon-sidebar-nav">
@@ -68,6 +72,7 @@ class IconSidebarLayout extends React.Component {
           <MainSidebar hideLogoText />
           <Col className="main-content col" tag="main">
             <MainNavbar />
+            <InfoBanner data={banner} />
             {children}
             <CookiesBanner
               show={!acceptedCookies}

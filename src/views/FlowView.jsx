@@ -18,8 +18,7 @@ class FlowView extends React.Component {
   constructor(props) {
     super(props);
     const chart = Store.getFlowchart();
-    const banner = Store.getBanner("flow");
-    this.state = { chart, banner, showOverlay: false };
+    this.state = { chart, showOverlay: false };
 
     this.stateActionCallbacks = Object.keys(actions).reduce((obj, key, idx) => {
       obj[key] = (...args) => {
@@ -34,7 +33,6 @@ class FlowView extends React.Component {
     }, {});
 
     Store.on("update-flowchart", this.getData);
-    Store.on("update-ui", this.getBanner);
   }
 
   componentDidMount = () => {
@@ -45,7 +43,6 @@ class FlowView extends React.Component {
 
   componentWillUnmount = () => {
     Store.removeListener("update-flowchart", this.getData);
-    Store.removeListener("update-ui", this.getBanner);
   };
 
   exportImage = (extension = "png") => {
@@ -79,11 +76,6 @@ class FlowView extends React.Component {
   getData = () => {
     const chart = Store.getFlowchart();
     this.updateChart(chart);
-  };
-
-  getBanner = () => {
-    const banner = Store.getBanner("flow");
-    this.setState({ banner });
   };
 
   updateNode = (node, callback) => {
@@ -164,16 +156,9 @@ class FlowView extends React.Component {
   };
 
   render = () => {
-    const { chart, banner, showOverlay } = this.state;
+    const { chart, showOverlay } = this.state;
     return (
       <Container fluid className="main-content-container px-0">
-        {banner && (
-          <div className="mr-4">
-            <div className={`mb-0 banner px-4 banner-${banner.theme}`}>
-              {banner.message}
-            </div>
-          </div>
-        )}
         <div className="px-4">
           <a href="/#" id="download-link" style={{ display: "none" }}>
             download

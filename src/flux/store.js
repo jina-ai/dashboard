@@ -36,15 +36,8 @@ function getInitialStore() {
     },
     images: {},
     hub: [],
-    banner: {
-      flow: false,
-      logs: false,
-    },
-    connected: {
-      logs: false,
-      flow: false,
-      status: false,
-    },
+    banner: false,
+    connected: false,
     loading: true,
     modal: false,
     menuVisible: false,
@@ -194,21 +187,13 @@ class Store extends EventEmitter {
 
     if (yamlSTRING) {
       flow = parseYAML(yamlSTRING);
-      _store.connected.flow = false;
     } else {
       try {
         let str = await api.getYAML(connectionString);
         flow = parseYAML(str);
-        _store.connected.flow = true;
-        this.showBanner(
-          "flow",
-          `Getting YAML from ${connectionString}`,
-          "success"
-        );
+        this.showBanner(`Getting YAML from ${connectionString}`, "success");
       } catch (e) {
-        _store.connected.flow = false;
         this.showBanner(
-          "flow",
           `Could not get YAML flow from ${connectionString}`,
           "error"
         );
@@ -240,13 +225,13 @@ class Store extends EventEmitter {
     const { type, data } = message;
 
     if (type === "connect") {
-      _store.connected.logs = true;
-      return this.showBanner("logs", data, "success");
+      _store.connected = true;
+      return this.showBanner(data, "success");
     }
 
     if (type === "error") {
-      _store.connected.logs = false;
-      return this.showBanner("logs", data, "error");
+      _store.connected = false;
+      return this.showBanner(data, "error");
     }
 
     const log = data;
@@ -268,16 +253,6 @@ class Store extends EventEmitter {
 
   handleNewTaskEvent = (message) => {
     const { type, data } = message;
-
-    if (type === "connect") {
-      _store.connected.task = true;
-      return this.showBanner("task", data, "success");
-    }
-
-    if (type === "error") {
-      _store.connected.task = false;
-      return this.showBanner("task", data, "error");
-    }
 
     const event = data;
 
@@ -460,13 +435,13 @@ class Store extends EventEmitter {
       result = await api.postRating(imageId, stars);
     } catch (e) {
       let error = String(e).includes("409") ? "Already Rated" : e;
-      return this.showError("hub", error);
+      return this.showError(error);
     }
-    if (result.error) this.showError("hub", result.error);
+    if (result.error) this.showError(result.error);
     else if (result.data) {
       const image = result.data;
       _store.images[image.id] = image;
-      this.showBanner("hub", "Rating successfully posted", "success");
+      this.showBanner("Rating successfully posted", "success");
     }
     this.emit("update-hub");
   };
@@ -482,13 +457,13 @@ class Store extends EventEmitter {
       result = await api.postReview(imageId, content);
     } catch (e) {
       let error = String(e).includes("409") ? "Already Reviewed" : e;
-      return this.showError("hub", error);
+      return this.showError(error);
     }
-    if (result.error) this.showError("hub", result.error);
+    if (result.error) this.showError(result.error);
     else if (result.data) {
       const image = result.data;
       _store.images[image.id] = image;
-      this.showBanner("hub", "Review successfully posted", "success");
+      this.showBanner("Review successfully posted", "success");
     }
     this.emit("update-hub");
   };
@@ -504,20 +479,20 @@ class Store extends EventEmitter {
     this.emit("update-hub");
   };
 
-  showBanner = (target, message, theme) => {
+  showBanner = (message, theme) => {
     if (this.bannerTimeout) clearTimeout(this.bannerTimeout);
-    _store.banner[target] = { message: String(message), theme };
+    _store.banner = { message: String(message), theme };
     this.bannerTimeout = setTimeout(this.hideBanner, HIDE_BANNER_TIMEOUT);
     this.emit("update-ui");
   };
 
   hideBanner = () => {
-    _store.banner = { logs: false, flow: false };
+    _store.banner = false;
     this.emit("update-ui");
   };
 
-  showError = (target, message) => {
-    this.showBanner(target, message, "error");
+  showError = (message) => {
+    this.showBanner(message, "error");
   };
 
   showModal = (data) => {
@@ -564,8 +539,8 @@ class Store extends EventEmitter {
     return _store.settings;
   };
 
-  getBanner = (panel = "logs") => {
-    return _store.banner[panel];
+  getBanner = () => {
+    return _store.banner;
   };
 
   getModal = () => {

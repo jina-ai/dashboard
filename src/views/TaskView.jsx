@@ -13,35 +13,21 @@ class TaskView extends React.Component {
     super();
     this.state = {
       taskData: Store.getTaskData(),
-      banner: Store.getBanner("task"),
     };
     Store.on("update-task", this.getData);
-    Store.on("update-ui", this.getBanner);
   }
 
   componentWillUnmount = () => {
     Store.removeListener("update-task", this.getData);
-    Store.removeListener("update-ui", this.getBanner);
   };
   getData = () => {
     const taskData = Store.getTaskData();
     this.setState({ taskData });
   };
-  getBanner = () => {
-    const banner = Store.getBanner("task");
-    this.setState({ banner });
-  };
   render = () => {
-    const { taskData, banner } = this.state;
+    const { taskData } = this.state;
     return (
       <Container fluid className="main-content-container px-0">
-        {banner && (
-          <div className="mr-4">
-            <div className={`mb-0 banner px-4 banner-${banner.theme}`}>
-              {banner.message}
-            </div>
-          </div>
-        )}
         <div className="px-4">
           <Row noGutters className="page-header py-4">
             <PageTitle
