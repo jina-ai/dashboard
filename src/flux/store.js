@@ -169,7 +169,6 @@ class Store extends EventEmitter {
     this.initHub();
     this.initUser();
 
-    _store.loading = false;
     this.emit("update-ui");
     this.emit("update-settings");
   };
@@ -192,12 +191,7 @@ class Store extends EventEmitter {
       try {
         let str = await api.getYAML(connectionString);
         flow = parseYAML(str);
-        this.showBanner(`Getting YAML from ${connectionString}`, "success");
       } catch (e) {
-        this.showBanner(
-          `Could not get YAML flow from ${connectionString}`,
-          "error"
-        );
         return;
       }
     }
@@ -215,25 +209,31 @@ class Store extends EventEmitter {
   };
 
   initLogStream = () => {
-    api.connect(_store.settings, this.handleNewLog, this.handleNewTaskEvent);
+    api.connect(
+      _store.settings,
+      this.handleLogConnectionStatus,
+      this.handleNewLog,
+      this.handleNewTaskEvent
+    );
     this.updateTaskInterval = setInterval(
       () => this.emit("update-task"),
       TASK_UPDATE_INTERVAL
     );
   };
 
-  handleNewLog = (message) => {
-    const { type, data } = message;
-
-    if (type === "connect") {
+  handleLogConnectionStatus = (status, message) => {
+    _store.loading = false;
+    if (status === "connected") {
       _store.connected = true;
-      return this.showBanner(data, "success");
-    }
-
-    if (type === "error") {
+      return this.showBanner(message, "success");
+    } else {
       _store.connected = false;
-      return this.showBanner(data, "error");
+      return this.showBanner(message, "error");
     }
+  };
+
+  handleNewLog = (message) => {
+    const { data } = message;
 
     const log = data;
 
@@ -253,7 +253,7 @@ class Store extends EventEmitter {
   };
 
   handleNewTaskEvent = (message) => {
-    const { type, data } = message;
+    const { data } = message;
 
     const event = data;
 
@@ -348,9 +348,8 @@ class Store extends EventEmitter {
     try {
       const images = await api.getImages();
       _store.hub = images;
-      _store.connected.hub = true;
     } catch (e) {
-      _store.connected.hub = false;
+      _store.hub = false;
     }
     this.emit("update-hub");
   };

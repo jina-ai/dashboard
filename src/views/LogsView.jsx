@@ -1,6 +1,5 @@
 import React from "react";
 import { Container, Row, Col } from "react-bootstrap";
-import { Store } from "../flux";
 import LogStream from "../components/LogStream/LogStream";
 import SummaryChart from "../components/LogStream/SummaryChart";
 import PageTitle from "../components/Common/PageTitle";

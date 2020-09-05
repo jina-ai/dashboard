@@ -34,7 +34,8 @@ class IconSidebarLayout extends React.Component {
     const modal = Store.getModal();
     const loading = Store.isLoading();
     const banner = Store.getBanner();
-    this.setState({ modal, loading, banner });
+    const connected = Store.getConnectionStatus();
+    this.setState({ modal, loading, banner, connected });
   };
 
   acceptCookies = () => {
@@ -71,8 +72,10 @@ class IconSidebarLayout extends React.Component {
   };
 
   render = () => {
-    const { modal, acceptedCookies, banner, connected } = this.state;
+    const { modal, acceptedCookies, banner, connected, loading } = this.state;
     const { children } = this.props;
+    console.log("loading: ", loading);
+    console.log("connected:", connected);
     return (
       <Container fluid className="icon-sidebar-nav">
         <Row>
@@ -81,6 +84,7 @@ class IconSidebarLayout extends React.Component {
             <MainNavbar />
             <InfoBanner data={banner} />
             <ConnectionBanner
+              loading={loading}
               connected={connected}
               reconnect={this.reconnect}
             />
