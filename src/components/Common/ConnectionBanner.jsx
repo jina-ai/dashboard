@@ -1,6 +1,5 @@
 import React from "react";
 import { Button, Row, Col } from "react-bootstrap";
-import { Link } from "react-router-dom";
 
 export default ({ loading, connected, reconnect }) => {
   return loading || connected ? (
@@ -13,9 +12,14 @@ export default ({ loading, connected, reconnect }) => {
           <a href="#/settings">settings</a> are configured correctly.
         </Col>
         <Col md="4" className="text-right">
-          <Link to="/connection-guide" className="mr-2">
-            <Button variant="light">Connection Guide</Button>
-          </Link>
+          <a
+            href="https://github.com/jina-ai/dashboard"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mr-2"
+          >
+            <Button variant="light">View Docs</Button>
+          </a>
           <Button variant="primary" onClick={reconnect}>
             <i className="material-icons mr-1">refresh</i>Try Again
           </Button>
