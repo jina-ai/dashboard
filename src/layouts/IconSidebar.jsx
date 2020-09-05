@@ -5,6 +5,8 @@ import MainNavbar from "../components/Layout/MainNavbar/MainNavbar";
 import MainSidebar from "../components/Layout/MainSidebar/MainSidebar";
 import MainFooter from "../components/Layout/MainFooter";
 import CookiesBanner from "../components/Common/CookiesBanner";
+import InfoBanner from "../components/Common/InfoBanner";
+import ConnectionBanner from "../components/Common/ConnectionBanner";
 
 import PasteYAML from "../modals/PasteYAML";
 import WriteReview from "../modals/WriteReview";
@@ -17,6 +19,8 @@ class IconSidebarLayout extends React.Component {
     this.state = {
       modal: Store.getModal(),
       loading: Store.isLoading(),
+      banner: Store.getBanner(),
+      connected: Store.getConnectionStatus(),
       acceptedCookies: localStorage.getItem("accepted-cookies"),
     };
     Store.on("update-ui", this.getData);
@@ -29,7 +33,9 @@ class IconSidebarLayout extends React.Component {
   getData = () => {
     const modal = Store.getModal();
     const loading = Store.isLoading();
-    this.setState({ modal, loading });
+    const banner = Store.getBanner();
+    const connected = Store.getConnectionStatus();
+    this.setState({ modal, loading, banner, connected });
   };
 
   acceptCookies = () => {
@@ -59,15 +65,29 @@ class IconSidebarLayout extends React.Component {
     });
   };
 
+  reconnect = () => {
+    Dispatcher.dispatch({
+      actionType: Constants.RECONNECT,
+    });
+  };
+
   render = () => {
-    const { modal, acceptedCookies } = this.state;
+    const { modal, acceptedCookies, banner, connected, loading } = this.state;
     const { children } = this.props;
+    console.log("loading: ", loading);
+    console.log("connected:", connected);
     return (
       <Container fluid className="icon-sidebar-nav">
         <Row>
           <MainSidebar hideLogoText />
           <Col className="main-content col" tag="main">
             <MainNavbar />
+            <InfoBanner data={banner} />
+            <ConnectionBanner
+              loading={loading}
+              connected={connected}
+              reconnect={this.reconnect}
+            />
             {children}
             <CookiesBanner
               show={!acceptedCookies}

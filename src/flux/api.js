@@ -1,12 +1,12 @@
 import axios from "axios";
-import { hubURL } from "./config";
+import { hubURL, timeout } from "./config";
 let logStream;
 let taskStream;
 
 const hub = axios.create({
   baseURL: hubURL,
   withCredentials: true,
-  timeout: 30000, // 30 secs
+  timeout, // 30 secs
   headers: {
     "Content-Type": "application/json",
     Accept: "application/json",
@@ -14,13 +14,7 @@ const hub = axios.create({
 });
 
 export default {
-  checkConnection: (settings) => {
-    let connectionString = `${settings.host}:${settings.port}${
-      settings.ready.startsWith("/") ? settings.ready : "/" + settings.ready
-    }`;
-    return axios.get(connectionString);
-  },
-  connect: (settings, logUpdate, taskUpdate) => {
+  connect: (settings, connectionUpdate, logUpdate, taskUpdate) => {
     const logString = `${settings.host}:${settings.port}${
       settings.log.startsWith("/") ? settings.log : "/" + settings.log
     }`;
@@ -28,19 +22,22 @@ export default {
     logStream = new EventSource(logString);
 
     logStream.onopen = () => {
-      logUpdate({
-        type: "connect",
-        data: `Log connection established at ${logString}`,
-      });
+      connectionUpdate(
+        "connected",
+        `Logserver connection established at ${settings.host}:${settings.port}`
+      );
     };
+
     logStream.onmessage = (m) => {
       logUpdate({ type: "log", data: JSON.parse(m.data) });
     };
+
     logStream.onerror = (data) => {
-      logUpdate({
-        type: "error",
-        data: `Could not get log data from ${logString}`,
-      });
+      connectionUpdate(
+        "failed",
+        `Could not connect to logserver at ${settings.host}:${settings.port}`
+      );
+      console.error("log error: ", data);
       logStream.close();
     };
 
@@ -58,14 +55,17 @@ export default {
         data: `Task connection established at ${taskString}`,
       });
     };
+
     taskStream.onmessage = (m) => {
       taskUpdate({ type: "event", data: JSON.parse(m.data) });
     };
+
     taskStream.onerror = (data) => {
       taskUpdate({
         type: "error",
         data: `Could not get profile data from ${taskString}`,
       });
+      console.error("task error:", data);
       taskStream.close();
     };
   },
@@ -74,7 +74,7 @@ export default {
     return result.data;
   },
   getYAML: async (connectionString) => {
-    const result = await axios.get(connectionString);
+    const result = await axios.get(connectionString, { timeout });
     return result.data;
   },
   getImages: async () => {

@@ -15,30 +15,22 @@ class HubView extends React.Component {
   constructor() {
     super();
     this.state = {
-      banner: Store.getBanner("hub"),
       images: Store.getHubImages(),
       sortType: "suggested",
       category: "all",
       searchQuery: "",
     };
 
-    Store.on("update-ui", this.getData);
     Store.on("update-hub", this.getHubImages);
   }
 
   componentWillUnmount = () => {
-    Store.removeListener("update-ui", this.getData);
     Store.removeListener("update-hub", this.getHubImages);
   };
 
   getHubImages = () => {
     const images = Store.getHubImages();
     this.setState({ images });
-  };
-
-  getData = () => {
-    const banner = Store.getBanner("hub");
-    this.setState({ banner });
   };
 
   sortBy = (sortType) => {
@@ -62,16 +54,9 @@ class HubView extends React.Component {
   };
 
   render = () => {
-    const { banner, images, sortType, category, searchQuery } = this.state;
+    const { images, sortType, category, searchQuery } = this.state;
     return (
       <Container fluid className="main-content-container px-0">
-        {banner && (
-          <div className="mr-4">
-            <div className={`mb-0 banner px-4 banner-${banner.theme}`}>
-              {banner.message}
-            </div>
-          </div>
-        )}
         <div className="px-4">
           <Row className="page-header py-4">
             <PageTitle
