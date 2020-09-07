@@ -50,7 +50,6 @@ type Props = {
   data: any[];
 };
 const buildStore = (data: any, refField: any) => {
-  console.log("buildstore");
   return data.reduce((acc: any, curr: any) => {
     acc[curr[refField]] = curr;
     return acc;

@@ -27,7 +27,6 @@ function useLunr<T = unknown>(
     if (!query || !index) return [];
 
     const results = index.search(query);
-    console.log("results: ", results);
 
     if (store) {
       return results.map(({ ref }) => store[ref]);
