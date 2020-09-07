@@ -60,10 +60,10 @@ const width = 900;
 const itemKey = (index: number, data: { items: RawLog[] }) =>
   data.items[index].created;
 
-const arrayLikeToArray = (arrayLike: any[] | Set<any>) =>
+const arrayLikeToArray = (arrayLike: Readonly<any[]> | Set<any>) =>
   Array.isArray(arrayLike) ? arrayLike : Array.from(arrayLike);
 
-const toOption = (list: any[] | Set<any>) =>
+const toOption = (list: Readonly<any[]> | Set<any>) =>
   arrayLikeToArray(list).map((item) => ({ label: item, value: item }));
 
 function LogsTable({ data }: Props) {
