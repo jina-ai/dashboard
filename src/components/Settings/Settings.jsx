@@ -7,6 +7,7 @@ import {
   Col,
   Form,
   FormInput,
+  Button,
 } from "shards-react";
 import { Collapse } from "react-bootstrap";
 
@@ -83,17 +84,24 @@ class SettingsCard extends React.Component {
                 />
               </Col>
             </Row>
-            <strong
-              aria-controls="collapsed-form"
-              aria-expanded={expanded}
-              onClick={this.toggleExpand}
-              className="text-primary d-block mb-3 cursor-pointer"
-            >
-              Advanced{" "}
-              <i className="material-icons">
-                {expanded ? "arrow_drop_up" : "arrow_drop_down"}
-              </i>
-            </strong>
+            <Row>
+              <Col xs="6">
+                <strong
+                  aria-controls="collapsed-form"
+                  aria-expanded={expanded}
+                  onClick={this.toggleExpand}
+                  className="text-primary d-inline-block mb-3 cursor-pointer"
+                >
+                  Advanced{" "}
+                  <i className="material-icons">
+                    {expanded ? "arrow_drop_up" : "arrow_drop_down"}
+                  </i>
+                </strong>
+              </Col>
+              <Col xs="6" className="text-right">
+                <Button onClick={this.saveChanges}>Save Changes</Button>
+              </Col>
+            </Row>
             <Collapse in={expanded}>
               <div id="collapsed-form">
                 <strong className="text-muted d-block mb-3">Endpoints</strong>
