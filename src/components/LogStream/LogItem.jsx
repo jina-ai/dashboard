@@ -1,8 +1,12 @@
+/** @jsx jsx */
+import { jsx } from "@emotion/core";
 import React from "react";
 import { Row, Col } from "react-bootstrap";
 
-export default ({ data, showPodInFlow }) => {
-  const { name, msg, levelname, process, formattedTimestamp, idx } = data;
+function LogItem({ index, style, data: { columns, items } }) {
+  const { name, msg, levelname, process, formattedTimestamp, idx } = items[
+    index
+  ];
   let logName = String(name);
   logName = logName.length > 20 ? logName.substring(0, 20) : logName;
   let levelInitial = String(levelname)[0];
@@ -11,6 +15,8 @@ export default ({ data, showPodInFlow }) => {
       className={`log log-${String(
         levelname
       ).toLowerCase()} px-4 border-bottom py-1`}
+      css={{ height: 84 }}
+      style={style}
     >
       <Row>
         <Col
@@ -25,7 +31,7 @@ export default ({ data, showPodInFlow }) => {
           lg="3"
           md="4"
           className="log-prefix px-0 text-left text-md-right text-bold cursor-pointer"
-          onClick={() => showPodInFlow(logName)}
+          css={{ maxWidth: 300 }}
         >
           {logName}@{process}[{levelInitial}]:
         </Col>
@@ -35,4 +41,6 @@ export default ({ data, showPodInFlow }) => {
       </Row>
     </div>
   );
-};
+}
+
+export { LogItem };

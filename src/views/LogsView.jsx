@@ -5,22 +5,27 @@ import LogStream from "../components/LogStream/LogStream";
 import SummaryChart from "../components/LogStream/SummaryChart";
 import PageTitle from "../components/Common/PageTitle";
 import OccurenceChart from "../components/LogStream/OccurenceChart";
+import { LogsTable } from "../components/LogStream/LogsTable";
 
 class LogsView extends React.Component {
   constructor() {
     super();
     this.state = {
       banner: Store.getBanner("logs"),
+      logs: Store.getLogs(),
     };
     Store.on("update-ui", this.getData);
+    Store.on("update-logs", this.getData);
   }
 
   componentWillUnmount = () => {
     Store.removeListener("update-ui", this.getData);
+    Store.on("update-logs", this.getData);
   };
   getData = () => {
     const banner = Store.getBanner("logs");
-    this.setState({ banner });
+    const logs = Store.getLogs();
+    this.setState({ banner, logs });
   };
   render = () => {
     const { banner } = this.state;
@@ -49,7 +54,7 @@ class LogsView extends React.Component {
               <OccurenceChart />
             </Col>
           </Row>
-          <LogStream />
+          <LogsTable data={this.state.logs} />
         </div>
       </Container>
     );

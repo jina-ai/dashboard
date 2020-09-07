@@ -8,7 +8,7 @@ import {
   DropdownButton,
   Dropdown,
 } from "react-bootstrap";
-import LogItem from "./LogItem";
+import { LogItem } from "./LogItem";
 import lunr from "lunr";
 import { saveAs } from "file-saver";
 import { Store } from "../../flux";
