@@ -4,10 +4,15 @@ import React from "react";
 import { Row, Col } from "react-bootstrap";
 
 type Props = {
-  items: { index: number; style: any; data: { columns: any; items: any } }[];
+  index: number;
+  style: any;
+  data: {
+    columns: { firstCol: number; secondCol: number; thirdCol: number };
+    items: any[];
+  };
 };
 
-function LogItem({ index, style, data: { columns, items } }: any) {
+function LogItem({ index, style, data: { columns, items } }: Props) {
   const { name, msg, levelname, process, formattedTimestamp, idx } = items[
     index
   ];
