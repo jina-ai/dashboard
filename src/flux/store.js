@@ -108,6 +108,7 @@ class Store extends EventEmitter {
     super();
     Dispatcher.register(this.registerActions);
     this.init();
+    window.peakLogs = this.getLogs;
   }
 
   registerActions = ({ actionType, payload }) => {
@@ -159,7 +160,6 @@ class Store extends EventEmitter {
   };
 
   init = async () => {
-    console.log("initializing");
     this.clearIntervals();
     _store = getInitialStore();
 

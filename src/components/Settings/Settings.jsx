@@ -58,7 +58,6 @@ class SettingsCard extends React.Component {
 
   render = () => {
     const { original, updates, expanded } = this.state;
-    console.log("expanded:", expanded);
     return (
       <Card small className="mb-4">
         <CardHeader className="border-bottom">

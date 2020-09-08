@@ -74,8 +74,6 @@ class IconSidebarLayout extends React.Component {
   render = () => {
     const { modal, acceptedCookies, banner, connected, loading } = this.state;
     const { children } = this.props;
-    console.log("loading: ", loading);
-    console.log("connected:", connected);
     return (
       <Container fluid className="icon-sidebar-nav">
         <Row>
