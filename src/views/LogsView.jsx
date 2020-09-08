@@ -5,6 +5,7 @@ import SummaryChart from "../components/LogStream/SummaryChart";
 import PageTitle from "../components/Common/PageTitle";
 import OccurenceChart from "../components/LogStream/OccurenceChart";
 import { LogsTable } from "../components/LogStream/LogsTable";
+import { Store } from "../flux";
 
 class LogsView extends React.Component {
   constructor() {
