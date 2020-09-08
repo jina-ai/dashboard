@@ -342,12 +342,18 @@ body {
 .banner {
   position: fixed;
   z-index: 5;
-  width: 100%;
+  width: calc(100% - 4.75rem);
   padding-top: 0.25em;
   padding-bottom: 0.25em;
   overflow: hidden;
   background-color: red;
   color: white;
+}
+
+@media (max-width: 768px) {
+  .banner {
+    width: 100%;
+  }
 }
 
 .banner.banner-success {
@@ -356,6 +362,11 @@ body {
 
 .banner.banner-error {
   background-color: #ff6666;
+}
+
+.banner.banner-warning {
+  background-color: #ffcc66;
+  color: black;
 }
 
 .btn-primary {

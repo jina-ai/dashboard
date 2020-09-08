@@ -1,6 +1,5 @@
 import React from "react";
 import { Container, Row, Col } from "react-bootstrap";
-import { Store } from "../flux";
 import LogStream from "../components/LogStream/LogStream";
 import SummaryChart from "../components/LogStream/SummaryChart";
 import PageTitle from "../components/Common/PageTitle";
@@ -28,16 +27,8 @@ class LogsView extends React.Component {
     this.setState({ banner, logs });
   };
   render = () => {
-    const { banner } = this.state;
     return (
       <Container fluid className="main-content-container px-0">
-        {banner && (
-          <div className="mr-4">
-            <div className={`mb-0 banner px-4 banner-${banner.theme}`}>
-              {banner.message}
-            </div>
-          </div>
-        )}
         <div className="px-4">
           <Row noGutters className="page-header py-4">
             <PageTitle
