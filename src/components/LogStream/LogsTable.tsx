@@ -49,7 +49,7 @@ const fields = ["filename", "funcName", "msg", "name", "module", "pathname"];
 type Props = {
   data: any[];
 };
-const buildStore = (data: any, refField: any) => {
+const buildStore = <T, K extends keyof T>(data: T[], refField: keyof K) => {
   return data.reduce((acc: any, curr: any) => {
     acc[curr[refField]] = curr;
     return acc;
