@@ -30,8 +30,6 @@ function LogItem({ index, style, data: { columns, items } }: Props) {
     >
       <Row>
         <Col
-          lg="2"
-          md="3"
           className="log-prefix text-muted px-0 d-flex flex-row"
           css={{ maxWidth: firstCol }}
         >
@@ -39,25 +37,22 @@ function LogItem({ index, style, data: { columns, items } }: Props) {
           <div className="ml-auto">{formattedTimestamp}</div>
         </Col>
         <Col
-          lg="3"
-          md="4"
           className="log-prefix px-0 text-left text-md-right text-bold cursor-pointer"
           css={{ maxWidth: secondCol }}
         >
           {logName}@{process}[{levelInitial}]:
         </Col>
         <Col
-          sm="12"
-          md="5"
-          lg="7"
           className="px-0"
           css={{
             maxHeight: 84,
             display: "block",
             overflow: "hidden",
             textOverflow: "ellipsis",
-            maxWidth: thirdCol,
+            width: thirdCol,
             whiteSpace: "nowrap",
+            paddingRight: 0,
+            marginRight: 0,
           }}
         >
           {msg}

@@ -49,7 +49,14 @@ const buildStore = <T, K extends keyof T>(data: T[], refField: keyof K) => {
     return acc;
   }, {});
 };
-const width = 900;
+const scrollCheck = (event: any) => {
+  const bottom =
+    event.target.scrollHeight - event.target.scrollTop ===
+    event.target.clientHeight;
+  if (bottom) {
+    console.log("At The Bottom"); //Add in what you want here
+  }
+};
 
 const itemKey = (index: number, data: { items: RawLog[] }) =>
   data.items[index].created;
@@ -85,7 +92,8 @@ function LogsTable({ data }: Props) {
   const sources = data.reduce((acc, curr) => acc.add(curr.name), new Set());
   useEffect(() => {
     if (windowListRef.current) {
-      windowListRef.current.scrollToItem(resultData.length);
+      console.log(windowListRef.current);
+      // windowListRef.current.scrollToItem(resultData.length);
     }
   }, [resultData.length]);
 
@@ -93,7 +101,7 @@ function LogsTable({ data }: Props) {
     <Card className="mb-4">
       <Card.Header className="p-3">
         <Row>
-          <Col md="8" xs="6">
+          <Col md="8">
             <MultiFilterSelect
               options={toOption(sources)}
               onChange={setSelectedSources as any}
@@ -107,7 +115,7 @@ function LogsTable({ data }: Props) {
               placeholder="All Levels"
             />
           </Col>
-          <Col md="4" xs="6">
+          <Col md="4">
             <Form.Control
               placeholder="search logs..."
               value={searchString}
