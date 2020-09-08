@@ -3,19 +3,24 @@ import { jsx } from "@emotion/core";
 import React from "react";
 import { Row, Col } from "react-bootstrap";
 
-function LogItem({ index, style, data: { columns, items } }) {
+type Props = {
+  items: { index: number; style: any; data: { columns: any; items: any } }[];
+};
+
+function LogItem({ index, style, data: { columns, items } }: any) {
   const { name, msg, levelname, process, formattedTimestamp, idx } = items[
     index
   ];
   let logName = String(name);
   logName = logName.length > 20 ? logName.substring(0, 20) : logName;
   let levelInitial = String(levelname)[0];
+  const { firstColumnWidth, stringColumnWidth, msgColumnWidth } = columns;
   return (
     <div
       className={`log log-${String(
         levelname
       ).toLowerCase()} px-4 border-bottom py-1`}
-      css={{ height: 84 }}
+      css={{ maxHeight: 84 }}
       style={style}
     >
       <Row>
@@ -23,6 +28,7 @@ function LogItem({ index, style, data: { columns, items } }) {
           lg="2"
           md="3"
           className="log-prefix text-muted px-0 d-flex flex-row"
+          css={{ maxWidth: firstColumnWidth }}
         >
           <div className="text-bold mr-2">{idx}</div>
           <div className="ml-auto">{formattedTimestamp}</div>
@@ -31,11 +37,24 @@ function LogItem({ index, style, data: { columns, items } }) {
           lg="3"
           md="4"
           className="log-prefix px-0 text-left text-md-right text-bold cursor-pointer"
-          css={{ maxWidth: 300 }}
+          css={{ maxWidth: stringColumnWidth }}
         >
           {logName}@{process}[{levelInitial}]:
         </Col>
-        <Col sm="12" md="5" lg="7" className="px-0">
+        <Col
+          sm="12"
+          md="5"
+          lg="7"
+          className="px-0"
+          css={{
+            maxHeight: 84,
+            display: "block",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            maxWidth: msgColumnWidth,
+            whiteSpace: "nowrap",
+          }}
+        >
           {msg}
         </Col>
       </Row>
