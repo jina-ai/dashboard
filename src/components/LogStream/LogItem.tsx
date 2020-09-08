@@ -14,7 +14,7 @@ function LogItem({ index, style, data: { columns, items } }: any) {
   let logName = String(name);
   logName = logName.length > 20 ? logName.substring(0, 20) : logName;
   let levelInitial = String(levelname)[0];
-  const { firstColumnWidth, stringColumnWidth, msgColumnWidth } = columns;
+  const { firstCol, secondCol, thirdCol } = columns;
   return (
     <div
       className={`log log-${String(
@@ -28,7 +28,7 @@ function LogItem({ index, style, data: { columns, items } }: any) {
           lg="2"
           md="3"
           className="log-prefix text-muted px-0 d-flex flex-row"
-          css={{ maxWidth: firstColumnWidth }}
+          css={{ maxWidth: firstCol }}
         >
           <div className="text-bold mr-2">{idx}</div>
           <div className="ml-auto">{formattedTimestamp}</div>
@@ -37,7 +37,7 @@ function LogItem({ index, style, data: { columns, items } }: any) {
           lg="3"
           md="4"
           className="log-prefix px-0 text-left text-md-right text-bold cursor-pointer"
-          css={{ maxWidth: stringColumnWidth }}
+          css={{ maxWidth: secondCol }}
         >
           {logName}@{process}[{levelInitial}]:
         </Col>
@@ -51,7 +51,7 @@ function LogItem({ index, style, data: { columns, items } }: any) {
             display: "block",
             overflow: "hidden",
             textOverflow: "ellipsis",
-            maxWidth: msgColumnWidth,
+            maxWidth: thirdCol,
             whiteSpace: "nowrap",
           }}
         >

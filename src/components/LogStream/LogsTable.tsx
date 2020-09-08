@@ -36,13 +36,7 @@ type RawLog = {
   threadName: string;
 };
 
-const ROW_SIZE = 84;
-
-const columns = [
-  { dataKey: "created", width: 200 },
-  { dataKey: "name", width: 200 },
-  { dataKey: "levelname", width: 200 },
-];
+const ROW_SIZE = 30;
 
 const fields = ["filename", "funcName", "msg", "name", "module", "pathname"];
 
@@ -73,7 +67,9 @@ function LogsTable({ data }: Props) {
     fields: fields,
   });
 
-  const store = React.useMemo(() => buildStore(data, "idx"), [data.length]);
+  const store = React.useMemo(() => buildStore(data, "idx" as any), [
+    data.length,
+  ]);
   const [selectedSources, setSelectedSources] = React.useState([]);
   const [selectedLevels, setSelectedLevels] = React.useState([]);
   const [searchString, setSearchString] = React.useState();
@@ -126,6 +122,9 @@ function LogsTable({ data }: Props) {
       >
         <AutoSizer>
           {({ height, width }) => {
+            const firstCol = 250;
+            const secondCol = 250;
+            const thirdCol = width - (firstCol + secondCol);
             return (
               <List
                 height={height}
@@ -134,8 +133,8 @@ function LogsTable({ data }: Props) {
                 itemSize={ROW_SIZE}
                 itemKey={itemKey}
                 itemData={{
-                  columns,
                   items: resultData,
+                  columns: { firstCol, secondCol, thirdCol },
                 }}
                 ref={windowListRef}
               >
