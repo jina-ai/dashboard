@@ -13,7 +13,7 @@ export default ({ loading, connected, reconnect }) => {
         </Col>
         <Col md="4" className="text-right">
           <a
-            href="https://github.com/jina-ai/dashboard"
+            href="https://github.com/jina-ai/dashboard#getting-started"
             target="_blank"
             rel="noopener noreferrer"
             className="mr-2"
