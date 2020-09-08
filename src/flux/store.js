@@ -109,6 +109,7 @@ class Store extends EventEmitter {
     Dispatcher.register(this.registerActions);
     this.init();
     window.peakLogs = this.getLogs;
+    window.peakStore = () => console.log(_store);
   }
 
   registerActions = ({ actionType, payload }) => {
