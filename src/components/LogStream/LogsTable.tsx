@@ -63,7 +63,7 @@ const buildStore = <T, K extends keyof T>(data: T[], refField: keyof K) => {
 };
 
 const itemKey = (index: number, data: { items: RawLog[] }) =>
-  data.items[index].created;
+  data.items[index].created + data.items[index].name;
 
 const arrayLikeToArray = (arrayLike: Readonly<any[]> | Set<any>) =>
   Array.isArray(arrayLike) ? arrayLike : Array.from(arrayLike);
