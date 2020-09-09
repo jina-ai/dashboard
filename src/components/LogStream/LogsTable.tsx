@@ -61,14 +61,6 @@ const buildStore = <T, K extends keyof T>(data: T[], refField: keyof K) => {
     return acc;
   }, {});
 };
-const scrollCheck = (event: any) => {
-  const bottom =
-    event.target.scrollHeight - event.target.scrollTop ===
-    event.target.clientHeight;
-  if (bottom) {
-    console.log("At The Bottom"); //Add in what you want here
-  }
-};
 
 const itemKey = (index: number, data: { items: RawLog[] }) =>
   data.items[index].created;
@@ -106,11 +98,10 @@ function LogsTable({ data, downloadLogs }: Props) {
   );
   const sources = data.reduce((acc, curr) => acc.add(curr.name), new Set());
   useEffect(() => {
-    console.log("scrolledToBottom: ", scrolledToBottom);
     if (windowListRef.current && scrolledToBottom) {
       windowListRef.current.scrollToItem(resultData.length);
     }
-  }, [resultData.length]);
+  }, [resultData.length, scrolledToBottom]);
 
   return (
     <Card className="mb-4">
