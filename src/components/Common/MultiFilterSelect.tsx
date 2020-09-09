@@ -21,14 +21,16 @@ const customStyles = {
 };
 
 export type Props = {
-  onChange: any;
+  onFilterChange: (val: any[]) => void;
   options: { value: string; label: string }[];
 } & SelectProps;
 
-function MultiFilterSelect({ onChange, options, ...rest }: Props) {
+function MultiFilterSelect({ onFilterChange, options, ...rest }: Props) {
   return (
     <Select
-      onChange={(val) => onChange(Array.isArray(val) ? val : !val ? [] : [val])}
+      onChange={(val) =>
+        onFilterChange(Array.isArray(val) ? val : !val ? [] : [val])
+      }
       isMulti
       options={options}
       styles={customStyles}

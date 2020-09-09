@@ -77,9 +77,9 @@ function LogsTable({ data }: Props) {
   const store = React.useMemo(() => buildStore(data, "idx" as any), [
     data.length,
   ]);
-  const [selectedSources, setSelectedSources] = React.useState([]);
-  const [selectedLevels, setSelectedLevels] = React.useState([]);
-  const [searchString, setSearchString] = React.useState();
+  const [selectedSources, setSelectedSources] = React.useState<any[]>([]);
+  const [selectedLevels, setSelectedLevels] = React.useState<any[]>([]);
+  const [searchString, setSearchString] = React.useState("");
   const results = useLunr(searchString, index, store);
   const unfiltered = searchString ? Object.values(results) : data;
 
@@ -104,13 +104,13 @@ function LogsTable({ data }: Props) {
           <Col md="8">
             <MultiFilterSelect
               options={toOption(sources)}
-              onChange={setSelectedSources as any}
+              onFilterChange={setSelectedSources}
               className="logstream-select mb-2 mr-0 mb-md-0 mr-md-2"
               placeholder="All Logsources"
             />
             <MultiFilterSelect
               options={toOption(levels as any) as any}
-              onChange={setSelectedLevels as any}
+              onFilterChange={setSelectedLevels}
               className="logstream-select mb-2 mr-0 mb-md-0 mr-md-2"
               placeholder="All Levels"
             />
@@ -119,7 +119,7 @@ function LogsTable({ data }: Props) {
             <Form.Control
               placeholder="search logs..."
               value={searchString}
-              onChange={(e) => setSearchString(e.target.value as any)}
+              onChange={(e) => setSearchString(e.target.value as string)}
             />
           </Col>
         </Row>
