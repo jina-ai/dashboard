@@ -1,13 +1,21 @@
 /** @jsx jsx */
 import { jsx } from "@emotion/core";
-import React, { Fragment, useEffect, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { useLunr } from "./useLunr";
 import { useLunrIndex } from "./useLunrIndex";
 import { FixedSizeList as List } from "react-window";
 import { MultiFilterSelect } from "../Common/MultiFilterSelect";
 import { applyFilters } from "./useFilters";
 import { LogItem } from "./LogItem";
-import { Card, Row, Col, Form } from "react-bootstrap";
+import {
+  Card,
+  Row,
+  Col,
+  Form,
+  DropdownButton,
+  ButtonGroup,
+  Dropdown,
+} from "react-bootstrap";
 import AutoSizer from "react-virtualized-auto-sizer";
 
 const levels = [
@@ -40,9 +48,13 @@ const ROW_SIZE = 30;
 
 const fields = ["filename", "funcName", "msg", "name", "module", "pathname"];
 
+type Format = "json" | "csv" | "tsv" | "txt";
+
 type Props = {
   data: any[];
+  downloadLogs: (format: Format) => void;
 };
+
 const buildStore = <T, K extends keyof T>(data: T[], refField: keyof K) => {
   return data.reduce((acc: any, curr: any) => {
     acc[curr[refField]] = curr;
@@ -67,15 +79,18 @@ const arrayLikeToArray = (arrayLike: Readonly<any[]> | Set<any>) =>
 const toOption = (list: Readonly<any[]> | Set<any>) =>
   arrayLikeToArray(list).map((item) => ({ label: item, value: item }));
 
-function LogsTable({ data }: Props) {
+function LogsTable({ data, downloadLogs }: Props) {
+  const [scrolledToBottom, setScrolledToBottom] = React.useState(true);
   const windowListRef = useRef<any>();
   const index = useLunrIndex({
     documents: data,
     fields: fields,
   });
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const store = React.useMemo(() => buildStore(data, "idx" as any), [
     data.length,
+    data,
   ]);
   const [selectedSources, setSelectedSources] = React.useState<any[]>([]);
   const [selectedLevels, setSelectedLevels] = React.useState<any[]>([]);
@@ -91,9 +106,9 @@ function LogsTable({ data }: Props) {
   );
   const sources = data.reduce((acc, curr) => acc.add(curr.name), new Set());
   useEffect(() => {
-    if (windowListRef.current) {
-      console.log(windowListRef.current);
-      // windowListRef.current.scrollToItem(resultData.length);
+    console.log("scrolledToBottom: ", scrolledToBottom);
+    if (windowListRef.current && scrolledToBottom) {
+      windowListRef.current.scrollToItem(resultData.length);
     }
   }, [resultData.length]);
 
@@ -114,6 +129,21 @@ function LogsTable({ data }: Props) {
               className="logstream-select mb-2 mr-0 mb-md-0 mr-md-2"
               placeholder="All Levels"
             />
+            <DropdownButton
+              as={ButtonGroup}
+              title="Download Logs"
+              id="bg-nested-dropdown"
+            >
+              <Dropdown.Item onClick={() => downloadLogs("csv")}>
+                Download as CSV
+              </Dropdown.Item>
+              <Dropdown.Item onClick={() => downloadLogs("json")}>
+                Download as JSON
+              </Dropdown.Item>
+              <Dropdown.Item onClick={() => downloadLogs("txt")}>
+                Download as TXT
+              </Dropdown.Item>
+            </DropdownButton>
           </Col>
           <Col md="4">
             <Form.Control
@@ -135,6 +165,11 @@ function LogsTable({ data }: Props) {
             const thirdCol = width - (firstCol + secondCol);
             return (
               <List
+                onScroll={({ scrollOffset }) => {
+                  setScrolledToBottom(
+                    (scrollOffset + height) / ROW_SIZE - resultData.length === 0
+                  );
+                }}
                 height={height}
                 width={width}
                 itemCount={resultData.length}
