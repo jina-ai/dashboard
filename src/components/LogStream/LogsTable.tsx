@@ -149,6 +149,16 @@ function LogsTable({ data, downloadLogs }: Props) {
         className="log-stream-container p-1 border-top"
         id="log-stream-container"
       >
+        {!scrolledToBottom && (
+          <div
+            onClick={() =>
+              windowListRef.current.scrollToItem(resultData.length)
+            }
+            className={`back-to-bottom active`}
+          >
+            <i className="material-icons">arrow_downward</i> Back to Bottom
+          </div>
+        )}
         <AutoSizer>
           {({ height, width }) => {
             const firstCol = 250;
