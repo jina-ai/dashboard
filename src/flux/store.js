@@ -1,4 +1,5 @@
 import { EventEmitter } from "events";
+import { nanoid } from "nanoid";
 import Dispatcher from "./dispatcher";
 import Constants from "./constants";
 import { parseYAML, formatForFlowchart, formatSeconds } from "../helpers";
@@ -234,6 +235,7 @@ class Store extends EventEmitter {
   };
 
   handleNewLog = (message) => {
+    const id = nanoid();
     const { data } = message;
 
     const log = data;
@@ -241,7 +243,7 @@ class Store extends EventEmitter {
     log.formattedTimestamp = new Date(log.created * 1000).toLocaleString();
     log.idx = _store.logs.length;
 
-    _store.logs.push(log);
+    _store.logs.push({ ...log, id });
     _store.processes[log.process] = log.name;
     _store.logSources[log.name] = true;
     _store.logLevels[log.levelname] = true;
