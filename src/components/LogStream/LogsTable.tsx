@@ -1,6 +1,8 @@
 /** @jsx jsx */
 import { jsx } from "@emotion/core";
 import React, { useEffect, useRef } from "react";
+import { useMiniSearch } from "react-minisearch";
+import { usePrevious } from "./usePrevious";
 import { useLunr } from "./useLunr";
 import { useLunrIndex } from "./useLunrIndex";
 import { FixedSizeList as List } from "react-window";
@@ -42,11 +44,13 @@ type RawLog = {
   processName: string;
   thread: number;
   threadName: string;
+  id: string;
 };
 
 const ROW_SIZE = 30;
 
 const fields = ["filename", "funcName", "msg", "name", "module", "pathname"];
+const miniSearchOptions = { fields };
 
 type Format = "json" | "csv" | "tsv" | "txt";
 
@@ -63,7 +67,7 @@ const buildStore = <T, K extends keyof T>(data: T[], refField: keyof K) => {
 };
 
 const itemKey = (index: number, data: { items: RawLog[] }) =>
-  data.items[index].created + data.items[index].name;
+  data.items[index].id;
 
 const arrayLikeToArray = (arrayLike: Readonly<any[]> | Set<any>) =>
   Array.isArray(arrayLike) ? arrayLike : Array.from(arrayLike);
@@ -74,23 +78,23 @@ const toOption = (list: Readonly<any[]> | Set<any>) =>
 function LogsTable({ data, downloadLogs }: Props) {
   const [scrolledToBottom, setScrolledToBottom] = React.useState(true);
   const windowListRef = useRef<any>();
-  const index = useLunrIndex({
-    documents: data,
-    fields: fields,
-  });
-
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const store = React.useMemo(() => buildStore(data, "idx" as any), [
-    data.length,
-    data,
-  ]);
   const [selectedSources, setSelectedSources] = React.useState<any[]>([]);
   const [selectedLevels, setSelectedLevels] = React.useState<any[]>([]);
   const [searchString, setSearchString] = React.useState("");
-  const results = useLunr(searchString, index, store);
-  const unfiltered = searchString ? Object.values(results) : data;
+  const { search, searchResults, addAllAsync } = useMiniSearch(
+    data,
+    miniSearchOptions
+  );
+  const previousLength = usePrevious(data.length);
+  useEffect(() => {
+    if (previousLength && previousLength! > 0) {
+      addAllAsync([data[previousLength! - 1]]);
+    }
+  }, [previousLength]);
 
-  const resultData = unfiltered.filter((result) =>
+  const unfiltered = searchString ? searchResults : data;
+
+  const resultData = (unfiltered || []).filter((result) =>
     applyFilters(result, {
       levelname: selectedLevels.map(({ value }) => value),
       name: selectedSources.map(({ value }) => value),
@@ -140,7 +144,10 @@ function LogsTable({ data, downloadLogs }: Props) {
             <Form.Control
               placeholder="search logs..."
               value={searchString}
-              onChange={(e) => setSearchString(e.target.value as string)}
+              onChange={(e) => {
+                search(e.target.value as string);
+                setSearchString(e.target.value);
+              }}
             />
           </Col>
         </Row>
