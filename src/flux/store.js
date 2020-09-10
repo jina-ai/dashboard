@@ -10,8 +10,6 @@ import exampleYAML from "../data/yaml";
 let _store;
 
 const HIDE_BANNER_TIMEOUT = 5000;
-const NUM_CHART_ELEMENTS = 60;
-const CHART_UPDATE_INTERVAL = 1000;
 const TASK_UPDATE_INTERVAL = 500;
 const CHART_LEVELS = [
   "INFO",
@@ -21,6 +19,17 @@ const CHART_LEVELS = [
   "CRITICAL",
   "DEBUG",
 ];
+
+function getInitialLevelOccurences() {
+  let occurences = {
+    lastLog: 0,
+    levels: {},
+  };
+  CHART_LEVELS.forEach((level) => {
+    occurences.levels[level] = 0;
+  });
+  return occurences;
+}
 
 function getInitialStore() {
   return {
@@ -66,11 +75,7 @@ function getInitialStore() {
     logs: [],
     logSources: {},
     logLevels: {},
-    occurences: {
-      current: {},
-      previous: {},
-      lastLog: [],
-    },
+    logLevelOccurences: {},
     logIndex: false,
     summaryCharts: {},
     processes: {},
@@ -234,21 +239,28 @@ class Store extends EventEmitter {
   };
 
   handleNewLog = (message) => {
-    const { data } = message;
+    const { data: log } = message;
 
-    const log = data;
-
-    log.formattedTimestamp = new Date(log.created * 1000).toLocaleString();
+    log.timestamp = new Date(log.created * 1000);
+    log.formattedTimestamp = log.timestamp.toLocaleString();
     log.idx = _store.logs.length;
 
     _store.logs.push(log);
     _store.processes[log.process] = log.name;
-    _store.logSources[log.name] = true;
-    _store.logLevels[log.levelname] = true;
 
-    if (CHART_LEVELS.includes(log.levelname)) {
-      _store.occurences.current[log.levelname]++;
-    }
+    if (_store.logSources[log.name]) _store.logSources[log.name]++;
+    else _store.logSources[log.name] = 1;
+
+    if (_store.logLevels[log.levelname]) _store.logLevels[log.levelname]++;
+    else _store.logLevels[log.levelname] = 1;
+
+    const unixTime = parseInt(log.timestamp / 1000);
+
+    if (!_store.logLevelOccurences[unixTime])
+      _store.logLevelOccurences[unixTime] = getInitialLevelOccurences();
+
+    _store.logLevelOccurences[unixTime].levels[log.levelname]++;
+    _store.logLevelOccurences[unixTime].lastLog = log.idx;
 
     this.emit("update-logs");
   };
@@ -331,18 +343,8 @@ class Store extends EventEmitter {
     }
   };
 
-  initCharts = () => {
-    for (let i = 0; i < CHART_LEVELS.length; ++i) {
-      let level = CHART_LEVELS[i];
-      _store.occurences.current[level] = 0;
-      _store.occurences.previous[level] = 0;
-      _store.summaryCharts[level] = new Array(NUM_CHART_ELEMENTS).fill(0);
-    }
-    _store.occurences.lastLog = new Array(NUM_CHART_ELEMENTS).fill({});
-    this.updateChartInterval = setInterval(
-      this.updateSummaryCharts,
-      CHART_UPDATE_INTERVAL
-    );
+  initCharts = async () => {
+    this.updateChartInterval = setInterval(this.updateSummaryCharts, 1000);
   };
 
   initHub = async () => {
@@ -362,17 +364,6 @@ class Store extends EventEmitter {
   };
 
   updateSummaryCharts = () => {
-    const { current, previous } = _store.occurences;
-    for (let i = 0; i < CHART_LEVELS.length; ++i) {
-      let level = CHART_LEVELS[i];
-      const numLogs = current[level];
-      const prevNum = previous[level];
-      _store.summaryCharts[level].push(numLogs - prevNum);
-      _store.summaryCharts[level].shift();
-      _store.occurences.previous[level] = numLogs;
-    }
-    _store.occurences.lastLog.push(_store.logs.length - 1);
-    _store.occurences.lastLog.shift();
     this.emit("update-summary-chart");
   };
 
@@ -385,10 +376,9 @@ class Store extends EventEmitter {
     this.emit("update-ui");
   }
 
-  showLogAtIndex = (index) => {
-    let logIndex = _store.occurences.lastLog[index];
-    if (!logIndex) return;
-    _store.logIndex = _store.occurences.lastLog[index];
+  showLogAtIndex = (logIndex) => {
+    if (!logIndex || !_store.logs[logIndex]) return;
+    _store.logIndex = logIndex;
     this.emit("show-log");
   };
 
@@ -568,8 +558,20 @@ class Store extends EventEmitter {
     return _store.summaryCharts;
   };
 
-  getOccurencesByName = () => {
-    return _store.occurences.current;
+  getLogLevelCharts = (numSeconds = 60) => {
+    const emptyItem = getInitialLevelOccurences();
+    let chartData = [];
+    let now = parseInt(new Date() / 1000);
+    for (let i = now - numSeconds; i < now; i++) {
+      chartData.push(
+        _store.logLevelOccurences[i] ? _store.logLevelOccurences[i] : emptyItem
+      );
+    }
+    return chartData;
+  };
+
+  getLogLevelOccurences = () => {
+    return _store.logLevels;
   };
 
   getTaskData = () => {

@@ -1,9 +1,9 @@
 import React from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import LogStream from "../components/LogStream/LogStream";
-import SummaryChart from "../components/LogStream/SummaryChart";
+import LogLevelSummaryChart from "../components/LogStream/LogLevelSummaryChart";
+import LogLevelPieChart from "../components/LogStream/LogLevelPieChart";
 import PageTitle from "../components/Common/PageTitle";
-import OccurenceChart from "../components/LogStream/OccurenceChart";
 
 class LogsView extends React.Component {
   render = () => {
@@ -19,10 +19,10 @@ class LogsView extends React.Component {
           </Row>
           <Row>
             <Col md="10" className="mb-4">
-              <SummaryChart />
+              <LogLevelSummaryChart />
             </Col>
             <Col md="2" className="mb-4">
-              <OccurenceChart />
+              <LogLevelPieChart />
             </Col>
           </Row>
           <LogStream />

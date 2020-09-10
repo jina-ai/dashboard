@@ -1,13 +1,13 @@
 import React from "react";
 import { Card } from "react-bootstrap";
 import { Store } from "../../flux";
-import ChartBase from "./PieChart";
+import PieChart from "./PieChart";
 
-class OccurenceChart extends React.Component {
+class LogLevelPieChart extends React.Component {
   constructor() {
     super();
     this.state = {
-      chartData: Store.getOccurencesByName(),
+      chartData: Store.getLogLevelOccurences(),
     };
     Store.on("update-summary-chart", this.getData);
   }
@@ -17,7 +17,7 @@ class OccurenceChart extends React.Component {
   };
 
   getData = () => {
-    const chartData = Store.getOccurencesByName();
+    const chartData = Store.getLogLevelOccurences();
     this.setState({ chartData });
   };
 
@@ -26,11 +26,11 @@ class OccurenceChart extends React.Component {
     return (
       <Card className="h-100">
         <Card.Body>
-          <ChartBase data={chartData} />
+          <PieChart data={chartData} />
         </Card.Body>
       </Card>
     );
   };
 }
 
-export default OccurenceChart;
+export default LogLevelPieChart;
