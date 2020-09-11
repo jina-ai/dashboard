@@ -1,7 +1,8 @@
 /** @jsx jsx */
 import { jsx } from "@emotion/core";
-import React from "react";
 import { Row, Col } from "react-bootstrap";
+import { memo } from "react";
+import { areEqual } from "react-window";
 
 type Props = {
   index: number;
@@ -12,7 +13,7 @@ type Props = {
   };
 };
 
-function LogItem({ index, style, data: { columns, items } }: Props) {
+const LogItem = memo(({ index, style, data: { columns, items } }: Props) => {
   const { name, msg, levelname, process, formattedTimestamp, idx } = items[
     index
   ];
@@ -60,6 +61,6 @@ function LogItem({ index, style, data: { columns, items } }: Props) {
       </Row>
     </div>
   );
-}
+}, areEqual);
 
 export { LogItem };
