@@ -56,7 +56,8 @@
     "eject": "react-scripts eject",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
-    "format": "prettier --write \"src/**/*.{js,jsx, ts, tsx}\""
+    "format": "prettier --write \"src/**/*.{js,jsx, ts, tsx}\"",
+    "lint": "eslint \"src/**/*.{js,jsx, ts, tsx}\" --max-warnings=0"
   },
   "husky": {
     "hooks": {
@@ -65,7 +66,8 @@
   },
   "lint-staged": {
     "src/**/*.{js,jsx,ts,tsx,json,css,scss,md}": [
-      "prettier --write"
+      "prettier --write",
+      "eslint --max-warnings=0"
     ]
   },
   "eslintConfig": {
