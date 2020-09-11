@@ -1,10 +1,9 @@
 /** @jsx jsx */
 import { jsx } from "@emotion/core";
-import React, { useEffect, useRef } from "react";
+import React from "react";
+import { useEffect, useRef } from "react";
 import { useMiniSearch } from "react-minisearch";
 import { usePrevious } from "./usePrevious";
-import { useLunr } from "./useLunr";
-import { useLunrIndex } from "./useLunrIndex";
 import { FixedSizeList as List } from "react-window";
 import { MultiFilterSelect } from "../Common/MultiFilterSelect";
 import { applyFilters } from "./useFilters";
@@ -55,15 +54,8 @@ const miniSearchOptions = { fields };
 type Format = "json" | "csv" | "tsv" | "txt";
 
 type Props = {
-  data: any[];
+  data: RawLog[];
   downloadLogs: (format: Format) => void;
-};
-
-const buildStore = <T, K extends keyof T>(data: T[], refField: keyof K) => {
-  return data.reduce((acc: any, curr: any) => {
-    acc[curr[refField]] = curr;
-    return acc;
-  }, {});
 };
 
 const itemKey = (index: number, data: { items: RawLog[] }) =>
@@ -90,12 +82,13 @@ function LogsTable({ data, downloadLogs }: Props) {
     if (previousLength && previousLength! > 0) {
       addAllAsync([data[previousLength! - 1]]);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [previousLength]);
 
   const unfiltered = searchString ? searchResults : data;
 
   const resultData = (unfiltered || []).filter((result) =>
-    applyFilters(result, {
+    applyFilters(result as any, {
       levelname: selectedLevels.map(({ value }) => value),
       name: selectedSources.map(({ value }) => value),
     })
@@ -168,8 +161,8 @@ function LogsTable({ data, downloadLogs }: Props) {
         )}
         <AutoSizer>
           {({ height, width }) => {
-            const firstCol = 250;
-            const secondCol = 250;
+            const firstCol = 200;
+            const secondCol = 200;
             const thirdCol = width - (firstCol + secondCol);
             return (
               <List
