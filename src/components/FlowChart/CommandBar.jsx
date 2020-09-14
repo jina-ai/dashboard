@@ -1,7 +1,7 @@
 import React from "react";
 import { ButtonGroup, Button } from "react-bootstrap";
 
-export default (props) => {
+export default function ChartNode(props) {
   return (
     <div className="command-bar-container">
       <div className="command-bar">
@@ -28,4 +28,4 @@ export default (props) => {
       </div>
     </div>
   );
-};
+}
