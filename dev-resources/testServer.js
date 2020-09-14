@@ -18,6 +18,8 @@ function startDemo(req, res) {
 			logId = 0;
 		else logId++;
 
+		log.created = new Date()/1000;
+
 		res.write(`id: ${messageId}\n`);
 		res.write(`data:${JSON.stringify(log)}\n\n`);
 		console.log('sending message')

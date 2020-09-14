@@ -3,11 +3,11 @@ import { Card } from "react-bootstrap";
 import { Store, Dispatcher, Constants } from "../../flux";
 import ChartBase from "./ChartBase";
 
-class SummaryChart extends React.Component {
+class LogLevelSummaryChart extends React.Component {
   constructor() {
     super();
     this.state = {
-      chartData: Store.getSummaryCharts(),
+      chartData: Store.getLogLevelCharts(),
     };
     Store.on("update-summary-chart", this.getData);
   }
@@ -17,16 +17,19 @@ class SummaryChart extends React.Component {
   };
 
   showLog = (activePoints) => {
+    const { chartData } = this.state;
     let index = activePoints[0] && activePoints[0]._index;
-    if (index && typeof index !== "undefined");
-    Dispatcher.dispatch({
-      actionType: Constants.SHOW_LOG_AT_INDEX,
-      payload: index,
-    });
+    console.log("index:", index);
+
+    if (index && typeof index !== "undefined")
+      Dispatcher.dispatch({
+        actionType: Constants.SHOW_LOG_AT_INDEX,
+        payload: chartData[index].lastLog,
+      });
   };
 
   getData = () => {
-    const chartData = Store.getSummaryCharts();
+    const chartData = Store.getLogLevelCharts();
     this.setState({ chartData });
   };
 
@@ -55,4 +58,4 @@ class SummaryChart extends React.Component {
   };
 }
 
-export default SummaryChart;
+export default LogLevelSummaryChart;
