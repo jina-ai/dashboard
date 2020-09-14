@@ -45,10 +45,10 @@ class ChartBase extends React.Component {
       maintainAspectRatio: true,
       responsive: true,
       legend: {
-        position: "bottom",
+        position: "top",
         labels: {
           padding: 10,
-          boxWidth: 20,
+          boxWidth: 15,
         },
       },
       tooltips: {
@@ -58,22 +58,27 @@ class ChartBase extends React.Component {
       elements: {
         point: {
           radius: 0,
-          hitRadius: 10,
+          hitRadius: 20,
         },
       },
       scales: {
         xAxes: [
           {
-            gridLines: false,
-            color: "red",
             ticks: {
-              display: false,
+              padding: 5,
+              maxRotation: 0,
+              callback: this.getXAxisLabel,
             },
           },
         ],
         yAxes: [
           {
+            scaleLabel: {
+              display: true,
+              labelString: "Occurences",
+            },
             gridLines: {
+              labelString: "hello",
               borderDash: [2.5, 5],
               zeroLineColor: "#6c757d",
               drawBorder: false,
@@ -82,6 +87,13 @@ class ChartBase extends React.Component {
             ticks: {
               padding: 5,
               suggestedMin: 0,
+              autoSkip: true,
+              maxTicksLimit: 4,
+              callback: function (value) {
+                if (Number.isInteger(value)) {
+                  return value;
+                }
+              },
             },
           },
         ],
@@ -123,6 +135,12 @@ class ChartBase extends React.Component {
       labels.push(i);
     }
     return labels;
+  };
+
+  getXAxisLabel = (value, index, values) => {
+    if (index === 0) return values.length + "s ago";
+    else if (index === parseInt(values.length / 2)) return index + "s ago";
+    return;
   };
 
   getParsedDatasets = () => {

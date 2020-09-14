@@ -37,7 +37,8 @@ class LogLevelSummaryChart extends React.Component {
     const { chartData } = this.state;
     return (
       <Card className="h-100">
-        <Card.Body className="d-none d-md-block pb-2">
+        <Card.Header>Log Occurences by Level</Card.Header>
+        <Card.Body className="d-none d-md-block pb-2 pt-0">
           <ChartBase
             data={chartData}
             height={10}
