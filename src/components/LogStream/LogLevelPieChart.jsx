@@ -25,7 +25,8 @@ class LogLevelPieChart extends React.Component {
     const { chartData } = this.state;
     return (
       <Card className="h-100">
-        <Card.Body>
+        <Card.Header className="text-center">Log Levels</Card.Header>
+        <Card.Body className="pt-0">
           <PieChart data={chartData} />
         </Card.Body>
       </Card>
