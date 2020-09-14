@@ -241,25 +241,26 @@ class Store extends EventEmitter {
   handleNewLog = (message) => {
     const { data: log } = message;
 
-    log.timestamp = new Date(log.created * 1000);
+    log.unixTime = parseInt(log.created);
+    log.timestamp = new Date(log.unixTime * 1000);
     log.formattedTimestamp = log.timestamp.toLocaleString();
     log.idx = _store.logs.length;
 
+    const { process, name, levelname, unixTime } = log;
+
     _store.logs.push(log);
-    _store.processes[log.process] = log.name;
+    _store.processes[process] = log.name;
 
-    if (_store.logSources[log.name]) _store.logSources[log.name]++;
-    else _store.logSources[log.name] = 1;
+    if (_store.logSources[name]) _store.logSources[name]++;
+    else _store.logSources[name] = 1;
 
-    if (_store.logLevels[log.levelname]) _store.logLevels[log.levelname]++;
-    else _store.logLevels[log.levelname] = 1;
-
-    const unixTime = parseInt(log.timestamp / 1000);
+    if (_store.logLevels[levelname]) _store.logLevels[levelname]++;
+    else _store.logLevels[levelname] = 1;
 
     if (!_store.logLevelOccurences[unixTime])
       _store.logLevelOccurences[unixTime] = getInitialLevelOccurences();
 
-    _store.logLevelOccurences[unixTime].levels[log.levelname]++;
+    _store.logLevelOccurences[unixTime].levels[levelname]++;
     _store.logLevelOccurences[unixTime].lastLog = log.idx;
 
     this.emit("update-logs");
