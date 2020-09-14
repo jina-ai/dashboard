@@ -1,8 +1,8 @@
 import React from "react";
 import { Container, Row, Col } from "react-bootstrap";
-import SummaryChart from "../components/LogStream/SummaryChart";
+import LogLevelSummaryChart from "../components/LogStream/LogLevelSummaryChart";
+import LogLevelPieChart from "../components/LogStream/LogLevelPieChart";
 import PageTitle from "../components/Common/PageTitle";
-import OccurenceChart from "../components/LogStream/OccurenceChart";
 import { LogsTable } from "../components/LogStream/LogsTable";
 import { Store } from "../flux";
 import { saveAs } from "file-saver";
@@ -64,10 +64,10 @@ class LogsView extends React.Component {
           </Row>
           <Row>
             <Col md="10" className="mb-4">
-              <SummaryChart />
+              <LogLevelSummaryChart />
             </Col>
             <Col md="2" className="mb-4">
-              <OccurenceChart />
+              <LogLevelPieChart />
             </Col>
           </Row>
           <LogsTable downloadLogs={this.downloadLogs} data={this.state.logs} />

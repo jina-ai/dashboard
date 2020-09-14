@@ -1,30 +1,30 @@
 import React from "react";
 import ChartElement from "chart.js";
 
-const _colors = {
+const _levels = {
   INFO: {
-    border: "#009999",
-    background: "rgba(0, 153, 153, 0.9)",
+    borderColor: "#009999",
+    backgroundColor: "rgba(0, 153, 153, 0.9)",
   },
   SUCCESS: {
-    border: "#32c8cd",
-    background: "rgba(50, 200, 205, 0.9)",
+    borderColor: "#32c8cd",
+    backgroundColor: "rgba(50, 200, 205, 0.9)",
   },
   WARNING: {
-    border: "#ffcc66",
-    background: "rgba(255, 204, 102, 0.9)",
+    borderColor: "#ffcc66",
+    backgroundColor: "rgba(255, 204, 102, 0.9)",
   },
   ERROR: {
-    border: "#ff6666",
-    background: "rgba(255, 102, 102, 0.9)",
+    borderColor: "#ff6666",
+    backgroundColor: "rgba(255, 102, 102, 0.9)",
   },
   CRITICAL: {
-    border: "#ff4540",
-    background: "rgba(255, 70, 64, 0.9)",
+    borderColor: "#ff4540",
+    backgroundColor: "rgba(255, 70, 64, 0.9)",
   },
   DEBUG: {
-    border: "#6E7278",
-    background: "rgba(110, 114, 120, 0.9)",
+    borderColor: "#6E7278",
+    backgroundColor: "rgba(110, 114, 120, 0.9)",
   },
 };
 
@@ -39,7 +39,6 @@ class ChartBase extends React.Component {
   };
 
   renderChart = () => {
-    const { data } = this.props;
     const chartOptions = {
       events: ["click"],
       onClick: this.onClick,
@@ -94,23 +93,23 @@ class ChartBase extends React.Component {
       type: "line",
       labels: this.getLabels(60),
       data: {
-        datasets: Object.keys(data).map((level) => {
-          const chartData = data[level];
-          return {
-            label: level,
-            fill: "start",
-            borderWidth: 1.5,
-            borderColor: _colors[level].border,
-            backgroundColor: _colors[level].background,
-            data: chartData,
-          };
-        }),
+        datasets: this.getParsedDatasets(),
       },
       options: chartOptions,
       ...this.props.chartConfig,
     };
 
     this.chart = new ChartElement(this.canvasRef.current, chartConfig);
+  };
+
+  updateChart = () => {
+    const chartData = {
+      labels: this.getLabels(60),
+      datasets: this.getParsedDatasets(),
+    };
+    this.chart.data = chartData;
+    this.chart.options.animation = false;
+    this.chart.update();
   };
 
   onClick = (e) => {
@@ -126,25 +125,20 @@ class ChartBase extends React.Component {
     return labels;
   };
 
-  updateChart = () => {
+  getParsedDatasets = () => {
     const { data } = this.props;
-    const chartData = {
-      labels: this.getLabels(60),
-      datasets: Object.keys(data).map((level) => {
-        const chartData = data[level];
-        return {
-          label: level,
-          fill: "start",
-          borderWidth: 1.5,
-          borderColor: _colors[level].border,
-          backgroundColor: _colors[level].background,
-          data: chartData,
-        };
-      }),
-    };
-    this.chart.data = chartData;
-    this.chart.options.animation = false;
-    this.chart.update();
+    const datasets = Object.keys(_levels).map((level) => {
+      const levelData = data.map((tick) => tick.levels[level]);
+      return {
+        label: level,
+        fill: "start",
+        borderWidth: 1.5,
+        borderColor: _levels[level].borderColor,
+        backgroundColor: _levels[level].backgroundColor,
+        data: levelData,
+      };
+    });
+    return datasets;
   };
 
   render = () => {
