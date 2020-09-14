@@ -1,11 +1,11 @@
 import React from "react";
 import { Container, Row, Col } from "react-bootstrap";
-import { LogsTable } from "../components/LogStream/LogsTable";
-import { Store } from "../flux";
-import { saveAs } from "file-saver";
 import LogLevelSummaryChart from "../components/LogStream/LogLevelSummaryChart";
 import LogLevelPieChart from "../components/LogStream/LogLevelPieChart";
 import PageTitle from "../components/Common/PageTitle";
+import { LogsTable } from "../components/LogStream/LogsTable";
+import { Store } from "../flux";
+import { saveAs } from "file-saver";
 
 class LogsView extends React.Component {
   constructor() {
