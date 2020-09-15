@@ -6,7 +6,7 @@
 [![Jina Docs](https://github.com/jina-ai/jina/blob/master/.github/badges/docs-badge.svg "Checkout our docs and learn Jina")](https://docs.jina.ai)
 [![We are hiring](https://github.com/jina-ai/jina/blob/master/.github/badges/jina-corp-badge-hiring.svg "We are hiring full-time position at Jina")](https://jobs.jina.ai)
 <a href="https://twitter.com/intent/tweet?text=%F0%9F%91%8DCheck+out+Jina%3A+the+New+Open-Source+Solution+for+Neural+Information+Retrieval+%F0%9F%94%8D%40JinaAI_&url=https%3A%2F%2Fgithub.com%2Fjina-ai%2Fjina&hashtags=JinaSearch&original_referer=http%3A%2F%2Fgithub.com%2F&tw_p=tweetbutton" target="_blank">
-  <img src="https://github.com/jina-ai/jina/blob/master/.github/badges/twitter-badge.svg"
+<img src="https://github.com/jina-ai/jina/blob/master/.github/badges/twitter-badge.svg"
        alt="tweet button" title="👍Share Jina with your friends on Twitter"></img>
 </a>
 
@@ -16,29 +16,31 @@
 <img src=".github/.README_images/flow-demo.gif?raw=true" alt="flow demo" width="80%">
 </p>
 
- 🌟 **Features:**
+🌟 **Features:**
 
 - Log streaming, real-time chart on log-level.
-- Grouping logs by Pods, Executors. Full text search on logs.
+- Grouping logs by Pods, Executors, Levels. Full text search on logs.
 - Drag & drop flow design, setting properties of each Pod via a webform.
+- Prebuilt pod mennu for easy flow design.
 - Flow can be imported from/exported to YAML.
 
-
 ## Contents
+
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
-
-- [Monitor Jina "Hello, World!" with Dashboard](#monitor-jina-hello-world-with-dashboard)
-- [Getting started](#getting-started)
-  - [1. Start the log server](#1-start-the-log-server)
-  - [2. Connect the Dashboard to your log server](#2-connect-the-dashboard-to-your-log-server)
-  - [Customize the endpoints](#customize-the-endpoints)
-- [Self-host Dashboard](#self-host-dashboard)
-  - [Run in the debug mode](#run-in-the-debug-mode)
-  - [Run in the live mode](#run-in-the-live-mode)
-- [Contributing](#contributing)
-- [License](#license)
+- [Dashboard (beta)](#dashboard-beta)
+  - [Contents](#contents)
+  - [Monitor Jina "Hello, World!" with Dashboard](#monitor-jina-hello-world-with-dashboard)
+  - [Getting started](#getting-started)
+    - [1. Start the log server](#1-start-the-log-server)
+    - [2. Connect the Dashboard to your log server](#2-connect-the-dashboard-to-your-log-server)
+    - [Customize the endpoints](#customize-the-endpoints)
+  - [Self-host Dashboard](#self-host-dashboard)
+    - [Run in the debug mode](#run-in-the-debug-mode)
+    - [Run in the live mode](#run-in-the-live-mode)
+  - [Contributing](#contributing)
+  - [License](#license)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -48,17 +50,16 @@ Jina "Hello, World" is a simple demo of image neural search for Fashion-MNIST.
 
 1. Run the following command in the console
    - (Python >=3.7 required)
-      ```bash
-      JINA_LOG_PROFILING=1 jina hello-world
-      ``` 
+     ```bash
+     JINA_LOG_PROFILING=1 jina hello-world
+     ```
    - ...or if you use Docker (no install required)
-      ```
-      docker run -e "JINA_LOG_PROFILING=1" -p 5000:5000 jinaai/jina:devel hello-world --logserver
-      ```
+     ```
+     docker run -e "JINA_LOG_PROFILING=1" -p 5000:5000 jinaai/jina:devel hello-world --logserver
+     ```
 2. Open https://dashboard.jina.ai in your browser
 
 It should start streaming. If not, please refer to [this step](#2-connect-the-dashboard-to-your-log-server).
-
 
 ## Getting started
 
@@ -66,7 +67,7 @@ It should start streaming. If not, please refer to [this step](#2-connect-the-da
 
 > Set environment variable `JINA_LOG_PROFILING` to `1` to enable Task tab in the dashboard.
 
-Log server is a helper thread in Jina flow. It exposes HTTP endpoints to the public which the dashboard can use to fetch logs, visualize the flow. 
+Log server is a helper thread in Jina flow. It exposes HTTP endpoints to the public which the dashboard can use to fetch logs, visualize the flow.
 
 By default the log server is disabled. To enable it you can,
 
@@ -98,8 +99,7 @@ with f.build() as fl:
 !Flow
 with:
   logserver: true
-pods:
-  ...
+pods: ...
 ```
 
 ```python
@@ -120,7 +120,6 @@ with f.build() as fl:
 jina flow --logserver --yaml-path myflow.yml
 ```
 
-
 </td>
 </tr>
 
@@ -131,10 +130,10 @@ jina flow --logserver --yaml-path myflow.yml
 ```bash
 docker run -p 5000:5000 jina flow --logserver ...
 ```
+
 </td>
 </tr>
 </table>
-
 
 Either way, if you see the following logs show up in the console, then your log server is successfully running. You can now move to the next step.
 
@@ -142,42 +141,42 @@ Either way, if you see the following logs show up in the console, then your log 
 <img src=".github/.README_images/logserver.png?raw=true" alt="logserver success started" width="80%">
 </p>
 
-
 ### 2. Connect the Dashboard to your log server
 
 Go to: [https://dashboard.jina.ai](https://dashboard.jina.ai)
 
-Click on the globe icon on the top-left corner to connect to the log server.
+Make sure your [settings](https://dashboard.jina.ai/#/settings) are configured correctly to point to your Jina instance.
 
-It should turn into a green check mark, which means the connection is success.
+If you have a running Jina instance, it should connect automatically.
+
+If you start a new Jina instance, click "try again" and it will connect.
+
+Note: make sure you wait for the `logserver` to start before attempting to connect dashboard.
+
+Connection status will be indicated by the globe icon. A red X means the dashboard is not connected to any Jina instance, a green checkmark means there is an active connection.
 
 <p align="center">
 <img src=".github/.README_images/2859cc17.png?raw=true" alt="log server settings" width="80%">
 </p>
 
-You should now see the log-streaming and flow visualization. 
-
-If it has a red cross, it means the connection is lost or the endpoint is not set correctly. Please move to the next step for instruction.
+You should now see the log stream and flow visualization.
 
 ### Customize the endpoints
 
-By default the configurations of the log server is as follows:
+By default the configurations of the log server are as follows:
 
 ```yaml
 host: 0.0.0.0
 port: 5000
 endpoints:
-  log: /stream/log  # fetching log in SSE stream
-  profile: /stream/profile  # fetching profiling log in SSE stream
-  yaml: /data/yaml  # get the YAML spec of a flow
-  shutdown: /action/shutdown  # shutdown the log server
-  ready: /status/ready  # tell if the log server is ready, return 200 if yes
+  log: /stream/log # fetching log in SSE stream
+  profile: /stream/profile # fetching profiling log in SSE stream
+  yaml: /data/yaml # get the YAML spec of a flow
+  shutdown: /action/shutdown # shutdown the log server
+  ready: /status/ready # tell if the log server is ready, return 200 if yes
 ```
 
-You can customize the endpoints of the log server via a YAML, say `mylogserver.yml`. Then pass it to the Flow API via 
-
-
-
+You can customize the endpoints of the log server via YAML, say `mylogserver.yml`. Then pass it to the Flow API via
 
 <table>
 <tr>
@@ -198,7 +197,7 @@ f = Flow(logserver=True, logserver_config='mylogserver.yml')
 !Flow
 with:
   logserver: true
-  logserver_config: mylogserver.yml 
+  logserver_config: mylogserver.yml
 ```
 
 </td>
@@ -211,7 +210,6 @@ with:
 ```bash
 jina flow --logserver --logserver-config mylogserver.yml ...
 ```
-
 
 </td>
 </tr>
@@ -228,12 +226,6 @@ docker run -p PORT:PORT -v "$(PWD)/mylogserver.yml:/mylogserver.yml" jina flow -
 </tr>
 </table>
 
-
-
-
-
-
-
 Don't forget to update endpoint in the dashboard accordingly.
 
 <p align="center">
@@ -248,12 +240,14 @@ One can self-host a dashboard locally.
 2. Install dependencies using command `npm i`.
 3. Run dashboard via the following ways .
 
+Note: features like the hub and GitHub login will not work when running locally as they are restricted to the `dashboard.jina.ai` origin. They are not necessary to view logs or interact with flows. If you would like to browse the hub do so from [dashboard.jina.ai](https://dashboard.jina.ai/).
+
 ### Run in the debug mode
 
 1. `node testServer`
-2.  testServer will be running on `http://localhost:5000` by default
+2. testServer will be running on `http://localhost:5000` by default
 3. `npm start`
-4.  dashboard will be served on `http://localhost:3000` by default
+4. dashboard will be served on `http://localhost:3000` by default
 
 ### Run in the live mode
 
@@ -275,4 +269,3 @@ The following resources help you to make a good first contribution:
 Copyright (c) 2020 Jina AI Limited. All rights reserved.
 
 Jina is licensed under the Apache License, Version 2.0. See [LICENSE](LICENSE) for the full license text.
-
