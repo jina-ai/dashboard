@@ -4,7 +4,7 @@ import LogLevelSummaryChart from "../components/LogStream/LogLevelSummaryChart";
 import LogLevelPieChart from "../components/LogStream/LogLevelPieChart";
 import PageTitle from "../components/Common/PageTitle";
 import { LogsTable } from "../components/LogStream/LogsTable";
-import { Store } from "../flux";
+import { Store, Dispatcher, Constants } from "../flux";
 import { saveAs } from "file-saver";
 
 class LogsView extends React.Component {
@@ -22,11 +22,13 @@ class LogsView extends React.Component {
     Store.removeListener("update-ui", this.getData);
     Store.on("update-logs", this.getData);
   };
+
   getData = () => {
     const banner = Store.getBanner("logs");
     const logs = Store.getLogs();
     this.setState({ banner, logs });
   };
+
   downloadLogs = (format) => {
     let logs = this.state.logs;
     let content = "";
@@ -51,6 +53,14 @@ class LogsView extends React.Component {
     let blob = new Blob([content], { type: "text,plain;charset=utf-8" });
     saveAs(blob, filename);
   };
+
+  showLogDetails = (log) => {
+    Dispatcher.dispatch({
+      actionType: Constants.SHOW_MODAL,
+      payload: { modal: "logDetails", modalParams: { log } },
+    });
+  };
+
   render = () => {
     return (
       <Container fluid className="main-content-container px-0">
@@ -70,7 +80,11 @@ class LogsView extends React.Component {
               <LogLevelPieChart />
             </Col>
           </Row>
-          <LogsTable downloadLogs={this.downloadLogs} data={this.state.logs} />
+          <LogsTable
+            downloadLogs={this.downloadLogs}
+            data={this.state.logs}
+            showLogDetails={this.showLogDetails}
+          />
         </div>
       </Container>
     );

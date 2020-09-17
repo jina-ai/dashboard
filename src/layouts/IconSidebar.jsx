@@ -10,6 +10,7 @@ import ConnectionBanner from "../components/Common/ConnectionBanner";
 
 import PasteYAML from "../modals/PasteYAML";
 import WriteReview from "../modals/WriteReview";
+import LogDetails from "../modals/LogDetails";
 
 import { Store, Dispatcher, Constants } from "../flux";
 
@@ -18,6 +19,7 @@ class IconSidebarLayout extends React.Component {
     super();
     this.state = {
       modal: Store.getModal(),
+      modalParams: Store.getModalParams(),
       loading: Store.isLoading(),
       banner: Store.getBanner(),
       connected: Store.getConnectionStatus(),
@@ -32,10 +34,11 @@ class IconSidebarLayout extends React.Component {
 
   getData = () => {
     const modal = Store.getModal();
+    const modalParams = Store.getModalParams();
     const loading = Store.isLoading();
     const banner = Store.getBanner();
     const connected = Store.getConnectionStatus();
-    this.setState({ modal, loading, banner, connected });
+    this.setState({ modal, loading, banner, connected, modalParams });
   };
 
   acceptCookies = () => {
@@ -57,8 +60,7 @@ class IconSidebarLayout extends React.Component {
   };
 
   submitReview = (content) => {
-    const params = Store.getModalParams();
-    const { imageId } = params;
+    const { imageId } = this.state.modalParams;
     Dispatcher.dispatch({
       actionType: Constants.POST_REVIEW,
       payload: { content, imageId },
@@ -72,7 +74,14 @@ class IconSidebarLayout extends React.Component {
   };
 
   render = () => {
-    const { modal, acceptedCookies, banner, connected, loading } = this.state;
+    const {
+      modal,
+      acceptedCookies,
+      banner,
+      connected,
+      loading,
+      modalParams,
+    } = this.state;
     const { children } = this.props;
     return (
       <Container fluid className="icon-sidebar-nav">
@@ -94,6 +103,12 @@ class IconSidebarLayout extends React.Component {
             <MainFooter />
           </Col>
         </Row>
+        <LogDetails
+          open={modal === "logDetails"}
+          closeModal={this.closeModal}
+          submitReview={this.submitReview}
+          modalParams={modalParams}
+        />
         <PasteYAML
           open={modal === "import"}
           closeModal={this.closeModal}
