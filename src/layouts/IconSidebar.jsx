@@ -77,6 +77,8 @@ class IconSidebarLayout extends React.Component {
 
   enableLogger = () => {
     logger.enable();
+    const storeCopy = Store.getStoreCopy();
+    logger.log("Store Snapshot", storeCopy);
     Dispatcher.dispatch({
       actionType: Constants.SHOW_BANNER,
       payload: [
@@ -95,6 +97,8 @@ class IconSidebarLayout extends React.Component {
   };
 
   exportLogs = () => {
+    const storeCopy = Store.getStoreCopy();
+    logger.log("Store Snapshot", storeCopy);
     logger.exportLogs();
   };
 
