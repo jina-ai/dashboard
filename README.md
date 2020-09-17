@@ -250,10 +250,11 @@ One can self-host a dashboard locally.
 
 ### Run in the debug mode
 
-1. `node testServer`
-2.  testServer will be running on `http://localhost:5000` by default
-3. `npm start`
-4.  dashboard will be served on `http://localhost:3000` by default
+1. `cd dev-resources`
+2. `node testServer`
+3.  testServer will be running on `http://localhost:5000` by default
+4. `npm start`
+5.  dashboard will be served on `http://localhost:3000` by default
 
 ### Run in the live mode
 
