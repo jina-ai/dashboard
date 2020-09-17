@@ -11,6 +11,9 @@ const logger = {
     console.log(...args);
     window.logs.push(args);
   },
+  isEnabled: function () {
+    return window.logsEnabled;
+  },
   enable: function () {
     const _navigator = {};
     for (let i in window.navigator) _navigator[i] = window.navigator[i];
@@ -23,8 +26,11 @@ const logger = {
     window.removeEventListener("error", handleErrorMessage);
     window.logsEnabled = false;
   },
+  setFormat: function (format = "json") {
+    window.logsFormat = format;
+  },
   exportLogs: function () {
-    const format = window.logsFormat;
+    const format = window.logsFormat || "json";
     const logs = window.logs;
     let content = "[\n";
     for (let i = 0; i < logs.length; ++i) {

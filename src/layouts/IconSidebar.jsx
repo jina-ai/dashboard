@@ -11,12 +11,15 @@ import ConnectionBanner from "../components/Common/ConnectionBanner";
 import PasteYAML from "../modals/PasteYAML";
 import WriteReview from "../modals/WriteReview";
 
+import logger from "../logger";
+
 import { Store, Dispatcher, Constants } from "../flux";
 
 class IconSidebarLayout extends React.Component {
   constructor() {
     super();
     this.state = {
+      loggerEnabled: logger.isEnabled(),
       modal: Store.getModal(),
       loading: Store.isLoading(),
       banner: Store.getBanner(),
@@ -35,7 +38,8 @@ class IconSidebarLayout extends React.Component {
     const loading = Store.isLoading();
     const banner = Store.getBanner();
     const connected = Store.getConnectionStatus();
-    this.setState({ modal, loading, banner, connected });
+    const loggerEnabled = logger.isEnabled();
+    this.setState({ modal, loading, banner, connected, loggerEnabled });
   };
 
   acceptCookies = () => {
@@ -71,8 +75,38 @@ class IconSidebarLayout extends React.Component {
     });
   };
 
+  enableLogger = () => {
+    logger.enable();
+    Dispatcher.dispatch({
+      actionType: Constants.SHOW_BANNER,
+      payload: [
+        'Debug Mode Enabled. Click "Export Debug Data" to download Debug JSON.',
+        "warning",
+      ],
+    });
+  };
+
+  disableLogger = () => {
+    logger.disable();
+    Dispatcher.dispatch({
+      actionType: Constants.SHOW_BANNER,
+      payload: ["Debug Mode Disabled.", "warning"],
+    });
+  };
+
+  exportLogs = () => {
+    logger.exportLogs();
+  };
+
   render = () => {
-    const { modal, acceptedCookies, banner, connected, loading } = this.state;
+    const {
+      modal,
+      acceptedCookies,
+      banner,
+      connected,
+      loading,
+      loggerEnabled,
+    } = this.state;
     const { children } = this.props;
     return (
       <Container fluid className="icon-sidebar-nav">
@@ -91,7 +125,12 @@ class IconSidebarLayout extends React.Component {
               show={!acceptedCookies}
               acceptCookies={this.acceptCookies}
             />
-            <MainFooter />
+            <MainFooter
+              loggerEnabled={loggerEnabled}
+              enableLogger={this.enableLogger}
+              disableLogger={this.disableLogger}
+              exportLogs={this.exportLogs}
+            />
           </Col>
         </Row>
         <PasteYAML
