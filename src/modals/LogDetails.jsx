@@ -49,11 +49,13 @@ export default ({ open, closeModal, modalParams }) => {
         </h4>
       </div>
       <div className="modal-body px-0 pb-0 pt-1">
-        <Row className="border-bottom pb-1">
-          <Col xs="3">
+        <Row className="px-3">
+          <Col xs="3" className="border-bottom pb-1 px-0">
             <span className="text-bold">msg</span>
           </Col>
-          <Col xs="9">{log.msg}</Col>
+          <Col xs="9" className="border-bottom pb-1 px-0">
+            {log.msg}
+          </Col>
         </Row>
         {Object.entries(log)
           .filter(([key, value]) => !hiddenKeys.includes(key))
@@ -61,11 +63,13 @@ export default ({ open, closeModal, modalParams }) => {
             key === "msg" ? (
               ""
             ) : (
-              <Row className="border-bottom pb-1" key={key}>
-                <Col xs="3">
+              <Row className="px-3" key={key}>
+                <Col xs="3" className="border-bottom pb-1 px-0">
                   <span className="text-bold">{key}</span>
                 </Col>
-                <Col xs="9">{JSON.stringify(value)}</Col>
+                <Col xs="9" className="border-bottom pb-1 px-0">
+                  {JSON.stringify(value)}
+                </Col>
               </Row>
             )
           )}
