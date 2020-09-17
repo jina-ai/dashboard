@@ -66,7 +66,7 @@ class PackageView extends React.Component {
     const modal = "review";
     Dispatcher.dispatch({
       actionType: Constants.SHOW_MODAL,
-      payload: { modal, params: { imageId } },
+      payload: { modal, modalParams: { imageId } },
     });
   };
 
