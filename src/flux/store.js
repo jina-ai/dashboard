@@ -4,6 +4,7 @@ import Dispatcher from "./dispatcher";
 import Constants from "./constants";
 import { parseYAML, formatForFlowchart, formatSeconds } from "../helpers";
 import api from "./api";
+import logger from "../logger";
 import propertyList from "../data/podProperties.json";
 import getSidebarNavItems from "../data/sidebar-nav-items";
 import exampleYAML from "../data/yaml";
@@ -108,6 +109,8 @@ function getInitialStore() {
     currentTab: "logStream",
   };
 }
+
+if (window.location.hostname === "localhost") logger.enable();
 
 class Store extends EventEmitter {
   constructor() {
