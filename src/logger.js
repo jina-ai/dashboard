@@ -1,7 +1,7 @@
 import { saveAs } from "file-saver";
 
 function handleErrorMessage(msg, url, line) {
-  logger.log("ERROR", msg, url, `line: ${line}`);
+  logger.log("window.onerror - ERROR", msg, url, `line: ${line}`);
 }
 
 const logger = {
