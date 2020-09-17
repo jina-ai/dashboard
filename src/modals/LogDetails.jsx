@@ -21,6 +21,8 @@ const style = {
   },
 };
 
+const hiddenKeys = ["msg", "unixTime"];
+
 export default ({ open, closeModal, modalParams }) => {
   const log = modalParams.log || {};
   return (
@@ -53,18 +55,20 @@ export default ({ open, closeModal, modalParams }) => {
           </Col>
           <Col xs="9">{log.msg}</Col>
         </Row>
-        {Object.entries(log).map(([key, value]) =>
-          key === "msg" ? (
-            ""
-          ) : (
-            <Row className="border-bottom pb-1">
-              <Col xs="3">
-                <span className="text-bold">{key}</span>
-              </Col>
-              <Col xs="9">{JSON.stringify(value)}</Col>
-            </Row>
-          )
-        )}
+        {Object.entries(log)
+          .filter(([key, value]) => !hiddenKeys.includes(key))
+          .map(([key, value]) =>
+            key === "msg" ? (
+              ""
+            ) : (
+              <Row className="border-bottom pb-1" key={key}>
+                <Col xs="3">
+                  <span className="text-bold">{key}</span>
+                </Col>
+                <Col xs="9">{JSON.stringify(value)}</Col>
+              </Row>
+            )
+          )}
       </div>
     </ReactModal>
   );
