@@ -1,3 +1,5 @@
+import { fromUnixTime } from "date-fns";
+import { nanoid } from "nanoid";
 const levels = [
   "INFO",
   "SUCCESS",
@@ -23,3 +25,24 @@ export type RawLog = {
   thread: number;
   threadName: string;
 };
+
+export type ProcessedLog = RawLog & {
+  pod: string;
+  createdDate: Date;
+  id: string;
+};
+
+function getPod(log: RawLog) {
+  const { processName } = log;
+  return processName.split("-")[0];
+}
+
+function transformLog(log: RawLog) {
+  const pod = getPod(log);
+  const { created } = log;
+  const createdDate = fromUnixTime(created);
+  const id = nanoid();
+  return { ...log, createdDate, pod, id };
+}
+
+export { transformLog };
