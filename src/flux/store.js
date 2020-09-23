@@ -1,5 +1,4 @@
 import { EventEmitter } from "events";
-import { nanoid } from "nanoid";
 import Dispatcher from "./dispatcher";
 import Constants from "./constants";
 import { parseYAML, formatForFlowchart, formatSeconds } from "../helpers";
@@ -7,6 +6,7 @@ import api from "./api";
 import propertyList from "../data/podProperties.json";
 import getSidebarNavItems from "../data/sidebar-nav-items";
 import exampleYAML from "../data/yaml";
+import { transformLog } from "./tranformLog";
 
 let _store;
 
@@ -240,15 +240,13 @@ class Store extends EventEmitter {
   };
 
   handleNewLog = (message) => {
-    const { data: log } = message;
-    const id = nanoid();
+    const { data } = message;
+    const log = transformLog(data);
 
     log.unixTime = parseInt(log.created);
     log.timestamp = new Date(log.unixTime * 1000);
     log.formattedTimestamp = log.timestamp.toLocaleString();
     log.idx = _store.logs.length;
-    log.id = id;
-
     const { process, name, levelname, unixTime } = log;
 
     _store.logs.push(log);
