@@ -8,6 +8,7 @@ import { FixedSizeList as List } from "react-window";
 import { MultiFilterSelect } from "../Common/MultiFilterSelect";
 import { applyFilters } from "./useFilters";
 import { LogItem } from "./LogItem";
+import { ProcessedLog } from "../../flux/tranformLog";
 import {
   Card,
   Row,
@@ -18,7 +19,7 @@ import {
   Dropdown,
 } from "react-bootstrap";
 import AutoSizer from "react-virtualized-auto-sizer";
-
+import { useDebounce } from "../../hooks/useDebounce";
 const levels = [
   "INFO",
   "SUCCESS",
@@ -27,25 +28,6 @@ const levels = [
   "CRITICAL",
   "DEBUG",
 ] as const;
-type Level = typeof levels[number];
-
-type RawLog = {
-  created: number;
-  filename: string;
-  funcName: string;
-  levelname: Level;
-  lineno: number;
-  module: string;
-  msg: string;
-  name: string;
-  pathname: string;
-  process: number;
-  processName: string;
-  thread: number;
-  threadName: string;
-  id: string;
-};
-
 const ROW_SIZE = 30;
 
 const fields = ["filename", "funcName", "msg", "name", "module", "pathname"];
@@ -54,11 +36,11 @@ const miniSearchOptions = { fields };
 type Format = "json" | "csv" | "tsv" | "txt";
 
 type Props = {
-  data: RawLog[];
+  data: ProcessedLog[];
   downloadLogs: (format: Format) => void;
 };
 
-const itemKey = (index: number, data: { items: RawLog[] }) =>
+const itemKey = (index: number, data: { items: ProcessedLog[] }) =>
   data.items[index].id;
 
 const arrayLikeToArray = (arrayLike: Readonly<any[]> | Set<any>) =>
@@ -70,20 +52,29 @@ const toOption = (list: Readonly<any[]> | Set<any>) =>
 function LogsTable({ data, downloadLogs }: Props) {
   const [scrolledToBottom, setScrolledToBottom] = React.useState(true);
   const windowListRef = useRef<any>();
+  const [pods, setPods] = React.useState<Set<string>>(new Set());
   const [selectedSources, setSelectedSources] = React.useState<any[]>([]);
-  const [selectedLevels, setSelectedLevels] = React.useState<any[]>([]);
+  const [selectedPods, setSelectedPods] = React.useState<any[]>([]);
+  const [selectedLevels, setSelectedLevels] = React.useState<
+    { value: ProcessedLog["levelname"] }[]
+  >([]);
   const [searchString, setSearchString] = React.useState("");
   const { search, searchResults, addAllAsync } = useMiniSearch(
     data,
     miniSearchOptions
   );
+  const buffer = useRef<any[]>([]);
   const previousLength = usePrevious(data.length);
   useEffect(() => {
     if (previousLength && previousLength! > 0) {
-      addAllAsync([data[previousLength! - 1]]);
+      const newLog = data[previousLength! - 1];
+      setPods((prevPods) => prevPods.add(newLog.pod));
+      addAllAsync([newLog]);
+      buffer.current.push(newLog);
+      console.log(buffer.current);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [previousLength]);
+  }, [previousLength, searchString]);
 
   const unfiltered = searchString ? searchResults : data;
 
@@ -91,6 +82,7 @@ function LogsTable({ data, downloadLogs }: Props) {
     applyFilters(result as any, {
       levelname: selectedLevels.map(({ value }) => value),
       name: selectedSources.map(({ value }) => value),
+      pod: selectedPods.map(({ value }) => value),
     })
   );
   const sources = data.reduce((acc, curr) => acc.add(curr.name), new Set());
@@ -99,12 +91,25 @@ function LogsTable({ data, downloadLogs }: Props) {
       windowListRef.current.scrollToItem(resultData.length);
     }
   }, [resultData.length, scrolledToBottom]);
+  useDebounce(
+    () => {
+      search(searchString);
+    },
+    1000,
+    [searchString]
+  );
 
   return (
     <Card className="mb-4">
       <Card.Header className="p-3">
         <Row>
           <Col md="8">
+            <MultiFilterSelect
+              options={toOption(pods)}
+              onFilterChange={setSelectedPods}
+              className="logstream-select mb-2 mr-0 mb-md-0 mr-md-2"
+              placeholder="All Pods"
+            />
             <MultiFilterSelect
               options={toOption(sources)}
               onFilterChange={setSelectedSources}
@@ -138,7 +143,6 @@ function LogsTable({ data, downloadLogs }: Props) {
               placeholder="search logs..."
               value={searchString}
               onChange={(e) => {
-                search(e.target.value as string);
                 setSearchString(e.target.value);
               }}
             />
@@ -161,8 +165,8 @@ function LogsTable({ data, downloadLogs }: Props) {
         )}
         <AutoSizer>
           {({ height, width }) => {
-            const firstCol = 200;
-            const secondCol = 200;
+            const firstCol = 300;
+            const secondCol = 300;
             const thirdCol = width - (firstCol + secondCol);
             return (
               <List
