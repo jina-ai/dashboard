@@ -37,7 +37,7 @@ type Format = "json" | "csv" | "tsv" | "txt";
 
 type Props = {
   data: ProcessedLog[];
-  downloadLogs: (format: Format) => void;
+  downloadLogs: (format: Format, logs: ProcessedLog[]) => void;
 };
 
 const itemKey = (index: number, data: { items: ProcessedLog[] }) =>
@@ -127,13 +127,13 @@ function LogsTable({ data, downloadLogs }: Props) {
               title="Download Logs"
               id="bg-nested-dropdown"
             >
-              <Dropdown.Item onClick={() => downloadLogs("csv")}>
+              <Dropdown.Item onClick={() => downloadLogs("csv", data)}>
                 Download as CSV
               </Dropdown.Item>
-              <Dropdown.Item onClick={() => downloadLogs("json")}>
+              <Dropdown.Item onClick={() => downloadLogs("json", data)}>
                 Download as JSON
               </Dropdown.Item>
-              <Dropdown.Item onClick={() => downloadLogs("txt")}>
+              <Dropdown.Item onClick={() => downloadLogs("txt", data)}>
                 Download as TXT
               </Dropdown.Item>
             </DropdownButton>
