@@ -5,31 +5,6 @@ import LogLevelPieChart from "../components/LogStream/LogLevelPieChart";
 import PageTitle from "../components/Common/PageTitle";
 import { LogsTable } from "../components/LogStream/LogsTable";
 import { Store } from "../flux";
-import { saveAs } from "file-saver";
-
-function downloadLogs(format, logs) {
-  let content = "";
-  if (format === "json") content = "[\n";
-  else if (format === "csv")
-    content =
-      "created,formatted timestamp,name,process,level name,message,filename,line number,module,funcname,pathname\n";
-
-  for (let i = 0; i < logs.length; ++i) {
-    let log = logs[i];
-    if (format === "json")
-      content +=
-        JSON.stringify(logs[i]) + `${i < logs.length - 1 ? "," : ""}\n`;
-    else if (format === "csv")
-      content += `${log.created},"${log.formattedTimestamp}",${log.name},${log.process},${log.levelname},"${log.msg}",${log.filename},${log.lineno},${log.module},${log.funcname},${log.pathname}\n`;
-    else
-      content += `${log.formattedTimestamp} ${log.name}@${log.process} [${log.levelname}]: ${log.msg}\n`;
-  }
-  if (format === "json") content += "]";
-
-  let filename = `jina-logs-${new Date()}.${format}`;
-  let blob = new Blob([content], { type: "text,plain;charset=utf-8" });
-  saveAs(blob, filename);
-}
 
 function LogsView() {
   const [logs, setLogs] = useState([]);
@@ -62,7 +37,7 @@ function LogsView() {
             <LogLevelPieChart />
           </Col>
         </Row>
-        <LogsTable downloadLogs={downloadLogs} pods={flowPods} data={logs} />
+        <LogsTable pods={flowPods} data={logs} />
       </div>
     </Container>
   );
