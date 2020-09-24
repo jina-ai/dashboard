@@ -2,7 +2,7 @@ import React from "react";
 import { Button } from "shards-react";
 import ReviewCard from "./ReviewCard";
 
-export default ({ reviews, newReview }) => {
+export default function ImageReviews({ reviews, newReview }) {
   return (
     <div>
       <div className="border-bottom d-flex flex-row mb-4">
@@ -20,4 +20,4 @@ export default ({ reviews, newReview }) => {
       )}
     </div>
   );
-};
+}

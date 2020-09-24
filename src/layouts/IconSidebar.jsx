@@ -12,12 +12,15 @@ import PasteYAML from "../modals/PasteYAML";
 import WriteReview from "../modals/WriteReview";
 import LogDetails from "../modals/LogDetails";
 
+import logger from "../logger";
+
 import { Store, Dispatcher, Constants } from "../flux";
 
 class IconSidebarLayout extends React.Component {
   constructor() {
     super();
     this.state = {
+      loggerEnabled: logger.isEnabled(),
       modal: Store.getModal(),
       modalParams: Store.getModalParams(),
       loading: Store.isLoading(),
@@ -38,12 +41,13 @@ class IconSidebarLayout extends React.Component {
     const loading = Store.isLoading();
     const banner = Store.getBanner();
     const connected = Store.getConnectionStatus();
-    this.setState({ modal, loading, banner, connected, modalParams });
+    const loggerEnabled = logger.isEnabled();
+    this.setState({ modal, loading, banner, connected, modalParams, loggerEnabled });
   };
 
   acceptCookies = () => {
     localStorage.setItem("accepted-cookies", true);
-    this.setState({ accepted: true });
+    this.setState({ acceptedCookies: true });
   };
 
   closeModal = () => {
@@ -73,6 +77,33 @@ class IconSidebarLayout extends React.Component {
     });
   };
 
+  enableLogger = () => {
+    logger.enable();
+    const storeCopy = Store.getStoreCopy();
+    logger.log("Store Snapshot", storeCopy);
+    Dispatcher.dispatch({
+      actionType: Constants.SHOW_BANNER,
+      payload: [
+        'Debug Mode Enabled. Click "Export Debug Data" to download Debug JSON.',
+        "warning",
+      ],
+    });
+  };
+
+  disableLogger = () => {
+    logger.disable();
+    Dispatcher.dispatch({
+      actionType: Constants.SHOW_BANNER,
+      payload: ["Debug Mode Disabled.", "warning"],
+    });
+  };
+
+  exportLogs = () => {
+    const storeCopy = Store.getStoreCopy();
+    logger.log("Store Snapshot", storeCopy);
+    logger.exportLogs();
+  };
+
   render = () => {
     const {
       modal,
@@ -81,6 +112,7 @@ class IconSidebarLayout extends React.Component {
       connected,
       loading,
       modalParams,
+      loggerEnabled,
     } = this.state;
     const { children } = this.props;
     return (
@@ -100,7 +132,12 @@ class IconSidebarLayout extends React.Component {
               show={!acceptedCookies}
               acceptCookies={this.acceptCookies}
             />
-            <MainFooter />
+            <MainFooter
+              loggerEnabled={loggerEnabled}
+              enableLogger={this.enableLogger}
+              disableLogger={this.disableLogger}
+              exportLogs={this.exportLogs}
+            />
           </Col>
         </Row>
         <LogDetails

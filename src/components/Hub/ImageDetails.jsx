@@ -1,7 +1,7 @@
 import React from "react";
 import { Card, CardHeader, CardBody, Row, Col } from "shards-react";
 
-export default ({ image }) => {
+export default function ImageDetails({ image }) {
   return (
     <Card className="readme-container mb-4">
       <CardHeader className="border-bottom d-flex flex-row">
@@ -63,4 +63,4 @@ export default ({ image }) => {
       </CardBody>
     </Card>
   );
-};
+}

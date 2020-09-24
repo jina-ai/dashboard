@@ -3,7 +3,7 @@ import { Container, Row, Col } from "shards-react";
 import HelpCard from "../components/Common/HelpCard";
 import PageTitle from "../components/Common/PageTitle";
 
-const Errors = () => (
+const NotFound = () => (
   <Container fluid className="main-content-container px-4">
     <Row noGutters className="page-header py-4">
       <PageTitle
@@ -62,4 +62,4 @@ const Errors = () => (
   </Container>
 );
 
-export default Errors;
+export default NotFound;
