@@ -1,7 +1,7 @@
 import React from "react";
 import { Button } from "react-bootstrap";
 
-export default ({ show, acceptCookies }) => {
+const CookiesBanner = ({ show, acceptCookies }) => {
   return (
     <div className={`cookies-banner ${show ? "" : "hidden"}`}>
       <p className="mb-2">
@@ -20,3 +20,5 @@ export default ({ show, acceptCookies }) => {
     </div>
   );
 };
+
+export { CookiesBanner };
