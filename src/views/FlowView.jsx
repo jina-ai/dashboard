@@ -7,7 +7,7 @@ import { Dispatcher, Constants, Store } from "../flux";
 import PageTitle from "../components/Common/PageTitle";
 import html2canvas from "html2canvas";
 
-import CommandBar from "../components/FlowChart/CommandBar";
+import { CommandBar } from "../components/FlowChart/CommandBar";
 import Sidebar from "../components/FlowChart/Sidebar";
 import CustomNode from "../components/FlowChart/ChartNode";
 import CustomPort from "../components/FlowChart/NodePort";
