@@ -8,7 +8,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./assets/main.scss";
 import "./App.css";
 
-export default () => (
+const App = () => (
   <Router basename={"/"}>
     <div>
       {routes.map((route, index) => {
@@ -30,3 +30,5 @@ export default () => (
     </div>
   </Router>
 );
+
+export { App };
