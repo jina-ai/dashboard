@@ -1,6 +1,6 @@
 import * as React from "react";
 import { REACT_FLOW_CHART } from "@mrblenny/react-flow-chart";
-import ChartNode from "./ChartNode";
+import { ChartNode } from "./ChartNode";
 
 export default (props) => {
   const { label, ports, properties } = props;
