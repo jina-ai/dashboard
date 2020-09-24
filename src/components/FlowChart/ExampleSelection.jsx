@@ -1,7 +1,7 @@
 import React from "react";
 import { ButtonGroup, Dropdown, DropdownButton } from "react-bootstrap";
 
-export default (props) => {
+const ExampleSelection = (props) => {
   return (
     <div className="example-selection">
       <DropdownButton
@@ -22,3 +22,5 @@ export default (props) => {
     </div>
   );
 };
+
+export { ExampleSelection };

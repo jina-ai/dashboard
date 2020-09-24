@@ -1,5 +1,6 @@
 import React from "react";
 import { Badge } from "react-bootstrap";
+
 const ChartNode = (props) => {
   const { properties, label } = props.node;
   const list = [];
