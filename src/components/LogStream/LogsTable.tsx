@@ -20,6 +20,12 @@ import {
 } from "react-bootstrap";
 import AutoSizer from "react-virtualized-auto-sizer";
 import { useDebounce } from "../../hooks/useDebounce";
+import {
+  serializeLogsToCSVBlob,
+  serializeLogsToJSONBlob,
+  serializeLogsToTextBlob,
+} from "../../helpers";
+import { saveAs } from "file-saver";
 const levels = [
   "INFO",
   "SUCCESS",
@@ -33,11 +39,13 @@ const ROW_SIZE = 30;
 const fields = ["filename", "funcName", "msg", "name", "module", "pathname"];
 const miniSearchOptions = { fields };
 
+const generateFormatFileName = (format: Format) =>
+  `jina-logs-${new Date()}.${format}`;
+
 type Format = "json" | "csv" | "tsv" | "txt";
 
 type Props = {
   data: ProcessedLog[];
-  downloadLogs: (format: Format, logs: ProcessedLog[]) => void;
 };
 
 const itemKey = (index: number, data: { items: ProcessedLog[] }) =>
@@ -49,7 +57,7 @@ const arrayLikeToArray = (arrayLike: Readonly<any[]> | Set<any>) =>
 const toOption = (list: Readonly<any[]> | Set<any>) =>
   arrayLikeToArray(list).map((item) => ({ label: item, value: item }));
 
-function LogsTable({ data, downloadLogs }: Props) {
+function LogsTable({ data }: Props) {
   const [scrolledToBottom, setScrolledToBottom] = React.useState(true);
   const windowListRef = useRef<any>();
   const [pods, setPods] = React.useState<Set<string>>(new Set());
@@ -127,13 +135,34 @@ function LogsTable({ data, downloadLogs }: Props) {
               title="Download Logs"
               id="bg-nested-dropdown"
             >
-              <Dropdown.Item onClick={() => downloadLogs("csv", data)}>
+              <Dropdown.Item
+                onClick={() =>
+                  saveAs(
+                    serializeLogsToCSVBlob(data),
+                    generateFormatFileName("csv")
+                  )
+                }
+              >
                 Download as CSV
               </Dropdown.Item>
-              <Dropdown.Item onClick={() => downloadLogs("json", data)}>
+              <Dropdown.Item
+                onClick={() =>
+                  saveAs(
+                    serializeLogsToJSONBlob(data),
+                    generateFormatFileName("json")
+                  )
+                }
+              >
                 Download as JSON
               </Dropdown.Item>
-              <Dropdown.Item onClick={() => downloadLogs("txt", data)}>
+              <Dropdown.Item
+                onClick={() =>
+                  saveAs(
+                    serializeLogsToTextBlob(data),
+                    generateFormatFileName("txt")
+                  )
+                }
+              >
                 Download as TXT
               </Dropdown.Item>
             </DropdownButton>
