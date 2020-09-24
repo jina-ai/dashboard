@@ -8,7 +8,7 @@ import { DefaultLayout, IconSidebar } from "./layouts";
 import FlowView from "./views/FlowView";
 import LogsView from "./views/LogsView";
 import TaskView from "./views/TaskView";
-import Settings from "./views/Settings";
+import { Settings } from "./views/Settings";
 import HubView from "./views/HubView";
 import PackageView from "./views/PackageView";
 import LogIn from "./views/LogIn";
