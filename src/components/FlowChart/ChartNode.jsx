@@ -1,7 +1,7 @@
 import React from "react";
 import { Badge } from "react-bootstrap";
 
-export default (props) => {
+export default function ChartNode(props) {
   const { properties, label } = props.node;
   const list = [];
   Object.keys(properties).forEach((prop, idx) => {
@@ -38,4 +38,4 @@ export default (props) => {
       )}
     </div>
   );
-};
+}

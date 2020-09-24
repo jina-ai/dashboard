@@ -2,7 +2,7 @@ import * as React from "react";
 import { REACT_FLOW_CHART } from "@mrblenny/react-flow-chart";
 import ChartNode from "./ChartNode";
 
-export default (props) => {
+export default function SidebarItem(props) {
   const { label, ports, properties } = props;
   const ref = React.createRef();
   return (
@@ -20,4 +20,4 @@ export default (props) => {
       <ChartNode node={{ properties }} />
     </div>
   );
-};
+}
