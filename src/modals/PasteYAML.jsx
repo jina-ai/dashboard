@@ -21,7 +21,7 @@ const style = {
   },
 };
 
-export default ({ open, closeModal, importYAML }) => {
+const PasteYAML = ({ open, closeModal, importYAML }) => {
   return (
     <ReactModal
       ariaHideApp={false}
@@ -65,3 +65,5 @@ export default ({ open, closeModal, importYAML }) => {
     </ReactModal>
   );
 };
+
+export { PasteYAML };
