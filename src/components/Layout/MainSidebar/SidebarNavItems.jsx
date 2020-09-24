@@ -1,9 +1,9 @@
 import React from "react";
 import { Nav } from "shards-react";
 
-import SidebarNavItem from "./SidebarNavItem";
+import { SidebarNavItem } from "./SidebarNavItem";
 
-export default ({ navItems: items, toggleSidebar }) => {
+const SidebarNavItems = ({ navItems: items, toggleSidebar }) => {
   return (
     <div className="nav-wrapper">
       {items.map((nav, idx) => (
@@ -25,3 +25,5 @@ export default ({ navItems: items, toggleSidebar }) => {
     </div>
   );
 };
+
+export { SidebarNavItems };

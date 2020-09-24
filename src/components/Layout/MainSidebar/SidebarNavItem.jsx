@@ -8,7 +8,7 @@ import {
   Collapse,
 } from "shards-react";
 
-export default ({ item, toggleSidebar }) => {
+const SidebarNavItem = ({ item, toggleSidebar }) => {
   const hasSubItems = item.items && item.items.length;
   const path = window.location.hash.substring(2, window.location.hash.length);
   let active = false;
@@ -51,3 +51,5 @@ export default ({ item, toggleSidebar }) => {
     </NavItem>
   );
 };
+
+export { SidebarNavItem };
