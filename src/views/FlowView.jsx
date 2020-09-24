@@ -10,7 +10,7 @@ import html2canvas from "html2canvas";
 import { CommandBar } from "../components/FlowChart/CommandBar";
 import Sidebar from "../components/FlowChart/Sidebar";
 import { ChartNode as CustomNode } from "../components/FlowChart/ChartNode";
-import CustomPort from "../components/FlowChart/NodePort";
+import { NodePort as CustomPort } from "../components/FlowChart/NodePort";
 import { ExampleSelection } from "../components/FlowChart/ExampleSelection";
 import { formatAsYAML, copyToClipboard } from "../helpers";
 
