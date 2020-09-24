@@ -1,7 +1,7 @@
 import React from "react";
 import { Card, Row, Col } from "react-bootstrap";
 
-export default ({ title, content, icon, theme, link }) => {
+const HelpCard = ({ title, content, icon, theme, link }) => {
   return (
     <a
       className="unstyled-link"
@@ -27,3 +27,5 @@ export default ({ title, content, icon, theme, link }) => {
     </a>
   );
 };
+
+export { HelpCard };

@@ -1,6 +1,6 @@
 import React from "react";
 import { Container, Row, Col } from "shards-react";
-import HelpCard from "../components/Common/HelpCard";
+import { HelpCard } from "../components/Common/HelpCard";
 import PageTitle from "../components/Common/PageTitle";
 
 const Errors = () => (
