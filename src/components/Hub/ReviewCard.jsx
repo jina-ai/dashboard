@@ -1,7 +1,7 @@
 import React from "react";
 import { Card, CardHeader, CardBody } from "shards-react";
 
-export default ({ review }) => {
+export default function ReviewCard({ review }) {
   return (
     <Card className="readme-container mb-4">
       <CardHeader className="border-bottom d-flex flex-row">
@@ -11,4 +11,4 @@ export default ({ review }) => {
       <CardBody className="py-3">{review.content}</CardBody>
     </Card>
   );
-};
+}

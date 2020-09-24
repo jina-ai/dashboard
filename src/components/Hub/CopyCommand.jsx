@@ -3,7 +3,7 @@ import { Card, CardHeader, CardBody } from "shards-react";
 import SyntaxHighlighter from "react-syntax-highlighter";
 import { atomOneLight } from "react-syntax-highlighter/dist/esm/styles/hljs";
 
-export default (props) => {
+export default function CopyCommand(props) {
   const { image, copyCode } = props;
   const imageVar = image.repoTags[image.repoTags.length - 1];
   let code = [
@@ -84,4 +84,4 @@ export default (props) => {
       </CardBody>
     </Card>
   );
-};
+}

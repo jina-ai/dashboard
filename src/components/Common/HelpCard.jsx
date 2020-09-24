@@ -1,9 +1,14 @@
 import React from "react";
 import { Card, Row, Col } from "react-bootstrap";
 
-export default ({ title, content, icon, theme, link }) => {
+export default function HelpCard({ title, content, icon, theme, link }) {
   return (
-    <a className="unstyled-link" href={link}>
+    <a
+      className="unstyled-link"
+      href={link}
+      target="_blank"
+      rel="noopener noreferrer"
+    >
       <Card className="h-100">
         <Card.Body className="pt-3">
           <Row>
@@ -21,4 +26,4 @@ export default ({ title, content, icon, theme, link }) => {
       </Card>
     </a>
   );
-};
+}

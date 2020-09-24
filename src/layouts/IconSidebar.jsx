@@ -40,7 +40,7 @@ class IconSidebarLayout extends React.Component {
 
   acceptCookies = () => {
     localStorage.setItem("accepted-cookies", true);
-    this.setState({ accepted: true });
+    this.setState({ acceptedCookies: true });
   };
 
   closeModal = () => {
