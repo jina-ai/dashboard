@@ -4,7 +4,13 @@ import LogLevelSummaryChart from "../components/LogStream/LogLevelSummaryChart";
 import LogLevelPieChart from "../components/LogStream/LogLevelPieChart";
 import PageTitle from "../components/Common/PageTitle";
 import { LogsTable } from "../components/LogStream/LogsTable";
-import { Store } from "../flux";
+import { Store, Dispatcher, Constants } from "../flux";
+const showLogDetails = (log) => {
+  Dispatcher.dispatch({
+    actionType: Constants.SHOW_MODAL,
+    payload: { modal: "logDetails", modalParams: { log } },
+  });
+};
 
 function LogsView() {
   const [logs, setLogs] = useState([]);
@@ -34,7 +40,7 @@ function LogsView() {
             <LogLevelPieChart />
           </Col>
         </Row>
-        <LogsTable data={logs} />
+        <LogsTable data={logs} showLogDetails={showLogDetails} />
       </div>
     </Container>
   );

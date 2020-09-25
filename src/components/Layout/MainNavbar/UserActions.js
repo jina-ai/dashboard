@@ -11,7 +11,12 @@ import {
   Button,
 } from "shards-react";
 
-export default ({ user, logOut, userActionsVisible, toggleUserActions }) => {
+export default function UserActions({
+  user,
+  logOut,
+  userActionsVisible,
+  toggleUserActions,
+}) {
   return (
     <NavItem tag={Dropdown} caret toggle={toggleUserActions}>
       {user ? (
@@ -41,4 +46,4 @@ export default ({ user, logOut, userActionsVisible, toggleUserActions }) => {
       </Collapse>
     </NavItem>
   );
-};
+}

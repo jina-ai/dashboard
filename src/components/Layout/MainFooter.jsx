@@ -1,7 +1,14 @@
 import React from "react";
 import { Container, Row, Nav } from "shards-react";
 
-const MainFooter = ({ menuItems, copyright }) => (
+const MainFooter = ({
+  menuItems,
+  copyright,
+  loggerEnabled,
+  enableLogger,
+  disableLogger,
+  exportLogs,
+}) => (
   <footer className="main-footer d-flex p-2 px-3 bg-white border-top">
     <Container fluid>
       <Row>
@@ -11,6 +18,29 @@ const MainFooter = ({ menuItems, copyright }) => (
               {item.title}
             </a>
           ))}
+          {loggerEnabled ? (
+            <>
+              <span
+                className="nav-link text-warning cursor-pointer"
+                onClick={disableLogger}
+              >
+                Exit Debug Mode
+              </span>
+              <span
+                className="nav-link text-warning cursor-pointer"
+                onClick={exportLogs}
+              >
+                Export Debug Data
+              </span>
+            </>
+          ) : (
+            <span
+              className="nav-link text-warning cursor-pointer"
+              onClick={enableLogger}
+            >
+              Debug Mode
+            </span>
+          )}
         </Nav>
         <span className="copyright ml-auto my-auto mr-2">{copyright}</span>
       </Row>

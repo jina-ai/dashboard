@@ -1,7 +1,7 @@
 import React from "react";
 import { Card, CardHeader, CardBody } from "shards-react";
 
-export default ({ readme, documentation }) => {
+export default function ReadMe({ readme, documentation }) {
   return (
     <Card className="readme-container mb-4">
       <CardHeader className="border-bottom d-flex flex-row">
@@ -28,4 +28,4 @@ export default ({ readme, documentation }) => {
       </CardBody>
     </Card>
   );
-};
+}

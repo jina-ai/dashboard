@@ -1,8 +1,10 @@
 import { EventEmitter } from "events";
+import _ from "lodash";
 import Dispatcher from "./dispatcher";
 import Constants from "./constants";
 import { parseYAML, formatForFlowchart, formatSeconds } from "../helpers";
 import api from "./api";
+import logger from "../logger";
 import propertyList from "../data/podProperties.json";
 import getSidebarNavItems from "../data/sidebar-nav-items";
 import exampleYAML from "../data/yaml";
@@ -104,10 +106,12 @@ function getInitialStore() {
       bytes: [],
     },
     selectedNode: null,
-    modalParams: null,
+    modalParams: {},
     currentTab: "logStream",
   };
 }
+
+if (window.location.hostname === "localhost") logger.enable();
 
 class Store extends EventEmitter {
   constructor() {
@@ -186,6 +190,7 @@ class Store extends EventEmitter {
   };
 
   initFlowChart = async (yamlSTRING) => {
+    logger.log("initFlowChart - yamlString", yamlSTRING);
     let flow;
     const { settings } = _store;
     const connectionString = `${settings.host}:${settings.port}${
@@ -199,6 +204,7 @@ class Store extends EventEmitter {
         let str = await api.getYAML(connectionString);
         flow = parseYAML(str);
       } catch (e) {
+        logger.log("initFlowChart - parseYAML[API] ERROR", e);
         return;
       }
     }
@@ -208,6 +214,8 @@ class Store extends EventEmitter {
     } catch (e) {
       canvas = {};
     }
+    logger.log("initFlowChart - flow", flow);
+    logger.log("initFlowChart - canvas", canvas);
     const parsed = formatForFlowchart(flow.data.pods, canvas);
     parsed.with = flow.data.with;
     _store.flowchart = parsed;
@@ -229,6 +237,8 @@ class Store extends EventEmitter {
   };
 
   handleLogConnectionStatus = (status, message) => {
+    logger.log("handleLogConnectionStatus - status", status);
+    logger.log("handleLogConnectionStatus - message", message);
     _store.loading = false;
     if (status === "connected") {
       _store.connected = true;
@@ -403,6 +413,7 @@ class Store extends EventEmitter {
   };
 
   importCustomYAML = (customYAML) => {
+    logger.log("importCustomYAML - customYAML", customYAML);
     this.initFlowChart(customYAML);
     this.closeModal();
     this.emit("update-flowchart");
@@ -415,6 +426,7 @@ class Store extends EventEmitter {
   };
 
   saveSettings = (settings) => {
+    logger.log("saveSettings - settings", settings);
     Object.keys(settings).forEach((key) => {
       localStorage.setItem(`preferences-${key}`, settings[key]);
     });
@@ -489,15 +501,15 @@ class Store extends EventEmitter {
   };
 
   showModal = (data) => {
-    const { modal, params } = data;
+    const { modal, modalParams } = data;
     _store.modal = modal;
-    _store.modalParams = params;
+    _store.modalParams = modalParams || {};
     this.emit("update-ui");
   };
 
   closeModal = () => {
     _store.modal = false;
-    _store.modalParams = "";
+    _store.modalParams = {};
     this.emit("update-ui");
   };
 
@@ -607,6 +619,10 @@ class Store extends EventEmitter {
 
   getIndexedLog = () => {
     return _store.logIndex;
+  };
+
+  getStoreCopy = () => {
+    return _.cloneDeep(_store);
   };
 }
 

@@ -1,6 +1,6 @@
 import React from "react";
 
-export default ({ rating, userRated, rate }) => {
+export default function StarRating({ rating, userRated, rate }) {
   const formatted = parseFloat(Math.round(rating * 10 || 0) / 10).toFixed(1);
   const stars = getStars(formatted, rate);
   return (
@@ -14,7 +14,7 @@ export default ({ rating, userRated, rate }) => {
       {stars}
     </span>
   );
-};
+}
 
 const getStars = (amount, rate) => {
   let stars = [];

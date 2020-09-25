@@ -23,3 +23,6 @@ hub-resources/config.js
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# for jetbrains IDE's
+.idea/

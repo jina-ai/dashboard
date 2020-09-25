@@ -26,7 +26,6 @@ import {
   serializeLogsToTextBlob,
 } from "../../helpers";
 import { saveAs } from "file-saver";
-
 const levels = [
   "INFO",
   "SUCCESS",
@@ -35,7 +34,6 @@ const levels = [
   "CRITICAL",
   "DEBUG",
 ] as const;
-
 const ROW_SIZE = 30;
 
 const fields = ["filename", "funcName", "msg", "name", "module", "pathname"];
@@ -46,6 +44,11 @@ const generateFormatFileName = (format: Format) =>
 
 type Format = "json" | "csv" | "txt";
 
+type Props = {
+  data: ProcessedLog[];
+  showLogDetails: (log: ProcessedLog) => void;
+};
+
 const itemKey = (index: number, data: { items: ProcessedLog[] }) =>
   data.items[index].id;
 
@@ -55,13 +58,7 @@ const arrayLikeToArray = (arrayLike: Readonly<any[]> | Set<any>) =>
 const toOption = (list: Readonly<any[]> | Set<any>) =>
   arrayLikeToArray(list).map((item) => ({ label: item, value: item }));
 
-type Props = {
-  data: ProcessedLog[];
-};
-
-const throttleSearchMS = 1000;
-
-function LogsTable({ data }: Props) {
+function LogsTable({ data, showLogDetails }: Props) {
   const [scrolledToBottom, setScrolledToBottom] = React.useState(true);
   const windowListRef = useRef<any>();
   const [selectedSources, setSelectedSources] = React.useState<any[]>([]);
@@ -78,10 +75,8 @@ function LogsTable({ data }: Props) {
   useEffect(() => {
     if (previousLength && previousLength! > 0) {
       const newLog = data[previousLength! - 1];
-      setPods((prevPods) => prevPods.add(newLog.pod));
       addAllAsync([newLog]);
       buffer.current.push(newLog);
-      console.log(buffer.current);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [previousLength, searchString]);
@@ -104,7 +99,7 @@ function LogsTable({ data }: Props) {
     () => {
       search(searchString);
     },
-    throttleSearchMS,
+    1000,
     [searchString]
   );
 
