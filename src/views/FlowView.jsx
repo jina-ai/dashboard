@@ -148,10 +148,10 @@ class FlowView extends React.Component {
     });
   };
 
-  loadExample = (example) => {
+  loadFlow = (flow) => {
     Dispatcher.dispatch({
-      actionType: Constants.LOAD_EXAMPLE,
-      payload: example,
+      actionType: Constants.LOAD_FLOW,
+      payload: flow,
     });
   };
 
@@ -172,7 +172,7 @@ class FlowView extends React.Component {
           </Row>
           <div className="flow-container d-flex flex-column flex-md-row">
             <Card className="chart-section-container p-1 mr-md-4 mb-4">
-              <FlowSelection loadExample={this.loadExample} />
+              <FlowSelection loadFlow={this.loadFlow} />
               <CommandBar
                 copyChart={this.copyChartAsYAML}
                 importChart={this.showImportModal}

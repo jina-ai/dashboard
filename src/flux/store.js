@@ -156,8 +156,8 @@ class Store extends EventEmitter {
       case Constants.LOG_OUT:
         this.logOut();
         break;
-      case Constants.LOAD_EXAMPLE:
-        this.loadExample(payload);
+      case Constants.LOAD_FLOW:
+        this.loadFlow(payload);
         break;
       case Constants.SHOW_POD_IN_FLOW:
         this.showPodByLabel(payload);
@@ -410,8 +410,8 @@ class Store extends EventEmitter {
     this.emit("update-flowchart");
   };
 
-  loadExample = (exampleName) => {
-    const flow = exampleYAML[exampleName];
+  loadFlow = (flowName) => {
+    const flow = exampleYAML[flowName];
     this.initFlowChart(flow);
     this.emit("update-flowchart");
   };
