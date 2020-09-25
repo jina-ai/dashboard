@@ -103,6 +103,7 @@
     "@types/react-select": "^3.0.19",
     "@types/react-virtualized-auto-sizer": "^1.0.0",
     "@types/react-window": "^1.8.2",
+    "@types/react-window-infinite-loader": "^1.0.3",
     "eslint-plugin-flowtype": "^5.2.0",
     "husky": "^4.2.5",
     "lint-staged": "^10.2.11",
