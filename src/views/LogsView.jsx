@@ -16,7 +16,7 @@ function LogsView() {
   const [logs, setLogs] = useState([]);
   function getData() {
     const newLogs = Store.getLogs();
-    setLogs(newLogs);
+    setLogs([...newLogs]);
   }
   useEffect(() => {
     Store.on("update-logs", getData);
