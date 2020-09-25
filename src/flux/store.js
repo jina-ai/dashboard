@@ -106,7 +106,7 @@ function getInitialStore() {
       bytes: [],
     },
     selectedNode: null,
-    modalParams: null,
+    modalParams: {},
     currentTab: "logStream",
   };
 }
@@ -503,15 +503,15 @@ class Store extends EventEmitter {
   };
 
   showModal = (data) => {
-    const { modal, params } = data;
+    const { modal, modalParams } = data;
     _store.modal = modal;
-    _store.modalParams = params;
+    _store.modalParams = modalParams || {};
     this.emit("update-ui");
   };
 
   closeModal = () => {
     _store.modal = false;
-    _store.modalParams = "";
+    _store.modalParams = {};
     this.emit("update-ui");
   };
 

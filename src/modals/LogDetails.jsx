@@ -1,6 +1,6 @@
 import React from "react";
-import { Button, Form } from "react-bootstrap";
 import ReactModal from "react-modal";
+import { Row, Col } from "react-bootstrap";
 const style = {
   overlay: {
     backgroundColor: "rgba(38, 50, 56, 0.5)",
@@ -21,8 +21,10 @@ const style = {
   },
 };
 
-export default ({ open, closeModal, importYAML }) => {
-  let inputRef;
+const hiddenKeys = ["msg", "unixTime"];
+
+export default ({ open, closeModal, modalParams }) => {
+  const log = modalParams.log || {};
   return (
     <ReactModal
       ariaHideApp={false}
@@ -36,7 +38,7 @@ export default ({ open, closeModal, importYAML }) => {
     >
       <div className="modal-header p-0">
         <h4>
-          <b>Import YAML</b>
+          <b>Log Details</b>
         </h4>
         <h4>
           <span className="float-right close-icon">
@@ -46,23 +48,32 @@ export default ({ open, closeModal, importYAML }) => {
           </span>
         </h4>
       </div>
-      <div className="modal-body px-0 pb-0">
-        <Form.Group>
-          <Form.Label>Custom YAML:</Form.Label>
-          <Form.Control
-            placeholder="Paste Here"
-            ref={(ref) => (inputRef = ref)}
-            as="textarea"
-            rows="10"
-          />
-        </Form.Group>
+      <div className="modal-body px-0 pb-0 pt-1">
+        <Row className="px-3">
+          <Col xs="3" className="border-bottom pb-1 px-0">
+            <span className="text-bold">msg</span>
+          </Col>
+          <Col xs="9" className="border-bottom pb-1 px-0">
+            {log.msg}
+          </Col>
+        </Row>
+        {Object.entries(log)
+          .filter(([key, value]) => !hiddenKeys.includes(key))
+          .map(([key, value]) =>
+            key === "msg" ? (
+              ""
+            ) : (
+              <Row className="px-3" key={key}>
+                <Col xs="3" className="border-bottom pb-1 px-0">
+                  <span className="text-bold">{key}</span>
+                </Col>
+                <Col xs="9" className="border-bottom pb-1 px-0">
+                  {JSON.stringify(value)}
+                </Col>
+              </Row>
+            )
+          )}
       </div>
-      <Button
-        className="btn-primary"
-        onClick={() => importYAML(inputRef.value)}
-      >
-        Continue
-      </Button>
     </ReactModal>
   );
 };

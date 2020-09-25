@@ -56,6 +56,7 @@ type Format = "json" | "csv" | "tsv" | "txt";
 type Props = {
   data: RawLog[];
   downloadLogs: (format: Format) => void;
+  showLogDetails: (log: any) => void;
 };
 
 const itemKey = (index: number, data: { items: RawLog[] }) =>
@@ -67,7 +68,7 @@ const arrayLikeToArray = (arrayLike: Readonly<any[]> | Set<any>) =>
 const toOption = (list: Readonly<any[]> | Set<any>) =>
   arrayLikeToArray(list).map((item) => ({ label: item, value: item }));
 
-function LogsTable({ data, downloadLogs }: Props) {
+function LogsTable({ data, downloadLogs, showLogDetails }: Props) {
   const [scrolledToBottom, setScrolledToBottom] = React.useState(true);
   const windowListRef = useRef<any>();
   const [selectedSources, setSelectedSources] = React.useState<any[]>([]);
@@ -179,6 +180,7 @@ function LogsTable({ data, downloadLogs }: Props) {
                 itemData={{
                   items: resultData,
                   columns: { firstCol, secondCol, thirdCol },
+                  showLogDetails: showLogDetails,
                 }}
                 ref={windowListRef}
               >

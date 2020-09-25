@@ -10,6 +10,7 @@ import ConnectionBanner from "../components/Common/ConnectionBanner";
 
 import PasteYAML from "../modals/PasteYAML";
 import WriteReview from "../modals/WriteReview";
+import LogDetails from "../modals/LogDetails";
 
 import logger from "../logger";
 
@@ -21,6 +22,7 @@ class IconSidebarLayout extends React.Component {
     this.state = {
       loggerEnabled: logger.isEnabled(),
       modal: Store.getModal(),
+      modalParams: Store.getModalParams(),
       loading: Store.isLoading(),
       banner: Store.getBanner(),
       connected: Store.getConnectionStatus(),
@@ -35,11 +37,12 @@ class IconSidebarLayout extends React.Component {
 
   getData = () => {
     const modal = Store.getModal();
+    const modalParams = Store.getModalParams();
     const loading = Store.isLoading();
     const banner = Store.getBanner();
     const connected = Store.getConnectionStatus();
     const loggerEnabled = logger.isEnabled();
-    this.setState({ modal, loading, banner, connected, loggerEnabled });
+    this.setState({ modal, loading, banner, connected, modalParams, loggerEnabled });
   };
 
   acceptCookies = () => {
@@ -61,8 +64,7 @@ class IconSidebarLayout extends React.Component {
   };
 
   submitReview = (content) => {
-    const params = Store.getModalParams();
-    const { imageId } = params;
+    const { imageId } = this.state.modalParams;
     Dispatcher.dispatch({
       actionType: Constants.POST_REVIEW,
       payload: { content, imageId },
@@ -109,6 +111,7 @@ class IconSidebarLayout extends React.Component {
       banner,
       connected,
       loading,
+      modalParams,
       loggerEnabled,
     } = this.state;
     const { children } = this.props;
@@ -137,6 +140,12 @@ class IconSidebarLayout extends React.Component {
             />
           </Col>
         </Row>
+        <LogDetails
+          open={modal === "logDetails"}
+          closeModal={this.closeModal}
+          submitReview={this.submitReview}
+          modalParams={modalParams}
+        />
         <PasteYAML
           open={modal === "import"}
           closeModal={this.closeModal}
