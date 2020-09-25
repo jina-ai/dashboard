@@ -27,22 +27,15 @@ export type RawLog = {
 };
 
 export type ProcessedLog = RawLog & {
-  pod: string;
   createdDate: Date;
   id: string;
 };
 
-function getPod(log: RawLog) {
-  const { processName } = log;
-  return processName.split("-")[0];
-}
-
 function transformLog(log: RawLog) {
-  const pod = getPod(log);
   const { created } = log;
   const createdDate = fromUnixTime(created);
   const id = nanoid();
-  return { ...log, createdDate, pod, id };
+  return { ...log, createdDate, id };
 }
 
 export { transformLog };
