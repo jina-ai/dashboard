@@ -26,6 +26,7 @@ import {
   serializeLogsToTextBlob,
 } from "../../helpers";
 import { saveAs } from "file-saver";
+
 const levels = [
   "INFO",
   "SUCCESS",
@@ -34,6 +35,7 @@ const levels = [
   "CRITICAL",
   "DEBUG",
 ] as const;
+
 const ROW_SIZE = 30;
 
 const fields = ["filename", "funcName", "msg", "name", "module", "pathname"];
@@ -42,11 +44,7 @@ const miniSearchOptions = { fields };
 const generateFormatFileName = (format: Format) =>
   `jina-logs-${new Date()}.${format}`;
 
-type Format = "json" | "csv" | "tsv" | "txt";
-
-type Props = {
-  data: ProcessedLog[];
-};
+type Format = "json" | "csv" | "txt";
 
 const itemKey = (index: number, data: { items: ProcessedLog[] }) =>
   data.items[index].id;
@@ -57,12 +55,16 @@ const arrayLikeToArray = (arrayLike: Readonly<any[]> | Set<any>) =>
 const toOption = (list: Readonly<any[]> | Set<any>) =>
   arrayLikeToArray(list).map((item) => ({ label: item, value: item }));
 
+type Props = {
+  data: ProcessedLog[];
+};
+
+const throttleSearchMS = 1000;
+
 function LogsTable({ data }: Props) {
   const [scrolledToBottom, setScrolledToBottom] = React.useState(true);
   const windowListRef = useRef<any>();
-  const [pods, setPods] = React.useState<Set<string>>(new Set());
   const [selectedSources, setSelectedSources] = React.useState<any[]>([]);
-  const [selectedPods, setSelectedPods] = React.useState<any[]>([]);
   const [selectedLevels, setSelectedLevels] = React.useState<
     { value: ProcessedLog["levelname"] }[]
   >([]);
@@ -90,7 +92,6 @@ function LogsTable({ data }: Props) {
     applyFilters(result as any, {
       levelname: selectedLevels.map(({ value }) => value),
       name: selectedSources.map(({ value }) => value),
-      pod: selectedPods.map(({ value }) => value),
     })
   );
   const sources = data.reduce((acc, curr) => acc.add(curr.name), new Set());
@@ -103,7 +104,7 @@ function LogsTable({ data }: Props) {
     () => {
       search(searchString);
     },
-    1000,
+    throttleSearchMS,
     [searchString]
   );
 
@@ -112,12 +113,6 @@ function LogsTable({ data }: Props) {
       <Card.Header className="p-3">
         <Row>
           <Col md="8">
-            <MultiFilterSelect
-              options={toOption(pods)}
-              onFilterChange={setSelectedPods}
-              className="logstream-select mb-2 mr-0 mb-md-0 mr-md-2"
-              placeholder="All Pods"
-            />
             <MultiFilterSelect
               options={toOption(sources)}
               onFilterChange={setSelectedSources}

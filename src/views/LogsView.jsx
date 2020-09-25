@@ -8,12 +8,9 @@ import { Store } from "../flux";
 
 function LogsView() {
   const [logs, setLogs] = useState([]);
-  const [flowPods, setFlowPods] = useState();
   function getData() {
     const newLogs = Store.getLogs();
-    const { nodes } = Store.getFlowchart();
     setLogs(newLogs);
-    setFlowPods(Object.keys(nodes));
   }
   useEffect(() => {
     Store.on("update-logs", getData);
@@ -37,7 +34,7 @@ function LogsView() {
             <LogLevelPieChart />
           </Col>
         </Row>
-        <LogsTable pods={flowPods} data={logs} />
+        <LogsTable data={logs} />
       </div>
     </Container>
   );
