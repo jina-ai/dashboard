@@ -202,6 +202,7 @@ function LogsTable({ data, showLogDetails }: Props) {
                 itemData={{
                   items: resultData,
                   columns: { firstCol, secondCol, thirdCol },
+                  showLogDetails,
                 }}
                 ref={windowListRef}
               >
