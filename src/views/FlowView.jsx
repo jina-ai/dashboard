@@ -11,7 +11,7 @@ import CommandBar from "../components/FlowChart/CommandBar";
 import Sidebar from "../components/FlowChart/Sidebar";
 import CustomNode from "../components/FlowChart/ChartNode";
 import CustomPort from "../components/FlowChart/NodePort";
-import ExampleSelection from "../components/FlowChart/ExampleSelection";
+import FlowSelection from "../components/FlowChart/FlowSelection";
 import { formatAsYAML, copyToClipboard } from "../helpers";
 
 class FlowView extends React.Component {
@@ -172,7 +172,7 @@ class FlowView extends React.Component {
           </Row>
           <div className="flow-container d-flex flex-column flex-md-row">
             <Card className="chart-section-container p-1 mr-md-4 mb-4">
-              <ExampleSelection loadExample={this.loadExample} />
+              <FlowSelection loadExample={this.loadExample} />
               <CommandBar
                 copyChart={this.copyChartAsYAML}
                 importChart={this.showImportModal}

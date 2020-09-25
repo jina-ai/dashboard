@@ -555,11 +555,11 @@ code {
   z-index: 5;
 }
 
-.example-selection {
+.flow-selection {
   position: absolute;
   right: 0;
   top: 0;
-  padding: 1em;
+  margin: 1em;
   z-index: 5;
 }
 
