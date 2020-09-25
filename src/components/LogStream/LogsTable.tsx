@@ -26,6 +26,8 @@ import {
   serializeLogsToTextBlob,
 } from "../../helpers";
 import { saveAs } from "file-saver";
+import InfiniteLoader from "react-window-infinite-loader";
+
 const levels = [
   "INFO",
   "SUCCESS",
@@ -38,6 +40,7 @@ const ROW_SIZE = 30;
 
 const fields = ["filename", "funcName", "msg", "name", "module", "pathname"];
 const miniSearchOptions = { fields };
+const isItemLoaded = (index: number) => false;
 
 const generateFormatFileName = (format: Format) =>
   `jina-logs-${new Date()}.${format}`;
@@ -46,6 +49,7 @@ type Format = "json" | "csv" | "tsv" | "txt";
 
 type Props = {
   data: ProcessedLog[];
+  loadMoreItems: any;
 };
 
 const itemKey = (index: number, data: { items: ProcessedLog[] }) =>
@@ -57,12 +61,10 @@ const arrayLikeToArray = (arrayLike: Readonly<any[]> | Set<any>) =>
 const toOption = (list: Readonly<any[]> | Set<any>) =>
   arrayLikeToArray(list).map((item) => ({ label: item, value: item }));
 
-function LogsTable({ data }: Props) {
+function LogsTable({ data, loadMoreItems }: Props) {
   const [scrolledToBottom, setScrolledToBottom] = React.useState(true);
   const windowListRef = useRef<any>();
-  const [pods, setPods] = React.useState<Set<string>>(new Set());
   const [selectedSources, setSelectedSources] = React.useState<any[]>([]);
-  const [selectedPods, setSelectedPods] = React.useState<any[]>([]);
   const [selectedLevels, setSelectedLevels] = React.useState<
     { value: ProcessedLog["levelname"] }[]
   >([]);
@@ -76,29 +78,30 @@ function LogsTable({ data }: Props) {
   useEffect(() => {
     if (previousLength && previousLength! > 0) {
       const newLog = data[previousLength! - 1];
-      setPods((prevPods) => prevPods.add(newLog.pod));
-      addAllAsync([newLog]);
+      // addAllAsync([newLog]);
       buffer.current.push(newLog);
-      console.log(buffer.current);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [previousLength, searchString]);
 
   const unfiltered = searchString ? searchResults : data;
 
-  const resultData = (unfiltered || []).filter((result) =>
-    applyFilters(result as any, {
-      levelname: selectedLevels.map(({ value }) => value),
-      name: selectedSources.map(({ value }) => value),
-      pod: selectedPods.map(({ value }) => value),
-    })
-  );
+  // const resultData = unfiltered![0]
+  //   ? (unfiltered || []).filter((result) =>
+  //       applyFilters(result as any, {
+  //         levelname: selectedLevels.map(({ value }) => value),
+  //         name: selectedSources.map(({ value }) => value),
+  //         pod: selectedPods.map(({ value }) => value),
+  //       })
+  //     )
+  //   : unfiltered;
+  const resultData = data;
   const sources = data.reduce((acc, curr) => acc.add(curr.name), new Set());
   useEffect(() => {
     if (windowListRef.current && scrolledToBottom) {
-      windowListRef.current.scrollToItem(resultData.length);
+      windowListRef.current.scrollToItem(resultData!.length);
     }
-  }, [resultData.length, scrolledToBottom]);
+  }, [resultData!.length, scrolledToBottom]);
   useDebounce(
     () => {
       search(searchString);
@@ -112,12 +115,6 @@ function LogsTable({ data }: Props) {
       <Card.Header className="p-3">
         <Row>
           <Col md="8">
-            <MultiFilterSelect
-              options={toOption(pods)}
-              onFilterChange={setSelectedPods}
-              className="logstream-select mb-2 mr-0 mb-md-0 mr-md-2"
-              placeholder="All Pods"
-            />
             <MultiFilterSelect
               options={toOption(sources)}
               onFilterChange={setSelectedSources}
@@ -185,7 +182,7 @@ function LogsTable({ data }: Props) {
         {!scrolledToBottom && (
           <div
             onClick={() =>
-              windowListRef.current.scrollToItem(resultData.length)
+              windowListRef.current.scrollToItem(resultData!.length)
             }
             className={`back-to-bottom active`}
           >
@@ -198,25 +195,37 @@ function LogsTable({ data }: Props) {
             const secondCol = 300;
             const thirdCol = width - (firstCol + secondCol);
             return (
-              <List
-                onScroll={({ scrollOffset }) => {
-                  setScrolledToBottom(
-                    (scrollOffset + height) / ROW_SIZE - resultData.length === 0
-                  );
-                }}
-                height={height}
-                width={width}
-                itemCount={resultData.length}
-                itemSize={ROW_SIZE}
-                itemKey={itemKey}
-                itemData={{
-                  items: resultData,
-                  columns: { firstCol, secondCol, thirdCol },
-                }}
-                ref={windowListRef}
+              <InfiniteLoader
+                isItemLoaded={isItemLoaded}
+                itemCount={data.length + 1}
+                loadMoreItems={loadMoreItems}
+                threshold={30}
               >
-                {LogItem}
-              </List>
+                {({ onItemsRendered, ref }) => (
+                  <List
+                    onScroll={({ scrollOffset }) => {
+                      setScrolledToBottom(
+                        (scrollOffset + height) / ROW_SIZE -
+                          resultData!.length ===
+                          0
+                      );
+                    }}
+                    onItemsRendered={onItemsRendered}
+                    height={height}
+                    width={width}
+                    itemCount={data.length}
+                    itemSize={ROW_SIZE}
+                    itemKey={itemKey}
+                    itemData={{
+                      items: data,
+                      columns: { firstCol, secondCol, thirdCol },
+                    }}
+                    ref={ref}
+                  >
+                    {LogItem}
+                  </List>
+                )}
+              </InfiniteLoader>
             );
           }}
         </AutoSizer>
