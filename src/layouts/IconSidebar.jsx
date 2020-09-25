@@ -42,7 +42,14 @@ class IconSidebarLayout extends React.Component {
     const banner = Store.getBanner();
     const connected = Store.getConnectionStatus();
     const loggerEnabled = logger.isEnabled();
-    this.setState({ modal, loading, banner, connected, modalParams, loggerEnabled });
+    this.setState({
+      modal,
+      loading,
+      banner,
+      connected,
+      modalParams,
+      loggerEnabled,
+    });
   };
 
   acceptCookies = () => {

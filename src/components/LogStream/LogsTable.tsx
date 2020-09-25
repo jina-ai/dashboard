@@ -8,6 +8,7 @@ import { FixedSizeList as List } from "react-window";
 import { MultiFilterSelect } from "../Common/MultiFilterSelect";
 import { applyFilters } from "./useFilters";
 import { LogItem } from "./LogItem";
+import { ProcessedLog } from "../../flux/tranformLog";
 import {
   Card,
   Row,
@@ -18,7 +19,13 @@ import {
   Dropdown,
 } from "react-bootstrap";
 import AutoSizer from "react-virtualized-auto-sizer";
-
+import { useDebounce } from "../../hooks/useDebounce";
+import {
+  serializeLogsToCSVBlob,
+  serializeLogsToJSONBlob,
+  serializeLogsToTextBlob,
+} from "../../helpers";
+import { saveAs } from "file-saver";
 const levels = [
   "INFO",
   "SUCCESS",
@@ -27,39 +34,22 @@ const levels = [
   "CRITICAL",
   "DEBUG",
 ] as const;
-type Level = typeof levels[number];
-
-type RawLog = {
-  created: number;
-  filename: string;
-  funcName: string;
-  levelname: Level;
-  lineno: number;
-  module: string;
-  msg: string;
-  name: string;
-  pathname: string;
-  process: number;
-  processName: string;
-  thread: number;
-  threadName: string;
-  id: string;
-};
-
 const ROW_SIZE = 30;
 
 const fields = ["filename", "funcName", "msg", "name", "module", "pathname"];
 const miniSearchOptions = { fields };
 
-type Format = "json" | "csv" | "tsv" | "txt";
+const generateFormatFileName = (format: Format) =>
+  `jina-logs-${new Date()}.${format}`;
+
+type Format = "json" | "csv" | "txt";
 
 type Props = {
-  data: RawLog[];
-  downloadLogs: (format: Format) => void;
-  showLogDetails: (log: any) => void;
+  data: ProcessedLog[];
+  showLogDetails: (log: ProcessedLog) => void;
 };
 
-const itemKey = (index: number, data: { items: RawLog[] }) =>
+const itemKey = (index: number, data: { items: ProcessedLog[] }) =>
   data.items[index].id;
 
 const arrayLikeToArray = (arrayLike: Readonly<any[]> | Set<any>) =>
@@ -68,23 +58,28 @@ const arrayLikeToArray = (arrayLike: Readonly<any[]> | Set<any>) =>
 const toOption = (list: Readonly<any[]> | Set<any>) =>
   arrayLikeToArray(list).map((item) => ({ label: item, value: item }));
 
-function LogsTable({ data, downloadLogs, showLogDetails }: Props) {
+function LogsTable({ data, showLogDetails }: Props) {
   const [scrolledToBottom, setScrolledToBottom] = React.useState(true);
   const windowListRef = useRef<any>();
   const [selectedSources, setSelectedSources] = React.useState<any[]>([]);
-  const [selectedLevels, setSelectedLevels] = React.useState<any[]>([]);
+  const [selectedLevels, setSelectedLevels] = React.useState<
+    { value: ProcessedLog["levelname"] }[]
+  >([]);
   const [searchString, setSearchString] = React.useState("");
   const { search, searchResults, addAllAsync } = useMiniSearch(
     data,
     miniSearchOptions
   );
+  const buffer = useRef<any[]>([]);
   const previousLength = usePrevious(data.length);
   useEffect(() => {
     if (previousLength && previousLength! > 0) {
-      addAllAsync([data[previousLength! - 1]]);
+      const newLog = data[previousLength! - 1];
+      addAllAsync([newLog]);
+      buffer.current.push(newLog);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [previousLength]);
+  }, [previousLength, searchString]);
 
   const unfiltered = searchString ? searchResults : data;
 
@@ -100,6 +95,13 @@ function LogsTable({ data, downloadLogs, showLogDetails }: Props) {
       windowListRef.current.scrollToItem(resultData.length);
     }
   }, [resultData.length, scrolledToBottom]);
+  useDebounce(
+    () => {
+      search(searchString);
+    },
+    1000,
+    [searchString]
+  );
 
   return (
     <Card className="mb-4">
@@ -123,13 +125,34 @@ function LogsTable({ data, downloadLogs, showLogDetails }: Props) {
               title="Download Logs"
               id="bg-nested-dropdown"
             >
-              <Dropdown.Item onClick={() => downloadLogs("csv")}>
+              <Dropdown.Item
+                onClick={() =>
+                  saveAs(
+                    serializeLogsToCSVBlob(data),
+                    generateFormatFileName("csv")
+                  )
+                }
+              >
                 Download as CSV
               </Dropdown.Item>
-              <Dropdown.Item onClick={() => downloadLogs("json")}>
+              <Dropdown.Item
+                onClick={() =>
+                  saveAs(
+                    serializeLogsToJSONBlob(data),
+                    generateFormatFileName("json")
+                  )
+                }
+              >
                 Download as JSON
               </Dropdown.Item>
-              <Dropdown.Item onClick={() => downloadLogs("txt")}>
+              <Dropdown.Item
+                onClick={() =>
+                  saveAs(
+                    serializeLogsToTextBlob(data),
+                    generateFormatFileName("txt")
+                  )
+                }
+              >
                 Download as TXT
               </Dropdown.Item>
             </DropdownButton>
@@ -139,7 +162,6 @@ function LogsTable({ data, downloadLogs, showLogDetails }: Props) {
               placeholder="search logs..."
               value={searchString}
               onChange={(e) => {
-                search(e.target.value as string);
                 setSearchString(e.target.value);
               }}
             />
@@ -162,8 +184,8 @@ function LogsTable({ data, downloadLogs, showLogDetails }: Props) {
         )}
         <AutoSizer>
           {({ height, width }) => {
-            const firstCol = 200;
-            const secondCol = 200;
+            const firstCol = 300;
+            const secondCol = 300;
             const thirdCol = width - (firstCol + secondCol);
             return (
               <List
@@ -180,7 +202,7 @@ function LogsTable({ data, downloadLogs, showLogDetails }: Props) {
                 itemData={{
                   items: resultData,
                   columns: { firstCol, secondCol, thirdCol },
-                  showLogDetails: showLogDetails,
+                  showLogDetails,
                 }}
                 ref={windowListRef}
               >
