@@ -54,6 +54,7 @@
     "react-virtualized": "^9.21.2",
     "react-virtualized-auto-sizer": "^1.0.2",
     "react-window": "^1.8.5",
+    "react-window-infinite-loader": "^1.0.5",
     "resize-observer-polyfill": "^1.5.1",
     "shards-react": "^1.0.3",
     "styled-components": "^5.1.1",
