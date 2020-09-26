@@ -20,7 +20,7 @@ function LogsView() {
   }
   useEffect(() => {
     Store.on("update-logs", getData);
-    return () => Store.removeListener("update-logs");
+    return () => Store.removeListener("update-logs", getData);
   }, []);
   return (
     <Container fluid className="main-content-container px-0">
