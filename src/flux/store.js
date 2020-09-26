@@ -6,7 +6,7 @@ import { parseYAML, formatForFlowchart, formatSeconds } from "../helpers";
 import api from "./api";
 import propertyList from "../data/podProperties.json";
 import getSidebarNavItems from "../data/sidebar-nav-items";
-import exampleYAML from "../data/yaml";
+import exampleFlows from "../data/exampleFlows";
 
 let _store;
 
@@ -20,6 +20,51 @@ const CHART_LEVELS = [
   "CRITICAL",
   "DEBUG",
 ];
+
+function getParsedExamples(){
+  const flows = {};
+
+  Object.entries(exampleFlows).forEach(([id,flow])=>{
+    const parsed = parseYAML(flow.yaml);
+    let canvas;
+    try {
+      canvas = parsed.data.with.board.canvas;
+    } catch (e) {
+      canvas = {};
+    }
+    const formatted = formatForFlowchart(parsed.data.pods, canvas);
+    flows[id] = {
+      ...flow,
+      flow: formatted
+    }
+  })
+
+  return flows;
+}
+
+function getInitialFlow() {
+  return {
+    selected: {},
+    hovered: {},
+    scale: 1,
+    nodes: {
+      gateway: {
+        id: "gateway",
+        label: "gateway",
+        ports: {
+          outPort: {
+            id: "outPort",
+            type: "output",
+          },
+        },
+        properties: {},
+        position: { x: 629, y: 72 },
+      },
+    },
+    links: {},
+    offset: { x: 0, y: 0 },
+  };
+}
 
 function getInitialLevelOccurences() {
   let occurences = {
@@ -52,27 +97,15 @@ function getInitialStore() {
     modal: false,
     menuVisible: false,
     navItems: getSidebarNavItems(),
-    flowchart: {
-      selected: {},
-      hovered: {},
-      scale: 1,
-      nodes: {
-        gateway: {
-          id: "gateway",
-          label: "gateway",
-          ports: {
-            outPort: {
-              id: "outPort",
-              type: "output",
-            },
-          },
-          properties: {},
-          position: { x: 629, y: 72 },
-        },
+    flows: {
+      blank: {
+        name: "Empty Flow",
+        type: "user-generated",
+        flow: getInitialFlow(),
       },
-      links: {},
-      offset: { x: 0, y: 0 },
+      ...getParsedExamples(),
     },
+    selectedFlow: "blank",
     logs: [],
     logSources: {},
     logLevels: {},
@@ -170,6 +203,8 @@ class Store extends EventEmitter {
     this.clearIntervals();
     _store = getInitialStore();
 
+    console.log("store:", _store);
+
     await this.initFlowChart();
     this.initLogStream();
     this.initCharts();
@@ -187,14 +222,14 @@ class Store extends EventEmitter {
 
   initFlowChart = async (yamlSTRING) => {
     let flow;
-    const { settings } = _store;
-    const connectionString = `${settings.host}:${settings.port}${
-      settings.yaml.startsWith("/") ? settings.yaml : "/" + settings.yaml
-    }`;
 
     if (yamlSTRING) {
       flow = parseYAML(yamlSTRING);
     } else {
+      const { settings } = _store;
+      const connectionString = `${settings.host}:${settings.port}${
+        settings.yaml.startsWith("/") ? settings.yaml : "/" + settings.yaml
+      }`;
       try {
         let str = await api.getYAML(connectionString);
         flow = parseYAML(str);
@@ -202,12 +237,14 @@ class Store extends EventEmitter {
         return;
       }
     }
+
     let canvas;
     try {
       canvas = flow.data.with.board.canvas;
     } catch (e) {
       canvas = {};
     }
+
     const parsed = formatForFlowchart(flow.data.pods, canvas);
     parsed.with = flow.data.with;
     _store.flowchart = parsed;
@@ -410,9 +447,8 @@ class Store extends EventEmitter {
     this.emit("update-flowchart");
   };
 
-  loadFlow = (flowName) => {
-    const flow = exampleYAML[flowName];
-    this.initFlowChart(flow);
+  loadFlow = (flowId) => {
+    _store.selectedFlow = flowId;
     this.emit("update-flowchart");
   };
 
@@ -600,7 +636,15 @@ class Store extends EventEmitter {
   };
 
   getFlowchart = () => {
-    return _store.flowchart;
+    return _store.flows[_store.selectedFlow];
+  };
+
+  getFlowOptions = () => {
+    return _store.flows;
+  };
+
+  getSelectedFlowId = () => {
+    return _store.selectedFlow;
   };
 
   getAvailableProperties = () => {

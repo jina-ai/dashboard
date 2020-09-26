@@ -17,8 +17,16 @@ import { formatAsYAML, copyToClipboard } from "../helpers";
 class FlowView extends React.Component {
   constructor(props) {
     super(props);
-    const chart = Store.getFlowchart();
-    this.state = { chart, showOverlay: false };
+    const { flow: chart, name } = Store.getFlowchart();
+    const selectedFlowId = Store.getSelectedFlowId();
+    const flowOptions = Store.getFlowOptions();
+    this.state = {
+      chart,
+      name,
+      selectedFlowId,
+      flowOptions,
+      showOverlay: false,
+    };
 
     this.stateActionCallbacks = Object.keys(actions).reduce((obj, key, idx) => {
       obj[key] = (...args) => {
@@ -74,8 +82,10 @@ class FlowView extends React.Component {
   };
 
   getData = () => {
-    const chart = Store.getFlowchart();
-    this.updateChart(chart);
+    const { flow: chart, name } = Store.getFlowchart();
+    const selectedFlowId = Store.getSelectedFlowId();
+    const flowOptions = Store.getFlowOptions();
+    this.setState({ chart, name, selectedFlowId, flowOptions });
   };
 
   updateNode = (node, callback) => {
@@ -156,7 +166,7 @@ class FlowView extends React.Component {
   };
 
   render = () => {
-    const { chart, showOverlay } = this.state;
+    const { chart,flowOptions,selectedFlowId, showOverlay } = this.state;
     return (
       <Container fluid className="main-content-container px-0">
         <div className="px-4">
@@ -172,7 +182,7 @@ class FlowView extends React.Component {
           </Row>
           <div className="flow-container d-flex flex-column flex-md-row">
             <Card className="chart-section-container p-1 mr-md-4 mb-4">
-              <FlowSelection loadFlow={this.loadFlow} />
+              <FlowSelection loadFlow={this.loadFlow} flowOptions={flowOptions} selectedFlowId={selectedFlowId}/>
               <CommandBar
                 copyChart={this.copyChartAsYAML}
                 importChart={this.showImportModal}
