@@ -32,7 +32,6 @@ class PackageView extends React.Component {
   }
 
   componentDidMount = () => {
-    this.getData();
     this.getImageData();
   };
 
