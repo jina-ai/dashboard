@@ -153,52 +153,59 @@ export function formatForFlowchart(pods, canvas) {
 
   return formatted;
 }
+const getNodeLabelsByPortId = ({ from, to }, nodes) => ({
+  [from.portId]: nodes[from.nodeId].label || nodes[from.nodeId].properties.name,
+  [to.portId]: nodes[to.nodeId].label || nodes[to.nodeId].properties.name,
+});
+const decodePropValue = (propName, propValue) =>
+  propertyTypes[propName] === "bool" ? propValue === "true" : propValue;
+const unpackIfLengthOne = (arr) =>
+  Array.isArray(arr) && arr.length === 1 ? arr[0] : arr;
 
 export function formatAsYAML(chart) {
-  let output = {
-    with: chart.with || {},
-    pods: {},
-  };
-  output.with.board = { canvas: {} };
+  console.log("formatAsYAML input: ", chart);
+  const { with: chartWith, nodes, links } = chart;
 
-  Object.keys(chart.nodes).forEach((id) => {
-    let node = chart.nodes[id];
-    node.label = node.label || node.properties.name;
-    if (node.properties.name) delete node.properties.name;
-  });
+  const needsByPodLabel = Object.values(links).reduce((acc, curr) => {
+    const nodeLabelsByPortId = getNodeLabelsByPortId(curr, nodes);
+    const neededBy = nodeLabelsByPortId.outPort;
+    const needs = nodeLabelsByPortId.inPort;
 
-  Object.keys(chart.nodes).forEach((id) => {
-    const node = chart.nodes[id];
+    if (!acc[neededBy]) {
+      acc[neededBy] = [];
+    }
+    acc[neededBy].push(needs);
+    return acc;
+  }, {});
 
-    if (!node.label) return;
+  const pods = Object.values(nodes).reduce((acc, node) => {
+    const { label } = node;
+    if (!label) return acc;
 
-    output.pods[node.label] = {};
+    const podProperties = Object.entries(node.properties).reduce(
+      (acc, [key, propValue]) => {
+        acc[key] = decodePropValue(key, propValue);
+        return acc;
+      },
+      {}
+    );
+    if (needsByPodLabel[label]) {
+      podProperties.needs = unpackIfLengthOne(needsByPodLabel[label]);
+    }
 
-    Object.keys(node.properties).forEach((propId) => {
-      let type = propertyTypes[propId];
-      if (type === "bool") {
-        output.pods[node.label][propId] =
-          String(node.properties[propId]) === "true";
-      } else if (type === "int")
-        output.pods[node.label][propId] = parseInt(node.properties[propId]);
-      else output.pods[node.label][propId] = node.properties[propId];
-    });
-    output.with.board.canvas[node.label] = {
-      x: node.position.x,
-      y: node.position.y,
-    };
-  });
-  Object.keys(chart.links).forEach((id) => {
-    const link = chart.links[id];
-    const nodeFrom = chart.nodes[link.from.nodeId].label;
-    const nodeTo = chart.nodes[link.to.nodeId].label;
-    if (!nodeFrom || !nodeTo) return;
-    if (output.pods[nodeTo].needs) {
-      if (!Array.isArray(output.pods[nodeTo].needs))
-        output.pods[nodeTo].needs = [output.pods[nodeTo].needs];
-      output.pods[nodeTo].needs.push(nodeFrom);
-    } else output.pods[nodeTo].needs = nodeFrom;
-  });
+    acc[label] = { ...podProperties };
+    return acc;
+  }, {});
+
+  const canvas = Object.values(nodes).reduce((acc, node) => {
+    const {
+      position: { x, y },
+    } = node;
+    acc[node.label] = { x, y };
+    return acc;
+  }, {});
+
+  const output = { with: { ...chartWith, board: { canvas } }, pods };
   return `!Flow\n${YAML.stringify(output)}`;
 }
 
