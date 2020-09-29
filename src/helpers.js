@@ -168,8 +168,8 @@ export function formatAsYAML(chart) {
 
   const needsByPodLabel = Object.values(links).reduce((acc, curr) => {
     const nodeLabelsByPortId = getNodeLabelsByPortId(curr, nodes);
-    const neededBy = nodeLabelsByPortId.outPort;
-    const needs = nodeLabelsByPortId.inPort;
+    const needs = nodeLabelsByPortId.outPort;
+    const neededBy = nodeLabelsByPortId.inPort;
 
     if (!acc[neededBy]) {
       acc[neededBy] = [];
