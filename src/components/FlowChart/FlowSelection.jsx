@@ -6,6 +6,7 @@ export default function FlowSelection({
   loadFlow,
   selectedFlowId,
   createNewFlow,
+  connected,
 }) {
   return (
     <Dropdown className="flow-selection">
@@ -17,8 +18,8 @@ export default function FlowSelection({
         <Dropdown.Header className="text-uppercase">Your Flows</Dropdown.Header>
         {Object.entries(flowOptions)
           .filter(([id, flow]) => flow.type !== "example")
-          .map(([flowId, flow]) => (
-            <Dropdown.Item onClick={() => loadFlow(flowId)}>
+          .map(([flowId, flow], idx) => (
+            <Dropdown.Item onClick={() => loadFlow(flowId)} key={idx}>
               {selectedFlowId === flowId ? (
                 <i className="material-icons text-primary">
                   radio_button_checked
@@ -27,13 +28,19 @@ export default function FlowSelection({
                 <i className="material-icons">radio_button_unchecked</i>
               )}
               {flow.name}
+              {flow.type === "remote" &&
+                (connected ? (
+                  <i className="material-icons ml-2 text-success">wifi</i>
+                ) : (
+                  <i className="material-icons ml-2 text-warning">wifi_off</i>
+                ))}
             </Dropdown.Item>
           ))}
         <Dropdown.Header className="text-uppercase">Examples</Dropdown.Header>
         {Object.entries(flowOptions)
           .filter(([id, flow]) => flow.type === "example")
-          .map(([flowId, flow]) => (
-            <Dropdown.Item onClick={() => loadFlow(flowId)}>
+          .map(([flowId, flow], idx) => (
+            <Dropdown.Item onClick={() => loadFlow(flowId)} key={idx}>
               {selectedFlowId === flowId ? (
                 <i className="material-icons text-primary">
                   radio_button_checked

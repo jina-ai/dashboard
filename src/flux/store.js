@@ -1,12 +1,15 @@
 import { EventEmitter } from "events";
-import { nanoid } from "nanoid";
+import _ from "lodash";
 import Dispatcher from "./dispatcher";
+import { nanoid } from "nanoid";
 import Constants from "./constants";
 import { parseYAML, formatForFlowchart, formatSeconds } from "../helpers";
 import api from "./api";
+import logger from "../logger";
 import propertyList from "../data/podProperties.json";
 import getSidebarNavItems from "../data/sidebar-nav-items";
 import exampleFlows from "../data/exampleFlows";
+import { transformLog } from "./tranformLog";
 
 let _store;
 
@@ -137,10 +140,12 @@ function getInitialStore() {
       bytes: [],
     },
     selectedNode: null,
-    modalParams: null,
+    modalParams: {},
     currentTab: "logStream",
   };
 }
+
+if (window.location.hostname === "localhost") logger.enable();
 
 class Store extends EventEmitter {
   constructor() {
@@ -226,27 +231,15 @@ class Store extends EventEmitter {
     if (this.updateTaskInterval) clearInterval(this.updateTaskInterval);
   };
 
-  initFlowChart = async (yamlSTRING) => {
+  initFlowChart = async () => {
     let flow;
-    let name;
-    let type;
-    let id;
 
-    if (yamlSTRING) {
-      flow = parseYAML(yamlSTRING);
-      name = "Imported Flow";
-      type = "user-generated";
-      id = nanoid();
-    } else {
-      try {
-        let str = await api.getYAML(_store.settings);
-        flow = parseYAML(str);
-        type = "remote";
-        name = "Connected Flow";
-        id = "connected_flow";
-      } catch (e) {
-        return;
-      }
+    try {
+      let str = await api.getYAML(_store.settings);
+      flow = parseYAML(str);
+    } catch (e) {
+      logger.log("initFlowChart - parseYAML[API] ERROR", e);
+      return;
     }
 
     let canvas;
@@ -256,11 +249,23 @@ class Store extends EventEmitter {
       canvas = {};
     }
 
+    logger.log("initFlowChart - flow", flow);
+    logger.log("initFlowChart - canvas", canvas);
+
     const parsed = formatForFlowchart(flow.data.pods, canvas);
     parsed.with = flow.data.with;
 
-    _store.flows[id] = { flow: parsed, name, type };
-    _store.selectedFlow = id;
+    logger.log("initFlowChart - parsed", parsed);
+
+    let flows = {};
+    flows.connectedFlow = {
+      flow: parsed,
+      name: "Connected Flow",
+      type: "remote",
+    };
+    _store.flows = { ...flows, ..._store.flows };
+    _store.selectedFlow = "connectedFlow";
+
     this.emit("update-ui");
     this.emit("update-flowchart");
   };
@@ -279,6 +284,8 @@ class Store extends EventEmitter {
   };
 
   handleLogConnectionStatus = (status, message) => {
+    logger.log("handleLogConnectionStatus - status", status);
+    logger.log("handleLogConnectionStatus - message", message);
     _store.loading = false;
     if (status === "connected") {
       _store.connected = true;
@@ -290,15 +297,13 @@ class Store extends EventEmitter {
   };
 
   handleNewLog = (message) => {
-    const { data: log } = message;
-    const id = nanoid();
+    const { data } = message;
+    const log = transformLog(data);
 
     log.unixTime = parseInt(log.created);
     log.timestamp = new Date(log.unixTime * 1000);
     log.formattedTimestamp = log.timestamp.toLocaleString();
     log.idx = _store.logs.length;
-    log.id = id;
-
     const { process, name, levelname, unixTime } = log;
 
     _store.logs.push(log);
@@ -455,7 +460,8 @@ class Store extends EventEmitter {
   };
 
   importCustomYAML = (customYAML) => {
-    this.initFlowChart(customYAML);
+    logger.log("importCustomYAML - customYAML", customYAML);
+    this.createNewFlow(customYAML);
     this.closeModal();
     this.emit("update-flowchart");
   };
@@ -470,20 +476,25 @@ class Store extends EventEmitter {
     this.emit("update-flowchart");
   };
 
-  createNewFlow = () => {
+  createNewFlow = (customYAML) => {
+    let isImported;
+    if (customYAML) isImported = true;
+
+    let prefixString = `${isImported ? "Imported" : "Custom"} Flow`;
+
     let userFlows = Object.entries(_store.flows)
-      .filter(([id, flow]) => flow.name.startsWith("Custom Flow "))
+      .filter(([id, flow]) => flow.name.startsWith(prefixString))
       .map(([id, flow]) => flow);
 
     const flowNumbers = userFlows
-      .map((f) => parseInt(f.name.substring(12)) || 0)
+      .map((f) => parseInt(f.name.substring(prefixString.length)) || 0)
       .sort((a, b) => a - b);
 
     const largestNumber = flowNumbers[flowNumbers.length - 1] || 0;
 
     const id = nanoid();
     _store.flows[id] = {
-      name: `Custom Flow ${largestNumber + 1}`,
+      name: `${prefixString} ${largestNumber + 1}`,
       flow: getInitialFlow(),
       type: "user-generated",
     };
@@ -501,6 +512,7 @@ class Store extends EventEmitter {
   };
 
   saveSettings = (settings) => {
+    logger.log("saveSettings - settings", settings);
     Object.keys(settings).forEach((key) => {
       localStorage.setItem(`preferences-${key}`, settings[key]);
     });
@@ -575,15 +587,15 @@ class Store extends EventEmitter {
   };
 
   showModal = (data) => {
-    const { modal, params } = data;
+    const { modal, modalParams } = data;
     _store.modal = modal;
-    _store.modalParams = params;
+    _store.modalParams = modalParams || {};
     this.emit("update-ui");
   };
 
   closeModal = () => {
     _store.modal = false;
-    _store.modalParams = "";
+    _store.modalParams = {};
     this.emit("update-ui");
   };
 
@@ -701,6 +713,10 @@ class Store extends EventEmitter {
 
   getIndexedLog = () => {
     return _store.logIndex;
+  };
+
+  getStoreCopy = () => {
+    return _.cloneDeep(_store);
   };
 }
 

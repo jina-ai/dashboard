@@ -14,13 +14,25 @@ import CustomPort from "../components/FlowChart/NodePort";
 import FlowSelection from "../components/FlowChart/FlowSelection";
 import { formatAsYAML, copyToClipboard } from "../helpers";
 
+const syncEvents = [
+  "onDragNodeStop",
+  "onCanvasDrop",
+  "onCanvasClick",
+  "onNodeClick",
+  "onDragCanvasStop",
+  "updateNode",
+  "updateLink",
+];
+
 class FlowView extends React.Component {
   constructor(props) {
     super(props);
     const { flow: chart, name } = Store.getFlowchart();
     const selectedFlowId = Store.getSelectedFlowId();
     const flowOptions = Store.getFlowOptions();
+    const connected = Store.getConnectionStatus();
     this.state = {
+      connected,
       chart,
       name,
       selectedFlowId,
@@ -34,12 +46,13 @@ class FlowView extends React.Component {
         let action = actions[key];
         let newChartTransformer = action(...args);
         let newChart = newChartTransformer(chart);
-        this.updateFlow({ ...chart, ...newChart });
+        this.updateFlow({ ...chart, ...newChart }, key);
         return newChart;
       };
       return obj;
     }, {});
 
+    Store.on("update-ui", this.getConnectionStatus);
     Store.on("update-flowchart", this.getData);
   }
 
@@ -51,6 +64,7 @@ class FlowView extends React.Component {
 
   componentWillUnmount = () => {
     Store.removeListener("update-flowchart", this.getData);
+    Store.removeListener("update-ui", this.getConnectionStatus);
   };
 
   exportImage = (extension = "png") => {
@@ -88,6 +102,11 @@ class FlowView extends React.Component {
     this.setState({ chart, name, selectedFlowId, flowOptions });
   };
 
+  getConnectionStatus = () => {
+    const connected = Store.getConnectionStatus();
+    this.setState({ connected });
+  };
+
   updateNode = (node, callback) => {
     let { chart } = this.state;
     let newChart = cloneDeep(chart);
@@ -106,7 +125,7 @@ class FlowView extends React.Component {
 
     newChart.nodes[node.id].properties = props;
 
-    this.updateFlow({ ...chart, ...newChart });
+    this.updateFlow({ ...chart, ...newChart }, "updateNode");
     return newChart.nodes[node.id];
   };
 
@@ -118,7 +137,7 @@ class FlowView extends React.Component {
     newChart.links[linkId].from.nodeId = fromId;
     newChart.links[linkId].to.nodeId = toId;
 
-    this.updateChart({ ...chart, ...newChart });
+    this.updateFlow({ ...chart, ...newChart }, "updateLink");
   };
 
   cancelChanges = () => {
@@ -129,10 +148,16 @@ class FlowView extends React.Component {
     this.stateActionCallbacks.onDeleteKey({});
   };
 
-  updateFlow = (newFlow) => {
+  updateFlow = (flow, event) => {
+    console.log("event:", event);
+    if (syncEvents.includes(event)) return this.syncFlow(flow);
+    this.setState({ chart: flow });
+  };
+
+  syncFlow = (flow) => {
     Dispatcher.dispatch({
       actionType: Constants.UPDATE_FLOW,
-      payload: newFlow,
+      payload: flow,
     });
   };
 
@@ -175,7 +200,13 @@ class FlowView extends React.Component {
   };
 
   render = () => {
-    const { chart, flowOptions, selectedFlowId, showOverlay } = this.state;
+    const {
+      chart,
+      flowOptions,
+      selectedFlowId,
+      showOverlay,
+      connected,
+    } = this.state;
     return (
       <Container fluid className="main-content-container px-0">
         <div className="px-4">
@@ -192,6 +223,7 @@ class FlowView extends React.Component {
           <div className="flow-container d-flex flex-column flex-md-row">
             <Card className="chart-section-container p-1 mr-md-4 mb-4">
               <FlowSelection
+                connected={connected}
                 loadFlow={this.loadFlow}
                 flowOptions={flowOptions}
                 selectedFlowId={selectedFlowId}

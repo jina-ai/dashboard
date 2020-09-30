@@ -2,6 +2,39 @@ const YAML = require("yaml");
 const settings = require("./settings");
 const propertyList = require("./data/podProperties.json");
 
+function toBlob(content) {
+  return new Blob([content], { type: "text,plain;charset=utf-8" });
+}
+function serializeLogsToCSV(logs) {
+  const columns =
+    "created,formatted timestamp,name,process,level name,message,filename,line number,module,funcname,pathname\n";
+  const fileContent = logs.reduce((acc, log) => {
+    acc += `${log.created},"${log.formattedTimestamp}",${log.name},${log.process},${log.levelname},"${log.msg}",${log.filename},${log.lineno},${log.module},${log.funcname},${log.pathname}\n`;
+    return acc;
+  }, columns);
+  return fileContent;
+}
+
+function serializeLogsToJSON(logs) {
+  const fileContent = logs.reduce((acc, log, i) => {
+    acc += JSON.stringify(log) + `${i < logs.length - 1 ? "," : ""}\n`;
+    return acc;
+  }, "\n");
+  return `[${fileContent}]`;
+}
+
+function serializeLogsToText(logs) {
+  const fileContent = logs.reduce((acc, log) => {
+    acc += `${log.formattedTimestamp} ${log.name}@${log.process} [${log.levelname}]: ${log.msg}\n`;
+    return acc;
+  }, "");
+  return fileContent;
+}
+
+const serializeLogsToCSVBlob = (logs) => toBlob(serializeLogsToCSV(logs));
+const serializeLogsToJSONBlob = (logs) => toBlob(serializeLogsToJSON(logs));
+const serializeLogsToTextBlob = (logs) => toBlob(serializeLogsToText(logs));
+
 const propertyTypes = {};
 propertyList.forEach((prop) => (propertyTypes[prop.name] = prop.type));
 
@@ -206,3 +239,9 @@ function getNodeDepth(nodes, currentId, currentDepth) {
 
   return currentDepth + longestDepth;
 }
+
+export {
+  serializeLogsToCSVBlob,
+  serializeLogsToTextBlob,
+  serializeLogsToJSONBlob,
+};

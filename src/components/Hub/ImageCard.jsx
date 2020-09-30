@@ -3,7 +3,7 @@ import { Row, Col, Card } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import StarRating from "./StarRating";
 
-export default ({ image }) => {
+export default function ImageCard({ image }) {
   let {
     name,
     id,
@@ -58,4 +58,4 @@ export default ({ image }) => {
       </Card>
     </Link>
   );
-};
+}

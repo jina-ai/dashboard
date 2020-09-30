@@ -1,4 +1,5 @@
 import axios from "axios";
+import logger from "../logger";
 import { hubURL, timeout } from "./config";
 let logStream;
 let taskStream;
@@ -15,13 +16,18 @@ const hub = axios.create({
 
 export default {
   connect: (settings, connectionUpdate, logUpdate, taskUpdate) => {
+    logger.log("api - connect - settings", settings);
+
     const logString = `${settings.host}:${settings.port}${
       settings.log.startsWith("/") ? settings.log : "/" + settings.log
     }`;
+    logger.log("api - connect - logString", logString);
+
     if (logStream) logStream.close();
     logStream = new EventSource(logString);
 
     logStream.onopen = () => {
+      logger.log("api - logStream.onopen called");
       connectionUpdate(
         "connected",
         `Logserver connection established at ${settings.host}:${settings.port}`
@@ -33,11 +39,11 @@ export default {
     };
 
     logStream.onerror = (data) => {
+      logger.log("api - logStream.onerror - ERROR", data);
       connectionUpdate(
         "failed",
         `Could not connect to logserver at ${settings.host}:${settings.port}`
       );
-      console.error("log error: ", data);
       logStream.close();
     };
 
@@ -46,10 +52,13 @@ export default {
         ? settings.profile
         : "/" + settings.profile
     }`;
+    logger.log("api - connect - taskString", taskString);
+
     if (taskStream) taskStream.close();
     taskStream = new EventSource(taskString);
 
     taskStream.onopen = () => {
+      logger.log("api - taskStream.onopen called");
       taskUpdate({
         type: "connect",
         data: `Task connection established at ${taskString}`,
@@ -61,11 +70,11 @@ export default {
     };
 
     taskStream.onerror = (data) => {
+      logger.log("api - taskStream.onerror - ERROR", data);
       taskUpdate({
         type: "error",
         data: `Could not get profile data from ${taskString}`,
       });
-      console.error("task error:", data);
       taskStream.close();
     };
   },
@@ -77,6 +86,7 @@ export default {
     const connectionString = `${settings.host}:${settings.port}${
       settings.yaml.startsWith("/") ? settings.yaml : "/" + settings.yaml
     }`;
+    logger.log("api - getYAML - connectionString", connectionString);
     const result = await axios.get(connectionString, { timeout });
     return result.data;
   },

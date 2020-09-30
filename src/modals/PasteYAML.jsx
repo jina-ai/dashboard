@@ -22,6 +22,7 @@ const style = {
 };
 
 export default ({ open, closeModal, importYAML }) => {
+  let inputRef;
   return (
     <ReactModal
       ariaHideApp={false}
@@ -50,7 +51,7 @@ export default ({ open, closeModal, importYAML }) => {
           <Form.Label>Custom YAML:</Form.Label>
           <Form.Control
             placeholder="Paste Here"
-            ref={(ref) => (this.inputRef = ref)}
+            ref={(ref) => (inputRef = ref)}
             as="textarea"
             rows="10"
           />
@@ -58,7 +59,7 @@ export default ({ open, closeModal, importYAML }) => {
       </div>
       <Button
         className="btn-primary"
-        onClick={() => importYAML(this.inputRef.value)}
+        onClick={() => importYAML(inputRef.value)}
       >
         Continue
       </Button>
