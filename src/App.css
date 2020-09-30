@@ -5,15 +5,12 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: #f6f8fa !important;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
-}
-
-body {
-  background-color: #f6f8fa !important;
 }
 
 .text-bold {
@@ -619,4 +616,13 @@ code {
   bottom: 5px;
   right: 5px;
   border-width: 0 5px 5px 0;
+}
+
+.readonly-overlay {
+  position: absolute;
+  padding: 1em;
+  background: rgba(255, 255, 255, 0.85);
+  height: 100%;
+  width: 100%;
+  border-radius: 0.625rem;
 }

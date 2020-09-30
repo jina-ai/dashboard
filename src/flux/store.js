@@ -203,6 +203,9 @@ class Store extends EventEmitter {
       case Constants.CREATE_NEW_FLOW:
         this.createNewFlow();
         break;
+      case Constants.DUPLICATE_FLOW:
+        this.createNewFlow(payload);
+        break;
       case Constants.UPDATE_FLOW:
         this.updateFlow(payload);
         break;
@@ -477,10 +480,7 @@ class Store extends EventEmitter {
   };
 
   createNewFlow = (customYAML) => {
-    let isImported;
-    if (customYAML) isImported = true;
-
-    let prefixString = `${isImported ? "Imported" : "Custom"} Flow`;
+    let prefixString = "Custom Flow";
 
     let userFlows = Object.entries(_store.flows)
       .filter(([id, flow]) => flow.name.startsWith(prefixString))
@@ -493,22 +493,28 @@ class Store extends EventEmitter {
     const largestNumber = flowNumbers[flowNumbers.length - 1] || 0;
 
     const id = nanoid();
+
+    let flow;
+
+    if (customYAML) {
+      const parsed = parseYAML(customYAML);
+      let canvas;
+      try {
+        canvas = parsed.data.with.board.canvas;
+      } catch (e) {
+        canvas = {};
+      }
+      flow = formatForFlowchart(parsed.data.pods, canvas);
+    } else flow = getInitialFlow();
+
     _store.flows[id] = {
       name: `${prefixString} ${largestNumber + 1}`,
-      flow: getInitialFlow(),
       type: "user-generated",
+      flow,
     };
 
     _store.selectedFlow = id;
     this.emit("update-flowchart");
-  };
-
-  saveFlows = () => {
-    let flows = {};
-    Object.entries(_store.flows).forEach(([id, flow]) => {
-      if (flow.type === "user-generated") flows[id] = flow;
-    });
-    localStorage.setItem("userFlows", JSON.stringify(flows));
   };
 
   saveSettings = (settings) => {

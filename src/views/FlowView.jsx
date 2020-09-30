@@ -27,14 +27,14 @@ const syncEvents = [
 class FlowView extends React.Component {
   constructor(props) {
     super(props);
-    const { flow: chart, name } = Store.getFlowchart();
+    const { flow: chart,type:flowType } = Store.getFlowchart();
     const selectedFlowId = Store.getSelectedFlowId();
     const flowOptions = Store.getFlowOptions();
     const connected = Store.getConnectionStatus();
     this.state = {
+      flowType,
       connected,
       chart,
-      name,
       selectedFlowId,
       flowOptions,
       showOverlay: false,
@@ -96,10 +96,10 @@ class FlowView extends React.Component {
   };
 
   getData = () => {
-    const { flow: chart, name } = Store.getFlowchart();
+    const { flow: chart,type:flowType } = Store.getFlowchart();
     const selectedFlowId = Store.getSelectedFlowId();
     const flowOptions = Store.getFlowOptions();
-    this.setState({ chart, name, selectedFlowId, flowOptions });
+    this.setState({ chart, flowType,selectedFlowId, flowOptions });
   };
 
   getConnectionStatus = () => {
@@ -199,6 +199,14 @@ class FlowView extends React.Component {
     });
   };
 
+  duplicateFlow = () =>{
+    const yaml = formatAsYAML(this.state.chart);
+    Dispatcher.dispatch({
+      actionType: Constants.DUPLICATE_FLOW,
+      payload: yaml
+    });
+  }
+
   render = () => {
     const {
       chart,
@@ -206,7 +214,9 @@ class FlowView extends React.Component {
       selectedFlowId,
       showOverlay,
       connected,
+      flowType
     } = this.state;
+    const readonly = flowType !=="user-generated";
     return (
       <Container fluid className="main-content-container px-0">
         <div className="px-4">
@@ -247,12 +257,15 @@ class FlowView extends React.Component {
                   Components={{ NodeInner: CustomNode, Port: CustomPort }}
                   callbacks={this.stateActionCallbacks}
                   config={{
+                    readonly,
                     validateLink: this.validateLink,
                   }}
                 />
               </div>
             </Card>
             <Sidebar
+              duplicateFlow={this.duplicateFlow}
+              readonly={readonly}
               chart={chart}
               cancelChanges={this.cancelChanges}
               deleteSelection={this.deleteSelection}
