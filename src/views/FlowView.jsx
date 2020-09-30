@@ -34,7 +34,7 @@ class FlowView extends React.Component {
         let action = actions[key];
         let newChartTransformer = action(...args);
         let newChart = newChartTransformer(chart);
-        this.updateChart({ ...chart, ...newChart });
+        this.updateFlow({ ...chart, ...newChart });
         return newChart;
       };
       return obj;
@@ -106,7 +106,7 @@ class FlowView extends React.Component {
 
     newChart.nodes[node.id].properties = props;
 
-    this.updateChart({ ...chart, ...newChart });
+    this.updateFlow({ ...chart, ...newChart });
     return newChart.nodes[node.id];
   };
 
@@ -129,8 +129,11 @@ class FlowView extends React.Component {
     this.stateActionCallbacks.onDeleteKey({});
   };
 
-  updateChart = (chart) => {
-    this.setState({ chart });
+  updateFlow = (newFlow) => {
+    Dispatcher.dispatch({
+      actionType: Constants.UPDATE_FLOW,
+      payload: newFlow,
+    });
   };
 
   selectNode = (data) => {
@@ -165,8 +168,14 @@ class FlowView extends React.Component {
     });
   };
 
+  createNewFlow = () => {
+    Dispatcher.dispatch({
+      actionType: Constants.CREATE_NEW_FLOW,
+    });
+  };
+
   render = () => {
-    const { chart,flowOptions,selectedFlowId, showOverlay } = this.state;
+    const { chart, flowOptions, selectedFlowId, showOverlay } = this.state;
     return (
       <Container fluid className="main-content-container px-0">
         <div className="px-4">
@@ -182,7 +191,12 @@ class FlowView extends React.Component {
           </Row>
           <div className="flow-container d-flex flex-column flex-md-row">
             <Card className="chart-section-container p-1 mr-md-4 mb-4">
-              <FlowSelection loadFlow={this.loadFlow} flowOptions={flowOptions} selectedFlowId={selectedFlowId}/>
+              <FlowSelection
+                loadFlow={this.loadFlow}
+                flowOptions={flowOptions}
+                selectedFlowId={selectedFlowId}
+                createNewFlow={this.createNewFlow}
+              />
               <CommandBar
                 copyChart={this.copyChartAsYAML}
                 importChart={this.showImportModal}

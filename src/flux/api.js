@@ -73,7 +73,10 @@ export default {
     const result = await hub.get("profile");
     return result.data;
   },
-  getYAML: async (connectionString) => {
+  getYAML: async (settings) => {
+    const connectionString = `${settings.host}:${settings.port}${
+      settings.yaml.startsWith("/") ? settings.yaml : "/" + settings.yaml
+    }`;
     const result = await axios.get(connectionString, { timeout });
     return result.data;
   },
