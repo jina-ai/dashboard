@@ -1,7 +1,7 @@
 import React from "react";
 import { FallbackProps } from "react-error-boundary";
 
-function ErrorFallback({ error, resetErrorBoundary }: FallbackProps) {
+function FallbackPage({ error, resetErrorBoundary }: FallbackProps) {
   return (
     <div role="alert">
       <p>Something went wrong:</p>
@@ -11,4 +11,4 @@ function ErrorFallback({ error, resetErrorBoundary }: FallbackProps) {
   );
 }
 
-export { ErrorFallback };
+export { FallbackPage };
