@@ -1,7 +1,7 @@
 import React from "react";
 import { Button, Row, Col } from "react-bootstrap";
 
-export default ({ loading, connected, reconnect }) => {
+export default function ConnectionBanner({ loading, connected, reconnect }) {
   return loading || connected ? (
     ""
   ) : (
@@ -27,4 +27,4 @@ export default ({ loading, connected, reconnect }) => {
       </Row>
     </div>
   );
-};
+}

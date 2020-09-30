@@ -135,10 +135,8 @@ class FlowView extends React.Component {
     alert("Chart copied to clipboard as YAML");
   };
 
-  validateLink = ({ fromNodeId, toNodeId, fromPortId, toPortId, chart }) => {
-    if (fromPortId !== "outPort" || toPortId !== "inPort") return false;
-    if (fromNodeId === toNodeId) return false;
-    return true;
+  validateLink = ({ fromNodeId, toNodeId, fromPortId, toPortId }) => {
+    return !(fromNodeId === toNodeId || fromPortId === toPortId);
   };
 
   showImportModal = () => {

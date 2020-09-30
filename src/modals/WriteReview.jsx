@@ -23,6 +23,7 @@ const style = {
 };
 
 export default ({ open, closeModal, submitReview }) => {
+  let inputRef;
   return (
     <ReactModal
       ariaHideApp={false}
@@ -50,7 +51,7 @@ export default ({ open, closeModal, submitReview }) => {
         <Form.Group>
           <Form.Control
             placeholder="Tell the world about your experience"
-            ref={(ref) => (this.inputRef = ref)}
+            ref={(ref) => (inputRef = ref)}
             as="textarea"
             rows="10"
           />
@@ -58,7 +59,7 @@ export default ({ open, closeModal, submitReview }) => {
       </div>
       <Button
         className="btn-primary"
-        onClick={() => submitReview(this.inputRef.value)}
+        onClick={() => submitReview(inputRef.value)}
       >
         Submit
       </Button>

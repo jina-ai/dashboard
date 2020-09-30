@@ -1,17 +1,18 @@
 import { EventEmitter } from "events";
+import _ from "lodash";
 import Dispatcher from "./dispatcher";
 import Constants from "./constants";
 import { parseYAML, formatForFlowchart, formatSeconds } from "../helpers";
 import api from "./api";
+import logger from "../logger";
 import propertyList from "../data/podProperties.json";
 import getSidebarNavItems from "../data/sidebar-nav-items";
 import exampleYAML from "../data/yaml";
+import { transformLog } from "./tranformLog";
 
 let _store;
 
 const HIDE_BANNER_TIMEOUT = 5000;
-const NUM_CHART_ELEMENTS = 60;
-const CHART_UPDATE_INTERVAL = 1000;
 const TASK_UPDATE_INTERVAL = 500;
 const CHART_LEVELS = [
   "INFO",
@@ -21,6 +22,17 @@ const CHART_LEVELS = [
   "CRITICAL",
   "DEBUG",
 ];
+
+function getInitialLevelOccurences() {
+  let occurences = {
+    lastLog: 0,
+    levels: {},
+  };
+  CHART_LEVELS.forEach((level) => {
+    occurences.levels[level] = 0;
+  });
+  return occurences;
+}
 
 function getInitialStore() {
   return {
@@ -66,11 +78,7 @@ function getInitialStore() {
     logs: [],
     logSources: {},
     logLevels: {},
-    occurences: {
-      current: {},
-      previous: {},
-      lastLog: [],
-    },
+    logLevelOccurences: {},
     logIndex: false,
     summaryCharts: {},
     processes: {},
@@ -98,10 +106,12 @@ function getInitialStore() {
       bytes: [],
     },
     selectedNode: null,
-    modalParams: null,
+    modalParams: {},
     currentTab: "logStream",
   };
 }
+
+if (window.location.hostname === "localhost") logger.enable();
 
 class Store extends EventEmitter {
   constructor() {
@@ -180,6 +190,7 @@ class Store extends EventEmitter {
   };
 
   initFlowChart = async (yamlSTRING) => {
+    logger.log("initFlowChart - yamlString", yamlSTRING);
     let flow;
     const { settings } = _store;
     const connectionString = `${settings.host}:${settings.port}${
@@ -193,6 +204,7 @@ class Store extends EventEmitter {
         let str = await api.getYAML(connectionString);
         flow = parseYAML(str);
       } catch (e) {
+        logger.log("initFlowChart - parseYAML[API] ERROR", e);
         return;
       }
     }
@@ -202,6 +214,8 @@ class Store extends EventEmitter {
     } catch (e) {
       canvas = {};
     }
+    logger.log("initFlowChart - flow", flow);
+    logger.log("initFlowChart - canvas", canvas);
     const parsed = formatForFlowchart(flow.data.pods, canvas);
     parsed.with = flow.data.with;
     _store.flowchart = parsed;
@@ -223,6 +237,8 @@ class Store extends EventEmitter {
   };
 
   handleLogConnectionStatus = (status, message) => {
+    logger.log("handleLogConnectionStatus - status", status);
+    logger.log("handleLogConnectionStatus - message", message);
     _store.loading = false;
     if (status === "connected") {
       _store.connected = true;
@@ -235,20 +251,28 @@ class Store extends EventEmitter {
 
   handleNewLog = (message) => {
     const { data } = message;
+    const log = transformLog(data);
 
-    const log = data;
-
-    log.formattedTimestamp = new Date(log.created * 1000).toLocaleString();
+    log.unixTime = parseInt(log.created);
+    log.timestamp = new Date(log.unixTime * 1000);
+    log.formattedTimestamp = log.timestamp.toLocaleString();
     log.idx = _store.logs.length;
+    const { process, name, levelname, unixTime } = log;
 
     _store.logs.push(log);
-    _store.processes[log.process] = log.name;
-    _store.logSources[log.name] = true;
-    _store.logLevels[log.levelname] = true;
+    _store.processes[process] = log.name;
 
-    if (CHART_LEVELS.includes(log.levelname)) {
-      _store.occurences.current[log.levelname]++;
-    }
+    if (_store.logSources[name]) _store.logSources[name]++;
+    else _store.logSources[name] = 1;
+
+    if (_store.logLevels[levelname]) _store.logLevels[levelname]++;
+    else _store.logLevels[levelname] = 1;
+
+    if (!_store.logLevelOccurences[unixTime])
+      _store.logLevelOccurences[unixTime] = getInitialLevelOccurences();
+
+    _store.logLevelOccurences[unixTime].levels[levelname]++;
+    _store.logLevelOccurences[unixTime].lastLog = log.idx;
 
     this.emit("update-logs");
   };
@@ -331,18 +355,8 @@ class Store extends EventEmitter {
     }
   };
 
-  initCharts = () => {
-    for (let i = 0; i < CHART_LEVELS.length; ++i) {
-      let level = CHART_LEVELS[i];
-      _store.occurences.current[level] = 0;
-      _store.occurences.previous[level] = 0;
-      _store.summaryCharts[level] = new Array(NUM_CHART_ELEMENTS).fill(0);
-    }
-    _store.occurences.lastLog = new Array(NUM_CHART_ELEMENTS).fill({});
-    this.updateChartInterval = setInterval(
-      this.updateSummaryCharts,
-      CHART_UPDATE_INTERVAL
-    );
+  initCharts = async () => {
+    this.updateChartInterval = setInterval(this.updateSummaryCharts, 1000);
   };
 
   initHub = async () => {
@@ -362,17 +376,6 @@ class Store extends EventEmitter {
   };
 
   updateSummaryCharts = () => {
-    const { current, previous } = _store.occurences;
-    for (let i = 0; i < CHART_LEVELS.length; ++i) {
-      let level = CHART_LEVELS[i];
-      const numLogs = current[level];
-      const prevNum = previous[level];
-      _store.summaryCharts[level].push(numLogs - prevNum);
-      _store.summaryCharts[level].shift();
-      _store.occurences.previous[level] = numLogs;
-    }
-    _store.occurences.lastLog.push(_store.logs.length - 1);
-    _store.occurences.lastLog.shift();
     this.emit("update-summary-chart");
   };
 
@@ -385,10 +388,9 @@ class Store extends EventEmitter {
     this.emit("update-ui");
   }
 
-  showLogAtIndex = (index) => {
-    let logIndex = _store.occurences.lastLog[index];
-    if (!logIndex) return;
-    _store.logIndex = _store.occurences.lastLog[index];
+  showLogAtIndex = (logIndex) => {
+    if (!logIndex || !_store.logs[logIndex]) return;
+    _store.logIndex = logIndex;
     this.emit("show-log");
   };
 
@@ -411,6 +413,7 @@ class Store extends EventEmitter {
   };
 
   importCustomYAML = (customYAML) => {
+    logger.log("importCustomYAML - customYAML", customYAML);
     this.initFlowChart(customYAML);
     this.closeModal();
     this.emit("update-flowchart");
@@ -423,6 +426,7 @@ class Store extends EventEmitter {
   };
 
   saveSettings = (settings) => {
+    logger.log("saveSettings - settings", settings);
     Object.keys(settings).forEach((key) => {
       localStorage.setItem(`preferences-${key}`, settings[key]);
     });
@@ -497,15 +501,15 @@ class Store extends EventEmitter {
   };
 
   showModal = (data) => {
-    const { modal, params } = data;
+    const { modal, modalParams } = data;
     _store.modal = modal;
-    _store.modalParams = params;
+    _store.modalParams = modalParams || {};
     this.emit("update-ui");
   };
 
   closeModal = () => {
     _store.modal = false;
-    _store.modalParams = "";
+    _store.modalParams = {};
     this.emit("update-ui");
   };
 
@@ -568,8 +572,20 @@ class Store extends EventEmitter {
     return _store.summaryCharts;
   };
 
-  getOccurencesByName = () => {
-    return _store.occurences.current;
+  getLogLevelCharts = (numSeconds = 60) => {
+    const emptyItem = getInitialLevelOccurences();
+    let chartData = [];
+    let now = parseInt(new Date() / 1000);
+    for (let i = now - numSeconds; i < now; i++) {
+      chartData.push(
+        _store.logLevelOccurences[i] ? _store.logLevelOccurences[i] : emptyItem
+      );
+    }
+    return chartData;
+  };
+
+  getLogLevelOccurences = () => {
+    return _store.logLevels;
   };
 
   getTaskData = () => {
@@ -603,6 +619,10 @@ class Store extends EventEmitter {
 
   getIndexedLog = () => {
     return _store.logIndex;
+  };
+
+  getStoreCopy = () => {
+    return _.cloneDeep(_store);
   };
 }
 

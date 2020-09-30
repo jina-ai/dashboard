@@ -1,7 +1,7 @@
 import React from "react";
 import { Card, CardHeader, CardBody } from "shards-react";
 
-export default (props) => {
+export default function BuildHistory(props) {
   const { buildHistory } = props.image;
   return (
     <Card className="readme-container mb-4">
@@ -30,4 +30,4 @@ export default (props) => {
       </CardBody>
     </Card>
   );
-};
+}
