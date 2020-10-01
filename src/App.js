@@ -9,30 +9,36 @@ import "./assets/main.scss";
 import "./App.css";
 import { ErrorBoundary } from "react-error-boundary";
 import { FallbackPage } from "./FallbackPage";
+import { Store } from "./flux/";
 
-const App = () => (
-  <Router basename={"/"}>
-    <div>
-      {routes.map((route, index) => {
-        return (
-          <Route
-            key={index}
-            path={route.path}
-            exact={route.exact}
-            component={withTracker((props) => {
-              return (
-                <ErrorBoundary FallbackComponent={FallbackPage}>
+const App = () => {
+  return (
+    <Router basename={"/"}>
+      <div>
+        {routes.map((route, index) => {
+          return (
+            <Route
+              key={index}
+              path={route.path}
+              exact={route.exact}
+              component={withTracker((props) => {
+                return (
                   <route.layout {...props}>
-                    <route.component {...props} />
+                    <ErrorBoundary
+                      FallbackComponent={FallbackPage}
+                      onReset={() => Store.init()}
+                    >
+                      <route.component {...props} />
+                    </ErrorBoundary>
                   </route.layout>
-                </ErrorBoundary>
-              );
-            })}
-          />
-        );
-      })}
-    </div>
-  </Router>
-);
+                );
+              })}
+            />
+          );
+        })}
+      </div>
+    </Router>
+  );
+};
 
 export { App };
