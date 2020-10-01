@@ -8,7 +8,7 @@ import PageTitle from "../components/Common/PageTitle";
 import html2canvas from "html2canvas";
 
 import CommandBar from "../components/FlowChart/CommandBar";
-import Sidebar from "../components/FlowChart/Sidebar";
+import Sidebar from "../components/FlowChart/Sidebar.tsx";
 import CustomNode from "../components/FlowChart/ChartNode";
 import CustomPort from "../components/FlowChart/NodePort";
 import FlowSelection from "../components/FlowChart/FlowSelection";
@@ -216,6 +216,7 @@ class FlowView extends React.Component {
       flowType,
     } = this.state;
     const readonly = flowType !== "user-generated";
+    console.log("chart:", chart);
     return (
       <Container fluid className="main-content-container px-0">
         <div className="px-4">
