@@ -27,7 +27,7 @@ const syncEvents = [
 class FlowView extends React.Component {
   constructor(props) {
     super(props);
-    const { flow: chart,type:flowType } = Store.getFlowchart();
+    const { flow: chart, type: flowType } = Store.getFlowchart();
     const selectedFlowId = Store.getSelectedFlowId();
     const flowOptions = Store.getFlowOptions();
     const connected = Store.getConnectionStatus();
@@ -96,10 +96,10 @@ class FlowView extends React.Component {
   };
 
   getData = () => {
-    const { flow: chart,type:flowType } = Store.getFlowchart();
+    const { flow: chart, type: flowType } = Store.getFlowchart();
     const selectedFlowId = Store.getSelectedFlowId();
     const flowOptions = Store.getFlowOptions();
-    this.setState({ chart, flowType,selectedFlowId, flowOptions });
+    this.setState({ chart, flowType, selectedFlowId, flowOptions });
   };
 
   getConnectionStatus = () => {
@@ -149,7 +149,6 @@ class FlowView extends React.Component {
   };
 
   updateFlow = (flow, event) => {
-    console.log("event:", event);
     if (syncEvents.includes(event)) return this.syncFlow(flow);
     this.setState({ chart: flow });
   };
@@ -199,13 +198,13 @@ class FlowView extends React.Component {
     });
   };
 
-  duplicateFlow = () =>{
+  duplicateFlow = () => {
     const yaml = formatAsYAML(this.state.chart);
     Dispatcher.dispatch({
       actionType: Constants.DUPLICATE_FLOW,
-      payload: yaml
+      payload: yaml,
     });
-  }
+  };
 
   render = () => {
     const {
@@ -214,9 +213,9 @@ class FlowView extends React.Component {
       selectedFlowId,
       showOverlay,
       connected,
-      flowType
+      flowType,
     } = this.state;
-    const readonly = flowType !=="user-generated";
+    const readonly = flowType !== "user-generated";
     return (
       <Container fluid className="main-content-container px-0">
         <div className="px-4">

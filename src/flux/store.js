@@ -482,9 +482,9 @@ class Store extends EventEmitter {
   createNewFlow = (customYAML) => {
     let prefixString = "Custom Flow";
 
-    let userFlows = Object.entries(_store.flows)
-      .filter(([id, flow]) => flow.name.startsWith(prefixString))
-      .map(([id, flow]) => flow);
+    let userFlows = Object.values(_store.flows).filter((flow) =>
+      flow.name.startsWith(prefixString)
+    );
 
     const flowNumbers = userFlows
       .map((f) => parseInt(f.name.substring(prefixString.length)) || 0)
