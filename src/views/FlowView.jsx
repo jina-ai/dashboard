@@ -192,9 +192,20 @@ class FlowView extends React.Component {
     });
   };
 
-  createNewFlow = () => {
+  createNewFlow = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
     Dispatcher.dispatch({
       actionType: Constants.CREATE_NEW_FLOW,
+    });
+  };
+
+  deleteFlow = (e, flowId) => {
+    e.preventDefault();
+    e.stopPropagation();
+    Dispatcher.dispatch({
+      actionType: Constants.DELETE_FLOW,
+      payload: flowId,
     });
   };
 
@@ -233,10 +244,11 @@ class FlowView extends React.Component {
             <Card className="chart-section-container p-1 mr-md-4 mb-4">
               <FlowSelection
                 connected={connected}
-                loadFlow={this.loadFlow}
                 flowOptions={flowOptions}
                 selectedFlowId={selectedFlowId}
                 createNewFlow={this.createNewFlow}
+                loadFlow={this.loadFlow}
+                deleteFlow={this.deleteFlow}
               />
               <CommandBar
                 copyChart={this.copyChartAsYAML}
