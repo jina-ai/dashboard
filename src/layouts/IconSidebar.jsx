@@ -121,19 +121,21 @@ class IconSidebarLayout extends React.Component {
       modalParams,
       loggerEnabled,
     } = this.state;
-    const { children } = this.props;
+    const { children, usesAuth, usesConnection } = this.props;
     return (
       <Container fluid className="icon-sidebar-nav">
         <Row>
           <MainSidebar hideLogoText />
           <Col className="main-content col" tag="main">
-            <MainNavbar />
+            <MainNavbar usesAuth={usesAuth} usesConnection={usesConnection} />
             <InfoBanner data={banner} />
-            <ConnectionBanner
-              loading={loading}
-              connected={connected}
-              reconnect={this.reconnect}
-            />
+            {usesConnection && (
+              <ConnectionBanner
+                loading={loading}
+                connected={connected}
+                reconnect={this.reconnect}
+              />
+            )}
             {children}
             <CookiesBanner
               show={!acceptedCookies}

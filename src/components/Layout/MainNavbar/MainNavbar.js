@@ -55,6 +55,7 @@ class MainNavbar extends React.Component {
   };
   render = () => {
     const { connected, user, userActionsVisible } = this.state;
+    const { usesAuth, usesConnection } = this.props;
     return (
       <div className="main-navbar bg-white sticky-top">
         <Container fluid className="p-0">
@@ -64,13 +65,20 @@ class MainNavbar extends React.Component {
           >
             <NavbarSpacer />
             <Nav navbar className="border-left flex-row">
-              <Notifications reconnect={this.reconnect} connected={connected} />
-              <UserActions
-                user={user}
-                userActionsVisible={userActionsVisible}
-                toggleUserActions={this.toggleUserActions}
-                logOut={this.logOut}
-              />
+              {usesConnection && (
+                <Notifications
+                  reconnect={this.reconnect}
+                  connected={connected}
+                />
+              )}
+              {usesAuth && (
+                <UserActions
+                  user={user}
+                  userActionsVisible={userActionsVisible}
+                  toggleUserActions={this.toggleUserActions}
+                  logOut={this.logOut}
+                />
+              )}
             </Nav>
             <NavbarToggle toggleSidebar={this.toggleSidebar} />
           </Navbar>
