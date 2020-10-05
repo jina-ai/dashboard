@@ -753,7 +753,7 @@ class Store extends EventEmitter {
     return _store.flows[_store.selectedFlow];
   };
 
-  getFlowOptions = () => {
+  getFlows = () => {
     return _store.flows;
   };
 

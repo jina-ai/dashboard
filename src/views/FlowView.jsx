@@ -29,14 +29,14 @@ class FlowView extends React.Component {
     super(props);
     const { flow: chart, type: flowType } = Store.getFlowchart();
     const selectedFlowId = Store.getSelectedFlowId();
-    const flowOptions = Store.getFlowOptions();
+    const flows = Store.getFlows();
     const connected = Store.getConnectionStatus();
     this.state = {
       flowType,
       connected,
       chart,
       selectedFlowId,
-      flowOptions,
+      flows,
       showOverlay: false,
     };
 
@@ -98,8 +98,8 @@ class FlowView extends React.Component {
   getData = () => {
     const { flow: chart, type: flowType } = Store.getFlowchart();
     const selectedFlowId = Store.getSelectedFlowId();
-    const flowOptions = Store.getFlowOptions();
-    this.setState({ chart, flowType, selectedFlowId, flowOptions });
+    const flows = Store.getFlows();
+    this.setState({ chart, flowType, selectedFlowId, flows });
   };
 
   getConnectionStatus = () => {
@@ -220,7 +220,7 @@ class FlowView extends React.Component {
   render = () => {
     const {
       chart,
-      flowOptions,
+      flows,
       selectedFlowId,
       showOverlay,
       connected,
@@ -244,7 +244,7 @@ class FlowView extends React.Component {
             <Card className="chart-section-container p-1 mr-md-4 mb-4">
               <FlowSelection
                 connected={connected}
-                flowOptions={flowOptions}
+                flows={flows}
                 selectedFlowId={selectedFlowId}
                 createNewFlow={this.createNewFlow}
                 loadFlow={this.loadFlow}

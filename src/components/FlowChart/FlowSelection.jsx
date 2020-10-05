@@ -52,7 +52,7 @@ function EditFlowsButton({ isEditing, onClick }) {
 }
 
 export default function FlowSelection({
-  flowOptions,
+  flows,
   loadFlow,
   selectedFlowId,
   createNewFlow,
@@ -65,15 +65,15 @@ export default function FlowSelection({
     setIsEditing((currentIsEditing) => !currentIsEditing);
   };
 
-  const userFlows = Object.entries(flowOptions).filter(
+  const userFlows = Object.entries(flows).filter(
     ([id, flow]) => flow.type !== "example"
   );
 
-  const exampleFlows = Object.entries(flowOptions).filter(
+  const exampleFlows = Object.entries(flows).filter(
     ([id, flow]) => flow.type === "example"
   );
 
-  const currentFlow = flowOptions[selectedFlowId];
+  const currentFlow = flows[selectedFlowId];
 
   return (
     <Dropdown className="flow-selection">
