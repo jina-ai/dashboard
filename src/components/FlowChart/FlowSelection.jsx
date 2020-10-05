@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { Dropdown } from "react-bootstrap";
 
-function SelectionIndicator({ selectedId, itemId }) {
-  return selectedId === itemId ? (
+function SelectionIndicator({ selected }) {
+  return selected ? (
     <i className="material-icons text-primary">radio_button_checked</i>
   ) : (
     <i className="material-icons">radio_button_unchecked</i>
@@ -94,7 +94,7 @@ export default function FlowSelection({
         </Dropdown.Header>
         {userFlows.map(([flowId, flow], idx) => (
           <Dropdown.Item onClick={() => loadFlow(flowId)} key={idx}>
-            <SelectionIndicator itemId={flowId} selectedId={selectedFlowId} />
+            <SelectionIndicator selected={flowId === selectedFlowId} />
             {flow.name}
             <ConnectionIndicator
               show={flow.type === "remote"}
