@@ -6,7 +6,7 @@ import MainSidebar from "../components/Layout/MainSidebar/MainSidebar";
 import MainFooter from "../components/Layout/MainFooter";
 import CookiesBanner from "../components/Common/CookiesBanner";
 import InfoBanner from "../components/Common/InfoBanner";
-import ConnectionBanner from "../components/Common/ConnectionBanner";
+import { ConnectionBanner } from "../components/Common/ConnectionBanner";
 
 import PasteYAML from "../modals/PasteYAML";
 import WriteReview from "../modals/WriteReview";
