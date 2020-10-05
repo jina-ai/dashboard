@@ -4,7 +4,7 @@ import { FlowChart } from "@mrblenny/react-flow-chart";
 import * as actions from "@mrblenny/react-flow-chart/src/container/actions";
 import { Container, Row, Card } from "shards-react";
 import { Dispatcher, Constants, Store } from "../flux";
-import PageTitle from "../components/Common/PageTitle";
+import { PageTitle } from "../components/Common/PageTitle";
 import html2canvas from "html2canvas";
 
 import CommandBar from "../components/FlowChart/CommandBar";

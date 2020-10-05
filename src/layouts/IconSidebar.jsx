@@ -4,8 +4,8 @@ import { Container, Row, Col } from "shards-react";
 import MainNavbar from "../components/Layout/MainNavbar/MainNavbar";
 import MainSidebar from "../components/Layout/MainSidebar/MainSidebar";
 import MainFooter from "../components/Layout/MainFooter";
-import CookiesBanner from "../components/Common/CookiesBanner";
-import InfoBanner from "../components/Common/InfoBanner";
+import { CookiesBanner } from "../components/Common/CookiesBanner";
+import { InfoBanner } from "../components/Common/InfoBanner";
 import { ConnectionBanner } from "../components/Common/ConnectionBanner";
 
 import PasteYAML from "../modals/PasteYAML";

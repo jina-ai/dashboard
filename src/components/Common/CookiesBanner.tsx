@@ -1,7 +1,12 @@
 import React from "react";
 import { Button } from "react-bootstrap";
 
-export default function CookiesBanner({ show, acceptCookies }) {
+type Props = {
+  show: boolean;
+  acceptCookies: () => void;
+};
+
+function CookiesBanner({ show, acceptCookies }: Props) {
   return (
     <div className={`cookies-banner ${show ? "" : "hidden"}`}>
       <p className="mb-2">
@@ -20,3 +25,5 @@ export default function CookiesBanner({ show, acceptCookies }) {
     </div>
   );
 }
+
+export { CookiesBanner };

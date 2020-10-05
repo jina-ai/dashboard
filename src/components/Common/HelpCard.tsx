@@ -1,7 +1,15 @@
 import React from "react";
 import { Card, Row, Col } from "react-bootstrap";
 
-export default function HelpCard({ title, content, icon, theme, link }) {
+type Props = {
+  title: string;
+  content: string;
+  icon: string;
+  theme: string;
+  link: string;
+};
+
+function HelpCard({ title, content, icon, theme, link }: Props) {
   return (
     <a
       className="unstyled-link"
@@ -27,3 +35,5 @@ export default function HelpCard({ title, content, icon, theme, link }) {
     </a>
   );
 }
+
+export { HelpCard };
