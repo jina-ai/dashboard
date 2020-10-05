@@ -9,14 +9,35 @@ import {
   NavItem,
   NavLink,
   Button,
+  // @ts-ignore
 } from "shards-react";
 
-export default function UserActions({
+type User = {
+  displayName: string;
+  emails: [{ value: string }];
+  id: string;
+  nodeId: string;
+  photos: [{ value: string }];
+  profileUrl: string;
+  provider: string;
+  username: string;
+  _json: any;
+  _raw: any;
+};
+
+type Props = {
+  userActionsVisible: boolean;
+  user: User | null;
+  logOut: () => void;
+  toggleUserActions: () => void;
+};
+
+function UserActions({
   user,
   logOut,
   userActionsVisible,
   toggleUserActions,
-}) {
+}: Props) {
   return (
     <NavItem tag={Dropdown} caret toggle={toggleUserActions}>
       {user ? (
@@ -47,3 +68,5 @@ export default function UserActions({
     </NavItem>
   );
 }
+
+export { UserActions };

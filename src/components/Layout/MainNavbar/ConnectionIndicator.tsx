@@ -1,7 +1,13 @@
 import React from "react";
+// @ts-ignore
 import { NavItem, NavLink, Badge } from "shards-react";
 
-export default function Notifications({ connected, reconnect }) {
+type Props = {
+  connected: boolean;
+  reconnect: () => void;
+};
+
+function ConnectionIndicator({ connected, reconnect }: Props) {
   return (
     <NavItem
       className="border-right dropdown notifications"
@@ -24,3 +30,5 @@ export default function Notifications({ connected, reconnect }) {
     </NavItem>
   );
 }
+
+export { ConnectionIndicator };

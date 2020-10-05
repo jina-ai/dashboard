@@ -1,7 +1,7 @@
 import React from "react";
 import { Container, Row, Col } from "shards-react";
 
-import MainNavbar from "../components/Layout/MainNavbar/MainNavbar";
+import { MainNavbar } from "../components/Layout/MainNavbar/MainNavbar";
 import MainSidebar from "../components/Layout/MainSidebar/MainSidebar";
 import MainFooter from "../components/Layout/MainFooter";
 import { CookiesBanner } from "../components/Common/CookiesBanner";
@@ -24,15 +24,18 @@ class IconSidebarLayout extends React.Component {
       modal: Store.getModal(),
       modalParams: Store.getModalParams(),
       loading: Store.isLoading(),
+      user: Store.getUser(),
       banner: Store.getBanner(),
       connected: Store.getConnectionStatus(),
       acceptedCookies: localStorage.getItem("accepted-cookies"),
     };
     Store.on("update-ui", this.getData);
+    Store.on("update-user", this.getUser);
   }
 
   componentWillUnmount = () => {
     Store.removeListener("update-ui", this.getData);
+    Store.removeListener("update-user", this.getUser);
   };
 
   getData = () => {
@@ -50,6 +53,11 @@ class IconSidebarLayout extends React.Component {
       modalParams,
       loggerEnabled,
     });
+  };
+
+  getUser = () => {
+    const user = Store.getUser();
+    this.setState({ user });
   };
 
   acceptCookies = () => {
@@ -81,6 +89,18 @@ class IconSidebarLayout extends React.Component {
   reconnect = () => {
     Dispatcher.dispatch({
       actionType: Constants.RECONNECT,
+    });
+  };
+
+  logOut = () => {
+    Dispatcher.dispatch({
+      actionType: Constants.LOG_OUT,
+    });
+  };
+
+  toggleSidebar = () => {
+    Dispatcher.dispatch({
+      actionType: Constants.TOGGLE_SIDEBAR,
     });
   };
 
@@ -117,6 +137,7 @@ class IconSidebarLayout extends React.Component {
       acceptedCookies,
       banner,
       connected,
+      user,
       loading,
       modalParams,
       loggerEnabled,
@@ -127,7 +148,15 @@ class IconSidebarLayout extends React.Component {
         <Row>
           <MainSidebar hideLogoText />
           <Col className="main-content col" tag="main">
-            <MainNavbar usesAuth={usesAuth} usesConnection={usesConnection} />
+            <MainNavbar
+              usesAuth={usesAuth}
+              usesConnection={usesConnection}
+              logOut={this.logOut}
+              toggleSidebar={this.toggleSidebar}
+              reconnect={this.reconnect}
+              connected={connected}
+              user={user}
+            />
             <InfoBanner data={banner} />
             {usesConnection && (
               <ConnectionBanner
