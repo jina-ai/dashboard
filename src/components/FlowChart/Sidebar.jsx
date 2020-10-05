@@ -333,8 +333,17 @@ class FlowChartSidebar extends React.Component {
     );
   };
 
+  renderReadOnly = () =>{
+    return(<div className="readonly-overlay py-4 px-4 text-center">
+      <h4 className="my-4"><b>This flow is <span className="text-muted">readonly</span></b></h4>
+      <p className="my-4">To edit this flow, please duplicate it.</p>
+      <Button onClick={this.props.duplicateFlow}>Duplicate Flow</Button>
+    </div>)
+  }
+
   render = () => {
-    const { selected, nodes, links } = this.props.chart;
+    const {chart, readonly} = this.props;
+    const { selected, nodes, links } = chart;
     const hasSelected = Object.keys(selected).length > 0;
     return (
       <Card className="flowchart-sidebar mb-4">
@@ -343,6 +352,7 @@ class FlowChartSidebar extends React.Component {
             ? this.renderEditLink(links[selected.id], nodes)
             : this.renderEditNode(nodes[selected.id])
           : this.renderPodMenu()}
+          {readonly&&this.renderReadOnly()}
       </Card>
     );
   };
