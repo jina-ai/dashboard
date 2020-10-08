@@ -8,7 +8,7 @@ import {
   FormSelect,
 } from "shards-react";
 import { Dispatcher, Constants, Store } from "../flux";
-import PageTitle from "../components/Common/PageTitle";
+import { PageTitle } from "../components/Common/PageTitle";
 import ImageCard from "../components/Hub/ImageCard";
 
 class HubView extends React.Component {

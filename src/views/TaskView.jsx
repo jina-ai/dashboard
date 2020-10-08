@@ -1,7 +1,7 @@
 import React from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import { Store } from "../flux";
-import PageTitle from "../components/Common/PageTitle";
+import { PageTitle } from "../components/Common/PageTitle";
 import ElapsedCard from "../components/Task/ElapsedCard";
 import ProgressCard from "../components/Task/ProgressCard";
 import SpeedCard from "../components/Task/SpeedCard";

@@ -1,10 +1,12 @@
 import React from "react";
 import { Button, Row, Col } from "react-bootstrap";
 
-export default function ConnectionBanner({ loading, connected, reconnect }) {
-  return loading || connected ? (
-    ""
-  ) : (
+type Props = {
+  reconnect: () => void;
+};
+
+function ConnectionBanner({ reconnect }: Props) {
+  return (
     <div className="mb-0 banner px-3 banner-warning">
       <Row>
         <Col md="8" className="my-1">
@@ -28,3 +30,5 @@ export default function ConnectionBanner({ loading, connected, reconnect }) {
     </div>
   );
 }
+
+export { ConnectionBanner };

@@ -307,8 +307,8 @@ class Store extends EventEmitter {
       return this.showBanner(message, "success");
     } else {
       _store.connected = false;
-      return this.showBanner(message, "error");
     }
+    this.emit("update-ui");
   };
 
   handleNewLog = (message) => {

@@ -23,7 +23,7 @@ const App = () => {
               exact={route.exact}
               component={withTracker((props) => {
                 return (
-                  <route.layout {...props}>
+                  <route.layout {...props} {...route.props}>
                     <ErrorBoundary
                       FallbackComponent={FallbackPage}
                       onReset={() => Store.init()}

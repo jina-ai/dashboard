@@ -1,6 +1,10 @@
 import React from "react";
 
-export default function NavbarToggle({ toggleSidebar }) {
+type Props = {
+  toggleSidebar: () => void;
+};
+
+function NavbarToggle({ toggleSidebar }: Props) {
   return (
     <nav className="nav cursor-pointer">
       <span
@@ -12,3 +16,5 @@ export default function NavbarToggle({ toggleSidebar }) {
     </nav>
   );
 }
+
+export { NavbarToggle };
