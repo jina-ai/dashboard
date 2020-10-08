@@ -12,8 +12,8 @@ interface Node extends INode {
 type ParsedNode = {
   label: string;
   id: string;
-  properties: { [key: string]: any };
-  newProperties: { [key: string]: any };
+  properties: { [key: string]: string | number };
+  newProperties: { [key: string]: string | number };
 };
 
 type NodesObject = {
@@ -109,13 +109,18 @@ function EditLink({ link, nodes, updateLink, deleteSelection }: EditLinkProps) {
   );
 }
 
+type PropertyItem = {
+  name: string;
+  type: string;
+};
+
 type EditNodeProps = {
   node: ParsedNode;
+  availableProperties: PropertyItem[];
   updateLabel: (label: string) => void;
-  updateNewValue: (key: string, value: any) => void;
-  updateExistingValue: (key: string, value: any) => void;
+  updateNewValue: (key: string, value: string | number) => void;
+  updateExistingValue: (key: string, value: string | number) => void;
   deleteSelection: () => void;
-  availableProperties: any;
 };
 
 function EditNode({
@@ -131,8 +136,8 @@ function EditNode({
     availableProperties
   );
 
-  const updateSearchQuery = (e: any) => {
-    setSearchQuery(e.target.value);
+  const updateSearchQuery = (searchString: string) => {
+    setSearchQuery(searchString);
   };
 
   useEffect(() => {
@@ -170,11 +175,11 @@ function EditNode({
           spellCheck={false}
           placeholder="search properties..."
           value={searchQuery}
-          onChange={updateSearchQuery}
+          onChange={(e) => updateSearchQuery(e.target.value)}
         />
       </div>
       <div className="property-table flex-fill mx-2">
-        {filteredProperties.map((property: any) => {
+        {filteredProperties.map((property) => {
           const { name, type } = property;
           const value = node.properties[name];
 
@@ -185,6 +190,7 @@ function EditNode({
                 <FormControl
                   spellCheck={false}
                   placeholder={type}
+                  type={type === "int" ? "number" : "text"}
                   value={node.newProperties[name] || ""}
                   onChange={(e) => updateNewValue(name, e.target.value)}
                   className="property-value-input"
@@ -196,6 +202,8 @@ function EditNode({
               <p className="property-label mb-1">{name}</p>
               <FormControl
                 spellCheck={false}
+                placeholder={type}
+                type={type === "int" ? "number" : "text"}
                 value={value || ""}
                 onChange={(e) => updateExistingValue(name, e.target.value)}
                 className="property-value-input"
@@ -265,7 +273,7 @@ type FlowChartSidebarProps = {
     nodeFromId: string,
     nodeToId: string | undefined
   ) => void;
-  availableProperties: [any];
+  availableProperties: PropertyItem[];
 };
 
 function FlowChartSidebar({
@@ -283,7 +291,7 @@ function FlowChartSidebar({
     links,
   } = chart;
 
-  const [node, setNode]: [ParsedNode | null, any] = useState(null);
+  const [node, setNode] = useState<ParsedNode | undefined>();
 
   useEffect(() => {
     let node;
