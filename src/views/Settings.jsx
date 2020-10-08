@@ -1,6 +1,6 @@
 import React from "react";
 import { Container, Row } from "react-bootstrap";
-import PageTitle from "../components/Common/PageTitle";
+import { PageTitle } from "../components/Common/PageTitle";
 import SettingsCard from "../components/Settings/Settings";
 
 class SettingsView extends React.Component {

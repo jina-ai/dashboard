@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import LogLevelSummaryChart from "../components/LogStream/LogLevelSummaryChart";
 import LogLevelPieChart from "../components/LogStream/LogLevelPieChart";
-import PageTitle from "../components/Common/PageTitle";
+import { PageTitle } from "../components/Common/PageTitle";
 import { LogsTable } from "../components/LogStream/LogsTable";
 import { Store, Dispatcher, Constants } from "../flux";
 const showLogDetails = (log) => {

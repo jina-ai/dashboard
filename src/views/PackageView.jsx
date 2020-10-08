@@ -2,7 +2,7 @@ import React from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import { Dispatcher, Constants, Store } from "../flux";
 import BuildHistory from "../components/Hub/BuildHistory";
-import PageTitle from "../components/Common/PageTitle";
+import { PageTitle } from "../components/Common/PageTitle";
 import Details from "../components/Hub/ImageDetails";
 import Readme from "../components/Hub/Readme";
 import CopyCommand from "../components/Hub/CopyCommand";

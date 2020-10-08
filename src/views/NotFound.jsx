@@ -1,7 +1,7 @@
 import React from "react";
 import { Container, Row, Col } from "shards-react";
-import HelpCard from "../components/Common/HelpCard";
-import PageTitle from "../components/Common/PageTitle";
+import { HelpCard } from "../components/Common/HelpCard";
+import { PageTitle } from "../components/Common/PageTitle";
 
 const NotFound = () => (
   <Container fluid className="main-content-container px-4">

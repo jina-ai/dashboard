@@ -24,7 +24,7 @@ const CHART_LEVELS = [
   "DEBUG",
 ];
 
-function getParsedExamples() {
+function getExampleFlows() {
   const flows = {};
 
   Object.entries(exampleFlows).forEach(([id, flow]) => {
@@ -43,6 +43,19 @@ function getParsedExamples() {
   });
 
   return flows;
+}
+
+function getUserFlows() {
+  const userFlows = JSON.parse(localStorage.getItem("userFlows"));
+  return _.isEmpty(userFlows)
+    ? {
+        _userFlow: {
+          name: "Custom Flow 1",
+          type: "user-generated",
+          flow: getInitialFlow(),
+        },
+      }
+    : userFlows;
 }
 
 function getInitialFlow() {
@@ -101,12 +114,8 @@ function getInitialStore() {
     menuVisible: false,
     navItems: getSidebarNavItems(),
     flows: {
-      _userFlow: {
-        name: "Custom Flow 1",
-        type: "user-generated",
-        flow: getInitialFlow(),
-      },
-      ...getParsedExamples(),
+      ...getUserFlows(),
+      ...getExampleFlows(),
     },
     selectedFlow: "_userFlow",
     logs: [],
@@ -209,6 +218,9 @@ class Store extends EventEmitter {
       case Constants.UPDATE_FLOW:
         this.updateFlow(payload);
         break;
+      case Constants.DELETE_FLOW:
+        this.deleteFlow(payload);
+        break;
       default:
     }
   };
@@ -263,7 +275,7 @@ class Store extends EventEmitter {
     let flows = {};
     flows.connectedFlow = {
       flow: parsed,
-      name: "Connected Flow",
+      name: "Network Flow",
       type: "remote",
     };
     _store.flows = { ...flows, ..._store.flows };
@@ -295,8 +307,8 @@ class Store extends EventEmitter {
       return this.showBanner(message, "success");
     } else {
       _store.connected = false;
-      return this.showBanner(message, "error");
     }
+    this.emit("update-ui");
   };
 
   handleNewLog = (message) => {
@@ -476,6 +488,7 @@ class Store extends EventEmitter {
 
   updateFlow = (newFlow) => {
     _store.flows[_store.selectedFlow].flow = newFlow;
+    this.saveFlowsToStorage();
     this.emit("update-flowchart");
   };
 
@@ -514,7 +527,42 @@ class Store extends EventEmitter {
     };
 
     _store.selectedFlow = id;
+    this.saveFlowsToStorage();
     this.emit("update-flowchart");
+  };
+
+  deleteFlow = (flowId) => {
+    _store.flows = _.omit(_store.flows, flowId);
+
+    const nonExampleFlows = Object.entries(_store.flows).filter(
+      ([id, flow]) => flow.type !== "example"
+    );
+
+    if (_store.selectedFlow === flowId && nonExampleFlows.length) {
+      _store.selectedFlow = nonExampleFlows[0][0];
+    } else if (!nonExampleFlows.length) {
+      _store.flows = {
+        _userFlow: {
+          name: "Custom Flow 1",
+          type: "user-generated",
+          flow: getInitialFlow(),
+        },
+        ..._store.flows,
+      };
+      _store.selectedFlow = "_userFlow";
+    }
+
+    this.saveFlowsToStorage();
+    this.emit("update-flowchart");
+  };
+
+  saveFlowsToStorage = () => {
+    let toSave = {};
+    const { flows } = _store;
+    Object.entries(flows).forEach(([id, flow]) => {
+      if (flow.type === "user-generated") toSave[id] = flow;
+    });
+    localStorage.setItem("userFlows", JSON.stringify(toSave));
   };
 
   saveSettings = (settings) => {
@@ -705,7 +753,7 @@ class Store extends EventEmitter {
     return _store.flows[_store.selectedFlow];
   };
 
-  getFlowOptions = () => {
+  getFlows = () => {
     return _store.flows;
   };
 

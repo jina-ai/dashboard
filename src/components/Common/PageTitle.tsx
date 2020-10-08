@@ -1,8 +1,14 @@
 import React from "react";
 import classNames from "classnames";
-import { Col } from "shards-react";
+import { Col } from "react-bootstrap";
 
-export default function PageTitle({ title, subtitle, className, ...attrs }) {
+type Props = {
+  title: string;
+  subtitle: string;
+  className: string;
+};
+
+function PageTitle({ title, subtitle, className }: Props) {
   const classes = classNames(
     className,
     "text-center",
@@ -11,9 +17,11 @@ export default function PageTitle({ title, subtitle, className, ...attrs }) {
   );
 
   return (
-    <Col xs="12" sm="3" className={classes} {...attrs}>
+    <Col xs="12" sm="3" className={classes}>
       <span className="text-uppercase page-subtitle">{subtitle}</span>
       <h3 className="page-title">{title}</h3>
     </Col>
   );
 }
+
+export { PageTitle };

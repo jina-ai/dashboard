@@ -2,7 +2,7 @@ import React from "react";
 import { Redirect } from "react-router-dom";
 
 // Layout Types
-import { DefaultLayout, IconSidebar } from "./layouts";
+import { IconSidebar } from "./layouts";
 
 // Route Views
 import FlowView from "./views/FlowView";
@@ -19,52 +19,88 @@ export default [
   {
     path: "/",
     exact: true,
-    layout: DefaultLayout,
+    layout: IconSidebar,
     component: () => <Redirect to="/logs" />,
   },
   {
     path: "/logs",
     layout: IconSidebar,
     component: LogsView,
+    props: {
+      usesConnection: true,
+      usesAuth: false,
+    },
   },
   {
     path: "/flow",
     layout: IconSidebar,
     component: FlowView,
+    props: {
+      usesConnection: true,
+      usesAuth: false,
+    },
   },
   {
     path: "/task",
     layout: IconSidebar,
     component: TaskView,
+    props: {
+      usesConnection: true,
+      usesAuth: false,
+    },
   },
   {
     path: "/settings",
     layout: IconSidebar,
     component: Settings,
+    props: {
+      usesConnection: true,
+      usesAuth: false,
+    },
   },
   {
     path: "/help",
     layout: IconSidebar,
     component: NotFound,
+    props: {
+      usesConnection: false,
+      usesAuth: false,
+    },
   },
   {
     path: "/home",
     layout: IconSidebar,
     component: NotFound,
+    props: {
+      usesConnection: false,
+      usesAuth: false,
+    },
   },
   {
     path: "/hub",
     layout: IconSidebar,
     component: HubView,
+    props: {
+      usesConnection: false,
+      usesAuth: true,
+    },
   },
   {
     path: "/package",
     layout: IconSidebar,
     component: PackageView,
+    props: {
+      usesConnection: false,
+      usesAuth: true,
+    },
   },
   {
     path: "/login",
     layout: IconSidebar,
     component: LogIn,
+    props: {
+      usesConnection: false,
+      usesAuth: true,
+    },
   },
 ];

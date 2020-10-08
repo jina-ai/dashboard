@@ -4,7 +4,7 @@ import { FlowChart } from "@mrblenny/react-flow-chart";
 import * as actions from "@mrblenny/react-flow-chart/src/container/actions";
 import { Container, Row, Card } from "shards-react";
 import { Dispatcher, Constants, Store } from "../flux";
-import PageTitle from "../components/Common/PageTitle";
+import { PageTitle } from "../components/Common/PageTitle";
 import html2canvas from "html2canvas";
 
 import CommandBar from "../components/FlowChart/CommandBar";
@@ -29,14 +29,14 @@ class FlowView extends React.Component {
     super(props);
     const { flow: chart, type: flowType } = Store.getFlowchart();
     const selectedFlowId = Store.getSelectedFlowId();
-    const flowOptions = Store.getFlowOptions();
+    const flows = Store.getFlows();
     const connected = Store.getConnectionStatus();
     this.state = {
       flowType,
       connected,
       chart,
       selectedFlowId,
-      flowOptions,
+      flows,
       showOverlay: false,
     };
 
@@ -98,8 +98,8 @@ class FlowView extends React.Component {
   getData = () => {
     const { flow: chart, type: flowType } = Store.getFlowchart();
     const selectedFlowId = Store.getSelectedFlowId();
-    const flowOptions = Store.getFlowOptions();
-    this.setState({ chart, flowType, selectedFlowId, flowOptions });
+    const flows = Store.getFlows();
+    this.setState({ chart, flowType, selectedFlowId, flows });
   };
 
   getConnectionStatus = () => {
@@ -172,10 +172,8 @@ class FlowView extends React.Component {
     alert("Chart copied to clipboard as YAML");
   };
 
-  validateLink = ({ fromNodeId, toNodeId, fromPortId, toPortId, chart }) => {
-    if (fromPortId !== "outPort" || toPortId !== "inPort") return false;
-    if (fromNodeId === toNodeId) return false;
-    return true;
+  validateLink = ({ fromNodeId, toNodeId, fromPortId, toPortId }) => {
+    return !(fromNodeId === toNodeId || fromPortId === toPortId);
   };
 
   showImportModal = () => {
@@ -192,9 +190,20 @@ class FlowView extends React.Component {
     });
   };
 
-  createNewFlow = () => {
+  createNewFlow = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
     Dispatcher.dispatch({
       actionType: Constants.CREATE_NEW_FLOW,
+    });
+  };
+
+  deleteFlow = (e, flowId) => {
+    e.preventDefault();
+    e.stopPropagation();
+    Dispatcher.dispatch({
+      actionType: Constants.DELETE_FLOW,
+      payload: flowId,
     });
   };
 
@@ -209,7 +218,7 @@ class FlowView extends React.Component {
   render = () => {
     const {
       chart,
-      flowOptions,
+      flows,
       selectedFlowId,
       showOverlay,
       connected,
@@ -234,10 +243,11 @@ class FlowView extends React.Component {
             <Card className="chart-section-container p-1 mr-md-4 mb-4">
               <FlowSelection
                 connected={connected}
-                loadFlow={this.loadFlow}
-                flowOptions={flowOptions}
+                flows={flows}
                 selectedFlowId={selectedFlowId}
                 createNewFlow={this.createNewFlow}
+                loadFlow={this.loadFlow}
+                deleteFlow={this.deleteFlow}
               />
               <CommandBar
                 copyChart={this.copyChartAsYAML}

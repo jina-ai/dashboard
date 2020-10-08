@@ -1,9 +1,14 @@
 import React from "react";
 import { Button } from "react-bootstrap";
 
-export default function CookiesBanner({ show, acceptCookies }) {
+type Props = {
+  show: boolean;
+  acceptCookies: () => void;
+};
+
+function CookiesBanner({ acceptCookies }: Props) {
   return (
-    <div className={`cookies-banner ${show ? "" : "hidden"}`}>
+    <div className="cookies-banner">
       <p className="mb-2">
         We and third parties use cookies or similar technologies ("Cookies") as
         described below to collect and process personal data, such as your IP
@@ -20,3 +25,5 @@ export default function CookiesBanner({ show, acceptCookies }) {
     </div>
   );
 }
+
+export { CookiesBanner };
