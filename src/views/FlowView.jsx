@@ -11,14 +11,34 @@ import CommandBar from "../components/FlowChart/CommandBar";
 import Sidebar from "../components/FlowChart/Sidebar";
 import CustomNode from "../components/FlowChart/ChartNode";
 import CustomPort from "../components/FlowChart/NodePort";
-import ExampleSelection from "../components/FlowChart/ExampleSelection";
+import FlowSelection from "../components/FlowChart/FlowSelection";
 import { formatAsYAML, copyToClipboard } from "../helpers";
+
+const syncEvents = [
+  "onDragNodeStop",
+  "onCanvasDrop",
+  "onCanvasClick",
+  "onNodeClick",
+  "onDragCanvasStop",
+  "updateNode",
+  "updateLink",
+];
 
 class FlowView extends React.Component {
   constructor(props) {
     super(props);
-    const chart = Store.getFlowchart();
-    this.state = { chart, showOverlay: false };
+    const { flow: chart, type: flowType } = Store.getFlowchart();
+    const selectedFlowId = Store.getSelectedFlowId();
+    const flows = Store.getFlows();
+    const connected = Store.getConnectionStatus();
+    this.state = {
+      flowType,
+      connected,
+      chart,
+      selectedFlowId,
+      flows,
+      showOverlay: false,
+    };
 
     this.stateActionCallbacks = Object.keys(actions).reduce((obj, key, idx) => {
       obj[key] = (...args) => {
@@ -26,12 +46,13 @@ class FlowView extends React.Component {
         let action = actions[key];
         let newChartTransformer = action(...args);
         let newChart = newChartTransformer(chart);
-        this.updateChart({ ...chart, ...newChart });
+        this.updateFlow({ ...chart, ...newChart }, key);
         return newChart;
       };
       return obj;
     }, {});
 
+    Store.on("update-ui", this.getConnectionStatus);
     Store.on("update-flowchart", this.getData);
   }
 
@@ -43,6 +64,7 @@ class FlowView extends React.Component {
 
   componentWillUnmount = () => {
     Store.removeListener("update-flowchart", this.getData);
+    Store.removeListener("update-ui", this.getConnectionStatus);
   };
 
   exportImage = (extension = "png") => {
@@ -74,8 +96,15 @@ class FlowView extends React.Component {
   };
 
   getData = () => {
-    const chart = Store.getFlowchart();
-    this.updateChart(chart);
+    const { flow: chart, type: flowType } = Store.getFlowchart();
+    const selectedFlowId = Store.getSelectedFlowId();
+    const flows = Store.getFlows();
+    this.setState({ chart, flowType, selectedFlowId, flows });
+  };
+
+  getConnectionStatus = () => {
+    const connected = Store.getConnectionStatus();
+    this.setState({ connected });
   };
 
   updateNode = (node, callback) => {
@@ -96,7 +125,7 @@ class FlowView extends React.Component {
 
     newChart.nodes[node.id].properties = props;
 
-    this.updateChart({ ...chart, ...newChart });
+    this.updateFlow({ ...chart, ...newChart }, "updateNode");
     return newChart.nodes[node.id];
   };
 
@@ -108,7 +137,7 @@ class FlowView extends React.Component {
     newChart.links[linkId].from.nodeId = fromId;
     newChart.links[linkId].to.nodeId = toId;
 
-    this.updateChart({ ...chart, ...newChart });
+    this.updateFlow({ ...chart, ...newChart }, "updateLink");
   };
 
   cancelChanges = () => {
@@ -119,8 +148,16 @@ class FlowView extends React.Component {
     this.stateActionCallbacks.onDeleteKey({});
   };
 
-  updateChart = (chart) => {
-    this.setState({ chart });
+  updateFlow = (flow, event) => {
+    if (syncEvents.includes(event)) return this.syncFlow(flow);
+    this.setState({ chart: flow });
+  };
+
+  syncFlow = (flow) => {
+    Dispatcher.dispatch({
+      actionType: Constants.UPDATE_FLOW,
+      payload: flow,
+    });
   };
 
   selectNode = (data) => {
@@ -146,15 +183,48 @@ class FlowView extends React.Component {
     });
   };
 
-  loadExample = (example) => {
+  loadFlow = (flow) => {
     Dispatcher.dispatch({
-      actionType: Constants.LOAD_EXAMPLE,
-      payload: example,
+      actionType: Constants.LOAD_FLOW,
+      payload: flow,
+    });
+  };
+
+  createNewFlow = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    Dispatcher.dispatch({
+      actionType: Constants.CREATE_NEW_FLOW,
+    });
+  };
+
+  deleteFlow = (e, flowId) => {
+    e.preventDefault();
+    e.stopPropagation();
+    Dispatcher.dispatch({
+      actionType: Constants.DELETE_FLOW,
+      payload: flowId,
+    });
+  };
+
+  duplicateFlow = () => {
+    const yaml = formatAsYAML(this.state.chart);
+    Dispatcher.dispatch({
+      actionType: Constants.DUPLICATE_FLOW,
+      payload: yaml,
     });
   };
 
   render = () => {
-    const { chart, showOverlay } = this.state;
+    const {
+      chart,
+      flows,
+      selectedFlowId,
+      showOverlay,
+      connected,
+      flowType,
+    } = this.state;
+    const readonly = flowType !== "user-generated";
     return (
       <Container fluid className="main-content-container px-0">
         <div className="px-4">
@@ -170,7 +240,14 @@ class FlowView extends React.Component {
           </Row>
           <div className="flow-container d-flex flex-column flex-md-row">
             <Card className="chart-section-container p-1 mr-md-4 mb-4">
-              <ExampleSelection loadExample={this.loadExample} />
+              <FlowSelection
+                connected={connected}
+                flows={flows}
+                selectedFlowId={selectedFlowId}
+                createNewFlow={this.createNewFlow}
+                loadFlow={this.loadFlow}
+                deleteFlow={this.deleteFlow}
+              />
               <CommandBar
                 copyChart={this.copyChartAsYAML}
                 importChart={this.showImportModal}
@@ -189,12 +266,15 @@ class FlowView extends React.Component {
                   Components={{ NodeInner: CustomNode, Port: CustomPort }}
                   callbacks={this.stateActionCallbacks}
                   config={{
+                    readonly,
                     validateLink: this.validateLink,
                   }}
                 />
               </div>
             </Card>
             <Sidebar
+              duplicateFlow={this.duplicateFlow}
+              readonly={readonly}
               chart={chart}
               cancelChanges={this.cancelChanges}
               deleteSelection={this.deleteSelection}

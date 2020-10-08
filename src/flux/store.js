@@ -1,13 +1,14 @@
 import { EventEmitter } from "events";
 import _ from "lodash";
 import Dispatcher from "./dispatcher";
+import { nanoid } from "nanoid";
 import Constants from "./constants";
 import { parseYAML, formatForFlowchart, formatSeconds } from "../helpers";
 import api from "./api";
 import logger from "../logger";
 import propertyList from "../data/podProperties.json";
 import getSidebarNavItems from "../data/sidebar-nav-items";
-import exampleYAML from "../data/yaml";
+import exampleFlows from "../data/exampleFlows";
 import { transformLog } from "./tranformLog";
 
 let _store;
@@ -22,6 +23,64 @@ const CHART_LEVELS = [
   "CRITICAL",
   "DEBUG",
 ];
+
+function getExampleFlows() {
+  const flows = {};
+
+  Object.entries(exampleFlows).forEach(([id, flow]) => {
+    const parsed = parseYAML(flow.yaml);
+    let canvas;
+    try {
+      canvas = parsed.data.with.board.canvas;
+    } catch (e) {
+      canvas = {};
+    }
+    const formatted = formatForFlowchart(parsed.data.pods, canvas);
+    flows[id] = {
+      ...flow,
+      flow: formatted,
+    };
+  });
+
+  return flows;
+}
+
+function getUserFlows() {
+  const userFlows = JSON.parse(localStorage.getItem("userFlows"));
+  return _.isEmpty(userFlows)
+    ? {
+        _userFlow: {
+          name: "Custom Flow 1",
+          type: "user-generated",
+          flow: getInitialFlow(),
+        },
+      }
+    : userFlows;
+}
+
+function getInitialFlow() {
+  return {
+    selected: {},
+    hovered: {},
+    scale: 1,
+    nodes: {
+      gateway: {
+        id: "gateway",
+        label: "gateway",
+        ports: {
+          outPort: {
+            id: "outPort",
+            type: "output",
+          },
+        },
+        properties: {},
+        position: { x: 629, y: 72 },
+      },
+    },
+    links: {},
+    offset: { x: 0, y: 0 },
+  };
+}
 
 function getInitialLevelOccurences() {
   let occurences = {
@@ -54,27 +113,11 @@ function getInitialStore() {
     modal: false,
     menuVisible: false,
     navItems: getSidebarNavItems(),
-    flowchart: {
-      selected: {},
-      hovered: {},
-      scale: 1,
-      nodes: {
-        gateway: {
-          id: "gateway",
-          label: "gateway",
-          ports: {
-            outPort: {
-              id: "outPort",
-              type: "output",
-            },
-          },
-          properties: {},
-          position: { x: 629, y: 72 },
-        },
-      },
-      links: {},
-      offset: { x: 0, y: 0 },
+    flows: {
+      ...getUserFlows(),
+      ...getExampleFlows(),
     },
+    selectedFlow: "_userFlow",
     logs: [],
     logSources: {},
     logLevels: {},
@@ -160,11 +203,23 @@ class Store extends EventEmitter {
       case Constants.LOG_OUT:
         this.logOut();
         break;
-      case Constants.LOAD_EXAMPLE:
-        this.loadExample(payload);
+      case Constants.LOAD_FLOW:
+        this.loadFlow(payload);
         break;
       case Constants.SHOW_POD_IN_FLOW:
         this.showPodByLabel(payload);
+        break;
+      case Constants.CREATE_NEW_FLOW:
+        this.createNewFlow();
+        break;
+      case Constants.DUPLICATE_FLOW:
+        this.createNewFlow(payload);
+        break;
+      case Constants.UPDATE_FLOW:
+        this.updateFlow(payload);
+        break;
+      case Constants.DELETE_FLOW:
+        this.deleteFlow(payload);
         break;
       default:
     }
@@ -173,6 +228,8 @@ class Store extends EventEmitter {
   init = async () => {
     this.clearIntervals();
     _store = getInitialStore();
+
+    console.log("store:", _store);
 
     await this.initFlowChart();
     this.initLogStream();
@@ -189,36 +246,41 @@ class Store extends EventEmitter {
     if (this.updateTaskInterval) clearInterval(this.updateTaskInterval);
   };
 
-  initFlowChart = async (yamlSTRING) => {
-    logger.log("initFlowChart - yamlString", yamlSTRING);
+  initFlowChart = async () => {
     let flow;
-    const { settings } = _store;
-    const connectionString = `${settings.host}:${settings.port}${
-      settings.yaml.startsWith("/") ? settings.yaml : "/" + settings.yaml
-    }`;
 
-    if (yamlSTRING) {
-      flow = parseYAML(yamlSTRING);
-    } else {
-      try {
-        let str = await api.getYAML(connectionString);
-        flow = parseYAML(str);
-      } catch (e) {
-        logger.log("initFlowChart - parseYAML[API] ERROR", e);
-        return;
-      }
+    try {
+      let str = await api.getYAML(_store.settings);
+      flow = parseYAML(str);
+    } catch (e) {
+      logger.log("initFlowChart - parseYAML[API] ERROR", e);
+      return;
     }
+
     let canvas;
     try {
       canvas = flow.data.with.board.canvas;
     } catch (e) {
       canvas = {};
     }
+
     logger.log("initFlowChart - flow", flow);
     logger.log("initFlowChart - canvas", canvas);
+
     const parsed = formatForFlowchart(flow.data.pods, canvas);
     parsed.with = flow.data.with;
-    _store.flowchart = parsed;
+
+    logger.log("initFlowChart - parsed", parsed);
+
+    let flows = {};
+    flows.connectedFlow = {
+      flow: parsed,
+      name: "Network Flow",
+      type: "remote",
+    };
+    _store.flows = { ...flows, ..._store.flows };
+    _store.selectedFlow = "connectedFlow";
+
     this.emit("update-ui");
     this.emit("update-flowchart");
   };
@@ -414,15 +476,93 @@ class Store extends EventEmitter {
 
   importCustomYAML = (customYAML) => {
     logger.log("importCustomYAML - customYAML", customYAML);
-    this.initFlowChart(customYAML);
+    this.createNewFlow(customYAML);
     this.closeModal();
     this.emit("update-flowchart");
   };
 
-  loadExample = (exampleName) => {
-    const flow = exampleYAML[exampleName];
-    this.initFlowChart(flow);
+  loadFlow = (flowId) => {
+    _store.selectedFlow = flowId;
     this.emit("update-flowchart");
+  };
+
+  updateFlow = (newFlow) => {
+    _store.flows[_store.selectedFlow].flow = newFlow;
+    this.saveFlowsToStorage();
+    this.emit("update-flowchart");
+  };
+
+  createNewFlow = (customYAML) => {
+    let prefixString = "Custom Flow";
+
+    let userFlows = Object.values(_store.flows).filter((flow) =>
+      flow.name.startsWith(prefixString)
+    );
+
+    const flowNumbers = userFlows
+      .map((f) => parseInt(f.name.substring(prefixString.length)) || 0)
+      .sort((a, b) => a - b);
+
+    const largestNumber = flowNumbers[flowNumbers.length - 1] || 0;
+
+    const id = nanoid();
+
+    let flow;
+
+    if (customYAML) {
+      const parsed = parseYAML(customYAML);
+      let canvas;
+      try {
+        canvas = parsed.data.with.board.canvas;
+      } catch (e) {
+        canvas = {};
+      }
+      flow = formatForFlowchart(parsed.data.pods, canvas);
+    } else flow = getInitialFlow();
+
+    _store.flows[id] = {
+      name: `${prefixString} ${largestNumber + 1}`,
+      type: "user-generated",
+      flow,
+    };
+
+    _store.selectedFlow = id;
+    this.saveFlowsToStorage();
+    this.emit("update-flowchart");
+  };
+
+  deleteFlow = (flowId) => {
+    _store.flows = _.omit(_store.flows, flowId);
+
+    const nonExampleFlows = Object.entries(_store.flows).filter(
+      ([id, flow]) => flow.type !== "example"
+    );
+
+    if (_store.selectedFlow === flowId && nonExampleFlows.length) {
+      _store.selectedFlow = nonExampleFlows[0][0];
+    } else if (!nonExampleFlows.length) {
+      _store.flows = {
+        _userFlow: {
+          name: "Custom Flow 1",
+          type: "user-generated",
+          flow: getInitialFlow(),
+        },
+        ..._store.flows,
+      };
+      _store.selectedFlow = "_userFlow";
+    }
+
+    this.saveFlowsToStorage();
+    this.emit("update-flowchart");
+  };
+
+  saveFlowsToStorage = () => {
+    let toSave = {};
+    const { flows } = _store;
+    Object.entries(flows).forEach(([id, flow]) => {
+      if (flow.type === "user-generated") toSave[id] = flow;
+    });
+    localStorage.setItem("userFlows", JSON.stringify(toSave));
   };
 
   saveSettings = (settings) => {
@@ -610,7 +750,15 @@ class Store extends EventEmitter {
   };
 
   getFlowchart = () => {
-    return _store.flowchart;
+    return _store.flows[_store.selectedFlow];
+  };
+
+  getFlows = () => {
+    return _store.flows;
+  };
+
+  getSelectedFlowId = () => {
+    return _store.selectedFlow;
   };
 
   getAvailableProperties = () => {
