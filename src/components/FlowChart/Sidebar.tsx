@@ -1,49 +1,29 @@
 import React, { useState, useEffect } from "react";
 import SidebarItem from "./SidebarItem";
 import defaultPods from "../../data/defaultPods.json";
+import _ from "lodash";
+import { IChart, ILink, INode } from "@mrblenny/react-flow-chart";
 import { Button, FormControl, Card } from "react-bootstrap";
 
-type Node = {
-  id: string;
+interface Node extends INode {
+  label?: string;
+}
+
+type ParsedNode = {
   label: string;
-  orientation?: number;
-  readonly?: boolean;
-  ports: {
-    [id: string]: { id: string; type: string };
-  };
-  position: { x: number; y: number };
+  id: string;
   properties: { [key: string]: any };
   newProperties: { [key: string]: any };
-  size: { width: number; height: number };
-};
-
-type Link = {
-  from: { nodeId: string; portId: string };
-  to: { nodeId: string; portId: string };
-  id: string;
 };
 
 type NodesObject = {
   [key: string]: Node;
 };
 
-type LinksObject = {
-  [key: string]: Link;
-};
-
-type Chart = {
-  offset: { x: number; y: number };
-  nodes: NodesObject;
-  links: LinksObject;
-  scale: number;
-  selected: { id?: string; type?: string };
-  hovered: { id?: string; type?: string };
-};
-
-const parseNode = (node: Node) => {
+const parseNode = (node: Node): ParsedNode => {
   const properties = { ...node.properties };
   const newProperties = {};
-  const label = node.label;
+  const label = node.label || "";
 
   return { label, id: node.id, properties, newProperties };
 };
@@ -63,15 +43,19 @@ function ReadOnly({ duplicateFlow }: { duplicateFlow: () => void }) {
 }
 
 type EditLinkProps = {
-  link: Link;
+  link: ILink;
   nodes: NodesObject;
-  updateLink: (linkId: string, nodeFrom: string, nodeTo: string) => void;
+  updateLink: (
+    linkId: string,
+    nodeFrom: string,
+    nodeTo: string | undefined
+  ) => void;
   deleteSelection: () => void;
 };
 
 function EditLink({ link, nodes, updateLink, deleteSelection }: EditLinkProps) {
-  const nodeFrom = nodes[link.from.nodeId];
-  const nodeTo = nodes[link.to.nodeId];
+  let nodeFromId = link.from.nodeId;
+  let nodeToId = link.to.nodeId;
 
   let choices = Object.keys(nodes).map((id) => {
     return { label: nodes[id].label || nodes[id].properties.name, id };
@@ -90,8 +74,8 @@ function EditLink({ link, nodes, updateLink, deleteSelection }: EditLinkProps) {
           <FormControl
             className="mb-2"
             as="select"
-            onChange={(e) => updateLink(link.id, e.target.value, nodeTo.id)}
-            value={nodeFrom.id}
+            onChange={(e) => updateLink(link.id, e.target.value, nodeToId)}
+            value={nodeFromId}
           >
             {choices.map((choice) => (
               <option key={choice.id} value={choice.id}>
@@ -105,8 +89,8 @@ function EditLink({ link, nodes, updateLink, deleteSelection }: EditLinkProps) {
           <FormControl
             className="mb-2"
             as="select"
-            onChange={(e) => updateLink(link.id, nodeFrom.id, e.target.value)}
-            value={nodeTo.id}
+            onChange={(e) => updateLink(link.id, nodeFromId, e.target.value)}
+            value={nodeToId}
           >
             {choices.map((choice) => (
               <option key={choice.id} value={choice.id}>
@@ -126,7 +110,7 @@ function EditLink({ link, nodes, updateLink, deleteSelection }: EditLinkProps) {
 }
 
 type EditNodeProps = {
-  node: Node;
+  node: ParsedNode;
   updateLabel: (label: string) => void;
   updateNewValue: (key: string, value: any) => void;
   updateExistingValue: (key: string, value: any) => void;
@@ -163,8 +147,7 @@ function EditNode({
     setFilteredProperties(availableProperties);
   }, [node.id, availableProperties]);
 
-  let label =
-    typeof node.label === "undefined" ? node.properties.name : node.label || "";
+  let label = node.label || node.properties.name;
 
   return (
     <div className="h-100 d-flex flex-column">
@@ -273,12 +256,16 @@ function PodMenu() {
 
 type FlowChartSidebarProps = {
   readonly: boolean;
-  chart: Chart;
-  node: Node;
-  updateLabel: (label: string) => void;
-  updateNewValue: (key: string, value: any) => void;
-  updateExistingValue: (key: string, value: any) => void;
+  chart: IChart;
+  duplicateFlow: () => void;
+  updateNode: (updates: any) => void;
   deleteSelection: () => void;
+  updateLink: (
+    linkId: string,
+    nodeFromId: string,
+    nodeToId: string | undefined
+  ) => void;
+  availableProperties: [any];
 };
 
 function FlowChartSidebar({
@@ -289,19 +276,20 @@ function FlowChartSidebar({
   updateNode,
   updateLink,
   availableProperties,
-}: any) {
+}: FlowChartSidebarProps) {
   const {
     selected: { id: selectedId, type: selectedType },
     nodes,
     links,
   } = chart;
 
-  const [node, setNode]: [any, any] = useState(null);
+  const [node, setNode]: [ParsedNode | null, any] = useState(null);
 
   useEffect(() => {
     let node;
+    if (!selectedId) return;
     const selectedNode = nodes[selectedId];
-    if (selectedNode) node = parseNode(nodes[selectedId]);
+    if (selectedNode) node = parseNode(selectedNode);
     setNode(node);
   }, [nodes, selectedId]);
 
@@ -313,7 +301,8 @@ function FlowChartSidebar({
   }
 
   function updateNewValue(key: string, value: any) {
-    let newNode = { ...node };
+    if (!node) return;
+    let newNode = _.cloneDeep(node);
     newNode.newProperties[key] = value;
     updateNode({
       ...newNode,
@@ -321,7 +310,8 @@ function FlowChartSidebar({
   }
 
   function updateExistingValue(key: string, value: any) {
-    let newNode = { ...node };
+    if (!node) return;
+    let newNode = _.cloneDeep(node);
     newNode.properties[key] = value;
     updateNode({
       ...newNode,
