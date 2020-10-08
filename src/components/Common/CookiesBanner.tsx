@@ -6,9 +6,9 @@ type Props = {
   acceptCookies: () => void;
 };
 
-function CookiesBanner({ show, acceptCookies }: Props) {
+function CookiesBanner({ acceptCookies }: Props) {
   return (
-    <div className={`cookies-banner ${show ? "" : "hidden"}`}>
+    <div className="cookies-banner">
       <p className="mb-2">
         We and third parties use cookies or similar technologies ("Cookies") as
         described below to collect and process personal data, such as your IP

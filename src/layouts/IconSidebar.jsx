@@ -158,18 +158,13 @@ class IconSidebarLayout extends React.Component {
               user={user}
             />
             <InfoBanner data={banner} />
-            {usesConnection && (
-              <ConnectionBanner
-                loading={loading}
-                connected={connected}
-                reconnect={this.reconnect}
-              />
+            {usesConnection && !loading && !connected && (
+              <ConnectionBanner reconnect={this.reconnect} />
             )}
             {children}
-            <CookiesBanner
-              show={!acceptedCookies}
-              acceptCookies={this.acceptCookies}
-            />
+            {!acceptedCookies && (
+              <CookiesBanner acceptCookies={this.acceptCookies} />
+            )}
             <MainFooter
               loggerEnabled={loggerEnabled}
               enableLogger={this.enableLogger}

@@ -2,13 +2,10 @@ import React from "react";
 import { Button, Row, Col } from "react-bootstrap";
 
 type Props = {
-  loading: boolean;
-  connected: boolean;
   reconnect: () => void;
 };
 
-function ConnectionBanner({ loading, connected, reconnect }: Props) {
-  if (loading || connected) return null;
+function ConnectionBanner({ reconnect }: Props) {
   return (
     <div className="mb-0 banner px-3 banner-warning">
       <Row>
