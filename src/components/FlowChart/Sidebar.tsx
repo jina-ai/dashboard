@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import SidebarItem from "./SidebarItem";
 import defaultPods from "../../data/defaultPods.json";
 import { Button, FormControl, Card } from "react-bootstrap";
-import { Store } from "../../flux";
 
 type Node = {
   id: string;
@@ -132,6 +131,7 @@ type EditNodeProps = {
   updateNewValue: (key: string, value: any) => void;
   updateExistingValue: (key: string, value: any) => void;
   deleteSelection: () => void;
+  availableProperties: any;
 };
 
 function EditNode({
@@ -140,8 +140,8 @@ function EditNode({
   updateNewValue,
   updateExistingValue,
   deleteSelection,
+  availableProperties,
 }: EditNodeProps) {
-  const availableProperties = Store.getAvailableProperties();
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredProperties, setFilteredProperties] = useState(
     availableProperties
@@ -152,18 +152,16 @@ function EditNode({
   };
 
   useEffect(() => {
-    const availableProperties = Store.getAvailableProperties();
-    const results = availableProperties.filter((property) =>
+    const results = availableProperties.filter((property: any) =>
       property.name.toLowerCase().includes(searchQuery.toLowerCase())
     );
     setFilteredProperties(results);
-  }, [searchQuery]);
+  }, [searchQuery, availableProperties]);
 
   useEffect(() => {
-    const availableProperties = Store.getAvailableProperties();
     setSearchQuery("");
     setFilteredProperties(availableProperties);
-  }, [node.id]);
+  }, [node.id, availableProperties]);
 
   let label =
     typeof node.label === "undefined" ? node.properties.name : node.label || "";
@@ -193,7 +191,7 @@ function EditNode({
         />
       </div>
       <div className="property-table flex-fill mx-2">
-        {filteredProperties.map((property) => {
+        {filteredProperties.map((property: any) => {
           const { name, type } = property;
           const value = node.properties[name];
 
@@ -290,6 +288,7 @@ function FlowChartSidebar({
   deleteSelection,
   updateNode,
   updateLink,
+  availableProperties,
 }: any) {
   const {
     selected: { id: selectedId, type: selectedType },
@@ -342,6 +341,7 @@ function FlowChartSidebar({
         ) : (
           node && (
             <EditNode
+              availableProperties={availableProperties}
               node={node}
               updateLabel={updateLabel}
               updateNewValue={updateNewValue}

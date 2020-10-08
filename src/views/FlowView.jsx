@@ -31,7 +31,9 @@ class FlowView extends React.Component {
     const selectedFlowId = Store.getSelectedFlowId();
     const flows = Store.getFlows();
     const connected = Store.getConnectionStatus();
+    const availableProperties = Store.getAvailableProperties();
     this.state = {
+      availableProperties,
       flowType,
       connected,
       chart,
@@ -223,6 +225,7 @@ class FlowView extends React.Component {
       showOverlay,
       connected,
       flowType,
+      availableProperties,
     } = this.state;
     const readonly = flowType !== "user-generated";
     console.log("chart:", chart);
@@ -274,6 +277,7 @@ class FlowView extends React.Component {
               </div>
             </Card>
             <Sidebar
+              availableProperties={availableProperties}
               duplicateFlow={this.duplicateFlow}
               readonly={readonly}
               chart={chart}
