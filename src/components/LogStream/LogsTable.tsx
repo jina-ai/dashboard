@@ -4,10 +4,8 @@ import React from "react";
 import { useEffect, useRef } from "react";
 import { useMiniSearch } from "react-minisearch";
 import { usePrevious } from "./usePrevious";
-import { FixedSizeList as List } from "react-window";
 import { MultiFilterSelect } from "../Common/MultiFilterSelect";
 import { applyFilters } from "./useFilters";
-import { LogItem } from "./LogItem";
 import { ProcessedLog } from "../../flux/tranformLog";
 import {
   Card,
@@ -18,7 +16,6 @@ import {
   ButtonGroup,
   Dropdown,
 } from "react-bootstrap";
-import AutoSizer from "react-virtualized-auto-sizer";
 import { useDebounce } from "../../hooks/useDebounce";
 import {
   serializeLogsToCSVBlob,
@@ -26,6 +23,8 @@ import {
   serializeLogsToTextBlob,
 } from "../../helpers";
 import { saveAs } from "file-saver";
+import { LogTable } from "./LogTable";
+
 const levels = [
   "INFO",
   "SUCCESS",
@@ -34,7 +33,6 @@ const levels = [
   "CRITICAL",
   "DEBUG",
 ] as const;
-const ROW_SIZE = 30;
 
 const fields = ["filename", "funcName", "msg", "name", "module", "pathname"];
 const miniSearchOptions = { fields };
@@ -49,9 +47,6 @@ type Props = {
   showLogDetails: (log: ProcessedLog) => void;
 };
 
-const itemKey = (index: number, data: { items: ProcessedLog[] }) =>
-  data.items[index].id;
-
 const arrayLikeToArray = (arrayLike: Readonly<any[]> | Set<any>) =>
   Array.isArray(arrayLike) ? arrayLike : Array.from(arrayLike);
 
@@ -59,7 +54,43 @@ const toOption = (list: Readonly<any[]> | Set<any>) =>
   arrayLikeToArray(list).map((item) => ({ label: item, value: item }));
 
 function LogsTable({ data, showLogDetails }: Props) {
-  const [scrolledToBottom, setScrolledToBottom] = React.useState(true);
+  const columns = React.useMemo(
+    () =>
+      [
+        {
+          headerLabel: "n",
+          accessor: "idx",
+          cellProps: {},
+          css: { width: "50px" },
+        },
+        {
+          headerLabel: "created",
+          accessor: "created",
+          cellProps: {
+            align: "right",
+          },
+          css: { width: "200px" },
+        },
+        {
+          headerLabel: "logString",
+          accessor: "logString",
+          cellProps: {
+            align: "right",
+          },
+          css: { width: "300px" },
+        },
+        {
+          headerLabel: "Message",
+          accessor: "msg",
+          cellProps: {
+            align: "left",
+          },
+          css: { flexGrow: 2 },
+        },
+      ] as const,
+    []
+  );
+  const [scrolledToBottom] = React.useState(true);
   const windowListRef = useRef<any>();
   const [selectedSources, setSelectedSources] = React.useState<any[]>([]);
   const [selectedLevels, setSelectedLevels] = React.useState<
@@ -171,6 +202,7 @@ function LogsTable({ data, showLogDetails }: Props) {
       <Card.Body
         className="log-stream-container p-1 border-top"
         id="log-stream-container"
+        css={{ height: "100%" }}
       >
         {!scrolledToBottom && (
           <div
@@ -182,35 +214,12 @@ function LogsTable({ data, showLogDetails }: Props) {
             <i className="material-icons">arrow_downward</i> Back to Bottom
           </div>
         )}
-        <AutoSizer>
-          {({ height, width }) => {
-            const firstCol = 300;
-            const secondCol = 300;
-            const thirdCol = width - (firstCol + secondCol);
-            return (
-              <List
-                onScroll={({ scrollOffset }) => {
-                  setScrolledToBottom(
-                    (scrollOffset + height) / ROW_SIZE - resultData.length === 0
-                  );
-                }}
-                height={height}
-                width={width}
-                itemCount={resultData.length}
-                itemSize={ROW_SIZE}
-                itemKey={itemKey}
-                itemData={{
-                  items: resultData,
-                  columns: { firstCol, secondCol, thirdCol },
-                  showLogDetails,
-                }}
-                ref={windowListRef}
-              >
-                {LogItem}
-              </List>
-            );
-          }}
-        </AutoSizer>
+
+        <LogTable
+          columns={columns}
+          data={resultData}
+          showLogDetails={showLogDetails}
+        />
       </Card.Body>
     </Card>
   );
