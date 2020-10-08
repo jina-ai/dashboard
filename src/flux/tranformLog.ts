@@ -29,13 +29,19 @@ export type RawLog = {
 export type ProcessedLog = RawLog & {
   createdDate: Date;
   id: string;
+  logString: string;
 };
 
+const toLogString = ({ name, levelname, process }: RawLog) => {
+  const levelInitial = levelname[0];
+  return `${name}@${process}[${levelInitial}]`;
+};
 function transformLog(log: RawLog) {
   const { created } = log;
   const createdDate = fromUnixTime(created);
   const id = nanoid();
-  return { ...log, createdDate, id };
+  const logString = toLogString(log);
+  return { ...log, createdDate, logString, id };
 }
 
 export { transformLog };
