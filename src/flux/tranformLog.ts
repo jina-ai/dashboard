@@ -47,6 +47,7 @@ function hasKey<O>(obj: O, key: keyof any): key is keyof O {
 function getProp<T, K extends keyof T>(o: T, key: K) {
   return String(o[key]);
 }
+
 function groupBy<T, K extends StringPropertyNames<T>>(data: T[], propKey: K) {
   return data.reduce((acc, curr) => {
     const groupByProperty = getProp(curr, propKey) as string;
@@ -55,7 +56,6 @@ function groupBy<T, K extends StringPropertyNames<T>>(data: T[], propKey: K) {
     } else {
       acc[groupByProperty] = [curr];
     }
-    console.log(acc);
 
     return acc;
   }, {} as Record<any, T[]>);
