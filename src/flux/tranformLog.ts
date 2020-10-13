@@ -37,5 +37,32 @@ function transformLog(log: RawLog) {
   const id = nanoid();
   return { ...log, createdDate, id };
 }
+type StringPropertyNames<T> = {
+  [K in keyof T]: T[K] extends String ? K : never;
+}[keyof T];
 
-export { transformLog };
+function hasKey<O>(obj: O, key: keyof any): key is keyof O {
+  return key in obj;
+}
+function getProp<T, K extends keyof T>(o: T, key: K) {
+  return String(o[key]);
+}
+function groupBy<T, K extends StringPropertyNames<T>>(data: T[], propKey: K) {
+  return data.reduce((acc, curr) => {
+    const groupByProperty = getProp(curr, propKey) as string;
+    if (hasKey(acc, groupByProperty)) {
+      acc[groupByProperty].push(curr);
+    } else {
+      acc[groupByProperty] = [curr];
+    }
+    console.log(acc);
+
+    return acc;
+  }, {} as Record<any, T[]>);
+}
+
+function objectToChartData(o: Record<string, any>) {
+  return Object.entries(o).map(([key, value]) => ({ key, value }));
+}
+
+export { transformLog, groupBy, objectToChartData };
