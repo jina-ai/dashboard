@@ -15,6 +15,6 @@ const theme = {
     success: { main: PERSIAN_GREEN },
     info: { main: SCOOTER_GREEN },
   },
-};
+} as const;
 
 export { theme };
