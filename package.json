@@ -24,6 +24,7 @@
     "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",
     "csvtojson": "^2.0.10",
+    "d3": "^6.2.0",
     "dagre": "^0.8.5",
     "date-fns": "^2.16.1",
     "emotion-theming": "^10.0.27",
@@ -101,6 +102,7 @@
     ]
   },
   "devDependencies": {
+    "@types/d3": "^5.16.3",
     "@types/lunr": "^2.3.3",
     "@types/react-select": "^3.0.19",
     "@types/react-virtualized-auto-sizer": "^1.0.0",
