@@ -56,14 +56,17 @@ function LogsView() {
       <Row>
         <Col className="mb-4">
           <Card ref={ref} style={{ width: "100%", height: "100%" }}>
-            <Chart
-              data={objectToChartData(groupBy(logs, "name")).map((datum) => ({
-                ...datum,
-                value: datum.value.length,
-              }))}
-              height={800}
-              width={width}
-            />
+            <Card.Body>
+              <Card.Title>Card Title</Card.Title>
+              <Chart
+                data={objectToChartData(groupBy(logs, "name")).map((datum) => ({
+                  ...datum,
+                  value: datum.value.length,
+                }))}
+                height={800}
+                width={width}
+              />
+            </Card.Body>
           </Card>
         </Col>
       </Row>
