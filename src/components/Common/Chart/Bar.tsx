@@ -1,5 +1,6 @@
 import React from "react";
 import { useTheme } from "emotion-theming";
+import { useSpring, animated } from "react-spring";
 
 type Props = { y: number; x: number; width: number; height: number };
 
@@ -9,7 +10,8 @@ function Bar({ x, y, height, width }: Props) {
       primary: { main },
     },
   } = useTheme();
+  const props = useSpring({ x, y, height, width });
 
-  return <rect y={y} x={x} height={height} width={width} fill={main} />;
+  return <animated.rect {...props} fill={main} />;
 }
 export { Bar };
