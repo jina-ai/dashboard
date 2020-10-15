@@ -8,7 +8,7 @@ import { PageTitle } from "../components/Common/PageTitle";
 import html2canvas from "html2canvas";
 
 import CommandBar from "../components/FlowChart/CommandBar";
-import Sidebar from "../components/FlowChart/Sidebar";
+import Sidebar from "../components/FlowChart/Sidebar.tsx";
 import CustomNode from "../components/FlowChart/ChartNode";
 import CustomPort from "../components/FlowChart/NodePort";
 import FlowSelection from "../components/FlowChart/FlowSelection";
@@ -31,7 +31,9 @@ class FlowView extends React.Component {
     const selectedFlowId = Store.getSelectedFlowId();
     const flows = Store.getFlows();
     const connected = Store.getConnectionStatus();
+    const availableProperties = Store.getAvailableProperties();
     this.state = {
+      availableProperties,
       flowType,
       connected,
       chart,
@@ -223,8 +225,10 @@ class FlowView extends React.Component {
       showOverlay,
       connected,
       flowType,
+      availableProperties,
     } = this.state;
     const readonly = flowType !== "user-generated";
+    console.log("chart:", chart);
     return (
       <Container fluid className="main-content-container px-0">
         <div className="px-4">
@@ -273,6 +277,7 @@ class FlowView extends React.Component {
               </div>
             </Card>
             <Sidebar
+              availableProperties={availableProperties}
               duplicateFlow={this.duplicateFlow}
               readonly={readonly}
               chart={chart}

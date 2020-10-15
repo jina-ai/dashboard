@@ -2,7 +2,7 @@ body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
     "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
+    "sans-serif";
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: #f6f8fa !important;
@@ -182,10 +182,16 @@ code {
   border: 1px solid #d1d5da !important;
 }
 
-.chart-container path {
-  stroke: #6c757d !important;
-  stroke-width: 2;
-  z-index: 10000 !important;
+.chart-container path:nth-child(2) {
+  stroke: #6c757d;
+}
+
+.chart-container path:nth-child(3) {
+  stroke: #009999;
+}
+
+.chart-container path:nth-child(3):hover {
+  stroke: #6c757d;
 }
 
 .property-table {
