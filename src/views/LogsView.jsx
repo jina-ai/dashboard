@@ -4,11 +4,10 @@ import LogLevelSummaryChart from "../components/LogStream/LogLevelSummaryChart";
 import LogLevelPieChart from "../components/LogStream/LogLevelPieChart";
 import { PageTitle } from "../components/Common/PageTitle";
 import { LogsTable } from "../components/LogStream/LogsTable";
-import { Chart } from "../components/Common/Chart/Chart";
 import { Store, Dispatcher, Constants } from "../flux";
-import { groupBy, objectToChartData } from "../flux/tranformLog";
 import useDimensions from "react-cool-dimensions";
 import { ResizeObserver } from "@juggle/resize-observer";
+import { LogFold } from "../components/Common/LogFold";
 
 const showLogDetails = (log) => {
   Dispatcher.dispatch({
@@ -18,7 +17,7 @@ const showLogDetails = (log) => {
 };
 
 function LogsView() {
-  const { ref, width } = useDimensions({
+  const { ref } = useDimensions({
     useBorderBoxSize: true, // Tell the hook to measure based on the border-box size, default is false
     polyfill: ResizeObserver, // Use polyfill to make this feature works on more browsers
   });
@@ -58,14 +57,7 @@ function LogsView() {
           <Card ref={ref} style={{ width: "100%", height: "100%" }}>
             <Card.Body>
               <Card.Title>Card Title</Card.Title>
-              <Chart
-                data={objectToChartData(groupBy(logs, "name")).map((datum) => ({
-                  ...datum,
-                  value: datum.value.length,
-                }))}
-                height={800}
-                width={width}
-              />
+              <LogFold />
             </Card.Body>
           </Card>
         </Col>
