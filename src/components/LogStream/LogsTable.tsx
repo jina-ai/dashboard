@@ -188,7 +188,9 @@ function LogsTable({ data, showLogDetails }: Props) {
             <i className="material-icons">arrow_downward</i> Back to Bottom
           </div>
         )}
-        <AutoSizer>
+        {
+          resultData.length?
+          <AutoSizer>
           {({ height, width }) => {
             const thirdCol = width - (firstCol + secondCol);
             return (
@@ -215,6 +217,10 @@ function LogsTable({ data, showLogDetails }: Props) {
             );
           }}
         </AutoSizer>
+        :
+        <h3 className="my-5 py-5 text-center text-muted">No logs to display</h3>
+        }
+        
       </Card.Body>
     </Card>
   );
