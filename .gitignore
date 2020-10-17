@@ -13,6 +13,8 @@
 
 hub-resources/config.js
 
+dev-resources/recordings/
+
 # misc
 .DS_Store
 .env.local
