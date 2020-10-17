@@ -257,6 +257,7 @@ code {
   outline: none !important;
 }
 
+.text-monospace,
 .log {
   font-family: "Roboto Mono", monospace;
   word-wrap: break-word;
