@@ -4,6 +4,26 @@ import Accordion from "@material-ui/core/Accordion";
 import AccordionSummary from "@material-ui/core/AccordionSummary";
 import AccordionDetails from "@material-ui/core/AccordionDetails";
 import Typography from "@material-ui/core/Typography";
+type Props = {
+  name: string;
+  value: any;
+};
+function AccordionComponent({ name, value }: Props) {
+  return (
+    <Accordion>
+      <AccordionSummary
+        expandIcon={<button>expand more</button>}
+        aria-controls="panel1a-content"
+        id="panel1a-header"
+      >
+        <Typography>{name}</Typography>
+      </AccordionSummary>
+      <AccordionDetails>
+        <Typography>{JSON.stringify(value)}</Typography>
+      </AccordionDetails>
+    </Accordion>
+  );
+}
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -14,53 +34,18 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: theme.typography.fontWeightRegular,
   },
 }));
+type LogFoldProps = {
+  data: any;
+};
 
-function LogFold() {
+function LogFold({ data }: LogFoldProps) {
   const classes = useStyles();
 
   return (
     <div className={classes.root}>
-      <Accordion>
-        <AccordionSummary
-          expandIcon={<button>expand more</button>}
-          aria-controls="panel1a-content"
-          id="panel1a-header"
-        >
-          <Typography className={classes.heading}>Accordion 1</Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Typography>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-            malesuada lacus ex, sit amet blandit leo lobortis eget.
-          </Typography>
-        </AccordionDetails>
-      </Accordion>
-      <Accordion>
-        <AccordionSummary
-          expandIcon={<button>expand more</button>}
-          aria-controls="panel2a-content"
-          id="panel2a-header"
-        >
-          <Typography className={classes.heading}>Accordion 2</Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Typography>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-            malesuada lacus ex, sit amet blandit leo lobortis eget.
-          </Typography>
-        </AccordionDetails>
-      </Accordion>
-      <Accordion disabled>
-        <AccordionSummary
-          expandIcon={<button>expand more</button>}
-          aria-controls="panel3a-content"
-          id="panel3a-header"
-        >
-          <Typography className={classes.heading}>
-            Disabled Accordion
-          </Typography>
-        </AccordionSummary>
-      </Accordion>
+      {data.map(({ key, value }: { key: string; value: any }) => (
+        <AccordionComponent key={key} name={key} value={value} />
+      ))}
     </div>
   );
 }
