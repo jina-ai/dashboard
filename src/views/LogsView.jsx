@@ -8,6 +8,7 @@ import { Store, Dispatcher, Constants } from "../flux";
 import useDimensions from "react-cool-dimensions";
 import { ResizeObserver } from "@juggle/resize-observer";
 import { LogFold } from "../components/Common/LogFold";
+import { groupBy, objectToChartData } from "../flux/tranformLog";
 
 const showLogDetails = (log) => {
   Dispatcher.dispatch({
@@ -57,7 +58,7 @@ function LogsView() {
           <Card ref={ref} style={{ width: "100%", height: "100%" }}>
             <Card.Body>
               <Card.Title>Card Title</Card.Title>
-              <LogFold />
+              <LogFold data={objectToChartData(groupBy(logs, "name"))} />
             </Card.Body>
           </Card>
         </Col>
