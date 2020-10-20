@@ -18,6 +18,14 @@ const customStyles = {
     ...provided,
     width: width,
   }),
+  option: (styles: any) => ({
+    ...styles,
+    cursor: 'pointer',
+  }),
+  control: (styles: any) => ({
+    ...styles,
+    cursor: 'pointer',
+  }),
 };
 
 export type Props = {

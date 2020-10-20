@@ -8,6 +8,7 @@ import { FixedSizeList as List } from "react-window";
 import { MultiFilterSelect } from "../Common/MultiFilterSelect";
 import { applyFilters } from "./useFilters";
 import { LogItem } from "./LogItem";
+import {LogsTableHeader} from "./LogsTableHeader";
 import { ProcessedLog } from "../../flux/tranformLog";
 import {
   Card,
@@ -103,10 +104,13 @@ function LogsTable({ data, showLogDetails }: Props) {
     [searchString]
   );
 
+  const firstCol = 300;
+  const secondCol = 300;
+
   return (
     <Card className="mb-4">
-      <Card.Header className="p-3">
-        <Row>
+      <Card.Header className="p-0">
+        <Row className="p-3">
           <Col md="8">
             <MultiFilterSelect
               options={toOption(sources)}
@@ -122,6 +126,7 @@ function LogsTable({ data, showLogDetails }: Props) {
             />
             <DropdownButton
               as={ButtonGroup}
+              className="d-block d-md-inline-block mb-2 mr-0 mb-md-0 mr-md-2"
               title="Download Logs"
               id="bg-nested-dropdown"
             >
@@ -167,9 +172,10 @@ function LogsTable({ data, showLogDetails }: Props) {
             />
           </Col>
         </Row>
+        <LogsTableHeader columns={{firstCol,secondCol}}/>
       </Card.Header>
       <Card.Body
-        className="log-stream-container p-1 border-top"
+        className="log-stream-container p-0 border-top"
         id="log-stream-container"
       >
         {!scrolledToBottom && (
@@ -182,10 +188,10 @@ function LogsTable({ data, showLogDetails }: Props) {
             <i className="material-icons">arrow_downward</i> Back to Bottom
           </div>
         )}
-        <AutoSizer>
+        {
+          resultData.length?
+          <AutoSizer>
           {({ height, width }) => {
-            const firstCol = 300;
-            const secondCol = 300;
             const thirdCol = width - (firstCol + secondCol);
             return (
               <List
@@ -211,6 +217,10 @@ function LogsTable({ data, showLogDetails }: Props) {
             );
           }}
         </AutoSizer>
+        :
+        <h3 className="my-5 py-5 text-center text-muted">No logs to display</h3>
+        }
+        
       </Card.Body>
     </Card>
   );

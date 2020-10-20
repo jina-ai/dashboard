@@ -251,12 +251,16 @@ code {
 
 .log-stream-container {
   height: 55vh;
+  box-shadow: inset 0px 5px 8px -3px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  border-radius: 0em 0em .75em .75em;
 }
 
 .ReactVirtualized__Grid {
   outline: none !important;
 }
 
+.text-monospace,
 .log {
   font-family: "Roboto Mono", monospace;
   word-wrap: break-word;
@@ -313,15 +317,16 @@ code {
   display: none;
   position: absolute;
   right: 1.5em;
-  top: 0.5em !important;
+  top: 1em !important;
   padding: 1em;
   padding-top: 0.25em;
   padding-bottom: 0.25em;
-  background-color: rgba(255, 255, 255, 0.75);
+  background-color: rgba(255, 255, 255, 0.85);
   border: 1px solid #d1d5da;
   z-index: 5;
   cursor: pointer;
   transition: 0.2s;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.15);
 }
 
 .back-to-bottom.active {
