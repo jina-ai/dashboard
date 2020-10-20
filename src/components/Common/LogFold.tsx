@@ -5,9 +5,19 @@ import Accordion from "@material-ui/core/Accordion";
 import AccordionSummary from "@material-ui/core/AccordionSummary";
 import AccordionDetails from "@material-ui/core/AccordionDetails";
 import Typography from "@material-ui/core/Typography";
-import { Table, TableRow, TableCell } from "@material-ui/core";
+import {
+  Table,
+  TableRow,
+  TableCell,
+  TableContainer,
+  Badge,
+} from "@material-ui/core";
 import { useTheme } from "emotion-theming";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import { ExpandMore, Error } from "@material-ui/icons";
+// import { FixedSizeList as List } from "react-window";
+// import { ProcessedLog } from "../../flux/tranformLog";
+// const itemKey = (index: number, data: { items: ProcessedLog[] }) =>
+//   data.items[index].id;
 
 type Props = {
   name: string;
@@ -48,21 +58,52 @@ function Log({ log }: any) {
   );
 }
 function AccordionComponent({ name, value }: Props) {
+  const { palette } = useTheme();
+  console.log(palette);
   return (
     <Accordion TransitionProps={{ unmountOnExit: true }}>
       <AccordionSummary
-        expandIcon={<ExpandMoreIcon />}
+        expandIcon={<ExpandMore />}
         aria-controls="panel1a-content"
         id="panel1a-header"
       >
         <Typography>{name}</Typography>
+        <Badge badgeContent={value.length} color="primary">
+          <Error style={{ color: palette.primary.main }} />
+        </Badge>
       </AccordionSummary>
       <AccordionDetails>
-        <Table>
-          {value.map((log: any) => (
-            <Log key={log.idx} log={log} />
-          ))}
-        </Table>
+        <TableContainer>
+          {/* <AutoSizer>
+            {({ height, width }) => {
+              const firstCol = 300;
+              const secondCol = 300;
+              const thirdCol = width - (firstCol + secondCol);
+              return (
+                <List
+                  height={400}
+                  width={width}
+                  itemCount={resultData.length}
+                  itemSize={ROW_SIZE}
+                  itemKey={itemKey}
+                  itemData={{
+                    items: resultData,
+                    columns: { firstCol, secondCol, thirdCol },
+                    showLogDetails,
+                  }}
+                  ref={windowListRef}
+                >
+                  {LogItem}
+                </List>
+              );
+            }}
+          </AutoSizer> */}
+          <Table size="small">
+            {value.map((log: any) => (
+              <Log key={log.idx} log={log} />
+            ))}
+          </Table>
+        </TableContainer>
       </AccordionDetails>
     </Accordion>
   );
