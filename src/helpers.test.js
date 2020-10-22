@@ -22,10 +22,13 @@ describe(formatSeconds, () => {
     expect(formatSeconds(43200)).toEqual('12h 0m 0s')
   })
   // Edge Cases:
-  test("converts duration more than a day", () => {
+  test("converts duration of zero seconds", () => {
     expect(formatSeconds(0)).toEqual('0s')
   })
-  test("converts duration more than a day", () => {
+  test("converts fractional duration less than one secons", () => {
+    expect(formatSeconds(0.25)).toEqual('0s')
+  })
+  test("converts negative duration", () => {
     expect(formatSeconds(-8)).toEqual('-8s')
   })
 })

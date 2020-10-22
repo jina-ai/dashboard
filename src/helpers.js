@@ -213,9 +213,9 @@ export function formatSeconds(numSeconds) {
   let minute = 60;
   let hour = 60 * minute;
 
-  return numSeconds < minute ? `${numSeconds}s`
-    : numSeconds < hour ? `${parseInt(numSeconds/minute)}m ${parseInt(numSeconds % minute)}s`
-    : `${parseInt(numSeconds/hour)}h ${parseInt((numSeconds % hour)/minute)}m ${parseInt(numSeconds%minute)}s`
+  return numSeconds < minute ? `${Math.floor(numSeconds)}s`
+    : numSeconds < hour ? `${Math.floor(numSeconds/minute)}m ${Math.floor(numSeconds % minute)}s`
+    : `${Math.floor(numSeconds/hour)}h ${Math.floor((numSeconds % hour)/minute)}m ${Math.floor(numSeconds%minute)}s`
 }
 
 export function formatBytes(numBytes) {
