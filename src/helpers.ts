@@ -1,21 +1,31 @@
+// @ts-nocheck
+import {ProcessedLog} from './flux/tranformLog'
+
+type PodPropertyType = "str" | "int" | "bool" | "SocketType" | "ReplicaType"
+type PodProperty = {
+  name: string,
+  type: PodPropertyType
+}
+type PropertyMap = { [key: string]: PodPropertyType}
+
 const YAML = require("yaml");
 const settings = require("./settings");
-const propertyList = require("./data/podProperties.json");
+const propertyList: PodProperty[] = require("./data/podProperties.json");
 
-function toBlob(content) {
+function toBlob(content: string) {
   return new Blob([content], { type: "text,plain;charset=utf-8" });
 }
-function serializeLogsToCSV(logs) {
+function serializeLogsToCSV(logs: ProcessedLog[]): string {
   const columns =
     "created,formatted timestamp,name,process,level name,message,filename,line number,module,funcname,pathname\n";
   const fileContent = logs.reduce((acc, log) => {
-    acc += `${log.created},"${log.formattedTimestamp}",${log.name},${log.process},${log.levelname},"${log.msg}",${log.filename},${log.lineno},${log.module},${log.funcname},${log.pathname}\n`;
+    acc += `${log.created},"${log.formattedTimestamp}",${log.name},${log.process},${log.levelname},"${log.msg}",${log.filename},${log.lineno},${log.module},${log.funcName},${log.pathname}\n`;
     return acc;
   }, columns);
   return fileContent;
 }
 
-function serializeLogsToJSON(logs) {
+function serializeLogsToJSON(logs: ProcessedLog[]): string {
   const fileContent = logs.reduce((acc, log, i) => {
     acc += JSON.stringify(log) + `${i < logs.length - 1 ? "," : ""}\n`;
     return acc;
@@ -23,7 +33,7 @@ function serializeLogsToJSON(logs) {
   return `[${fileContent}]`;
 }
 
-function serializeLogsToText(logs) {
+function serializeLogsToText(logs: ProcessedLog[]): string {
   const fileContent = logs.reduce((acc, log) => {
     acc += `${log.formattedTimestamp} ${log.name}@${log.process} [${log.levelname}]: ${log.msg}\n`;
     return acc;
@@ -31,14 +41,14 @@ function serializeLogsToText(logs) {
   return fileContent;
 }
 
-const serializeLogsToCSVBlob = (logs) => toBlob(serializeLogsToCSV(logs));
-const serializeLogsToJSONBlob = (logs) => toBlob(serializeLogsToJSON(logs));
-const serializeLogsToTextBlob = (logs) => toBlob(serializeLogsToText(logs));
+const serializeLogsToCSVBlob = (logs: ProcessedLog[]) => toBlob(serializeLogsToCSV(logs));
+const serializeLogsToJSONBlob = (logs: ProcessedLog[]) => toBlob(serializeLogsToJSON(logs));
+const serializeLogsToTextBlob = (logs: ProcessedLog[]) => toBlob(serializeLogsToText(logs));
 
-const propertyTypes = {};
+const propertyTypes: PropertyMap = {};
 propertyList.forEach((prop) => (propertyTypes[prop.name] = prop.type));
 
-export function copyToClipboard(str) {
+export function copyToClipboard(str: string) {
   const temp = document.createElement("textarea");
   temp.value = str;
   document.body.appendChild(temp);
@@ -47,7 +57,7 @@ export function copyToClipboard(str) {
   document.body.removeChild(temp);
   return;
 }
-export function parseYAML(yamlSTR) {
+export function parseYAML(yamlSTR: string) {
   try {
     const data = YAML.parse(yamlSTR);
     return { data };
@@ -163,7 +173,6 @@ const unpackIfLengthOne = (arr) =>
   Array.isArray(arr) && arr.length === 1 ? arr[0] : arr;
 
 export function formatAsYAML(chart) {
-  console.log("formatAsYAML input: ", chart);
   const { with: chartWith, nodes, links } = chart;
 
   const needsByPodLabel = Object.values(links).reduce((acc, curr) => {
@@ -209,7 +218,7 @@ export function formatAsYAML(chart) {
   return `!Flow\n${YAML.stringify(output)}`;
 }
 
-export function formatSeconds(numSeconds) {
+export function formatSeconds(numSeconds: number): string {
   let minute = 60;
   let hour = 60 * minute;
 
@@ -218,14 +227,14 @@ export function formatSeconds(numSeconds) {
     : `${Math.floor(numSeconds/hour)}h ${Math.floor((numSeconds % hour)/minute)}m ${Math.floor(numSeconds%minute)}s`
 }
 
-export function formatBytes(numBytes) {
+export function formatBytes(numBytes: number): string {
   return numBytes < 1024 ? `${numBytes} Bytes`
     : (numBytes < 1024 ** 2) ? `${(numBytes / 1024).toFixed(1)} KB`
     : (numBytes < 1024 ** 3) ? `${(numBytes / 1024 ** 2).toFixed(1)} MB`
     : `${(numBytes / 1024 ** 3).toFixed(1)} GB`;
 }
 
-function getNodeDepth(nodes, currentId, currentDepth) {
+function getNodeDepth(nodes, currentId, currentDepth): number {
   let parents = Object.keys(nodes[currentId].needs);
   let longestDepth = 0;
 
