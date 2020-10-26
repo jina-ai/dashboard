@@ -8,7 +8,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./assets/main.scss";
 import "./App.css";
 import { ErrorBoundary } from "react-error-boundary";
-import { FallbackPage } from "./FallbackPage";
+import { FallbackPage } from "./views/FallbackPage";
 import { Store } from "./flux/";
 
 const App = () => {

@@ -1,7 +1,7 @@
 import React from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import { FallbackProps } from "react-error-boundary";
-import { PageTitle } from "./components/Common/PageTitle";
+import { PageTitle } from "../components/Common/PageTitle";
 import { Button } from "shards-react";
 
 function FallbackPage({ error, resetErrorBoundary }: FallbackProps) {

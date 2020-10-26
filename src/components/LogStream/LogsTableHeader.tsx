@@ -3,10 +3,10 @@ import { jsx } from "@emotion/core";
 import { Row, Col } from "react-bootstrap";
 
 type Props = {
-  columns: { firstCol: number; secondCol: number; };
+  columns: { firstCol: number; secondCol: number };
 };
 
-const LogsTableHeader = ({ columns:{firstCol,secondCol} }: Props) => {
+const LogsTableHeader = ({ columns: { firstCol, secondCol } }: Props) => {
   return (
     <div
       className="px-4 py-1 border-top bg-light text-monospace"

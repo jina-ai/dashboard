@@ -13,6 +13,7 @@ import { transformLog } from "./tranformLog";
 
 let _store;
 
+const MAX_CHART_TICKS = 60;
 const HIDE_BANNER_TIMEOUT = 5000;
 const TASK_UPDATE_INTERVAL = 500;
 const CHART_LEVELS = [
@@ -233,7 +234,6 @@ class Store extends EventEmitter {
 
     await this.initFlowChart();
     this.initLogStream();
-    this.initCharts();
     this.initHub();
     this.initUser();
 
@@ -417,10 +417,6 @@ class Store extends EventEmitter {
     }
   };
 
-  initCharts = async () => {
-    this.updateChartInterval = setInterval(this.updateSummaryCharts, 1000);
-  };
-
   initHub = async () => {
     try {
       const images = await api.getImages();
@@ -435,10 +431,6 @@ class Store extends EventEmitter {
     const user = await api.getProfile();
     _store.user = user;
     this.emit("update-user");
-  };
-
-  updateSummaryCharts = () => {
-    this.emit("update-summary-chart");
   };
 
   reconnect() {
@@ -714,14 +706,24 @@ class Store extends EventEmitter {
 
   getLogLevelCharts = (numSeconds = 60) => {
     const emptyItem = getInitialLevelOccurences();
-    let chartData = [];
-    let now = parseInt(new Date() / 1000);
-    for (let i = now - numSeconds; i < now; i++) {
-      chartData.push(
-        _store.logLevelOccurences[i] ? _store.logLevelOccurences[i] : emptyItem
-      );
+    const step = numSeconds / MAX_CHART_TICKS;
+    const data = [];
+    const now = parseInt(new Date() / 1000);
+
+    for (let i = now - numSeconds; i < now; i += step) {
+      let item = _.cloneDeep(emptyItem);
+      for (let j = i; j < i + step; ++j) {
+        const occurence = _store.logLevelOccurences[j];
+        if (!occurence) continue;
+        item.lastLog = occurence.lastLog;
+        Object.entries(occurence.levels).forEach(([level, amount]) => {
+          item.levels[level] = item.levels[level] + amount;
+        });
+      }
+      data.push(item);
     }
-    return chartData;
+
+    return { data, numSeconds, numTicks: MAX_CHART_TICKS, lastTimestamp: now };
   };
 
   getLogLevelOccurences = () => {
