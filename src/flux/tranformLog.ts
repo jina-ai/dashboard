@@ -29,13 +29,20 @@ export type RawLog = {
 export type ProcessedLog = RawLog & {
   createdDate: Date;
   id: string;
+  idx: number;
+  unixTime: number;
+  timestamp: Date;
+  formattedTimestamp: string;
 };
 
-function transformLog(log: RawLog) {
+function transformLog(log: RawLog, idx: number): ProcessedLog {
   const { created } = log;
   const createdDate = fromUnixTime(created);
   const id = nanoid();
-  return { ...log, createdDate, id };
+  const unixTime = created;
+  const timestamp = new Date(unixTime * 1000);
+  const formattedTimestamp = timestamp.toLocaleString();
+  return { ...log, createdDate, id, idx, unixTime, timestamp, formattedTimestamp };
 }
 
 export { transformLog };

@@ -3,13 +3,14 @@ import { jsx } from "@emotion/core";
 import { Row, Col } from "react-bootstrap";
 import { memo } from "react";
 import { areEqual } from "react-window";
+import { ProcessedLog } from "../../flux/tranformLog";
 
 type Props = {
   index: number;
   style: any;
   data: {
     columns: { firstCol: number; secondCol: number; thirdCol: number };
-    items: any[];
+    items: ProcessedLog[];
     showLogDetails: (log: any) => void;
   };
 };

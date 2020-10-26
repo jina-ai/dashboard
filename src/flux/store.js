@@ -313,12 +313,8 @@ class Store extends EventEmitter {
 
   handleNewLog = (message) => {
     const { data } = message;
-    const log = transformLog(data);
+    const log = transformLog(data, _store.logs.length);
 
-    log.unixTime = parseInt(log.created);
-    log.timestamp = new Date(log.unixTime * 1000);
-    log.formattedTimestamp = log.timestamp.toLocaleString();
-    log.idx = _store.logs.length;
     const { process, name, levelname, unixTime } = log;
 
     _store.logs.push(log);
