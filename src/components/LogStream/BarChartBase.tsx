@@ -88,7 +88,7 @@ function ChartBase({
   function getXAxisLabel(value: any, index: number, values: any) {
     if (index === 0) return numSeconds + "s ago";
     else if (index === Math.floor(values.length / 2))
-      return numSeconds ? numSeconds / 2 : 0 + "s ago";
+      return (numSeconds ? numSeconds / 2 : 0) + "s ago";
     return;
   }
 

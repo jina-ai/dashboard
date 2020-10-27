@@ -9,10 +9,6 @@ const DEFAULT_WIDTH = 70;
 const DEFAULT_HEIGHT_SMALL = 20;
 const DEFAULT_WIDTH_SMALL = 50;
 
-function areEqual(prevProps: Props, nextProps: Props) {
-  return prevProps.data.lastTimestamp === nextProps.data.lastTimestamp;
-}
-
 type Props = {
   data: {
     data: LogLevelSummaryChartData;
@@ -22,6 +18,10 @@ type Props = {
   };
   showLog: (activePoints: any) => void;
 };
+
+function areEqual(prevProps: Props, nextProps: Props) {
+  return prevProps.data.lastTimestamp === nextProps.data.lastTimestamp;
+}
 
 const LogLevelSummaryChart = React.memo(function LogLevelSummaryChart({
   data: { data, numSeconds, numTicks },

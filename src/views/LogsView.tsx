@@ -6,8 +6,11 @@ import { PageTitle } from "../components/Common/PageTitle";
 import { LogsTable } from "../components/LogStream/LogsTable";
 import { Store, Dispatcher, Constants } from "../flux";
 
-const UPDATE_INTERVAL = 1000;
-let chartInterval: any;
+const LOGS_UPDATE_INTERVAL = 20;
+const CHART_UPDATE_INTERVAL = 1000;
+
+let chartUpdateInterval: any;
+let logsUpdateInterval: any;
 
 const showLogDetails = (log: any) => {
   Dispatcher.dispatch({
@@ -24,6 +27,7 @@ function showLogInTable(index: number) {
 }
 
 function LogsView() {
+  const hasNewLogs = React.useRef(false);
   const [logs, setLogs] = useState(() => Store.getLogs());
   const [logLevelOccurrences, setLogLevelOccurrences] = useState(() =>
     Store.getLogLevelOccurences()
@@ -35,8 +39,8 @@ function LogsView() {
   function updateLogs() {
     const newLogs = Store.getLogs();
     const newOccurrences = Store.getLogLevelOccurences();
-    setLogLevelOccurrences({ ...newOccurrences });
     setLogs([...newLogs]);
+    setLogLevelOccurrences({ ...newOccurrences });
   }
 
   function updateChart() {
@@ -53,14 +57,26 @@ function LogsView() {
     }
   }
 
+  function checkForNewLogs() {
+    if (!hasNewLogs.current) return;
+    hasNewLogs.current = false;
+    updateLogs();
+  }
+
+  function onNewLogs() {
+    hasNewLogs.current = true;
+  }
+
   useEffect(() => {
-    Store.on("update-logs", updateLogs);
-    chartInterval = setInterval(updateChart, UPDATE_INTERVAL);
+    Store.on("update-logs", onNewLogs);
+    logsUpdateInterval = setInterval(checkForNewLogs, LOGS_UPDATE_INTERVAL);
+    chartUpdateInterval = setInterval(updateChart, CHART_UPDATE_INTERVAL);
     return () => {
-      Store.removeListener("update-logs", updateLogs);
-      clearInterval(chartInterval);
+      Store.removeListener("update-logs", onNewLogs);
+      clearInterval(logsUpdateInterval);
+      clearInterval(chartUpdateInterval);
     };
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <Container fluid className="main-content-container px-0">
