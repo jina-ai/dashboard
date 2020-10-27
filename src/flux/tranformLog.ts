@@ -39,10 +39,18 @@ function transformLog(log: RawLog, idx: number): ProcessedLog {
   const { created } = log;
   const createdDate = fromUnixTime(created);
   const id = nanoid();
-  const unixTime = created;
+  const unixTime = Math.floor(created);
   const timestamp = new Date(unixTime * 1000);
   const formattedTimestamp = timestamp.toLocaleString();
-  return { ...log, createdDate, id, idx, unixTime, timestamp, formattedTimestamp };
+  return {
+    ...log,
+    createdDate,
+    id,
+    idx,
+    unixTime,
+    timestamp,
+    formattedTimestamp,
+  };
 }
 
 export { transformLog };
