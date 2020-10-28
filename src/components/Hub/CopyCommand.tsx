@@ -2,9 +2,14 @@ import React from "react";
 import { Card, CardHeader, CardBody } from "shards-react";
 import SyntaxHighlighter from "react-syntax-highlighter";
 import { atomOneLight } from "react-syntax-highlighter/dist/esm/styles/hljs";
+import { HubImage } from "./types";
 
-export default function CopyCommand(props) {
-  const { image, copyCode } = props;
+type Props = {
+  image: HubImage;
+  copyCode: (code: string) => void;
+};
+
+export default function CopyCommand({ image, copyCode }: Props) {
   const imageVar = image.repoTags[image.repoTags.length - 1];
   let code = [
     `from jina.flow import Flow\nf = Flow().add(name='my-pod', image='${imageVar}')`,

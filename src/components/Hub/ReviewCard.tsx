@@ -1,7 +1,12 @@
 import React from "react";
 import { Card, CardHeader, CardBody } from "shards-react";
+import { Review } from "./types";
 
-export default function ReviewCard({ review }) {
+type Props = {
+  review: Review;
+};
+
+export default function ReviewCard({ review }: Props) {
   return (
     <Card className="readme-container mb-4">
       <CardHeader className="border-bottom d-flex flex-row">

@@ -1,7 +1,12 @@
 import React from "react";
 import { Card, CardHeader, CardBody, Row, Col } from "shards-react";
+import { HubImage } from "./types";
 
-export default function ImageDetails({ image }) {
+type Props = {
+  image: HubImage;
+};
+
+export default function ImageDetails({ image }: Props) {
   return (
     <Card className="readme-container mb-4">
       <CardHeader className="border-bottom d-flex flex-row">

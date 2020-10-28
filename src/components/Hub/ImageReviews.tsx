@@ -1,8 +1,14 @@
 import React from "react";
 import { Button } from "shards-react";
 import ReviewCard from "./ReviewCard";
+import { Review } from "./types";
 
-export default function ImageReviews({ reviews, newReview }) {
+type Props = {
+  reviews: Review[];
+  newReview: () => void;
+};
+
+export default function ImageReviews({ reviews, newReview }: Props) {
   return (
     <div>
       <div className="border-bottom d-flex flex-row mb-4">

@@ -2,8 +2,13 @@ import React from "react";
 import { Row, Col, Card } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import StarRating from "./StarRating";
+import { HubImage } from "./types";
 
-export default function ImageCard({ image }) {
+type Props = {
+  image: HubImage;
+};
+
+export default function ImageCard({ image }: Props) {
   let {
     name,
     id,

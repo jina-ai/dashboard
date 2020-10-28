@@ -1,7 +1,12 @@
 import React from "react";
 import { Card, CardHeader, CardBody } from "shards-react";
 
-export default function ReadMe({ readme, documentation }) {
+type Props = {
+  readme: string;
+  documentation: string;
+};
+
+export default function ReadMe({ readme, documentation }: Props) {
   return (
     <Card className="readme-container mb-4">
       <CardHeader className="border-bottom d-flex flex-row">

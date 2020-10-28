@@ -1,8 +1,22 @@
 import React from "react";
 import { Card, CardHeader, CardBody } from "shards-react";
 
-export default function BuildHistory(props) {
-  const { buildHistory } = props.image;
+type Build = {
+  created: string;
+  size: number;
+  os: string;
+  architecture: string;
+};
+
+type Props = {
+  image: {
+    buildHistory?: Build[];
+    [key: string]: any;
+  };
+};
+
+export default function BuildHistory({ image }: Props) {
+  const { buildHistory } = image;
   return (
     <Card className="readme-container mb-4">
       <CardHeader className="border-bottom d-flex flex-row">
@@ -12,7 +26,7 @@ export default function BuildHistory(props) {
         {buildHistory &&
           buildHistory.map((build, idx) => {
             const formattedCreated = new Date(build.created).toLocaleString();
-            const buildSize = parseFloat(build.size / 1e6).toFixed(2);
+            const buildSize = (build.size / 1e6).toFixed(2);
             return (
               <div key={idx} className="user-activity__item pr-3 py-3">
                 <div className="user-activity__item__icon mt-2">
