@@ -1,7 +1,11 @@
 import React, { useState } from "react";
 import { Dropdown } from "react-bootstrap";
 
-function SelectionIndicator({ selected }) {
+type SelectionIndicatorProps = {
+  selected: boolean;
+};
+
+function SelectionIndicator({ selected }: SelectionIndicatorProps) {
   return selected ? (
     <i className="material-icons text-primary">radio_button_checked</i>
   ) : (
@@ -9,7 +13,12 @@ function SelectionIndicator({ selected }) {
   );
 }
 
-function ConnectionIndicator({ connected, show }) {
+type ConnectionIndicatorProps = {
+  connected: boolean;
+  show: boolean;
+};
+
+function ConnectionIndicator({ connected, show }: ConnectionIndicatorProps) {
   if (!show) return null;
   return connected ? (
     <i className="material-icons ml-2 text-success">wifi</i>
@@ -18,7 +27,10 @@ function ConnectionIndicator({ connected, show }) {
   );
 }
 
-function TitleConnectionIndicator({ connected, show }) {
+function TitleConnectionIndicator({
+  connected,
+  show,
+}: ConnectionIndicatorProps) {
   if (!show) return null;
   return connected ? (
     <i className="material-icons text-white ml-1 mr-2">wifi</i>
@@ -27,7 +39,12 @@ function TitleConnectionIndicator({ connected, show }) {
   );
 }
 
-function DeleteFlowButton({ show, deleteFlow }) {
+type DeleteFlowProps = {
+  deleteFlow: (e: any) => void;
+  show: boolean;
+};
+
+function DeleteFlowButton({ show, deleteFlow }: DeleteFlowProps) {
   if (!show) return null;
   return (
     <i className="material-icons text-danger float-right" onClick={deleteFlow}>
@@ -36,20 +53,39 @@ function DeleteFlowButton({ show, deleteFlow }) {
   );
 }
 
-function EditFlowsButton({ isEditing, onClick }) {
+type EditFlowsProps = {
+  toggleEditing: () => void;
+  isEditing: boolean;
+};
+
+function EditFlowsButton({ isEditing, toggleEditing }: EditFlowsProps) {
   return isEditing ? (
     <i
-      onClick={onClick}
+      onClick={toggleEditing}
       className="material-icons float-right cursor-pointer text-success"
     >
       done
     </i>
   ) : (
-    <i onClick={onClick} className="material-icons float-right cursor-pointer">
+    <i
+      onClick={toggleEditing}
+      className="material-icons float-right cursor-pointer"
+    >
       edit
     </i>
   );
 }
+
+type FlowSelectionProps = {
+  flows: {
+    [key: string]: any;
+  };
+  loadFlow: (flowId: string) => void;
+  createNewFlow: () => void;
+  deleteFlow: (e: any, flowId: string) => void;
+  selectedFlowId: string;
+  connected: boolean;
+};
 
 export default function FlowSelection({
   flows,
@@ -58,7 +94,7 @@ export default function FlowSelection({
   createNewFlow,
   deleteFlow,
   connected,
-}) {
+}: FlowSelectionProps) {
   const [isEditing, setIsEditing] = useState(false);
 
   const toggleEditing = () => {
@@ -90,7 +126,10 @@ export default function FlowSelection({
         </Dropdown.Item>
         <Dropdown.Header className="text-uppercase">
           Your Flows{" "}
-          <EditFlowsButton isEditing={isEditing} onClick={toggleEditing} />
+          <EditFlowsButton
+            isEditing={isEditing}
+            toggleEditing={toggleEditing}
+          />
         </Dropdown.Header>
         {userFlows.map(([flowId, flow], idx) => (
           <Dropdown.Item onClick={() => loadFlow(flowId)} key={idx}>
@@ -102,14 +141,14 @@ export default function FlowSelection({
             />
             <DeleteFlowButton
               show={flow.type === "user-generated" && isEditing}
-              deleteFlow={(e) => deleteFlow(e, flowId)}
+              deleteFlow={(e: any) => deleteFlow(e, flowId)}
             />
           </Dropdown.Item>
         ))}
         <Dropdown.Header className="text-uppercase">Examples</Dropdown.Header>
         {exampleFlows.map(([flowId, flow], idx) => (
           <Dropdown.Item onClick={() => loadFlow(flowId)} key={idx}>
-            <SelectionIndicator itemId={flowId} selectedId={selectedFlowId} />
+            <SelectionIndicator selected={flowId === selectedFlowId} />
             {flow.name}
           </Dropdown.Item>
         ))}

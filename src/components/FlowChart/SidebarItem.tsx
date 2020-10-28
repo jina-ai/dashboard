@@ -2,9 +2,18 @@ import * as React from "react";
 import { REACT_FLOW_CHART } from "@mrblenny/react-flow-chart";
 import ChartNode from "./ChartNode";
 
-export default function SidebarItem(props) {
-  const { label, ports, properties } = props;
-  const ref = React.createRef();
+type Props = {
+  label?: string;
+  ports: {
+    [key: string]: any;
+  };
+  properties: {
+    [key: string]: any;
+  };
+};
+
+export default function SidebarItem({ label, ports, properties }: Props) {
+  const ref: React.RefObject<HTMLInputElement> = React.createRef();
   return (
     <div
       ref={ref}
@@ -13,11 +22,11 @@ export default function SidebarItem(props) {
       onDragStart={(event) => {
         event.dataTransfer.setData(
           REACT_FLOW_CHART,
-          JSON.stringify({ label, ports, properties, type: "hello world" })
+          JSON.stringify({ label, ports, properties })
         );
       }}
     >
-      <ChartNode node={{ properties }} />
+      <ChartNode node={{ properties, label }} />
     </div>
   );
 }

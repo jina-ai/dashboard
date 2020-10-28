@@ -1,9 +1,16 @@
 import React from "react";
 import { Badge } from "react-bootstrap";
 
-export default function ChartNode(props) {
-  const { properties, label } = props.node;
-  const list = [];
+type Props = {
+  node: {
+    properties: any;
+    label: string | undefined;
+  };
+};
+
+export default function ChartNode({ node }: Props) {
+  const { properties, label } = node;
+  const list: any = [];
   Object.keys(properties).forEach((prop, idx) => {
     if (properties[prop] && prop !== "name")
       list.push(
