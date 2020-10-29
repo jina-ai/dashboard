@@ -8,7 +8,27 @@ import {
   Collapse,
 } from "shards-react";
 
-export default ({ item, toggleSidebar }) => {
+type SubItem = {
+  title: string;
+  to: string;
+};
+
+type NavItem = {
+  title: string;
+  to: string;
+  open: boolean;
+  htmlBefore: string;
+  htmlAfter: string;
+  matches: string[];
+  items?: SubItem[];
+};
+
+type Props = {
+  item: NavItem;
+  toggleSidebar: () => void;
+};
+
+export default ({ item, toggleSidebar }: Props) => {
   const hasSubItems = item.items && item.items.length;
   const path = window.location.hash.substring(2, window.location.hash.length);
   let active = false;
@@ -39,7 +59,7 @@ export default ({ item, toggleSidebar }) => {
           />
         )}
       </NavLink>
-      {hasSubItems && (
+      {item.items && (
         <Collapse tag={DropdownMenu} small open={item.open} style={{ top: 0 }}>
           {item.items.map((subItem, idx) => (
             <DropdownItem key={idx} tag={RouteNavLink} to={subItem.to}>

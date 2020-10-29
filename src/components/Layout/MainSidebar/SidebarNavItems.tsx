@@ -3,7 +3,15 @@ import { Nav } from "shards-react";
 
 import SidebarNavItem from "./SidebarNavItem";
 
-export default ({ navItems: items, toggleSidebar }) => {
+type Props = {
+  navItems: {
+    title: string;
+    items: [];
+  }[];
+  toggleSidebar: () => void;
+};
+
+export default ({ navItems: items, toggleSidebar }: Props) => {
   return (
     <div className="nav-wrapper">
       {items.map((nav, idx) => (

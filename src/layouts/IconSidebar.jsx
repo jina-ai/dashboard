@@ -27,6 +27,8 @@ class IconSidebarLayout extends React.Component {
       user: Store.getUser(),
       banner: Store.getBanner(),
       connected: Store.getConnectionStatus(),
+      menuVisible: Store.getMenuState(),
+      sidebarNavItems: Store.getSidebarItems(),
       acceptedCookies: localStorage.getItem("accepted-cookies"),
     };
     Store.on("update-ui", this.getData);
@@ -45,6 +47,8 @@ class IconSidebarLayout extends React.Component {
     const banner = Store.getBanner();
     const connected = Store.getConnectionStatus();
     const loggerEnabled = logger.isEnabled();
+    const menuVisible = Store.getMenuState();
+    const sidebarNavItems = Store.getSidebarItems();
     this.setState({
       modal,
       loading,
@@ -52,6 +56,8 @@ class IconSidebarLayout extends React.Component {
       connected,
       modalParams,
       loggerEnabled,
+      menuVisible,
+      sidebarNavItems,
     });
   };
 
@@ -131,6 +137,12 @@ class IconSidebarLayout extends React.Component {
     logger.exportLogs();
   };
 
+  toggleSidebar = () => {
+    Dispatcher.dispatch({
+      actionType: Constants.TOGGLE_SIDEBAR,
+    });
+  };
+
   render = () => {
     const {
       modal,
@@ -141,12 +153,19 @@ class IconSidebarLayout extends React.Component {
       loading,
       modalParams,
       loggerEnabled,
+      menuVisible,
+      sidebarNavItems,
     } = this.state;
     const { children, usesAuth, usesConnection } = this.props;
     return (
       <Container fluid className="icon-sidebar-nav">
         <Row>
-          <MainSidebar hideLogoText />
+          <MainSidebar
+            hideLogoText
+            sidebarNavItems={sidebarNavItems}
+            menuVisible={menuVisible}
+            toggleSidebar={this.toggleSidebar}
+          />
           <Col className="main-content col" tag="main">
             <MainNavbar
               usesAuth={usesAuth}

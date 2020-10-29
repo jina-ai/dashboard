@@ -1,7 +1,11 @@
 import React from "react";
 import { Navbar, NavbarBrand } from "shards-react";
 
-export default ({ toggleSidebar }) => {
+type Props = {
+  toggleSidebar: () => void;
+};
+
+export default ({ toggleSidebar }: Props) => {
   return (
     <div className="main-navbar">
       <Navbar

@@ -14,9 +14,23 @@ import { Store, Dispatcher, Constants } from "../../flux";
 import { baseOptions, advancedOptions } from "./options";
 import FormItem from "./FormItem";
 
+type Settings = {
+  host: string;
+  port: string | number;
+  log: string;
+  profile: string;
+  yaml: string;
+  ready: string;
+  shutdown: string;
+};
+
+type AnyObj = {
+  [key: string]: any;
+};
+
 function SettingsCard() {
-  const [original, setOriginal] = useState(Store.getSettings());
-  const [updates, setUpdates] = useState({});
+  const [original, setOriginal] = useState<AnyObj>(Store.getSettings());
+  const [updates, setUpdates] = useState<AnyObj>({});
   const [expanded, setExpanded] = useState(false);
 
   function getData() {
@@ -33,8 +47,8 @@ function SettingsCard() {
     };
   }, []);
 
-  function updateSetting(setting, value) {
-    const newUpdates = { ...updates };
+  function updateSetting(setting: string, value: string) {
+    const newUpdates: { [key: string]: string } = { ...updates };
     newUpdates[setting] = value;
     setUpdates(newUpdates);
   }

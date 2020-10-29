@@ -1,6 +1,20 @@
 import React from "react";
 import { Container, Row, Nav } from "shards-react";
 
+type MenuItems = {
+  title: string;
+  to: string;
+};
+
+type Props = {
+  menuItems: MenuItems[];
+  copyright: string;
+  loggerEnabled: boolean;
+  enableLogger: () => void;
+  disableLogger: () => void;
+  exportLogs: () => void;
+};
+
 const MainFooter = ({
   menuItems,
   copyright,
@@ -8,7 +22,7 @@ const MainFooter = ({
   enableLogger,
   disableLogger,
   exportLogs,
-}) => (
+}: Props) => (
   <footer className="main-footer d-flex p-2 px-3 bg-white border-top">
     <Container fluid>
       <Row>
