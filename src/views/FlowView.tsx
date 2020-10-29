@@ -232,7 +232,6 @@ class FlowView extends React.Component<any, any> {
       actionCallbacks,
     } = this.state;
     const readonly = flowType !== "user-generated";
-    console.log("chart:", chart);
     return (
       <Container fluid className="main-content-container px-0">
         <div className="px-4">
