@@ -4,9 +4,9 @@
   "private": true,
   "homepage": "https://dashboard.jina.ai",
   "dependencies": {
+    "@bastinjafari/react-flow-chart": "0.0.14",
     "@emotion/core": "^10.0.35",
     "@emotion/styled": "^10.0.27",
-    "@mrblenny/react-flow-chart": "^0.0.13",
     "@projectstorm/react-diagrams": "^6.0.1-beta.7",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
