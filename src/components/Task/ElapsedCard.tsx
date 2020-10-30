@@ -1,7 +1,14 @@
 import React from "react";
 import { Card } from "shards-react";
 
-export default function ElapsedCard({ elapsed }) {
+type Props = {
+  elapsed: {
+    task_name: string;
+    seconds: string | number;
+  };
+};
+
+export default function ElapsedCard({ elapsed }: Props) {
   return (
     <Card className="p-3 h-100">
       <h6 className="stats-small__label text-uppercase text-center mb-0">
