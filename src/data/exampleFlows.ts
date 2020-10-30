@@ -1,7 +1,7 @@
-module.exports = {
+export default {
   pokedex: {
-    name:'Pokedex Query',
-    type: 'example',
+    name: "Pokedex Query",
+    type: "example",
     yaml: `!Flow
     with:
       read_only: true
@@ -55,9 +55,9 @@ module.exports = {
     
     `,
   },
-  flower:{
-    name:'Flower Search Query',
-    type: 'example',
+  flower: {
+    name: "Flower Search Query",
+    type: "example",
     yaml: `!Flow
     with:
       read_only: true
@@ -119,11 +119,11 @@ module.exports = {
       doc_indexer:
         uses: yaml/index-doc.yml
         needs: ranker  
-    `
+    `,
   },
   southpark: {
-    name: 'Southpark Query',
-    type: 'example',
+    name: "Southpark Query",
+    type: "example",
     yaml: `!Flow
     with:
       read_only: true
@@ -175,5 +175,5 @@ module.exports = {
         uses: pods/index-doc.yml
         needs: ranker
     `,
-  }
+  },
 };
