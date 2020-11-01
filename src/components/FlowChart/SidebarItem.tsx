@@ -1,5 +1,5 @@
 import * as React from "react";
-import { REACT_FLOW_CHART } from "@bastinjafari/react-flow-chart";
+import { REACT_FLOW_CHART } from "@bastinjafari/react-flow-chart-with-tooltips";
 import ChartNode from "./ChartNode";
 
 type Props = {
