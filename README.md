@@ -30,7 +30,6 @@
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
-
 - [Monitor Jina "Hello, World!" with Dashboard](#monitor-jina-hello-world-with-dashboard)
 - [Getting started](#getting-started)
   - [1. Start the log server](#1-start-the-log-server)
