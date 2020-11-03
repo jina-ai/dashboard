@@ -16,9 +16,9 @@ import logger from "../logger";
 
 import { Store, Dispatcher, Constants } from "../flux";
 
-class IconSidebarLayout extends React.Component {
-  constructor() {
-    super();
+class IconSidebarLayout extends React.Component<any, any> {
+  constructor(props: any) {
+    super(props);
     this.state = {
       loggerEnabled: logger.isEnabled(),
       modal: Store.getModal(),
@@ -67,7 +67,7 @@ class IconSidebarLayout extends React.Component {
   };
 
   acceptCookies = () => {
-    localStorage.setItem("accepted-cookies", true);
+    localStorage.setItem("accepted-cookies", String(true));
     this.setState({ acceptedCookies: true });
   };
 
@@ -77,14 +77,14 @@ class IconSidebarLayout extends React.Component {
     });
   };
 
-  importYAML = (yamlString) => {
+  importYAML = (yamlString: string) => {
     Dispatcher.dispatch({
       actionType: Constants.IMPORT_CUSTOM_YAML,
       payload: yamlString,
     });
   };
 
-  submitReview = (content) => {
+  submitReview = (content: any) => {
     const { imageId } = this.state.modalParams;
     Dispatcher.dispatch({
       actionType: Constants.POST_REVIEW,
@@ -137,12 +137,6 @@ class IconSidebarLayout extends React.Component {
     logger.exportLogs();
   };
 
-  toggleSidebar = () => {
-    Dispatcher.dispatch({
-      actionType: Constants.TOGGLE_SIDEBAR,
-    });
-  };
-
   render = () => {
     const {
       modal,
@@ -161,7 +155,6 @@ class IconSidebarLayout extends React.Component {
       <Container fluid className="icon-sidebar-nav">
         <Row>
           <MainSidebar
-            hideLogoText
             sidebarNavItems={sidebarNavItems}
             menuVisible={menuVisible}
             toggleSidebar={this.toggleSidebar}
@@ -195,7 +188,6 @@ class IconSidebarLayout extends React.Component {
         <LogDetails
           open={modal === "logDetails"}
           closeModal={this.closeModal}
-          submitReview={this.submitReview}
           modalParams={modalParams}
         />
         <PasteYAML

@@ -2,7 +2,6 @@ import React from "react";
 import { Button } from "react-bootstrap";
 
 type Props = {
-  show: boolean;
   acceptCookies: () => void;
 };
 

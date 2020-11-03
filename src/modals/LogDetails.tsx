@@ -1,7 +1,8 @@
 import React from "react";
-import ReactModal from "react-modal";
+import ReactModal, { Styles } from "react-modal";
 import { Row, Col } from "react-bootstrap";
-const style = {
+
+const style: Styles = {
   overlay: {
     backgroundColor: "rgba(38, 50, 56, 0.5)",
   },
@@ -23,7 +24,13 @@ const style = {
 
 const hiddenKeys = ["msg", "unixTime"];
 
-export default ({ open, closeModal, modalParams }) => {
+type Props = {
+  open: boolean;
+  closeModal: () => void;
+  modalParams: any;
+};
+
+export default ({ open, closeModal, modalParams }: Props) => {
   const log = modalParams.log || {};
   return (
     <ReactModal

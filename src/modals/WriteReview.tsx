@@ -1,8 +1,8 @@
 import React from "react";
 import { Button, Form } from "react-bootstrap";
-import ReactModal from "react-modal";
+import ReactModal, { Styles } from "react-modal";
 
-const style = {
+const style: Styles = {
   overlay: {
     backgroundColor: "rgba(38, 50, 56, 0.5)",
   },
@@ -22,8 +22,14 @@ const style = {
   },
 };
 
-export default ({ open, closeModal, submitReview }) => {
-  let inputRef;
+type Props = {
+  open: boolean;
+  closeModal: () => void;
+  submitReview: (content: any) => void;
+};
+
+export default ({ open, closeModal, submitReview }: Props) => {
+  let inputRef: any;
   return (
     <ReactModal
       ariaHideApp={false}
@@ -51,9 +57,9 @@ export default ({ open, closeModal, submitReview }) => {
         <Form.Group>
           <Form.Control
             placeholder="Tell the world about your experience"
-            ref={(ref) => (inputRef = ref)}
+            ref={(ref: any) => (inputRef = ref)}
             as="textarea"
-            rows="10"
+            rows={10}
           />
         </Form.Group>
       </div>

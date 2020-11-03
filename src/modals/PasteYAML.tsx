@@ -1,7 +1,7 @@
 import React from "react";
 import { Button, Form } from "react-bootstrap";
-import ReactModal from "react-modal";
-const style = {
+import ReactModal, { Styles } from "react-modal";
+const style: Styles = {
   overlay: {
     backgroundColor: "rgba(38, 50, 56, 0.5)",
   },
@@ -21,8 +21,14 @@ const style = {
   },
 };
 
-export default ({ open, closeModal, importYAML }) => {
-  let inputRef;
+type Props = {
+  open: boolean;
+  closeModal: () => void;
+  importYAML: (yamlString: string) => void;
+};
+
+export default ({ open, closeModal, importYAML }: Props) => {
+  let inputRef: any;
   return (
     <ReactModal
       ariaHideApp={false}
@@ -51,9 +57,9 @@ export default ({ open, closeModal, importYAML }) => {
           <Form.Label>Custom YAML:</Form.Label>
           <Form.Control
             placeholder="Paste Here"
-            ref={(ref) => (inputRef = ref)}
+            ref={(ref: any) => (inputRef = ref)}
             as="textarea"
-            rows="10"
+            rows={10}
           />
         </Form.Group>
       </div>
