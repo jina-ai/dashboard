@@ -1,8 +1,8 @@
 import axios from "axios";
 import logger from "../logger";
 import { hubURL, timeout } from "./config";
-let logStream;
-let taskStream;
+let logStream: EventSource;
+let taskStream: EventSource;
 
 const hub = axios.create({
   baseURL: hubURL,
@@ -14,8 +14,27 @@ const hub = axios.create({
   },
 });
 
+type Settings = {
+  host: string;
+  port: string | number;
+  log: string;
+  profile: string;
+  yaml: string;
+  ready: string;
+  shutdown: string;
+};
+
+type ConnectionUpdate = (messageType: string, message: string) => void;
+
+type UpdateHandler = (update: { type: string; data: string }) => void;
+
 export default {
-  connect: (settings, connectionUpdate, logUpdate, taskUpdate) => {
+  connect: (
+    settings: Settings,
+    connectionUpdate: ConnectionUpdate,
+    logUpdate: UpdateHandler,
+    taskUpdate: UpdateHandler
+  ) => {
     logger.log("api - connect - settings", settings);
 
     const logString = `${settings.host}:${settings.port}${
@@ -82,7 +101,7 @@ export default {
     const result = await hub.get("profile");
     return result.data;
   },
-  getYAML: async (settings) => {
+  getYAML: async (settings: Settings) => {
     const connectionString = `${settings.host}:${settings.port}${
       settings.yaml.startsWith("/") ? settings.yaml : "/" + settings.yaml
     }`;
@@ -94,19 +113,19 @@ export default {
     const result = await hub.get("images");
     return result.data;
   },
-  getImage: async (id) => {
+  getImage: async (id: string) => {
     const result = await hub.get(`/images/${id}`);
     return result.data;
   },
-  postRating: async (imageId, stars) => {
+  postRating: async (imageId: string, stars: any) => {
     const result = await hub.post(`/images/${imageId}/ratings`, { stars });
     return result.data;
   },
-  postReview: async (imageId, content) => {
+  postReview: async (imageId: string, content: any) => {
     const result = await hub.post(`/images/${imageId}/reviews`, { content });
     return result.data;
   },
-  searchHub: async (category, q, sort) => {
+  searchHub: async (category: string, q: string, sort: string) => {
     const result = await hub.get(
       `/images?category=${category}&q=${q}&sort=${sort}`
     );

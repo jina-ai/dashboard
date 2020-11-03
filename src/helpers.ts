@@ -1,12 +1,12 @@
 // @ts-nocheck
-import {ProcessedLog} from './flux/tranformLog'
+import { ProcessedLog } from "./flux/tranformLog";
 
-type PodPropertyType = "str" | "int" | "bool" | "SocketType" | "ReplicaType"
+type PodPropertyType = "str" | "int" | "bool" | "SocketType" | "ReplicaType";
 type PodProperty = {
-  name: string,
-  type: PodPropertyType
-}
-type PropertyMap = { [key: string]: PodPropertyType}
+  name: string;
+  type: PodPropertyType;
+};
+type PropertyMap = { [key: string]: PodPropertyType };
 
 const YAML = require("yaml");
 const settings = require("./settings");
@@ -41,9 +41,12 @@ function serializeLogsToText(logs: ProcessedLog[]): string {
   return fileContent;
 }
 
-const serializeLogsToCSVBlob = (logs: ProcessedLog[]) => toBlob(serializeLogsToCSV(logs));
-const serializeLogsToJSONBlob = (logs: ProcessedLog[]) => toBlob(serializeLogsToJSON(logs));
-const serializeLogsToTextBlob = (logs: ProcessedLog[]) => toBlob(serializeLogsToText(logs));
+const serializeLogsToCSVBlob = (logs: ProcessedLog[]) =>
+  toBlob(serializeLogsToCSV(logs));
+const serializeLogsToJSONBlob = (logs: ProcessedLog[]) =>
+  toBlob(serializeLogsToJSON(logs));
+const serializeLogsToTextBlob = (logs: ProcessedLog[]) =>
+  toBlob(serializeLogsToText(logs));
 
 const propertyTypes: PropertyMap = {};
 propertyList.forEach((prop) => (propertyTypes[prop.name] = prop.type));
@@ -77,6 +80,7 @@ export function formatForFlowchart(pods, canvas) {
     selected: {},
     hovered: {},
     scale: 1,
+    with: {},
   };
 
   let nodes = {};
@@ -222,15 +226,22 @@ export function formatSeconds(numSeconds: number): string {
   let minute = 60;
   let hour = 60 * minute;
 
-  return numSeconds < minute ? `${Math.floor(numSeconds)}s`
-    : numSeconds < hour ? `${Math.floor(numSeconds/minute)}m ${Math.floor(numSeconds % minute)}s`
-    : `${Math.floor(numSeconds/hour)}h ${Math.floor((numSeconds % hour)/minute)}m ${Math.floor(numSeconds%minute)}s`
+  return numSeconds < minute
+    ? `${Math.floor(numSeconds)}s`
+    : numSeconds < hour
+    ? `${Math.floor(numSeconds / minute)}m ${Math.floor(numSeconds % minute)}s`
+    : `${Math.floor(numSeconds / hour)}h ${Math.floor(
+        (numSeconds % hour) / minute
+      )}m ${Math.floor(numSeconds % minute)}s`;
 }
 
 export function formatBytes(numBytes: number): string {
-  return numBytes < 1024 ? `${numBytes} Bytes`
-    : (numBytes < 1024 ** 2) ? `${(numBytes / 1024).toFixed(1)} KB`
-    : (numBytes < 1024 ** 3) ? `${(numBytes / 1024 ** 2).toFixed(1)} MB`
+  return numBytes < 1024
+    ? `${numBytes} Bytes`
+    : numBytes < 1024 ** 2
+    ? `${(numBytes / 1024).toFixed(1)} KB`
+    : numBytes < 1024 ** 3
+    ? `${(numBytes / 1024 ** 2).toFixed(1)} MB`
     : `${(numBytes / 1024 ** 3).toFixed(1)} GB`;
 }
 

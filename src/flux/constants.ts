@@ -1,4 +1,4 @@
-module.exports = {
+export const Constants = {
   TOGGLE_SIDEBAR: "TOGGLE_SIDEBAR",
   SET_CURRENT_TAB: "SET_CURRENT_TAB",
   SELECT_NODE: "SELECT_NODE",

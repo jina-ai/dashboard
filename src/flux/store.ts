@@ -1,17 +1,18 @@
 import { EventEmitter } from "events";
 import _ from "lodash";
-import Dispatcher from "./dispatcher";
 import { nanoid } from "nanoid";
-import Constants from "./constants";
+import { Constants, Dispatcher, transformLog } from "./";
 import { parseYAML, formatForFlowchart, formatSeconds } from "../helpers";
 import api from "./api";
 import logger from "../logger";
 import propertyList from "../data/podProperties.json";
 import getSidebarNavItems from "../data/sidebar-nav-items";
 import exampleFlows from "../data/exampleFlows";
-import { transformLog } from "./tranformLog";
 
-let _store;
+let _store: any;
+let _updateChartInterval: any;
+let _updateTaskInterval: any;
+let _bannerTimeout: any;
 
 const MAX_CHART_TICKS = 60;
 const HIDE_BANNER_TIMEOUT = 5000;
@@ -26,7 +27,7 @@ const CHART_LEVELS = [
 ];
 
 function getExampleFlows() {
-  const flows = {};
+  const flows: LooseObject = {};
 
   Object.entries(exampleFlows).forEach(([id, flow]) => {
     const parsed = parseYAML(flow.yaml);
@@ -47,7 +48,8 @@ function getExampleFlows() {
 }
 
 function getUserFlows() {
-  const userFlows = JSON.parse(localStorage.getItem("userFlows"));
+  const storedFlows = localStorage.getItem("userFlows");
+  const userFlows = storedFlows ? JSON.parse(storedFlows) : null;
   return _.isEmpty(userFlows)
     ? {
         _userFlow: {
@@ -84,7 +86,7 @@ function getInitialFlow() {
 }
 
 function getInitialLevelOccurences() {
-  let occurences = {
+  let occurences: LooseObject = {
     lastLog: 0,
     levels: {},
   };
@@ -94,7 +96,7 @@ function getInitialLevelOccurences() {
   return occurences;
 }
 
-function getInitialStore() {
+function getInitialStore(): LooseObject {
   return {
     settings: {
       host: localStorage.getItem("preferences-host") || "http://localhost",
@@ -157,16 +159,24 @@ function getInitialStore() {
 
 if (window.location.hostname === "localhost") logger.enable();
 
-class Store extends EventEmitter {
+type DispatchProps = {
+  actionType: string;
+  payload: any;
+};
+
+interface LooseObject {
+  [key: string]: any;
+}
+
+class StoreBase extends EventEmitter {
   constructor() {
     super();
     Dispatcher.register(this.registerActions);
     this.init();
-    window.peakLogs = this.getLogs;
-    window.peakStore = () => console.log(_store);
+    (window as any).peakLogs = this.getLogs;
+    (window as any).peakStore = () => console.log(_store);
   }
-
-  registerActions = ({ actionType, payload }) => {
+  registerActions = ({ actionType, payload }: DispatchProps) => {
     switch (actionType) {
       case Constants.TOGGLE_SIDEBAR:
         this.toggleSidebar();
@@ -175,7 +185,7 @@ class Store extends EventEmitter {
         this.showModal(payload);
         break;
       case Constants.SHOW_BANNER:
-        this.showBanner(...payload);
+        this.showBanner(...(payload as [string, string]));
         break;
       case Constants.IMPORT_CUSTOM_YAML:
         this.importCustomYAML(payload);
@@ -190,7 +200,7 @@ class Store extends EventEmitter {
         this.saveSettings(payload);
         break;
       case Constants.RECONNECT:
-        this.reconnect(payload);
+        this.reconnect();
         break;
       case Constants.POST_RATING:
         this.postRating(payload);
@@ -242,8 +252,8 @@ class Store extends EventEmitter {
   };
 
   clearIntervals = () => {
-    if (this.updateChartInterval) clearInterval(this.updateChartInterval);
-    if (this.updateTaskInterval) clearInterval(this.updateTaskInterval);
+    if (_updateChartInterval) clearInterval(_updateChartInterval);
+    if (_updateTaskInterval) clearInterval(_updateTaskInterval);
   };
 
   initFlowChart = async () => {
@@ -272,7 +282,7 @@ class Store extends EventEmitter {
 
     logger.log("initFlowChart - parsed", parsed);
 
-    let flows = {};
+    let flows: LooseObject = {};
     flows.connectedFlow = {
       flow: parsed,
       name: "Network Flow",
@@ -292,13 +302,13 @@ class Store extends EventEmitter {
       this.handleNewLog,
       this.handleNewTaskEvent
     );
-    this.updateTaskInterval = setInterval(
+    _updateTaskInterval = setInterval(
       () => this.emit("update-task"),
       TASK_UPDATE_INTERVAL
     );
   };
 
-  handleLogConnectionStatus = (status, message) => {
+  handleLogConnectionStatus = (status: string, message: string) => {
     logger.log("handleLogConnectionStatus - status", status);
     logger.log("handleLogConnectionStatus - message", message);
     _store.loading = false;
@@ -311,7 +321,7 @@ class Store extends EventEmitter {
     this.emit("update-ui");
   };
 
-  handleNewLog = (message) => {
+  handleNewLog = (message: { data: any }) => {
     const { data } = message;
     const log = transformLog(data, _store.logs.length);
 
@@ -335,7 +345,7 @@ class Store extends EventEmitter {
     this.emit("update-logs");
   };
 
-  handleNewTaskEvent = (message) => {
+  handleNewTaskEvent = (message: { data: any }) => {
     const { data } = message;
 
     const event = data;
@@ -364,7 +374,7 @@ class Store extends EventEmitter {
 
     if (msg_recv && msg_sent) {
       let index = _store.taskData.messages
-        .map((obj) => obj.process)
+        .map((obj: any) => obj.process)
         .indexOf(process);
       let msgData = {
         process,
@@ -386,10 +396,10 @@ class Store extends EventEmitter {
         _store.taskData.bytes[index] = bytesData;
       }
       _store.taskData.messages = _store.taskData.messages
-        .sort((a, b) => b.sent + b.received - (a.sent + a.received))
+        .sort((a: any, b: any) => b.sent + b.received - (a.sent + a.received))
         .slice(0, 20);
       _store.taskData.bytes = _store.taskData.bytes
-        .sort((a, b) => b.sent + b.received - (a.sent + a.received))
+        .sort((a: any, b: any) => b.sent + b.received - (a.sent + a.received))
         .slice(0, 20);
       _store.taskData.lastUpdateChart = new Date();
     }
@@ -438,57 +448,59 @@ class Store extends EventEmitter {
     this.emit("update-ui");
   }
 
-  showLogAtIndex = (logIndex) => {
+  showLogAtIndex = (logIndex: number) => {
     if (!logIndex || !_store.logs[logIndex]) return;
     _store.logIndex = logIndex;
     this.emit("show-log");
   };
 
-  showPodByLabel = (label) => {
-    let selected = {};
+  showPodByLabel = (label: string) => {
+    let selected: LooseObject = {};
     let x = 0;
     let y = 0;
-    for (const [key, value] of Object.entries(_store.flowchart.nodes)) {
-      if (value.label === label) {
-        selected.id = key;
-        selected.type = "node";
-        x = value.position.x * -1 + 40;
-        y = value.position.y * -1 + 100;
+    Object.entries(_store.flowchart.nodes).forEach(
+      ([key, value]: [string, any]) => {
+        if (value.label === label) {
+          selected.id = key;
+          selected.type = "node";
+          x = value.position.x * -1 + 40;
+          y = value.position.y * -1 + 100;
+        }
       }
-    }
+    );
     _store.flowchart.selected = selected;
     _store.flowchart.offset = { x, y };
     this.emit("update-flowchart");
     window.location.hash = "#/flow";
   };
 
-  importCustomYAML = (customYAML) => {
+  importCustomYAML = (customYAML?: string) => {
     logger.log("importCustomYAML - customYAML", customYAML);
     this.createNewFlow(customYAML);
     this.closeModal();
     this.emit("update-flowchart");
   };
 
-  loadFlow = (flowId) => {
+  loadFlow = (flowId: string) => {
     _store.selectedFlow = flowId;
     this.emit("update-flowchart");
   };
 
-  updateFlow = (newFlow) => {
+  updateFlow = (newFlow: any) => {
     _store.flows[_store.selectedFlow].flow = newFlow;
     this.saveFlowsToStorage();
     this.emit("update-flowchart");
   };
 
-  createNewFlow = (customYAML) => {
+  createNewFlow = (customYAML?: string) => {
     let prefixString = "Custom Flow";
 
-    let userFlows = Object.values(_store.flows).filter((flow) =>
+    let userFlows = Object.values(_store.flows).filter((flow: any) =>
       flow.name.startsWith(prefixString)
     );
 
     const flowNumbers = userFlows
-      .map((f) => parseInt(f.name.substring(prefixString.length)) || 0)
+      .map((f: any) => parseInt(f.name.substring(prefixString.length)) || 0)
       .sort((a, b) => a - b);
 
     const largestNumber = flowNumbers[flowNumbers.length - 1] || 0;
@@ -519,11 +531,11 @@ class Store extends EventEmitter {
     this.emit("update-flowchart");
   };
 
-  deleteFlow = (flowId) => {
+  deleteFlow = (flowId: string) => {
     _store.flows = _.omit(_store.flows, flowId);
 
     const nonExampleFlows = Object.entries(_store.flows).filter(
-      ([id, flow]) => flow.type !== "example"
+      ([id, flow]: [string, any]) => flow.type !== "example"
     );
 
     if (_store.selectedFlow === flowId && nonExampleFlows.length) {
@@ -545,15 +557,15 @@ class Store extends EventEmitter {
   };
 
   saveFlowsToStorage = () => {
-    let toSave = {};
+    let toSave: LooseObject = {};
     const { flows } = _store;
-    Object.entries(flows).forEach(([id, flow]) => {
+    Object.entries(flows).forEach(([id, flow]: [string, any]) => {
       if (flow.type === "user-generated") toSave[id] = flow;
     });
     localStorage.setItem("userFlows", JSON.stringify(toSave));
   };
 
-  saveSettings = (settings) => {
+  saveSettings = (settings: LooseObject) => {
     logger.log("saveSettings - settings", settings);
     Object.keys(settings).forEach((key) => {
       localStorage.setItem(`preferences-${key}`, settings[key]);
@@ -561,7 +573,7 @@ class Store extends EventEmitter {
     setTimeout(this.init, 100);
   };
 
-  postRating = async ({ imageId, stars }) => {
+  postRating = async ({ imageId, stars }: { imageId: string; stars: any }) => {
     if (!_store.user) return (window.location.hash = "#/login");
     let result;
     try {
@@ -579,7 +591,13 @@ class Store extends EventEmitter {
     this.emit("update-hub");
   };
 
-  postReview = async ({ imageId, content }) => {
+  postReview = async ({
+    imageId,
+    content,
+  }: {
+    imageId: string;
+    content: any;
+  }) => {
     if (!_store.user) {
       this.closeModal();
       return (window.location.hash = "#/login");
@@ -606,16 +624,24 @@ class Store extends EventEmitter {
     window.location.reload();
   };
 
-  searchHub = async ({ category, q, sort }) => {
+  searchHub = async ({
+    category,
+    q,
+    sort,
+  }: {
+    category: string;
+    q: string;
+    sort: string;
+  }) => {
     const images = await api.searchHub(category, q, sort);
     _store.hub = images;
     this.emit("update-hub");
   };
 
-  showBanner = (message, theme) => {
-    if (this.bannerTimeout) clearTimeout(this.bannerTimeout);
+  showBanner = (message: string, theme: string) => {
+    if (_bannerTimeout) clearTimeout(_bannerTimeout);
     _store.banner = { message: String(message), theme };
-    this.bannerTimeout = setTimeout(this.hideBanner, HIDE_BANNER_TIMEOUT);
+    _bannerTimeout = setTimeout(this.hideBanner, HIDE_BANNER_TIMEOUT);
     this.emit("update-ui");
   };
 
@@ -624,11 +650,11 @@ class Store extends EventEmitter {
     this.emit("update-ui");
   };
 
-  showError = (message) => {
+  showError = (message: string) => {
     this.showBanner(message, "error");
   };
 
-  showModal = (data) => {
+  showModal = (data: { modal: string; modalParams: any }) => {
     const { modal, modalParams } = data;
     _store.modal = modal;
     _store.modalParams = modalParams || {};
@@ -661,7 +687,7 @@ class Store extends EventEmitter {
     return _store.hub;
   };
 
-  getHubImage = async (imageId) => {
+  getHubImage = async (imageId: string) => {
     if (!_store.images[imageId]) {
       _store.images[imageId] = await api.getImage(imageId);
     }
@@ -700,11 +726,11 @@ class Store extends EventEmitter {
     return _store.summaryCharts;
   };
 
-  getLogLevelCharts = (numSeconds = 60) => {
+  getLogLevelCharts = (numSeconds: number = 60) => {
     const emptyItem = getInitialLevelOccurences();
     const step = numSeconds / MAX_CHART_TICKS;
     const data = [];
-    const now = parseInt(new Date() / 1000);
+    const now = Math.floor(+new Date() / 1000);
 
     for (let i = now - numSeconds; i < now; i += step) {
       let item = _.cloneDeep(emptyItem);
@@ -772,4 +798,4 @@ class Store extends EventEmitter {
   };
 }
 
-export default new Store();
+export const Store = new StoreBase();
