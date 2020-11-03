@@ -8,7 +8,7 @@ import { PageTitle } from "../components/Common/PageTitle";
 import html2canvas from "html2canvas";
 
 import CommandBar from "../components/FlowChart/CommandBar";
-import Sidebar from "../components/FlowChart/Sidebar.tsx";
+import Sidebar from "../components/FlowChart/Sidebar";
 import CustomNode from "../components/FlowChart/ChartNode";
 import CustomPort from "../components/FlowChart/NodePort";
 import FlowSelection from "../components/FlowChart/FlowSelection";
@@ -24,8 +24,8 @@ const syncEvents = [
   "updateLink",
 ];
 
-class FlowView extends React.Component {
-  constructor(props) {
+class FlowView extends React.Component<any, any> {
+  constructor(props: any) {
     super(props);
     const { flow: chart, type: flowType } = Store.getFlowchart();
     const selectedFlowId = Store.getSelectedFlowId();
@@ -40,28 +40,30 @@ class FlowView extends React.Component {
       selectedFlowId,
       flows,
       showOverlay: false,
+      actionCallbacks: Object.keys(actions).reduce(
+        (obj: any, key: any, idx: any) => {
+          obj[key] = (...args: any) => {
+            let { chart } = this.state;
+            let action = (actions as any)[key];
+            let newChartTransformer = action(...args);
+            let newChart = newChartTransformer(chart);
+            this.updateFlow({ ...chart, ...newChart }, key);
+            return newChart;
+          };
+          return obj;
+        },
+        {}
+      ),
     };
-
-    this.stateActionCallbacks = Object.keys(actions).reduce((obj, key, idx) => {
-      obj[key] = (...args) => {
-        let { chart } = this.state;
-        let action = actions[key];
-        let newChartTransformer = action(...args);
-        let newChart = newChartTransformer(chart);
-        this.updateFlow({ ...chart, ...newChart }, key);
-        return newChart;
-      };
-      return obj;
-    }, {});
 
     Store.on("update-ui", this.getConnectionStatus);
     Store.on("update-flowchart", this.getData);
   }
 
   componentDidMount = () => {
-    document
-      .querySelector(".chart-container")
-      .addEventListener("contextmenu", (e) => e.preventDefault());
+    const chartContainer = document.querySelector(".chart-container");
+    if (chartContainer)
+      chartContainer.addEventListener("contextmenu", (e) => e.preventDefault());
   };
 
   componentWillUnmount = () => {
@@ -70,9 +72,14 @@ class FlowView extends React.Component {
   };
 
   exportImage = (extension = "png") => {
-    document.querySelector(".capture-overlay").classList.add("fade-out");
+    const chartContainer = document.querySelector(".chart-container");
+    const captureOverlay = document.querySelector(".capture-overlay");
+    if (!chartContainer) return;
+    if (captureOverlay) captureOverlay.classList.add("fade-out");
+
     this.showCaptureOverlay();
     setTimeout(() => this.showCaptureOverlay(false), 500);
+
     let canvasParams = {
       foreignObjectRendering: true,
       logging: true,
@@ -82,15 +89,15 @@ class FlowView extends React.Component {
       scrollY: 0,
       scale: 5,
     };
-    html2canvas(document.querySelector(".chart-container"), canvasParams).then(
-      (canvas) => {
-        var image = canvas.toDataURL(`image/${extension}`);
-        var link = document.getElementById("download-link");
-        link.setAttribute("download", `jina-flow-visual.${extension}`);
-        link.setAttribute("href", image);
-        link.click();
-      }
-    );
+
+    html2canvas(chartContainer as HTMLElement, canvasParams).then((canvas) => {
+      var image = canvas.toDataURL(`image/${extension}`);
+      var link = document.getElementById("download-link");
+      if (!link) return;
+      link.setAttribute("download", `jina-flow-visual.${extension}`);
+      link.setAttribute("href", image);
+      link.click();
+    });
   };
 
   showCaptureOverlay = (showOverlay = true) => {
@@ -109,7 +116,7 @@ class FlowView extends React.Component {
     this.setState({ connected });
   };
 
-  updateNode = (node, callback) => {
+  updateNode = (node: any) => {
     let { chart } = this.state;
     let newChart = cloneDeep(chart);
     newChart.nodes[node.id].label = node.label;
@@ -131,7 +138,7 @@ class FlowView extends React.Component {
     return newChart.nodes[node.id];
   };
 
-  updateLink = (linkId, fromId, toId) => {
+  updateLink = (linkId: string, fromId: string, toId: string | undefined) => {
     if (fromId === toId) return;
     let { chart } = this.state;
     let newChart = cloneDeep(chart);
@@ -142,27 +149,23 @@ class FlowView extends React.Component {
     this.updateFlow({ ...chart, ...newChart }, "updateLink");
   };
 
-  cancelChanges = () => {
-    this.stateActionCallbacks.onCanvasClick({});
-  };
-
   deleteSelection = () => {
-    this.stateActionCallbacks.onDeleteKey({});
+    this.state.actionCallbacks.onDeleteKey({});
   };
 
-  updateFlow = (flow, event) => {
+  updateFlow = (flow: any, event: any) => {
     if (syncEvents.includes(event)) return this.syncFlow(flow);
     this.setState({ chart: flow });
   };
 
-  syncFlow = (flow) => {
+  syncFlow = (flow: any) => {
     Dispatcher.dispatch({
       actionType: Constants.UPDATE_FLOW,
       payload: flow,
     });
   };
 
-  selectNode = (data) => {
+  selectNode = (data: any) => {
     Dispatcher.dispatch({
       actionType: Constants.SELECT_NODE,
       payload: data.nodeId,
@@ -174,7 +177,7 @@ class FlowView extends React.Component {
     alert("Chart copied to clipboard as YAML");
   };
 
-  validateLink = ({ fromNodeId, toNodeId, fromPortId, toPortId }) => {
+  validateLink = ({ fromNodeId, toNodeId, fromPortId, toPortId }: any) => {
     return !(fromNodeId === toNodeId || fromPortId === toPortId);
   };
 
@@ -185,14 +188,14 @@ class FlowView extends React.Component {
     });
   };
 
-  loadFlow = (flow) => {
+  loadFlow = (flow: any) => {
     Dispatcher.dispatch({
       actionType: Constants.LOAD_FLOW,
       payload: flow,
     });
   };
 
-  createNewFlow = (e) => {
+  createNewFlow = (e: any) => {
     e.preventDefault();
     e.stopPropagation();
     Dispatcher.dispatch({
@@ -200,7 +203,7 @@ class FlowView extends React.Component {
     });
   };
 
-  deleteFlow = (e, flowId) => {
+  deleteFlow = (e: any, flowId: any) => {
     e.preventDefault();
     e.stopPropagation();
     Dispatcher.dispatch({
@@ -226,6 +229,7 @@ class FlowView extends React.Component {
       connected,
       flowType,
       availableProperties,
+      actionCallbacks,
     } = this.state;
     const readonly = flowType !== "user-generated";
     console.log("chart:", chart);
@@ -267,8 +271,11 @@ class FlowView extends React.Component {
                 </div>
                 <FlowChart
                   chart={chart}
-                  Components={{ NodeInner: CustomNode, Port: CustomPort }}
-                  callbacks={this.stateActionCallbacks}
+                  Components={{
+                    NodeInner: CustomNode as any,
+                    Port: CustomPort,
+                  }}
+                  callbacks={actionCallbacks}
                   config={{
                     readonly,
                     validateLink: this.validateLink,
@@ -281,7 +288,6 @@ class FlowView extends React.Component {
               duplicateFlow={this.duplicateFlow}
               readonly={readonly}
               chart={chart}
-              cancelChanges={this.cancelChanges}
               deleteSelection={this.deleteSelection}
               updateNode={this.updateNode}
               updateLink={this.updateLink}

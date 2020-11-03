@@ -81,7 +81,7 @@ type FlowSelectionProps = {
     [key: string]: any;
   };
   loadFlow: (flowId: string) => void;
-  createNewFlow: () => void;
+  createNewFlow: (e: any) => void;
   deleteFlow: (e: any, flowId: string) => void;
   selectedFlowId: string;
   connected: boolean;

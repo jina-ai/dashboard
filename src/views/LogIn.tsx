@@ -10,7 +10,7 @@ class Login extends React.Component {
     let hash = window.location.href;
     if (hash.indexOf("code") > 0) {
       let code = hash.substring(hash.indexOf("code") + 5, hash.length);
-      window.location = `${hubURL}/auth/github/callback?code=${code}`;
+      window.location = `${hubURL}/auth/github/callback?code=${code}` as any;
     }
   };
   render = () => {

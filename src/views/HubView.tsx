@@ -11,9 +11,9 @@ import { Dispatcher, Constants, Store } from "../flux";
 import { PageTitle } from "../components/Common/PageTitle";
 import ImageCard from "../components/Hub/ImageCard";
 
-class HubView extends React.Component {
-  constructor() {
-    super();
+class HubView extends React.Component<any, any> {
+  constructor(props: any) {
+    super(props);
     this.state = {
       images: Store.getHubImages(),
       sortType: "suggested",
@@ -33,15 +33,15 @@ class HubView extends React.Component {
     this.setState({ images });
   };
 
-  sortBy = (sortType) => {
+  sortBy = (sortType: string) => {
     this.setState({ sortType }, this.search);
   };
 
-  setCategory = (category) => {
+  setCategory = (category: string) => {
     this.setState({ category }, this.search);
   };
 
-  updateSearch = (searchQuery) => {
+  updateSearch = (searchQuery: string) => {
     this.setState({ searchQuery }, this.search);
   };
 
@@ -70,7 +70,7 @@ class HubView extends React.Component {
                   <InputGroupText>Categories</InputGroupText>
                 </InputGroupAddon>
                 <FormSelect
-                  onChange={(e) => this.setCategory(e.target.value)}
+                  onChange={(e: any) => this.setCategory(e.target.value)}
                   value={category}
                 >
                   <option value="all">All Categories</option>
@@ -86,7 +86,7 @@ class HubView extends React.Component {
                   <InputGroupText>Sort By</InputGroupText>
                 </InputGroupAddon>
                 <FormSelect
-                  onChange={(e) => this.sortBy(e.target.value)}
+                  onChange={(e: any) => this.sortBy(e.target.value)}
                   value={sortType}
                 >
                   <option value="suggested">Suggested</option>
@@ -101,7 +101,7 @@ class HubView extends React.Component {
                 placeholder="search images..."
                 className="mb-3 mb-sm-0 ml-auto py-2"
                 value={searchQuery}
-                onChange={(e) => this.updateSearch(e.target.value)}
+                onChange={(e: any) => this.updateSearch(e.target.value)}
               />
             </Col>
           </Row>

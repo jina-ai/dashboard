@@ -9,7 +9,7 @@ import "./assets/main.scss";
 import "./App.css";
 import { ErrorBoundary } from "react-error-boundary";
 import { FallbackPage } from "./views/FallbackPage";
-import { Store } from "./flux/";
+import { Store } from "./flux";
 
 const App = () => {
   return (
@@ -21,7 +21,7 @@ const App = () => {
               key={index}
               path={route.path}
               exact={route.exact}
-              component={withTracker((props) => {
+              component={withTracker((props: any) => {
                 return (
                   <route.layout {...props} {...route.props}>
                     <ErrorBoundary

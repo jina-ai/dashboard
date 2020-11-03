@@ -9,11 +9,6 @@ import propertyList from "../data/podProperties.json";
 import getSidebarNavItems from "../data/sidebar-nav-items";
 import exampleFlows from "../data/exampleFlows";
 
-let _store: any;
-let _updateChartInterval: any;
-let _updateTaskInterval: any;
-let _bannerTimeout: any;
-
 const MAX_CHART_TICKS = 60;
 const HIDE_BANNER_TIMEOUT = 5000;
 const TASK_UPDATE_INTERVAL = 500;
@@ -97,7 +92,8 @@ function getInitialLevelOccurences() {
 }
 
 function getInitialStore(): LooseObject {
-  return {
+  console.log("GETTING INITIAL STORE");
+  const initialStore: LooseObject = {
     settings: {
       host: localStorage.getItem("preferences-host") || "http://localhost",
       port: localStorage.getItem("preferences-port") || 5000,
@@ -155,7 +151,13 @@ function getInitialStore(): LooseObject {
     modalParams: {},
     currentTab: "logStream",
   };
+  return initialStore;
 }
+
+let _store: any = getInitialStore();
+let _updateChartInterval: any;
+let _updateTaskInterval: any;
+let _bannerTimeout: any;
 
 if (window.location.hostname === "localhost") logger.enable();
 
@@ -171,6 +173,7 @@ interface LooseObject {
 class StoreBase extends EventEmitter {
   constructor() {
     super();
+    console.log("CONSTRUCTOR");
     Dispatcher.register(this.registerActions);
     this.init();
     (window as any).peakLogs = this.getLogs;
@@ -237,8 +240,11 @@ class StoreBase extends EventEmitter {
   };
 
   init = async () => {
+    console.log("INIT");
     this.clearIntervals();
     _store = getInitialStore();
+
+    console.log("GOT INITIAL STORE");
 
     console.log("store:", _store);
 
@@ -249,6 +255,7 @@ class StoreBase extends EventEmitter {
 
     this.emit("update-ui");
     this.emit("update-settings");
+    console.log("FINISH INIT");
   };
 
   clearIntervals = () => {
@@ -703,6 +710,7 @@ class StoreBase extends EventEmitter {
   };
 
   getModal = () => {
+    console.log("GET MODAL:", _store);
     return _store.modal;
   };
 

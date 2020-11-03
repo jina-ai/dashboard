@@ -8,9 +8,9 @@ import SpeedCard from "../components/Task/SpeedCard";
 import BarChartCard from "../components/Task/BarChartCard";
 import QueriesPerSecond from "../components/Task/QueriesPerSecond";
 
-class TaskView extends React.Component {
-  constructor() {
-    super();
+class TaskView extends React.Component<any, any> {
+  constructor(props: any) {
+    super(props);
     this.state = {
       taskData: Store.getTaskData(),
     };

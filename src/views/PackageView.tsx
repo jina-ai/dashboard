@@ -10,9 +10,9 @@ import StarRating from "../components/Hub/StarRating";
 import ImageReviews from "../components/Hub/ImageReviews";
 import { copyToClipboard } from "../helpers";
 
-class PackageView extends React.Component {
-  constructor() {
-    super();
+class PackageView extends React.Component<any, any> {
+  constructor(props: any) {
+    super(props);
     let windowHash = window.location.hash;
     const windowParams = windowHash.substring(
       windowHash.indexOf("?"),
@@ -44,7 +44,7 @@ class PackageView extends React.Component {
     this.setState({ imageData, loading: false });
   };
 
-  rate = (stars) => {
+  rate = (stars: any) => {
     const { imageId } = this.state;
     Dispatcher.dispatch({
       actionType: Constants.POST_RATING,
@@ -52,7 +52,7 @@ class PackageView extends React.Component {
     });
   };
 
-  copyCode = (content) => {
+  copyCode = (content: any) => {
     copyToClipboard(content);
     Dispatcher.dispatch({
       actionType: Constants.SHOW_BANNER,
