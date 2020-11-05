@@ -50,7 +50,7 @@ Jina "Hello, World" is a simple demo of image neural search for Fashion-MNIST.
 1. Run the following command in the console
    - (Python >=3.7 required)
      ```bash
-     JINA_LOG_PROFILING=1 jina hello-world
+     JINA_LOG_PROFILING=1 jina hello-world --logserver
      ```
    - ...or if you use Docker (no install required)
      ```
