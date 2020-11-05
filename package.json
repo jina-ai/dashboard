@@ -76,13 +76,16 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "start_dev-server": "node dev-resources/testServer.js",
     "build": "CI=false react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
     "format": "prettier --write \"src/**/*.{js,jsx, ts, tsx}\"",
-    "lint": "eslint \"src/**/*.{js,jsx, ts, tsx}\" --max-warnings=0"
+    "lint": "eslint \"src/**/*.{js,jsx, ts, tsx}\" --max-warnings=0",
+    "cy:dev": "npx cypress open",
+    "cy:run": "npx cypress run"
   },
   "husky": {
     "hooks": {
@@ -115,6 +118,7 @@
     "@types/react-select": "^3.0.19",
     "@types/react-virtualized-auto-sizer": "^1.0.0",
     "@types/react-window": "^1.8.2",
+    "cypress": "^5.5.0",
     "eslint-plugin-flowtype": "^5.2.0",
     "husky": "^4.2.5",
     "lint-staged": "^10.2.11",
