@@ -10,7 +10,7 @@ type Props = {
 function ConnectionIndicator({ connected, reconnect }: Props) {
   return (
     <NavItem
-      className="border-right dropdown notifications"
+      className="dropdown notifications"
       onClick={reconnect}
     >
       <NavLink className="nav-link-icon text-center">

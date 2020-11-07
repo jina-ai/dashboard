@@ -92,10 +92,9 @@ class PackageView extends React.Component<any, any> {
           </div>
         ) : (
           <div className="px-4">
-            <Row noGutters className="page-header py-4">
+            <Row noGutters className="page-header mb-4">
               <PageTitle
                 title={name}
-                subtitle="Image"
                 className="text-sm-left mb-3"
               />
               <Col md="6" />

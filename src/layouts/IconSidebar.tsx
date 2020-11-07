@@ -5,8 +5,8 @@ import { MainNavbar } from "../components/Layout/MainNavbar/MainNavbar";
 import MainSidebar from "../components/Layout/MainSidebar/MainSidebar";
 import MainFooter from "../components/Layout/MainFooter";
 import { CookiesBanner } from "../components/Common/CookiesBanner";
-import { InfoBanner } from "../components/Common/InfoBanner";
-import { ConnectionBanner } from "../components/Common/ConnectionBanner";
+import { InfoToast } from "../components/Common/InfoToast";
+import { ConnectionToast } from "../components/Common/ConnectionToast";
 
 import PasteYAML from "../modals/PasteYAML";
 import WriteReview from "../modals/WriteReview";
@@ -169,9 +169,9 @@ class IconSidebarLayout extends React.Component<any, any> {
               connected={connected}
               user={user}
             />
-            <InfoBanner data={banner} />
+            <InfoToast data={banner} />
             {usesConnection && !loading && !connected && (
-              <ConnectionBanner reconnect={this.reconnect} />
+              <ConnectionToast reconnect={this.reconnect}/>
             )}
             {children}
             {!acceptedCookies && (

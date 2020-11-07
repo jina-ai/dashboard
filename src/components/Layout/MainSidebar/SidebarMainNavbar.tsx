@@ -9,7 +9,7 @@ export default ({ toggleSidebar }: Props) => {
   return (
     <div className="main-navbar">
       <Navbar
-        className="align-items-stretch bg-white flex-md-nowrap border-bottom p-0"
+        className="align-items-stretch bg-white flex-md-nowrap p-0"
         type="light"
       >
         <NavbarBrand

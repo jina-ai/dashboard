@@ -5,10 +5,9 @@ import { PageTitle } from "../components/Common/PageTitle";
 
 const NotFound = () => (
   <Container fluid className="main-content-container px-4">
-    <Row noGutters className="page-header py-4">
+    <Row noGutters className="page-header mb-4">
       <PageTitle
         title="Resources"
-        subtitle="Jina.ai"
         className="text-sm-left mb-3"
       />
     </Row>

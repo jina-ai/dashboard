@@ -238,15 +238,14 @@ class FlowView extends React.Component<any, any> {
           <a href="/#" id="download-link" style={{ display: "none" }}>
             download
           </a>
-          <Row noGutters className="page-header py-4">
+          <Row noGutters className="page-header mb-4">
             <PageTitle
               title="Flow Design"
-              subtitle="Network"
               className="text-sm-left mb-3"
             />
           </Row>
           <div className="flow-container d-flex flex-column flex-md-row">
-            <Card className="chart-section-container p-1 mr-md-4 mb-4">
+            <Card className="chart-section-container mr-md-4 mb-4">
               <FlowSelection
                 connected={connected}
                 flows={flows}

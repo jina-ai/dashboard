@@ -23,7 +23,7 @@ const MainFooter = ({
   disableLogger,
   exportLogs,
 }: Props) => (
-  <footer className="main-footer d-flex p-2 px-3 bg-white border-top">
+  <footer className="main-footer d-flex p-2 px-3">
     <Container fluid>
       <Row>
         <Nav>
@@ -71,7 +71,7 @@ MainFooter.defaultProps = {
       to: "https://jina.ai",
     },
     {
-      title: "Opensource",
+      title: "Open Source",
       to: "https://opensource.jina.ai",
     },
     {

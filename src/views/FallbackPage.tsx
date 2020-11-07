@@ -7,14 +7,14 @@ import { Button } from "shards-react";
 function FallbackPage({ error, resetErrorBoundary }: FallbackProps) {
   return (
     <Container fluid className="main-content-container p-5">
-      <Row noGutters className="page-header py-4">
+      <Row noGutters className="page-header mb-4">
         <PageTitle
           title="Error"
           subtitle="This should not have happened"
           className="text-sm-left my-3"
         />
       </Row>
-      <Row noGutters className="page-header py-4">
+      <Row noGutters className="page-header mb-4">
         <Col xs="12" sm="3">
           <p>Something went wrong:</p>
           <pre>

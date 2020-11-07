@@ -24,7 +24,7 @@
     "axios": "^0.19.2",
     "bootstrap": "^4.4.1",
     "chalk": "^4.1.0",
-    "chart.js": "^2.9.3",
+    "chart.js": "^2.9.4",
     "cli-cursor": "^3.1.0",
     "closest": "^0.0.1",
     "cookie-parser": "^1.4.5",
