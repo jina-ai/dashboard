@@ -29,10 +29,9 @@ class TaskView extends React.Component<any, any> {
     return (
       <Container fluid className="main-content-container px-0">
         <div className="px-4">
-          <Row noGutters className="page-header py-4">
+          <Row noGutters className="page-header mb-4">
             <PageTitle
               title="Task"
-              subtitle="Network"
               className="text-sm-left mb-3"
             />
           </Row>

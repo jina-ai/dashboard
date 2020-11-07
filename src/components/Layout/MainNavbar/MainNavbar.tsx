@@ -44,11 +44,11 @@ function MainNavbar({
     setUserActionsVisible((isVisible) => !isVisible);
   }
   return (
-    <div className="main-navbar bg-white sticky-top">
+    <div className="main-navbar">
       <Container fluid className="p-0">
-        <Navbar type="light" className="align-items-stretch flex-md-nowrap p-0">
+        <Navbar type="light" className="align-items-stretch flex-md-nowrap p-0 px-2">
           <NavbarSpacer />
-          <Nav navbar className="border-left flex-row">
+          <Nav navbar className="flex-row">
             {usesConnection && (
               <ConnectionIndicator
                 reconnect={reconnect}

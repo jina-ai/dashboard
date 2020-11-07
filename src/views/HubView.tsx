@@ -58,10 +58,9 @@ class HubView extends React.Component<any, any> {
     return (
       <Container fluid className="main-content-container px-0">
         <div className="px-4">
-          <Row className="page-header py-4">
+          <Row className="page-header mb-4">
             <PageTitle
               title="Jina Hub"
-              subtitle="Community"
               className="text-sm-left mb-3"
             />
             <Col md="3" className="py-sm-2">

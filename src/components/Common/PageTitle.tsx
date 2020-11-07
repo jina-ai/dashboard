@@ -4,7 +4,7 @@ import { Col } from "react-bootstrap";
 
 type Props = {
   title: string;
-  subtitle: string;
+  subtitle?: string;
   className: string;
 };
 
@@ -18,8 +18,8 @@ function PageTitle({ title, subtitle, className }: Props) {
 
   return (
     <Col xs="12" sm="3" className={classes}>
-      <span className="text-uppercase page-subtitle">{subtitle}</span>
       <h3 className="page-title">{title}</h3>
+      <p className="page-subtitle mt-2 mb-0">{subtitle}</p>
     </Col>
   );
 }

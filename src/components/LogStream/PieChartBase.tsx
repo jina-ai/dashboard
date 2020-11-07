@@ -9,44 +9,32 @@ import { LogLevelPieChartData } from "./types";
 const DEFAULT_HEIGHT = 50;
 const DEFAULT_WIDTH = 50;
 
-const _colors = [
-  {
-    border: "#fff",
-    background: "rgba(0, 153, 153, 0.85)",
+const _levels: { [key: string]: any } = {
+  INFO: {
+    borderColor: "#009999",
+    backgroundColor: "rgba(0, 153, 153, 0.9)",
   },
-  {
-    border: "#fff",
-    background: "rgba(0, 153, 153, 0.75)",
+  SUCCESS: {
+    borderColor: "#32c8cd",
+    backgroundColor: "rgba(50, 200, 205, 0.9)",
   },
-  {
-    border: "#fff",
-    background: "rgba(0, 153, 153, 0.65)",
+  WARNING: {
+    borderColor: "#ffcc66",
+    backgroundColor: "rgba(255, 204, 102, 0.9)",
   },
-  {
-    border: "#fff",
-    background: "rgba(0, 153, 153, 0.55)",
+  ERROR: {
+    borderColor: "#ff6666",
+    backgroundColor: "rgba(255, 102, 102, 0.9)",
   },
-  {
-    border: "#fff",
-    background: "rgba(0, 153, 153, 0.45)",
+  CRITICAL: {
+    borderColor: "#ff4540",
+    backgroundColor: "rgba(255, 70, 64, 0.9)",
   },
-  {
-    border: "#fff",
-    background: "rgba(0, 153, 153, 0.35)",
+  DEBUG: {
+    borderColor: "#6E7278",
+    backgroundColor: "rgba(110, 114, 120, 0.9)",
   },
-  {
-    border: "#fff",
-    background: "rgba(0, 153, 153, 0.25)",
-  },
-  {
-    border: "#fff",
-    background: "rgba(0, 153, 153, 0.15)",
-  },
-  {
-    border: "#fff",
-    background: "rgba(0, 153, 153, 0.05)",
-  },
-];
+};
 
 type Props = {
   width?: number;
@@ -58,13 +46,8 @@ function PieChartBase({ width, height, data }: Props) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [chartInstance, setChartInstance] = useState<ChartElement | null>(null);
 
-  function getColor(index: number) {
-    let color: any = false;
-    while (!color) {
-      if (_colors[index]) color = _colors[index];
-      else index -= _colors.length;
-    }
-    return color;
+  function getColor(key:string) {
+    return _levels[key]
   }
 
   useEffect(() => {
@@ -93,8 +76,8 @@ function PieChartBase({ width, height, data }: Props) {
           {
             borderWidth: 1,
             data: Object.values(data),
-            borderColor: names.map((name, idx) => getColor(idx).border),
-            backgroundColor: names.map((name, idx) => getColor(idx).background),
+            borderColor: names.map(name => getColor(name).borderColor),
+            backgroundColor: names.map(name => getColor(name).backgroundColor),
           },
         ],
       },
@@ -114,8 +97,8 @@ function PieChartBase({ width, height, data }: Props) {
         {
           borderWidth: 1,
           data: Object.values(data),
-          borderColor: names.map((name, idx) => getColor(idx).border),
-          backgroundColor: names.map((name, idx) => getColor(idx).background),
+          borderColor: names.map(name => getColor(name).borderColor),
+          backgroundColor: names.map(name => getColor(name).backgroundColor),
         },
       ],
     };
