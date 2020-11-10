@@ -1142,9 +1142,9 @@
     lodash "^4.17.19"
     to-fast-properties "^2.0.0"
 
-"@bastinjafari/react-flow-chart-with-tooltips@^0.0.14":
+"@bastinjafari/react-flow-chart-with-tooltips-and-multi-select@^0.0.14":
   version "0.0.14"
-  resolved "https://registry.yarnpkg.com/@bastinjafari/react-flow-chart-with-tooltips/-/react-flow-chart-with-tooltips-0.0.14.tgz#a0eff1de97b8cb0bc1bbd961cb612525183038e0"
+  resolved "https://registry.yarnpkg.com/@bastinjafari/react-flow-chart-with-tooltips-and-multi-select/-/react-flow-chart-with-tooltips-0.0.14.tgz#a0eff1de97b8cb0bc1bbd961cb612525183038e0"
   integrity sha512-7/FgymGcZGuLT1A3Jjvk8inJp1J9otfBb7hwq0RZUetjQrXaZzUWMigA56XgQ+GIqrR3LhkNR69bAWsuWoWEWg==
   dependencies:
     pathfinding "^0.4.18"

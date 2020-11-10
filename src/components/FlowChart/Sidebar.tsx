@@ -6,7 +6,7 @@ import {
   IChart,
   ILink,
   INode,
-} from "@bastinjafari/react-flow-chart-with-tooltips";
+} from "@bastinjafari/react-flow-chart-with-tooltips-and-multi-select";
 import { Button, FormControl, Card } from "react-bootstrap";
 
 interface Node extends INode {

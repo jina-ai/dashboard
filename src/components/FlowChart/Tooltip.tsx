@@ -1,5 +1,5 @@
 import React from "react";
-import { ITooltipComponentDefaultProps } from "@bastinjafari/react-flow-chart-with-tooltips";
+import { ITooltipComponentDefaultProps } from "@bastinjafari/react-flow-chart-with-tooltips-and-multi-select";
 
 export default function Tooltip(props: ITooltipComponentDefaultProps) {
   return (

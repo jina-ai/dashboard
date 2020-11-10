@@ -1,7 +1,7 @@
 import React from "react";
 import { cloneDeep } from "lodash";
-import { FlowChart } from "@bastinjafari/react-flow-chart-with-tooltips";
-import * as actions from "@bastinjafari/react-flow-chart-with-tooltips/src/container/actions";
+import { FlowChart } from "@bastinjafari/react-flow-chart-with-tooltips-and-multi-select";
+import * as actions from "@bastinjafari/react-flow-chart-with-tooltips-and-multi-select/src/container/actions";
 import { Container, Row, Card } from "shards-react";
 import { Dispatcher, Constants, Store } from "../flux";
 import { PageTitle } from "../components/Common/PageTitle";
