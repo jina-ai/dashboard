@@ -1,14 +1,15 @@
 import React from "react";
 
-type RatingFunction = (stars: number) => void
+type RatingFunction = (stars: number) => void;
 type StarRatingProps = {
-  rating: number,
-  userRated?: boolean,
-  rate?: RatingFunction
-}
+  rating: any;
+  userRated?: boolean;
+  rate?: RatingFunction;
+};
 
 const StarRating = ({ rating, userRated, rate }: StarRatingProps) => {
-  const formatted = rating.toFixed(1);
+  //@ts-ignore
+  const formatted = parseFloat(Math.round(rating * 10 || 0) / 10).toFixed(1);
   const stars = getStars(rating, rate);
   return (
     <span
@@ -21,10 +22,13 @@ const StarRating = ({ rating, userRated, rate }: StarRatingProps) => {
       {stars}
     </span>
   );
-}
+};
 
-export const getStars = (amount: number, rate: RatingFunction | undefined): JSX.Element[] => {
-  const handleRatingClick = (index: number) => rate && rate(index)
+export const getStars = (
+  amount: number,
+  rate: RatingFunction | undefined
+): JSX.Element[] => {
+  const handleRatingClick = (index: number) => rate && rate(index);
   let stars = [];
   let integer = Math.floor(amount);
   let remainder = amount - integer;
@@ -32,7 +36,11 @@ export const getStars = (amount: number, rate: RatingFunction | undefined): JSX.
   for (i = 0; i < integer; ++i) {
     let index = i;
     stars.push(
-      <i key={i} className="material-icons" onClick={() => handleRatingClick(index)}>
+      <i
+        key={i}
+        className="material-icons"
+        onClick={() => handleRatingClick(index)}
+      >
         star
       </i>
     );
@@ -40,14 +48,22 @@ export const getStars = (amount: number, rate: RatingFunction | undefined): JSX.
   if (remainder >= 0.8) {
     let index = i;
     stars.push(
-      <i key={i++} className="material-icons" onClick={() => handleRatingClick(index)}>
+      <i
+        key={i++}
+        className="material-icons"
+        onClick={() => handleRatingClick(index)}
+      >
         star
       </i>
     );
   } else if (remainder >= 0.25) {
     let index = i;
     stars.push(
-      <i key={i++} className="material-icons" onClick={() => handleRatingClick(index)}>
+      <i
+        key={i++}
+        className="material-icons"
+        onClick={() => handleRatingClick(index)}
+      >
         star_half
       </i>
     );
@@ -55,7 +71,11 @@ export const getStars = (amount: number, rate: RatingFunction | undefined): JSX.
   for (let j = stars.length; j < 5; ++j) {
     let index = i;
     stars.push(
-      <i key={i++} className="material-icons" onClick={() => handleRatingClick(index)}>
+      <i
+        key={i++}
+        className="material-icons"
+        onClick={() => handleRatingClick(index)}
+      >
         star_outline
       </i>
     );
@@ -63,4 +83,4 @@ export const getStars = (amount: number, rate: RatingFunction | undefined): JSX.
   return stars;
 };
 
-export default StarRating
+export default StarRating;
