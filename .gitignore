@@ -28,3 +28,7 @@ yarn-error.log*
 
 # for jetbrains IDE's
 .idea/
+
+# Cypress' recorded videos
+cypress/videos/
+

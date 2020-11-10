@@ -1,7 +1,6 @@
 export default function () {
   return [
     {
-      title: "Navigation",
       items: [
         {
           title: "Home",

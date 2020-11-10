@@ -3,6 +3,7 @@ import ChartElement, {
   ChartConfiguration,
   ChartOptions,
   ChartData,
+  ChartDataSets,
 } from "chart.js";
 import { LogLevelSummaryChartData } from "./types";
 
@@ -36,18 +37,20 @@ const _levels: { [key: string]: any } = {
   },
 };
 
-function getParsedDatasets(data: LogLevelSummaryChartData): any {
-  const datasets = Object.keys(_levels).map((level) => {
-    const levelData = data.map((tick: any) => tick.levels[level]);
-    return {
-      label: level,
-      fill: "start",
-      borderWidth: 1.5,
-      borderColor: _levels[level].borderColor,
-      backgroundColor: _levels[level].backgroundColor,
-      data: levelData,
-    };
-  });
+function getParsedDatasets(data: LogLevelSummaryChartData) {
+  const datasets = Object.keys(_levels).map(
+    (level): ChartDataSets => {
+      const levelData = data.map((tick: any) => tick.levels[level]);
+      return {
+        barPercentage: 0.75,
+        categoryPercentage: 1,
+        label: level,
+        fill: "start",
+        backgroundColor: _levels[level].backgroundColor,
+        data: levelData,
+      };
+    }
+  );
   return datasets;
 }
 
@@ -98,6 +101,19 @@ function ChartBase({
     }
   }
 
+  function ChartLegend() {
+    return (
+      <div className="chart-legend mt-1 mb-3">
+        {Object.entries(_levels).map(([level, style]: [string, any]) => (
+          <div className="chart-legend-item">
+            <div className={`chart-legend-indicator mr-1 ${level.toLowerCase()}`} style={{backgroundColor:style.borderColor}}/>
+            <span className="chart-legend-caption mr-2">{level}</span>
+          </div>
+        ))}
+      </div>
+    );
+  }
+
   useEffect(() => {
     if (!canvasRef.current) return;
     const chartOptions: ChartOptions = {
@@ -107,11 +123,7 @@ function ChartBase({
       maintainAspectRatio: true,
       responsive: true,
       legend: {
-        position: "top",
-        labels: {
-          padding: 10,
-          boxWidth: 15,
-        },
+        display: false,
       },
       tooltips: {
         enabled: false,
@@ -131,20 +143,23 @@ function ChartBase({
               maxRotation: 0,
               callback: getXAxisLabel,
             },
+            gridLines: {
+              zeroLineColor: "#cfd8dc",
+              color: "#cfd8dc",
+            },
           },
         ],
         yAxes: [
           {
             stacked: true,
             scaleLabel: {
-              display: true,
-              labelString: "Occurences",
+              display: false,
             },
             gridLines: {
-              borderDash: [2.5, 5],
-              zeroLineColor: "#6c757d",
+              borderDash: [5, 5],
+              zeroLineColor: "#cfd8dc",
               drawBorder: false,
-              color: "#6c757d",
+              color: "#cfd8dc",
             },
             ticks: {
               padding: 5,
@@ -181,11 +196,14 @@ function ChartBase({
   }, [data, chartInstance, numTicks]);
 
   return (
-    <canvas
-      height={height || DEFAULT_HEIGHT}
-      width={width || DEFAULT_WIDTH}
-      ref={canvasRef}
-    />
+    <>
+      <ChartLegend />
+      <canvas
+        height={height || DEFAULT_HEIGHT}
+        width={width || DEFAULT_WIDTH}
+        ref={canvasRef}
+      />
+    </>
   );
 }
 

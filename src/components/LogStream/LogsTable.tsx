@@ -12,10 +12,6 @@ import {
   Card,
   Row,
   Col,
-  Form,
-  DropdownButton,
-  ButtonGroup,
-  Dropdown,
 } from "react-bootstrap";
 import AutoSizer from "react-virtualized-auto-sizer";
 import { useDebounce } from "../../hooks/useDebounce";
@@ -25,6 +21,7 @@ import {
   serializeLogsToTextBlob,
 } from "../../helpers";
 import { saveAs } from "file-saver";
+import { ExpandingSearchbar } from "../Common/ExpandingSearchbar";
 
 const levels = [
   "INFO",
@@ -35,6 +32,12 @@ const levels = [
   "DEBUG",
 ] as const;
 const ROW_SIZE = 30;
+
+const saveOptions = [
+  { value: "csv", label: "CSV" },
+  { value: "json", label: "JSON" },
+  { value: "txt", label: "TXT" },
+];
 
 const fields = ["filename", "funcName", "msg", "name", "module", "pathname"];
 const miniSearchOptions = { fields };
@@ -64,6 +67,13 @@ function usePrevious(value: any) {
 
 const generateFormatFileName = (format: Format) =>
   `jina-logs-${new Date()}.${format}`;
+
+const saveLogData = (data: any, format: Format) => {
+  const filename = generateFormatFileName(format);
+  if (format === "csv") return saveAs(serializeLogsToCSVBlob(data), filename);
+  if (format === "json") return saveAs(serializeLogsToJSONBlob(data), filename);
+  if (format === "txt") return saveAs(serializeLogsToTextBlob(data), filename);
+};
 
 type Format = "json" | "csv" | "txt";
 
@@ -137,71 +147,40 @@ function LogsTable({ data, showLogDetails }: Props) {
         <Row className="p-3">
           <Col md="8">
             <MultiFilterSelect
+              isMulti
               options={toOption(sources)}
               onFilterChange={setSelectedSources}
               className="logstream-select mb-2 mr-0 mb-md-0 mr-md-2"
-              placeholder="All Logsources"
+              placeholder="All Sources"
             />
             <MultiFilterSelect
+              isMulti
               options={toOption(levels as any) as any}
               onFilterChange={setSelectedLevels}
               className="logstream-select mb-2 mr-0 mb-md-0 mr-md-2"
               placeholder="All Levels"
             />
-            <DropdownButton
-              as={ButtonGroup}
-              className="d-block d-md-inline-block mb-2 mr-0 mb-md-0 mr-md-2"
-              title="Download Logs"
-              id="bg-nested-dropdown"
-            >
-              <Dropdown.Item
-                onClick={() =>
-                  saveAs(
-                    serializeLogsToCSVBlob(data),
-                    generateFormatFileName("csv")
-                  )
-                }
-              >
-                Download as CSV
-              </Dropdown.Item>
-              <Dropdown.Item
-                onClick={() =>
-                  saveAs(
-                    serializeLogsToJSONBlob(data),
-                    generateFormatFileName("json")
-                  )
-                }
-              >
-                Download as JSON
-              </Dropdown.Item>
-              <Dropdown.Item
-                onClick={() =>
-                  saveAs(
-                    serializeLogsToTextBlob(data),
-                    generateFormatFileName("txt")
-                  )
-                }
-              >
-                Download as TXT
-              </Dropdown.Item>
-            </DropdownButton>
+            <MultiFilterSelect
+              clearAfter
+              options={saveOptions}
+              onFilterChange={(option: any[]) =>
+                saveLogData(data, option[0].value)
+              }
+              className="logstream-select mb-2 mr-0 mb-md-0 mr-md-2"
+              placeholder="Download Logs"
+              isSearchable={false}
+            />
           </Col>
           <Col md="4">
-            <Form.Control
-              placeholder="search logs..."
+            <ExpandingSearchbar
               value={searchString}
-              onChange={(e) => {
-                setSearchString(e.target.value);
-              }}
+              onChange={setSearchString}
             />
           </Col>
         </Row>
         <LogsTableHeader columns={{ firstCol, secondCol }} />
       </Card.Header>
-      <Card.Body
-        className="log-stream-container p-0 border-top"
-        id="log-stream-container"
-      >
+      <Card.Body className="log-stream-container p-0 border-top" id="log-stream-container">
         {!scrolledToBottom && (
           <div
             onClick={() =>
@@ -242,9 +221,12 @@ function LogsTable({ data, showLogDetails }: Props) {
             }}
           </AutoSizer>
         ) : (
-          <h3 className="my-5 py-5 text-center text-muted">
-            No logs to display
-          </h3>
+          <div className="my-5 py-5 text-center opacity-5">
+            <h1>
+              <i className="material-icons">inbox</i>
+            </h1>
+            <h3>No logs to display</h3>
+          </div>
         )}
       </Card.Body>
     </Card>

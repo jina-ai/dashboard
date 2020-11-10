@@ -9,7 +9,7 @@ type Props = {
 const LogsTableHeader = ({ columns: { firstCol, secondCol } }: Props) => {
   return (
     <div
-      className="px-4 py-1 border-top bg-light text-monospace"
+      className="px-4 py-1 bg-light text-monospace border-top"
       css={{ maxHeight: 84 }}
     >
       <Row>

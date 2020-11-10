@@ -47,10 +47,14 @@
 
 Jina "Hello, World" is a simple demo of image neural search for Fashion-MNIST.
 
+Make sure to have Fluentd installed - ```gem install fluentd --no-doc```
+
+Run: ```fluentd -c jina/resources/fluent.conf ``` (file is in https://github.com/jina-ai/jina)
+
 1. Run the following command in the console
    - (Python >=3.7 required)
      ```bash
-     JINA_LOG_PROFILING=1 jina hello-world
+     JINA_LOG_PROFILING=1 jina hello-world --logserver
      ```
    - ...or if you use Docker (no install required)
      ```

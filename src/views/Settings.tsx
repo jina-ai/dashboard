@@ -7,10 +7,9 @@ class SettingsView extends React.Component {
   render = () => {
     return (
       <Container fluid className="main-content-container px-4">
-        <Row noGutters className="page-header py-4">
+        <Row noGutters className="page-header mb-4">
           <PageTitle
             title="Settings"
-            subtitle="Network"
             className="text-sm-left mb-3"
           />
         </Row>
