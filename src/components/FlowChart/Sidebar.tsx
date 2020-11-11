@@ -2,7 +2,11 @@ import React, { useState, useEffect } from "react";
 import SidebarItem from "./SidebarItem";
 import defaultPods from "../../data/defaultPods.json";
 import _ from "lodash";
-import { IChart, ILink, INode } from "@bastinjafari/react-flow-chart";
+import {
+  IChart,
+  ILink,
+  INode,
+} from "@bastinjafari/react-flow-chart-with-tooltips-and-multi-select";
 import { Button, FormControl, Card } from "react-bootstrap";
 
 interface Node extends INode {

@@ -4,7 +4,7 @@
   "private": true,
   "homepage": "https://dashboard.jina.ai",
   "dependencies": {
-    "@bastinjafari/react-flow-chart": "0.0.14",
+    "@bastinjafari/react-flow-chart-with-tooltips-and-multi-select": "0.0.14",
     "@emotion/core": "^10.0.35",
     "@emotion/styled": "^10.0.27",
     "@projectstorm/react-diagrams": "^6.0.1-beta.7",
@@ -93,7 +93,7 @@
     }
   },
   "lint-staged": {
-    "src/**/*.{js,jsx,ts,tsx,json,css,scss,md}": [
+    "src/**/*.{js,jsx,ts,tsx,json,md}": [
       "prettier --write",
       "eslint --max-warnings=0"
     ]

@@ -744,3 +744,19 @@ code {
   width: 100%;
   border-radius: 0.625rem;
 }
+
+.tooltip-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tooltip-icon {
+  height: 50px;
+  width: auto;
+  margin-right: 15px;
+}
+
+.tooltip-text {
+  width: 150px;
+}
