@@ -1,7 +1,7 @@
 import React from "react";
 import { cloneDeep } from "lodash";
-import { FlowChart } from "@bastinjafari/react-flow-chart";
-import * as actions from "@bastinjafari/react-flow-chart/src/container/actions";
+import { FlowChart } from "@bastinjafari/react-flow-chart-with-tooltips-and-multi-select";
+import * as actions from "@bastinjafari/react-flow-chart-with-tooltips-and-multi-select/src/container/actions";
 import { Container, Row, Card } from "shards-react";
 import { Dispatcher, Constants, Store } from "../flux";
 import { PageTitle } from "../components/Common/PageTitle";
@@ -13,6 +13,9 @@ import CustomNode from "../components/FlowChart/ChartNode";
 import CustomPort from "../components/FlowChart/NodePort";
 import FlowSelection from "../components/FlowChart/FlowSelection";
 import { formatAsYAML, copyToClipboard } from "../helpers";
+
+import Tooltip from "../components/FlowChart/Tooltip";
+import { tooltipConfig } from "../data/tooltipConfig";
 
 const syncEvents = [
   "onDragNodeStop",
@@ -28,6 +31,10 @@ class FlowView extends React.Component<any, any> {
   constructor(props: any) {
     super(props);
     const { flow: chart, type: flowType } = Store.getFlowchart();
+    const chartWithTooltips = {
+      ...chart,
+      ...tooltipConfig,
+    };
     const selectedFlowId = Store.getSelectedFlowId();
     const flows = Store.getFlows();
     const connected = Store.getConnectionStatus();
@@ -36,7 +43,7 @@ class FlowView extends React.Component<any, any> {
       availableProperties,
       flowType,
       connected,
-      chart,
+      chart: { ...chartWithTooltips },
       selectedFlowId,
       flows,
       showOverlay: false,
@@ -239,10 +246,7 @@ class FlowView extends React.Component<any, any> {
             download
           </a>
           <Row noGutters className="page-header mb-4">
-            <PageTitle
-              title="Flow Design"
-              className="text-sm-left mb-3"
-            />
+            <PageTitle title="Flow Design" className="text-sm-left mb-3" />
           </Row>
           <div className="flow-container d-flex flex-column flex-md-row">
             <Card className="chart-section-container mr-md-4 mb-4">
@@ -270,6 +274,7 @@ class FlowView extends React.Component<any, any> {
                 <FlowChart
                   chart={chart}
                   Components={{
+                    TooltipComponent: Tooltip,
                     NodeInner: CustomNode as any,
                     Port: CustomPort,
                   }}

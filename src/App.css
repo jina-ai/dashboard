@@ -792,3 +792,18 @@ code {
   border-radius: .5em;
   overflow:hidden;
 }
+.tooltip-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tooltip-icon {
+  height: 50px;
+  width: auto;
+  margin-right: 15px;
+}
+
+.tooltip-text {
+  width: 150px;
+}
