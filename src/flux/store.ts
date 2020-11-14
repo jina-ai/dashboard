@@ -92,7 +92,6 @@ function getInitialLevelOccurences() {
 }
 
 function getInitialStore(): LooseObject {
-  console.log("GETTING INITIAL STORE");
   const initialStore: LooseObject = {
     settings: {
       host: localStorage.getItem("preferences-host") || "http://localhost",
@@ -173,7 +172,6 @@ interface LooseObject {
 class StoreBase extends EventEmitter {
   constructor() {
     super();
-    console.log("CONSTRUCTOR");
     Dispatcher.register(this.registerActions);
     this.init();
     (window as any).peakLogs = this.getLogs;
@@ -240,13 +238,8 @@ class StoreBase extends EventEmitter {
   };
 
   init = async () => {
-    console.log("INIT");
     this.clearIntervals();
     _store = getInitialStore();
-
-    console.log("GOT INITIAL STORE");
-
-    console.log("store:", _store);
 
     await this.initFlowChart();
     this.initLogStream();
@@ -255,7 +248,6 @@ class StoreBase extends EventEmitter {
 
     this.emit("update-ui");
     this.emit("update-settings");
-    console.log("FINISH INIT");
   };
 
   clearIntervals = () => {
@@ -710,7 +702,6 @@ class StoreBase extends EventEmitter {
   };
 
   getModal = () => {
-    console.log("GET MODAL:", _store);
     return _store.modal;
   };
 

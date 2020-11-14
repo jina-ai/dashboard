@@ -246,10 +246,7 @@ class FlowView extends React.Component<any, any> {
             download
           </a>
           <Row noGutters className="page-header mb-4">
-            <PageTitle
-              title="Flow Design"
-              className="text-sm-left mb-3"
-            />
+            <PageTitle title="Flow Design" className="text-sm-left mb-3" />
           </Row>
           <div className="flow-container d-flex flex-column flex-md-row">
             <Card className="chart-section-container mr-md-4 mb-4">

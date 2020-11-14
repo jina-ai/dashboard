@@ -11,7 +11,7 @@ const CHART_LEVELS = [
 ] as const;
 
 type LevelType = typeof CHART_LEVELS[number];
-type Option = { value: string; label: string };
+type Option = { value: string; label: any };
 
 const customStyles = {
   dropdownIndicator: (styles: any) => ({
