@@ -4,12 +4,13 @@ import { Row, Col } from "react-bootstrap";
 
 type Props = {
   columns: { firstCol: number; secondCol: number };
+  border?:boolean;
 };
 
-const LogsTableHeader = ({ columns: { firstCol, secondCol } }: Props) => {
+const LogsTableHeader = ({ columns: { firstCol, secondCol },border}: Props) => {
   return (
     <div
-      className="px-4 py-1 bg-light text-monospace border-top"
+      className={`px-4 py-1 bg-light text-monospace ${border?'border-top':''}`}
       css={{ maxHeight: 84 }}
     >
       <Row>

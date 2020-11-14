@@ -279,6 +279,17 @@ code {
   border-radius: 0em 0em .75em .75em;
 }
 
+.log-stream-container-small{
+  height: 25vh;
+  overflow:hidden;
+  border-radius: 0em 0em .75em .75em;
+}
+
+.log-group-container{
+  height: 100%;
+  overflow-y: auto;
+}
+
 .ReactVirtualized__Grid {
   outline: none !important;
 }
@@ -336,6 +347,10 @@ code {
   padding: 1em;
 }
 
+.d-invisible{
+  opacity: 0;
+}
+
 .expanding-searchbar .form-control{
   max-width: 10em;
   transition: .25s;
@@ -351,6 +366,11 @@ code {
   border-radius: 20em;
   border: none;
   box-shadow: none;
+  transition: .2s;
+}
+
+.expanding-searchbar i{
+  transition: .2s;
 }
 
 .expanding-searchbar .input-group:focus-within .form-control,
@@ -743,4 +763,32 @@ code {
   height: 100%;
   width: 100%;
   border-radius: 0.625rem;
+}
+
+.log-group-item{
+  border-radius: .5em;
+  border-radius: .5em;
+  transition: .1s;
+}
+
+.log-group-item:hover{
+  background: #f8f9fa;
+}
+
+
+.log-group-header{
+  font-size: 1.5em !important;
+}
+
+.log-group-header i{
+  transition: .1s !important;
+}
+
+.rotate-90{
+  transform: rotate(90deg);
+}
+
+.log-group-body>div{
+  border-radius: .5em;
+  overflow:hidden;
 }

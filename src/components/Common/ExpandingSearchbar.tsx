@@ -15,7 +15,17 @@ function ExpandingSearchbar({ value, onChange }: Props) {
             <i className="material-icons">search</i>
           </InputGroup.Text>
         </InputGroup.Prepend>
-        <Form.Control type="text" placeholder="Search logs.." />
+        <Form.Control
+          type="text"
+          placeholder="Search logs.."
+          value={value}
+          onChange={(e: any) => onChange(e.target.value)}
+        />
+        <InputGroup.Append>
+          <InputGroup.Text>
+            <i className={`cursor-pointer text-muted material-icons mr-3 ${!value?'d-invisible':""}`} onClick={()=>onChange("")}>cancel</i>
+          </InputGroup.Text>
+        </InputGroup.Append>
       </InputGroup>
     </div>
   );
