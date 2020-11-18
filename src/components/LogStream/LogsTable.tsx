@@ -39,18 +39,27 @@ const saveOptions = [
   { value: "txt", label: "TXT" },
 ];
 
-const viewOptions = [
-  { value: "table", label: "Table View" },
-  { value: "grouped", label: "Grouped View" },
-];
+const viewOptions: { [key: string]: { value: string; label: string } } = {
+  table: {
+    value: "table",
+    label: "Table View",
+  },
+  "group-pod": {
+    value: "group-pod",
+    label: "Group by Pod",
+  },
+  "group-level": {
+    value: "group-level",
+    label: "Group by Level",
+  },
+};
 
 const fields = ["filename", "funcName", "msg", "name", "module", "pathname"];
 const miniSearchOptions = { fields };
 
 function getUserViewPreference() {
   const preference = localStorage.getItem(VIEW_PREFERENCE_NAME);
-  if (viewOptions.find((option) => option.value === preference))
-    return preference;
+  if (preference && viewOptions[preference]) return preference;
   return false;
 }
 
@@ -208,7 +217,7 @@ function LogsTable({ data, showLogDetails }: Props) {
     })
   );
 
-  if (currentView === "grouped") {
+  if (currentView === "group-pod") {
     const podNames = arrayLikeToArray(sources).map(
       (name: string) => name.toLowerCase().split(POD_NAME_SPLIT_CHAR)[0]
     );
@@ -223,6 +232,18 @@ function LogsTable({ data, showLogDetails }: Props) {
       if (!pod.data.length) return;
       pod.levels = _.countBy(pod.data, "levelname");
       groupedData[podName] = pod;
+    });
+  } else if (currentView === "group-level") {
+    groupedData = {};
+    levels.forEach((level: string) => {
+      const levelItem: any = {};
+
+      levelItem.data = (resultData || []).filter(
+        (log: any) => log.levelname === level
+      );
+
+      if (!levelItem.data.length) return;
+      groupedData[level] = levelItem;
     });
   }
 
@@ -244,7 +265,7 @@ function LogsTable({ data, showLogDetails }: Props) {
           <Col md="8">
             <MultiFilterSelect
               clearAfter
-              options={viewOptions}
+              options={Object.values(viewOptions)}
               onFilterChange={(option: any[]) => setView(option[0].value)}
               className="logstream-select mb-2 mr-0 mb-md-0 mr-md-2"
               placeholder={
@@ -254,7 +275,8 @@ function LogsTable({ data, showLogDetails }: Props) {
                   </span>
                 ) : (
                   <span>
-                    <i className="material-icons mr-2">view_list</i>Grouped View
+                    <i className="material-icons mr-2">view_list</i>
+                    {viewOptions[currentView].label}
                   </span>
                 )
               }
@@ -319,22 +341,26 @@ function LogsTable({ data, showLogDetails }: Props) {
         <Card.Body className="log-stream-container p-0 border-top">
           {Object.keys(groupedData).length ? (
             <div className="log-group-container">
-              {Object.entries(groupedData).map(([pod, data]: any,idx:number) => (
-                <LogGroup
-                  key={idx}
-                  title={pod}
-                  levels={data.levels}
-                  body={
-                    <LogsList
-                      firstCol={firstCol}
-                      secondCol={secondCol}
-                      data={data.data}
-                      showLogDetails={showLogDetails}
-                      small
-                    />
-                  }
-                />
-              ))}
+              {Object.entries(groupedData).map(
+                ([key, data]: any, idx: number) => (
+                  <LogGroup
+                    group={currentView}
+                    key={idx}
+                    title={key}
+                    levels={data.levels}
+                    numItems={data.data.length}
+                    body={
+                      <LogsList
+                        firstCol={firstCol}
+                        secondCol={secondCol}
+                        data={data.data}
+                        showLogDetails={showLogDetails}
+                        small
+                      />
+                    }
+                  />
+                )
+              )}
             </div>
           ) : (
             <div className="my-5 py-5 text-center opacity-5">
