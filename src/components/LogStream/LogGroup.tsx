@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Collapse } from "react-bootstrap";
 
-const _icons = {
+const _icons: { [key: string]: any } = {
   success: {
     name: "check_circle",
     color: "success",
@@ -20,13 +20,32 @@ const _icons = {
   },
 };
 
-type Status = "success" | "pending" | "warning" | "failed";
+type StatusString = "success" | "pending" | "warning" | "failed";
 
-type StatusProps = {
-  status: Status;
+type CountSummaryProps = {
+  levels?: any[];
+  numItems: number;
+  title: string;
 };
 
-function StatusIcon({ status }: StatusProps) {
+function CountSummary({ levels, numItems }: CountSummaryProps) {
+  console.log("levels:", levels);
+  return <span className="ml-2 text-muted">({numItems})</span>;
+}
+
+function getStatusFromLevels(levels: any): StatusString {
+  const keys = Object.keys(levels);
+  if (
+    keys.find((k) => k.toLowerCase() === "critical") ||
+    keys.find((k) => k.toLowerCase() === "error")
+  )
+    return "failed";
+  if (keys.find((k) => k.toLowerCase() === "warning")) return "warning";
+  return "success";
+}
+
+function StatusIcon({ levels }: { levels: any }) {
+  const status = getStatusFromLevels(levels);
   const icon = _icons[status];
   return (
     <i className={`no-select material-icons log-${icon.color} mr-2`}>
@@ -51,21 +70,15 @@ function ExpandController({ expanded }: ExpandIndicator) {
   );
 }
 
-function getStatusFromLevels(levels: string[]): Status {
-  if (levels.find((l:string) => l.toLowerCase() === "critical") || levels.find((l:string) => l.toLowerCase() === "error"))
-    return "failed";
-  if (levels.find((l:string) => l.toLowerCase() === "warning")) return "warning";
-  return "success";
-}
-
 type Props = {
   title: string;
   body: any;
-  levels: string[];
+  numItems: number;
+  group: string;
+  levels?: string[];
 };
 
-function LogGroup({ title, body, levels }: Props) {
-  const status = getStatusFromLevels(Object.keys(levels));
+function LogGroup({ title, body, levels, numItems, group }: Props) {
   const [expanded, setExpanded] = useState(false);
   return (
     <div className={`log-group-item m-2 ${expanded ? "bg-light" : ""}`}>
@@ -74,8 +87,17 @@ function LogGroup({ title, body, levels }: Props) {
         onClick={() => setExpanded((prev) => !prev)}
       >
         <ExpandController expanded={expanded} />
-        <StatusIcon status={status} />
-        {title}
+        {levels && <StatusIcon levels={levels} />}
+        <span
+          className={
+            group === "group-level" ? `log-${title.toLowerCase()}` : ""
+          }
+        >
+          {title}
+        </span>
+        {!levels && (
+          <CountSummary levels={levels} numItems={numItems} title={title} />
+        )}
       </div>
       <Collapse in={expanded} timeout={100}>
         <div className="log-group-body p-3">
