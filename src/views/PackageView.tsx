@@ -98,10 +98,11 @@ class PackageView extends React.Component<any, any> {
                 className="text-sm-left mb-3"
               />
               <Col md="6" />
-              <Col md="3" className="py-sm-2">
+              <Col md="3" className="py-sm-2 text-right">
                 <h3>
                   <StarRating
                     rating={userRated || rating}
+                    totalRatings={totalRatings}
                     rate={this.rate}
                     userRated={userRated}
                   />

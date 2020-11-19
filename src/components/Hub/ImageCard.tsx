@@ -17,7 +17,6 @@ export default function ImageCard({ image }: Props) {
     description,
     totalStars,
     totalRatings,
-    numReviews,
   } = image;
 
   let rating;
@@ -25,30 +24,17 @@ export default function ImageCard({ image }: Props) {
     rating = totalStars / totalRatings;
   }
 
-  let reviews;
-  if (!numReviews) reviews = <span className="text-muted">no reviews</span>;
-  else if (numReviews > 1) reviews = <span>{numReviews} reviews</span>;
-  else reviews = <span>{numReviews} review</span>;
-
   return (
     <Link className="unstyled-link" to={`/package?id=${id}`}>
-      <Card className="clickable mb-4 h-100">
+      <Card className="clickable mb-4 h-100 image-card">
         <Card.Body className="pb-0 mb-0 pt-3">
           <Row>
             <Col xs="12" className="px-0">
-              <div className="app-title">
-                {name}
-                {official && (
-                  <span title="Official Package" className="float-right">
-                    <i className="ml-2 material-icons verified-icon">
-                      verified_user
-                    </i>
-                  </span>
-                )}
-              </div>
-              <div className="app-subtitle">{author}</div>
+              <div className="app-category mb-2">search</div>
+              <div className="app-title mb-2">{name}</div>
+              <div className="app-subtitle mb-2">{author}</div>
             </Col>
-            <Col sm="12" className="px-0 pt-3 pb-0">
+            <Col sm="12" className="px-0 pb-0">
               <div className="description-container">
                 <div className="description-overlay" />
                 <div className="app-description">{description}</div>
@@ -57,8 +43,16 @@ export default function ImageCard({ image }: Props) {
           </Row>
         </Card.Body>
         <Card.Footer className="pt-0 px-3 pb-3">
-          {reviews}
-          {rating && <StarRating rating={rating} />}
+          {totalRatings ? (
+            <StarRating rating={rating} totalRatings={totalRatings} />
+          ) : (
+            <span className="text-muted">no ratings</span>
+          )}
+          {official && (
+            <span className="float-right">
+              <img src="/jina-j.png" alt="Official Package" width={30} />
+            </span>
+          )}
         </Card.Footer>
       </Card>
     </Link>

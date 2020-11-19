@@ -3,24 +3,25 @@ import React from "react";
 type RatingFunction = (stars: number) => void;
 type StarRatingProps = {
   rating: any;
+  totalRatings:number;
   userRated?: boolean;
   rate?: RatingFunction;
 };
 
-const StarRating = ({ rating, userRated, rate }: StarRatingProps) => {
-  //@ts-ignore
-  const formatted = parseFloat(Math.round(rating * 10 || 0) / 10).toFixed(1);
+const StarRating = ({ rating, userRated, rate,totalRatings }: StarRatingProps) => {
   const stars = getStars(rating, rate);
   return (
-    <span
-      className={`app-rating ${rating ? "existing" : ""} ${
+    <div
+      className={`d-inline-block app-rating mb-3 ${rating ? "existing" : ""} ${
         userRated ? "userRated" : ""
       } text-muted`}
     >
       <span className="text-faded">{userRated ? "You Rated: " : ""}</span>
-      <span className="rating-num">{rating ? formatted : ""}</span>
       {stars}
-    </span>
+      {
+        totalRatings&&<span className="rating-num ml-1">({totalRatings})</span>
+      }
+    </div>
   );
 };
 
