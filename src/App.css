@@ -13,22 +13,22 @@ code {
     monospace;
 }
 
-.card{
+.card {
   box-shadow: none !important;
 }
 
-.main-sidebar{
+.main-sidebar {
   box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.25) !important;
   border-radius: 0em 1.25em 1.25em 0em !important;
   overflow: hidden;
 }
 
-.main-navbar{
+.main-navbar {
   background: transparent;
   box-shadow: none !important;
 }
 
-.main-footer{
+.main-footer {
   background: transparent;
 }
 
@@ -36,17 +36,17 @@ code {
   font-weight: 700;
 }
 
-.opacity-5{
-  opacity: .5;
+.opacity-5 {
+  opacity: 0.5;
 }
 
-.page-title{
+.page-title {
   font-size: 2em !important;
 }
 
-.page-subtitle{
+.page-subtitle {
   letter-spacing: normal !important;
-  font-size: .85em !important;
+  font-size: 0.85em !important;
 }
 
 .loader {
@@ -206,15 +206,15 @@ code {
   border: 1px solid #d1d5da !important;
 }
 
-.chart-container path:nth-child(2){
+.chart-container path:nth-child(2) {
   stroke: #6c757d;
 }
 
-.chart-container path:nth-child(3){
+.chart-container path:nth-child(3) {
   stroke: #009999;
 }
 
-.chart-container path:nth-child(3):hover{
+.chart-container path:nth-child(3):hover {
   stroke: #6c757d;
 }
 
@@ -276,16 +276,16 @@ code {
 .log-stream-container {
   height: 55vh;
   overflow: hidden;
-  border-radius: 0em 0em .75em .75em;
+  border-radius: 0em 0em 0.75em 0.75em;
 }
 
-.log-stream-container-small{
+.log-stream-container-small {
   height: 25vh;
-  overflow:hidden;
-  border-radius: 0em 0em .75em .75em;
+  overflow: hidden;
+  border-radius: 0em 0em 0.75em 0.75em;
 }
 
-.log-group-container{
+.log-group-container {
   height: 100%;
   overflow-y: auto;
 }
@@ -347,43 +347,52 @@ code {
   padding: 1em;
 }
 
-.d-invisible{
+.d-invisible {
   opacity: 0;
 }
 
-.expanding-searchbar .form-control{
-  max-width: 10em;
-  transition: .25s;
+.expanding-searchbar-gray .form-control,
+.expanding-searchbar-gray .input-group-text{
+  background: #F6F8FA;
 }
 
-.expanding-searchbar .form-control:focus{
+.expanding-searchbar .form-control {
+  max-width: 10em;
+  transition: 0.25s;
+}
+
+.expanding-searchbar .form-control:focus {
   max-width: 100%;
 }
 
-
 .expanding-searchbar .input-group-text,
-.expanding-searchbar .form-control{
+.expanding-searchbar .form-control {
   border-radius: 20em;
   border: none;
   box-shadow: none;
-  transition: .2s;
+  transition: 0.2s;
 }
 
-.expanding-searchbar i{
-  transition: .2s;
+.expanding-searchbar i {
+  transition: 0.2s;
 }
 
 .expanding-searchbar .input-group:focus-within .form-control,
-.expanding-searchbar .input-group:focus-within .input-group-text{
-  background:#f7f7f7;
+.expanding-searchbar .input-group:focus-within .input-group-text {
+  background: #F6F8FA;
 }
 
-.expanding-searchbar .input-group-text{
+.expanding-searchbar-gray .input-group:focus-within .form-control,
+.expanding-searchbar-gray .input-group:focus-within .input-group-text {
+  background: white;
+}
+
+.expanding-searchbar .input-group-text {
   padding-right: 0em;
   color: black;
 }
 
-.chart-legend-indicator{
+.chart-legend-indicator {
   width: 10px;
   height: 10px;
   display: inline-block;
@@ -392,14 +401,14 @@ code {
   border-radius: 100%;
 }
 
-.chart-legend-item{
+.chart-legend-item {
   display: inline-block;
 }
 
-.chart-legend-caption{
+.chart-legend-caption {
   line-height: 1;
   font-weight: 500;
-  opacity: .75;
+  opacity: 0.75;
 }
 
 .back-to-bottom {
@@ -436,31 +445,31 @@ code {
   font-weight: 800;
 }
 
-.notifications-container{
+.notifications-container {
   position: fixed;
   z-index: 5;
   bottom: 1em;
   right: 1em;
 }
 
-.toast{
+.toast {
   border: none;
 }
 
-.toast .close{
+.toast .close {
   opacity: 1;
   color: white;
   outline: none;
 }
 
 .no-select,
-.toast .close{
+.toast .close {
   -webkit-touch-callout: none; /* iOS Safari */
   -webkit-user-select: none; /* Safari */
-   -khtml-user-select: none; /* Konqueror HTML */
-     -moz-user-select: none; /* Old versions of Firefox */
-      -ms-user-select: none; /* Internet Explorer/Edge */
-          user-select: none; /* Non-prefixed version, currently
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Old versions of Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none; /* Non-prefixed version, currently
                                 supported by Chrome, Edge, Opera and Firefox */
 }
 
@@ -481,7 +490,7 @@ code {
   }
 }
 
-.toast .btn{
+.toast .btn {
   white-space: nowrap;
 }
 
@@ -534,6 +543,15 @@ code {
   background-color: #ff6666 !important;
 }
 
+.app-category{
+  display: inline-block;
+  padding-left: .5em;
+  padding-right: .5em;
+  border-radius: .25em;
+  color: black;
+  background:rgba(0, 153, 153, 0.25);
+}
+
 .app-title {
   font-size: 1.25em;
   font-weight: 700;
@@ -546,6 +564,7 @@ code {
 }
 
 .description-container {
+  opacity: 0.75;
   overflow: hidden;
   height: 5em;
 }
@@ -566,7 +585,6 @@ code {
 }
 
 .app-rating {
-  float: right;
   font-size: 1em;
 }
 
@@ -585,6 +603,13 @@ code {
 .app-rating.userRated i {
   color: #32c8cd;
 }
+
+.image-card .app-rating{
+  position: absolute;
+  bottom: 0;
+  right: left;
+}
+
 
 .rating-num {
   font-size: 0.85em;
@@ -682,6 +707,15 @@ code {
   vertical-align: middle;
 }
 
+.hub-select {
+  height: auto !important;
+  width: auto;
+  width: 10em;
+  max-width: 100%;
+  display: inline-block;
+  vertical-align: middle;
+}
+
 .command-bar-container {
   position: absolute;
   left: 0;
@@ -765,32 +799,31 @@ code {
   border-radius: 0.625rem;
 }
 
-.log-group-item{
-  border-radius: .5em;
-  border-radius: .5em;
-  transition: .1s;
+.log-group-item {
+  border-radius: 0.5em;
+  border-radius: 0.5em;
+  transition: 0.1s;
 }
 
-.log-group-item:hover{
+.log-group-item:hover {
   background: #f8f9fa;
 }
 
-
-.log-group-header{
+.log-group-header {
   font-size: 1.5em !important;
 }
 
-.log-group-header i{
-  transition: .1s !important;
+.log-group-header i {
+  transition: 0.1s !important;
 }
 
-.rotate-90{
+.rotate-90 {
   transform: rotate(90deg);
 }
 
-.log-group-body>div{
-  border-radius: .5em;
-  overflow:hidden;
+.log-group-body > div {
+  border-radius: 0.5em;
+  overflow: hidden;
 }
 .tooltip-container {
   display: flex;

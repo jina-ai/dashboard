@@ -324,6 +324,7 @@ function LogsTable({ data, showLogDetails }: Props) {
           </Col>
           <Col md="4">
             <ExpandingSearchbar
+              placeholder="search logs..."
               value={searchString}
               onChange={setSearchString}
             />

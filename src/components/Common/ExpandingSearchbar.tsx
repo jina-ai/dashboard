@@ -3,12 +3,14 @@ import { Form, InputGroup } from "react-bootstrap";
 
 type Props = {
   value: string | number;
+  placeholder?:string;
+  variant?:string;
   onChange: (newValue: string) => void;
 };
 
-function ExpandingSearchbar({ value, onChange }: Props) {
+function ExpandingSearchbar({ value, onChange,placeholder,variant }: Props) {
   return (
-    <div className="expanding-searchbar">
+    <div className={`expanding-searchbar expanding-searchbar-${variant||"default"}`}>
       <InputGroup>
         <InputGroup.Prepend className="ml-auto">
           <InputGroup.Text>
@@ -17,7 +19,7 @@ function ExpandingSearchbar({ value, onChange }: Props) {
         </InputGroup.Prepend>
         <Form.Control
           type="text"
-          placeholder="Search logs.."
+          placeholder={placeholder}
           value={value}
           onChange={(e: any) => onChange(e.target.value)}
         />

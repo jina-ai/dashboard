@@ -34,7 +34,7 @@ const customStyles = {
     ...styles,
     cursor: "pointer",
     border: "none",
-    background: "#f7f7f7",
+    background: "#F6F8FA",
   }),
 };
 

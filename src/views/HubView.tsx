@@ -1,15 +1,22 @@
 import React from "react";
 import { Container, Row, Col } from "react-bootstrap";
-import {
-  FormInput,
-  InputGroup,
-  InputGroupAddon,
-  InputGroupText,
-  FormSelect,
-} from "shards-react";
 import { Dispatcher, Constants, Store } from "../flux";
 import { PageTitle } from "../components/Common/PageTitle";
+import { MultiFilterSelect } from "../components/Common/MultiFilterSelect";
+import { ExpandingSearchbar } from "../components/Common/ExpandingSearchbar";
 import ImageCard from "../components/Hub/ImageCard";
+
+const categoryOptions = [
+  { value: "all", label: "All Categories" },
+  { value: "search", label: "Search" },
+  { value: "configurations", label: "Configurations" },
+];
+
+const sortOptions = [
+  { value: "suggested", label: "Suggested" },
+  { value: "highestRating", label: "Highest Rated" },
+  { value: "newest", label: "Newest" },
+];
 
 class HubView extends React.Component<any, any> {
   constructor(props: any) {
@@ -54,60 +61,45 @@ class HubView extends React.Component<any, any> {
   };
 
   render = () => {
-    const { images, sortType, category, searchQuery } = this.state;
+    const { images, searchQuery } = this.state;
     return (
       <Container fluid className="main-content-container px-0">
         <div className="px-4">
-          <Row className="page-header mb-4">
-            <PageTitle
-              title="Jina Hub"
-              className="text-sm-left mb-3"
-            />
-            <Col md="3" className="py-sm-2">
-              <InputGroup>
-                <InputGroupAddon type="prepend">
-                  <InputGroupText>Categories</InputGroupText>
-                </InputGroupAddon>
-                <FormSelect
-                  onChange={(e: any) => this.setCategory(e.target.value)}
-                  value={category}
-                >
-                  <option value="all">All Categories</option>
-                  <option value="highestRated">Search</option>
-                  <option value="newest">Configurations</option>
-                </FormSelect>
-              </InputGroup>
+          <Row className="page-header">
+            <PageTitle title="Jina Hub" className="text-sm-left mb-3" />
+          </Row>
+          <Row className="mb-4">
+            <Col md="8">
+              <MultiFilterSelect
+                options={categoryOptions}
+                onFilterChange={(option: any[]) =>
+                  this.setCategory(option[0].value)
+                }
+                className="hub-select mb-2 mr-0 mb-md-0 mr-md-2"
+                placeholder="All Categories"
+                isSearchable={false}
+              />
+              <MultiFilterSelect
+                options={sortOptions}
+                onFilterChange={(option: any[]) => this.sortBy(option[0].value)}
+                className="hub-select mb-2 mr-0 mb-md-0 mr-md-2"
+                placeholder="Suggested"
+                isSearchable={false}
+              />
             </Col>
-
-            <Col md="3" className="py-sm-2">
-              <InputGroup>
-                <InputGroupAddon type="prepend">
-                  <InputGroupText>Sort By</InputGroupText>
-                </InputGroupAddon>
-                <FormSelect
-                  onChange={(e: any) => this.sortBy(e.target.value)}
-                  value={sortType}
-                >
-                  <option value="suggested">Suggested</option>
-                  <option value="highestRated">Highest Rated</option>
-                  <option value="newest">Newest</option>
-                </FormSelect>
-              </InputGroup>
-            </Col>
-
-            <Col md="3" className="py-sm-2">
-              <FormInput
-                placeholder="search images..."
-                className="mb-3 mb-sm-0 ml-auto py-2"
+            <Col md="4">
+              <ExpandingSearchbar
+                variant="gray"
+                placeholder="search hub..."
                 value={searchQuery}
-                onChange={(e: any) => this.updateSearch(e.target.value)}
+                onChange={this.updateSearch}
               />
             </Col>
           </Row>
           <Row>
             {Object.keys(images).map((imageId) => (
               <Col key={imageId} md="3" className="mb-4">
-                <ImageCard image={images[imageId]} />
+                <ImageCard image={(images as any)[imageId]} />
               </Col>
             ))}
           </Row>
