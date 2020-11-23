@@ -96,6 +96,10 @@
     "src/**/*.{js,jsx,ts,tsx,json,md}": [
       "prettier --write",
       "eslint --max-warnings=0"
+    ],
+    "src/**/*.{css,scss}": [
+      "prettier --write",
+      "stylelint --max-warnings=0"
     ]
   },
   "eslintConfig": {
@@ -122,6 +126,9 @@
     "eslint-plugin-flowtype": "^5.2.0",
     "husky": "^4.2.5",
     "lint-staged": "^10.2.11",
-    "prettier": "^2.0.5"
+    "prettier": "^2.0.5",
+    "stylelint": "^13.8.0",
+    "stylelint-config-prettier": "^8.0.2",
+    "stylelint-config-standard": "^20.0.0"
   }
 }
