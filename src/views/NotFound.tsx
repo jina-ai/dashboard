@@ -6,13 +6,10 @@ import { PageTitle } from "../components/Common/PageTitle";
 const NotFound = () => (
   <Container fluid className="main-content-container px-4">
     <Row noGutters className="page-header mb-4">
-      <PageTitle
-        title="Resources"
-        className="text-sm-left mb-3"
-      />
+      <PageTitle title="Resources" className="text-sm-left mb-3" />
     </Row>
     <Row>
-      <Col md="3" className="mb-4">
+      <Col md="4" lg="3" className="mb-4">
         <HelpCard
           title="Jina 101"
           content="Understanding all key concepts of Jina in 3 minutes!"
@@ -21,16 +18,16 @@ const NotFound = () => (
           theme="warning"
         />
       </Col>
-      <Col md="3" className="mb-4">
+      <Col md="4" lg="3" className="mb-4">
         <HelpCard
-          title="Jina Documentations"
+          title="Jina Docs"
           content="The best way to learn Jina in depth."
           link="https://docs.jina.ai"
           icon="fas fa-book"
           theme="primary"
         />
       </Col>
-      <Col md="3" className="mb-4">
+      <Col md="4" lg="3" className="mb-4">
         <HelpCard
           title='Jina "Hello World"'
           content="A simple demo of image neural search for Fashion-MNIST."
@@ -39,16 +36,20 @@ const NotFound = () => (
           theme="error"
         />
       </Col>
-      <Col md="3" className="mb-4">
+      <Col md="4" lg="3" className="mb-4">
         <HelpCard
-          title="Visit us on Github!"
+          title={
+            <span>
+              Visit us on <span className="text-nowrap">Github!</span>
+            </span>
+          }
           content="Explore more exciting open-source projects from us."
           link="https://opensource.jina.ai"
           icon="fab fa-github"
           theme="info"
         />
       </Col>
-      <Col md="3" className="mb-4">
+      <Col md="4" lg="3" className="mb-4">
         <HelpCard
           title="We are hiring!"
           content="Join us and build the next neural search eco system!"

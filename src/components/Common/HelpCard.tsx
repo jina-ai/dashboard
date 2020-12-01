@@ -1,8 +1,8 @@
-import React from "react";
+import React, { ReactNode } from "react";
 import { Card, Row, Col } from "react-bootstrap";
 
 type Props = {
-  title: string;
+  title: ReactNode;
   content: string;
   icon: string;
   theme: string;
@@ -19,16 +19,18 @@ function HelpCard({ title, content, icon, theme, link }: Props) {
     >
       <Card className="h-100">
         <Card.Body className="pt-3">
-          <Row>
-            <Col xs="8" className="pr-0">
+          <Row className="align-items-center">
+            <Col xs="8">
               <h4>{title}</h4>
-              {content}
             </Col>
-            <Col xs="4" className="pl-0">
-              <h1 className="mt-4 ml-4">
+            <Col xs="4">
+              <h1 className="float-right">
                 <span className={`${icon} log-${theme}`} />
               </h1>
             </Col>
+          </Row>
+          <Row>
+            <Col>{content}</Col>
           </Row>
         </Card.Body>
       </Card>
