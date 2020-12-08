@@ -62,6 +62,7 @@ function BarChartCard(props: any) {
           },
         ],
       },
+      maintainAspectRatio: false,
     };
   }, [chartData, currentTab]);
 
@@ -172,12 +173,9 @@ function BarChartCard(props: any) {
             </ButtonGroup>
           </Col>
         </Row>
-        <canvas
-          height="100"
-          ref={canvasRef}
-          style={{ maxWidth: "100% !important" }}
-          className="sales-overview-sales-report"
-        />
+        <div style={{ position: "relative", height: 300 }}>
+          <canvas ref={canvasRef} />
+        </div>
       </CardBody>
     </Card>
   );
