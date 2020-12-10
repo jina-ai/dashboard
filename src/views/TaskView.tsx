@@ -30,22 +30,19 @@ class TaskView extends React.Component<any, any> {
       <Container fluid className="main-content-container px-0">
         <div className="px-4">
           <Row noGutters className="page-header mb-4">
-            <PageTitle
-              title="Task"
-              className="text-sm-left mb-3"
-            />
+            <PageTitle title="Task" className="text-sm-left mb-3" />
           </Row>
           <Row>
-            <Col md="3" className="mb-4">
+            <Col md="6" lg="6" xl="3" className="mb-4">
               <ElapsedCard elapsed={taskData.elapsed} />
             </Col>
-            <Col md="3" className="mb-4">
+            <Col md="6" lg="6" xl="3" className="mb-4">
               <ProgressCard progress={taskData.progress} />
             </Col>
-            <Col md="3" className="mb-4">
+            <Col md="6" lg="6" xl="3" className="mb-4">
               <QueriesPerSecond qps={taskData.qps} />
             </Col>
-            <Col md="3" className="mb-4">
+            <Col md="6" lg="6" xl="3" className="mb-4">
               <SpeedCard speed={taskData.speed} />
             </Col>
           </Row>
