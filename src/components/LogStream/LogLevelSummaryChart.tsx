@@ -29,8 +29,10 @@ const LogLevelSummaryChart = React.memo(function LogLevelSummaryChart({
 }: Props) {
   return (
     <Card className="h-100">
-      <Card.Header className="p-2 px-3">Log Occurences by Level</Card.Header>
-      <Card.Body className="d-none d-md-block p-0 pb-2 px-3">
+      <Card.Header id="logChartHeader" className="p-2 px-3">
+        Log Occurences by Level
+      </Card.Header>
+      <Card.Body id="barChart1" className="d-none d-md-block p-0 pb-2 px-3">
         <BarChart
           data={data}
           numTicks={numTicks}

@@ -1,0 +1,57 @@
+[
+  {
+    "nodeReference": "pageTitle",
+    "content": "Look out for the title of the page here, it describes the current page",
+    "position": 0
+  },
+  {
+    "nodeReference": "connectionInfo",
+    "content": "Watch out for the connection info here, if its green with a check mark, it means your logs are streaming successfully. Otherwise please check the documentation on how to stream logs ",
+    "position": 1
+  },
+  {
+    "nodeReference": "logChartHeader",
+    "content": "Your chart is displayed here, the header is quite self explanatory",
+    "position": 2
+  },
+  {
+    "nodeReference": "barChart1",
+    "content": "Bar charts will be displayed here, you can read your streams as it comes in",
+    "position": 3
+  },
+  {
+    "nodeReference": "table-view-filter",
+    "content": "Filter tables by different groups or views, depends on your preference",
+    "position": 4
+  },
+  {
+    "nodeReference": "all-sources-filter",
+    "content": "Filter by sources",
+    "position": 5
+  },
+  {
+    "nodeReference": "all-levels-filter",
+    "content": "Filter by levels",
+    "position": 6
+  },
+  {
+    "nodeReference": "download-logs-filter",
+    "content": "Download the logs of your streams, use this filter to control the logs",
+    "position": 7
+  },
+  {
+    "nodeReference": "logLevelPieChart-tour",
+    "content": "This chart provides the logs in real time presented as pie chart",
+    "position": 8
+  },
+  {
+    "nodeReference": "logStream",
+    "content": "This table auto scrolls as logs are being presented to the user please watch out for the logs here ",
+    "position": 9
+  },
+  {
+    "nodeReference": "sideBar",
+    "content": "Controls navigation to other parts of the app",
+    "position": 10
+  }
+]

@@ -9,12 +9,9 @@ type Props = {
 
 function ConnectionIndicator({ connected, reconnect }: Props) {
   return (
-    <NavItem
-      className="dropdown notifications"
-      onClick={reconnect}
-    >
+    <NavItem className="dropdown notifications" onClick={reconnect}>
       <NavLink className="nav-link-icon text-center">
-        <div className="nav-link-icon__wrapper">
+        <div id="connectionInfo" className="nav-link-icon__wrapper">
           <i className="material-icons">language</i>
           {connected ? (
             <Badge pill theme="success" className="connection-indicator p-1">

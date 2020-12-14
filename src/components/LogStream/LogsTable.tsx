@@ -105,6 +105,7 @@ type Format = "json" | "csv" | "txt";
 type Props = {
   data: ProcessedLog[];
   showLogDetails: (log: ProcessedLog) => void;
+  ref?: React.MutableRefObject<HTMLInputElement>;
 };
 
 const itemKey = (index: number, data: { items: ProcessedLog[] }) =>
@@ -133,6 +134,7 @@ function LogsList({ data, firstCol, secondCol, showLogDetails, small }: any) {
         className={`log-stream-container${
           small ? "-small" : ""
         } p-0 border-top`}
+        id="logStream"
       >
         {!scrolledToBottom && (
           <div
@@ -174,7 +176,7 @@ function LogsList({ data, firstCol, secondCol, showLogDetails, small }: any) {
   );
 }
 
-function LogsTable({ data, showLogDetails }: Props) {
+function LogsTable({ data, showLogDetails, ref }: Props) {
   const [currentView, setCurrentView] = React.useState(
     getUserViewPreference() || DEFAULT_VIEW
   );
@@ -259,11 +261,12 @@ function LogsTable({ data, showLogDetails }: Props) {
   const secondCol = 300;
 
   return (
-    <Card className="mb-4">
+    <Card ref={ref} className="mb-4">
       <Card.Header className="p-0">
         <Row className="p-3">
           <Col md="8">
             <MultiFilterSelect
+              id="table-view-filter"
               clearAfter
               options={Object.values(viewOptions)}
               onFilterChange={(option: any[]) => setView(option[0].value)}
@@ -284,6 +287,7 @@ function LogsTable({ data, showLogDetails }: Props) {
             />
             {currentView === "table" && (
               <MultiFilterSelect
+                id="all-sources-filter"
                 isMulti
                 options={toOption(sources)}
                 onFilterChange={setSelectedSources}
@@ -298,6 +302,7 @@ function LogsTable({ data, showLogDetails }: Props) {
 
             <MultiFilterSelect
               isMulti
+              id="all-levels-filter"
               options={toOption(levels as any) as any}
               onFilterChange={setSelectedLevels}
               className="logstream-select mb-2 mr-0 mb-md-0 mr-md-2"
@@ -308,6 +313,7 @@ function LogsTable({ data, showLogDetails }: Props) {
               }
             />
             <MultiFilterSelect
+              id="download-logs-filter"
               clearAfter
               options={saveOptions}
               onFilterChange={(option: any[]) =>

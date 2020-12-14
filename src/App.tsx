@@ -3,7 +3,6 @@ import { HashRouter as Router, Route } from "react-router-dom";
 
 import routes from "./routes";
 import withTracker from "./withTracker";
-
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./assets/main.scss";
 import "./App.css";

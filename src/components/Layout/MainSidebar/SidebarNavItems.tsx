@@ -13,7 +13,7 @@ type Props = {
 
 export default ({ navItems: items, toggleSidebar }: Props) => {
   return (
-    <div className="nav-wrapper">
+    <div id="side-items" className="nav-wrapper">
       {items.map((nav, idx) => (
         <div key={idx}>
           <h6 className="main-sidebar__nav-title">{nav.title}</h6>

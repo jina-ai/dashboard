@@ -1,0 +1,285 @@
+.tour-modal-open {
+  height: 100vh;
+  width: 100vw;
+  display: block;
+  position: fixed;
+  transition: all 0.2s ease-in;
+  top: 0;
+  z-index: 10000;
+  background-color: rgba(0, 0, 0, 0.8);
+  -webkit-transition: all 0.2s ease-in;
+  -moz-transition: all 0.2s ease-in;
+  -ms-transition: all 0.2s ease-in;
+  -o-transition: all 0.2s ease-in;
+}
+
+.tour-modal-close {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+.tour-modal-open .tour-guide {
+  margin: 25px 0;
+  background-color: #fff;
+  min-width: 350px;
+  width: auto;
+  min-height: 100px;
+  left: 0;
+  top: 0;
+  opacity: 1;
+  position: absolute;
+  border-radius: 4px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -o-border-radius: 4px;
+  box-sizing: border-box;
+  padding: 24px 30px;
+  box-shadow: rgba(0, 0, 0, 0.3) 0 0.5em 3em;
+  line-height: 1.3;
+  color: #2d2323;
+  font-weight: 500;
+}
+
+.tour-modal-open .tour-guide button,
+.tour-modal-open .tour-guide button:hover,
+.tour-modal-open .tour-guide button:active {
+  outline: none;
+}
+
+.tour-modal-open .tour-content {
+  width: 100%;
+  text-align: left;
+  display: grid;
+  grid-template-rows: auto 60px auto;
+}
+
+.tour-modal-open .tour-content p {
+  text-align: left;
+  padding: 0;
+  padding-top: 10%;
+  line-height: 1.3;
+  max-width: 331px;
+  min-width: 150px;
+  color: #2d2323;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetical Neue",
+    sans-serif;
+  box-sizing: border-box;
+  margin: 10px 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+.tour-modal-open .tour-data-row {
+  display: grid;
+  width: 100%;
+  margin: 5px 0;
+  margin-top: 15px;
+  min-height: 40px;
+  grid-template-columns: 20% 60% 20%;
+  align-items: start;
+}
+
+.tour-modal-open .tour-elements-feedback {
+  display: flex;
+  justify-content: space-between;
+}
+
+.tour-modal-open .tour-badge {
+  position: absolute;
+  font-family: monospace;
+  background: linear-gradient(to right, rgb(28, 143, 158), rgb(92, 183, 183));
+  height: 1.875em;
+  width: 1.875em;
+  padding: 0.6em;
+  font-size: 1em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  color: white;
+  text-align: center;
+  box-shadow: rgba(0, 0, 0, 0.3) 0 0.25em 0.5em;
+  top: -0.8125em;
+  right: -0.8125em;
+  background-color: linear-gradient(to right, #1c8f9e, #5cb7b7);
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  -ms-border-radius: 50%;
+  -o-border-radius: 50%;
+}
+
+.tour-modal-open .tour-highlight {
+  counter-increment: dot 1;
+  width: 10px;
+  height: 10px;
+  border: 1px solid rgb(202, 204, 206);
+  border-radius: 100%;
+  padding: 0;
+  display: block;
+  margin: 4px;
+  transition: opacity 0.3s ease 0s, transform 0.3s ease 0s;
+  cursor: pointer;
+  transform: scale(1);
+  color: rgb(202, 204, 206);
+  background: none;
+}
+
+.tour-modal-open .tour-highlight::before {
+  content: counter(dot);
+  position: absolute;
+  bottom: calc(100% + 0.25em);
+  left: 50%;
+  opacity: 0;
+  transform: translate(-50%, 1em);
+  transition: all 0.3s ease 0s;
+  display: block;
+}
+
+.tour-modal-open .tour-close-button {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  width: 9px;
+  height: 9px;
+  color: rgb(94, 94, 94);
+  display: block;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  font-weight: 400;
+  font-size: 20.3333px;
+  appearance: button;
+}
+
+.tour-modal-open .tour-close-button:hover {
+  color: #222;
+}
+
+.tour-modal-open .tour-highlight-selected {
+  background: linear-gradient(to right, rgb(28, 143, 158), rgb(92, 183, 183));
+  transition: opacity 0.3s ease 0s, transform 0.3s ease 0s;
+  border-color: rgb(92, 183, 183);
+  cursor: not-allowed;
+  transform: scale(1.25);
+}
+
+.tour-modal-open .tour-svg {
+  appearance: button;
+  text-rendering: auto;
+  letter-spacing: normal;
+  word-spacing: normal;
+  text-transform: none;
+  text-indent: 0;
+  text-shadow: none;
+  text-align: center;
+  box-sizing: border-box;
+  margin: 0;
+  font-style: normal;
+  font-variant-ligatures: normal;
+  font-variant-caps: normal;
+  font-variant-numeric: normal;
+  font-variant-east-asian: normal;
+  font-weight: 400;
+  font-stretch: normal;
+  font-size: 13.3333px;
+  line-height: normal;
+  border-width: 2px;
+  border-style: outset;
+  border-color: -internal-light-dark(rgb(118, 118, 118), rgb(133, 133, 133));
+  border-image: initial;
+  color: rgb(100, 100, 100);
+  width: 16px;
+  height: 12px;
+  padding: 0;
+  border: 0;
+  background-color: none;
+  cursor: pointer;
+}
+
+.tour-modal-open .tour-left-svg {
+  display: flex;
+  width: 100%;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+}
+
+.tour-modal-open .tour-right-svg {
+  display: flex;
+  width: 100%;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+}
+
+.tour-modal-open .tour-overlay-element {
+  background: #fff !important;
+  box-sizing: content-box !important;
+  padding: 10px;
+  z-index: 20;
+  position: relative;
+  box-shadow: 0 0 0.1em 0.1em rgba(0, 0, 0, 0.1);
+}
+
+.tour-github-documentation {
+  text-transform: none;
+  color: #d2d2d2;
+  font-size: 1.2em;
+  border-radius: 5px;
+  width: auto;
+  height: 50%;
+  margin: 10px 0;
+  border: solid 1px rgba(0, 0, 0, 0.1);
+  background: rgba(0, 0, 0, 0.02);
+  padding: 4px 10px;
+  box-sizing: content-box;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+  display: grid;
+  grid-template-columns: 30px auto;
+  grid-column-gap: 3px;
+  align-items: center;
+}
+
+.tour-github-documentation img {
+  width: 20px;
+  height: 20px;
+  color: rgba(0, 0, 0, 0.5);
+  object-fit: contain;
+}
+
+.tour-github-documentation a {
+  font-size: 0.8em !important;
+  color: #666 !important;
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.tour-dismiss {
+  padding: 15px 20px;
+  font-size: 1.2em;
+  border: solid 1px #fff;
+  color: #fff;
+  cursor: pointer;
+  letter-spacing: 1px;
+  text-transform: capitalize;
+  position: absolute;
+  background-color: transparent;
+  right: 10px;
+  top: 20px;
+  z-index: 2000000;
+}
+
+.tour-dismiss:active,
+.tour-dismiss:hover {
+  outline: none;
+}
