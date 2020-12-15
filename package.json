@@ -76,8 +76,12 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "dashboard-dev":"REACT_APP_TARGET=dashboard react-scripts start",
+    "hub-dev":"REACT_APP_TARGET=hub react-scripts start",
     "start_dev-server": "node dev-resources/testServer.js",
     "build": "CI=false react-scripts build",
+    "hub-build":"CI=false REACT_APP_TARGET=hub react-scripts build",
+    "dashboard-build":"CI=false REACT_APP_TARGET=dashboard react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "predeploy": "npm run build",

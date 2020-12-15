@@ -3,8 +3,8 @@ import React from "react";
 import { NavItem, NavLink, Badge } from "shards-react";
 
 type Props = {
-  connected: boolean;
-  reconnect: () => void;
+  connected?: boolean;
+  reconnect?: () => void;
 };
 
 function ConnectionIndicator({ connected, reconnect }: Props) {

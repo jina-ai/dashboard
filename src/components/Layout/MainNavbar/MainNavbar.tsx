@@ -6,6 +6,7 @@ import { NavbarSpacer } from "./NavbarSpacer";
 import { NavbarToggle } from "./NavbarToggle";
 import { ConnectionIndicator } from "./ConnectionIndicator";
 import { UserActions } from "./UserActions";
+import {NavLogo} from './NavLogo';
 
 type User = {
   displayName: string;
@@ -23,11 +24,13 @@ type User = {
 type Props = {
   usesAuth: boolean;
   usesConnection: boolean;
-  connected: boolean;
+  connected?: boolean;
   logOut: () => void;
-  toggleSidebar: () => void;
-  reconnect: () => void;
+  toggleSidebar?: () => void;
+  reconnect?: () => void;
   user: User | null;
+  hideSidebarToggle?:boolean;
+  showLogo?:boolean;
 };
 
 function MainNavbar({
@@ -38,6 +41,8 @@ function MainNavbar({
   reconnect,
   connected,
   user,
+  hideSidebarToggle,
+  showLogo
 }: Props) {
   const [userActionsVisible, setUserActionsVisible] = useState(false);
   function toggleUserActions() {
@@ -47,6 +52,9 @@ function MainNavbar({
     <div className="main-navbar">
       <Container fluid className="p-0">
         <Navbar type="light" className="align-items-stretch flex-md-nowrap p-0 px-2">
+          {
+            showLogo && <NavLogo/>
+          }
           <NavbarSpacer />
           <Nav navbar className="flex-row">
             {usesConnection && (
@@ -64,7 +72,10 @@ function MainNavbar({
               />
             )}
           </Nav>
-          <NavbarToggle toggleSidebar={toggleSidebar} />
+          {
+            !hideSidebarToggle&&
+            <NavbarToggle toggleSidebar={toggleSidebar} />
+          }
         </Navbar>
       </Container>
     </div>

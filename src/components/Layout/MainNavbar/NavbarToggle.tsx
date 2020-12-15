@@ -1,7 +1,7 @@
 import React from "react";
 
 type Props = {
-  toggleSidebar: () => void;
+  toggleSidebar?: () => void;
 };
 
 function NavbarToggle({ toggleSidebar }: Props) {

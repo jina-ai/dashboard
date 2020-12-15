@@ -1,21 +1,19 @@
 import React from "react";
 import { HashRouter as Router, Route } from "react-router-dom";
 
-import routes from "./routes";
-import withTracker from "./withTracker";
+import { dashboardRoutes as routes } from "../routes";
+import withTracker from "../withTracker";
 
-import "bootstrap/dist/css/bootstrap.min.css";
-import "./assets/main.scss";
-import "./App.css";
 import { ErrorBoundary } from "react-error-boundary";
-import { FallbackPage } from "./views/FallbackPage";
-import { Store } from "./flux";
+import { FallbackPage } from "../views/FallbackPage";
+import { Store } from "../flux";
 
-const App = () => {
+const Dashboard = () => {
+  document.title="Jina Dashboard";
   return (
     <Router basename={"/"}>
       <div>
-        {routes.map((route, index) => {
+        {routes.map((route:any, index:number) => {
           return (
             <Route
               key={index}
@@ -41,4 +39,4 @@ const App = () => {
   );
 };
 
-export { App };
+export { Dashboard };
