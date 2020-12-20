@@ -8,7 +8,7 @@ module.exports = {
       yaml: "/data/yaml",
     },
     messageInterval: 100,
-    source: "examples/hello-world.json"
+    source: "examples/hello-world-gradual.json"
   },
   recorder: {
     url: "http://localhost:5000",

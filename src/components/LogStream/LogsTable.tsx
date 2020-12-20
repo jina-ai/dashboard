@@ -1,23 +1,30 @@
-import React from "react";
+import React, { useState, useCallback, useEffect, useRef } from "react";
 import _ from "lodash";
-import { useEffect, useRef } from "react";
-import { useMiniSearch } from "react-minisearch";
 import { FixedSizeList as List } from "react-window";
+import { Card, Row, Col } from "react-bootstrap";
+import AutoSizer from "react-virtualized-auto-sizer";
+import FlexSearch from "flexsearch";
+import { saveAs } from "file-saver";
+
 import { MultiFilterSelect } from "../Common/MultiFilterSelect";
 import { LogItem } from "./LogItem";
 import { LogsTableHeader } from "./LogsTableHeader";
 import { ProcessedLog } from "../../flux/tranformLog";
-import { Card, Row, Col } from "react-bootstrap";
-import AutoSizer from "react-virtualized-auto-sizer";
-import { useDebounce } from "../../hooks/useDebounce";
+import { ExpandingSearchbar } from "../Common/ExpandingSearchbar";
+import { LogGroup } from "./LogGroup";
+
 import {
   serializeLogsToCSVBlob,
   serializeLogsToJSONBlob,
   serializeLogsToTextBlob,
 } from "../../helpers";
-import { saveAs } from "file-saver";
-import { ExpandingSearchbar } from "../Common/ExpandingSearchbar";
-import { LogGroup } from "./LogGroup";
+
+const ROW_SIZE = 30;
+const DEFAULT_VIEW = "table";
+const VIEW_PREFERENCE_NAME = "logs-view-preference";
+const POD_NAME_SPLIT_CHAR = "-";
+
+const SEARCH_FIELDS = ["filename","funcName","module","msg","pathname","name"];
 
 const levels = [
   "INFO",
@@ -27,11 +34,6 @@ const levels = [
   "CRITICAL",
   "DEBUG",
 ] as const;
-
-const ROW_SIZE = 30;
-const DEFAULT_VIEW = "table";
-const VIEW_PREFERENCE_NAME = "logs-view-preference";
-const POD_NAME_SPLIT_CHAR = "-";
 
 const saveOptions = [
   { value: "csv", label: "CSV" },
@@ -54,9 +56,6 @@ const viewOptions: { [key: string]: { value: string; label: string } } = {
   },
 };
 
-const fields = ["filename", "funcName", "msg", "name", "module", "pathname"];
-const miniSearchOptions = { fields };
-
 function getUserViewPreference() {
   const preference = localStorage.getItem(VIEW_PREFERENCE_NAME);
   if (preference && viewOptions[preference]) return preference;
@@ -66,6 +65,18 @@ function getUserViewPreference() {
 function setUserViewPreference(preference: string) {
   localStorage.setItem(VIEW_PREFERENCE_NAME, preference);
 }
+
+function getInitialView() {
+  return getUserViewPreference() || DEFAULT_VIEW;
+}
+
+let _lastNumLogs = 0;
+let _searchIndex = FlexSearch.create({
+  doc: {
+    id: "id",
+    field: SEARCH_FIELDS
+  }
+});
 
 const applyFilters = <T extends Record<string, any>, K>(
   item: T,
@@ -80,27 +91,19 @@ const applyFilters = <T extends Record<string, any>, K>(
       : value === item[key];
   }, true as boolean);
 
-function usePrevious(value: any) {
-  const ref = React.useRef();
+type Format = "json" | "csv" | "txt";
 
-  React.useEffect(() => {
-    ref.current = value;
-  }, [value]);
+type View = "group-pod" | "group-level" | "table";
 
-  return ref.current;
-}
-
-const generateFormatFileName = (format: Format) =>
+const generateFileName = (format: Format) =>
   `jina-logs-${new Date()}.${format}`;
 
 const saveLogData = (data: any, format: Format) => {
-  const filename = generateFormatFileName(format);
+  const filename = generateFileName(format);
   if (format === "csv") return saveAs(serializeLogsToCSVBlob(data), filename);
   if (format === "json") return saveAs(serializeLogsToJSONBlob(data), filename);
   if (format === "txt") return saveAs(serializeLogsToTextBlob(data), filename);
 };
-
-type Format = "json" | "csv" | "txt";
 
 type Props = {
   data: ProcessedLog[];
@@ -118,7 +121,7 @@ const toOption = (list: Readonly<any[]> | Set<any>) =>
 
 function LogsList({ data, firstCol, secondCol, showLogDetails, small }: any) {
   const listRef = useRef<any>();
-  const [scrolledToBottom, setScrolledToBottom] = React.useState(true);
+  const [scrolledToBottom, setScrolledToBottom] = useState(true);
 
   useEffect(() => {
     if (listRef.current && scrolledToBottom) {
@@ -174,33 +177,72 @@ function LogsList({ data, firstCol, secondCol, showLogDetails, small }: any) {
   );
 }
 
-function LogsTable({ data, showLogDetails }: Props) {
-  const [currentView, setCurrentView] = React.useState(
-    getUserViewPreference() || DEFAULT_VIEW
-  );
-  const [selectedSources, setSelectedSources] = React.useState<any[]>([]);
-  const [selectedLevels, setSelectedLevels] = React.useState<
-    { value: ProcessedLog["levelname"] }[]
-  >([]);
-  const [searchString, setSearchString] = React.useState("");
-  const { search, searchResults, addAllAsync } = useMiniSearch(
-    data,
-    miniSearchOptions
-  );
+type GroupedLogProps = {
+  groupedData: any;
+  grouping: string;
+  firstCol: any;
+  secondCol: any;
+  showLogDetails: any;
+};
 
-  const buffer = useRef<any[]>([]);
-  const previousLength = usePrevious(data.length);
+function GroupedLogs({
+  groupedData,
+  grouping,
+  firstCol,
+  secondCol,
+  showLogDetails,
+}: GroupedLogProps) {
+  return (
+    <Card.Body className="log-stream-container p-0 border-top">
+      {Object.keys(groupedData).length && (
+        <div className="log-group-container">
+          {Object.entries(groupedData).map(([key, data]: any, idx: number) => (
+            <LogGroup
+              group={grouping}
+              key={idx}
+              title={key}
+              levels={data.levels}
+              numItems={data.data.length}
+              body={
+                <LogsList
+                  firstCol={firstCol}
+                  secondCol={secondCol}
+                  data={data.data}
+                  showLogDetails={showLogDetails}
+                  small
+                />
+              }
+            />
+          ))}
+        </div>
+      )}
+    </Card.Body>
+  );
+}
+
+function LogsTable({ data, showLogDetails }: Props) {
+  const [currentView, setCurrentView] = useState(() => getInitialView());
+
+  const [selectedSources, setSelectedSources] = useState<any[]>([]);
+  const [selectedLevels, setSelectedLevels] = useState<any[]>([]);
+
+  const [searchResults, setSearchResults] = useState<any[]>([]);
+  const [searchString, setSearchString] = useState("");
+
+  const search = useCallback(async () => {
+    const newData = data.slice(_lastNumLogs,data.length)
+    _searchIndex.add(newData);
+    _lastNumLogs = data.length;
+    const searchResults = await _searchIndex.search(searchString);
+    setSearchResults(searchResults);
+    // @ts-ignore
+  }, [searchString, data.length]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
-    if (previousLength && previousLength! > 0) {
-      const newLog = data[previousLength! - 1];
-      addAllAsync([newLog]);
-      buffer.current.push(newLog);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [previousLength, searchString]);
+    if (searchString && data.length) search();
+  }, [data.length, searchString, search]);
 
-  function setView(view: string) {
+  function setView(view: View) {
     setCurrentView(view);
     setUserViewPreference(view);
   }
@@ -247,14 +289,6 @@ function LogsTable({ data, showLogDetails }: Props) {
     });
   }
 
-  useDebounce(
-    () => {
-      search(searchString);
-    },
-    250,
-    [searchString]
-  );
-
   const firstCol = 300;
   const secondCol = 300;
 
@@ -295,7 +329,6 @@ function LogsTable({ data, showLogDetails }: Props) {
                 }
               />
             )}
-
             <MultiFilterSelect
               isMulti
               options={toOption(levels as any) as any}
@@ -339,39 +372,13 @@ function LogsTable({ data, showLogDetails }: Props) {
           showLogDetails={showLogDetails}
         />
       ) : (
-        <Card.Body className="log-stream-container p-0 border-top">
-          {Object.keys(groupedData).length ? (
-            <div className="log-group-container">
-              {Object.entries(groupedData).map(
-                ([key, data]: any, idx: number) => (
-                  <LogGroup
-                    group={currentView}
-                    key={idx}
-                    title={key}
-                    levels={data.levels}
-                    numItems={data.data.length}
-                    body={
-                      <LogsList
-                        firstCol={firstCol}
-                        secondCol={secondCol}
-                        data={data.data}
-                        showLogDetails={showLogDetails}
-                        small
-                      />
-                    }
-                  />
-                )
-              )}
-            </div>
-          ) : (
-            <div className="my-5 py-5 text-center opacity-5">
-              <h1>
-                <i className="material-icons">inbox</i>
-              </h1>
-              <h3>No logs to display</h3>
-            </div>
-          )}
-        </Card.Body>
+        <GroupedLogs
+          firstCol={firstCol}
+          secondCol={secondCol}
+          grouping={currentView}
+          groupedData={groupedData}
+          showLogDetails={showLogDetails}
+        />
       )}
     </Card>
   );

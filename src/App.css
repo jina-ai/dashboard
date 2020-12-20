@@ -18,7 +18,7 @@ code {
 }
 
 .main-sidebar {
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.25) !important;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.25) !important;
   border-radius: 0em 1.25em 1.25em 0em !important;
   overflow: hidden;
 }

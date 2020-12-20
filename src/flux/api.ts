@@ -110,7 +110,7 @@ export default {
     return result.data;
   },
   getImages: async () => {
-    const result = await hub.get("images");
+    const result = await hub.get("list");
     return result.data;
   },
   getImage: async (id: string) => {
