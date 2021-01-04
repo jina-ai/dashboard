@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import { LogLevelSummaryChart } from "../components/LogStream/LogLevelSummaryChart";
 import { LogLevelPieChart } from "../components/LogStream/LogLevelPieChart";
@@ -11,6 +11,52 @@ const CHART_UPDATE_INTERVAL = 1000;
 
 let chartUpdateInterval: any;
 let logsUpdateInterval: any;
+
+const DEFAULT_TIME_SELECTION = "60second";
+
+const TIME_PREFERENCE_NAME = "logs-time-preference";
+
+const timeOptions: {
+  [key: string]: { value: string; label: string; chartLabels: string[] };
+} = {
+  "60second": {
+    value: "60second",
+    label: "60 Seconds",
+    chartLabels: ["60s ago", "30s ago", ""],
+  },
+  "15minute": {
+    value: "15minute",
+    label: "15 Minutes",
+    chartLabels: ["15m ago", "7m 30s ago", ""],
+  },
+  "1hour": {
+    value: "1hour",
+    label: "1 Hour",
+    chartLabels: ["1h ago", "30m ago", ""],
+  },
+};
+
+const numSeconds: { [key: string]: number } = {
+  "60second": 60,
+  "15minute": 900,
+  "1hour": 3600,
+};
+
+function getUserTimePreference() {
+  const preference = localStorage.getItem(TIME_PREFERENCE_NAME);
+  if (preference && timeOptions[preference]) return preference;
+  return false;
+}
+
+function setUserTimePreference(preference: string) {
+  localStorage.setItem(TIME_PREFERENCE_NAME, preference);
+}
+
+function getInitialTimeSelection() {
+  return getUserTimePreference() || DEFAULT_TIME_SELECTION;
+}
+
+type TimePreference = "60second" | "15minute" | "1hour";
 
 const showLogDetails = (log: any) => {
   Dispatcher.dispatch({
@@ -29,12 +75,20 @@ function showLogInTable(index: number) {
 function LogsView() {
   const hasNewLogs = React.useRef(false);
   const [logs, setLogs] = useState(() => Store.getLogs());
+  const [selectedTime, setSelectedTime] = useState(() =>
+    getInitialTimeSelection()
+  );
   const [logLevelOccurrences, setLogLevelOccurrences] = useState(() =>
     Store.getLogLevelOccurences()
   );
   const [logLevelCharts, setLogLevelCharts] = useState(() =>
-    Store.getLogLevelCharts()
+    Store.getLogLevelCharts(numSeconds[selectedTime])
   );
+
+  function setTimeSelection(time: TimePreference) {
+    setSelectedTime(time);
+    setUserTimePreference(time);
+  }
 
   function updateLogs() {
     const newLogs = Store.getLogs();
@@ -43,10 +97,10 @@ function LogsView() {
     setLogLevelOccurrences({ ...newOccurrences });
   }
 
-  function updateChart() {
-    const newCharts = Store.getLogLevelCharts();
+  const updateChart = useCallback(() => {
+    const newCharts = Store.getLogLevelCharts(numSeconds[selectedTime]);
     setLogLevelCharts({ ...newCharts });
-  }
+  }, [selectedTime]);
 
   function showLog(activePoints: any) {
     const { data } = logLevelCharts;
@@ -76,20 +130,30 @@ function LogsView() {
       clearInterval(logsUpdateInterval);
       clearInterval(chartUpdateInterval);
     };
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [updateChart]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    updateChart();
+  }, [updateChart]);
+
+  const timeSelection = timeOptions[selectedTime];
 
   return (
     <Container fluid className="main-content-container px-0">
       <div className="px-4">
         <Row noGutters className="page-header mb-4">
-          <PageTitle
-            title="Log Stream"
-            className="text-sm-left mb-3"
-          />
+          <PageTitle title="Log Stream" className="text-sm-left mb-3" />
         </Row>
         <Row>
           <Col md="10" className="mb-4">
-            <LogLevelSummaryChart data={logLevelCharts} showLog={showLog} />
+            <LogLevelSummaryChart
+              data={logLevelCharts}
+              showLog={showLog}
+              setTimeSelection={setTimeSelection}
+              timeOptions={timeOptions}
+              selectedTime={selectedTime}
+              timeLabels={timeSelection.chartLabels}
+            />
           </Col>
           <Col md="2" className="mb-4">
             <LogLevelPieChart data={logLevelOccurrences} />

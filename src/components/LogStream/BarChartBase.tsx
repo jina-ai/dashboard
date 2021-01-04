@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef, useEffect, useState, useCallback } from "react";
 import ChartElement, {
   ChartConfiguration,
   ChartOptions,
@@ -69,6 +69,7 @@ type Props = {
   numTicks?: number;
   data: LogLevelSummaryChartData;
   onClick: (activePoints: any) => void;
+  timeLabels: string[];
 };
 
 function ChartBase({
@@ -78,6 +79,7 @@ function ChartBase({
   data,
   numTicks,
   onClick,
+  timeLabels,
 }: Props) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [chartInstance, setChartInstance] = useState<ChartElement | null>(null);
@@ -88,12 +90,14 @@ function ChartBase({
     onClick(activePoints);
   }
 
-  function getXAxisLabel(value: any, index: number, values: any) {
-    if (index === 0) return numSeconds + "s ago";
-    else if (index === Math.floor(values.length / 2))
-      return (numSeconds ? numSeconds / 2 : 0) + "s ago";
-    return;
-  }
+  const getXAxisLabel = useCallback(
+    (value: any, index: number, values: any) => {
+      if (index === 0) return timeLabels[0];
+      else if (index === Math.floor(values.length / 2)) return timeLabels[1];
+      return;
+    },
+    [timeLabels]
+  );
 
   function getYAxisLabel(value: any) {
     if (Number.isInteger(value)) {
@@ -106,7 +110,10 @@ function ChartBase({
       <div className="chart-legend mt-1 mb-3">
         {Object.entries(_levels).map(([level, style]: [string, any]) => (
           <div className="chart-legend-item">
-            <div className={`chart-legend-indicator mr-1 ${level.toLowerCase()}`} style={{backgroundColor:style.borderColor}}/>
+            <div
+              className={`chart-legend-indicator mr-1 ${level.toLowerCase()}`}
+              style={{ backgroundColor: style.borderColor }}
+            />
             <span className="chart-legend-caption mr-2">{level}</span>
           </div>
         ))}
@@ -141,6 +148,7 @@ function ChartBase({
             ticks: {
               padding: 5,
               maxRotation: 0,
+              autoSkip: false,
               callback: getXAxisLabel,
             },
             gridLines: {
@@ -194,6 +202,18 @@ function ChartBase({
     chartInstance.data = chartData;
     chartInstance.update();
   }, [data, chartInstance, numTicks]);
+
+  useEffect(() => {
+    if (
+      chartInstance &&
+      chartInstance.options.scales &&
+      chartInstance.options.scales.xAxes &&
+      chartInstance.options.scales.xAxes[0].ticks
+    ) {
+      chartInstance.options.scales.xAxes[0].ticks.callback = getXAxisLabel;
+      chartInstance.update();
+    }
+  }, [getXAxisLabel, chartInstance]);
 
   return (
     <>
