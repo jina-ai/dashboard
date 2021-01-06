@@ -109,7 +109,7 @@ function ChartBase({
     return (
       <div className="chart-legend mt-1 mb-3">
         {Object.entries(_levels).map(([level, style]: [string, any]) => (
-          <div className="chart-legend-item">
+          <div className="chart-legend-item" key={level}>
             <div
               className={`chart-legend-indicator mr-1 ${level.toLowerCase()}`}
               style={{ backgroundColor: style.borderColor }}
