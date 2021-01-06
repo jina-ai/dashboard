@@ -21,7 +21,7 @@
     "@types/react-modal": "^3.10.6",
     "@types/react-router-dom": "^5.1.6",
     "@types/react-syntax-highlighter": "^13.5.0",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "bootstrap": "^4.4.1",
     "chalk": "^4.1.0",
     "chart.js": "^2.9.4",
