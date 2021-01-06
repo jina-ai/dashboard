@@ -12,7 +12,7 @@ import { Collapse } from "react-bootstrap";
 
 import { Store, Dispatcher, Constants } from "../../flux";
 import { baseOptions, advancedOptions } from "./options";
-import FormItem from "./FormItem";
+import BaseFormTextInput from "components/Common/BaseFormTextInput";
 
 type Settings = {
   host: string;
@@ -75,7 +75,7 @@ function SettingsCard() {
         <Form>
           <Row form>
             {baseOptions.map(({ label, placeholder, value }) => (
-              <FormItem
+              <BaseFormTextInput
                 key={value}
                 label={label}
                 placeholder={placeholder}
@@ -107,7 +107,7 @@ function SettingsCard() {
               <strong className="text-muted d-block mb-3">Endpoints</strong>
               <Row form>
                 {advancedOptions.map(({ label, placeholder, value }) => (
-                  <FormItem
+                  <BaseFormTextInput
                     key={value}
                     label={label}
                     placeholder={placeholder}
