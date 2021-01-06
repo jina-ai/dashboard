@@ -8,8 +8,9 @@ import { Container, Row, Col, Card, CardBody } from "shards-react";
 class Login extends React.Component {
   componentDidMount = () => {
     let hash = window.location.href;
-    if (hash.indexOf("code") > 0) {
-      let code = hash.substring(hash.indexOf("code") + 5, hash.length);
+    const codeIndex = hash.indexOf("code")
+    if (codeIndex > 0) {
+      let code = hash.substring(codeIndex + 5, hash.length);
       window.location = `${hubURL}/auth/github/callback?code=${code}` as any;
     }
   };
