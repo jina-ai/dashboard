@@ -729,9 +729,9 @@ class StoreBase extends EventEmitter {
     const emptyItem = getInitialLevelOccurences();
     const step = numSeconds / MAX_CHART_TICKS;
     const data = [];
+    const currentInterval = Math.ceil(+new Date() / 1000 / step) * step;
     const now = Math.floor(+new Date() / 1000);
-
-    for (let i = now - numSeconds; i < now; i += step) {
+    for (let i = currentInterval - numSeconds; i < currentInterval; i += step) {
       let item = _.cloneDeep(emptyItem);
       for (let j = i; j < i + step; ++j) {
         const occurence = _store.logLevelOccurences[j];
