@@ -1,6 +1,6 @@
 ---
 name: "\U0001F914 Question?"
-about: Question, proposal, suggestion?
+about: Question?
 title: ''
 labels: kind/question
 assignees: ''

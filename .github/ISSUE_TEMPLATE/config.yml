@@ -9,6 +9,9 @@ contact_links:
   - name: "😊 Join us"
     url: https://career.jina.ai
     about: Shape the neural search ecosystem in open-source!
+  - name: "💬 Talk to us"
+    url: https://slack.jina.ai
+    about: Join our Slack community and ask questions
 #  - name: "🔎 Search on Existing Issues"
 #    url: https://github.com/jina-ai/jina/search?q=&type=Issues
 #    about: Someone else may already post this issue and got solved

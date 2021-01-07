@@ -10,7 +10,7 @@ assignees: ''
 **Describe the bug**
 <!-- A clear and concise description of what the bug is. -->
 
-**Describe how you solve it**
+**Have you solved it? If so, let us know how!**
 <!-- copy past your code/pull request link -->
 
 ---
@@ -20,5 +20,5 @@ assignees: ''
 **Environment**
 <!-- Run `jina --version-full` and copy paste the output here -->
 
-**Screenshots**
+**Screenshots and logs**
 <!-- If applicable, add screenshots to help explain your problem. -->
