@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { ThemeProvider } from "emotion-theming";
+import { ThemeProvider } from "@emotion/react";
 import { theme } from "./theme";
 
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -18,8 +18,9 @@ if (process.env.REACT_APP_TARGET === "dashboard") {
 }
 
 ReactDOM.render(
-    <ThemeProvider theme={theme}>
-      <App />
-    </ThemeProvider>,
+  // HOC to make theme available as a prop in all components
+  <ThemeProvider theme={theme}>
+    <App />
+  </ThemeProvider>,
   document.getElementById("root")
 );
