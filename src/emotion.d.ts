@@ -6,14 +6,14 @@ declare module "@emotion/react" {
   export interface Theme {
     palette: {
       background: { default: string };
-      primary: {
-        main: string;
-      };
-      secondary: { main: string };
-      warning: { main: string };
-      error: { main: string };
-      success: { main: string };
-      info: { main: string };
+      primary: string;
+      secondary: string;
+      warning: string;
+      error: string;
+      success: string;
+      info: string;
+      critical: string;
+      debug: string;
     };
   }
 }
