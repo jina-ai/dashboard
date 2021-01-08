@@ -107,7 +107,10 @@ function ChartBase({
 
   function ChartLegend() {
     return (
-      <div className="chart-legend mt-1 mb-3">
+      <div
+        className="chart-legend mt-1 mb-3"
+        data-name="logOccurencesChartLegend"
+      >
         {Object.entries(_levels).map(([level, style]: [string, any]) => (
           <div className="chart-legend-item" key={level}>
             <div

@@ -36,8 +36,8 @@ function LogLevelSummaryChart({
     <Card className="h-100">
       <Card.Header className="p-2 px-3">
         <Row>
-          <Col>Log Occurences by Level</Col>
-          <Col className="text-right">
+          <Col data-name="logOccurenceTitle">Log Occurences by Level</Col>
+          <Col className="text-right" data-name="logOccurenceDurationSelect">
             <MultiFilterSelect
               clearAfter
               options={Object.values(timeOptions)}
@@ -46,7 +46,7 @@ function LogLevelSummaryChart({
               }
               className="logstream-select text-left"
               placeholder={
-                <span>
+                <span data-name="logOccurenceDurationSelectedOption">
                   <i className="material-icons mr-2">access_time</i>
                   {timeOptions[selectedTime].label}
                 </span>
