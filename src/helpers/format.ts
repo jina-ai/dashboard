@@ -17,8 +17,11 @@ const getNodeLabelsByPortId = ({ from, to }, nodes) => ({
 });
 
 export const parseYAML = (yamlSTR: string) => {
+  //todo removing the !tag is kind a bootleg solution. We should look into the parsing
+  const yamlStrWithoutTag = yamlSTR.split("\n").slice(1).join("\n");
+
   try {
-    const data = YAML.parse(yamlSTR);
+    const data = YAML.parse(yamlStrWithoutTag);
     return { data };
   } catch (error) {
     alert("Error Parsing YAML:\n" + error);
