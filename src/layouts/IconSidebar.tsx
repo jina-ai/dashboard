@@ -165,13 +165,12 @@ class IconSidebarLayout extends React.Component<any, any> {
               usesConnection={usesConnection}
               logOut={this.logOut}
               toggleSidebar={this.toggleSidebar}
-              reconnect={this.reconnect}
               connected={connected}
               user={user}
             />
             <InfoToast data={banner} />
             {usesConnection && !loading && !connected && (
-              <ConnectionToast reconnect={this.reconnect}/>
+              <ConnectionToast reconnect={this.reconnect} />
             )}
             {children}
             {!acceptedCookies && (
