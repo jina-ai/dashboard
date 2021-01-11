@@ -14,11 +14,13 @@ import {
   Button,
 } from "shards-react";
 import { formatBytes } from "../../helpers";
+import { useTheme } from "@emotion/react";
 
 function BarChartCard(props: any) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [chartInstance, setChartInstance] = useState<ChartElement | null>(null);
   const [currentTab, setCurrentTab] = useState("messages");
+  const { palette } = useTheme();
 
   const chartData = props[currentTab];
 
@@ -78,27 +80,27 @@ function BarChartCard(props: any) {
               label: "msg sent",
               fill: "start",
               data: chartData.map((d: any) => d.sent),
-              backgroundColor: "#009999",
-              borderColor: "#009999",
-              pointBackgroundColor: "#FFFFFF",
-              pointHoverBackgroundColor: "#009999",
+              backgroundColor: palette.primary,
+              borderColor: palette.primary,
+              pointBackgroundColor: palette.background.default,
+              pointHoverBackgroundColor: palette.primary,
               borderWidth: 1.5,
             },
             {
               label: "msg received",
               fill: "start",
               data: chartData.map((d: any) => d.received),
-              backgroundColor: "#32C8CD",
-              borderColor: "#32C8CD",
-              pointBackgroundColor: "#FFFFFF",
-              pointHoverBackgroundColor: "#32C8CD",
+              backgroundColor: palette.success,
+              borderColor: palette.success,
+              pointBackgroundColor: palette.background.default,
+              pointHoverBackgroundColor: palette.success,
               borderWidth: 1.5,
             },
           ],
         },
       };
     },
-    [chartData]
+    [chartData, palette.success, palette.primary, palette.background.default]
   );
 
   const getChartData = useCallback(() => {
@@ -109,25 +111,31 @@ function BarChartCard(props: any) {
           label: `${currentTab} sent`,
           fill: "start",
           data: chartData.map((d: any) => d.sent),
-          backgroundColor: "#009999",
-          borderColor: "#009999",
-          pointBackgroundColor: "#FFFFFF",
-          pointHoverBackgroundColor: "#009999",
+          backgroundColor: palette.primary,
+          borderColor: palette.primary,
+          pointBackgroundColor: palette.background.default,
+          pointHoverBackgroundColor: palette.primary,
           borderWidth: 1.5,
         },
         {
           label: `${currentTab} received`,
           fill: "start",
           data: chartData.map((d: any) => d.received),
-          backgroundColor: "#32C8CD",
-          borderColor: "#32C8CD",
-          pointBackgroundColor: "#FFFFFF",
-          pointHoverBackgroundColor: "#32C8CD",
+          backgroundColor: palette.success,
+          borderColor: palette.success,
+          pointBackgroundColor: palette.background.default,
+          pointHoverBackgroundColor: palette.success,
           borderWidth: 1.5,
         },
       ],
     };
-  }, [chartData, currentTab]);
+  }, [
+    chartData,
+    currentTab,
+    palette.success,
+    palette.primary,
+    palette.background.default,
+  ]);
 
   useEffect(() => {
     if (!canvasRef.current) return;

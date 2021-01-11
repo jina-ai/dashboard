@@ -6,14 +6,14 @@ const SCOOTER_GREEN = "#32C8CD";
 const theme = {
   palette: {
     background: { default: "#FFFFFF" },
-    primary: {
-      main: PERSIAN_GREEN,
-    },
-    secondary: { main: GOLDEN_TANOI },
-    warning: { main: GOLDEN_TANOI },
-    error: { main: BITTER_SWEET },
-    success: { main: PERSIAN_GREEN },
-    info: { main: SCOOTER_GREEN },
+    primary: PERSIAN_GREEN,
+    secondary: GOLDEN_TANOI,
+    warning: GOLDEN_TANOI,
+    error: BITTER_SWEET,
+    success: SCOOTER_GREEN,
+    info: PERSIAN_GREEN,
+    critical: "#ff4540",
+    debug: "#7E7278",
   },
 };
 

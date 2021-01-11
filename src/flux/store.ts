@@ -8,18 +8,11 @@ import logger from "../logger";
 import propertyList from "../data/podProperties.json";
 import getSidebarNavItems from "../data/sidebar-nav-items";
 import exampleFlows from "../data/exampleFlows";
+import { Level, RawLogEntry } from "./tranformLog";
 
 const MAX_CHART_TICKS = 60;
 const HIDE_BANNER_TIMEOUT = 5000;
 const TASK_UPDATE_INTERVAL = 500;
-const CHART_LEVELS = [
-  "INFO",
-  "SUCCESS",
-  "WARNING",
-  "ERROR",
-  "CRITICAL",
-  "DEBUG",
-];
 
 function getExampleFlows() {
   const flows: LooseObject = {};
@@ -80,15 +73,18 @@ function getInitialFlow() {
   };
 }
 
-function getInitialLevelOccurences() {
-  let occurences: LooseObject = {
+function getInitialLevelOccurences(): RawLogEntry {
+  return {
     lastLog: 0,
-    levels: {},
+    levels: {
+      INFO: 0,
+      SUCCESS: 0,
+      WARNING: 0,
+      ERROR: 0,
+      CRITICAL: 0,
+      DEBUG: 0,
+    },
   };
-  CHART_LEVELS.forEach((level) => {
-    occurences.levels[level] = 0;
-  });
-  return occurences;
 }
 
 function getInitialStore(): LooseObject {
@@ -729,15 +725,17 @@ class StoreBase extends EventEmitter {
     const emptyItem = getInitialLevelOccurences();
     const step = numSeconds / MAX_CHART_TICKS;
     const data = [];
+    const currentInterval = Math.ceil(+new Date() / 1000 / step) * step;
     const now = Math.floor(+new Date() / 1000);
-
-    for (let i = now - numSeconds; i < now; i += step) {
+    for (let i = currentInterval - numSeconds; i < currentInterval; i += step) {
       let item = _.cloneDeep(emptyItem);
       for (let j = i; j < i + step; ++j) {
         const occurence = _store.logLevelOccurences[j];
         if (!occurence) continue;
         item.lastLog = occurence.lastLog;
-        Object.entries(occurence.levels).forEach(([level, amount]) => {
+        Object.entries(occurence.levels).forEach((logEntry) => {
+          const level = logEntry[0] as Level;
+          const amount = logEntry[1] as number;
           item.levels[level] = item.levels[level] + amount;
         });
       }

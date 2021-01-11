@@ -247,15 +247,16 @@ Note: features like the hub and GitHub login will not work when running locally 
 
 ### Run in the debug mode
 
-1. `cd dev-resources`
-2. `node testServer`
-3.  testServer will be running on `http://localhost:5000` by default
-4. `npm start`
-5.  dashboard will be served on `http://localhost:3000` by default
+1. `npm run start_dev-server`
+
+    testServer will be running on `http://localhost:5000` by default
+2. `npm run start-dashboard`
+
+    Dashboard will be served on `http://localhost:3000` by default
 
 ### Run in the live mode
 
-1. `npm build`
+1. `npm run build-dashboard`
 2. `node dashboard`
 3. dashboard will be served on `http://localhost:3030` by default
 
