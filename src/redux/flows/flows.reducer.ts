@@ -53,7 +53,7 @@ function getExampleFlows() {
 }
 
 const initialState: FlowState = {
-  selectedFlow: null,
+  selectedFlow: "_userFlow",
   flows: {
     ...getUserFlows(),
     ...getExampleFlows(),

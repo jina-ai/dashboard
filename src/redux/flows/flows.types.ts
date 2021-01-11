@@ -75,7 +75,7 @@ export type Flows = {
 };
 
 export type FlowState = {
-  selectedFlow: string | null;
+  selectedFlow: string;
   flows: Flows;
 };
 export type UpdateFlowAction = {
