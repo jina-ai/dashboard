@@ -1,0 +1,17 @@
+blank_issues_enabled: false
+contact_links:
+  - name: "📚 Read docs"
+    url: https://docs.jina.ai/
+    about: Find your solution in our documentation
+  - name: "🐣 Learn examples"
+    url: https://github.com/jina-ai/examples
+    about: Learn from our examples
+  - name: "😊 Join us"
+    url: https://career.jina.ai
+    about: Shape the open-source neural search ecosystem!
+  - name: "💬 Talk to us"
+    url: https://slack.jina.ai
+    about: Join our Slack community and ask questions
+#  - name: "🔎 Search on Existing Issues"
+#    url: https://github.com/jina-ai/jina/search?q=&type=Issues
+#    about: Someone else may already post this issue and got solved
