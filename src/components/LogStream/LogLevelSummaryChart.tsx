@@ -61,7 +61,6 @@ function LogLevelSummaryChart({
           timeLabels={timeLabels}
           data={data}
           numTicks={numTicks}
-          numSeconds={numSeconds}
           height={DEFAULT_HEIGHT}
           width={DEFAULT_WIDTH}
           onClick={showLog}
@@ -72,7 +71,6 @@ function LogLevelSummaryChart({
           timeLabels={timeLabels}
           data={data}
           numTicks={numTicks}
-          numSeconds={numSeconds}
           height={DEFAULT_HEIGHT_SMALL}
           width={DEFAULT_WIDTH_SMALL}
           onClick={showLog}
