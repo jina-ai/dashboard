@@ -27,7 +27,6 @@ type Props = {
   connected?: boolean;
   logOut: () => void;
   toggleSidebar?: () => void;
-  reconnect?: () => void;
   user: User | null;
   hideSidebarToggle?: boolean;
   showLogo?: boolean;
@@ -38,7 +37,6 @@ function MainNavbar({
   usesConnection,
   logOut,
   toggleSidebar,
-  reconnect,
   connected,
   user,
   hideSidebarToggle,
