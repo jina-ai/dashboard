@@ -1,6 +1,6 @@
 # Contributing to Jina
 
-Thanks for your interest in contributing to Jina. We're grateful for your initiative! ❤️
+Thanks for your interest in contributing to Jina console. We're grateful for your initiative! ❤️
 
 # Join Us on Slack!
 
@@ -13,9 +13,9 @@ In this guide we're going to go through the steps for each kind of contribution,
 
 - [🏁 Before you Start](#-before-you-start)
 - [🐞 Bugs and Issues](#-bugs-and-issues)
-- [🥇 Making Your First Submission](#-making-your-first-submission)
+- [💻 Running Console locally](#-running-console-locally)
 - [☑️ Naming Conventions](#-naming-conventions)
-- [💥 Testing Jina Locally and on CI](#-testing-jina-locally-and-on-ci)
+- [🧪 Testing Locally and on CI](#-testing-locally-and-on-ci)
 - [📖 Contributing Documentation](#-contributing-documentation)
 - [💬 Getting Support](#-getting-support)
 - [🙏 Thank You](#-thank-you)
@@ -47,18 +47,48 @@ We love to get issue reports. But we love it even more if they're in the right f
 There are also a couple of nice to haves:
 
 * **Environment:** You can find this with `jina --version-full`
-* **Screenshots:** If they're relevant
+* **Screenshots, Logs:** If they're relevant
 
 ### Fixing and Discussing Issues
 
 Right now we're working on a list of things we want help with and easy-to-fix bugs suitable for first-time contributors. Stay tuned to:
 
-* [Good first issues](https://github.com/jina-ai/jina/issues?q=is%3Aopen+is%3Aissue+label%3A%22good+first+issue%22)
-* [Help wanted](https://github.com/jina-ai/jina/issues?q=is%3Aopen+is%3Aissue+label%3A%22help+wanted%22)
-* [Discussion required](https://github.com/jina-ai/jina/issues?q=is%3Aopen+is%3Aissue+label%3A%22discussion+required%22)
+* [Good first issues](https://github.com/jina-ai/dashboard/issues?q=is%3Aopen+is%3Aissue+label%3A%22good+first+issue%22)
+* [Help wanted](https://github.com/jina-ai/dashboard/issues?q=is%3Aopen+is%3Aissue+label%3A%22help+wanted%22)
+* [Discussion required](https://github.com/jina-ai/dashboard/issues?q=is%3Aopen+is%3Aissue+label%3A%22discussion+required%22)
 
-<a name="-making-your-first-submission"></a>
-## 🥇 Making Your First Submission 
+<a name="-running-console-locally"></a>
+## 💻 Running Console locally
+
+### Setup the project locally
+
+0. Fork this repository by clicking on fork button on the top right. This will create a copy of this repository on your account.
+1. Clone your fork. 
+    Get the URL of your fork by clicking on `code` button on GitHub.
+    Clone it to your local with command `git clone <URL you copied>`
+
+    `git clone https://github.com/<your-username>/dashboard.git`.
+1. Install dependencies using command `npm i`.
+    `cd dashboard`
+    `npm i`
+1. Run dashboard via the following ways .
+
+### Run in the debug mode
+
+0. `npm run start_dev-server`
+
+    testServer will be running on `http://localhost:5000` by default
+1. `npm run start-dashboard`
+
+    Dashboard will be served on `http://localhost:3000` by default
+
+### Run in the live mode
+
+0. `npm run build-dashboard`
+1. `node dashboard`
+1. dashboard will be served on `http://localhost:3030` by default
+
+Note: features like the hub and GitHub login will not work when running locally as they are restricted to the `dashboard.jina.ai` origin. They are not necessary to view logs or interact with flows. If you would like to browse the hub do so from [dashboard.jina.ai](https://dashboard.jina.ai/).
 
 0. Associate your local git config with your github account. If this is your first time using git you can follow [the steps](#associate-with-github-account).
 1. Fork the Jina repo and clone onto your computer. By default, `git` won't clone `jina/hub` as it is a submodule maintained at [`jina-ai/jina-hub`](https://github.com/jina-ai/jina-hub). Please follow [the steps](#check-out-jina-hub-submodule) for details. 
@@ -91,27 +121,6 @@ git commit --amend --author="YOUR-GITHUB-NAME <YOUR-GITHUB-EMAIL>" --no-edit
 git log  # to confirm the change is effective
 git push --force
 ```
-
-What happens after the merge? [Understand the development stage and release cycles here.](RELEASE.md)
-
-### Check out `jina/hub` submodule
-
-By default, `git clone` won't clone anything under `jina/hub` as it is a Git submodule maintained at [`jina-ai/jina-hub`](https://github.com/jina-ai/jina-hub). If you want to contribute to `jina-hub`, please move to [`jina-ai/jina-hub`](https://github.com/jina-ai/jina-hub) repo and make your contribution.
-
-Most cases when you work on `jina-ai/jina`, you don't need `jina-hub`. But just in case for some reason you wish to work with files under `jina/hub` (e.g. some integration test), you can use:
-
-```bash
-git clone https://github.com/jina-ai/jina.git
-git submodule update --init --remote
-```
-
-At any time, if you want to sync your local files `jina/hub` with `master@jina-ai/jina-hub`, you can always use:
-
-```bash
-git submodule update --remote
-```
-
-If you are unfamiliar with git submodule, [this blog post from Github nicely explains it](https://github.blog/2016-02-01-working-with-submodules/).  
 
 <a name="-naming-conventions"></a>
 ## ☑️ Naming Conventions
@@ -221,36 +230,15 @@ echo "<commit message>" | commitlint
 
 We don't enforce naming of PRs and branches, but we recommend you follow the same style. It can simply be one of your commit messages, just copy/paste it, e.g. `fix(readme): improve the readability and move sections`.
 
-<a name="-testing-jina-locally-and-on-ci"></a>
-## 💥 Testing Jina Locally and on CI
+<a name="-testing-locally-and-on-ci"></a>
+## 🧪 Testing Jina Locally and on CI
 
-You need to build a local docker image tagged 'jinaai/jina:test-pip' for all the tests to run as in the CI, via: 
+We use [jest](https://jestjs.io/) for unit tests and [cypress](https://www.cypress.io/) for integration tests.
 
-```bash
-docker build --build-arg PIP_TAG="[devel]" -f ${PATH_TO_JINA}/Dockerfiles/pip.Dockerfile -t jinaai/jina:test-pip ${PATH_TO_JINA}
-```
+To run unit tests, run `npm test`
 
-Locally you can do unittest via:
+To run integration tests, run `npm cy:run`
 
-```bash
-pip install ".[test]"
-pytest -v -s --ignore-glob='tests/integration/hub_usage/dummyhub*' tests
-```
-
-When you add an executor or a driver, you may introduce new dependencies to Jina. You can verify the dependencies via:
-
-```bash
-jina check
-```
-, and via Docker container:
-
-```bash
-docker run jinaai/jina:my-local-version check
-```
-
-It prints a list of components the current version of Jina supports, and then exits. Make sure yours are not in red.
-
-Once you submit the PR, your code will be tested in the environment of Python 3.7 and 3.8 with [full exta dependencies](extra-requirements.txt) (`pip install .[all]`) installed.
 
 <a name="-contributing-documentation"></a>
 ## 📖 Contributing Documentation
