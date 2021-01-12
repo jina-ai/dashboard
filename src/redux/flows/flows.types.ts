@@ -24,7 +24,7 @@ export interface Node extends Omit<INode, "type"> {
   label?: string;
   needs?:
     | {
-        encode: boolean;
+        [pod: string]: boolean;
       }
     | {};
   send_to?: {};
@@ -48,7 +48,7 @@ export interface Flow extends Omit<IChart, "nodes" | "links"> {
         compress_hwm: number;
         board: {
           canvas: {
-            [pea: string]: {
+            [pod: string]: {
               x: number;
               y: number;
             };
