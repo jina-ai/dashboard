@@ -6,17 +6,21 @@ import {
   loadFlow,
   updateFlow,
 } from "./flows.actions";
-import { initialFlow, flowState } from "./flows.constants";
+import { initialFlow } from "./flows.constants";
+import { testFlowState } from "./flows.testData";
 
 describe("flows reducer", () => {
   it("should delete a flows", () => {
-    const oldNumberOfFlows = Object.keys(flowState.flows).length;
-    const flowStateWithoutFlow2 = reducer(flowState, deleteFlow("testFlow2"));
+    const oldNumberOfFlows = Object.keys(testFlowState.flows).length;
+    const flowStateWithoutFlow2 = reducer(
+      testFlowState,
+      deleteFlow("testFlow2")
+    );
     const newNumberOfFlows = Object.keys(flowStateWithoutFlow2.flows).length;
 
     expect(oldNumberOfFlows - newNumberOfFlows).toEqual(1);
     expect(
-      Object.keys(flowState.flows).find((flowId) => flowId === "testFlow2")
+      Object.keys(testFlowState.flows).find((flowId) => flowId === "testFlow2")
     ).toEqual("testFlow2");
     expect(
       Object.keys(flowStateWithoutFlow2.flows).find(
@@ -26,11 +30,11 @@ describe("flows reducer", () => {
   });
 
   it("should duplicate a the flower flow", () => {
-    const flowerYaml = flowState.flows.flower.yaml;
+    const flowerYaml = testFlowState.flows.flower.yaml;
     if (flowerYaml) {
-      const oldNumberOfFlows = Object.keys(flowState.flows).length;
+      const oldNumberOfFlows = Object.keys(testFlowState.flows).length;
       const flowStateWithDuplicatedFlowerFlow = reducer(
-        flowState,
+        testFlowState,
         duplicateFlow(flowerYaml)
       );
       const newNumberOfFlows = Object.keys(
@@ -44,16 +48,16 @@ describe("flows reducer", () => {
       expect(duplicatedFlowerFlowIdAndProperty).toBeDefined();
       if (duplicatedFlowerFlowIdAndProperty) {
         expect(duplicatedFlowerFlowIdAndProperty[1].flow).toEqual(
-          flowState.flows.flower.flow
+          testFlowState.flows.flower.flow
         );
       }
     }
   });
 
   it("should update a flows", () => {
-    const testFlow2Flow = flowState.flows.testFlow2.flow;
-    const selectedFlow = flowState.selectedFlow;
-    const updatedState = reducer(flowState, updateFlow(testFlow2Flow));
+    const testFlow2Flow = testFlowState.flows.testFlow2.flow;
+    const selectedFlow = testFlowState.selectedFlow;
+    const updatedState = reducer(testFlowState, updateFlow(testFlow2Flow));
     expect(selectedFlow).toBeDefined();
     if (selectedFlow) {
       expect(updatedState.flows[selectedFlow].flow).toEqual(testFlow2Flow);
@@ -61,8 +65,8 @@ describe("flows reducer", () => {
   });
 
   it("should create a new flows", () => {
-    const oldNumberOfFlows = Object.keys(flowState.flows).length;
-    const flowStateWithNewFlow = reducer(flowState, createNewFlow());
+    const oldNumberOfFlows = Object.keys(testFlowState.flows).length;
+    const flowStateWithNewFlow = reducer(testFlowState, createNewFlow());
     const newNumberOfFlows = Object.keys(flowStateWithNewFlow.flows).length;
     const newFlowIdAndProperty = Object.entries(
       flowStateWithNewFlow.flows
@@ -76,7 +80,10 @@ describe("flows reducer", () => {
   });
 
   it("should load a flows", () => {
-    const flowStateWithLoadedFlow = reducer(flowState, loadFlow("testFlow2"));
+    const flowStateWithLoadedFlow = reducer(
+      testFlowState,
+      loadFlow("testFlow2")
+    );
     expect(flowStateWithLoadedFlow.selectedFlow).toEqual("testFlow2");
   });
 });
