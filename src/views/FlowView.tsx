@@ -16,6 +16,21 @@ import { formatAsYAML, copyToClipboard } from "../helpers";
 
 import Tooltip from "../components/FlowChart/Tooltip";
 import { tooltipConfig } from "../data/tooltipConfig";
+import { connect } from "react-redux";
+import {
+  createNewFlow,
+  deleteFlow,
+  duplicateFlow,
+  loadFlow,
+  updateFlow,
+} from "../redux/flows/flows.actions";
+import { State } from "../redux";
+import { Flow } from "../redux/flows/flows.types";
+import {
+  selectFlowChart,
+  selectFlows,
+  selectSelectedFlowId,
+} from "../redux/flows/flows.selectors";
 
 const syncEvents = [
   "onDragNodeStop",
@@ -30,27 +45,20 @@ const syncEvents = [
 class FlowView extends React.Component<any, any> {
   constructor(props: any) {
     super(props);
-    const { flow: chart, type: flowType } = Store.getFlowchart();
-    const chartWithTooltips = {
-      ...chart,
-      ...tooltipConfig,
-    };
-    const selectedFlowId = Store.getSelectedFlowId();
-    const flows = Store.getFlows();
+    const selectedFlowId = props.selectedFlowId;
+    const flows = props.flows;
     const connected = Store.getConnectionStatus();
     const availableProperties = Store.getAvailableProperties();
     this.state = {
       availableProperties,
-      flowType,
       connected,
-      chart: { ...chartWithTooltips },
       selectedFlowId,
       flows,
       showOverlay: false,
       actionCallbacks: Object.keys(actions).reduce(
         (obj: any, key: any, idx: any) => {
           obj[key] = (...args: any) => {
-            let { chart } = this.state;
+            let { chart } = this.props;
             let action = (actions as any)[key];
             let newChartTransformer = action(...args);
             let newChart = newChartTransformer(chart);
@@ -112,9 +120,9 @@ class FlowView extends React.Component<any, any> {
   };
 
   getData = () => {
-    const { flow: chart, type: flowType } = Store.getFlowchart();
-    const selectedFlowId = Store.getSelectedFlowId();
-    const flows = Store.getFlows();
+    const { flow: chart, type: flowType } = this.props.flowChart;
+    const selectedFlowId = this.props.selectedFlowId;
+    const flows = this.props.flows;
     this.setState({ chart, flowType, selectedFlowId, flows });
   };
 
@@ -165,13 +173,10 @@ class FlowView extends React.Component<any, any> {
     this.setState({ chart: flow });
   };
 
-  syncFlow = (flow: any) => {
-    Dispatcher.dispatch({
-      actionType: Constants.UPDATE_FLOW,
-      payload: flow,
-    });
+  syncFlow = (flow: Flow) => {
+    this.props.updateFlow(flow);
   };
-
+  //todo can't find usages. Maybe we can delete that
   selectNode = (data: any) => {
     Dispatcher.dispatch({
       actionType: Constants.SELECT_NODE,
@@ -180,7 +185,7 @@ class FlowView extends React.Component<any, any> {
   };
 
   copyChartAsYAML = () => {
-    copyToClipboard(formatAsYAML(this.state.chart));
+    copyToClipboard(formatAsYAML(this.props.chart));
     alert("Chart copied to clipboard as YAML");
   };
 
@@ -195,49 +200,39 @@ class FlowView extends React.Component<any, any> {
     });
   };
 
-  loadFlow = (flow: any) => {
-    Dispatcher.dispatch({
-      actionType: Constants.LOAD_FLOW,
-      payload: flow,
-    });
+  loadFlow = (flowId: string) => {
+    this.props.loadFlow(flowId);
   };
 
   createNewFlow = (e: any) => {
     e.preventDefault();
     e.stopPropagation();
-    Dispatcher.dispatch({
-      actionType: Constants.CREATE_NEW_FLOW,
-    });
+
+    this.props.createNewFlow();
   };
 
   deleteFlow = (e: any, flowId: any) => {
     e.preventDefault();
     e.stopPropagation();
-    Dispatcher.dispatch({
-      actionType: Constants.DELETE_FLOW,
-      payload: flowId,
-    });
+
+    this.props.deleteFlow(flowId);
   };
 
   duplicateFlow = () => {
-    const yaml = formatAsYAML(this.state.chart);
-    Dispatcher.dispatch({
-      actionType: Constants.DUPLICATE_FLOW,
-      payload: yaml,
-    });
+    const yaml = formatAsYAML(this.props.chart);
+    this.props.duplicateFlow(yaml);
   };
 
   render = () => {
     const {
-      chart,
-      flows,
-      selectedFlowId,
       showOverlay,
       connected,
-      flowType,
       availableProperties,
       actionCallbacks,
     } = this.state;
+
+    const { type: flowType } = this.props.flowChart;
+
     const readonly = flowType !== "user-generated";
     return (
       <Container fluid className="main-content-container px-0">
@@ -252,8 +247,8 @@ class FlowView extends React.Component<any, any> {
             <Card className="chart-section-container mr-md-4 mb-4">
               <FlowSelection
                 connected={connected}
-                flows={flows}
-                selectedFlowId={selectedFlowId}
+                flows={this.props.flows}
+                selectedFlowId={this.props.selectedFlowId}
                 createNewFlow={this.createNewFlow}
                 loadFlow={this.loadFlow}
                 deleteFlow={this.deleteFlow}
@@ -272,7 +267,7 @@ class FlowView extends React.Component<any, any> {
                   <div className="capture-overlay-bottom"></div>
                 </div>
                 <FlowChart
-                  chart={chart}
+                  chart={this.props.chart}
                   Components={{
                     TooltipComponent: Tooltip,
                     NodeInner: CustomNode as any,
@@ -290,7 +285,7 @@ class FlowView extends React.Component<any, any> {
               availableProperties={availableProperties}
               duplicateFlow={this.duplicateFlow}
               readonly={readonly}
-              chart={chart}
+              flow={this.props.chart}
               deleteSelection={this.deleteSelection}
               updateNode={this.updateNode}
               updateLink={this.updateLink}
@@ -301,4 +296,26 @@ class FlowView extends React.Component<any, any> {
     );
   };
 }
-export default FlowView;
+
+function mapStateToProps(state: State) {
+  const flowChart = selectFlowChart(state);
+  const { flow: chart } = flowChart;
+  const chartWithTooltips = {
+    ...chart,
+    ...tooltipConfig,
+  };
+  return {
+    chart: chartWithTooltips,
+    flowChart,
+    flows: selectFlows(state),
+    selectedFlowId: selectSelectedFlowId(state),
+  };
+}
+
+export default connect(mapStateToProps, {
+  loadFlow,
+  createNewFlow,
+  updateFlow,
+  duplicateFlow,
+  deleteFlow,
+})(FlowView);
