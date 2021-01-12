@@ -285,7 +285,7 @@ class FlowView extends React.Component<any, any> {
               availableProperties={availableProperties}
               duplicateFlow={this.duplicateFlow}
               readonly={readonly}
-              chart={this.props.chart}
+              flow={this.props.chart}
               deleteSelection={this.deleteSelection}
               updateNode={this.updateNode}
               updateLink={this.updateLink}

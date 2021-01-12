@@ -5,6 +5,11 @@ import {
   LOAD_FLOW,
   UPDATE_FLOW,
 } from "./flows.constants";
+import {
+  IChart,
+  ILink,
+  INode,
+} from "@bastinjafari/react-flow-chart-with-tooltips-and-multi-select";
 
 export type LoadFlowAction = {
   type: typeof LOAD_FLOW;
@@ -14,46 +19,36 @@ export type LoadFlowAction = {
 export type CreateNewFlowAction = {
   type: typeof CREATE_NEW_FLOW;
 };
-export type Flow = {
-  selected: {
-    type?: "link" | "node" | "port";
-    id?: string;
+
+export interface Node extends Omit<INode, "type"> {
+  label?: string;
+  needs?:
+    | {
+        encode: boolean;
+      }
+    | {};
+  send_to?: {};
+  depth?: number;
+}
+
+type colors = "red";
+
+interface Link extends ILink {
+  color: colors;
+}
+
+export interface Flow extends Omit<IChart, "nodes" | "links"> {
+  nodes: { [id: string]: Node };
+  links: {
+    [id: string]: Link;
   };
-  hovered: {
-    type?: "link" | "node" | "port";
-    id?: string;
-  };
-  scale: number;
-  nodes?: {
-    [nodeName: string]: {
-      id: string;
-      label: string;
-      ports: {
-        outPort: {
-          id: string;
-          type: string;
-        };
-        inPort?: {
-          id: string;
-          type: string;
-        };
-      };
-      properties: Object;
-      position: { x: number; y: number };
-      needs?: Object;
-      send_to?: Object;
-      depth?: number;
-    };
-  };
-  links: {};
-  offset: { x: number; y: number };
   with?:
     | {
         logserver: string;
         compress_hwm: number;
         board: {
           canvas: {
-            [podName: string]: {
+            [pea: string]: {
               x: number;
               y: number;
             };
@@ -61,7 +56,7 @@ export type Flow = {
         };
       }
     | {};
-};
+}
 
 export type FlowProperties = {
   name: string;
