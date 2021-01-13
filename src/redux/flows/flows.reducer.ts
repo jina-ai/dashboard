@@ -60,7 +60,7 @@ const initialState: FlowState = {
   },
 };
 
-export default function flowState(
+export default function flowReducer(
   state = initialState,
   action: FlowActionTypes
 ): FlowState {

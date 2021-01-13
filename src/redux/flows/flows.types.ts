@@ -11,15 +11,6 @@ import {
   INode,
 } from "@bastinjafari/react-flow-chart-with-tooltips-and-multi-select";
 
-export type LoadFlowAction = {
-  type: typeof LOAD_FLOW;
-  payload: string;
-};
-
-export type CreateNewFlowAction = {
-  type: typeof CREATE_NEW_FLOW;
-};
-
 export interface Node extends Omit<INode, "type"> {
   label?: string;
   needs?:
@@ -67,6 +58,15 @@ export type FlowProperties = {
 
 export type Flows = {
   [flowId: string]: FlowProperties;
+};
+
+export type LoadFlowAction = {
+  type: typeof LOAD_FLOW;
+  payload: string;
+};
+
+export type CreateNewFlowAction = {
+  type: typeof CREATE_NEW_FLOW;
 };
 
 export type FlowState = {
