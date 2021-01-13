@@ -10,7 +10,7 @@
        alt="tweet button" title="👍Share Jina with your friends on Twitter"></img>
 </a>
 
-**Dashboard** offers the insight of running tasks in Jina. With dashboard, one can analyze logs, design flows and view Jina Hub images.
+**Console** offers the insight of running tasks in Jina. With dashboard, one can analyze logs, design flows and view Jina Hub images.
 
 <p align="center">
 <img src=".github/.README_images/logs-demo.gif?raw=true" alt="flow demo" width="80%">
