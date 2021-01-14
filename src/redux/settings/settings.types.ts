@@ -1,22 +1,28 @@
-import { SAVE_SETTINGS } from "./settings.constants";
+import { UPDATE_SETTINGS } from "./settings.constants";
+
+export type SettingName =
+  | "host"
+  | "log"
+  | "profile"
+  | "yaml"
+  | "shutdown"
+  | "ready"
+  | "port";
 
 export type Settings = {
-  host: string;
-  port: number;
-  log: string;
-  profile: string;
-  yaml: string;
-  shutdown: string;
-  ready: string;
+  [settingName in SettingName]: string;
 };
 
+export type SettingUpdate = {
+  [settingName in SettingName]?: string;
+};
 export type SettingsState = {
   settings: Settings;
 };
 
-export type SaveSettingsAction = {
-  type: typeof SAVE_SETTINGS;
-  payload: SettingsState;
+export type updateSettingsAction = {
+  type: typeof UPDATE_SETTINGS;
+  payload: SettingUpdate;
 };
 
-export type SettingsActionTypes = SaveSettingsAction;
+export type SettingsActionTypes = updateSettingsAction;

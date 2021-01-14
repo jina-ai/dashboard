@@ -1,9 +1,9 @@
-import { SaveSettingsAction, SettingsState } from "./settings.types";
-import { SAVE_SETTINGS } from "./settings.constants";
+import { updateSettingsAction, SettingUpdate } from "./settings.types";
+import { UPDATE_SETTINGS } from "./settings.constants";
 
-export function saveSettings(settings: SettingsState): SaveSettingsAction {
+export function updateSettings(settings: SettingUpdate): updateSettingsAction {
   return {
-    type: SAVE_SETTINGS,
+    type: UPDATE_SETTINGS,
     payload: settings,
   };
 }

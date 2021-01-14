@@ -1,10 +1,11 @@
 import React from "react";
 import { Col, FormInput } from "shards-react";
+import { SettingName } from "../../redux/settings/settings.types";
 
 type Props = {
   colSpan?: number;
   label: string;
-  value: string;
+  value: SettingName;
   placeholder: string;
   onChange: (e: any) => void;
 };

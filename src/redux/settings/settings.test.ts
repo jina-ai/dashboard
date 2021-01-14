@@ -1,30 +1,30 @@
 import reducer from "./settings.reducer";
-import { saveSettings } from "./settings.actions";
-import { testSettingsState, testSettingsState2 } from "./settings.testData";
+import { updateSettings } from "./settings.actions";
+import { testSettingsState, newTestSettings } from "./settings.testData";
 
 describe("settings reducer", () => {
   it("should save settings in Store", () => {
-    const newSettings = reducer(
+    const newSettingsState = reducer(
       testSettingsState,
-      saveSettings(testSettingsState2)
+      updateSettings(newTestSettings)
     );
-    expect(newSettings).toEqual(testSettingsState2);
+    expect(newSettingsState.settings).toEqual(newTestSettings);
   });
 
   it("should save settings in localStorage", () => {
-    reducer(testSettingsState, saveSettings(testSettingsState2));
-    const newSettingsState: any = { settings: {} };
-    Object.keys(testSettingsState2.settings).forEach((key) => {
+    reducer(testSettingsState, updateSettings(newTestSettings));
+    const newSettingsAfterUpdate: any = {};
+    Object.keys(newTestSettings).forEach((key) => {
       if (key === "port")
-        newSettingsState.settings[key] = parseInt(
+        newSettingsAfterUpdate[key] = parseInt(
           localStorage.getItem(`preferences-${key}`) as string
         );
       else
-        newSettingsState.settings[key] = localStorage.getItem(
+        newSettingsAfterUpdate[key] = localStorage.getItem(
           `preferences-${key}`
         );
     });
-    expect(newSettingsState).toEqual(testSettingsState2);
+    expect(newSettingsAfterUpdate).toEqual(newTestSettings);
   });
 
   it("should log the saved settings", () => {
@@ -41,14 +41,14 @@ describe("settings reducer", () => {
     console.log = jest.fn();
     (window as any).logs.push = jest.fn();
 
-    reducer(testSettingsState, saveSettings(testSettingsState2));
+    reducer(testSettingsState, updateSettings(newTestSettings));
 
     expect(console.log).toHaveBeenCalledWith("saveSettings - settings", {
-      ...testSettingsState2.settings,
+      ...newTestSettings,
     });
     expect((window as any).logs.push).toHaveBeenCalledWith([
       "saveSettings - settings",
-      testSettingsState2.settings,
+      newTestSettings,
     ]);
   });
 });
