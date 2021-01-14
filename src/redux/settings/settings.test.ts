@@ -15,14 +15,7 @@ describe("settings reducer", () => {
     reducer(testSettingsState, updateSettings(newTestSettings));
     const newSettingsAfterUpdate: any = {};
     Object.keys(newTestSettings).forEach((key) => {
-      if (key === "port")
-        newSettingsAfterUpdate[key] = parseInt(
-          localStorage.getItem(`preferences-${key}`) as string
-        );
-      else
-        newSettingsAfterUpdate[key] = localStorage.getItem(
-          `preferences-${key}`
-        );
+      newSettingsAfterUpdate[key] = localStorage.getItem(`preferences-${key}`);
     });
     expect(newSettingsAfterUpdate).toEqual(newTestSettings);
   });
