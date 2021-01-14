@@ -25,6 +25,7 @@ import CommandBar from "../components/FlowChart/CommandBar";
 import {
   FlowChart,
   IChart,
+  IOnLinkCompleteInput,
 } from "@bastinjafari/react-flow-chart-with-tooltips-and-multi-select";
 import Tooltip from "../components/FlowChart/Tooltip";
 import CustomNode from "../components/FlowChart/ChartNode";
@@ -154,7 +155,7 @@ export default function FlowView() {
     toNodeId,
     fromPortId,
     toPortId,
-  }: any) => {
+  }: IOnLinkCompleteInput) => {
     return !(fromNodeId === toNodeId || fromPortId === toPortId);
   };
 
