@@ -3,6 +3,7 @@ import flowReducer from "./flows/flows.reducer";
 import { FlowState } from "./flows/flows.types";
 import { composeWithDevTools } from "redux-devtools-extension";
 import { SettingsState } from "./settings/settings.types";
+import settingsReducer from "./settings/settings.reducer";
 
 export type State = {
   flowState: FlowState;
@@ -11,6 +12,7 @@ export type State = {
 
 const rootReducer = combineReducers({
   flowState: flowReducer,
+  settingsState: settingsReducer,
 });
 
 const store = createStore(rootReducer, composeWithDevTools());
