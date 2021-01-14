@@ -1,25 +1,29 @@
 import reducer from "./settings.reducer";
 import { saveSettings } from "./settings.actions";
-import { testSettingsState } from "./settings.testData";
-import { SettingsState } from "./settings.types";
+import { testSettingsState, testSettingsState2 } from "./settings.testData";
 
 describe("settings reducer", () => {
   it("should save settings in Store", () => {
-    const testSettingsState2: SettingsState = {
-      settings: {
-        host: "http://testHost2",
-        port: 12435,
-        log: "/stream/testLog2",
-        profile: "/stream/testProfile2",
-        yaml: "/data/testYaml2",
-        shutdown: "/action/testShutdown2",
-        ready: "/status/testReady2",
-      },
-    };
-    const newState = reducer(
+    const newSettings = reducer(
       testSettingsState,
       saveSettings(testSettingsState2)
     );
-    expect(newState).toEqual(testSettingsState2);
+    expect(newSettings).toEqual(testSettingsState2);
+  });
+
+  it("should save settings in localStorage", () => {
+    reducer(testSettingsState, saveSettings(testSettingsState2));
+    const newSettingsState: any = { settings: {} };
+    Object.keys(testSettingsState2.settings).forEach((key) => {
+      if (key === "port")
+        newSettingsState.settings[key] = parseInt(
+          localStorage.getItem(`preferences-${key}`)
+        );
+      else
+        newSettingsState.settings[key] = localStorage.getItem(
+          `preferences-${key}`
+        );
+    });
+    expect(newSettingsState).toEqual(testSettingsState2);
   });
 });

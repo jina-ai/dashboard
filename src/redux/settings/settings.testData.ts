@@ -11,3 +11,15 @@ export const testSettingsState: SettingsState = {
     ready: "/status/testReady",
   },
 };
+
+export const testSettingsState2: SettingsState = {
+  settings: {
+    host: "http://testHost2",
+    port: 12435,
+    log: "/stream/testLog2",
+    profile: "/stream/testProfile2",
+    yaml: "/data/testYaml2",
+    shutdown: "/action/testShutdown2",
+    ready: "/status/testReady2",
+  },
+};
