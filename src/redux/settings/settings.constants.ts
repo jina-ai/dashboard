@@ -1,6 +1,6 @@
 import { SettingsState } from "./settings.types";
 
-export const UPDATE_SETTINGS = "SAVE_SETTINGS";
+export const UPDATE_SETTINGS = "UPDATE_SETTINGS";
 
 export const intialSettings: SettingsState = {
   settings: {
