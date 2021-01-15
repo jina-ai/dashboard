@@ -127,11 +127,13 @@
     "yargs": "^16.1.0"
   },
   "devDependencies": {
+    "@types/cypress-image-snapshot": "^3.1.2",
     "@types/lunr": "^2.3.3",
     "@types/react-select": "^3.0.19",
     "@types/react-virtualized-auto-sizer": "^1.0.0",
     "@types/react-window": "^1.8.2",
     "cypress": "^5.5.0",
+    "cypress-image-snapshot": "^4.0.0",
     "eslint-plugin-flowtype": "^5.2.0",
     "husky": "^4.2.5",
     "lint-staged": "^10.2.11",
