@@ -1,4 +1,4 @@
-name: "Deploy Dashboard"
+name: "Unit, integration tests"
 on:
   push:
 jobs:
