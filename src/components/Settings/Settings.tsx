@@ -1,65 +1,41 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
-  Card,
-  CardHeader,
-  CardBody,
-  Row,
-  Col,
   Button,
+  Card,
+  CardBody,
+  CardHeader,
+  Col,
   Form,
+  Row,
 } from "shards-react";
 import { Collapse } from "react-bootstrap";
 
-import { Store, Dispatcher, Constants } from "../../flux";
-import { baseOptions, advancedOptions } from "./options";
+import { advancedOptions, baseOptions } from "./options";
+import {
+  SettingName,
+  SettingUpdate,
+} from "../../redux/settings/settings.types";
+import { useDispatch, useSelector } from "react-redux";
+import { updateSettings } from "../../redux/settings/settings.actions";
+import { selectSettings } from "../../redux/settings/settings.selectors";
 import BaseFormTextInput from "components/Common/BaseFormTextInput";
 
-type Settings = {
-  host: string;
-  port: string | number;
-  log: string;
-  profile: string;
-  yaml: string;
-  ready: string;
-  shutdown: string;
-};
-
-type AnyObj = {
-  [key: string]: any;
-};
-
 function SettingsCard() {
-  const [original, setOriginal] = useState<AnyObj>(Store.getSettings());
-  const [updates, setUpdates] = useState<AnyObj>({});
+  const [updates, setUpdates] = useState<SettingUpdate>({});
   const [expanded, setExpanded] = useState(false);
 
-  function getData() {
-    const original = Store.getSettings();
-    setOriginal(original);
-    setUpdates({});
-  }
+  const settings = useSelector(selectSettings);
 
-  useEffect(() => {
-    Store.on("update-settings", getData);
+  const dispatch = useDispatch();
 
-    return function cleanup() {
-      Store.removeListener("update-settings", getData);
-    };
-  }, []);
-
-  function updateSetting(setting: string, value: string) {
-    const newUpdates: { [key: string]: string } = { ...updates };
+  function changeSetting(setting: SettingName, value: string) {
+    const newUpdates: SettingUpdate = { ...updates };
     newUpdates[setting] = value;
     setUpdates(newUpdates);
   }
 
   function saveChanges() {
-    const settings = { ...original, ...updates };
-
-    Dispatcher.dispatch({
-      actionType: Constants.SAVE_SETTINGS,
-      payload: settings,
-    });
+    dispatch(updateSettings(updates));
   }
 
   function toggleExpand() {
@@ -76,11 +52,15 @@ function SettingsCard() {
           <Row form>
             {baseOptions.map(({ label, placeholder, value }) => (
               <BaseFormTextInput
-                key={value}
+                key={value as string}
                 label={label}
                 placeholder={placeholder}
-                value={value in updates ? updates[value] : original[value]}
-                onChange={(e) => updateSetting(value, e.target.value)}
+                value={
+                  (value in updates
+                    ? updates[value]
+                    : settings[value]) as SettingName
+                }
+                onChange={(e) => changeSetting(value, e.target.value)}
               />
             ))}
           </Row>
@@ -111,8 +91,14 @@ function SettingsCard() {
                     key={value}
                     label={label}
                     placeholder={placeholder}
-                    value={value in updates ? updates[value] : original[value]}
-                    onChange={(e) => updateSetting(value, e.target.value)}
+                    value={
+                      (value in updates
+                        ? updates[value]
+                        : settings[value]) as SettingName
+                    }
+                    onChange={(e) =>
+                      changeSetting(value as SettingName, e.target.value)
+                    }
                   />
                 ))}
               </Row>

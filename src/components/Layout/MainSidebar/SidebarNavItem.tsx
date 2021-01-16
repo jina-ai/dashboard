@@ -1,5 +1,5 @@
 import React from "react";
-import { NavLink as RouteNavLink } from "react-router-dom";
+import { NavLink as RouteNavLink, useLocation } from "react-router-dom";
 import {
   NavItem,
   NavLink,
@@ -17,8 +17,7 @@ type NavItem = {
   title: string;
   to: string;
   open: boolean;
-  htmlBefore: string;
-  htmlAfter: string;
+  iconName: string;
   matches: string[];
   items?: SubItem[];
 };
@@ -30,10 +29,10 @@ type Props = {
 
 export default ({ item, toggleSidebar }: Props) => {
   const hasSubItems = item.items && item.items.length;
-  const path = window.location.hash.substring(2, window.location.hash.length);
+  const path = useLocation()?.pathname?.substring(1);
   let active = false;
   item.matches.forEach((match) => {
-    if (path.startsWith(match)) active = true;
+    if (path === match) active = true;
   });
 
   return (
@@ -45,19 +44,12 @@ export default ({ item, toggleSidebar }: Props) => {
         active={active}
         onClick={toggleSidebar}
       >
-        {item.htmlBefore && (
-          <div
-            className="d-inline-block item-icon-wrapper"
-            dangerouslySetInnerHTML={{ __html: item.htmlBefore }}
-          />
+        {item.iconName && (
+          <div className="d-inline-block item-icon-wrapper">
+            <i className="material-icons">{item.iconName}</i>
+          </div>
         )}
         {item.title && <span>{item.title}</span>}
-        {item.htmlAfter && (
-          <div
-            className="d-inline-block item-icon-wrapper"
-            dangerouslySetInnerHTML={{ __html: item.htmlAfter }}
-          />
-        )}
       </NavLink>
       {item.items && (
         <Collapse tag={DropdownMenu} small open={item.open} style={{ top: 0 }}>
