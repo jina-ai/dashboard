@@ -10,7 +10,7 @@ type Props = {
   onChange: (e: any) => void;
 };
 
-export default function FormItem({
+export default function BaseFormTextInput({
   colSpan = 6,
   label,
   value,
