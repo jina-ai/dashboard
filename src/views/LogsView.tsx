@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import { LogLevelSummaryChart } from "../components/LogStream/LogLevelSummaryChart";
 import { LogLevelPieChart } from "../components/LogStream/LogLevelPieChart";
@@ -76,7 +76,6 @@ function LogsView() {
   const logLevelOccurrences = useSelector(selectLogLevelOccurrences);
   const logs = useSelector(selectLogs);
   const logLevels = useSelector(selectLogLevels);
-  const currentDate = useMemo(() => new Date(), []);
   const [selectedTime, setSelectedTime] = useState(() =>
     getInitialTimeSelection()
   );
@@ -86,7 +85,7 @@ function LogsView() {
       numSeconds[selectedTime],
       MAX_CHART_TICKS,
       logLevelOccurrences,
-      currentDate
+      new Date()
     )
   );
 
@@ -96,6 +95,7 @@ function LogsView() {
   }
 
   useEffect(() => {
+    const currentDate = new Date();
     const newCharts = getLogLevelCharts(
       numSeconds[selectedTime],
       MAX_CHART_TICKS,
@@ -103,7 +103,7 @@ function LogsView() {
       currentDate
     );
     setLogLevelCharts({ ...newCharts });
-  }, [selectedTime, logLevelOccurrences, currentDate]);
+  }, [selectedTime, logLevelOccurrences]);
 
   function showLog(activePoints: any) {
     const { data } = logLevelCharts;
