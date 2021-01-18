@@ -1,9 +1,17 @@
 import { LogStreamState, Message } from "./logStream.types";
 
+const startDate = new Date(0);
+const startEpochMilliSeconds = startDate.getTime();
+const startEpochSeconds = startEpochMilliSeconds / 1000;
+const oneSecLaterDate = new Date(startEpochMilliSeconds + 1000);
+const oneSecLaterEpochSeconds = oneSecLaterDate.getTime() / 1000;
+const startFormattedTimeStamp = startDate.toLocaleString();
+const oneSecLaterFormattedTimeStamp = oneSecLaterDate.toLocaleString();
+
 export const testLogStreamState1: LogStreamState = {
   logIndex: 0,
   logLevelOccurrences: {
-    0: {
+    [startEpochSeconds]: {
       lastLog: 0,
       levels: {
         INFO: 0,
@@ -17,7 +25,7 @@ export const testLogStreamState1: LogStreamState = {
   },
   logs: [
     {
-      created: 0,
+      created: startEpochSeconds,
       filename: "testFile_0.py",
       funcName: "testFunc_0",
       levelname: "INFO",
@@ -30,12 +38,12 @@ export const testLogStreamState1: LogStreamState = {
       processName: "testProcessName_0",
       thread: 0,
       threadName: "testThreadName_0",
-      createdDate: new Date(Date.parse("1970-01-01T00:00:00.000Z")),
+      createdDate: startDate,
       id: "testId_0",
       idx: 0,
       unixTime: 0,
-      timestamp: new Date(Date.parse("1970-01-01T00:00:00.000Z")),
-      formattedTimestamp: "1/1/1970, 0:00:00 AM",
+      timestamp: startDate,
+      formattedTimestamp: startFormattedTimeStamp,
     },
   ],
   logLevels: {
@@ -53,7 +61,7 @@ export const testLogStreamState1: LogStreamState = {
 
 export const testMessage: Message = {
   data: {
-    created: 1,
+    created: oneSecLaterEpochSeconds,
     filename: "testFile_1.py",
     funcName: "testFunc_1",
     levelname: "INFO",
@@ -72,7 +80,7 @@ export const testMessage: Message = {
 export const testLogStreamState2: LogStreamState = {
   logIndex: 0,
   logLevelOccurrences: {
-    "0": {
+    [startEpochSeconds]: {
       lastLog: 0,
       levels: {
         INFO: 0,
@@ -83,7 +91,7 @@ export const testLogStreamState2: LogStreamState = {
         DEBUG: 0,
       },
     },
-    "1": {
+    [oneSecLaterEpochSeconds]: {
       lastLog: 1,
       levels: {
         INFO: 1,
@@ -97,7 +105,7 @@ export const testLogStreamState2: LogStreamState = {
   },
   logs: [
     {
-      created: 0,
+      created: startEpochSeconds,
       filename: "testFile_0.py",
       funcName: "testFunc_0",
       levelname: "INFO",
@@ -110,15 +118,15 @@ export const testLogStreamState2: LogStreamState = {
       processName: "testProcessName_0",
       thread: 0,
       threadName: "testThreadName_0",
-      createdDate: new Date(Date.parse("1970-01-01T00:00:00.000Z")),
+      createdDate: startDate,
       id: "testId_0",
       idx: 0,
       unixTime: 0,
-      timestamp: new Date(Date.parse("1970-01-01T00:00:00.000Z")),
-      formattedTimestamp: "1/1/1970, 0:00:00 AM",
+      timestamp: startDate,
+      formattedTimestamp: startFormattedTimeStamp,
     },
     {
-      created: 1,
+      created: oneSecLaterEpochSeconds,
       filename: "testFile_1.py",
       funcName: "testFunc_1",
       levelname: "INFO",
@@ -131,12 +139,12 @@ export const testLogStreamState2: LogStreamState = {
       processName: "testProcessName_1",
       thread: 1,
       threadName: "testThreadName_1",
-      createdDate: new Date(Date.parse("1970-01-01T00:00:01.000Z")),
+      createdDate: oneSecLaterDate,
       id: "testId_1",
       idx: 1,
       unixTime: 1,
-      timestamp: new Date(Date.parse("1970-01-01T00:00:01.000Z")),
-      formattedTimestamp: "1/1/1970, 1:00:01 AM",
+      timestamp: oneSecLaterDate,
+      formattedTimestamp: oneSecLaterFormattedTimeStamp,
     },
   ],
   logLevels: {
