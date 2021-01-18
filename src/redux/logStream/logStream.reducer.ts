@@ -1,6 +1,6 @@
 import {
   HANDLE_NEW_LOG,
-  initialLogLevel,
+  getInitialLogLevel,
   intialLogStreamState,
   SHOW_LOG_INDEX,
 } from "./logStream.constants";
@@ -35,29 +35,52 @@ function _handleNewLog(
   state: LogStreamState,
   message: Message
 ): LogStreamState {
-  const newState = { ...state };
   const { data } = message;
-  const log = _transformLog(data, newState.logs.length);
-  const { process, name, levelName, unixTime } = log;
-  newState.logs.push(log);
+  const log = _transformLog(data, state.logs.length);
 
+  const { process, name, levelname, unixTime } = log;
   console.log(process);
-  //todo process must be handled in a global reducer, which is another branch
-  //  newState.processes[process] = log.name;
-  // remove console.log afterwards
+  //todo process must be handled in another reducer
 
-  newState.logSources[name]
-    ? newState.logSources[name]++
-    : (newState.logSources[name] = 1);
+  const newLogs = [...state.logs, log];
 
-  newState.logLevels[levelName]++;
+  const newLogSourceValue = state.logSources[name]
+    ? state.logSources[name] + 1
+    : 1;
 
-  if (!newState.logLevelOccurences[unixTime])
-    newState.logLevelOccurences[unixTime] = { ...initialLogLevel };
+  const newLogSources = {
+    ...state.logSources,
+    [name]: newLogSourceValue,
+  };
 
-  newState.logLevelOccurences[unixTime].levels[levelName]++;
-  newState.logLevelOccurences[unixTime].lastLog = log.idx;
+  const newLogLevelValue = state.logLevels[levelname]
+    ? state.logLevels[levelname] + 1
+    : 1;
 
+  const newLogLevels = {
+    ...state.logLevels,
+    [levelname]: newLogLevelValue,
+  };
+
+  const newLogLevelOccurrence = state.logLevelOccurrences[unixTime]
+    ? { ...state.logLevelOccurrences[unixTime] }
+    : getInitialLogLevel();
+
+  const newLogLevelOccurrences = {
+    ...state.logLevelOccurrences,
+    [unixTime]: newLogLevelOccurrence,
+  };
+
+  newLogLevelOccurrences[unixTime].levels[levelname]++;
+  newLogLevelOccurrences[unixTime].lastLog = log.idx;
+
+  const newState = {
+    ...state,
+    logs: newLogs,
+    logSources: newLogSources,
+    logLevels: newLogLevels,
+    logLevelOccurrences: newLogLevelOccurrences,
+  };
   return newState;
 }
 

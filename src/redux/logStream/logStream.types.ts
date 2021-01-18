@@ -20,7 +20,7 @@ export type RawLog = {
   created: number;
   filename: string;
   funcName: string;
-  levelName: Level;
+  levelname: Level;
   lineno: number;
   module: string;
   msg: string;
@@ -45,12 +45,14 @@ export type LogLevels = {
   [logLevel in Level]: number;
 };
 
+export type LogLevelOccurrences = {
+  [timeStamp: number]: RawLogLevel;
+};
+
 export type LogStreamState = {
   logIndex: number;
-  logLevelOccurences: {
-    [timeStamp: number]: RawLogLevel;
-  };
-  logs: RawLog[];
+  logLevelOccurrences: LogLevelOccurrences;
+  logs: ProcessedLog[];
   logLevels: LogLevels;
   logSources: {
     [pea: string]: number;

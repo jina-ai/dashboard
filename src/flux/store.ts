@@ -1,18 +1,16 @@
 import { EventEmitter } from "events";
 import _ from "lodash";
 import { nanoid } from "nanoid";
-import { Constants, Dispatcher, transformLog } from "./";
+import { Constants, Dispatcher } from "./";
 import { parseYAML, formatForFlowchart, formatSeconds } from "../helpers";
 import api from "./api";
 import logger from "../logger";
 import propertyList from "../data/podProperties.json";
 import getSidebarNavItems from "../data/sidebar-nav-items";
 import exampleFlows from "../data/exampleFlows";
-import { Level, RawLogEntry } from "./tranformLog";
 
-const MAX_CHART_TICKS = 60;
 const HIDE_BANNER_TIMEOUT = 5000;
-const TASK_UPDATE_INTERVAL = 500;
+//const TASK_UPDATE_INTERVAL = 500;
 
 function getExampleFlows() {
   const flows: LooseObject = {};
@@ -70,20 +68,6 @@ function getInitialFlow() {
     },
     links: {},
     offset: { x: 0, y: 0 },
-  };
-}
-
-function getInitialLevelOccurences(): RawLogEntry {
-  return {
-    lastLog: 0,
-    levels: {
-      INFO: 0,
-      SUCCESS: 0,
-      WARNING: 0,
-      ERROR: 0,
-      CRITICAL: 0,
-      DEBUG: 0,
-    },
   };
 }
 
@@ -238,7 +222,6 @@ class StoreBase extends EventEmitter {
     _store = getInitialStore();
 
     await this.initFlowChart();
-    this.initLogStream();
     this.initHub();
     this.initUser();
 
@@ -290,19 +273,6 @@ class StoreBase extends EventEmitter {
     this.emit("update-flowchart");
   };
 
-  initLogStream = () => {
-    api.connect(
-      _store.settings,
-      this.handleLogConnectionStatus,
-      this.handleNewLog,
-      this.handleNewTaskEvent
-    );
-    _updateTaskInterval = setInterval(
-      () => this.emit("update-task"),
-      TASK_UPDATE_INTERVAL
-    );
-  };
-
   handleLogConnectionStatus = (status: string, message: string) => {
     logger.log("handleLogConnectionStatus - status", status);
     logger.log("handleLogConnectionStatus - message", message);
@@ -314,30 +284,6 @@ class StoreBase extends EventEmitter {
       _store.connected = false;
     }
     this.emit("update-ui");
-  };
-
-  handleNewLog = (message: { data: any }) => {
-    const { data } = message;
-    const log = transformLog(data, _store.logs.length);
-
-    const { process, name, levelname, unixTime } = log;
-
-    _store.logs.push(log);
-    _store.processes[process] = log.name;
-
-    if (_store.logSources[name]) _store.logSources[name]++;
-    else _store.logSources[name] = 1;
-
-    if (_store.logLevels[levelname]) _store.logLevels[levelname]++;
-    else _store.logLevels[levelname] = 1;
-
-    if (!_store.logLevelOccurences[unixTime])
-      _store.logLevelOccurences[unixTime] = getInitialLevelOccurences();
-
-    _store.logLevelOccurences[unixTime].levels[levelname]++;
-    _store.logLevelOccurences[unixTime].lastLog = log.idx;
-
-    this.emit("update-logs");
   };
 
   handleNewTaskEvent = (message: { data: any }) => {
@@ -719,30 +665,6 @@ class StoreBase extends EventEmitter {
 
   getSummaryCharts = () => {
     return _store.summaryCharts;
-  };
-
-  getLogLevelCharts = (numSeconds: number = 60) => {
-    const emptyItem = getInitialLevelOccurences();
-    const step = numSeconds / MAX_CHART_TICKS;
-    const data = [];
-    const currentInterval = Math.ceil(+new Date() / 1000 / step) * step;
-    const now = Math.floor(+new Date() / 1000);
-    for (let i = currentInterval - numSeconds; i < currentInterval; i += step) {
-      let item = _.cloneDeep(emptyItem);
-      for (let j = i; j < i + step; ++j) {
-        const occurence = _store.logLevelOccurences[j];
-        if (!occurence) continue;
-        item.lastLog = occurence.lastLog;
-        Object.entries(occurence.levels).forEach((logEntry) => {
-          const level = logEntry[0] as Level;
-          const amount = logEntry[1] as number;
-          item.levels[level] = item.levels[level] + amount;
-        });
-      }
-      data.push(item);
-    }
-
-    return { data, numSeconds, numTicks: MAX_CHART_TICKS, lastTimestamp: now };
   };
 
   getLogLevelOccurences = () => {

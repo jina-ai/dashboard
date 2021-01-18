@@ -6,7 +6,7 @@ export const HANDLE_NEW_LOG = "HANDLE_NEW_LOG";
 
 export const intialLogStreamState: LogStreamState = {
   logIndex: 0,
-  logLevelOccurences: {},
+  logLevelOccurrences: {},
   logs: [],
   logLevels: {
     INFO: 0,
@@ -19,7 +19,7 @@ export const intialLogStreamState: LogStreamState = {
   logSources: {},
 };
 
-export const initialLogLevel: RawLogLevel = {
+export const getInitialLogLevel = (): RawLogLevel => ({
   lastLog: 0,
   levels: {
     INFO: 0,
@@ -29,4 +29,4 @@ export const initialLogLevel: RawLogLevel = {
     CRITICAL: 0,
     DEBUG: 0,
   },
-};
+});
