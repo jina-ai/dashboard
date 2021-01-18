@@ -112,13 +112,14 @@ export const formatBytes = (numBytes: number): string => {
 export function getLogLevelCharts(
   numSeconds: number = 60,
   MAX_CHART_TICKS: number,
-  logLevelOccurrences: LogLevelOccurrences
+  logLevelOccurrences: LogLevelOccurrences,
+  currentDate: Date
 ) {
   const emptyItem = getInitialLogLevel();
   const step = numSeconds / MAX_CHART_TICKS;
   const data = [];
-  const currentInterval = Math.ceil(+new Date() / 1000 / step) * step;
-  const now = Math.floor(+new Date() / 1000);
+  const currentInterval = Math.ceil(currentDate / 1000 / step) * step;
+  const now = Math.floor(currentDate / 1000);
   for (let i = currentInterval - numSeconds; i < currentInterval; i += step) {
     let item = _.cloneDeep(emptyItem);
     for (let j = i; j < i + step; ++j) {
