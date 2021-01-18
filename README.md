@@ -1,4 +1,4 @@
-# Dashboard (beta)
+# Dashboard
 
 ![CD](https://github.com/jina-ai/dashboard/workflows/CD/badge.svg)
 [![Jina](https://github.com/jina-ai/jina/blob/master/.github/badges/jina-badge.svg "We fully commit to open-source")](https://jina.ai)
