@@ -8,9 +8,9 @@ describe('The Flow Page', () => {
 
   context('When the dev server is connected', () => {
 
-    it('should display the connection', () => {
-      cy.dataName("connection-notification-body").contains('Logserver connection established at http://localhost:5000')
-    })
+    // it('should display the connection', () => {
+    //   cy.dataName("connection-notification-body").contains('Logserver connection established at http://localhost:5000')
+    // })
 
   })
 
