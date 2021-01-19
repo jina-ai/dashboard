@@ -1,18 +1,25 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import { LogLevelSummaryChart } from "../components/LogStream/LogLevelSummaryChart";
 import { LogLevelPieChart } from "../components/LogStream/LogLevelPieChart";
 import { PageTitle } from "../components/Common/PageTitle";
 import { LogsTable } from "../components/LogStream/LogsTable";
-import { Store, Dispatcher, Constants } from "../flux";
+import { Dispatcher, Constants } from "../flux";
+import { useDispatch, useSelector } from "react-redux";
+import { showLogAtIndex } from "../redux/logStream/logStream.actions";
+import {
+  selectLogLevelOccurrences,
+  selectLogLevels,
+  selectLogs,
+} from "../redux/logStream/logStream.selectors";
 
-const LOGS_UPDATE_INTERVAL = 20;
-const CHART_UPDATE_INTERVAL = 1000;
+import { getLogLevelCharts } from "../helpers/format";
 
-let chartUpdateInterval: any;
-let logsUpdateInterval: any;
+type TimePreference = "60second" | "15minute" | "1hour";
 
-const DEFAULT_TIME_SELECTION = "60second";
+const DEFAULT_TIME_SELECTION: TimePreference = "60second";
+
+const MAX_CHART_TICKS = 60;
 
 const TIME_PREFERENCE_NAME = "logs-time-preference";
 
@@ -56,8 +63,6 @@ function getInitialTimeSelection() {
   return getUserTimePreference() || DEFAULT_TIME_SELECTION;
 }
 
-type TimePreference = "60second" | "15minute" | "1hour";
-
 const showLogDetails = (log: any) => {
   Dispatcher.dispatch({
     actionType: Constants.SHOW_MODAL,
@@ -65,24 +70,23 @@ const showLogDetails = (log: any) => {
   });
 };
 
-function showLogInTable(index: number) {
-  Dispatcher.dispatch({
-    actionType: Constants.SHOW_LOG_AT_INDEX,
-    payload: index,
-  });
-}
-
 function LogsView() {
-  const hasNewLogs = React.useRef(false);
-  const [logs, setLogs] = useState(() => Store.getLogs());
+  const dispatch = useDispatch();
+
+  const logLevelOccurrences = useSelector(selectLogLevelOccurrences);
+  const logs = useSelector(selectLogs);
+  const logLevels = useSelector(selectLogLevels);
   const [selectedTime, setSelectedTime] = useState(() =>
     getInitialTimeSelection()
   );
-  const [logLevelOccurrences, setLogLevelOccurrences] = useState(() =>
-    Store.getLogLevelOccurences()
-  );
+
   const [logLevelCharts, setLogLevelCharts] = useState(() =>
-    Store.getLogLevelCharts(numSeconds[selectedTime])
+    getLogLevelCharts(
+      numSeconds[selectedTime],
+      MAX_CHART_TICKS,
+      logLevelOccurrences,
+      new Date()
+    )
   );
 
   function setTimeSelection(time: TimePreference) {
@@ -90,51 +94,25 @@ function LogsView() {
     setUserTimePreference(time);
   }
 
-  function updateLogs() {
-    const newLogs = Store.getLogs();
-    const newOccurrences = Store.getLogLevelOccurences();
-    setLogs([...newLogs]);
-    setLogLevelOccurrences({ ...newOccurrences });
-  }
-
-  const updateChart = useCallback(() => {
-    const newCharts = Store.getLogLevelCharts(numSeconds[selectedTime]);
+  useEffect(() => {
+    const currentDate = new Date();
+    const newCharts = getLogLevelCharts(
+      numSeconds[selectedTime],
+      MAX_CHART_TICKS,
+      logLevelOccurrences,
+      currentDate
+    );
     setLogLevelCharts({ ...newCharts });
-  }, [selectedTime]);
+  }, [selectedTime, logLevelOccurrences]);
 
   function showLog(activePoints: any) {
     const { data } = logLevelCharts;
     let index = activePoints[0] && activePoints[0]._index;
     if (index && typeof index !== "undefined") {
       const { lastLog } = data[index];
-      showLogInTable(lastLog);
+      dispatch(showLogAtIndex(lastLog));
     }
   }
-
-  function checkForNewLogs() {
-    if (!hasNewLogs.current) return;
-    hasNewLogs.current = false;
-    updateLogs();
-  }
-
-  function onNewLogs() {
-    hasNewLogs.current = true;
-  }
-
-  useEffect(() => {
-    Store.on("update-logs", onNewLogs);
-    logsUpdateInterval = setInterval(checkForNewLogs, LOGS_UPDATE_INTERVAL);
-    chartUpdateInterval = setInterval(updateChart, CHART_UPDATE_INTERVAL);
-    return () => {
-      Store.removeListener("update-logs", onNewLogs);
-      clearInterval(logsUpdateInterval);
-      clearInterval(chartUpdateInterval);
-    };
-  }, [updateChart]); // eslint-disable-line react-hooks/exhaustive-deps
-
-  useEffect(() => {
-    updateChart();
-  }, [updateChart]);
 
   const timeSelection = timeOptions[selectedTime];
 
@@ -156,7 +134,7 @@ function LogsView() {
             />
           </Col>
           <Col md="2" className="mb-4">
-            <LogLevelPieChart data={logLevelOccurrences} />
+            <LogLevelPieChart data={logLevels} />
           </Col>
         </Row>
         <LogsTable data={logs} showLogDetails={showLogDetails} />
