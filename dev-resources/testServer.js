@@ -8,6 +8,7 @@ const EventSource = require("eventsource");
 const fs = require("fs-extra");
 const { nanoid } = require("nanoid");
 const { argv } = require("yargs");
+const readline = require('readline')
 
 const config = require("./config");
 
@@ -71,8 +72,8 @@ app.get(yamlEndpoint, (req, res) => {
 
 //CONSOLE OUTPUT
 function printEmitterStatus() {
-  process.stdout.clearLine();
-  process.stdout.cursorTo(0);
+  readline.clearLine(process.stdout, 0)
+  readline.cursorTo(process.stdout, 0, null)
   process.stdout.write(
     `Active Streams: ${
       activeStreams ? chalk.green(activeStreams) : chalk.gray(activeStreams)
@@ -93,8 +94,8 @@ function updateEmitterStatus() {
 }
 
 function printRecorderStatus() {
-  process.stdout.clearLine();
-  process.stdout.cursorTo(0);
+  readline.clearLine(process.stdout, 0)
+  readline.cursorTo(process.stdout, 0, null)
   let logsReceived = logData.length;
   let profileReceived = profileData.length;
   process.stdout.write(
@@ -203,15 +204,15 @@ async function endRecording() {
   let totalLogs = logData.length;
   let totalProfile = profileData.length;
   if (!(totalLogs || totalProfile || yaml)) {
-    process.stdout.clearLine();
-    process.stdout.cursorTo(0);
+    readline.clearLine(process.stdout, 0)
+    readline.cursorTo(process.stdout, 0, null)
     console.log(chalk.redBright("No data recorded"));
     return process.exit();
   }
   const filepath = `${config.recorder.saveDir}/${nanoid()}.json`;
 
-  process.stdout.clearLine();
-  process.stdout.cursorTo(0);
+  readline.clearLine(process.stdout, 0)
+  readline.cursorTo(process.stdout, 0, null)
   console.log(chalk.yellow("Recording stopped"));
   console.log();
   console.log(chalk.underline("Summary"));
