@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import { Dispatcher, Constants, Store } from "../flux";
 import { PageTitle } from "../components/Common/PageTitle";
 import { MultiFilterSelect } from "../components/Common/MultiFilterSelect";
 import { ExpandingSearchbar } from "../components/Common/ExpandingSearchbar";
 import ImageCard from "../components/Hub/ImageCard";
-import HubOverviewActionsContainer from "../components/Hub/HubOverviewActionsContainer"
+import HubOverviewActionsContainer from "../components/Hub/HubOverviewActionsContainer";
 
 const categoryOptions = [
   { value: "all", label: "All Categories" },
@@ -20,33 +20,33 @@ const sortOptions = [
 ];
 
 const HubView = () => {
-  const [images, setImages] = useState([])
-  const [sortType, setSortType] = useState('')
-  const [category, setCategory] = useState('')
-  const [searchQuery, setSearchQuery] = useState('')
+  const [images, setImages] = useState([]);
+  const [sortType, setSortType] = useState("");
+  const [category, setCategory] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
-    Store.on("update-hub", getHubImages)
+    Store.on("update-hub", getHubImages);
     // cleanup
     return () => {
-      Store.removeListener("update-hub", getHubImages)
-    }
-  })
+      Store.removeListener("update-hub", getHubImages);
+    };
+  });
 
-  useEffect(() => {
-    search()
-  }, [sortType, category, searchQuery, search])
-
-  const getHubImages = () => {
-    const images = Store.getHubImages()
-    setImages(images)
-  };
-
-  const search = () => {
+  const search = useCallback(() => {
     Dispatcher.dispatch({
       actionType: Constants.SEARCH_HUB,
       payload: { category, q: searchQuery, sort: sortType },
     });
+  }, [sortType, category, searchQuery]);
+
+  useEffect(() => {
+    search();
+  }, [search]);
+
+  const getHubImages = () => {
+    const images = Store.getHubImages();
+    setImages(images);
   };
 
   return (
@@ -94,6 +94,6 @@ const HubView = () => {
       </div>
     </Container>
   );
-}
+};
 
 export default HubView;
