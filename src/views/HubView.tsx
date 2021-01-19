@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import { Dispatcher, Constants, Store } from "../flux";
 import { PageTitle } from "../components/Common/PageTitle";
 import { MultiFilterSelect } from "../components/Common/MultiFilterSelect";
 import { ExpandingSearchbar } from "../components/Common/ExpandingSearchbar";
 import ImageCard from "../components/Hub/ImageCard";
+import HubOverviewActionsContainer from "../components/Hub/HubOverviewActionsContainer"
 
 const categoryOptions = [
   { value: "all", label: "All Categories" },
@@ -18,95 +19,81 @@ const sortOptions = [
   { value: "newest", label: "Newest" },
 ];
 
-class HubView extends React.Component<any, any> {
-  constructor(props: any) {
-    super(props);
-    this.state = {
-      images: Store.getHubImages(),
-      sortType: "suggested",
-      category: "all",
-      searchQuery: "",
-    };
+const HubView = () => {
+  const [images, setImages] = useState([])
+  const [sortType, setSortType] = useState('')
+  const [category, setCategory] = useState('')
+  const [searchQuery, setSearchQuery] = useState('')
 
-    Store.on("update-hub", this.getHubImages);
-  }
+  useEffect(() => {
+    Store.on("update-hub", getHubImages)
+    // cleanup
+    return () => {
+      Store.removeListener("update-hub", getHubImages)
+    }
+  })
 
-  componentWillUnmount = () => {
-    Store.removeListener("update-hub", this.getHubImages);
+  useEffect(() => {
+    search()
+  }, [sortType, category, searchQuery, search])
+
+  const getHubImages = () => {
+    const images = Store.getHubImages()
+    setImages(images)
   };
 
-  getHubImages = () => {
-    const images = Store.getHubImages();
-    this.setState({ images });
-  };
-
-  sortBy = (sortType: string) => {
-    this.setState({ sortType }, this.search);
-  };
-
-  setCategory = (category: string) => {
-    this.setState({ category }, this.search);
-  };
-
-  updateSearch = (searchQuery: string) => {
-    this.setState({ searchQuery }, this.search);
-  };
-
-  search = () => {
-    const { category, searchQuery, sortType } = this.state;
+  const search = () => {
     Dispatcher.dispatch({
       actionType: Constants.SEARCH_HUB,
       payload: { category, q: searchQuery, sort: sortType },
     });
   };
 
-  render = () => {
-    const { images, searchQuery } = this.state;
-    return (
-      <Container fluid className="main-content-container px-0">
-        <div className="px-4">
-          <Row className="page-header">
-            <PageTitle title="Jina Hub" className="text-sm-left mb-3" />
-          </Row>
-          <Row className="mb-4">
-            <Col md="8">
-              <MultiFilterSelect
-                options={categoryOptions}
-                onFilterChange={(option: any[]) =>
-                  this.setCategory(option[0].value)
-                }
-                className="hub-select mb-2 mr-0 mb-md-0 mr-md-2"
-                placeholder="All Categories"
-                isSearchable={false}
-              />
-              <MultiFilterSelect
-                options={sortOptions}
-                onFilterChange={(option: any[]) => this.sortBy(option[0].value)}
-                className="hub-select mb-2 mr-0 mb-md-0 mr-md-2"
-                placeholder="Suggested"
-                isSearchable={false}
-              />
+  return (
+    <Container fluid className="main-content-container px-0">
+      <div className="px-4">
+        <Row className="page-header">
+          <PageTitle title="Jina Hub" className="text-sm-left mb-3" />
+        </Row>
+        <Row>
+          <HubOverviewActionsContainer />
+        </Row>
+        <Row className="mb-4">
+          <Col md="8">
+            <MultiFilterSelect
+              options={categoryOptions}
+              onFilterChange={(option: any[]) => setCategory(option[0].value)}
+              className="hub-select mb-2 mr-0 mb-md-0 mr-md-2"
+              placeholder="All Categories"
+              isSearchable={false}
+            />
+            <MultiFilterSelect
+              options={sortOptions}
+              onFilterChange={(option: any[]) => setSortType(option[0].value)}
+              className="hub-select mb-2 mr-0 mb-md-0 mr-md-2"
+              placeholder="Suggested"
+              isSearchable={false}
+            />
+          </Col>
+          <Col md="4">
+            <ExpandingSearchbar
+              variant="gray"
+              placeholder="search hub..."
+              value={searchQuery}
+              onChange={setSearchQuery}
+            />
+          </Col>
+        </Row>
+        <Row>
+          {Object.keys(images).map((imageId) => (
+            <Col key={imageId} md="3" className="mb-4">
+              <ImageCard image={(images as any)[imageId]} />
             </Col>
-            <Col md="4">
-              <ExpandingSearchbar
-                variant="gray"
-                placeholder="search hub..."
-                value={searchQuery}
-                onChange={this.updateSearch}
-              />
-            </Col>
-          </Row>
-          <Row>
-            {Object.keys(images).map((imageId) => (
-              <Col key={imageId} md="3" className="mb-4">
-                <ImageCard image={(images as any)[imageId]} />
-              </Col>
-            ))}
-          </Row>
-        </div>
-      </Container>
-    );
-  };
+          ))}
+        </Row>
+      </div>
+    </Container>
+  );
 }
 
 export default HubView;

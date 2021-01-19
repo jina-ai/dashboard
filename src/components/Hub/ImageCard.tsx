@@ -1,7 +1,6 @@
 import React from "react";
 import { Row, Col, Card } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import StarRating from "./StarRating";
 import { HubImage } from "./types";
 
 type Props = {
@@ -15,14 +14,7 @@ export default function ImageCard({ image }: Props) {
     official,
     author,
     description,
-    totalStars,
-    totalRatings,
   } = image;
-
-  let rating;
-  if (image.totalStars && image.totalRatings) {
-    rating = totalStars / totalRatings;
-  }
 
   return (
     <Link className="unstyled-link" to={`/package?id=${id}`}>
@@ -43,11 +35,6 @@ export default function ImageCard({ image }: Props) {
           </Row>
         </Card.Body>
         <Card.Footer className="pt-0 px-3 pb-3">
-          {totalRatings ? (
-            <StarRating rating={rating} totalRatings={totalRatings} />
-          ) : (
-            <span className="text-muted">no ratings</span>
-          )}
           {official && (
             <span className="float-right">
               <img src="/jina-j.png" alt="Official Package" width={30} />
