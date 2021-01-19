@@ -10,7 +10,6 @@ import getSidebarNavItems from "../data/sidebar-nav-items";
 import exampleFlows from "../data/exampleFlows";
 
 const HIDE_BANNER_TIMEOUT = 5000;
-//const TASK_UPDATE_INTERVAL = 500;
 
 function getExampleFlows() {
   const flows: LooseObject = {};
