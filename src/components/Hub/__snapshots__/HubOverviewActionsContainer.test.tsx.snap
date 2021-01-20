@@ -2,23 +2,39 @@
 
 exports[`actions on hub homepage 1`] = `
 Array [
-  <h2>
-    Explore
-  </h2>,
-  <p>
-    Find out what you can do in Jina hub and how you platform works.
-  </p>,
-  <button>
-    Read more
-  </button>,
-  <h2>
-    Create
-  </h2>,
-  <p>
-    Create
-  </p>,
-  <button>
-    Let's Go
-  </button>,
+  <div
+    className="css-1lmpp88"
+  >
+    <span
+      className="css-kysenj"
+    >
+      Explore
+    </span>
+    <p>
+      Find out what you can do in Jina hub and how you platform works.
+    </p>
+    <button
+      className="css-mbxeyf"
+    >
+      Read more
+    </button>
+  </div>,
+  <div
+    className="css-1lmpp88"
+  >
+    <span
+      className="css-kysenj"
+    >
+      Create
+    </span>
+    <p>
+      Create
+    </p>
+    <button
+      className="css-mbxeyf"
+    >
+      Let's Go
+    </button>
+  </div>,
 ]
 `;
