@@ -13,7 +13,7 @@ type SubItem = {
   to: string;
 };
 
-type NavItem = {
+type NavigationItem = {
   title: string;
   to: string;
   open: boolean;
@@ -23,11 +23,11 @@ type NavItem = {
 };
 
 type Props = {
-  item: NavItem;
+  item: NavigationItem;
   toggleSidebar: () => void;
 };
 
-export default ({ item, toggleSidebar }: Props) => {
+const SidebarNavItem = ({ item, toggleSidebar }: Props) => {
   const hasSubItems = item.items && item.items.length;
   const path = useLocation()?.pathname?.substring(1);
   let active = false;
@@ -63,3 +63,5 @@ export default ({ item, toggleSidebar }: Props) => {
     </NavItem>
   );
 };
+
+export default SidebarNavItem;

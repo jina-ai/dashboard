@@ -27,7 +27,7 @@ type Props = {
   importYAML: (yamlString: string) => void;
 };
 
-export default ({ open, closeModal, importYAML }: Props) => {
+const PasteYAML = ({ open, closeModal, importYAML }: Props) => {
   let inputRef: any;
   return (
     <ReactModal
@@ -72,3 +72,5 @@ export default ({ open, closeModal, importYAML }: Props) => {
     </ReactModal>
   );
 };
+
+export default PasteYAML;

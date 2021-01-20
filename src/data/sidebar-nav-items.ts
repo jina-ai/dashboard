@@ -1,4 +1,4 @@
-export default function () {
+const sidebarNavItems = function () {
   return [
     {
       items: [
@@ -47,4 +47,6 @@ export default function () {
       ],
     },
   ];
-}
+};
+
+export default sidebarNavItems;

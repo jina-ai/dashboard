@@ -28,7 +28,7 @@ type ConnectionUpdate = (messageType: string, message: string) => void;
 
 type UpdateHandler = (update: { type: string; data: string }) => void;
 
-export default {
+const api = {
   connect: (
     settings: Settings,
     connectionUpdate: ConnectionUpdate,
@@ -136,3 +136,5 @@ export default {
     return result.data;
   },
 };
+
+export default api;
