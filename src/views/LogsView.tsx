@@ -14,6 +14,7 @@ import {
 } from "../redux/logStream/logStream.selectors";
 
 import { getLogLevelCharts } from "../helpers/format";
+import { Store } from "../flux/store";
 
 type TimePreference = "60second" | "15minute" | "1hour";
 
@@ -71,6 +72,7 @@ const showLogDetails = (log: any) => {
 };
 
 function LogsView() {
+  console.log(Store.getStoreCopy());
   const dispatch = useDispatch();
 
   const logLevelOccurrences = useSelector(selectLogLevelOccurrences);

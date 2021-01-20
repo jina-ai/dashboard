@@ -8,17 +8,21 @@ import { LogStreamState, Message } from "./logStream/logStream.types";
 import logStreamReducer from "./logStream/logStream.reducer";
 import api from "../flux/api";
 import { handleNewLog } from "./logStream/logStream.actions";
+import { GlobalState } from "./global/global.types";
+import globalReducer from "./global/global.reducer";
 
 export type State = {
   flowState: FlowState;
   settingsState: SettingsState;
   logStreamState: LogStreamState;
+  globalState: GlobalState;
 };
 
 const rootReducer = combineReducers({
   flowState: flowReducer,
   settingsState: settingsReducer,
   logStreamState: logStreamReducer,
+  globalState: globalReducer,
 });
 
 const store = createStore(rootReducer, composeWithDevTools());

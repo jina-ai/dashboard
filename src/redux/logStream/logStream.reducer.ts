@@ -38,9 +38,7 @@ function _handleNewLog(
   const { data } = message;
   const log = _transformLog(data, state.logs.length);
 
-  const { process, name, levelname, unixTime } = log;
-  console.log(process);
-  //todo process must be handled in another reducer
+  const { name, levelname, unixTime } = log;
 
   const newLogs = [...state.logs, log];
 

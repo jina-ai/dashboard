@@ -6,6 +6,7 @@ import {
   testMessage,
 } from "./logStream.testData";
 import nanoid from "nanoid";
+import { initialGlobalState } from "../global/global.constants";
 jest.mock("nanoid");
 
 describe("logStream reducer", () => {
@@ -25,5 +26,11 @@ describe("logStream reducer", () => {
       handleNewLog(testMessage)
     );
     expect(newLogStreamState).toEqual(testLogStreamState2);
+  });
+});
+
+describe("logStream selectors", () => {
+  it("should select correct values", () => {
+    selectLogs(initialGlobalState);
   });
 });
