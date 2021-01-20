@@ -31,6 +31,7 @@ type ConnectionUpdate = (messageType: string, message: string) => void;
 type UpdateHandler = (update: { type: string; data: string }) => void;
 
 type HandleNewLog = (message: Message) => void;
+
 const api = {
   connect: (
     settings: Settings,

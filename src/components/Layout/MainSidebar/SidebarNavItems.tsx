@@ -11,7 +11,7 @@ type Props = {
   toggleSidebar: () => void;
 };
 
-export default ({ navItems: items, toggleSidebar }: Props) => {
+const SidebarNavItems = ({ navItems: items, toggleSidebar }: Props) => {
   return (
     <div className="nav-wrapper">
       {items.map((nav, idx) => (
@@ -33,3 +33,5 @@ export default ({ navItems: items, toggleSidebar }: Props) => {
     </div>
   );
 };
+
+export default SidebarNavItems;

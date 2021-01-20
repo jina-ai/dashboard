@@ -1,18 +1,6 @@
 import React from "react";
 import Select, { Props as SelectProps } from "react-select";
 
-const CHART_LEVELS = [
-  "INFO",
-  "SUCCESS",
-  "WARNING",
-  "ERROR",
-  "CRITICAL",
-  "DEBUG",
-] as const;
-
-type LevelType = typeof CHART_LEVELS[number];
-type Option = { value: string; label: any };
-
 const customStyles = {
   dropdownIndicator: (styles: any) => ({
     ...styles,
