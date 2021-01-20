@@ -1,6 +1,8 @@
 import axios from "axios";
 import logger from "../logger";
 import { hubURL, timeout } from "./config";
+import { Message } from "../redux/logStream/logStream.types";
+
 let logStream: EventSource;
 let taskStream: EventSource;
 
@@ -28,11 +30,13 @@ type ConnectionUpdate = (messageType: string, message: string) => void;
 
 type UpdateHandler = (update: { type: string; data: string }) => void;
 
+type HandleNewLog = (message: Message) => void;
+
 const api = {
   connect: (
     settings: Settings,
     connectionUpdate: ConnectionUpdate,
-    logUpdate: UpdateHandler,
+    logUpdate: HandleNewLog,
     taskUpdate: UpdateHandler
   ) => {
     logger.log("api - connect - settings", settings);
@@ -41,8 +45,8 @@ const api = {
       settings.log.startsWith("/") ? settings.log : "/" + settings.log
     }`;
     logger.log("api - connect - logString", logString);
-
     if (logStream) logStream.close();
+
     logStream = new EventSource(logString);
 
     logStream.onopen = () => {
@@ -54,7 +58,7 @@ const api = {
     };
 
     logStream.onmessage = (m) => {
-      logUpdate({ type: "log", data: JSON.parse(m.data) });
+      logUpdate({ data: JSON.parse(m.data) });
     };
 
     logStream.onerror = (data) => {

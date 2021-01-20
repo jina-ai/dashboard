@@ -9,7 +9,7 @@ import { saveAs } from "file-saver";
 import { MultiFilterSelect } from "../Common/MultiFilterSelect";
 import { LogItem } from "./LogItem";
 import { LogsTableHeader } from "./LogsTableHeader";
-import { ProcessedLog } from "../../flux/tranformLog";
+import { ProcessedLog } from "../../redux/logStream/logStream.types";
 import { ExpandingSearchbar } from "../Common/ExpandingSearchbar";
 import { LogGroup } from "./LogGroup";
 

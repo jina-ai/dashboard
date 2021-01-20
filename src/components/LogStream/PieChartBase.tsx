@@ -4,9 +4,9 @@ import ChartElement, {
   ChartOptions,
   ChartData,
 } from "chart.js";
-import { LogLevelPieChartData } from "./types";
 import { useTheme } from "@emotion/react";
 import { getLevels } from "./levels";
+import { LogLevels } from "../../redux/logStream/logStream.types";
 
 const DEFAULT_HEIGHT = 50;
 const DEFAULT_WIDTH = 50;
@@ -14,7 +14,7 @@ const DEFAULT_WIDTH = 50;
 type Props = {
   width?: number;
   height?: number;
-  data: LogLevelPieChartData;
+  data: LogLevels;
 };
 
 function PieChartBase({ width, height, data }: Props) {
