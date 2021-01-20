@@ -1,10 +1,10 @@
 import React from "react";
 import { Card } from "react-bootstrap";
 import PieChart from "./PieChartBase";
-import { LogLevelPieChartData } from "./types";
+import { LogLevels } from "../../redux/logStream/logStream.types";
 
 type Props = {
-  data: LogLevelPieChartData;
+  data: LogLevels;
 };
 
 function LogLevelPieChart({ data }: Props) {
