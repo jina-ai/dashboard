@@ -46,7 +46,7 @@ type Match =
   | "settings"
   | "help";
 
-export type NavItem = {
+export type TNavItem = {
   title: Title;
   to: To;
   iconName: IconName;
@@ -55,20 +55,34 @@ export type NavItem = {
 
 type Tap = "logStream";
 
-export type Banner =
-  | {
-      message: string;
-      theme: string;
-    }
-  | {};
+export type Banner = {
+  message: string;
+  theme: string;
+} | null;
+
+export type User = {
+  displayName: string;
+  emails: [{ value: string }];
+  id: string;
+  nodeId: string;
+  photos: [{ value: string }];
+  profileUrl: string;
+  provider: string;
+  username: string;
+  _json: any;
+  _raw: any;
+} | null;
 export type GlobalState = {
+  user: User;
   connected: boolean;
   banner: Banner;
   loading: boolean;
   modal: string;
-  modalParams: {};
+  modalParams: {
+    imageId: string;
+  } | null;
   menuVisible: boolean;
-  navItems: NavItem[];
+  navItems: TNavItem[];
   processes: {
     [processNum: number]: string;
   };

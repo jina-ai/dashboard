@@ -15,6 +15,17 @@ import LogDetails from "../modals/LogDetails";
 import logger from "../logger";
 
 import { Store, Dispatcher, Constants } from "../flux";
+import { useSelector } from "react-redux";
+import {
+  selectBanner,
+  selectConnectionStatus,
+  selectLoading,
+  selectMenuState,
+  selectModal,
+  selectModalParams,
+  selectSidebarItems,
+  selectUser,
+} from "../redux/global/global.selectors";
 
 type IconSideBarLayoutProps = {
   children: React.ReactNode;
@@ -23,15 +34,15 @@ type IconSideBarLayoutProps = {
 };
 
 const IconSidebarLayout = (props: IconSideBarLayoutProps) => {
-  const modal = Store.getModal();
-  const modalParams = Store.getModalParams();
-  const loading = Store.isLoading();
-  const banner = Store.getBanner();
-  const connected = Store.getConnectionStatus();
+  const modal = useSelector(selectModal);
+  const modalParams = useSelector(selectModalParams);
+  const loading = useSelector(selectLoading);
+  const banner = useSelector(selectBanner);
+  const connected = useSelector(selectConnectionStatus);
   const loggerEnabled = logger.isEnabled();
-  const menuVisible = Store.getMenuState();
-  const sidebarNavItems = Store.getSidebarItems();
-  const user = Store.getUser();
+  const menuVisible = useSelector(selectMenuState);
+  const sidebarNavItems = useSelector(selectSidebarItems);
+  const user = useSelector(selectUser);
   const [acceptedCookies, setAcceptedCookies] = useState<boolean>(
     localStorage.getItem("accepted-cookies") === "true"
   );
@@ -55,11 +66,13 @@ const IconSidebarLayout = (props: IconSideBarLayoutProps) => {
   };
 
   const submitReview = (content: any) => {
-    const { imageId } = modalParams;
-    Dispatcher.dispatch({
-      actionType: Constants.POST_REVIEW,
-      payload: { content, imageId },
-    });
+    if (modalParams) {
+      const { imageId } = modalParams;
+      Dispatcher.dispatch({
+        actionType: Constants.POST_REVIEW,
+        payload: { content, imageId },
+      });
+    }
   };
 
   const reconnect = () => {

@@ -31,7 +31,7 @@ type Props = {
 };
 
 const LogDetails = ({ open, closeModal, modalParams }: Props) => {
-  const log = modalParams.log || {};
+  const log = modalParams?.log || {};
   return (
     <ReactModal
       ariaHideApp={false}

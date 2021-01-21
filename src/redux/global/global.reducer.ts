@@ -35,7 +35,7 @@ export default function globalReducer(
     case HIDE_BANNER:
       return {
         ...state,
-        banner: {},
+        banner: null,
       };
     case SHOW_ERROR:
       return {
@@ -55,7 +55,7 @@ export default function globalReducer(
       return {
         ...state,
         modal: "",
-        modalParams: {},
+        modalParams: null,
       };
 
     case HANDLE_NEW_LOG:
