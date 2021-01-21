@@ -1,5 +1,4 @@
-import { GlobalState } from "./global.types";
-import { NavItem } from "./global.types";
+import { GlobalState, NavItem } from "./global.types";
 
 export const HANDLE_CONNECTION_STATUS = "HANDLE_CONNECTION_STATUS";
 export const TOGGLE_SIDE_BAR = "TOGGLE_SIDE_BAR";
@@ -8,6 +7,8 @@ export const HIDE_BANNER = "HIDE_BANNER";
 export const SHOW_ERROR = "SHOW_ERROR";
 export const SHOW_MODAL = "SHOW_MODAL";
 export const CLOSE_MODAL = "CLOSE_MODAL";
+
+export const HIDE_BANNER_TIMEOUT = 5000;
 
 const navItems: NavItem[] = [
   {
@@ -55,13 +56,12 @@ const navItems: NavItem[] = [
 ];
 
 export const initialGlobalState: GlobalState = {
-  user: {},
   banner: {},
   connected: false,
   currentTab: "logStream",
   loading: true,
   menuVisible: false,
-  modal: false,
+  modal: "",
   modalParams: {},
   navItems,
   processes: [],

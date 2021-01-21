@@ -2,14 +2,13 @@ import { EventEmitter } from "events";
 import _ from "lodash";
 import { nanoid } from "nanoid";
 import { Constants, Dispatcher } from "./";
-import { parseYAML, formatForFlowchart, formatSeconds } from "../helpers";
+import { formatForFlowchart, formatSeconds, parseYAML } from "../helpers";
 import api from "./api";
 import logger from "../logger";
 import propertyList from "../data/podProperties.json";
 import getSidebarNavItems from "../data/sidebar-nav-items";
 import exampleFlows from "../data/exampleFlows";
-
-const HIDE_BANNER_TIMEOUT = 5000;
+import { HIDE_BANNER_TIMEOUT } from "../redux/global/global.constants";
 
 function getExampleFlows() {
   const flows: LooseObject = {};

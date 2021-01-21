@@ -2,6 +2,7 @@ import {
   CLOSE_MODAL,
   HANDLE_CONNECTION_STATUS,
   HIDE_BANNER,
+  HIDE_BANNER_TIMEOUT,
   SHOW_BANNER,
   SHOW_ERROR,
   SHOW_MODAL,
@@ -16,6 +17,9 @@ import {
   ShowModalAction,
   ToggleSidebarAction,
 } from "./global.types";
+import { ThunkAction } from "redux-thunk";
+import { State } from "../index";
+import { Action } from "redux";
 
 export function handleConnectionStatus(
   status: string,
@@ -36,7 +40,7 @@ export function toggleSidebar(): ToggleSidebarAction {
   };
 }
 
-export function showBanner(message: string, theme: string): ShowBannerAction {
+export function _showBanner(message: string, theme: string): ShowBannerAction {
   return {
     type: SHOW_BANNER,
     payload: {
@@ -46,9 +50,21 @@ export function showBanner(message: string, theme: string): ShowBannerAction {
   };
 }
 
-export function hideBanner(): HideBannerAction {
+export function _hideBanner(): HideBannerAction {
   return {
     type: HIDE_BANNER,
+  };
+}
+
+export function showBanner(
+  message: string,
+  theme: string
+): ThunkAction<void, State, unknown, Action<string>> {
+  return function (dispatch) {
+    dispatch(_showBanner(message, theme));
+    setTimeout(() => {
+      dispatch(_hideBanner());
+    }, HIDE_BANNER_TIMEOUT);
   };
 }
 

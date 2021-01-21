@@ -1,4 +1,4 @@
-import { combineReducers, createStore } from "redux";
+import { combineReducers, createStore, applyMiddleware } from "redux";
 import flowReducer from "./flows/flows.reducer";
 import { FlowState } from "./flows/flows.types";
 import { composeWithDevTools } from "redux-devtools-extension";
@@ -10,6 +10,7 @@ import api from "../flux/api";
 import { handleNewLog } from "./logStream/logStream.actions";
 import { GlobalState } from "./global/global.types";
 import globalReducer from "./global/global.reducer";
+import thunk from "redux-thunk";
 
 export type State = {
   flowState: FlowState;
@@ -25,7 +26,12 @@ const rootReducer = combineReducers({
   globalState: globalReducer,
 });
 
-const store = createStore(rootReducer, composeWithDevTools());
+const middleware = [thunk];
+
+const store = createStore(
+  rootReducer,
+  composeWithDevTools(applyMiddleware(...middleware))
+);
 
 function handleLogConnectionStatus(status: string, message: string) {}
 
@@ -34,6 +40,7 @@ function _handleNewLog(message: Message) {
 }
 
 function handleNewTaskEvent(update: { type: string; data: string }) {}
+
 api.connect(
   store.getState().settingsState.settings,
   handleLogConnectionStatus,
