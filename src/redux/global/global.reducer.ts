@@ -82,6 +82,5 @@ function _handleConnectionStatus(
     ...state,
     loading: false,
     connected: connected,
-    banner: { message, theme: "success" },
   };
 }

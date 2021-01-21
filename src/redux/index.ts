@@ -11,6 +11,7 @@ import { handleNewLog } from "./logStream/logStream.actions";
 import { GlobalState } from "./global/global.types";
 import globalReducer from "./global/global.reducer";
 import thunk from "redux-thunk";
+import { handleConnectionStatus } from "./global/global.actions";
 
 export type State = {
   flowState: FlowState;
@@ -33,19 +34,21 @@ const store = createStore(
   composeWithDevTools(applyMiddleware(...middleware))
 );
 
-function handleLogConnectionStatus(status: string, message: string) {}
+function _handleLogConnectionStatus(status: string, message: string) {
+  store.dispatch<any>(handleConnectionStatus(status, message));
+}
 
 function _handleNewLog(message: Message) {
   store.dispatch(handleNewLog(message));
 }
 
-function handleNewTaskEvent(update: { type: string; data: string }) {}
+function _handleNewTaskEvent(update: { type: string; data: string }) {}
 
 api.connect(
   store.getState().settingsState.settings,
-  handleLogConnectionStatus,
+  _handleLogConnectionStatus,
   _handleNewLog,
-  handleNewTaskEvent
+  _handleNewTaskEvent
 );
 
 export default store;

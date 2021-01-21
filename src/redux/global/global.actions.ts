@@ -24,6 +24,18 @@ import { Action } from "redux";
 export function handleConnectionStatus(
   status: string,
   message: string
+): ThunkAction<void, State, unknown, Action<string>> {
+  return function (dispatch) {
+    dispatch(_handleConnectionStatus(status, message));
+    if (status === "connected") {
+      dispatch(showBanner(message, "success"));
+    }
+  };
+}
+
+export function _handleConnectionStatus(
+  status: string,
+  message: string
 ): HandleConnectionStatusAction {
   return {
     type: HANDLE_CONNECTION_STATUS,
