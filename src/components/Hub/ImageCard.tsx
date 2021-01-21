@@ -22,7 +22,9 @@ export default function ImageCard({ image }: Props) {
         <Row>
           <Col xs="12" className="px-0">
             <div className="app-title mb-2">{name}</div>
-            <div className="app-category mb-2">{tags}</div>
+            <div data-name="hubImageTags" className="app-category mb-2">
+              {tags}
+            </div>
             <div className="app-subtitle mb-2">{author}</div>
           </Col>
           <Col sm="12" className="px-0 pb-0">

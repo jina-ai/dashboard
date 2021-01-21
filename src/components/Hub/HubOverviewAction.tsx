@@ -41,10 +41,14 @@ const HubOverviewAction = ({ overviewAction }: HubOverviewActionProps) => {
   return (
     <ActionItemContainer>
       <>
-        <ActionItemTitle>{title}</ActionItemTitle>
+        <ActionItemTitle data-name="hubOverviewActionTitle">
+          {title}
+        </ActionItemTitle>
         <p>{description}</p>
       </>
-      <ActionButton>{buttonLabel}</ActionButton>
+      <ActionButton data-name="hubOverviewActionButtonLabel">
+        {buttonLabel}
+      </ActionButton>
     </ActionItemContainer>
   );
 };

@@ -28,7 +28,7 @@ const HubImagesListPreview = () => {
 
   return (
     <>
-      <SubTitle>Latest</SubTitle>
+      <SubTitle data-name="hubImagesPreviewSubtitle">Latest</SubTitle>
       {images.map((image) => (
         <ImageCard image={image} key={image.id} />
       ))}
