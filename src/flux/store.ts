@@ -5,7 +5,6 @@ import { Constants, Dispatcher } from "./";
 import { formatForFlowchart, formatSeconds, parseYAML } from "../helpers";
 import api from "./api";
 import logger from "../logger";
-import propertyList from "../data/podProperties.json";
 import getSidebarNavItems from "../data/sidebar-nav-items";
 import exampleFlows from "../data/exampleFlows";
 import { HIDE_BANNER_TIMEOUT } from "../redux/global/global.constants";
@@ -700,10 +699,6 @@ class StoreBase extends EventEmitter {
 
   getSelectedFlowId = () => {
     return _store.selectedFlow;
-  };
-
-  getAvailableProperties = () => {
-    return propertyList;
   };
 
   getIndexedLog = () => {

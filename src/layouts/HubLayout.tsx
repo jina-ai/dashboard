@@ -11,6 +11,9 @@ import WriteReview from "../modals/WriteReview";
 import logger from "../logger";
 
 import { Store, Dispatcher, Constants } from "../flux";
+import { useDispatch } from "react-redux";
+import store from "../redux";
+import { showBanner } from "../redux/global/global.actions";
 
 type HubLayoutProps = {
   children: React.ReactNode;
@@ -28,15 +31,14 @@ const HubLayout = (props: HubLayoutProps) => {
     localStorage.getItem("accepted-cookies") === "true"
   );
 
+  const dispatch = useDispatch();
   const acceptCookies = () => {
     localStorage.setItem("accepted-cookies", String(true));
     setAcceptedCookies(true);
   };
 
   const closeModal = () => {
-    Dispatcher.dispatch({
-      actionType: Constants.CLOSE_MODAL,
-    });
+    dispatch(closeModal());
   };
 
   const submitReview = (content: any) => {
@@ -55,23 +57,19 @@ const HubLayout = (props: HubLayoutProps) => {
 
   const enableLogger = () => {
     logger.enable();
-    const storeCopy = Store.getStoreCopy();
+    const storeCopy = store.getState();
     logger.log("Store Snapshot", storeCopy);
-    Dispatcher.dispatch({
-      actionType: Constants.SHOW_BANNER,
-      payload: [
+    dispatch(
+      showBanner(
         'Debug Mode Enabled. Click "Export Debug Data" to download Debug JSON.',
-        "warning",
-      ],
-    });
+        "warning"
+      )
+    );
   };
 
   const disableLogger = () => {
     logger.disable();
-    Dispatcher.dispatch({
-      actionType: Constants.SHOW_BANNER,
-      payload: ["Debug Mode Disabled.", "warning"],
-    });
+    dispatch(showBanner("Debug Mode Disabled.", "warning"));
   };
 
   const exportLogs = () => {

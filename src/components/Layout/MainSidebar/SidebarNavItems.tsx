@@ -12,22 +12,17 @@ type Props = {
 const SidebarNavItems = ({ navItems: items, toggleSidebar }: Props) => {
   return (
     <div className="nav-wrapper">
-      {items.map((nav, idx) => (
-        <div key={idx}>
-          <h6 className="main-sidebar__nav-title">{nav.title}</h6>
-          {typeof items !== "undefined" && items.length && (
-            <Nav className="nav--no-borders flex-column">
-              {items.map((item, idx) => (
-                <SidebarNavItem
-                  key={idx}
-                  item={item}
-                  toggleSidebar={toggleSidebar}
-                />
-              ))}
-            </Nav>
-          )}
-        </div>
-      ))}
+      {typeof items !== "undefined" && items.length && (
+        <Nav className="nav--no-borders flex-column">
+          {items.map((item, idx) => (
+            <SidebarNavItem
+              key={idx}
+              item={item}
+              toggleSidebar={toggleSidebar}
+            />
+          ))}
+        </Nav>
+      )}
     </div>
   );
 };

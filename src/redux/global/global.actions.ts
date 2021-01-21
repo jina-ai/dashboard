@@ -77,12 +77,12 @@ export function showError(message: string): ShowErrorAction {
   };
 }
 
-export function showModal(modal: string, modalParams: any): ShowModalAction {
+export function showModal(modal: string, modalParams?: any): ShowModalAction {
   return {
     type: SHOW_MODAL,
     payload: {
       modal,
-      modalParams,
+      modalParams: modalParams || null,
     },
   };
 }

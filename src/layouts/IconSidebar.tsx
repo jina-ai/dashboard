@@ -14,8 +14,8 @@ import LogDetails from "../modals/LogDetails";
 
 import logger from "../logger";
 
-import { Store, Dispatcher, Constants } from "../flux";
-import { useSelector } from "react-redux";
+import { Dispatcher, Constants } from "../flux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   selectBanner,
   selectConnectionStatus,
@@ -26,6 +26,8 @@ import {
   selectSidebarItems,
   selectUser,
 } from "../redux/global/global.selectors";
+import store from "../redux";
+import { showBanner, toggleSidebar } from "../redux/global/global.actions";
 
 type IconSideBarLayoutProps = {
   children: React.ReactNode;
@@ -47,15 +49,14 @@ const IconSidebarLayout = (props: IconSideBarLayoutProps) => {
     localStorage.getItem("accepted-cookies") === "true"
   );
 
+  const dispatch = useDispatch();
   const acceptCookies = () => {
     localStorage.setItem("accepted-cookies", String(true));
     setAcceptedCookies(true);
   };
 
   const closeModal = () => {
-    Dispatcher.dispatch({
-      actionType: Constants.CLOSE_MODAL,
-    });
+    dispatch(closeModal());
   };
 
   const importYAML = (yamlString: string) => {
@@ -87,35 +88,29 @@ const IconSidebarLayout = (props: IconSideBarLayoutProps) => {
     });
   };
 
-  const toggleSidebar = () => {
-    Dispatcher.dispatch({
-      actionType: Constants.TOGGLE_SIDEBAR,
-    });
+  const _toggleSidebar = () => {
+    dispatch(toggleSidebar());
   };
 
   const enableLogger = () => {
     logger.enable();
-    const storeCopy = Store.getStoreCopy();
+    const storeCopy = store.getState();
     logger.log("Store Snapshot", storeCopy);
-    Dispatcher.dispatch({
-      actionType: Constants.SHOW_BANNER,
-      payload: [
+    dispatch(
+      showBanner(
         'Debug Mode Enabled. Click "Export Debug Data" to download Debug JSON.',
-        "warning",
-      ],
-    });
+        "warning"
+      )
+    );
   };
 
   const disableLogger = () => {
     logger.disable();
-    Dispatcher.dispatch({
-      actionType: Constants.SHOW_BANNER,
-      payload: ["Debug Mode Disabled.", "warning"],
-    });
+    dispatch(showBanner("Debug Mode Disabled.", "warning"));
   };
 
   const exportLogs = () => {
-    const storeCopy = Store.getStoreCopy();
+    const storeCopy = store.getState();
     logger.log("Store Snapshot", storeCopy);
     logger.exportLogs();
   };
@@ -127,7 +122,7 @@ const IconSidebarLayout = (props: IconSideBarLayoutProps) => {
         <MainSidebar
           sidebarNavItems={sidebarNavItems}
           menuVisible={menuVisible}
-          toggleSidebar={toggleSidebar}
+          toggleSidebar={_toggleSidebar}
         />
         <Col className="main-content col" tag="main">
           <MainNavbar
@@ -135,7 +130,7 @@ const IconSidebarLayout = (props: IconSideBarLayoutProps) => {
             usesAuth={usesAuth}
             usesConnection={usesConnection}
             logOut={logOut}
-            toggleSidebar={toggleSidebar}
+            toggleSidebar={_toggleSidebar}
             reconnect={reconnect}
             connected={connected}
           />
