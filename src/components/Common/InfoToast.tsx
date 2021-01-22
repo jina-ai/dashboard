@@ -1,11 +1,9 @@
 import React from "react";
 import { Toast } from "react-bootstrap";
+import { Banner } from "../../redux/global/global.types";
 
 type Props = {
-  data: {
-    theme: string;
-    message: string;
-  };
+  data: Banner;
 };
 
 function getIcon(theme: string) {

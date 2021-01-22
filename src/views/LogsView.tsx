@@ -4,7 +4,6 @@ import { LogLevelSummaryChart } from "../components/LogStream/LogLevelSummaryCha
 import { LogLevelPieChart } from "../components/LogStream/LogLevelPieChart";
 import { PageTitle } from "../components/Common/PageTitle";
 import { LogsTable } from "../components/LogStream/LogsTable";
-import { Dispatcher, Constants } from "../flux";
 import { useDispatch, useSelector } from "react-redux";
 import { showLogAtIndex } from "../redux/logStream/logStream.actions";
 import {
@@ -14,6 +13,7 @@ import {
 } from "../redux/logStream/logStream.selectors";
 
 import { getLogLevelCharts } from "../helpers/format";
+import { showModal } from "../redux/global/global.actions";
 
 type TimePreference = "60second" | "15minute" | "1hour";
 
@@ -63,13 +63,6 @@ function getInitialTimeSelection() {
   return getUserTimePreference() || DEFAULT_TIME_SELECTION;
 }
 
-const showLogDetails = (log: any) => {
-  Dispatcher.dispatch({
-    actionType: Constants.SHOW_MODAL,
-    payload: { modal: "logDetails", modalParams: { log } },
-  });
-};
-
 function LogsView() {
   const dispatch = useDispatch();
 
@@ -88,6 +81,10 @@ function LogsView() {
       new Date()
     )
   );
+
+  function showLogDetails(log: any) {
+    dispatch(showModal("logDetails", { log }));
+  }
 
   function setTimeSelection(time: TimePreference) {
     setSelectedTime(time);

@@ -4,15 +4,12 @@ import { getInitialLogLevel } from "../redux/logStream/logStream.constants";
 import _ from "lodash";
 import { Level, LogLevelOccurrences } from "../redux/logStream/logStream.types";
 
-const propertyList: PodProperty[] = require("./../data/podProperties.json");
-type PodPropertyType = "str" | "int" | "bool" | "SocketType" | "ReplicaType";
-type PodProperty = {
-  name: string;
-  type: PodPropertyType;
-};
+import { PROPERTY_LIST } from "../redux/logStream/logStream.constants";
+
 type PropertyMap = { [key: string]: PodPropertyType };
 const propertyTypes: PropertyMap = {};
-propertyList.forEach((prop) => (propertyTypes[prop.name] = prop.type));
+
+PROPERTY_LIST.forEach((prop) => (propertyTypes[prop.name] = prop.type));
 
 const getNodeLabelsByPortId = ({ from, to }, nodes) => ({
   [from.portId]: nodes[from.nodeId].label || nodes[from.nodeId].properties.name,

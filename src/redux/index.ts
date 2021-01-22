@@ -1,4 +1,4 @@
-import { combineReducers, createStore } from "redux";
+import { combineReducers, createStore, applyMiddleware } from "redux";
 import flowReducer from "./flows/flows.reducer";
 import { FlowState } from "./flows/flows.types";
 import { composeWithDevTools } from "redux-devtools-extension";
@@ -8,33 +8,45 @@ import { LogStreamState, Message } from "./logStream/logStream.types";
 import logStreamReducer from "./logStream/logStream.reducer";
 import api from "../flux/api";
 import { handleNewLog } from "./logStream/logStream.actions";
+import { GlobalState } from "./global/global.types";
+import globalReducer from "./global/global.reducer";
+import thunk from "redux-thunk";
+import { handleConnectionStatus } from "./global/global.actions";
 
 export type State = {
   flowState: FlowState;
   settingsState: SettingsState;
   logStreamState: LogStreamState;
+  globalState: GlobalState;
 };
 
 const rootReducer = combineReducers({
   flowState: flowReducer,
   settingsState: settingsReducer,
   logStreamState: logStreamReducer,
+  globalState: globalReducer,
 });
 
-const store = createStore(rootReducer, composeWithDevTools());
+const store = createStore(
+  rootReducer,
+  composeWithDevTools(applyMiddleware(thunk))
+);
 
-function handleLogConnectionStatus(status: string, message: string) {}
+function _handleLogConnectionStatus(status: string, message: string) {
+  store.dispatch<any>(handleConnectionStatus(status, message));
+}
 
 function _handleNewLog(message: Message) {
   store.dispatch(handleNewLog(message));
 }
 
-function handleNewTaskEvent(update: { type: string; data: string }) {}
+function _handleNewTaskEvent(update: { type: string; data: string }) {}
+
 api.connect(
   store.getState().settingsState.settings,
-  handleLogConnectionStatus,
+  _handleLogConnectionStatus,
   _handleNewLog,
-  handleNewTaskEvent
+  _handleNewTaskEvent
 );
 
 export default store;

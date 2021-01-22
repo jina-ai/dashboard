@@ -14,7 +14,20 @@ import LogDetails from "../modals/LogDetails";
 
 import logger from "../logger";
 
-import { Store, Dispatcher, Constants } from "../flux";
+import { Dispatcher, Constants } from "../flux";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  selectBanner,
+  selectConnectionStatus,
+  selectLoading,
+  selectMenuState,
+  selectModal,
+  selectModalParams,
+  selectSidebarItems,
+  selectUser,
+} from "../redux/global/global.selectors";
+import store from "../redux";
+import { showBanner, toggleSidebar } from "../redux/global/global.actions";
 
 type IconSideBarLayoutProps = {
   children: React.ReactNode;
@@ -23,28 +36,27 @@ type IconSideBarLayoutProps = {
 };
 
 const IconSidebarLayout = (props: IconSideBarLayoutProps) => {
-  const modal = Store.getModal();
-  const modalParams = Store.getModalParams();
-  const loading = Store.isLoading();
-  const banner = Store.getBanner();
-  const connected = Store.getConnectionStatus();
+  const modal = useSelector(selectModal);
+  const modalParams = useSelector(selectModalParams);
+  const loading = useSelector(selectLoading);
+  const banner = useSelector(selectBanner);
+  const connected = useSelector(selectConnectionStatus);
   const loggerEnabled = logger.isEnabled();
-  const menuVisible = Store.getMenuState();
-  const sidebarNavItems = Store.getSidebarItems();
-  const user = Store.getUser();
+  const menuVisible = useSelector(selectMenuState);
+  const sidebarNavItems = useSelector(selectSidebarItems);
+  const user = useSelector(selectUser);
   const [acceptedCookies, setAcceptedCookies] = useState<boolean>(
     localStorage.getItem("accepted-cookies") === "true"
   );
 
+  const dispatch = useDispatch();
   const acceptCookies = () => {
     localStorage.setItem("accepted-cookies", String(true));
     setAcceptedCookies(true);
   };
 
   const closeModal = () => {
-    Dispatcher.dispatch({
-      actionType: Constants.CLOSE_MODAL,
-    });
+    dispatch(closeModal());
   };
 
   const importYAML = (yamlString: string) => {
@@ -55,11 +67,13 @@ const IconSidebarLayout = (props: IconSideBarLayoutProps) => {
   };
 
   const submitReview = (content: any) => {
-    const { imageId } = modalParams;
-    Dispatcher.dispatch({
-      actionType: Constants.POST_REVIEW,
-      payload: { content, imageId },
-    });
+    if (modalParams) {
+      const { imageId } = modalParams;
+      Dispatcher.dispatch({
+        actionType: Constants.POST_REVIEW,
+        payload: { content, imageId },
+      });
+    }
   };
 
   const reconnect = () => {
@@ -74,35 +88,29 @@ const IconSidebarLayout = (props: IconSideBarLayoutProps) => {
     });
   };
 
-  const toggleSidebar = () => {
-    Dispatcher.dispatch({
-      actionType: Constants.TOGGLE_SIDEBAR,
-    });
+  const _toggleSidebar = () => {
+    dispatch(toggleSidebar());
   };
 
   const enableLogger = () => {
     logger.enable();
-    const storeCopy = Store.getStoreCopy();
+    const storeCopy = store.getState();
     logger.log("Store Snapshot", storeCopy);
-    Dispatcher.dispatch({
-      actionType: Constants.SHOW_BANNER,
-      payload: [
+    dispatch(
+      showBanner(
         'Debug Mode Enabled. Click "Export Debug Data" to download Debug JSON.',
-        "warning",
-      ],
-    });
+        "warning"
+      )
+    );
   };
 
   const disableLogger = () => {
     logger.disable();
-    Dispatcher.dispatch({
-      actionType: Constants.SHOW_BANNER,
-      payload: ["Debug Mode Disabled.", "warning"],
-    });
+    dispatch(showBanner("Debug Mode Disabled.", "warning"));
   };
 
   const exportLogs = () => {
-    const storeCopy = Store.getStoreCopy();
+    const storeCopy = store.getState();
     logger.log("Store Snapshot", storeCopy);
     logger.exportLogs();
   };
@@ -114,7 +122,7 @@ const IconSidebarLayout = (props: IconSideBarLayoutProps) => {
         <MainSidebar
           sidebarNavItems={sidebarNavItems}
           menuVisible={menuVisible}
-          toggleSidebar={toggleSidebar}
+          toggleSidebar={_toggleSidebar}
         />
         <Col className="main-content col" tag="main">
           <MainNavbar
@@ -122,7 +130,7 @@ const IconSidebarLayout = (props: IconSideBarLayoutProps) => {
             usesAuth={usesAuth}
             usesConnection={usesConnection}
             logOut={logOut}
-            toggleSidebar={toggleSidebar}
+            toggleSidebar={_toggleSidebar}
             reconnect={reconnect}
             connected={connected}
           />
