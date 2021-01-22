@@ -27,11 +27,9 @@ const rootReducer = combineReducers({
   globalState: globalReducer,
 });
 
-const middleware = [thunk];
-
 const store = createStore(
   rootReducer,
-  composeWithDevTools(applyMiddleware(...middleware))
+  composeWithDevTools(applyMiddleware(thunk))
 );
 
 function _handleLogConnectionStatus(status: string, message: string) {

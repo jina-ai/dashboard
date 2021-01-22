@@ -9,7 +9,6 @@ type Props = {
 };
 
 const SidebarNavItem = ({ item, toggleSidebar }: Props) => {
-  const hasSubItems = false;
   const path = useLocation()?.pathname?.substring(1);
   let active = false;
   item.matches.forEach((match) => {
@@ -19,9 +18,8 @@ const SidebarNavItem = ({ item, toggleSidebar }: Props) => {
   return (
     <NavItem style={{ position: "relative" }}>
       <NavLink
-        className={hasSubItems && "dropdown-toggle"}
-        tag={hasSubItems ? "a" : RouteNavLink}
-        to={hasSubItems ? "#" : item.to}
+        tag={RouteNavLink}
+        to={item.to}
         active={active}
         onClick={toggleSidebar}
       >
