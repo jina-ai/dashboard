@@ -12,6 +12,7 @@ import { GlobalState } from "./global/global.types";
 import globalReducer from "./global/global.reducer";
 import thunk from "redux-thunk";
 import { handleConnectionStatus } from "./global/global.actions";
+import taskReducer from "./task/task.reducer";
 
 export type State = {
   flowState: FlowState;
@@ -25,6 +26,7 @@ const rootReducer = combineReducers({
   settingsState: settingsReducer,
   logStreamState: logStreamReducer,
   globalState: globalReducer,
+  taskState: taskReducer,
 });
 
 const store = createStore(
