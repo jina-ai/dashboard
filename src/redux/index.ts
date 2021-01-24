@@ -14,13 +14,14 @@ import thunk from "redux-thunk";
 import { handleConnectionStatus } from "./global/global.actions";
 import taskReducer from "./task/task.reducer";
 import { handleNewTaskEvent } from "./task/task.actions";
-import { TaskEvent } from "./task/task.types";
+import { TaskEvent, TaskState } from "./task/task.types";
 
 export type State = {
   flowState: FlowState;
   settingsState: SettingsState;
   logStreamState: LogStreamState;
   globalState: GlobalState;
+  taskState: TaskState;
 };
 
 const rootReducer = combineReducers({
