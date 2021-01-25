@@ -98,6 +98,7 @@ code {
 
 .flow-container {
   border-radius: 0.25em;
+  max-width: 60rem;
 }
 
 .chart-section-container {
@@ -195,14 +196,8 @@ code {
   color: white;
   width: 1.2rem;
   height: 1.2rem;
-}
-
-div[data-port-id="outPort"] > .node-port {
-  border-radius: 0 0 3rem 3rem;
-}
-
-div[data-port-id="inPort"] > .node-port {
-  border-radius: 3rem 3rem 0 0;
+  border-radius: 3rem;
+  border: 1px solid white !important;
 }
 
 .lbZxLd .chart-node {
@@ -732,14 +727,6 @@ div[data-port-id="inPort"] > .node-port {
   left: 0;
   top: 0;
   padding: 1em;
-  z-index: 5;
-}
-
-.flow-selection {
-  position: absolute;
-  right: 0;
-  top: 0;
-  margin: 1em;
   z-index: 5;
 }
 
