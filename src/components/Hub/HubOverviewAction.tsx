@@ -17,7 +17,7 @@ const ActionItemTitle = styled.span`
 `;
 
 const ActionButton = styled.button`
-  background: linear-gradient(225deg, #00c9c9 0%, #009999 100%);
+  background: ${(props) => props.theme.palette.primary};
   border-radius: 10px;
   border: none;
   padding: 1rem 1.5rem;
