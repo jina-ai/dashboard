@@ -13,8 +13,6 @@ import {
   duplicateFlow,
   loadFlow,
   updateFlow,
-  startFlow,
-  stopFlow
 } from "../redux/flows/flows.actions";
 import html2canvas from "html2canvas";
 import { cloneDeep } from "lodash";
@@ -35,6 +33,13 @@ import Sidebar from "../components/FlowChart/Sidebar";
 import { showModal } from "../redux/global/global.actions";
 import { selectConnectionStatus } from "../redux/global/global.selectors";
 import { PROPERTY_LIST } from "../redux/logStream/logStream.constants";
+
+import styled from "@emotion/styled";
+
+const FlowContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+`;
 
 export default function FlowView() {
   const dispatch = useDispatch();
@@ -194,46 +199,51 @@ export default function FlowView() {
         <Row noGutters className="page-header mb-4">
           <PageTitle title="Flow Design" className="text-sm-left mb-3" />
         </Row>
-        <div className="flow-container d-flex flex-column flex-md-row">
-          <Card className="chart-section-container mr-md-4 mb-4">
-            <FlowSelection
-              connected={connected}
-              flows={flows}
-              selectedFlowId={selectedFlowId}
-              createNewFlow={handleCreateNewFlow}
-              loadFlow={(flowId) => dispatch(loadFlow(flowId))}
-              deleteFlow={handleDeleteFlow}
-            />
-            <CommandBar
-              startFlow={handleStartFlow}
-              stopFlow={handleStopFlow}
-              copyChart={copyChartAsYAML}
-              importChart={showImportModal}
-              exportImage={exportImage}
-            />
-            <div className="chart-container">
-              <div
-                className="capture-overlay"
-                style={{ display: showOverlay ? "" : "none" }}
-              >
-                <div className="capture-overlay-top"></div>
-                <div className="capture-overlay-bottom"></div>
-              </div>
-              <FlowChart
-                chart={(chart as unknown) as IChart}
-                Components={{
-                  TooltipComponent: Tooltip,
-                  NodeInner: CustomNode as any,
-                  Port: CustomPort,
-                }}
-                callbacks={actionCallbacks}
-                config={{
-                  readonly,
-                  validateLink: validateLink,
-                }}
+
+        <FlowContainer>
+          <FlowSelection
+            connected={connected}
+            flows={flows}
+            selectedFlowId={selectedFlowId}
+            createNewFlow={handleCreateNewFlow}
+            loadFlow={(flowId) => dispatch(loadFlow(flowId))}
+            deleteFlow={handleDeleteFlow}
+          />
+
+          <div className="flow-container d-flex flex-column flex-md-row">
+            <Card className="chart-section-container mr-md-4 mb-4">
+              <CommandBar
+                startFlow={handleStartFlow}
+                stopFlow={handleStopFlow}
+                copyChart={copyChartAsYAML}
+                importChart={showImportModal}
+                exportImage={exportImage}
               />
-            </div>
-          </Card>
+              <div className="chart-container">
+                <div
+                  className="capture-overlay"
+                  style={{ display: showOverlay ? "" : "none" }}
+                >
+                  <div className="capture-overlay-top"></div>
+                  <div className="capture-overlay-bottom"></div>
+                </div>
+                <FlowChart
+                  chart={(chart as unknown) as IChart}
+                  Components={{
+                    TooltipComponent: Tooltip,
+                    NodeInner: CustomNode as any,
+                    Port: CustomPort,
+                  }}
+                  callbacks={actionCallbacks}
+                  config={{
+                    readonly,
+                    validateLink: validateLink,
+                  }}
+                />
+              </div>
+            </Card>
+          </div>
+
           <Sidebar
             availableProperties={PROPERTY_LIST}
             duplicateFlow={handleDuplicateFlow}
@@ -243,7 +253,7 @@ export default function FlowView() {
             updateNode={updateNode}
             updateLink={updateLink}
           />
-        </div>
+        </FlowContainer>
       </div>
     </Container>
   );
