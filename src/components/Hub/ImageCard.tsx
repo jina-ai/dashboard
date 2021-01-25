@@ -1,5 +1,6 @@
 import React from "react";
 import { Row, Col, Card } from "react-bootstrap";
+import styled from "@emotion/styled"
 
 type HubImagePreview = {
   name: string;
@@ -13,6 +14,25 @@ type Props = {
   image: HubImagePreview;
 };
 
+const Tag = styled.div`
+  background: #DAD7FE;
+  border-radius: 6px;
+  display: inline-block;
+  padding: .25rem;
+  margin-right: 1rem;
+`
+const Title = styled.div`
+  font-size: 1.25em;
+  font-weight: 700;
+  line-height: normal;
+`
+
+const SubTitle = styled.div`
+  font-weight: 600;
+  opacity: 0.5;
+`
+
+
 export default function ImageCard({ image }: Props) {
   let { name, author, tags, description } = image;
 
@@ -21,11 +41,9 @@ export default function ImageCard({ image }: Props) {
       <Card.Body className="pb-0 mb-0 pt-3">
         <Row>
           <Col xs="12" className="px-0">
-            <div className="app-title mb-2">{name}</div>
-            <div data-name="hubImageTags" className="app-category mb-2">
-              {tags}
-            </div>
-            <div className="app-subtitle mb-2">{author}</div>
+            <Title className="mb-2">{name}</Title>
+            { tags.map(tag => (<Tag key={tag}>{tag}</Tag>))}
+            <SubTitle className="mb-2">{author}</SubTitle>
           </Col>
           <Col sm="12" className="px-0 pb-0">
             <div className="description-container">

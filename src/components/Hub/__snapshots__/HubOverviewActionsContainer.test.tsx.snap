@@ -7,6 +7,7 @@ Array [
   >
     <span
       className="css-kysenj"
+      data-name="hubOverviewActionTitle"
     >
       Explore
     </span>
@@ -14,7 +15,9 @@ Array [
       Find out what you can do in Jina hub and how you platform works.
     </p>
     <button
-      className="css-mbxeyf"
+      className="css-u2l7it"
+      data-name="hubOverviewActionButtonLabel"
+      onClick={[Function]}
     >
       Read more
     </button>
@@ -24,14 +27,17 @@ Array [
   >
     <span
       className="css-kysenj"
+      data-name="hubOverviewActionTitle"
     >
       Create
     </span>
     <p>
-      Create
+      Create flow
     </p>
     <button
-      className="css-mbxeyf"
+      className="css-u2l7it"
+      data-name="hubOverviewActionButtonLabel"
+      onClick={[Function]}
     >
       Let's Go
     </button>

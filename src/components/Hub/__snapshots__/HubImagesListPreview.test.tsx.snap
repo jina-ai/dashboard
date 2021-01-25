@@ -4,6 +4,7 @@ exports[`HubImagesListPreview 1`] = `
 Array [
   <span
     className="css-1gt7phv"
+    data-name="hubImagesPreviewSubtitle"
   >
     Latest
   </span>,
@@ -20,18 +21,22 @@ Array [
           className="px-0 col-12"
         >
           <div
-            className="app-title mb-2"
+            className="mb-2 css-14i9fhd"
           >
             Dummy MWU Encoder
           </div>
           <div
-            className="app-category mb-2"
+            className="css-kvh4bx"
           >
             Search
+          </div>
+          <div
+            className="css-kvh4bx"
+          >
             encode
           </div>
           <div
-            className="app-subtitle mb-2"
+            className="mb-2 css-k133o5"
           >
             dev-team@jina.ai
           </div>
@@ -68,18 +73,22 @@ Array [
           className="px-0 col-12"
         >
           <div
-            className="app-title mb-2"
+            className="mb-2 css-14i9fhd"
           >
             Dummy MWU Encoder
           </div>
           <div
-            className="app-category mb-2"
+            className="css-kvh4bx"
           >
             Search
+          </div>
+          <div
+            className="css-kvh4bx"
+          >
             encode
           </div>
           <div
-            className="app-subtitle mb-2"
+            className="mb-2 css-k133o5"
           >
             dev-team@jina.ai
           </div>
