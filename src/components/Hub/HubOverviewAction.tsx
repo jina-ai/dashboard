@@ -30,6 +30,7 @@ type overviewActionType = {
   title: string;
   description: string;
   buttonLabel: string;
+  buttonAction: () => void;
 };
 
 type HubOverviewActionProps = {
@@ -37,7 +38,7 @@ type HubOverviewActionProps = {
 };
 
 const HubOverviewAction = ({ overviewAction }: HubOverviewActionProps) => {
-  const { title, description, buttonLabel } = overviewAction;
+  const { title, description, buttonLabel, buttonAction } = overviewAction;
   return (
     <ActionItemContainer>
       <>
@@ -46,7 +47,10 @@ const HubOverviewAction = ({ overviewAction }: HubOverviewActionProps) => {
         </ActionItemTitle>
         <p>{description}</p>
       </>
-      <ActionButton data-name="hubOverviewActionButtonLabel">
+      <ActionButton
+        data-name="hubOverviewActionButtonLabel"
+        onClick={buttonAction}
+      >
         {buttonLabel}
       </ActionButton>
     </ActionItemContainer>
