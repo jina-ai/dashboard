@@ -161,13 +161,15 @@ code {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   border-radius: 0.25em;
   transition: 0.2s;
-  border: 1px solid #d1d5da;
+  border: 1px solid rgba(0, 153, 153, 0.3);
 }
 
 .node-header {
   font-size: 1.5em;
-  color: white;
-  background: #099;
+  font-family: Montserrat, sans-serif;
+  color: black;
+  font-weight: 500;
+  background: #eaeaea;
   border-radius: 5px;
 }
 
@@ -197,15 +199,6 @@ code {
     /* The third layer shadow */ 0 20px 1px -9px rgba(0, 0, 0, 0.15);
 }
 
-.node-port {
-  background-color: #099;
-  color: white;
-  width: 1.2rem;
-  height: 1.2rem;
-  border-radius: 3rem;
-  border: 1px solid white !important;
-}
-
 .lbZxLd .chart-node {
   border-color: #fc6;
 }
@@ -215,7 +208,7 @@ code {
 }
 
 .chart-container path:nth-child(2) {
-  stroke: #6c757d;
+  stroke: #c4c4c4;
 }
 
 .chart-container path:nth-child(3) {
