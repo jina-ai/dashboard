@@ -227,6 +227,7 @@ export default function FlowView() {
                   config={{
                     readonly,
                     validateLink: validateLink,
+                    smartRouting: true,
                   }}
                 />
               </div>
