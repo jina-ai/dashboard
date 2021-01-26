@@ -6,7 +6,8 @@
             "dom"
         ],
         "types": [
-            "cypress"
+            "cypress",
+            "@percy/cypress"
         ]
     },
     "include": [
