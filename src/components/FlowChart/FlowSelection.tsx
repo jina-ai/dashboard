@@ -77,6 +77,7 @@ type FlowSelectionProps = {
   flows: {
     [key: string]: any;
   };
+  showNewFlowModal: () => void;
   loadFlow: (flowId: string) => void;
   createNewFlow: (e: any) => void;
   deleteFlow: (e: any, flowId: string) => void;
@@ -89,6 +90,7 @@ export default function FlowSelection({
   loadFlow,
   selectedFlowId,
   createNewFlow,
+  showNewFlowModal,
   deleteFlow,
   connected,
 }: FlowSelectionProps) {
@@ -148,7 +150,7 @@ export default function FlowSelection({
         />
       </SelectedFlowHeader>
 
-      <FlowTap onClick={createNewFlow}>
+      <FlowTap onClick={showNewFlowModal}>
         New Flow <i className="material-icons">add</i>
       </FlowTap>
 

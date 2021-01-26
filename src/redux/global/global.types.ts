@@ -76,12 +76,15 @@ export type User = {
 export type Processes = {
   [processNum: number]: string;
 };
+
+export type Modal = null | "logDetails" | "newFlow" | "import" | "review";
+
 export type GlobalState = {
   user: User;
   connected: boolean;
   banner: Banner;
   loading: boolean;
-  modal: string;
+  modal: Modal;
   modalParams: {
     imageId: string;
   } | null;
@@ -125,7 +128,7 @@ export type ShowErrorAction = {
 export type ShowModalAction = {
   type: typeof SHOW_MODAL;
   payload: {
-    modal: string;
+    modal: Modal;
     modalParams: any;
   };
 };

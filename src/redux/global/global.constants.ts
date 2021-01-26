@@ -62,7 +62,7 @@ export const initialGlobalState: GlobalState = {
   currentTab: "logStream",
   loading: true,
   menuVisible: false,
-  modal: "",
+  modal: null,
   modalParams: null,
   navItems,
   processes: [],

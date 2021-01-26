@@ -54,7 +54,7 @@ export default function globalReducer(
     case CLOSE_MODAL:
       return {
         ...state,
-        modal: "",
+        modal: null,
         modalParams: null,
       };
 

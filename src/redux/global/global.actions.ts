@@ -12,6 +12,7 @@ import {
   CloseModalAction,
   HandleConnectionStatusAction,
   HideBannerAction,
+  Modal,
   ShowBannerAction,
   ShowErrorAction,
   ShowModalAction,
@@ -89,7 +90,7 @@ export function showError(message: string): ShowErrorAction {
   };
 }
 
-export function showModal(modal: string, modalParams?: any): ShowModalAction {
+export function showModal(modal: Modal, modalParams?: any): ShowModalAction {
   return {
     type: SHOW_MODAL,
     payload: {

@@ -32,6 +32,7 @@ import {
   showBanner,
   toggleSidebar,
 } from "../redux/global/global.actions";
+import NewFlow from "../modals/NewFlow";
 
 type IconSideBarLayoutProps = {
   children: React.ReactNode;
@@ -162,6 +163,7 @@ const IconSidebarLayout = (props: IconSideBarLayoutProps) => {
         closeModal={_closeModal}
         importYAML={importYAML}
       />
+      <NewFlow open={modal === "newFlow"} />
       <WriteReview
         open={modal === "review"}
         closeModal={_closeModal}
