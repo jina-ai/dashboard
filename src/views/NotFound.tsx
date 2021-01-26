@@ -4,7 +4,7 @@ import { HelpCard } from "../components/Common/HelpCard";
 import { PageTitle } from "../components/Common/PageTitle";
 
 const NotFound = () => (
-  <Container fluid className="main-content-container px-4">
+  <Container fluid className="main-content-container px-4" data-name="helpPage">
     <Row noGutters className="page-header mb-4">
       <PageTitle title="Resources" className="text-sm-left mb-3" />
     </Row>

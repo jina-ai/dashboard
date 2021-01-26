@@ -19,7 +19,7 @@
     "format": "prettier --write \"src/**/*.{js,jsx, ts, tsx}\"",
     "lint": "eslint \"src/**/*.{js,jsx, ts, tsx}\" --max-warnings=0",
     "cy:dev": "npx cypress open",
-    "cy:run": "npx cypress run"
+    "cy:run": "percy exec -- npx cypress run"
   },
   "husky": {
     "hooks": {
@@ -131,6 +131,7 @@
     "yargs": "^16.1.0"
   },
   "devDependencies": {
+    "@percy/cypress": "^2.3.4",
     "@types/lunr": "^2.3.3",
     "@types/react-select": "^3.0.19",
     "@types/react-virtualized-auto-sizer": "^1.0.0",
