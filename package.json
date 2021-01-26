@@ -1,6 +1,6 @@
 {
   "name": "dashboard-v1",
-  "version": "0.1.18",
+  "version": "0.1.19",
   "private": true,
   "homepage": "https://dashboard.jina.ai",
   "scripts": {
