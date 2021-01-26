@@ -4,9 +4,9 @@ import {
   selectFlowChart,
   selectFlows,
   selectSelectedFlowId,
+  selectTooltipConfig,
 } from "../redux/flows/flows.selectors";
 import * as actions from "@bastinjafari/react-flow-chart-with-tooltips-and-multi-select/src/container/actions";
-import { tooltipConfig } from "../data/tooltipConfig";
 import {
   createNewFlow,
   deleteFlow,
@@ -50,7 +50,7 @@ export default function FlowView() {
   const { flow: chart, type: flowType } = flowChart;
   const chartWithTooltips = {
     ...chart,
-    ...tooltipConfig,
+    ...useSelector(selectTooltipConfig),
   };
 
   const [showOverlay, setShowOverlay] = useState<boolean>(false);

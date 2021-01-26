@@ -1,6 +1,13 @@
 import { FlowState } from "./flows.types";
 
 export const testFlowState: FlowState = {
+  tooltipConfig: {
+    tooltipsGlobal: {
+      showTooltip: true,
+      toogleOffWhenClicked: "global",
+      text: "Hold Shift and click to select multiple nodes",
+    },
+  },
   selectedFlow: "testFlow1",
   flows: {
     testFlow1: {

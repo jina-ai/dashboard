@@ -54,6 +54,13 @@ const initialState: FlowState = {
     ...getUserFlows(),
     ...getExampleFlows(),
   },
+  tooltipConfig: {
+    tooltipsGlobal: {
+      showTooltip: true,
+      toogleOffWhenClicked: "global",
+      text: "Hold Shift and click to select multiple nodes",
+    },
+  },
 };
 
 export default function flowReducer(
@@ -92,6 +99,7 @@ function _deleteFlow(state: FlowState, flowId: string): FlowState {
     stateWithoutFlow.selectedFlow = idFirstNonExampleFlow;
   } else if (!nonExampleFlows.length) {
     stateWithoutFlow = {
+      ...state,
       flows: {
         _userFlow: {
           name: "Custom Flow 1",
@@ -134,6 +142,7 @@ function _createNewFlow(state: FlowState, customYAML?: string): FlowState {
   }
 
   return {
+    ...state,
     flows: {
       ...state.flows,
       [id]: {
@@ -150,6 +159,7 @@ function _createNewFlow(state: FlowState, customYAML?: string): FlowState {
 function _updateFlow(state: FlowState, newFlow: Flow): FlowState {
   if (state.selectedFlow) {
     return {
+      ...state,
       selectedFlow: state.selectedFlow,
       flows: {
         ...state.flows,
