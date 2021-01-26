@@ -161,6 +161,10 @@ export default function FlowView() {
     dispatch(showModal("import"));
   };
 
+  const showNewFlowModal = () => {
+    dispatch(showModal("newFlow"));
+  };
+
   const handleCreateNewFlow = (e: any) => {
     e.preventDefault();
     e.stopPropagation();
@@ -205,6 +209,7 @@ export default function FlowView() {
             connected={connected}
             flows={flows}
             selectedFlowId={selectedFlowId}
+            showNewFlowModal={showNewFlowModal}
             createNewFlow={handleCreateNewFlow}
             loadFlow={(flowId) => dispatch(loadFlow(flowId))}
             deleteFlow={handleDeleteFlow}

@@ -27,6 +27,7 @@ import {
   selectUser,
 } from "../redux/global/global.selectors";
 import store from "../redux";
+import NewFlow from "../modals/NewFlow";
 import { showBanner, toggleSidebar,closeModal,connectJinaD } from "../redux/global/global.actions";
 
 type IconSideBarLayoutProps = {
