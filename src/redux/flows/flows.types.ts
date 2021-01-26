@@ -72,6 +72,13 @@ export type CreateNewFlowAction = {
 export type FlowState = {
   selectedFlow: string;
   flows: Flows;
+  tooltipConfig: {
+    tooltipsGlobal: {
+      showTooltip: boolean;
+      toogleOffWhenClicked: string;
+      text: string;
+    };
+  };
 };
 export type UpdateFlowAction = {
   type: typeof UPDATE_FLOW;

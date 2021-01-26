@@ -4,6 +4,8 @@ export const selectFlowChart = (state: State) => {
   return state.flowState.flows[state.flowState.selectedFlow];
 };
 
+export const selectTooltipConfig = (state: State) =>
+  state.flowState.tooltipConfig;
 export const selectFlows = (state: State) => state.flowState.flows;
 
 export const selectExampleFlowsKeyEntryPairs = (state: State) => {
