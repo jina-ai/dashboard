@@ -72,6 +72,10 @@ export type User = {
   _json: any;
   _raw: any;
 } | null;
+
+export type Processes = {
+  [processNum: number]: string;
+};
 export type GlobalState = {
   user: User;
   connected: boolean;
@@ -83,9 +87,7 @@ export type GlobalState = {
   } | null;
   menuVisible: boolean;
   navItems: TNavItem[];
-  processes: {
-    [processNum: number]: string;
-  };
+  processes: Processes;
   currentTab: Tap;
 };
 
