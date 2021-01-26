@@ -19,7 +19,7 @@
     "format": "prettier --write \"src/**/*.{js,jsx, ts, tsx}\"",
     "lint": "eslint \"src/**/*.{js,jsx, ts, tsx}\" --max-warnings=0",
     "cy:dev": "npx cypress open",
-    "cy:run": "npx cypress run"
+    "cy:run": "percy exec -- npx cypress run"
   },
   "husky": {
     "hooks": {
