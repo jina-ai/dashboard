@@ -2,10 +2,17 @@ import React from "react";
 import { useHistory } from "react-router-dom";
 import HubOverviewAction from "./HubOverviewAction";
 
+type HubOverviewActionDataType = {
+  title: string;
+  description: string;
+  buttonLabel: string;
+  buttonAction: () => void;
+};
+
 const HubOverviewActionsContainer = () => {
   const history = useHistory();
 
-  const hubOverviewActionsData = [
+  const hubOverviewActionsData: HubOverviewActionDataType[] = [
     {
       title: "Explore",
       description:
