@@ -1,15 +1,15 @@
 // @ts-nocheck
 import * as YAML from "yaml";
+import { getInitialLogLevel } from "../redux/logStream/logStream.constants";
+import _ from "lodash";
+import { Level, LogLevelOccurrences } from "../redux/logStream/logStream.types";
 
-const propertyList: PodProperty[] = require("./../data/podProperties.json");
-type PodPropertyType = "str" | "int" | "bool" | "SocketType" | "ReplicaType";
-type PodProperty = {
-  name: string;
-  type: PodPropertyType;
-};
+import { PROPERTY_LIST } from "../redux/logStream/logStream.constants";
+
 type PropertyMap = { [key: string]: PodPropertyType };
 const propertyTypes: PropertyMap = {};
-propertyList.forEach((prop) => (propertyTypes[prop.name] = prop.type));
+
+PROPERTY_LIST.forEach((prop) => (propertyTypes[prop.name] = prop.type));
 
 const getNodeLabelsByPortId = ({ from, to }, nodes) => ({
   [from.portId]: nodes[from.nodeId].label || nodes[from.nodeId].properties.name,
@@ -105,3 +105,31 @@ export const formatBytes = (numBytes: number): string => {
     ? `${(numBytes / 1024 ** 2).toFixed(1)} MB`
     : `${(numBytes / 1024 ** 3).toFixed(1)} GB`;
 };
+
+export function getLogLevelCharts(
+  numSeconds: number = 60,
+  MAX_CHART_TICKS: number,
+  logLevelOccurrences: LogLevelOccurrences,
+  currentDate: Date
+) {
+  const emptyItem = getInitialLogLevel();
+  const step = numSeconds / MAX_CHART_TICKS;
+  const data = [];
+  const currentInterval = Math.ceil(currentDate / 1000 / step) * step;
+  const now = Math.floor(currentDate / 1000);
+  for (let i = currentInterval - numSeconds; i < currentInterval; i += step) {
+    let item = _.cloneDeep(emptyItem);
+    for (let j = i; j < i + step; ++j) {
+      const occurrence = logLevelOccurrences[j];
+      if (!occurrence) continue;
+      item.lastLog = occurrence.lastLog;
+      Object.entries(occurrence.levels).forEach((logEntry) => {
+        const level = logEntry[0] as Level;
+        const amount = logEntry[1] as number;
+        item.levels[level] = item.levels[level] + amount;
+      });
+    }
+    data.push(item);
+  }
+  return { data, numSeconds, numTicks: MAX_CHART_TICKS, lastTimestamp: now };
+}

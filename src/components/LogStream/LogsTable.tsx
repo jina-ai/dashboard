@@ -9,7 +9,7 @@ import { saveAs } from "file-saver";
 import { MultiFilterSelect } from "../Common/MultiFilterSelect";
 import { LogItem } from "./LogItem";
 import { LogsTableHeader } from "./LogsTableHeader";
-import { ProcessedLog } from "../../flux/tranformLog";
+import { ProcessedLog } from "../../redux/logStream/logStream.types";
 import { ExpandingSearchbar } from "../Common/ExpandingSearchbar";
 import { LogGroup } from "./LogGroup";
 
@@ -24,7 +24,14 @@ const DEFAULT_VIEW = "table";
 const VIEW_PREFERENCE_NAME = "logs-view-preference";
 const POD_NAME_SPLIT_CHAR = "-";
 
-const SEARCH_FIELDS = ["filename","funcName","module","msg","pathname","name"];
+const SEARCH_FIELDS = [
+  "filename",
+  "funcName",
+  "module",
+  "msg",
+  "pathname",
+  "name",
+];
 
 const levels = [
   "INFO",
@@ -74,11 +81,11 @@ let _lastNumLogs = 0;
 let _searchIndex = FlexSearch.create({
   doc: {
     id: "id",
-    field: SEARCH_FIELDS
-  }
+    field: SEARCH_FIELDS,
+  },
 });
 
-const applyFilters = <T extends Record<string, any>, K>(
+const applyFilters = <T extends Record<string, any>>(
   item: T,
   filters: { [key in keyof T]: any }
 ) =>
@@ -230,7 +237,7 @@ function LogsTable({ data, showLogDetails }: Props) {
   const [searchString, setSearchString] = useState("");
 
   const search = useCallback(async () => {
-    const newData = data.slice(_lastNumLogs,data.length)
+    const newData = data.slice(_lastNumLogs, data.length);
     _searchIndex.add(newData);
     _lastNumLogs = data.length;
     const searchResults = await _searchIndex.search(searchString);

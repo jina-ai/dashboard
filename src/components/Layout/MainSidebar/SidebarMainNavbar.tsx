@@ -5,7 +5,7 @@ type Props = {
   toggleSidebar: () => void;
 };
 
-export default ({ toggleSidebar }: Props) => {
+const SidebarMainNavbar = ({ toggleSidebar }: Props) => {
   return (
     <div className="main-navbar">
       <Navbar
@@ -37,3 +37,5 @@ export default ({ toggleSidebar }: Props) => {
     </div>
   );
 };
+
+export default SidebarMainNavbar;

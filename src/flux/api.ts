@@ -1,6 +1,9 @@
 import axios from "axios";
 import logger from "../logger";
 import { hubURL, timeout } from "./config";
+import { Message } from "../redux/logStream/logStream.types";
+import { TaskEvent } from "../redux/task/task.types";
+
 let logStream: EventSource;
 let taskStream: EventSource;
 
@@ -26,14 +29,16 @@ type Settings = {
 
 type ConnectionUpdate = (messageType: string, message: string) => void;
 
-type UpdateHandler = (update: { type: string; data: string }) => void;
+type TaskEventHandler = (taskEvent: TaskEvent) => void;
 
-export default {
+type HandleNewLog = (message: Message) => void;
+
+const api = {
   connect: (
     settings: Settings,
     connectionUpdate: ConnectionUpdate,
-    logUpdate: UpdateHandler,
-    taskUpdate: UpdateHandler
+    logUpdate: HandleNewLog,
+    taskEventHandler: TaskEventHandler
   ) => {
     logger.log("api - connect - settings", settings);
 
@@ -41,8 +46,8 @@ export default {
       settings.log.startsWith("/") ? settings.log : "/" + settings.log
     }`;
     logger.log("api - connect - logString", logString);
-
     if (logStream) logStream.close();
+
     logStream = new EventSource(logString);
 
     logStream.onopen = () => {
@@ -54,7 +59,7 @@ export default {
     };
 
     logStream.onmessage = (m) => {
-      logUpdate({ type: "log", data: JSON.parse(m.data) });
+      logUpdate({ data: JSON.parse(m.data) });
     };
 
     logStream.onerror = (data) => {
@@ -77,23 +82,22 @@ export default {
     taskStream = new EventSource(taskString);
 
     taskStream.onopen = () => {
-      logger.log("api - taskStream.onopen called");
-      taskUpdate({
-        type: "connect",
-        data: `Task connection established at ${taskString}`,
-      });
+      logger.log(
+        "api - taskStream.onopen called",
+        `Task connection established at ${taskString}`
+      );
     };
 
     taskStream.onmessage = (m) => {
-      taskUpdate({ type: "event", data: JSON.parse(m.data) });
+      taskEventHandler(JSON.parse(m.data));
     };
 
     taskStream.onerror = (data) => {
-      logger.log("api - taskStream.onerror - ERROR", data);
-      taskUpdate({
-        type: "error",
-        data: `Could not get profile data from ${taskString}`,
-      });
+      logger.log(
+        "api - taskStream.onerror - ERROR",
+        data,
+        `Could not get profile data from ${taskString}`
+      );
       taskStream.close();
     };
   },
@@ -136,3 +140,5 @@ export default {
     return result.data;
   },
 };
+
+export default api;

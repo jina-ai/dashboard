@@ -5,7 +5,6 @@ import {
   selectFlows,
   selectSelectedFlowId,
 } from "../redux/flows/flows.selectors";
-import { Constants, Dispatcher, Store } from "../flux";
 import * as actions from "@bastinjafari/react-flow-chart-with-tooltips-and-multi-select/src/container/actions";
 import { tooltipConfig } from "../data/tooltipConfig";
 import {
@@ -31,9 +30,13 @@ import Tooltip from "../components/FlowChart/Tooltip";
 import CustomNode from "../components/FlowChart/ChartNode";
 import CustomPort from "../components/FlowChart/NodePort";
 import Sidebar from "../components/FlowChart/Sidebar";
+import { showModal } from "../redux/global/global.actions";
+import { selectConnectionStatus } from "../redux/global/global.selectors";
+import { PROPERTY_LIST } from "../redux/logStream/logStream.constants";
 
 export default function FlowView() {
   const dispatch = useDispatch();
+  const connected = useSelector(selectConnectionStatus);
   const selectedFlowId = useSelector(selectSelectedFlowId);
   const flows = useSelector(selectFlows);
   const flowChart = useSelector(selectFlowChart);
@@ -42,10 +45,7 @@ export default function FlowView() {
     ...chart,
     ...tooltipConfig,
   };
-  const availableProperties = Store.getAvailableProperties();
-  const [connected, setConnected] = useState<boolean>(
-    Store.getConnectionStatus()
-  );
+
   const [showOverlay, setShowOverlay] = useState<boolean>(false);
 
   const actionCallbacks = Object.keys(actions).reduce((obj: any, key: any) => {
@@ -59,19 +59,10 @@ export default function FlowView() {
     return obj;
   }, {});
 
-  const getConnectionStatus = () => {
-    setConnected(Store.getConnectionStatus());
-  };
-
-  Store.on("update-ui", getConnectionStatus);
-
   useEffect(() => {
     const chartContainer = document.querySelector(".chart-container");
     if (chartContainer)
       chartContainer.addEventListener("contextmenu", (e) => e.preventDefault());
-    return () => {
-      Store.removeListener("update-ui", getConnectionStatus);
-    };
   }, []);
 
   const showCaptureOverlay = (showOverlay = true) => {
@@ -160,10 +151,7 @@ export default function FlowView() {
   };
 
   const showImportModal = () => {
-    Dispatcher.dispatch({
-      actionType: Constants.SHOW_MODAL,
-      payload: { modal: "import" },
-    });
+    dispatch(showModal("import"));
   };
 
   const handleCreateNewFlow = (e: any) => {
@@ -235,7 +223,7 @@ export default function FlowView() {
             </div>
           </Card>
           <Sidebar
-            availableProperties={availableProperties}
+            availableProperties={PROPERTY_LIST}
             duplicateFlow={handleDuplicateFlow}
             readonly={readonly}
             flow={chart}
