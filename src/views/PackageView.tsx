@@ -6,7 +6,6 @@ import { PageTitle } from "../components/Common/PageTitle";
 import Details from "../components/Hub/ImageDetails";
 import Readme from "../components/Hub/Readme";
 import CopyCommand from "../components/Hub/CopyCommand";
-import StarRating from "../components/Hub/StarRating";
 import ImageReviews from "../components/Hub/ImageReviews";
 import { copyToClipboard } from "../helpers";
 
@@ -44,14 +43,6 @@ class PackageView extends React.Component<any, any> {
     this.setState({ imageData, loading: false });
   };
 
-  rate = (stars: any) => {
-    const { imageId } = this.state;
-    Dispatcher.dispatch({
-      actionType: Constants.POST_RATING,
-      payload: { imageId, stars },
-    });
-  };
-
   copyCode = (content: any) => {
     copyToClipboard(content);
     Dispatcher.dispatch({
@@ -75,15 +66,8 @@ class PackageView extends React.Component<any, any> {
       name,
       readmeHTML,
       documentation,
-      totalStars,
-      totalRatings,
-      userRated,
       reviews,
     } = imageData;
-    let rating;
-    if (totalStars && totalRatings) {
-      rating = totalStars / totalRatings;
-    }
     return (
       <Container fluid className="main-content-container px-0">
         {loading ? (
@@ -98,16 +82,6 @@ class PackageView extends React.Component<any, any> {
                 className="text-sm-left mb-3"
               />
               <Col md="6" />
-              <Col md="3" className="py-sm-2 text-right">
-                <h3>
-                  <StarRating
-                    rating={userRated || rating}
-                    totalRatings={totalRatings}
-                    rate={this.rate}
-                    userRated={userRated}
-                  />
-                </h3>
-              </Col>
             </Row>
             <Row>
               <Col md="6">
