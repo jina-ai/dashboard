@@ -1,6 +1,6 @@
 {
   "name": "dashboard-v1",
-  "version": "0.1.18",
+  "version": "0.1.20",
   "private": true,
   "homepage": "https://dashboard.jina.ai",
   "scripts": {
@@ -19,7 +19,7 @@
     "format": "prettier --write \"src/**/*.{js,jsx, ts, tsx}\"",
     "lint": "eslint \"src/**/*.{js,jsx, ts, tsx}\" --max-warnings=0",
     "cy:dev": "npx cypress open",
-    "cy:run": "npx cypress run"
+    "cy:run": "percy exec -- npx cypress run"
   },
   "husky": {
     "hooks": {
@@ -53,8 +53,9 @@
   },
   "dependencies": {
     "@bastinjafari/react-flow-chart-with-tooltips-and-multi-select": "0.0.14",
+    "@emotion/core": "^11.0.0",
     "@emotion/react": "^11.1.4",
-    "@emotion/styled": "^10.0.27",
+    "@emotion/styled": "^11.0.0",
     "@projectstorm/react-diagrams": "^6.0.1-beta.7",
     "@reduxjs/toolkit": "^1.5.0",
     "@testing-library/jest-dom": "^4.2.4",
@@ -96,6 +97,7 @@
     "lunr": "^2.3.8",
     "mathjs": "^6.6.1",
     "minisearch": "^2.6.2",
+    "mockdate": "^3.0.2",
     "mongodb": "^3.5.6",
     "nanoid": "^3.1.20",
     "node-sass": "^4.13.1",
@@ -130,8 +132,10 @@
     "yargs": "^16.1.0"
   },
   "devDependencies": {
+    "@percy/cypress": "^2.3.4",
     "@types/lunr": "^2.3.3",
     "@types/react-select": "^3.0.19",
+    "@types/react-test-renderer": "^17.0.0",
     "@types/react-virtualized-auto-sizer": "^1.0.0",
     "@types/react-window": "^1.8.2",
     "cypress": "^5.5.0",
@@ -140,6 +144,7 @@
     "lint-staged": "^10.2.11",
     "npm-run-all": "^4.1.5",
     "prettier": "^2.0.5",
+    "react-test-renderer": "^17.0.1",
     "redux-devtools": "^3.7.0",
     "stylelint": "^13.8.0",
     "stylelint-config-prettier": "^8.0.2",

@@ -12,12 +12,16 @@ import { GlobalState } from "./global/global.types";
 import globalReducer from "./global/global.reducer";
 import thunk from "redux-thunk";
 import { handleConnectionStatus } from "./global/global.actions";
+import taskReducer from "./task/task.reducer";
+import { handleNewTaskEvent } from "./task/task.actions";
+import { TaskEvent, TaskState } from "./task/task.types";
 
 export type State = {
   flowState: FlowState;
   settingsState: SettingsState;
   logStreamState: LogStreamState;
   globalState: GlobalState;
+  taskState: TaskState;
 };
 
 const rootReducer = combineReducers({
@@ -25,6 +29,7 @@ const rootReducer = combineReducers({
   settingsState: settingsReducer,
   logStreamState: logStreamReducer,
   globalState: globalReducer,
+  taskState: taskReducer,
 });
 
 const store = createStore(
@@ -40,7 +45,11 @@ function _handleNewLog(message: Message) {
   store.dispatch(handleNewLog(message));
 }
 
-function _handleNewTaskEvent(update: { type: string; data: string }) {}
+function _handleNewTaskEvent(testEvent: TaskEvent) {
+  store.dispatch(
+    handleNewTaskEvent(testEvent, store.getState().globalState.processes)
+  );
+}
 
 api.connect(
   store.getState().settingsState.settings,

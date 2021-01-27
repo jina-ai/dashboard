@@ -1,5 +1,5 @@
 /** @jsx jsx */
-import { jsx } from "@emotion/core";
+import { jsx } from "@emotion/react";
 import { Row, Col } from "react-bootstrap";
 import { memo } from "react";
 import { areEqual } from "react-window";

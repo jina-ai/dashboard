@@ -2,6 +2,7 @@ import axios from "axios";
 import logger from "../logger";
 import { hubURL, timeout } from "./config";
 import { Message } from "../redux/logStream/logStream.types";
+import { TaskEvent } from "../redux/task/task.types";
 
 let logStream: EventSource;
 let taskStream: EventSource;
@@ -28,7 +29,7 @@ type Settings = {
 
 type ConnectionUpdate = (messageType: string, message: string) => void;
 
-type UpdateHandler = (update: { type: string; data: string }) => void;
+type TaskEventHandler = (taskEvent: TaskEvent) => void;
 
 type HandleNewLog = (message: Message) => void;
 
@@ -37,7 +38,7 @@ const api = {
     settings: Settings,
     connectionUpdate: ConnectionUpdate,
     logUpdate: HandleNewLog,
-    taskUpdate: UpdateHandler
+    taskEventHandler: TaskEventHandler
   ) => {
     logger.log("api - connect - settings", settings);
 
@@ -81,23 +82,22 @@ const api = {
     taskStream = new EventSource(taskString);
 
     taskStream.onopen = () => {
-      logger.log("api - taskStream.onopen called");
-      taskUpdate({
-        type: "connect",
-        data: `Task connection established at ${taskString}`,
-      });
+      logger.log(
+        "api - taskStream.onopen called",
+        `Task connection established at ${taskString}`
+      );
     };
 
     taskStream.onmessage = (m) => {
-      taskUpdate({ type: "event", data: JSON.parse(m.data) });
+      taskEventHandler(JSON.parse(m.data));
     };
 
     taskStream.onerror = (data) => {
-      logger.log("api - taskStream.onerror - ERROR", data);
-      taskUpdate({
-        type: "error",
-        data: `Could not get profile data from ${taskString}`,
-      });
+      logger.log(
+        "api - taskStream.onerror - ERROR",
+        data,
+        `Could not get profile data from ${taskString}`
+      );
       taskStream.close();
     };
   },

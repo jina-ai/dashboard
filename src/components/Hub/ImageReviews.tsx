@@ -1,6 +1,5 @@
 import React from "react";
 import { Button } from "shards-react";
-import ReviewCard from "./ReviewCard";
 import { Review } from "./types";
 
 type Props = {
@@ -19,11 +18,6 @@ export default function ImageReviews({ reviews, newReview }: Props) {
           </Button>
         </div>
       </div>
-      {reviews.length > 0 ? (
-        reviews.map((review, idx) => <ReviewCard key={idx} review={review} />)
-      ) : (
-        <h2 className="text-muted text-center py-4">No Reviews</h2>
-      )}
     </div>
   );
 }
