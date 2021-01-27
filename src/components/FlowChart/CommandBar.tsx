@@ -5,9 +5,13 @@ type Props = {
   importChart: () => void;
   copyChart: () => void;
   exportImage: (format: string) => void;
+  startFlow:()=>void;
+  stopFlow:()=>void;
 };
 
-export default function ChartNode({
+export default function CommandBar({
+  startFlow,
+  stopFlow,
   importChart,
   copyChart,
   exportImage,
@@ -16,14 +20,11 @@ export default function ChartNode({
     <div className="command-bar-container">
       <div className="command-bar">
         <ButtonGroup>
-          <Button variant="secondary" disabled>
+          <Button variant="secondary" onClick={startFlow}>
             <i className="material-icons">play_arrow</i>
           </Button>
-          <Button variant="secondary" disabled>
+          <Button variant="secondary" onClick={stopFlow}>
             <i className="material-icons">stop</i>
-          </Button>
-          <Button variant="secondary" disabled>
-            <i className="material-icons">schedule</i>
           </Button>
           <Button variant="secondary" onClick={importChart}>
             <i className="material-icons">save_alt</i>

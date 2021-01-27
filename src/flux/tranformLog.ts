@@ -1,4 +1,3 @@
-import { fromUnixTime } from "date-fns";
 import { nanoid } from "nanoid";
 const levels = [
   "INFO",
@@ -11,45 +10,40 @@ const levels = [
 type Level = typeof levels[number];
 
 export type RawLog = {
-  created: number;
-  filename: string;
-  funcName: string;
-  levelname: Level;
-  lineno: number;
-  module: string;
-  msg: string;
+  context: string;
+  host: string;
+  log_id: string;
+  message: string;
   name: string;
-  pathname: string;
-  process: number;
-  processName: string;
-  thread: number;
-  threadName: string;
+  process: string;
+  type: Level;
+  uptime: string;
+  workspace_path: string;
 };
 
 export type ProcessedLog = RawLog & {
-  createdDate: Date;
   id: string;
   idx: number;
   unixTime: number;
   timestamp: Date;
   formattedTimestamp: string;
+  level: Level;
 };
 
 function transformLog(log: RawLog, idx: number): ProcessedLog {
-  const { created } = log;
-  const createdDate = fromUnixTime(created);
+  const { uptime, type } = log;
   const id = nanoid();
-  const unixTime = Math.floor(created);
-  const timestamp = new Date(unixTime * 1000);
+  const timestamp = new Date(uptime);
+  const unixTime = timestamp.valueOf();
   const formattedTimestamp = timestamp.toLocaleString();
   return {
     ...log,
-    createdDate,
     id,
     idx,
     unixTime,
     timestamp,
     formattedTimestamp,
+    level: type,
   };
 }
 

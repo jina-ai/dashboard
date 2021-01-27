@@ -1,0 +1,30 @@
+{
+	"name": {
+			"title": "Name",
+			"description": "\nThe name of this object.\n\nThis will be used in the following places:\n- how you refer to this object in Python/YAML/CLI\n- log message\n- ...\n\nWhen not given, then the default naming strategy will apply.\n                    ",
+			"type": "string"
+	},
+	"log_config": {
+			"title": "Log Config",
+			"description": "The YAML config of the logger used in this object.",
+			"default": "/usr/local/lib/python3.7/site-packages/jina/resources/logging.default.yml",
+			"type": "string"
+	},
+	"show_exc_info": {
+			"title": "Show Exc Info",
+			"description": "If set, then exception stack information to be added to the logging message, useful in debugging",
+			"default": false,
+			"type": "boolean"
+	},
+	"uses": {
+			"title": "Uses",
+			"description": "The YAML file represents a flow",
+			"type": "string"
+	},
+	"inspect": {
+			"title": "Inspect",
+			"description": "\nThe strategy on those inspect pods in the flow.\n\nIf `REMOVE` is given then all inspect pods are removed when building the flow.\n",
+			"default": "COLLECT",
+			"type": "string"
+	}
+}

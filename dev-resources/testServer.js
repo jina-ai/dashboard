@@ -1,306 +1,231 @@
 const express = require("express");
 const cors = require("cors");
-const axios = require("axios");
-const symbols = require("log-symbols");
 const cliCursor = require("cli-cursor");
 const chalk = require("chalk");
-const EventSource = require("eventsource");
-const fs = require("fs-extra");
-const { nanoid } = require("nanoid");
+const { v4: uuid, validate: uuidValidate } = require("uuid");
 const { argv } = require("yargs");
 
 const config = require("./config");
-
 const app = express();
+const expressWs = require('express-ws')(app);
+
+const multer = require('multer');
+const upload = multer();
 
 app.use(cors());
 
 cliCursor.hide();
 
-//Global Variables
-let statusInterval;
-let currentSpeed = 0;
-//
+let _state;
+let _activeStreams = 0;
+let _currentSpeed = 0;
+let _messagesSent = 0;
+let _lastMessagesSent = 0;
+let _sampleStreamData;
 
-//Emitter Variables
-let initialStreamStart;
-let activeStreams = 0;
-let messagesSent = 0;
-let lastMessagesSent = 0;
-let flowTemplate;
-//
 
-//Recorder Variables
-let messagesReceived = 0;
-let lastMessagesReceived = 0;
-let logsActive = false;
-let profileActive = false;
-let yaml;
-let logData = [];
-let profileData = [];
-//
+function initSampleDaemon() {
+	_state = require("./sample-data/daemon-status.json");
+	_state.workspaces.time_created = new Date();
+	_state.workspaces.time_updated = new Date();
+	_state.pods.time_created = new Date();
+	_state.pods.time_updated = new Date();
+	_state.flows.time_created = new Date();
+	_state.flows.time_updated = new Date();
+}
 
 //ENDPOINTS
-const logEndpoint = config.emitter.endpoints.log;
-app.get(logEndpoint, (req, res) => {
-  res.writeHead(200, {
-    "Content-Type": "text/event-stream",
-    "Cache-Control": "no-cache",
-    Connection: "keep-alive",
-  });
-  res.write("\n");
-  startStreamSimulation(flowTemplate.logs, req, res);
+
+app.get("/", (req, res) => {
+	return res.json({})
 });
 
-const profileEndpoint = config.emitter.endpoints.profile;
-app.get(profileEndpoint, (req, res) => {
-  res.writeHead(200, {
-    "Content-Type": "text/event-stream",
-    "Cache-Control": "no-cache",
-    Connection: "keep-alive",
-  });
-  res.write("\n");
-  startStreamSimulation(flowTemplate.profile, req, res);
+app.get("/status", (req, res) => {
+	return res.json(_state);
+})
+
+app.get("/flows", (req, res) => {
+	return res.json(_state.flows);
+})
+
+app.post("/flows", upload.single("flow"), (req, res) => {
+	const yaml_source = req.file.buffer.toString();
+	const flow_id = uuid();
+	const workspace_id = req.body.workspace_id || uuid();
+	const workdir = `tmp/jinad/${workspace_id}`;
+	const time_created = new Date();
+	const args = {
+		name: null,
+		log_config: "/usr/local/lib/python3.7/site-packages/jina/resources/logging.default.yml",
+		identity: flow_id,
+		show_exec_info: false,
+		uses: null,
+		inspect: 2,
+		optimize_level: 0,
+	}
+	_state.flows.size++;
+	_state.flows.num_add++;
+	_state.flows.time_updated = new Date();
+	_state.flows.items[flow_id] = { time_created, arguments: args, workspace_id, workdir, yaml_source };
+	return res.status(201).json(flow_id);
+})
+
+app.get("/flows/arguments", (req, res) => {
+	return res.json(require("./sample-data/args-flow.json"))
 });
 
-const yamlEndpoint = config.emitter.endpoints.yaml;
-app.get(yamlEndpoint, (req, res) => {
-  return res.send(flowTemplate.yaml);
+app.get("/flows/:id", validateId, ensureResourceExists, (req, res) => {
+	const { id } = req.params;
+	return res.json(_state.flows.items[id]);
+})
+
+app.get("/pods", (req, res) => {
+	return res.json(_state.pods);
+})
+
+app.get("/pods/arguments", (req, res) => {
+	return res.json(require("./sample-data/args-pod.json"))
 });
-//
 
-//CONSOLE OUTPUT
-function printEmitterStatus() {
-  process.stdout.clearLine();
-  process.stdout.cursorTo(0);
-  process.stdout.write(
-    `Active Streams: ${
-      activeStreams ? chalk.green(activeStreams) : chalk.gray(activeStreams)
-    } | Messages Sent: ${
-      messagesSent ? messagesSent : chalk.gray(messagesSent)
-    } | Current Speed: ${
-      currentSpeed
-        ? `${currentSpeed} msg/s`
-        : chalk.gray(`${currentSpeed} msg/s`)
-    }`
-  );
+app.get("/pods/:id", validateId, ensureResourceExists, (req, res) => {
+	const { id } = req.params;
+	return res.json(_state.pods.items[id]);
+})
+
+app.get("/peas", (req, res) => {
+	return res.json(_state.pods);
+})
+
+app.get("/peas/arguments", (req, res) => {
+	return res.json(require("./sample-data/args-pea.json"))
+});
+
+app.get("/peas/:id", validateId, ensureResourceExists, (req, res) => {
+	const { id } = req.params;
+	return res.json(_state.peas.items[id]);
+})
+
+app.get("/workspaces", (req, res) => {
+	return res.json(_state.pods);
+})
+
+app.get("/workspaces/:id", validateId, ensureResourceExists, (req, res) => {
+	const { id } = req.params;
+	return res.json(_state.workspaces.items[id]);
+})
+
+app.get("/logs/:workspace_id/:flow_id", (req, res) => {
+	return res.json(require("./sample-data/logs.json"))
+})
+
+app.ws("/logstream/:workspace_id/:flow_id", (ws, req) => {
+	return startStreamSimulation(ws, _sampleStreamData.logs);
+})
+
+function startStreamSimulation(ws, items) {
+	let connected = true;
+	let timeouts = [];
+
+	_activeStreams++;
+
+	const { messageInterval } = config.emitter;
+
+	items.forEach((log, idx) => {
+		let delay = messageInterval * idx;
+		let timeout = setTimeout(() => {
+			if (!connected) return;
+			ws.send(JSON.stringify(log));
+			_messagesSent++;
+			printEmitterStatus();
+		}, delay);
+		timeouts.push(timeout);
+	});
+
+	ws.on("close", () => {
+		connected = false;
+		_activeStreams--;
+		clearTimeouts(timeouts);
+	});
 }
 
-function updateEmitterStatus() {
-  currentSpeed = messagesSent - lastMessagesSent;
-  lastMessagesSent = messagesSent;
-  printEmitterStatus();
+function validateId(req, res, next) {
+	const { id } = req.params;
+	if (uuidValidate(id))
+		return next()
+	return res.status(422).json({
+		"detail": [
+			{
+				"loc": [
+					"path",
+					"id"
+				],
+				"msg": "value is not a valid uuid",
+				"type": "type_error.uuid"
+			}
+		]
+	})
 }
 
-function printRecorderStatus() {
-  process.stdout.clearLine();
-  process.stdout.cursorTo(0);
-  let logsReceived = logData.length;
-  let profileReceived = profileData.length;
-  process.stdout.write(
-    `Connected: ${
-      logsActive || profileActive ? symbols.success : symbols.error
-    } | Logs : ${
-      logsReceived ? logsReceived : chalk.gray(logsReceived)
-    } | Profile : ${
-      profileReceived ? profileReceived : chalk.gray(profileReceived)
-    } | YAML : ${yaml ? symbols.success : symbols.error} | Current Speed: ${
-      currentSpeed
-        ? `${currentSpeed} msg/s`
-        : chalk.gray(`${currentSpeed} msg/s`)
-    }`
-  );
-}
-
-function updateRecorderStatus() {
-  currentSpeed = messagesReceived - lastMessagesReceived;
-  lastMessagesReceived = messagesReceived;
-  printRecorderStatus();
-}
-//
-
-function startStreamSimulation(items, req, res) {
-  let itemId = 0;
-  let connected = true;
-  let timeouts = [];
-
-  activeStreams++;
-
-  items.forEach(({ data, received }) => {
-    let delay = received - initialStreamStart;
-    let timeout = setTimeout(() => {
-      if (!connected) return;
-      data.created = new Date() / 1000;
-      res.write(`id: ${itemId}\n`);
-      res.write(`data:${JSON.stringify(data)}\n\n`);
-      itemId++;
-      messagesSent++;
-      printEmitterStatus();
-    }, delay);
-    timeouts.push(timeout);
-  });
-
-  req.on("close", () => {
-    connected = false;
-    activeStreams--;
-    clearTimeouts(timeouts);
-  });
-}
-
-async function startRecorder(endpoint) {
-  const logserver = axios.create({
-    baseURL: endpoint,
-  });
-
-  const { endpoints } = config.recorder;
-
-  try {
-    yaml = (await logserver.get(endpoints.yaml.path)).data;
-  } catch (e) {
-    yaml = undefined;
-  }
-
-  const logStream = new EventSource(`${endpoint}${endpoints.log.path}`);
-  const profileStream = new EventSource(`${endpoint}${endpoints.profile.path}`);
-
-  logStream.onopen = () => {
-    logsActive = true;
-  };
-
-  logStream.onmessage = (m) => {
-    messagesReceived++;
-    let received = +new Date();
-    let data = JSON.parse(m.data);
-    logData.push({ received, data });
-    printRecorderStatus();
-  };
-
-  logStream.onerror = () => {
-    logsActive = false;
-    logStream.close();
-  };
-
-  profileStream.onopen = () => {
-    profileActive = true;
-  };
-
-  profileStream.onmessage = (m) => {
-    messagesReceived++;
-    let received = +new Date();
-    let data = JSON.parse(m.data);
-    profileData.push({ received, data });
-    printRecorderStatus();
-  };
-
-  profileStream.onerror = () => {
-    profileActive = false;
-    profileStream.close();
-  };
-}
-
-async function endRecording() {
-  clearInterval(statusInterval);
-  let totalLogs = logData.length;
-  let totalProfile = profileData.length;
-  if (!(totalLogs || totalProfile || yaml)) {
-    process.stdout.clearLine();
-    process.stdout.cursorTo(0);
-    console.log(chalk.redBright("No data recorded"));
-    return process.exit();
-  }
-  const filepath = `${config.recorder.saveDir}/${nanoid()}.json`;
-
-  process.stdout.clearLine();
-  process.stdout.cursorTo(0);
-  console.log(chalk.yellow("Recording stopped"));
-  console.log();
-  console.log(chalk.underline("Summary"));
-  console.log(
-    `Logs: ${totalLogs ? totalLogs : chalk.gray(totalLogs)} | Profile: ${
-      totalProfile ? totalProfile : chalk.gray(totalProfile)
-    } | YAML: ${yaml ? symbols.success : symbols.error}`
-  );
-  console.log();
-  console.log(chalk.italic("Saving recording..."));
-  const data = {
-    logs: logData,
-    profile: profileData,
-    yaml,
-  };
-
-  await fs.ensureDir(config.recorder.saveDir);
-
-  try {
-    await fs.writeJSON(filepath, data);
-    console.log(`Recording saved to ${filepath}`, symbols.success);
-  } catch (e) {
-    console.log(chalk.red("Error saving file:"), e);
-  }
-
-  process.exit();
-}
-
-function initRecorder() {
-  let endpoint;
-  if (typeof argv.record === "boolean") endpoint = config.recorder.url;
-  else endpoint = argv.record;
-
-  console.clear();
-  console.log(chalk.bgYellow(" Logserver Recorder "));
-  console.log();
-  console.log("Recording URL:", chalk.underline(endpoint));
-  console.log();
-  console.log(chalk.underline("Recording Endpoints"));
-  Object.values(config.recorder.endpoints).map((e) =>
-    console.log(
-      e.type === "stream"
-        ? chalk.bgMagenta(` ${e.type} `)
-        : chalk.bgBlue(` ${e.type} `),
-      e.path
-    )
-  );
-  console.log();
-  printRecorderStatus();
-  statusInterval = setInterval(
-    updateRecorderStatus,
-    config.updateStatusInterval
-  );
-  startRecorder(endpoint);
-
-  process.once("SIGINT", endRecording);
-}
-
-function initEmitter() {
-  const PORT = argv.port || config.emitter.port;
-  const flowTemplatePath = argv.source || config.emitter.source;
-  flowTemplate = require(`./${flowTemplatePath}`);
-
-  let logsStart = flowTemplate.logs[0].received;
-  let profileStart = flowTemplate.profile[0].received;
-  initialStreamStart = Math.min(logsStart, profileStart);
-
-  app.listen(PORT, () => {
-    console.clear();
-    console.log(chalk.bgCyan(" Logserver Simulator "));
-    console.log();
-    console.log("Using template", chalk.italic(flowTemplatePath));
-    console.log();
-    console.log("Listening on port", PORT);
-    console.log();
-    console.log(chalk.underline("Available Endpoints"));
-    Object.values(config.emitter.endpoints).map((e) => console.log(e));
-    console.log();
-    printEmitterStatus();
-    statusInterval = setInterval(
-      updateEmitterStatus,
-      config.updateStatusInterval
-    );
-  });
+function ensureResourceExists(req, res, next) {
+	const resource = req.url.split("/")[1];
+	const resourceSingular = resource.slice(0, -1);
+	const resourceCapitalized = resourceSingular.charAt(0).toUpperCase() + resourceSingular.slice(1);
+	const { id } = req.params;
+	if (!_state[resource].items[id])
+		return res.status(404).json({
+			"detail": `${id} not found in <daemon.stores.${resourceSingular}.${resourceCapitalized}Store object at 0x7f61a0f01d90>`
+		})
+	next();
 }
 
 function clearTimeouts(timeouts) {
-  timeouts.forEach((id) => clearTimeout(id));
+	timeouts.forEach((id) => clearTimeout(id));
 }
 
-if (argv.record) initRecorder();
-else initEmitter();
+function updateEmitterStatus() {
+	_currentSpeed = _messagesSent - _lastMessagesSent;
+	_lastMessagesSent = _messagesSent;
+	printEmitterStatus();
+}
+
+function printEmitterStatus() {
+	process.stdout.clearLine();
+	process.stdout.cursorTo(0);
+	process.stdout.write(
+		`Active Streams: ${_activeStreams ? chalk.green(_activeStreams) : chalk.gray(_activeStreams)
+		} | Messages Sent: ${_messagesSent ? _messagesSent : chalk.gray(_messagesSent)
+		} | Current Speed: ${_currentSpeed
+			? `${_currentSpeed} msg/s`
+			: chalk.gray(`${_currentSpeed} msg/s`)
+		}`
+	);
+}
+
+function init() {
+	const port = argv.port || config.emitter.port;
+	const templatePath = argv.source || config.emitter.source;
+	const streamData = require(`./${templatePath}`);
+
+	_sampleStreamData = streamData;
+
+	app.listen(port, () => {
+		console.clear();
+		console.log(chalk.bgCyan(" Jina Daemon Simulator "));
+		console.log();
+		console.log("Using template", chalk.italic(templatePath));
+		console.log();
+		console.log("Listening on port", port);
+		console.log();
+		console.log(chalk.underline("Available Endpoints"));
+		Object.values(config.emitter.endpoints).map((e) => console.log(e));
+		console.log();
+		printEmitterStatus();
+		setInterval(
+			updateEmitterStatus,
+			config.updateStatusInterval
+		);
+		initSampleDaemon();
+	});
+}
+
+init();

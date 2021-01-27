@@ -18,15 +18,15 @@ type Props = {
 const LogItem = memo(
   ({ index, style, data: { columns, items, showLogDetails } }: Props) => {
     const logData = items[index];
-    const { name, msg, levelname, process, formattedTimestamp, idx } = logData;
+    const { name, message, level, process, formattedTimestamp, idx } = logData;
     let logName = String(name);
     logName = logName.length > 20 ? logName.substring(0, 20) : logName;
-    let levelInitial = String(levelname)[0];
+    let levelInitial = String(level)[0];
     const { firstCol, secondCol, thirdCol } = columns;
     return (
       <div
         className={`log log-${String(
-          levelname
+          level
         ).toLowerCase()} px-4 border-bottom py-1`}
         css={{ maxHeight: 84 }}
         style={style}
@@ -59,7 +59,7 @@ const LogItem = memo(
               marginRight: 0,
             }}
           >
-            {msg}
+            {message}
           </Col>
         </Row>
       </div>

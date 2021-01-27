@@ -24,7 +24,7 @@ const DEFAULT_VIEW = "table";
 const VIEW_PREFERENCE_NAME = "logs-view-preference";
 const POD_NAME_SPLIT_CHAR = "-";
 
-const SEARCH_FIELDS = ["filename","funcName","module","msg","pathname","name"];
+const SEARCH_FIELDS = ["filename","funcName","module","message","pathname","name"];
 
 const levels = [
   "INFO",
@@ -254,7 +254,7 @@ function LogsTable({ data, showLogDetails }: Props) {
 
   let resultData = (unfiltered || []).filter((result) =>
     applyFilters(result as any, {
-      levelname: selectedLevels.map(({ value }) => value),
+      level: selectedLevels.map(({ value }) => value),
       name: selectedSources.map(({ value }) => value),
     })
   );
@@ -272,7 +272,7 @@ function LogsTable({ data, showLogDetails }: Props) {
       );
 
       if (!pod.data.length) return;
-      pod.levels = _.countBy(pod.data, "levelname");
+      pod.levels = _.countBy(pod.data, "level");
       groupedData[podName] = pod;
     });
   } else if (currentView === "group-level") {
@@ -281,7 +281,7 @@ function LogsTable({ data, showLogDetails }: Props) {
       const levelItem: any = {};
 
       levelItem.data = (resultData || []).filter(
-        (log: any) => log.levelname === level
+        (log: any) => log.level === level
       );
 
       if (!levelItem.data.length) return;

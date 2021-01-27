@@ -19,7 +19,7 @@ function serializeLogsToCSV(logs: ProcessedLog[]): string {
   const columns =
     "created,formatted timestamp,name,process,level name,message,filename,line number,module,funcname,pathname\n";
   const fileContent = logs.reduce((acc, log) => {
-    acc += `${log.created},"${log.formattedTimestamp}",${log.name},${log.process},${log.levelname},"${log.msg}",${log.filename},${log.lineno},${log.module},${log.funcName},${log.pathname}\n`;
+    acc += `${log.created},"${log.formattedTimestamp}",${log.name},${log.process},${log.level},"${log.message}",${log.filename},${log.lineno},${log.module},${log.funcName},${log.pathname}\n`;
     return acc;
   }, columns);
   return fileContent;
@@ -35,7 +35,7 @@ function serializeLogsToJSON(logs: ProcessedLog[]): string {
 
 function serializeLogsToText(logs: ProcessedLog[]): string {
   const fileContent = logs.reduce((acc, log) => {
-    acc += `${log.formattedTimestamp} ${log.name}@${log.process} [${log.levelname}]: ${log.msg}\n`;
+    acc += `${log.formattedTimestamp} ${log.name}@${log.process} [${log.level}]: ${log.message}\n`;
     return acc;
   }, "");
   return fileContent;
@@ -218,7 +218,7 @@ export function formatAsYAML(chart) {
     return acc;
   }, {});
 
-  const output = { with: { ...chartWith, board: { canvas } }, pods };
+  const output = { with: { ...chartWith, board: { canvas },rest_api:true,port_expose:5555 }, pods };
   return `!Flow\n${YAML.stringify(output)}`;
 }
 

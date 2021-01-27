@@ -3,7 +3,8 @@ import _ from "lodash";
 import { nanoid } from "nanoid";
 import { Constants, Dispatcher, transformLog } from "./";
 import { parseYAML, formatForFlowchart, formatSeconds } from "../helpers";
-import api from "./api";
+import hub from "./hub";
+import jinad from "./jinad";
 import logger from "../logger";
 import propertyList from "../data/podProperties.json";
 import getSidebarNavItems from "../data/sidebar-nav-items";
@@ -11,7 +12,6 @@ import exampleFlows from "../data/exampleFlows";
 
 const MAX_CHART_TICKS = 60;
 const HIDE_BANNER_TIMEOUT = 5000;
-const TASK_UPDATE_INTERVAL = 500;
 const CHART_LEVELS = [
   "INFO",
   "SUCCESS",
@@ -103,6 +103,7 @@ function getInitialStore(): LooseObject {
         localStorage.getItem("preferences-shutdown") || "/action/shutdown",
       ready: localStorage.getItem("preferences-ready") || "/status/ready",
     },
+    activeFlow: false,
     images: {},
     hub: [],
     banner: false,
@@ -233,6 +234,12 @@ class StoreBase extends EventEmitter {
       case Constants.DELETE_FLOW:
         this.deleteFlow(payload);
         break;
+      case Constants.START_FLOW:
+        this.startFlow(payload);
+        break;
+      case Constants.STOP_FLOW:
+        this.stopFlow();
+        break;
       default:
     }
   };
@@ -241,8 +248,8 @@ class StoreBase extends EventEmitter {
     this.clearIntervals();
     _store = getInitialStore();
 
-    await this.initFlowChart();
-    this.initLogStream();
+    // await this.initFlowChart();
+    this.initJinaD();
     this.initHub();
     this.initUser();
 
@@ -259,7 +266,7 @@ class StoreBase extends EventEmitter {
     let flow;
 
     try {
-      let str = await api.getYAML(_store.settings);
+      let { flow: str } = await jinad.getFlow(_store.settings);
       flow = parseYAML(str);
     } catch (e) {
       logger.log("initFlowChart - parseYAML[API] ERROR", e);
@@ -294,17 +301,22 @@ class StoreBase extends EventEmitter {
     this.emit("update-flowchart");
   };
 
-  initLogStream = () => {
-    api.connect(
-      _store.settings,
-      this.handleLogConnectionStatus,
-      this.handleNewLog,
-      this.handleNewTaskEvent
-    );
-    _updateTaskInterval = setInterval(
-      () => this.emit("update-task"),
-      TASK_UPDATE_INTERVAL
-    );
+  initJinaD = () => {
+    jinad.connect(_store.settings, this.handleJinaDConnection);
+  };
+
+  handleJinaDConnection = (data: { connected: boolean; msg?: any }) => {
+    const { connected, msg } = data;
+    logger.log("handleLogConnectionStatus - connected", connected);
+    logger.log("handleLogConnectionStatus - msg", msg);
+    _store.loading = false;
+    if (connected) {
+      _store.connected = true;
+      return this.showBanner(msg, "success");
+    } else {
+      _store.connected = false;
+    }
+    this.emit("update-ui");
   };
 
   handleLogConnectionStatus = (status: string, message: string) => {
@@ -320,11 +332,13 @@ class StoreBase extends EventEmitter {
     this.emit("update-ui");
   };
 
-  handleNewLog = (message: { data: any }) => {
-    const { data } = message;
+  handleNewLog = (data: any) => {
+    console.log("data before:", data);
     const log = transformLog(data, _store.logs.length);
 
-    const { process, name, levelname, unixTime } = log;
+    console.log("transformed log:", log);
+
+    const { process, name, level, unixTime } = log;
 
     _store.logs.push(log);
     _store.processes[process] = log.name;
@@ -332,13 +346,13 @@ class StoreBase extends EventEmitter {
     if (_store.logSources[name]) _store.logSources[name]++;
     else _store.logSources[name] = 1;
 
-    if (_store.logLevels[levelname]) _store.logLevels[levelname]++;
-    else _store.logLevels[levelname] = 1;
+    if (_store.logLevels[level]) _store.logLevels[level]++;
+    else _store.logLevels[level] = 1;
 
     if (!_store.logLevelOccurences[unixTime])
       _store.logLevelOccurences[unixTime] = getInitialLevelOccurences();
 
-    _store.logLevelOccurences[unixTime].levels[levelname]++;
+    _store.logLevelOccurences[unixTime].levels[level]++;
     _store.logLevelOccurences[unixTime].lastLog = log.idx;
 
     this.emit("update-logs");
@@ -424,7 +438,7 @@ class StoreBase extends EventEmitter {
 
   initHub = async () => {
     try {
-      const images = await api.getImages();
+      const images = await hub.getImages();
       _store.hub = images;
     } catch (e) {
       _store.hub = false;
@@ -433,7 +447,7 @@ class StoreBase extends EventEmitter {
   };
 
   initUser = async () => {
-    const user = await api.getProfile();
+    const user = await hub.getProfile();
     _store.user = user;
     this.emit("update-user");
   };
@@ -489,6 +503,84 @@ class StoreBase extends EventEmitter {
     _store.flows[_store.selectedFlow].flow = newFlow;
     this.saveFlowsToStorage();
     this.emit("update-flowchart");
+  };
+
+  startFlow = async (yamlSTR: string) => {
+    const flowResult = await jinad.startFlow(yamlSTR);
+    console.log("flowResult:", flowResult);
+    if (flowResult.status === "error")
+      return this.showError(`Error starting flow`);
+
+    const { flow } = flowResult;
+    _store.activeFlow = flow;
+
+    const flowInfoResult = await jinad.getFlow(flow);
+
+    if (flowInfoResult.status === "error")
+      return this.showError(`Error getting flow information`);
+
+    const { workspace_id } = flowInfoResult.flow;
+    _store.activeWorkspace = workspace_id;
+
+    logger.log("store - startFlow - activeFlow: ", flow);
+    logger.log("store - startFlow - activeWorkspace: ", workspace_id);
+
+    this.showSuccess(`Flow successfully started\nFlowId: ${flow}`);
+    setTimeout(this.startLogStream,3000);
+  };
+
+  stopFlow = async () => {
+    const flowId = _store.activeFlow;
+    logger.log("store - stopFlow - flowId: ", flowId);
+    const result = await jinad.terminateFlow(flowId);
+    if (result.status === "success") {
+      _store.activeFlow = false;
+      this.showSuccess(`Flow successfully closed\nFlowId: ${flowId}`);
+    } else {
+      this.showError(`Could not close flow \nFlowId: ${flowId}`);
+    }
+  };
+
+  startPod = async (podArgs: any) => {
+    logger.log("store - startPod - podArgs: ", podArgs);
+    const result = await jinad.startPod(podArgs);
+    if (result.status === "success") {
+      _store.activeFlow = false;
+      this.showSuccess(`Pod successfully started`);
+    } else {
+      this.showError(`Could not start pod`);
+    }
+  };
+
+  stopPod = async () => {
+    const flowId = _store.activeFlow;
+    logger.log("store - stopFlow - flowId: ", flowId);
+    const result = await jinad.terminateFlow(flowId);
+    if (result.status === "success") {
+      _store.activeFlow = false;
+      this.showSuccess(`Flow successfully closed\nFlowId: ${flowId}`);
+    } else {
+      this.showError(`Could not close flow \nFlowId: ${flowId}`);
+    }
+  };
+
+  startLogStream = async () => {
+    const flowId = _store.activeFlow;
+    const workspaceId = _store.activeWorkspace;
+    let callback = (result: any) => {
+      logger.log("store - startLogStream - callback result: ", result);
+    };
+    const { logs } = await jinad.getLogs(workspaceId, flowId);
+    logs.forEach((log: any) => {
+      this.handleNewLog(log);
+    });
+    jinad.listenForLogs(
+      workspaceId,
+      flowId,
+      _store.settings,
+      callback,
+      this.handleNewLog
+    );
   };
 
   createNewFlow = (customYAML?: string) => {
@@ -576,7 +668,7 @@ class StoreBase extends EventEmitter {
     if (!_store.user) return (window.location.hash = "#/login");
     let result;
     try {
-      result = await api.postRating(imageId, stars);
+      result = await hub.postRating(imageId, stars);
     } catch (e) {
       let error = String(e).includes("409") ? "Already Rated" : e;
       return this.showError(error);
@@ -604,7 +696,7 @@ class StoreBase extends EventEmitter {
     this.closeModal();
     let result;
     try {
-      result = await api.postReview(imageId, content);
+      result = await hub.postReview(imageId, content);
     } catch (e) {
       let error = String(e).includes("409") ? "Already Reviewed" : e;
       return this.showError(error);
@@ -619,7 +711,7 @@ class StoreBase extends EventEmitter {
   };
 
   logOut = async () => {
-    await api.logOut();
+    await hub.logOut();
     window.location.reload();
   };
 
@@ -632,7 +724,7 @@ class StoreBase extends EventEmitter {
     q: string;
     sort: string;
   }) => {
-    const images = await api.searchHub(category, q, sort);
+    const images = await hub.search(category, q, sort);
     _store.hub = images;
     this.emit("update-hub");
   };
@@ -651,6 +743,10 @@ class StoreBase extends EventEmitter {
 
   showError = (message: string) => {
     this.showBanner(message, "error");
+  };
+
+  showSuccess = (message: string) => {
+    this.showBanner(message, "success");
   };
 
   showModal = (data: { modal: string; modalParams: any }) => {
@@ -688,7 +784,7 @@ class StoreBase extends EventEmitter {
 
   getHubImage = async (imageId: string) => {
     if (!_store.images[imageId]) {
-      _store.images[imageId] = await api.getImage(imageId);
+      _store.images[imageId] = await hub.getImage(imageId);
     }
     return _store.images[imageId];
   };
@@ -766,6 +862,10 @@ class StoreBase extends EventEmitter {
 
   getConnectionStatus = () => {
     return _store.connected;
+  };
+
+  getActiveFlow = () => {
+    return _store.activeFlow;
   };
 
   isLoading = () => {

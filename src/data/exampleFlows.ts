@@ -176,4 +176,19 @@ export default {
         needs: ranker
     `,
   },
+  blankFlow:{
+    name: "Test Flow",
+    type: "example",
+    yaml:`!Flow
+    with:
+      rest_api: true
+      port_expose: 5555
+    pods:
+      pod1:
+        read_only: true
+      pod2:
+        read_only: true
+      pod3:
+        read_only: true`
+  }
 };

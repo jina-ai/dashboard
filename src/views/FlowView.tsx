@@ -227,6 +227,22 @@ class FlowView extends React.Component<any, any> {
     });
   };
 
+  startFlow = () =>{
+    const yaml = formatAsYAML(this.state.chart);
+    Dispatcher.dispatch({
+      actionType: Constants.START_FLOW,
+      payload: yaml,
+    });
+  }
+
+  stopFlow = () =>{
+    const yaml = formatAsYAML(this.state.chart);
+    Dispatcher.dispatch({
+      actionType: Constants.STOP_FLOW,
+      payload: yaml,
+    });
+  }
+
   render = () => {
     const {
       chart,
@@ -259,6 +275,8 @@ class FlowView extends React.Component<any, any> {
                 deleteFlow={this.deleteFlow}
               />
               <CommandBar
+                startFlow={this.startFlow}
+                stopFlow={this.stopFlow}
                 copyChart={this.copyChartAsYAML}
                 importChart={this.showImportModal}
                 exportImage={this.exportImage}

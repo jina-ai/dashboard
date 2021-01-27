@@ -1,0 +1,46 @@
+[
+  {
+    "host": "f655e6fd731a",
+    "process": "43",
+    "type": "INFO",
+    "name": "encode1",
+    "uptime": "20210125233657",
+    "context": "encode1/ZEDRuntime",
+    "workspace_path": "/tmp/jinad/43e8a386-a2a1-48e7-8f70-545c651dddbb",
+    "log_id": "f0269f70-fe77-4d50-888b-c2c365aaea3c",
+    "message": "recv IndexRequest  from gateway\u001b[32m\u25b8\u001b[0mencode1/ZEDRuntime\u001b[32m\u25b8\u001b[0m\u2690"
+  },
+  {
+    "host": "f655e6fd731a",
+    "process": "43",
+    "type": "INFO",
+    "name": "encode1",
+    "uptime": "20210125233657",
+    "context": "encode1/ZEDRuntime",
+    "workspace_path": "/tmp/jinad/43e8a386-a2a1-48e7-8f70-545c651dddbb",
+    "log_id": "f0269f70-fe77-4d50-888b-c2c365aaea3c",
+    "message": "#sent: 0 #recv: 1 sent_size: 0 Bytes recv_size: 359 Bytes"
+  },
+  {
+    "host": "f655e6fd731a",
+    "process": "50",
+    "type": "INFO",
+    "name": "encode2",
+    "uptime": "20210125233657",
+    "context": "encode2/ZEDRuntime",
+    "workspace_path": "/tmp/jinad/43e8a386-a2a1-48e7-8f70-545c651dddbb",
+    "log_id": "f0269f70-fe77-4d50-888b-c2c365aaea3c",
+    "message": "recv IndexRequest  from gateway\u001b[32m\u25b8\u001b[0mencode1/ZEDRuntime\u001b[32m\u25b8\u001b[0mencode2/ZEDRuntime\u001b[32m\u25b8\u001b[0m\u2690"
+  },
+  {
+    "host": "f655e6fd731a",
+    "process": "50",
+    "type": "INFO",
+    "name": "encode2",
+    "uptime": "20210125233657",
+    "context": "encode2/ZEDRuntime",
+    "workspace_path": "/tmp/jinad/43e8a386-a2a1-48e7-8f70-545c651dddbb",
+    "log_id": "f0269f70-fe77-4d50-888b-c2c365aaea3c",
+    "message": "#sent: 0 #recv: 1 sent_size: 0 Bytes recv_size: 425 Bytes"
+  }
+]

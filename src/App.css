@@ -490,6 +490,10 @@ code {
   }
 }
 
+.toast{
+  white-space: pre-wrap;
+}
+
 .toast .btn {
   white-space: nowrap;
 }
