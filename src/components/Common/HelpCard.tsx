@@ -16,6 +16,7 @@ function HelpCard({ title, content, icon, theme, link }: Props) {
       href={link}
       target="_blank"
       rel="noopener noreferrer"
+      data-name={`help-card-${theme}`}
     >
       <Card className="h-100">
         <Card.Body className="pt-3">
