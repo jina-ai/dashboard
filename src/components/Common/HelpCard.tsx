@@ -7,16 +7,17 @@ type Props = {
   icon: string;
   theme: string;
   link: string;
+  dataName: string;
 };
 
-function HelpCard({ title, content, icon, theme, link }: Props) {
+function HelpCard({ title, content, icon, theme, link, dataName }: Props) {
   return (
     <a
       className="unstyled-link"
       href={link}
       target="_blank"
       rel="noopener noreferrer"
-      data-name={`help-card-${theme}`}
+      data-name={dataName}
     >
       <Card className="h-100">
         <Card.Body className="pt-3">
