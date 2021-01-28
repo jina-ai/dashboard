@@ -27,4 +27,24 @@ describe('Logs page', () => {
     })
   })
 
+  describe('click on Table view dropdown', () => {
+    it('shows a dropdown menu', () => {
+      cy.contains('table_rows').click()
+      cy.get('.ml-auto')
+      .should('contain', 'timestamp')
+      
+    })
+
+})
+
+describe('click on Group by  Pod in dropdown', () => {
+  it('shows logs grouped according to source', () => {
+    cy.contains('Group by Pod').click()
+    cy.get('.log-success')
+    .should('contain', 'check_circle')
+    
+  })
+
+})
+
 })
