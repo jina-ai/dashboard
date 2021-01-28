@@ -1,6 +1,8 @@
 import { combineReducers, createStore, applyMiddleware } from "redux";
 import flowReducer from "./flows/flows.reducer";
 import { FlowState } from "./flows/flows.types";
+import {HubState} from "./hub/hub.types"
+import hubReducer from "./hub/hub.reducer"
 import { composeWithDevTools } from "redux-devtools-extension";
 import { SettingsState } from "./settings/settings.types";
 import settingsReducer from "./settings/settings.reducer";
@@ -18,6 +20,7 @@ import { TaskEvent, TaskState } from "./task/task.types";
 
 export type State = {
   flowState: FlowState;
+  hubState: HubState;
   settingsState: SettingsState;
   logStreamState: LogStreamState;
   globalState: GlobalState;
@@ -26,6 +29,7 @@ export type State = {
 
 const rootReducer = combineReducers({
   flowState: flowReducer,
+  hubState: hubReducer,
   settingsState: settingsReducer,
   logStreamState: logStreamReducer,
   globalState: globalReducer,

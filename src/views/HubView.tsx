@@ -3,6 +3,7 @@ import { Container, Row } from "react-bootstrap";
 import { PageTitle } from "../components/Common/PageTitle";
 import HubOverviewActionsContainer from "../components/Hub/HubOverviewActionsContainer";
 import HubImagesListPreview from "../components/Hub/HubImagesListPreview";
+import HubImagesList from "../components/Hub/HubImagesList";
 
 const HubView = () => {
   return (
@@ -15,6 +16,7 @@ const HubView = () => {
           <HubOverviewActionsContainer />
         </Row>
         <HubImagesListPreview />
+        <HubImagesList />
       </div>
     </Container>
   );

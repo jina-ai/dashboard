@@ -4,10 +4,9 @@ import styled from "@emotion/styled"
 
 type HubImagePreview = {
   name: string;
-  id: string;
   author: string;
   description: string;
-  tags: string[];
+  keywords: string[];
 };
 
 type Props = {
@@ -20,6 +19,7 @@ const Tag = styled.div`
   display: inline-block;
   padding: .25rem;
   margin-right: 1rem;
+  margin-bottom: 1rem;
 `
 const Title = styled.div`
   font-size: 1.25em;
@@ -34,7 +34,7 @@ const SubTitle = styled.div`
 
 
 export default function ImageCard({ image }: Props) {
-  let { name, author, tags, description } = image;
+  let { name, author, keywords, description } = image;
 
   return (
     <Card className="clickable mb-4 h-100 image-card">
@@ -42,7 +42,7 @@ export default function ImageCard({ image }: Props) {
         <Row>
           <Col xs="12" className="px-0">
             <Title className="mb-2">{name}</Title>
-            { tags.map(tag => (<Tag key={tag}>{tag}</Tag>))}
+            { keywords.map(keyword => (<Tag key={keyword}>{keyword}</Tag>))}
             <SubTitle className="mb-2">{author}</SubTitle>
           </Col>
           <Col sm="12" className="px-0 pb-0">
