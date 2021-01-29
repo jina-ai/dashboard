@@ -1,9 +1,12 @@
 import {
   CREATE_NEW_FLOW,
   DELETE_FLOW,
+  DELETE_NODE,
   DUPLICATE_FLOW,
   LOAD_FLOW,
+  RERENDER,
   UPDATE_FLOW,
+  UPDATE_NODE,
 } from "./flows.constants";
 import {
   IChart,
@@ -21,6 +24,8 @@ export interface Node extends Omit<INode, "type"> {
   send_to?: {};
   depth?: number;
 }
+
+export type NodeUpdate = Partial<Node>;
 
 type colors = "red";
 
@@ -70,6 +75,7 @@ export type CreateNewFlowAction = {
 };
 
 export type FlowState = {
+  rerender: boolean;
   selectedFlow: string;
   flows: Flows;
   tooltipConfig: {
@@ -93,9 +99,26 @@ export type DeleteFlowAction = {
   payload: string;
 };
 
+export type UpdateNodeAction = {
+  type: typeof UPDATE_NODE;
+  payload: { nodeId: string; nodeUpdate: NodeUpdate };
+};
+
+export type DeleteNodeAction = {
+  type: typeof DELETE_NODE;
+  payload: string;
+};
+
+export type RerenderAction = {
+  type: typeof RERENDER;
+};
+
 export type FlowActionTypes =
   | LoadFlowAction
   | CreateNewFlowAction
   | UpdateFlowAction
   | DuplicateFlowAction
-  | DeleteFlowAction;
+  | DeleteFlowAction
+  | UpdateNodeAction
+  | DeleteNodeAction
+  | RerenderAction;

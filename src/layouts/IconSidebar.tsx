@@ -33,6 +33,7 @@ import {
   toggleSidebar,
 } from "../redux/global/global.actions";
 import NewFlow from "../modals/NewFlow";
+import PodEdit from "../modals/PodEdit";
 
 type IconSideBarLayoutProps = {
   children: React.ReactNode;
@@ -169,6 +170,13 @@ const IconSidebarLayout = (props: IconSideBarLayoutProps) => {
         closeModal={_closeModal}
         submitReview={submitReview}
       />
+      {modal === "podEdit" && (
+        <PodEdit
+          open={modal === "podEdit"}
+          closeModal={_closeModal}
+          modalParams={modalParams}
+        />
+      )}
     </Container>
   );
 };

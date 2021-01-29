@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import {
   selectFlowChart,
   selectFlows,
+  selectRerender,
   selectSelectedFlowId,
   selectTooltipConfig,
 } from "../redux/flows/flows.selectors";
@@ -43,6 +44,7 @@ const FlowContainer = styled.div`
 
 export default function FlowView() {
   const dispatch = useDispatch();
+  useState(useSelector(selectRerender));
   const connected = useSelector(selectConnectionStatus);
   const selectedFlowId = useSelector(selectSelectedFlowId);
   const flows = useSelector(selectFlows);
