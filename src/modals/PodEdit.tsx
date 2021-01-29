@@ -6,7 +6,7 @@ import React, { useEffect, useState } from "react";
 import { ModalParams } from "../redux/global/global.types";
 import ReactModal, { Styles } from "react-modal";
 import { deleteNode, rerender, updateNode } from "../redux/flows/flows.actions";
-import { Button, FormControl } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 
 const style: Styles = {
   overlay: {
@@ -47,6 +47,14 @@ const Header2 = styled.header`
   font-weight: 600;
   font-size: 20px;
   color: #009999;
+`;
+
+const Input = styled.input`
+  width: 95%;
+  background: #f1f3f4;
+  border-radius: 5px;
+  padding: 0.5em;
+  border: 0;
 `;
 
 type Props = {
@@ -106,31 +114,29 @@ function PodEditComponent({ open, closeModal, modalParams }: Props) {
         <PodEditContainer>
           <Header1>pods name</Header1>
 
-          <FormControl
-            spellCheck={false}
+          <Input
             value={label}
-            onChange={(e) => _updateLabel(e.target.value)}
+            onChange={(e: { target: { value: string } }) =>
+              _updateLabel(e.target.value)
+            }
             className="pod-name-input"
           />
 
           <Header1>properties</Header1>
 
-          <FormControl
-            spellCheck={false}
+          <Input
             placeholder="search properties..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
-          <div className="property-table flex-fill mx-2">
+          <div className="property-table">
             {filteredProperties.map((property) => {
               const { name, type } = property;
 
               return (
                 <>
                   <Header2>{name}</Header2>
-
-                  <FormControl
-                    spellCheck={false}
+                  <Input
                     placeholder={type}
                     type={type === "int" ? "number" : "text"}
                     value={node.properties[name] || ""}
