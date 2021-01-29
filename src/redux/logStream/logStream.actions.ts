@@ -1,8 +1,5 @@
 import { HANDLE_NEW_LOG, SHOW_LOG_INDEX } from "./logStream.constants";
-import {
-  handleNewLogAction,
-  showLogAtIndexAction,
-} from "./logStream.types";
+import { handleNewLogAction, showLogAtIndexAction } from "./logStream.types";
 import { ThunkAction } from "redux-thunk";
 import { Action } from "redux";
 
@@ -50,13 +47,15 @@ export function initLogStream(
       return;
     }
 
-    function handleLog(log: RawLog){
+    function handleLog(log: RawLog) {
       dispatch(handleNewLog(log));
     }
 
     const { logs } = logsResult;
 
-    logger.log("got logs:",logs)
+    logger.log("got logs:", logs);
+
+    logs.forEach(handleLog);
 
     const settings = store.getState().settingsState.settings;
     jinad.listenForLogs(
