@@ -1,27 +1,40 @@
 import React, { useEffect, useState, useCallback } from "react";
-import {useSelector, useDispatch} from "react-redux"
-import { Row, Col } from "react-bootstrap";
-import {fetchHubImages} from "../../redux/hub/hub.actions"
+import { useSelector, useDispatch } from "react-redux"
+import { Row, Col } from "react-bootstrap"
+import { fetchHubImages } from "../../redux/hub/hub.actions"
 import { selectHubImages } from "../../redux/hub/hub.selectors"
-import { MultiFilterSelect } from "../Common/MultiFilterSelect";
-import { ExpandingSearchbar } from "../Common/ExpandingSearchbar";
-import ImageCard from "./ImageCard";
+import { HubImage } from "../../redux/hub/hub.types"
+import ImageCard from "./ImageCard"
+import HubFilters from "./HubFilters"
+import { Filter, FilterObject } from "./HubFilters";
 
-const categoryOptions = [
-  { value: "all", label: "All Categories" },
-  { value: "search", label: "Search" },
-  { value: "configurations", label: "Configurations" },
-];
+export const removeDuplicates = (arrayWithDuplicates: string[]): string[] => arrayWithDuplicates.filter((e, i) => {
+  return arrayWithDuplicates.indexOf(e) === i
+})
 
-const sortOptions = [
-  { value: "suggested", label: "Suggested" },
-  { value: "highestRating", label: "Highest Rated" },
-  { value: "newest", label: "Newest" },
-];
+export const convertArrayToFilterObject = (array: string[]): FilterObject => array.reduce((acc, f) => ({ ...acc, [f]: false }), {} as FilterObject)
+
+export const getImageFilters = (images: HubImage[]) => {
+  return ([
+    {
+      filterLabel: "Type of image",
+      values: convertArrayToFilterObject(removeDuplicates(images.reduce((acc, image) => ([...acc, image.kind]), [] as string[])))
+    },
+    {
+      filterLabel: "Key domain of the image",
+      values: convertArrayToFilterObject(removeDuplicates(images.reduce((acc, image) => ([...acc, ...image.keywords]), [] as string[])))
+    }
+  ])
+}
 
 const HubImagesList = () => {
   const dispatch = useDispatch()
   const hubImages = useSelector(selectHubImages)
+  let [filters, setFilters] = useState([] as Filter[])
+
+  useEffect(() => {
+    hubImages && setFilters(getImageFilters(hubImages))
+  }, [hubImages])
 
   const search = useCallback(() => {
     dispatch(fetchHubImages())
@@ -34,11 +47,19 @@ const HubImagesList = () => {
   return (
     <>
       <Row>
+        <Col md="2">
+          <HubFilters filters={filters} setFilters={setFilters} />
+        </Col>
+        <Col md="10">
+          <Row>
+
         {hubImages.map((image) => (
-          <Col key={`${image.name}.${image.version}.${image["jina-version"]}`} md="3" className="mb-4">
+          <Col key={`${image.name}.${image.version}.${image["jina-version"]}`} md="4" className="mb-4">
             <ImageCard image={image} />
           </Col>
         ))}
+          </Row>
+        </Col>
       </Row>
     </>
   );
