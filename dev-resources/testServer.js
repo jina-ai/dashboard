@@ -144,6 +144,7 @@ function startStreamSimulation(ws, logs) {
 		let delay = messageInterval * idx;
 		let timeout = setTimeout(() => {
 			if (!connected) return;
+			log.uptime = (new Date()).toISOString();
 			ws.send(JSON.stringify(log));
 			_messagesSent++;
 			printEmitterStatus();
