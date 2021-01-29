@@ -25,7 +25,7 @@ export default function ChartNode({
           <Button variant="secondary" disabled>
             <i className="material-icons">schedule</i>
           </Button>
-          <Button variant="secondary" onClick={importChart}>
+          <Button variant="secondary" onClick={importChart} disabled>
             <i className="material-icons">save_alt</i>
           </Button>
           <Button variant="secondary" onClick={copyChart}>
