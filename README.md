@@ -31,7 +31,6 @@
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
-- [Monitor Jina "Hello, World!" with Dashboard](#monitor-jina-hello-world-with-dashboard)
 - [Getting started](#getting-started)
   - [1. Start the log server](#1-start-the-log-server)
   - [2. Connect the Dashboard to your log server](#2-connect-the-dashboard-to-your-log-server)
@@ -42,27 +41,6 @@
 - [License](#license)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
-
-## Monitor Jina "Hello, World!" with Dashboard
-
-Jina "Hello, World" is a simple demo of image neural search for Fashion-MNIST.
-
-Make sure to have Fluentd installed - ```gem install fluentd --no-doc```
-
-Run: ```fluentd -c jina/resources/fluent.conf ``` (file is in https://github.com/jina-ai/jina)
-
-1. Run the following command in the console
-   - (Python >=3.7 required)
-     ```bash
-     JINA_LOG_PROFILING=1 jina hello-world --logserver
-     ```
-   - ...or if you use Docker (no install required)
-     ```
-     docker run -e "JINA_LOG_PROFILING=1" -p 5000:5000 jinaai/jina:devel hello-world --logserver
-     ```
-2. Open https://dashboard.jina.ai in your browser
-
-It should start streaming. If not, please refer to [this step](#2-connect-the-dashboard-to-your-log-server).
 
 ## Getting started
 
