@@ -39,7 +39,10 @@ import styled from "@emotion/styled";
 
 const FlowContainer = styled.div`
   display: flex;
-  flex-direction: row;
+`;
+
+const FlowChartContainer = styled.div`
+  max-width: 50vw;
 `;
 
 export default function FlowView() {
@@ -217,7 +220,7 @@ export default function FlowView() {
             deleteFlow={handleDeleteFlow}
           />
 
-          <div className="flow-container d-flex flex-column flex-md-row">
+          <FlowChartContainer>
             <Card className="chart-section-container mr-md-4 mb-4">
               <CommandBar
                 startFlow={handleStartFlow}
@@ -234,6 +237,7 @@ export default function FlowView() {
                   <div className="capture-overlay-top"></div>
                   <div className="capture-overlay-bottom"></div>
                 </div>
+
                 <FlowChart
                   chart={(chart as unknown) as IChart}
                   Components={{
@@ -250,7 +254,7 @@ export default function FlowView() {
                 />
               </div>
             </Card>
-          </div>
+          </FlowChartContainer>
 
           <Sidebar
             availableProperties={PROPERTY_LIST}

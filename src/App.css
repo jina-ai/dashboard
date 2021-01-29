@@ -104,7 +104,6 @@ code {
 
 .flow-container {
   border-radius: 0.25em;
-  max-width: 50vw;
 }
 
 .chart-section-container {
@@ -224,11 +223,11 @@ code {
 }
 
 .property-table {
+  margin-bottom: 1rem;
+  border: 0;
   overflow-y: scroll;
   padding: 0.5em;
   max-height: 20rem;
-  background-color: #f6f8fa;
-  border: 1px solid #d1d5da;
   border-radius: 0.25em;
 }
 
