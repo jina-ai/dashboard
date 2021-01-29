@@ -22,7 +22,7 @@ type Settings = {
   shutdown: string;
 };
 
-export default {
+const api = {
   getProfile: async () => {
     const result = await hub.get("profile");
     return result.data;
@@ -62,3 +62,5 @@ export default {
     return result.data;
   },
 };
+
+export default api;

@@ -1,4 +1,21 @@
-export const baseOptions = [
+import { SettingName } from "../../redux/settings/settings.types";
+
+type LabelName =
+  | "Host"
+  | "Log"
+  | "Profile"
+  | "YAML"
+  | "Shutdown"
+  | "Ready"
+  | "Port";
+
+type Option = {
+  label: LabelName;
+  placeholder: string;
+  value: SettingName;
+};
+
+export const baseOptions: Option[] = [
   {
     label: "Host",
     placeholder: "0.0.0.0",
@@ -11,7 +28,7 @@ export const baseOptions = [
   },
 ];
 
-export const advancedOptions = [
+export const advancedOptions: Option[] = [
   {
     label: "Log",
     placeholder: "/stream/log",

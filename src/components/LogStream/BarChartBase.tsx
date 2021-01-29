@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef, useEffect, useState, useCallback } from "react";
 import ChartElement, {
   ChartConfiguration,
   ChartOptions,
@@ -6,39 +6,15 @@ import ChartElement, {
   ChartDataSets,
 } from "chart.js";
 import { LogLevelSummaryChartData } from "./types";
+import { getLevels } from "./levels";
+import { Theme, useTheme } from "@emotion/react";
 
 const DEFAULT_HEIGHT = 10;
 const DEFAULT_WIDTH = 100;
 
-const _levels: { [key: string]: any } = {
-  INFO: {
-    borderColor: "#009999",
-    backgroundColor: "rgba(0, 153, 153, 0.9)",
-  },
-  SUCCESS: {
-    borderColor: "#32c8cd",
-    backgroundColor: "rgba(50, 200, 205, 0.9)",
-  },
-  WARNING: {
-    borderColor: "#ffcc66",
-    backgroundColor: "rgba(255, 204, 102, 0.9)",
-  },
-  ERROR: {
-    borderColor: "#ff6666",
-    backgroundColor: "rgba(255, 102, 102, 0.9)",
-  },
-  CRITICAL: {
-    borderColor: "#ff4540",
-    backgroundColor: "rgba(255, 70, 64, 0.9)",
-  },
-  DEBUG: {
-    borderColor: "#6E7278",
-    backgroundColor: "rgba(110, 114, 120, 0.9)",
-  },
-};
-
-function getParsedDatasets(data: LogLevelSummaryChartData) {
-  const datasets = Object.keys(_levels).map(
+function getParsedDatasets(data: LogLevelSummaryChartData, theme: Theme) {
+  const levels = getLevels(theme);
+  const datasets = Object.keys(levels).map(
     (level): ChartDataSets => {
       const levelData = data.map((tick: any) => tick.levels[level]);
       return {
@@ -46,7 +22,7 @@ function getParsedDatasets(data: LogLevelSummaryChartData) {
         categoryPercentage: 1,
         label: level,
         fill: "start",
-        backgroundColor: _levels[level].backgroundColor,
+        backgroundColor: levels[level].backgroundColor,
         data: levelData,
       };
     }
@@ -65,22 +41,24 @@ function getLabels(amount?: number): number[] {
 type Props = {
   width?: number;
   height?: number;
-  numSeconds?: number;
   numTicks?: number;
   data: LogLevelSummaryChartData;
   onClick: (activePoints: any) => void;
+  timeLabels: string[];
 };
 
 function ChartBase({
   width,
   height,
-  numSeconds,
   data,
   numTicks,
   onClick,
+  timeLabels,
 }: Props) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [chartInstance, setChartInstance] = useState<ChartElement | null>(null);
+  // Get theme from ThemeProvider (for usecases like dark mode)
+  const theme = useTheme();
 
   function onClickChart(e: any) {
     if (!chartInstance) return;
@@ -88,12 +66,14 @@ function ChartBase({
     onClick(activePoints);
   }
 
-  function getXAxisLabel(value: any, index: number, values: any) {
-    if (index === 0) return numSeconds + "s ago";
-    else if (index === Math.floor(values.length / 2))
-      return (numSeconds ? numSeconds / 2 : 0) + "s ago";
-    return;
-  }
+  const getXAxisLabel = useCallback(
+    (value: any, index: number, values: any) => {
+      if (index === 0) return timeLabels[0];
+      else if (index === Math.floor(values.length / 2)) return timeLabels[1];
+      return;
+    },
+    [timeLabels]
+  );
 
   function getYAxisLabel(value: any) {
     if (Number.isInteger(value)) {
@@ -103,13 +83,21 @@ function ChartBase({
 
   function ChartLegend() {
     return (
-      <div className="chart-legend mt-1 mb-3">
-        {Object.entries(_levels).map(([level, style]: [string, any]) => (
-          <div className="chart-legend-item">
-            <div className={`chart-legend-indicator mr-1 ${level.toLowerCase()}`} style={{backgroundColor:style.borderColor}}/>
-            <span className="chart-legend-caption mr-2">{level}</span>
-          </div>
-        ))}
+      <div
+        className="chart-legend mt-1 mb-3"
+        data-name="logOccurencesChartLegend"
+      >
+        {Object.entries(getLevels(theme)).map(
+          ([level, style]: [string, any]) => (
+            <div className="chart-legend-item" key={level}>
+              <div
+                className={`chart-legend-indicator mr-1 ${level.toLowerCase()}`}
+                style={{ backgroundColor: style.borderColor }}
+              />
+              <span className="chart-legend-caption mr-2">{level}</span>
+            </div>
+          )
+        )}
       </div>
     );
   }
@@ -141,6 +129,7 @@ function ChartBase({
             ticks: {
               padding: 5,
               maxRotation: 0,
+              autoSkip: false,
               callback: getXAxisLabel,
             },
             gridLines: {
@@ -176,7 +165,7 @@ function ChartBase({
     const chartConfig: ChartConfiguration = {
       type: "bar",
       data: {
-        datasets: getParsedDatasets(data),
+        datasets: getParsedDatasets(data, theme),
       },
       options: chartOptions,
     };
@@ -189,11 +178,23 @@ function ChartBase({
     if (!chartInstance) return;
     const chartData: ChartData = {
       labels: getLabels(numTicks),
-      datasets: getParsedDatasets(data),
+      datasets: getParsedDatasets(data, theme),
     };
     chartInstance.data = chartData;
     chartInstance.update();
-  }, [data, chartInstance, numTicks]);
+  }, [data, chartInstance, numTicks, theme]);
+
+  useEffect(() => {
+    if (
+      chartInstance &&
+      chartInstance.options.scales &&
+      chartInstance.options.scales.xAxes &&
+      chartInstance.options.scales.xAxes[0].ticks
+    ) {
+      chartInstance.options.scales.xAxes[0].ticks.callback = getXAxisLabel;
+      chartInstance.update();
+    }
+  }, [getXAxisLabel, chartInstance]);
 
   return (
     <>

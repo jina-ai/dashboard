@@ -1,57 +1,52 @@
-export default function () {
+const sidebarNavItems = function () {
   return [
     {
       items: [
         {
           title: "Home",
           to: "/home",
-          htmlBefore: '<i class="material-icons">home</i>',
-          htmlAfter: "",
+          iconName: "home",
           matches: ["home"],
         },
         {
           title: "Log Stream",
           to: "/logs",
-          htmlBefore: '<i class="material-icons">insert_comment</i>',
-          htmlAfter: "",
+          iconName: "insert_comment",
           matches: ["logs"],
         },
         {
           title: "Task",
           to: "/task",
-          htmlBefore: '<i class="material-icons">assessment</i>',
-          htmlAfter: "",
+          iconName: "assessment",
           matches: ["task"],
         },
         {
           title: "Flow Design",
           to: "/flow",
-          htmlBefore: '<i class="material-icons">device_hub</i>',
-          htmlAfter: "",
+          iconName: "device_hub",
           matches: ["flow"],
         },
         {
           title: "Hub",
           to: "/hub",
-          htmlBefore: '<i class="material-icons">store</i>',
-          htmlAfter: "",
+          iconName: "store",
           matches: ["hub", "package"],
         },
         {
           title: "Settings",
           to: "/settings",
-          htmlBefore: '<i class="material-icons">settings</i>',
-          htmlAfter: "",
+          iconName: "settings",
           matches: ["settings"],
         },
         {
           title: "Help",
           to: "/help",
-          htmlBefore: '<i class="material-icons">help</i>',
-          htmlAfter: "",
+          iconName: "help",
           matches: ["help"],
         },
       ],
     },
   ];
-}
+};
+
+export default sidebarNavItems;

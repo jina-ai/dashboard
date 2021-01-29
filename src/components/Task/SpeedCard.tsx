@@ -1,6 +1,6 @@
 import React, { useRef, useState, useCallback, useEffect } from "react";
 import { Card } from "shards-react";
-
+import { useTheme } from "@emotion/react";
 import ChartElement, { ChartOptions } from "chart.js";
 
 type Props = {
@@ -15,6 +15,7 @@ function SpeedCard({ speed }: Props) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [chartInstance, setChartInstance] = useState<ChartElement | null>(null);
   const { history } = speed;
+  const { palette } = useTheme();
 
   let maxValue = Math.max(...history);
   let minValue = Math.min(...history);
@@ -90,7 +91,7 @@ function SpeedCard({ speed }: Props) {
               fill: "start",
               borderWidth: 1.5,
               backgroundColor: "rgba(0, 153, 153, 0.25)",
-              borderColor: "#009999",
+              borderColor: palette.primary,
               data: history,
             },
           ],
@@ -98,7 +99,7 @@ function SpeedCard({ speed }: Props) {
         options: chartOptions,
       };
     },
-    [history]
+    [history, palette.primary]
   );
 
   useEffect(() => {
@@ -120,7 +121,7 @@ function SpeedCard({ speed }: Props) {
             fill: "start",
             borderWidth: 1.5,
             backgroundColor: "rgba(0, 153, 153, 0.25)",
-            borderColor: "#009999",
+            borderColor: palette.primary,
             data: history,
           },
         ],
@@ -129,7 +130,13 @@ function SpeedCard({ speed }: Props) {
     chartInstance.options = getChartOptions();
     chartInstance.data = newChartData;
     chartInstance.update();
-  }, [history, chartInstance, getChartOptions, getChartConfig]);
+  }, [
+    history,
+    chartInstance,
+    getChartOptions,
+    getChartConfig,
+    palette.primary,
+  ]);
 
   return (
     <Card className="pt-0 h-100 stats-small">

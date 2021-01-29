@@ -30,8 +30,8 @@ type Props = {
   modalParams: any;
 };
 
-export default ({ open, closeModal, modalParams }: Props) => {
-  const log = modalParams.log || {};
+const LogDetails = ({ open, closeModal, modalParams }: Props) => {
+  const log = modalParams?.log || {};
   return (
     <ReactModal
       ariaHideApp={false}
@@ -84,3 +84,5 @@ export default ({ open, closeModal, modalParams }: Props) => {
     </ReactModal>
   );
 };
+
+export default LogDetails;

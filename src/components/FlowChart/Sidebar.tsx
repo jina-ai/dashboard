@@ -1,17 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import SidebarItem from "./SidebarItem";
 import defaultPods from "../../data/defaultPods.json";
 import _ from "lodash";
-import {
-  IChart,
-  ILink,
-  INode,
-} from "@bastinjafari/react-flow-chart-with-tooltips-and-multi-select";
-import { Button, FormControl, Card } from "react-bootstrap";
-
-interface Node extends INode {
-  label?: string;
-}
+import { ILink } from "@bastinjafari/react-flow-chart-with-tooltips-and-multi-select";
+import { Button, Card, FormControl } from "react-bootstrap";
+import { Flow, Node } from "../../redux/flows/flows.types";
 
 type ParsedNode = {
   label: string;
@@ -268,7 +261,7 @@ function PodMenu() {
 
 type FlowChartSidebarProps = {
   readonly: boolean;
-  chart: IChart;
+  flow: Flow;
   duplicateFlow: () => void;
   updateNode: (updates: any) => void;
   deleteSelection: () => void;
@@ -282,7 +275,7 @@ type FlowChartSidebarProps = {
 
 function FlowChartSidebar({
   readonly,
-  chart,
+  flow,
   duplicateFlow,
   deleteSelection,
   updateNode,
@@ -293,7 +286,7 @@ function FlowChartSidebar({
     selected: { id: selectedId, type: selectedType },
     nodes,
     links,
-  } = chart;
+  } = flow;
 
   const [node, setNode] = useState<ParsedNode | undefined>();
 

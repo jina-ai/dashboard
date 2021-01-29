@@ -15,13 +15,16 @@ type Settings = {
   shutdown: string;
 };
 
-type ConnectionCallback = (data: { connected: boolean; msg?: string }) => void;
+type ConnectionCallback = (data: {
+  connected: boolean;
+  message: string;
+}) => void;
 
 type LogHandler = (log: RawLog) => void;
 
 type Args = { [key: string]: string | number | boolean };
 
-export default {
+const jinadClient = {
   connect: async (settings: Settings, callback: ConnectionCallback) => {
     logger.log("api - connect - settings", settings);
 
@@ -36,22 +39,22 @@ export default {
         logger.log("api - connect successfully connected to jinad");
         return callback({
           connected: true,
-          msg: `Successfully connected to Jina at ${baseURL}`,
+          message: `Successfully connected to Jina at ${baseURL}`,
         });
       }
     } catch (e) {
       logger.log("api - connect could not connect to jinad:", e);
     }
-    return callback({ connected: false });
+    return callback({ connected: false, message: "failed to connect" });
   },
   getDaemonStatus: async () => {
     try {
       const result = await jinad.get("/status");
       if (result.status === 200)
         return { status: "success", daemonStatus: result.data };
-      return { status: "error", msg: result.data };
+      return { status: "error", message: result.data };
     } catch (e) {
-      return { status: "error", msg: e };
+      return { status: "error", message: e };
     }
   },
   getWorkspaces: async () => {
@@ -59,9 +62,9 @@ export default {
       const result = await jinad.get("/workspaces");
       if (result.status === 200)
         return { status: "success", workspaces: result.data };
-      return { status: "error", msg: result.data };
+      return { status: "error", message: result.data };
     } catch (e) {
-      return { status: "error", msg: e };
+      return { status: "error", message: e };
     }
   },
   createWorkspace: async (files: (string | Blob)[]) => {
@@ -79,15 +82,16 @@ export default {
       const result = await jinad.post("/workspaces", formData, options);
       if (result.status === 201)
         return { status: "success", workspace: result.data };
-      return { status: "error", msg: result.data };
+      return { status: "error", message: result.data };
     } catch (e) {
-      return { status: "error", msg: e };
+      return { status: "error", message: e };
     }
   },
   deleteWorkspace: async (workspace_id: string) => {
     try {
       const result = await jinad.delete(`/workspaces/${workspace_id}`);
-      if (result.status === 200) return { status: "success", msg: result.data };
+      if (result.status === 200)
+        return { status: "success", message: result.data };
     } catch (e) {
       logger.log(`api - deleteWorkspace ${workspace_id} error: `, e);
     }
@@ -96,7 +100,8 @@ export default {
   deleteAllWorkspaces: async () => {
     try {
       const result = await jinad.delete(`/workspaces/all`);
-      if (result.status === 200) return { status: "success", msg: result.data };
+      if (result.status === 200)
+        return { status: "success", message: result.data };
     } catch (e) {
       logger.log(`api - deleteAllWorkspaces error: `, e);
     }
@@ -107,9 +112,9 @@ export default {
       const result = await jinad.get("/flows/arguments");
       if (result.status === 200)
         return { status: "success", arguments: result.data };
-      return { status: "error", msg: result.data };
+      return { status: "error", message: result.data };
     } catch (e) {
-      return { status: "error", msg: e };
+      return { status: "error", message: e };
     }
   },
   getFlow: async (flow_id: string) => {
@@ -117,12 +122,20 @@ export default {
       const result = await jinad.get(`/flows/${flow_id}`);
       if (result.status === 200)
         return { status: "success", flow: result.data };
+      return {
+        status: "error",
+        message: result.data,
+      };
     } catch (e) {
       logger.log("api - getFlow error getting flow: ", e);
     }
-    return { status: "error" };
+    return {
+      status: "error",
+      message: `Could not get flow\nFlowId:${flow_id}`,
+    };
   },
   startFlow: async (yaml: string, workspace_id?: string) => {
+    logger.log("yamlString:", yaml);
     const formData = new FormData();
     formData.append("flow", new Blob([yaml]));
     if (workspace_id) formData.append("workspace_id", workspace_id);
@@ -133,28 +146,36 @@ export default {
     };
     try {
       const result = await jinad.post(`/flows`, formData, options);
-      if (result.status === 201)
-        return { status: "success", flow: result.data };
-      return { status: "error", msg: result.data };
+      if (result.status === 201) {
+        const flow_id = result.data;
+        const message = `Successfuly started flow\nid: ${flow_id}`;
+        return { status: "success", message, flow_id };
+      }
+      return { status: "error", message: result.data };
     } catch (e) {
-      return { status: "error", msg: e };
+      logger.log("api - startFlow error: ", e);
+      return { status: "error", message: e.message };
     }
   },
   terminateFlow: async (flow_id: string) => {
     try {
       const result = await jinad.delete(`/flows/${flow_id}`);
-      console.log("terminate result", result);
-      if (result.status === 200)
-        return { status: "success", flow: result.data };
+      logger.log("terminate result", result);
+      if (result.status === 200) {
+        const message = `Successfuly terminated flow ${flow_id}`;
+        return { status: "success", message, flow: result.data };
+      }
+      return { status: "error", message: result.data };
     } catch (e) {
       logger.log("api - terminateFlow error: ", e);
+      return { status: "error", message: e.message };
     }
-    return { status: "error" };
   },
   terminateAllFlows: async () => {
     try {
       const result = await jinad.delete("/flows/all");
-      if (result.status === 200) return { status: "success", msg: result.data };
+      if (result.status === 200)
+        return { status: "success", message: result.data };
     } catch (e) {
       logger.log("api - terminateAllFlows error: ", e);
     }
@@ -173,7 +194,10 @@ export default {
     } catch (e) {
       logger.log("api - getLogs error: ", e);
     }
-    return { status: "error" };
+    return {
+      status: "error",
+      message: `Could not get logs for flow.\nFlowId:${flow_id}`,
+    };
   },
   listenForLogs: async (
     workspace_id: string,
@@ -191,11 +215,11 @@ export default {
     try {
       socket = new WebSocket(baseURL);
     } catch (e) {
-      return callback({ connected: false, msg: e });
+      return callback({ connected: false, message: e });
     }
 
     socket.addEventListener("open", () => {
-      callback({ connected: true });
+      callback({ connected: true, message: "Successfully Connected" });
       socket.send(JSON.stringify({ from: 0 }));
     });
     socket.addEventListener("message", function (event) {
@@ -204,10 +228,10 @@ export default {
       handleLog(log);
     });
     socket.addEventListener("close", function (event) {
-      callback({ connected: false, msg: "Connection closed" });
+      callback({ connected: false, message: "Connection closed" });
     });
     socket.addEventListener("error", function (event) {
-      callback({ connected: false, msg: "Socket error" });
+      callback({ connected: false, message: "Socket error" });
     });
   },
   getPodArguments: async () => {
@@ -215,9 +239,9 @@ export default {
       const result = await jinad.get("/pods/arguments");
       if (result.status === 200)
         return { status: "success", arguments: result.data };
-      return { status: "error", msg: result.data };
+      return { status: "error", message: result.data };
     } catch (e) {
-      return { status: "error", msg: e };
+      return { status: "error", message: e };
     }
   },
   getPod: async (podId: string) => {
@@ -233,15 +257,16 @@ export default {
     try {
       const result = await jinad.post(`/pods`, podArgs);
       if (result.status === 201) return { status: "success", pod: result.data };
-      return { status: "error", msg: result.data };
+      return { status: "error", message: result.data };
     } catch (e) {
-      return { status: "error", msg: e };
+      return { status: "error", message: e };
     }
   },
   terminatePod: async (podId: string) => {
     try {
       const result = await jinad.delete(`/pods/${podId}`);
-      if (result.status === 200) return { status: "success", msg: result.data };
+      if (result.status === 200)
+        return { status: "success", message: result.data };
     } catch (e) {
       logger.log(`api - terminatePod ${podId} error: `, e);
     }
@@ -250,7 +275,8 @@ export default {
   terminateAllPods: async () => {
     try {
       const result = await jinad.delete(`/pods/all`);
-      if (result.status === 200) return { status: "success", msg: result.data };
+      if (result.status === 200)
+        return { status: "success", message: result.data };
     } catch (e) {
       logger.log(`api - terminateAllPods error: `, e);
     }
@@ -261,9 +287,9 @@ export default {
       const result = await jinad.get("/peas/arguments");
       if (result.status === 200)
         return { status: "success", arguments: result.data };
-      return { status: "error", msg: result.data };
+      return { status: "error", message: result.data };
     } catch (e) {
-      return { status: "error", msg: e };
+      return { status: "error", message: e };
     }
   },
   getPea: async (peaId: string) => {
@@ -279,15 +305,16 @@ export default {
     try {
       const result = await jinad.post(`/peas`, peaArgs);
       if (result.status === 201) return { status: "success", pea: result.data };
-      return { status: "error", msg: result.data };
+      return { status: "error", message: result.data };
     } catch (e) {
-      return { status: "error", msg: e };
+      return { status: "error", message: e };
     }
   },
   terminatePea: async (peaId: string) => {
     try {
       const result = await jinad.delete(`/peas/${peaId}`);
-      if (result.status === 200) return { status: "success", msg: result.data };
+      if (result.status === 200)
+        return { status: "success", message: result.data };
     } catch (e) {
       logger.log(`api - terminatePea ${peaId} error: `, e);
     }
@@ -296,10 +323,13 @@ export default {
   terminateAllPeas: async () => {
     try {
       const result = await jinad.delete("/peas/all");
-      if (result.status === 200) return { status: "success", msg: result.data };
+      if (result.status === 200)
+        return { status: "success", message: result.data };
     } catch (e) {
       logger.log(`api - terminateAllPeas error: `, e);
     }
     return { status: "error" };
   },
 };
+
+export default jinadClient;

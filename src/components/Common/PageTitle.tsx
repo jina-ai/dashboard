@@ -18,7 +18,9 @@ function PageTitle({ title, subtitle, className }: Props) {
 
   return (
     <Col xs="12" sm="3" className={classes}>
-      <h3 className="page-title">{title}</h3>
+      <h3 className="page-title" data-name="title">
+        {title}
+      </h3>
       <p className="page-subtitle mt-2 mb-0">{subtitle}</p>
     </Col>
   );

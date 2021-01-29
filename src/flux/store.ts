@@ -6,33 +6,16 @@ import { parseYAML, formatForFlowchart, formatSeconds } from "../helpers";
 import hub from "./hub";
 import jinad from "./jinad";
 import logger from "../logger";
-import propertyList from "../data/podProperties.json";
 import getSidebarNavItems from "../data/sidebar-nav-items";
 import exampleFlows from "../data/exampleFlows";
-
-const MAX_CHART_TICKS = 60;
-const HIDE_BANNER_TIMEOUT = 5000;
-const CHART_LEVELS = [
-  "INFO",
-  "SUCCESS",
-  "WARNING",
-  "ERROR",
-  "CRITICAL",
-  "DEBUG",
-];
+import { HIDE_BANNER_TIMEOUT } from "../redux/global/global.constants";
 
 function getExampleFlows() {
   const flows: LooseObject = {};
 
   Object.entries(exampleFlows).forEach(([id, flow]) => {
     const parsed = parseYAML(flow.yaml);
-    let canvas;
-    try {
-      canvas = parsed.data.with.board.canvas;
-    } catch (e) {
-      canvas = {};
-    }
-    const formatted = formatForFlowchart(parsed.data.pods, canvas);
+    const formatted = formatForFlowchart(parsed.data);
     flows[id] = {
       ...flow,
       flow: formatted,
@@ -78,17 +61,6 @@ function getInitialFlow() {
     links: {},
     offset: { x: 0, y: 0 },
   };
-}
-
-function getInitialLevelOccurences() {
-  let occurences: LooseObject = {
-    lastLog: 0,
-    levels: {},
-  };
-  CHART_LEVELS.forEach((level) => {
-    occurences.levels[level] = 0;
-  });
-  return occurences;
 }
 
 function getInitialStore(): LooseObject {
@@ -248,7 +220,6 @@ class StoreBase extends EventEmitter {
     this.clearIntervals();
     _store = getInitialStore();
 
-    // await this.initFlowChart();
     this.initJinaD();
     this.initHub();
     this.initUser();
@@ -273,17 +244,9 @@ class StoreBase extends EventEmitter {
       return;
     }
 
-    let canvas;
-    try {
-      canvas = flow.data.with.board.canvas;
-    } catch (e) {
-      canvas = {};
-    }
-
     logger.log("initFlowChart - flow", flow);
-    logger.log("initFlowChart - canvas", canvas);
 
-    const parsed = formatForFlowchart(flow.data.pods, canvas);
+    const parsed = formatForFlowchart(flow.data);
     parsed.with = flow.data.with;
 
     logger.log("initFlowChart - parsed", parsed);
@@ -333,10 +296,7 @@ class StoreBase extends EventEmitter {
   };
 
   handleNewLog = (data: any) => {
-    console.log("data before:", data);
     const log = transformLog(data, _store.logs.length);
-
-    console.log("transformed log:", log);
 
     const { process, name, level, unixTime } = log;
 
@@ -350,7 +310,7 @@ class StoreBase extends EventEmitter {
     else _store.logLevels[level] = 1;
 
     if (!_store.logLevelOccurences[unixTime])
-      _store.logLevelOccurences[unixTime] = getInitialLevelOccurences();
+      _store.logLevelOccurences[unixTime] = {};
 
     _store.logLevelOccurences[unixTime].levels[level]++;
     _store.logLevelOccurences[unixTime].lastLog = log.idx;
@@ -507,14 +467,13 @@ class StoreBase extends EventEmitter {
 
   startFlow = async (yamlSTR: string) => {
     const flowResult = await jinad.startFlow(yamlSTR);
-    console.log("flowResult:", flowResult);
     if (flowResult.status === "error")
       return this.showError(`Error starting flow`);
 
-    const { flow } = flowResult;
-    _store.activeFlow = flow;
+    const { flow_id } = flowResult;
+    _store.activeFlow = flow_id;
 
-    const flowInfoResult = await jinad.getFlow(flow);
+    const flowInfoResult = await jinad.getFlow(flow_id);
 
     if (flowInfoResult.status === "error")
       return this.showError(`Error getting flow information`);
@@ -522,11 +481,11 @@ class StoreBase extends EventEmitter {
     const { workspace_id } = flowInfoResult.flow;
     _store.activeWorkspace = workspace_id;
 
-    logger.log("store - startFlow - activeFlow: ", flow);
+    logger.log("store - startFlow - activeFlow: ", flow_id);
     logger.log("store - startFlow - activeWorkspace: ", workspace_id);
 
-    this.showSuccess(`Flow successfully started\nFlowId: ${flow}`);
-    setTimeout(this.startLogStream,3000);
+    this.showSuccess(`Flow successfully started\nFlowId: ${flow_id}`);
+    setTimeout(this.startLogStream, 3000);
   };
 
   stopFlow = async () => {
@@ -602,13 +561,7 @@ class StoreBase extends EventEmitter {
 
     if (customYAML) {
       const parsed = parseYAML(customYAML);
-      let canvas;
-      try {
-        canvas = parsed.data.with.board.canvas;
-      } catch (e) {
-        canvas = {};
-      }
-      flow = formatForFlowchart(parsed.data.pods, canvas);
+      flow = formatForFlowchart(parsed.data);
     } else flow = getInitialFlow();
 
     _store.flows[id] = {
@@ -821,28 +774,6 @@ class StoreBase extends EventEmitter {
     return _store.summaryCharts;
   };
 
-  getLogLevelCharts = (numSeconds: number = 60) => {
-    const emptyItem = getInitialLevelOccurences();
-    const step = numSeconds / MAX_CHART_TICKS;
-    const data = [];
-    const now = Math.floor(+new Date() / 1000);
-
-    for (let i = now - numSeconds; i < now; i += step) {
-      let item = _.cloneDeep(emptyItem);
-      for (let j = i; j < i + step; ++j) {
-        const occurence = _store.logLevelOccurences[j];
-        if (!occurence) continue;
-        item.lastLog = occurence.lastLog;
-        Object.entries(occurence.levels).forEach(([level, amount]) => {
-          item.levels[level] = item.levels[level] + amount;
-        });
-      }
-      data.push(item);
-    }
-
-    return { data, numSeconds, numTicks: MAX_CHART_TICKS, lastTimestamp: now };
-  };
-
   getLogLevelOccurences = () => {
     return _store.logLevels;
   };
@@ -882,10 +813,6 @@ class StoreBase extends EventEmitter {
 
   getSelectedFlowId = () => {
     return _store.selectedFlow;
-  };
-
-  getAvailableProperties = () => {
-    return propertyList;
   };
 
   getIndexedLog = () => {

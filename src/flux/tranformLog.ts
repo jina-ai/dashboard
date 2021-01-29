@@ -7,8 +7,16 @@ const levels = [
   "CRITICAL",
   "DEBUG",
 ] as const;
-type Level = typeof levels[number];
+export type Level = typeof levels[number];
 
+//todo look into possible refactoring of the types
+
+export type RawLogEntry = {
+  lastLog: number;
+  levels: {
+    [level in Level]: number;
+  };
+};
 export type RawLog = {
   context: string;
   host: string;
@@ -34,7 +42,7 @@ function transformLog(log: RawLog, idx: number): ProcessedLog {
   const { uptime, type } = log;
   const id = nanoid();
   const timestamp = new Date(uptime);
-  const unixTime = timestamp.valueOf();
+  const unixTime = Math.floor(timestamp.valueOf() / 1000);
   const formattedTimestamp = timestamp.toLocaleString();
   return {
     ...log,

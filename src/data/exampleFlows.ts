@@ -1,4 +1,4 @@
-export default {
+const exampleFlows = {
   pokedex: {
     name: "Pokedex Query",
     type: "example",
@@ -192,3 +192,5 @@ export default {
         read_only: true`
   }
 };
+
+export default exampleFlows;

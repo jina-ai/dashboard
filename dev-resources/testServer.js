@@ -4,6 +4,7 @@ const cliCursor = require("cli-cursor");
 const chalk = require("chalk");
 const { v4: uuid, validate: uuidValidate } = require("uuid");
 const { argv } = require("yargs");
+const readline = require('readline')
 
 const config = require("./config");
 const app = express();

@@ -1,0 +1,41 @@
+name: "Unit, integration tests"
+on:
+  push:
+  pull_request_target:
+jobs:
+  unit-test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [12.x]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Install Packages
+        run: npm ci
+      - name: Run unit tests 🧪
+        run: set CI=true&&npm test
+      - name: Test coverage
+        run: npm test -- --coverage --watchAll=false
+      - name: Upload coverage
+        run: bash <(curl -s https://codecov.io/bash)
+
+  integration-tests:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [12.x]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Cypress run ⚗️
+        uses: cypress-io/github-action@v2
+        with:
+          start: npm run dev
+          wait-on: 'http://localhost:3000'
+          command-prefix: 'percy exec -- npx'
+        env:
+          PERCY_TOKEN: ${{ secrets.percy_token }}

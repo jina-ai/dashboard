@@ -28,7 +28,7 @@ type Props = {
   submitReview: (content: any) => void;
 };
 
-export default ({ open, closeModal, submitReview }: Props) => {
+const WriteReviewModal = ({ open, closeModal, submitReview }: Props) => {
   let inputRef: any;
   return (
     <ReactModal
@@ -72,3 +72,5 @@ export default ({ open, closeModal, submitReview }: Props) => {
     </ReactModal>
   );
 };
+
+export default WriteReviewModal;

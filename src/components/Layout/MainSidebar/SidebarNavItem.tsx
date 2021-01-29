@@ -1,73 +1,37 @@
 import React from "react";
-import { NavLink as RouteNavLink } from "react-router-dom";
-import {
-  NavItem,
-  NavLink,
-  DropdownMenu,
-  DropdownItem,
-  Collapse,
-} from "shards-react";
-
-type SubItem = {
-  title: string;
-  to: string;
-};
-
-type NavItem = {
-  title: string;
-  to: string;
-  open: boolean;
-  htmlBefore: string;
-  htmlAfter: string;
-  matches: string[];
-  items?: SubItem[];
-};
+import { NavLink as RouteNavLink, useLocation } from "react-router-dom";
+import { NavItem, NavLink } from "shards-react";
+import { TNavItem } from "../../../redux/global/global.types";
 
 type Props = {
-  item: NavItem;
+  item: TNavItem;
   toggleSidebar: () => void;
 };
 
-export default ({ item, toggleSidebar }: Props) => {
-  const hasSubItems = item.items && item.items.length;
-  const path = window.location.hash.substring(2, window.location.hash.length);
+const SidebarNavItem = ({ item, toggleSidebar }: Props) => {
+  const path = useLocation()?.pathname?.substring(1);
   let active = false;
   item.matches.forEach((match) => {
-    if (path.startsWith(match)) active = true;
+    if (path === match) active = true;
   });
 
   return (
     <NavItem style={{ position: "relative" }}>
       <NavLink
-        className={hasSubItems && "dropdown-toggle"}
-        tag={hasSubItems ? "a" : RouteNavLink}
-        to={hasSubItems ? "#" : item.to}
+        tag={RouteNavLink}
+        to={item.to}
         active={active}
         onClick={toggleSidebar}
       >
-        {item.htmlBefore && (
-          <div
-            className="d-inline-block item-icon-wrapper"
-            dangerouslySetInnerHTML={{ __html: item.htmlBefore }}
-          />
+        {item.iconName && (
+          <div className="d-inline-block item-icon-wrapper">
+            <i className="material-icons">{item.iconName}</i>
+          </div>
         )}
         {item.title && <span>{item.title}</span>}
-        {item.htmlAfter && (
-          <div
-            className="d-inline-block item-icon-wrapper"
-            dangerouslySetInnerHTML={{ __html: item.htmlAfter }}
-          />
-        )}
       </NavLink>
-      {item.items && (
-        <Collapse tag={DropdownMenu} small open={item.open} style={{ top: 0 }}>
-          {item.items.map((subItem, idx) => (
-            <DropdownItem key={idx} tag={RouteNavLink} to={subItem.to}>
-              {subItem.title}
-            </DropdownItem>
-          ))}
-        </Collapse>
-      )}
     </NavItem>
   );
 };
+
+export default SidebarNavItem;

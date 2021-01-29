@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Container, Row, Col } from "shards-react";
 
 import { MainNavbar } from "../components/Layout/MainNavbar/MainNavbar";
@@ -11,142 +11,104 @@ import WriteReview from "../modals/WriteReview";
 import logger from "../logger";
 
 import { Store, Dispatcher, Constants } from "../flux";
+import { useDispatch } from "react-redux";
+import store from "../redux";
+import { showBanner } from "../redux/global/global.actions";
 
-class HubLayout extends React.Component<any, any> {
-  constructor(props: any) {
-    super(props);
-    this.state = {
-      loggerEnabled: logger.isEnabled(),
-      modal: Store.getModal(),
-      modalParams: Store.getModalParams(),
-      loading: Store.isLoading(),
-      user: Store.getUser(),
-      banner: Store.getBanner(),
-      acceptedCookies: localStorage.getItem("accepted-cookies"),
-    };
-    Store.on("update-ui", this.getData);
-    Store.on("update-user", this.getUser);
-  }
+type HubLayoutProps = {
+  children: React.ReactNode;
+  usesAuth: boolean;
+  usesConnection: boolean;
+};
 
-  componentWillUnmount = () => {
-    Store.removeListener("update-ui", this.getData);
-    Store.removeListener("update-user", this.getUser);
-  };
+const HubLayout = (props: HubLayoutProps) => {
+  const modal = Store.getModal();
+  const modalParams = Store.getModalParams();
+  const banner = Store.getBanner();
+  const loggerEnabled = logger.isEnabled();
+  const user = Store.getUser();
+  const [acceptedCookies, setAcceptedCookies] = useState<boolean>(
+    localStorage.getItem("accepted-cookies") === "true"
+  );
 
-  getData = () => {
-    const modal = Store.getModal();
-    const modalParams = Store.getModalParams();
-    const loading = Store.isLoading();
-    const banner = Store.getBanner();
-    const loggerEnabled = logger.isEnabled();
-    this.setState({
-      modal,
-      loading,
-      banner,
-      modalParams,
-      loggerEnabled,
-    });
-  };
-
-  getUser = () => {
-    const user = Store.getUser();
-    this.setState({ user });
-  };
-
-  acceptCookies = () => {
+  const dispatch = useDispatch();
+  const acceptCookies = () => {
     localStorage.setItem("accepted-cookies", String(true));
-    this.setState({ acceptedCookies: true });
+    setAcceptedCookies(true);
   };
 
-  closeModal = () => {
-    Dispatcher.dispatch({
-      actionType: Constants.CLOSE_MODAL,
-    });
+  const closeModal = () => {
+    dispatch(closeModal());
   };
 
-  submitReview = (content: any) => {
-    const { imageId } = this.state.modalParams;
+  const submitReview = (content: any) => {
+    const { imageId } = modalParams;
     Dispatcher.dispatch({
       actionType: Constants.POST_REVIEW,
       payload: { content, imageId },
     });
-	};
-	
-  logOut = () => {
+  };
+
+  const logOut = () => {
     Dispatcher.dispatch({
       actionType: Constants.LOG_OUT,
     });
   };
 
-  enableLogger = () => {
+  const enableLogger = () => {
     logger.enable();
-    const storeCopy = Store.getStoreCopy();
+    const storeCopy = store.getState();
     logger.log("Store Snapshot", storeCopy);
-    Dispatcher.dispatch({
-      actionType: Constants.SHOW_BANNER,
-      payload: [
+    dispatch(
+      showBanner(
         'Debug Mode Enabled. Click "Export Debug Data" to download Debug JSON.',
-        "warning",
-      ],
-    });
+        "warning"
+      )
+    );
   };
 
-  disableLogger = () => {
+  const disableLogger = () => {
     logger.disable();
-    Dispatcher.dispatch({
-      actionType: Constants.SHOW_BANNER,
-      payload: ["Debug Mode Disabled.", "warning"],
-    });
+    dispatch(showBanner("Debug Mode Disabled.", "warning"));
   };
 
-  exportLogs = () => {
+  const exportLogs = () => {
     const storeCopy = Store.getStoreCopy();
     logger.log("Store Snapshot", storeCopy);
     logger.exportLogs();
   };
 
-  render = () => {
-    const {
-      modal,
-      acceptedCookies,
-      banner,
-      user,
-      loggerEnabled,
-    } = this.state;
-    const { children, usesAuth, usesConnection } = this.props;
-    return (
-      <Container>
-        <Row>
-          <Col className="main-content col" tag="main">
-            <MainNavbar
-              usesAuth={usesAuth}
-              usesConnection={usesConnection}
-							logOut={this.logOut}
-              hideSidebarToggle={true}
-              showLogo
-              user={user}
-            />
-            <InfoToast data={banner} />
-            {children}
-            {!acceptedCookies && (
-              <CookiesBanner acceptCookies={this.acceptCookies} />
-            )}
-            <MainFooter
-              loggerEnabled={loggerEnabled}
-              enableLogger={this.enableLogger}
-              disableLogger={this.disableLogger}
-              exportLogs={this.exportLogs}
-            />
-          </Col>
-        </Row>
-        <WriteReview
-          open={modal === "review"}
-          closeModal={this.closeModal}
-          submitReview={this.submitReview}
-        />
-      </Container>
-    );
-  };
-}
+  const { children, usesAuth, usesConnection } = props;
+  return (
+    <Container>
+      <Row>
+        <Col className="main-content col" tag="main">
+          <MainNavbar
+            usesAuth={usesAuth}
+            usesConnection={usesConnection}
+            logOut={logOut}
+            hideSidebarToggle={true}
+            showLogo
+            user={user}
+          />
+          <InfoToast data={banner} />
+          {children}
+          {!acceptedCookies && <CookiesBanner acceptCookies={acceptCookies} />}
+          <MainFooter
+            loggerEnabled={loggerEnabled}
+            enableLogger={enableLogger}
+            disableLogger={disableLogger}
+            exportLogs={exportLogs}
+          />
+        </Col>
+      </Row>
+      <WriteReview
+        open={modal === "review"}
+        closeModal={closeModal}
+        submitReview={submitReview}
+      />
+    </Container>
+  );
+};
 
 export default HubLayout;
