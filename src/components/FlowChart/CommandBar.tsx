@@ -1,5 +1,10 @@
 import React from "react";
-import { ButtonGroup, Button } from "react-bootstrap";
+import styled from "@emotion/styled";
+import Play from "../../assets/icons/Play.svg";
+import Save from "../../assets/icons/Save.svg";
+import Stop from "../../assets/icons/Stop.svg";
+import Upload from "../../assets/icons/Upload.svg";
+import Yaml from "../../assets/icons/Yaml.svg";
 
 type Props = {
   importChart: () => void;
@@ -7,7 +12,25 @@ type Props = {
   exportImage: (format: string) => void;
 };
 
-export default function ChartNode({
+const ButtonGroup = styled.div`
+  height: 3.125rem;
+  background: #009999;
+  border-radius: 8px;
+  display: flex;
+`;
+
+const Button = styled.button`
+  background: #009999;
+  border: 0;
+  margin-right: 1rem;
+`;
+
+const PlayButton = styled.button`
+  background: #009999;
+  border: 0;
+  margin: 0 2rem;
+`;
+export default function CommandBar({
   importChart,
   copyChart,
   exportImage,
@@ -16,23 +39,20 @@ export default function ChartNode({
     <div className="command-bar-container">
       <div className="command-bar">
         <ButtonGroup>
-          <Button variant="secondary" disabled>
-            <i className="material-icons">play_arrow</i>
+          <PlayButton disabled>
+            <img alt="Play" src={Play} />
+          </PlayButton>
+          <Button disabled>
+            <img alt="Stop" src={Stop} />
           </Button>
-          <Button variant="secondary" disabled>
-            <i className="material-icons">stop</i>
+          <Button onClick={() => exportImage("png")}>
+            <img alt="Save" src={Save} />
           </Button>
-          <Button variant="secondary" disabled>
-            <i className="material-icons">schedule</i>
+          <Button onClick={importChart}>
+            <img alt="Upload" src={Upload} />
           </Button>
-          <Button variant="secondary" onClick={importChart} disabled>
-            <i className="material-icons">save_alt</i>
-          </Button>
-          <Button variant="secondary" onClick={copyChart}>
-            <i className="material-icons">assignment</i>
-          </Button>
-          <Button variant="secondary" onClick={() => exportImage("png")}>
-            <i className="material-icons">camera_alt</i>
+          <Button onClick={copyChart}>
+            <img alt="Yaml" src={Yaml} />
           </Button>
         </ButtonGroup>
       </div>
