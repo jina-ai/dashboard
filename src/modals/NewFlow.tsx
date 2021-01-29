@@ -16,15 +16,65 @@ const style: Styles = {
     bottom: "auto",
     maxHeight: "80%", // set height
     left: "50%",
-    padding: "2rem",
     position: "fixed",
     right: "auto",
     top: "50%", // start from center
     transform: "translate(-50%,-50%)", // adjust top "up" based on height
-    maxWidth: "30rem",
+    maxWidth: "44rem",
     overflow: "hidden",
   },
 };
+
+const CloseModal = styled.div`
+  cursor: pointer;
+  margin: 0;
+  padding: 0;
+  font-size: 2rem;
+  color: #ffffff;
+  float: right;
+  line-height: 100%;
+`;
+const CreateOptionsContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0 1rem 0 1rem;
+  margin-bottom: 1rem;
+`;
+
+const CreateOption = styled.div`
+  cursor: pointer;
+  background-color: #ffffff;
+  width: 12rem;
+  height: 12rem;
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+  margin-right: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+`;
+const CreateOptionAdd = () => {
+  return (
+    <i
+      style={{
+        fontSize: "6rem",
+        color: "#C4C4C4",
+        marginBottom: "-1rem",
+      }}
+      className="material-icons"
+    >
+      add
+    </i>
+  );
+};
+
+const OptionName = styled.span`
+  color: black;
+  font-size: 18px;
+  font-weight: 600;
+  text-align: center;
+`;
 
 type Props = {
   open: boolean;
@@ -61,55 +111,6 @@ const NewFlow = ({ open }: Props) => {
         break;
     }
   };
-
-  const CloseModal = styled.div`
-    cursor: pointer;
-    margin: 0;
-    padding: 0;
-    font-size: 2rem;
-    color: #ffffff;
-    float: right;
-    line-height: 100%;
-  `;
-  const CreateOptionsContainer = styled.div`
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    padding: 0 1rem 0 1rem;
-  `;
-
-  const CreateOption = styled.div`
-    cursor: pointer;
-    background-color: #ffffff;
-    width: 7.5rem;
-    height: 6.875rem;
-    margin-top: 1rem;
-    margin-bottom: 0.5rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-  `;
-  const CreateOptionAdd = () => {
-    return (
-      <i
-        style={{
-          fontSize: "6rem",
-          color: "#C4C4C4",
-          marginBottom: "-1rem",
-        }}
-        className="material-icons"
-      >
-        add
-      </i>
-    );
-  };
-
-  const OptionName = styled.span`
-    color: black;
-    font-size: 14px;
-    font-weight: 600;
-  `;
 
   return (
     <ReactModal

@@ -104,7 +104,7 @@ code {
 
 .flow-container {
   border-radius: 0.25em;
-  max-width: 60rem;
+  max-width: 50vw;
 }
 
 .chart-section-container {

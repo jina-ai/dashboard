@@ -4,18 +4,6 @@ import styled from "@emotion/styled";
 import { useTheme } from "@emotion/react";
 import deleteIcon from "../../assets/icons/Delete.svg";
 
-// type SelectionIndicatorProps = {
-//   selected: boolean;
-// };
-
-// function SelectionIndicator({ selected }: SelectionIndicatorProps) {
-//   return selected ? (
-//     <i className="material-icons text-primary">radio_button_checked</i>
-//   ) : (
-//     <i className="material-icons">radio_button_unchecked</i>
-//   );
-// }
-
 type ConnectionIndicatorProps = {
   connected: boolean;
   show: boolean;
@@ -75,7 +63,7 @@ export default function FlowSelection({
 
   const FlowSelectionMenu = styled.div`
     font-family: "Montserrat", serif;
-    min-width: 10rem;
+    min-width: 12rem;
     margin-right: 3rem;
   `;
 
@@ -90,6 +78,7 @@ export default function FlowSelection({
     font-weight: 500;
     font-size: 14px;
     display: flex;
+    align-items: center;
     justify-content: space-between;
     margin-left: 1rem;
   `;
@@ -100,12 +89,6 @@ export default function FlowSelection({
     font-size: 14px;
     color: ${palette.headerTextColor};
   `;
-
-  // const [isEditing, setIsEditing] = useState(false);
-
-  // const toggleEditing = () => {
-  //   setIsEditing((currentIsEditing) => !currentIsEditing);
-  // };
 
   const userFlows = Object.entries(flows).filter(
     ([id, flow]) => flow.type !== "example"
@@ -128,7 +111,7 @@ export default function FlowSelection({
       </SelectedFlowHeader>
 
       <FlowTap onClick={showNewFlowModal}>
-        New Flow <i className="material-icons">add</i>
+        New Flow <i className="material-icons plus-icon">add</i>
       </FlowTap>
 
       <FlowHeader>My flow </FlowHeader>
