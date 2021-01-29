@@ -18,7 +18,8 @@ module.exports = {
       }
     },
     messageInterval: 100,
-    source: "examples/sample-output.json"
+    messageLoops:100,
+    source: "sample-data/sample-output.json"
   },
   recorder: {
     url: "http://localhost:5000",

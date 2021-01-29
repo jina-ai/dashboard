@@ -1,10 +1,11 @@
 const express = require("express");
 const cors = require("cors");
 const cliCursor = require("cli-cursor");
+const fs = require("fs");
 const chalk = require("chalk");
 const { v4: uuid, validate: uuidValidate } = require("uuid");
 const { argv } = require("yargs");
-const readline = require('readline')
+const readline = require('readline');
 
 const config = require("./config");
 const app = express();
@@ -116,18 +117,26 @@ app.get("/workspaces/:id", validateId, ensureResourceExists, (req, res) => {
 })
 
 app.get("/logs/:workspace_id/:flow_id", (req, res) => {
-	return res.json(require("./sample-data/logs.json"))
+	fs.readFile("./sample-data/logs.txt", "utf8", (e, d) => {
+		return res.send(d)
+	})
+
 })
 
 app.ws("/logstream/:workspace_id/:flow_id", (ws, req) => {
 	return startStreamSimulation(ws, _sampleStreamData.logs);
 })
 
-function startStreamSimulation(ws, items) {
+function startStreamSimulation(ws, logs) {
 	let connected = true;
 	let timeouts = [];
 
 	_activeStreams++;
+
+	let items = [];
+	for (let i = 0; i < config.emitter.messageLoops; ++i) {
+		items = items.concat(logs);
+	}
 
 	const { messageInterval } = config.emitter;
 
