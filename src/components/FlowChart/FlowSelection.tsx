@@ -50,29 +50,6 @@ function DeleteFlowButton({ deleteFlow }: DeleteFlowProps) {
   return <img alt={"deleteFlowButton"} src={deleteIcon} onClick={deleteFlow} />;
 }
 
-// type EditFlowsProps = {
-//   toggleEditing: () => void;
-//   isEditing: boolean;
-// };
-
-// function EditFlowsButton({ isEditing, toggleEditing }: EditFlowsProps) {
-//   return isEditing ? (
-//     <i
-//       onClick={toggleEditing}
-//       className="material-icons float-right cursor-pointer text-success"
-//     >
-//       done
-//     </i>
-//   ) : (
-//     <i
-//       onClick={toggleEditing}
-//       className="material-icons float-right cursor-pointer"
-//     >
-//       edit
-//     </i>
-//   );
-// }
-
 type FlowSelectionProps = {
   flows: {
     [key: string]: any;
@@ -97,7 +74,7 @@ export default function FlowSelection({
   const { palette } = useTheme();
 
   const FlowSelectionMenu = styled.div`
-    font-family: "Montserrat";
+    font-family: "Montserrat", serif;
     min-width: 10rem;
     margin-right: 3rem;
   `;
@@ -163,7 +140,9 @@ export default function FlowSelection({
             show={flow.type === "remote"}
             connected={connected}
           />
-          <DeleteFlowButton deleteFlow={(e: any) => deleteFlow(e, flowId)} />
+          {flowId !== "_userFlow" && (
+            <DeleteFlowButton deleteFlow={(e: any) => deleteFlow(e, flowId)} />
+          )}
         </FlowTap>
       ))}
       <FlowHeader>Examples</FlowHeader>

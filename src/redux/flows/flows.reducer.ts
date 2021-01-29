@@ -8,6 +8,9 @@ import {
   DUPLICATE_FLOW,
   LOAD_FLOW,
   UPDATE_FLOW,
+  UPDATE_NODE,
+  DELETE_NODE,
+  RERENDER,
   UPDATE_FLOW_PROPERTIES
 } from "./flows.constants";
 import {
@@ -16,6 +19,7 @@ import {
   FlowProperties,
   Flows,
   FlowState,
+  NodeUpdate,
 } from "./flows.types";
 import { nanoid } from "nanoid";
 
@@ -49,6 +53,7 @@ function getExampleFlows() {
 }
 
 const initialState: FlowState = {
+  rerender: false,
   selectedFlow: "_userFlow",
   flows: {
     ...getUserFlows(),
@@ -80,6 +85,15 @@ export default function flowReducer(
       return _createNewFlow(state);
     case LOAD_FLOW:
       return _loadFlow(state, action.payload);
+    case UPDATE_NODE:
+      return _updateNode(state, action.payload);
+    case DELETE_NODE:
+      return _deleteNode(state, action.payload);
+    case RERENDER:
+      return {
+        ...state,
+        rerender: !state.rerender,
+      };
     default:
       return state;
   }
@@ -191,5 +205,29 @@ function _loadFlow(state: FlowState, flowId: string): FlowState {
   return {
     ...state,
     selectedFlow: flowId,
+  };
+}
+
+function _updateNode(
+  state: FlowState,
+  { nodeId, nodeUpdate }: { nodeId: string; nodeUpdate: NodeUpdate }
+): FlowState {
+  const newState = { ...state };
+  const oldNode = newState.flows[newState.selectedFlow].flow.nodes[nodeId];
+  const newNode = {
+    ...oldNode,
+    ...nodeUpdate,
+  };
+  newState.flows[newState.selectedFlow].flow.nodes[nodeId] = newNode;
+  return {
+    ...newState,
+  };
+}
+
+function _deleteNode(state: FlowState, nodeId: string): FlowState {
+  const newState = { ...state };
+  delete state.flows[newState.selectedFlow].flow.nodes[nodeId];
+  return {
+    ...newState,
   };
 }

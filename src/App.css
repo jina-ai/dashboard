@@ -152,6 +152,10 @@ code {
   border-radius: 0.25em;
 }
 
+.scroll {
+  max-height: 30rem;
+}
+
 .chart-node {
   cursor: move;
   text-align: center;
@@ -222,7 +226,7 @@ code {
 .property-table {
   overflow-y: scroll;
   padding: 0.5em;
-  max-height: 80vh;
+  max-height: 20rem;
   background-color: #f6f8fa;
   border: 1px solid #d1d5da;
   border-radius: 0.25em;

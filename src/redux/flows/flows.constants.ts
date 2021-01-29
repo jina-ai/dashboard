@@ -6,6 +6,9 @@ export const UPDATE_FLOW = "UPDATE_FLOW";
 export const UPDATE_FLOW_PROPERTIES = "UPDATE_FLOW_PROPERTIES";
 export const DUPLICATE_FLOW = "DUPLICATE_FLOW";
 export const DELETE_FLOW = "DELETE_FLOW";
+export const UPDATE_NODE = "UPDATE_NODE";
+export const DELETE_NODE = "DELETE_NODE";
+export const RERENDER = "RERENDER";
 export const START_FLOW = "START_FLOW";
 export const STOP_FLOW = "STOP_FLOW";
 

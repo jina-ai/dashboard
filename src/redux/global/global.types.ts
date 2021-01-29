@@ -78,7 +78,19 @@ export type Processes = {
   [processNum: number]: string;
 };
 
-export type Modal = null | "logDetails" | "newFlow" | "import" | "review";
+export type Modal =
+  | null
+  | "logDetails"
+  | "newFlow"
+  | "import"
+  | "review"
+  | "podEdit";
+
+export type ModalParams = {
+  imageId?: string;
+  nodeId?: string;
+  rerenderCanvas?: any;
+} | null;
 
 export type GlobalState = {
   user: User;
@@ -86,9 +98,7 @@ export type GlobalState = {
   banner: Banner;
   loading: boolean;
   modal: Modal;
-  modalParams: {
-    imageId: string;
-  } | null;
+  modalParams: ModalParams;
   menuVisible: boolean;
   navItems: TNavItem[];
   processes: Processes;

@@ -1,6 +1,7 @@
 import { FlowState } from "./flows.types";
 
 export const testFlowState: FlowState = {
+  rerender: false,
   tooltipConfig: {
     tooltipsGlobal: {
       showTooltip: true,
