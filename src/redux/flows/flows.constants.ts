@@ -19,6 +19,7 @@ export const initialFlow: Flow = {
   nodes: {
     gateway: {
       id: "gateway",
+      type: "input-output",
       label: "gateway",
       ports: {
         outPort: {

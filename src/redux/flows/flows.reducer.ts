@@ -109,9 +109,7 @@ export default function flowReducer(
       saveFlowsToStorage(newState);
       return newState;
     case LOAD_FLOW:
-      newState = _loadFlow(state, action.payload);
-      saveFlowsToStorage(newState);
-      return newState;
+      return _loadFlow(state, action.payload);
     case UPDATE_NODE:
       newState = _updateNode(state, action.payload);
       saveFlowsToStorage(newState);

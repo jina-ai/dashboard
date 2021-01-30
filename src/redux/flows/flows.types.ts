@@ -15,7 +15,7 @@ import {
   INode,
 } from "@bastinjafari/react-flow-chart-with-tooltips-and-multi-select";
 
-export interface Node extends Omit<INode, "type"> {
+export interface Node extends INode {
   label?: string;
   needs?:
     | {

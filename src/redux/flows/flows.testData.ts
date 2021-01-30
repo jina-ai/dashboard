@@ -22,6 +22,7 @@ export const testFlowState: FlowState = {
         nodes: {
           gateway: {
             id: "gateway",
+            type: "input-output",
             label: "gateway",
             ports: {
               outPort: {
@@ -48,6 +49,7 @@ export const testFlowState: FlowState = {
         nodes: {
           gateway: {
             id: "gateway",
+            type: "input-output",
             label: "gateway",
             ports: {
               outPort: {
@@ -77,6 +79,7 @@ export const testFlowState: FlowState = {
         nodes: {
           gateway: {
             id: "gateway",
+            type: "input-output",
             label: "gateway",
             ports: {
               inPort: {
@@ -99,6 +102,7 @@ export const testFlowState: FlowState = {
           },
           loader: {
             id: "loader",
+            type: "input-output",
             label: "loader",
             ports: {
               inPort: {
@@ -126,6 +130,7 @@ export const testFlowState: FlowState = {
           },
           flipper: {
             id: "flipper",
+            type: "input-output",
             label: "flipper",
             ports: {
               inPort: {
@@ -153,6 +158,7 @@ export const testFlowState: FlowState = {
           },
           normalizer: {
             id: "normalizer",
+            type: "input-output",
             label: "normalizer",
             ports: {
               inPort: {
@@ -180,6 +186,7 @@ export const testFlowState: FlowState = {
           },
           encoder: {
             id: "encoder",
+            type: "input-output",
             label: "encoder",
             ports: {
               inPort: {
@@ -208,6 +215,7 @@ export const testFlowState: FlowState = {
           },
           chunk_indexer: {
             id: "chunk_indexer",
+            type: "input-output",
             label: "chunk_indexer",
             ports: {
               inPort: {
@@ -237,6 +245,7 @@ export const testFlowState: FlowState = {
           },
           ranker: {
             id: "ranker",
+            type: "input-output",
             label: "ranker",
             ports: {
               inPort: {
@@ -263,6 +272,7 @@ export const testFlowState: FlowState = {
           },
           doc_indexer: {
             id: "doc_indexer",
+            type: "input-output",
             label: "doc_indexer",
             ports: {
               inPort: {

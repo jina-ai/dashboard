@@ -57,7 +57,6 @@ export default function FlowView() {
     ...chart,
     ...useSelector(selectTooltipConfig),
   };
-
   const [showOverlay, setShowOverlay] = useState<boolean>(false);
 
   const actionCallbacks = Object.keys(actions).reduce((obj: any, key: any) => {
@@ -239,7 +238,7 @@ export default function FlowView() {
                 </div>
 
                 <FlowChart
-                  chart={(chart as unknown) as IChart}
+                  chart={chart as IChart}
                   Components={{
                     TooltipComponent: Tooltip,
                     NodeInner: CustomNode as any,
