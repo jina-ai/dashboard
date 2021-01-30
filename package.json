@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "npm-run-all --parallel start_dev-server start-dashboard",
     "start": "react-scripts start",
-    "start-dashboard": "REACT_APP_TARGET=dashboard react-scripts start",
+    "start-dashboard": "react-scripts start",
     "start-hub": "REACT_APP_TARGET=hub react-scripts start",
     "start_dev-server": "node dev-resources/testServer.js",
     "build": "CI=false react-scripts build",
