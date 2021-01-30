@@ -23,6 +23,21 @@ import {
 } from "./flows.types";
 import { nanoid } from "nanoid";
 
+//todo type this properly
+
+interface LooseObject {
+  [key: string]: any;
+}
+
+const saveFlowsToStorage = (state: FlowState) => {
+  let toSave: LooseObject = {};
+  const { flows } = state;
+  Object.entries(flows).forEach(([id, flow]: [string, any]) => {
+    if (flow.type === "user-generated") toSave[id] = flow;
+  });
+  localStorage.setItem("userFlows", JSON.stringify(toSave));
+};
+
 function getUserFlows(): Flows {
   const storedFlows = localStorage.getItem("userFlows");
   const userFlows = storedFlows ? JSON.parse(storedFlows) : null;
@@ -72,23 +87,39 @@ export default function flowReducer(
   state = initialState,
   action: FlowActionTypes
 ): FlowState {
+  let newState;
   switch (action.type) {
     case DELETE_FLOW:
-      return _deleteFlow(state, action.payload);
+      newState = _deleteFlow(state, action.payload);
+      saveFlowsToStorage(newState);
+      return newState;
     case DUPLICATE_FLOW:
-      return _createNewFlow(state, action.payload);
+      newState = _createNewFlow(state, action.payload);
+      saveFlowsToStorage(newState);
+      return newState;
     case UPDATE_FLOW:
-      return _updateFlow(state, action.payload);
+      newState = _updateFlow(state, action.payload);
+      saveFlowsToStorage(newState);
+      return newState;
     case UPDATE_FLOW_PROPERTIES:
-      return _updateFlowProperties(state,action.payload);
+      newState = _updateFlowProperties(state,action.payload);
+      return newState
     case CREATE_NEW_FLOW:
-      return _createNewFlow(state);
+      newState = _createNewFlow(state);
+      saveFlowsToStorage(newState);
+      return newState;
     case LOAD_FLOW:
-      return _loadFlow(state, action.payload);
+      newState = _loadFlow(state, action.payload);
+      saveFlowsToStorage(newState);
+      return newState;
     case UPDATE_NODE:
-      return _updateNode(state, action.payload);
+      newState = _updateNode(state, action.payload);
+      saveFlowsToStorage(newState);
+      return newState;
     case DELETE_NODE:
-      return _deleteNode(state, action.payload);
+      newState = _deleteNode(state, action.payload);
+      saveFlowsToStorage(newState);
+      return newState;
     case RERENDER:
       return {
         ...state,
