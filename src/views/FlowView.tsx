@@ -37,12 +37,12 @@ import { PROPERTY_LIST } from "../redux/logStream/logStream.constants";
 
 import styled from "@emotion/styled";
 
-const FlowContainer = styled.div`
+const FlowViewContainer = styled.div`
   display: flex;
 `;
 
-const FlowChartContainer = styled.div`
-  max-width: 50vw;
+const FlowContainer = styled.div`
+  overflow: hidden;
 `;
 
 export default function FlowView() {
@@ -209,7 +209,7 @@ export default function FlowView() {
           <PageTitle title="Flow Design" className="text-sm-left mb-3" />
         </Row>
 
-        <FlowContainer>
+        <FlowViewContainer>
           <FlowSelection
             connected={connected}
             flows={flows}
@@ -220,7 +220,7 @@ export default function FlowView() {
             deleteFlow={handleDeleteFlow}
           />
 
-          <FlowChartContainer>
+          <FlowContainer>
             <Card className="chart-section-container mr-md-4 mb-4">
               <CommandBar
                 startFlow={handleStartFlow}
@@ -234,8 +234,8 @@ export default function FlowView() {
                   className="capture-overlay"
                   style={{ display: showOverlay ? "" : "none" }}
                 >
-                  <div className="capture-overlay-top"></div>
-                  <div className="capture-overlay-bottom"></div>
+                  <div className="capture-overlay-top" />
+                  <div className="capture-overlay-bottom" />
                 </div>
 
                 <FlowChart
@@ -254,7 +254,7 @@ export default function FlowView() {
                 />
               </div>
             </Card>
-          </FlowChartContainer>
+          </FlowContainer>
 
           <Sidebar
             availableProperties={PROPERTY_LIST}
@@ -265,7 +265,7 @@ export default function FlowView() {
             updateNode={updateNode}
             updateLink={updateLink}
           />
-        </FlowContainer>
+        </FlowViewContainer>
       </div>
     </Container>
   );
