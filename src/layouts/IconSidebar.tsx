@@ -27,7 +27,11 @@ import {
   selectUser,
 } from "../redux/global/global.selectors";
 import store from "../redux";
-import { showBanner, toggleSidebar } from "../redux/global/global.actions";
+import {
+  closeModal,
+  showBanner,
+  toggleSidebar,
+} from "../redux/global/global.actions";
 
 type IconSideBarLayoutProps = {
   children: React.ReactNode;
@@ -55,7 +59,7 @@ const IconSidebarLayout = (props: IconSideBarLayoutProps) => {
     setAcceptedCookies(true);
   };
 
-  const closeModal = () => {
+  const _closeModal = () => {
     dispatch(closeModal());
   };
 
@@ -150,17 +154,17 @@ const IconSidebarLayout = (props: IconSideBarLayoutProps) => {
       </Row>
       <LogDetails
         open={modal === "logDetails"}
-        closeModal={closeModal}
+        closeModal={_closeModal}
         modalParams={modalParams}
       />
       <PasteYAML
         open={modal === "import"}
-        closeModal={closeModal}
+        closeModal={_closeModal}
         importYAML={importYAML}
       />
       <WriteReview
         open={modal === "review"}
-        closeModal={closeModal}
+        closeModal={_closeModal}
         submitReview={submitReview}
       />
     </Container>
