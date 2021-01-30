@@ -102,10 +102,6 @@ code {
   border-bottom-color: #007bff;
 }
 
-.flow-container {
-  border-radius: 0.25em;
-}
-
 .chart-section-container {
   max-height: 80vh;
   overflow: hidden;
