@@ -32,10 +32,10 @@
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
 - [Getting started](#getting-started)
-  - [1. Start the log server](#1-start-the-log-server)
-  - [2. Connect the Dashboard to your log server](#2-connect-the-dashboard-to-your-log-server)
+  - [1. Start Jina Daemon](#1-start-jina-daemon)
+  - [2. Connect the Dashboard to Jina Daemon](#2-connect-the-dashboard-to-jina-daemon)
 - [Self-host Dashboard](#self-host-dashboard)
-  - [Run in the debug mode](#run-in-the-debug-mode)
+  - [Run in debug mode](#run-in-debug-mode)
   - [Run in the live mode](#run-in-the-live-mode)
 - [Contributing](#contributing)
 - [License](#license)
