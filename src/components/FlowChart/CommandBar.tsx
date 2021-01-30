@@ -52,7 +52,7 @@ export default function CommandBar({
           <Button onClick={() => exportImage("png")}>
             <img alt="Save" src={Save} />
           </Button>
-          <Button onClick={importChart}>
+          <Button disabled onClick={importChart}>
             <img alt="Upload" src={Upload} />
           </Button>
           <Button onClick={copyChart}>

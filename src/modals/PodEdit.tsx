@@ -41,20 +41,27 @@ const Header1 = styled.header`
   font-weight: 600;
   font-size: 30px;
   color: #009999;
+  margin-bottom: 0.5rem;
 `;
 
 const Header2 = styled.header`
   font-weight: 600;
   font-size: 20px;
   color: #009999;
+  margin-bottom: 0.5rem;
 `;
 
 const Input = styled.input`
-  width: 95%;
+  width: 97%;
   background: #f1f3f4;
   border-radius: 5px;
   padding: 0.5em;
   border: 0;
+  margin-bottom: 0.5rem;
+`;
+
+const DeleteButton = styled(Button)`
+  width: 97%;
 `;
 
 type Props = {
@@ -148,9 +155,9 @@ function PodEditComponent({ open, closeModal, modalParams }: Props) {
             })}
           </div>
 
-          <Button variant="danger" className="w-100" onClick={_deleteNode}>
+          <DeleteButton variant="danger" onClick={_deleteNode}>
             Delete Pod
-          </Button>
+          </DeleteButton>
         </PodEditContainer>
       </PodEdit>
     </ReactModal>
