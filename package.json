@@ -138,7 +138,7 @@
     "@types/react-test-renderer": "^17.0.0",
     "@types/react-virtualized-auto-sizer": "^1.0.0",
     "@types/react-window": "^1.8.2",
-    "cypress": "^5.5.0",
+    "cypress": "^6.3.0",
     "eslint-plugin-flowtype": "^5.2.0",
     "husky": "^4.2.5",
     "lint-staged": "^10.2.11",

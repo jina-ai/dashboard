@@ -71,7 +71,7 @@ const HubImagesList = () => {
           />
         </Col>
         <Col md="10">
-          <Row>
+          <Row data-name="hubImagesList">
             {hubImages.map((image) => (
               <Col
                 key={`${image.name}.${image.version}.${image["jina-version"]}`}
