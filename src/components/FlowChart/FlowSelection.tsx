@@ -71,6 +71,7 @@ export default function FlowSelection({
     font-weight: 600;
     font-size: 20px;
     color: ${palette.headerTextColor};
+    margin-bottom: 1rem;
   `;
 
   const FlowTap = styled.div`
@@ -81,12 +82,14 @@ export default function FlowSelection({
     align-items: center;
     justify-content: space-between;
     margin-left: 1rem;
+    margin-bottom: 1rem;
   `;
 
   const FlowHeader = styled.div`
     cursor: pointer;
     font-weight: 600;
     font-size: 14px;
+    margin-bottom: 1rem;
     color: ${palette.headerTextColor};
   `;
 
