@@ -1,6 +1,6 @@
 import React from "react";
 import SidebarItem from "./SidebarItem";
-import defaultPods from "../../data/defaultPods.json";
+import defaultPods from "../../data/defaultPods";
 import { Button, Card } from "react-bootstrap";
 import { Flow } from "../../redux/flows/flows.types";
 
