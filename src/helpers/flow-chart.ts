@@ -32,6 +32,7 @@ export const formatForFlowchart = (pods, canvas) => {
   Object.keys(pods).forEach((id) => {
     const pod = pods[id] || {};
     let node = {
+      type: "input-output",
       id,
       label: id,
       ports: {},

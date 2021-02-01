@@ -31,7 +31,7 @@ describe("flows reducer", () => {
     ).toBeUndefined();
   });
 
-  it("should duplicate a the flower flow", () => {
+  it("should duplicate the flower flow", () => {
     const flowerYaml = testFlowState.flows.flower.yaml;
     if (flowerYaml) {
       const oldNumberOfFlows = Object.keys(testFlowState.flows).length;

@@ -30,35 +30,25 @@ function PodMenu() {
         <b>Add Pods</b>
       </h5>
       <div className="p-3 scrollable flex-fill">
-        <SidebarItem
-          ports={{
-            inPort: {
-              id: "inPort",
-              type: "input",
-            },
-            outPort: {
-              id: "outPort",
-              type: "output",
-            },
-          }}
-          properties={{}}
-        />
-        {defaultPods.map((pod, idx) => (
-          <SidebarItem
-            key={idx}
-            ports={{
-              inPort: {
-                id: "inPort",
-                type: "input",
-              },
-              outPort: {
-                id: "outPort",
-                type: "output",
-              },
-            }}
-            properties={pod}
-          />
-        ))}
+        {defaultPods.map((pod, idx) => {
+          return (
+            <SidebarItem
+              data-name={`SideBarItem-${idx}`}
+              key={idx}
+              ports={{
+                inPort: {
+                  id: "inPort",
+                  type: "input",
+                },
+                outPort: {
+                  id: "outPort",
+                  type: "output",
+                },
+              }}
+              properties={pod}
+            />
+          );
+        })}
       </div>
     </div>
   );
