@@ -144,7 +144,7 @@ describe("global reducer", () => {
   describe("when closing  a modal", () => {
     const newGlobalState = reducer(initialGlobalState, closeModal());
     it("should set the modal and modalParams to empty", () => {
-      expect(newGlobalState.modal).toEqual("");
+      expect(newGlobalState.modal).toEqual(null);
       expect(newGlobalState.modalParams).toEqual(null);
     });
   });
