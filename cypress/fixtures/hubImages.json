@@ -31,7 +31,7 @@
     "name": "ArrayBytesReader",
     "description": "converts a byte stream into a numpy array and save to the Document.",
     "type": "pod",
-    "kind": "crafter",
+    "kind": "encoder",
     "keywords": [
       "Some keywords to describe the executor",
       "separated by commas"
@@ -53,7 +53,7 @@
     "name": "ArrayStringReader",
     "description": "convertsthe string of numbers into a numpy array and save to the Document.",
     "type": "pod",
-    "kind": "crafter",
+    "kind": "encoder",
     "keywords": [
       "Some keywords to describe the executor",
       "separated by commas"
@@ -75,7 +75,7 @@
     "name": "AudioMonophoner",
     "description": "makes the audio signal monophonic on doc-level.",
     "type": "pod",
-    "kind": "crafter",
+    "kind": "indexer",
     "keywords": [
       "audio",
       "librosa"
@@ -97,7 +97,7 @@
     "name": "AudioNormalizer",
     "description": "normalizes the audio signal on doc-level.",
     "type": "pod",
-    "kind": "crafter",
+    "kind": "ranker",
     "keywords": [
       "audio",
       "librosa"
@@ -141,7 +141,7 @@
     "name": "AudioSegmenter",
     "description": "provides the functions for segmenting audio signal.",
     "type": "pod",
-    "kind": "crafter",
+    "kind": "segmenter",
     "keywords": [
       "audio",
       "librosa"

@@ -1,6 +1,5 @@
 describe('Hub page', () => {
   before(() => {
-    cy.intercept('GET', 'https://hubapi.jina.ai/images', { fixture: 'hubImages'})
     cy.visit('/#/hub')
   })
 
@@ -24,6 +23,7 @@ describe('Hub page', () => {
 
   describe('explore button ', () => {
     it('takes users to hub list page', () => {
+      cy.intercept('images', { fixture: 'hubImages'})
       cy.dataName('hubOverviewActionButtonLabel').contains('Read more').click()
       cy.dataName('hubImagesList')
     })
@@ -31,7 +31,19 @@ describe('Hub page', () => {
 
   describe('hub images', () => {
     it('shows a list of hub images', () => {
-      cy.dataName('hubImagesList').dataName('hubImage').its('length').should('eq', 98)
+      cy.dataName('hubImagesList').dataName('hubImage').its('length').should('eq', 11)
     })
+  })
+
+  describe('hub images filters', () => {
+    it('shows a list of filters generated from hub images', () => {
+      cy.dataName('hubImagesFilter').should('contain.text', 'Type of image')
+    })
+
+    it('fetches images matching current filters', () => {
+      cy.dataName('hubImagesFilter').contains('encoder').click()
+      cy.dataName('hubImagesFilter').contains('nlp').click()
+    })
+
   })
 })

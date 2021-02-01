@@ -65,7 +65,7 @@ const HubFilters = ({ filters, setFilters, getHubImages }: HubFilterProps) => {
     getHubImages(getSelectedFilters(filters));
   };
   return (
-    <>
+    <div data-name="hubImagesFilter">
       {filters &&
         filters.map((filter: Filter, filterCategoryIndex: number) => (
           <div key={filterCategoryIndex}>
@@ -84,7 +84,7 @@ const HubFilters = ({ filters, setFilters, getHubImages }: HubFilterProps) => {
             </FiltersContainer>
           </div>
         ))}
-    </>
+    </div>
   );
 };
 
