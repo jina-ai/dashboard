@@ -16,39 +16,54 @@ import {
 
 export interface Node extends INode {
   label?: string;
-  needs?:
-    | {
-        [pod: string]: boolean;
-      }
-    | {};
+  needs?: {
+    [pod: string]: boolean;
+  };
   send_to?: {};
   depth?: number;
 }
 
+export type Nodes = { [id: string]: Node };
+
+export type Links = { [id: string]: Link };
 export type NodeUpdate = Partial<Node>;
 
 type colors = "red";
 
-interface Link extends ILink {
+export interface Link extends ILink {
   color: colors;
 }
 
-export interface Flow extends Omit<IChart, "nodes" | "links"> {
-  nodes: { [id: string]: Node };
-  links: {
-    [id: string]: Link;
+export type Canvas = {
+  [pod: string]: {
+    x: number;
+    y: number;
   };
+};
+
+export type Pod = {
+  needs: string;
+  uses: string;
+  polling?: "all" | "all_async" | "any";
+  separated_workspace?: true;
+  shards?: string;
+  timeout_ready?: number;
+  uses_reducing?: string;
+};
+
+export type Pods = {
+  [podName: string]: Pod;
+};
+
+export interface Flow extends Omit<IChart, "nodes" | "links"> {
+  nodes: Nodes;
+  links: Links;
   with?:
     | {
         logserver: string;
         compress_hwm: number;
         board: {
-          canvas: {
-            [pod: string]: {
-              x: number;
-              y: number;
-            };
-          };
+          canvas: Canvas;
         };
       }
     | {};

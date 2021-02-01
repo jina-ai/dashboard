@@ -1,7 +1,15 @@
-// @ts-nocheck
+import {
+  Canvas,
+  Link,
+  Links,
+  Node,
+  Nodes,
+  Pods,
+} from "../redux/flows/flows.types";
+
 const settings = require("./../settings");
 
-export const formatForFlowchart = (pods, canvas) => {
+export const formatForFlowchart = (pods: Pods, canvas: Canvas) => {
   const formatted = {
     offset: {
       x: 0,
@@ -15,10 +23,10 @@ export const formatForFlowchart = (pods, canvas) => {
     with: {},
   };
 
-  let nodes = {};
-  let links = {};
+  let nodes: Nodes = {};
+  let links: Links = {};
 
-  let prevNode = false;
+  let prevNode = "";
 
   if (!pods.gateway) {
     let newPods = {};
@@ -31,14 +39,17 @@ export const formatForFlowchart = (pods, canvas) => {
 
   Object.keys(pods).forEach((id) => {
     const pod = pods[id] || {};
-    let node = {
+    let node: Node = {
       type: "input-output",
       id,
       label: id,
       ports: {},
       needs: {},
       send_to: {},
-      position: {},
+      position: {
+        x: 0,
+        y: 0,
+      },
       properties: { ...pod },
     };
 
@@ -54,10 +65,10 @@ export const formatForFlowchart = (pods, canvas) => {
 
       for (let i = 0; i < parents.length; ++i) {
         let nodeFrom = parents[i];
-        node.needs[nodeFrom] = true;
+        if (node.needs) node.needs[nodeFrom] = true;
 
         let linkId = `${nodeFrom}-to-${id}`;
-        let link = {
+        let link: Link = {
           color: "red",
           id: linkId,
           from: { nodeId: nodeFrom, portId: "outPort" },
@@ -69,14 +80,14 @@ export const formatForFlowchart = (pods, canvas) => {
 
     if (canvas && canvas[id]) {
       const { x, y } = canvas[id];
-      node.position = { x: parseInt(x), y: parseInt(y) };
+      node.position = { x, y };
     }
 
     nodes[id] = node;
     prevNode = id;
   });
 
-  const depthPopulation = {}; //how many nodes at each depth
+  const depthPopulation: number[] = []; //how many nodes at each depth
   const offsetX = settings.nodeOffset.x;
   const offsetY = settings.nodeOffset.y;
 
@@ -97,19 +108,29 @@ export const formatForFlowchart = (pods, canvas) => {
 
   formatted.nodes = nodes;
   formatted.links = links;
-
   return formatted;
 };
 
-function getNodeDepth(nodes, currentId, currentDepth): number {
-  let parents = Object.keys(nodes[currentId].needs);
+function getNodeDepth(
+  nodes: Nodes,
+  currentId: string,
+  currentDepth: number
+): number {
+  let needsPod = nodes[currentId].needs;
+  let parents: string[] = [];
+  if (needsPod) {
+    parents = Object.keys(needsPod);
+  }
+
   let longestDepth = 0;
 
   for (let i = 0; i < parents.length; ++i) {
     let parent = parents[i];
     let depth;
-    if (nodes[parent].depth) depth = nodes[parent].depth + 1;
-    else depth = getNodeDepth(nodes, parent, 1);
+    if (nodes[parent].depth) {
+      // @ts-ignore because compiler is stupid and says that nodes[parent].depth could be undefined
+      depth = nodes[parent].depth + 1;
+    } else depth = getNodeDepth(nodes, parent, 1);
     if (depth > longestDepth) longestDepth = depth;
   }
 
