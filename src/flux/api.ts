@@ -10,7 +10,7 @@ let taskStream: EventSource;
 const hub = axios.create({
   baseURL: hubURL,
   withCredentials: true,
-  timeout, // 30 secs
+  timeout,
   headers: {
     "Content-Type": "application/json",
     Accept: "application/json",
