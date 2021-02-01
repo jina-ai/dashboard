@@ -1,4 +1,4 @@
-import defaultPods from "../../../src/data/defaultPods.json";
+import defaultPods from "../../../src/data/defaultPods";
 
 describe("The Flow Page", () => {
   beforeEach(() => {
