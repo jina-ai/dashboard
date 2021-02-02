@@ -67,8 +67,6 @@ function _handleNewLog(state: LogStreamState, rawLog: RawLog): LogStreamState {
   newLogLevelOccurrences[unixTime].levels[level]++;
   newLogLevelOccurrences[unixTime].lastLog = log.idx;
 
-  console.log("log level occurences: ", newLogLevelOccurrences);
-
   const newState = {
     ...state,
     logs: newLogs,

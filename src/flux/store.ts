@@ -207,8 +207,6 @@ class StoreBase extends EventEmitter {
     this.clearIntervals();
     _store = getInitialStore();
 
-    await this.initFlowChart();
-
     this.emit("update-ui");
     this.emit("update-settings");
   };
