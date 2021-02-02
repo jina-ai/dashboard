@@ -7,6 +7,7 @@ import {
   SHOW_ERROR,
   SHOW_MODAL,
   TOGGLE_SIDE_BAR,
+  CONNECT_JINAD,
 } from "./global.constants";
 import {
   CloseModalAction,
@@ -16,10 +17,13 @@ import {
   ShowErrorAction,
   ShowModalAction,
   ToggleSidebarAction,
+  ConnectJinaDAction,
 } from "./global.types";
 import { ThunkAction } from "redux-thunk";
 import { State } from "../index";
 import { Action } from "redux";
+import store from "..";
+import jinad from "../../flux/jinad";
 
 export function handleConnectionStatus(
   connected: boolean,
@@ -102,5 +106,26 @@ export function showModal(modal: string, modalParams?: any): ShowModalAction {
 export function closeModal(): CloseModalAction {
   return {
     type: CLOSE_MODAL,
+  };
+}
+
+export function connectJinaD(): ThunkAction<
+  void,
+  State,
+  unknown,
+  Action<string>
+> {
+  return function (dispatch) {
+    const settings = store.getState().settingsState.settings;
+    function onConnectionStatus({
+      connected,
+      message,
+    }: {
+      connected: boolean;
+      message: string;
+    }) {
+      dispatch(handleConnectionStatus(connected, message));
+    }
+    jinad.connect(settings, onConnectionStatus);
   };
 }

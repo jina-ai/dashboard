@@ -7,6 +7,7 @@ export const HIDE_BANNER = "HIDE_BANNER";
 export const SHOW_ERROR = "SHOW_ERROR";
 export const SHOW_MODAL = "SHOW_MODAL";
 export const CLOSE_MODAL = "CLOSE_MODAL";
+export const CONNECT_JINAD = "CONNECT_JINAD";
 
 export const HIDE_BANNER_TIMEOUT = 5000;
 
