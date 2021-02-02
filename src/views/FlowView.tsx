@@ -13,6 +13,8 @@ import {
   deleteFlow,
   duplicateFlow,
   loadFlow,
+  startFlow,
+  stopFlow,
   updateFlow,
 } from "../redux/flows/flows.actions";
 import html2canvas from "html2canvas";
@@ -188,13 +190,13 @@ export default function FlowView() {
     dispatch(duplicateFlow(flowYAML));
   };
 
-  const handleStartFlow = () =>{
+  const handleStartFlow = () => {
     dispatch(startFlow(selectedFlowId));
-  }
+  };
 
-  const handleStopFlow = () =>{
+  const handleStopFlow = () => {
     dispatch(stopFlow(selectedFlowId));
-  }
+  };
 
   const readonly = flowType !== "user-generated";
 

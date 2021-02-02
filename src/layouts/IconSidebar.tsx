@@ -27,14 +27,14 @@ import {
   selectUser,
 } from "../redux/global/global.selectors";
 import store from "../redux";
-import {
-  closeModal,
-  showBanner,
-  toggleSidebar,
-} from "../redux/global/global.actions";
 import NewFlow from "../modals/NewFlow";
 import PodEdit from "../modals/PodEdit";
-import { showBanner, toggleSidebar,closeModal,connectJinaD } from "../redux/global/global.actions";
+import {
+  showBanner,
+  toggleSidebar,
+  closeModal,
+  connectJinaD,
+} from "../redux/global/global.actions";
 
 type IconSideBarLayoutProps = {
   children: React.ReactNode;

@@ -11,7 +11,7 @@ import {
   UPDATE_NODE,
   DELETE_NODE,
   RERENDER,
-  UPDATE_FLOW_PROPERTIES
+  UPDATE_FLOW_PROPERTIES,
 } from "./flows.constants";
 import {
   Flow,
@@ -102,8 +102,8 @@ export default function flowReducer(
       saveFlowsToStorage(newState);
       return newState;
     case UPDATE_FLOW_PROPERTIES:
-      newState = _updateFlowProperties(state,action.payload);
-      return newState
+      newState = _updateFlowProperties(state, action.payload);
+      return newState;
     case CREATE_NEW_FLOW:
       newState = _createNewFlow(state);
       saveFlowsToStorage(newState);
@@ -215,15 +215,19 @@ function _updateFlow(state: FlowState, newFlow: Flow): FlowState {
   } else return state;
 }
 
-function _updateFlowProperties(state: FlowState, newFlowProperties: FlowProperties): FlowState {
+function _updateFlowProperties(
+  state: FlowState,
+  newFlowProperties: FlowProperties
+): FlowState {
   if (state.selectedFlow) {
     return {
+      ...state,
       selectedFlow: state.selectedFlow,
       flows: {
         ...state.flows,
         [state.selectedFlow]: {
           ...state.flows[state.selectedFlow],
-          ...newFlowProperties
+          ...newFlowProperties,
         },
       },
     };
