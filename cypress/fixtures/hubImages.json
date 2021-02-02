@@ -1,0 +1,246 @@
+[
+  {
+    "docker-name": "jinahub/pod.crafter.albumentationscrafter",
+    "version": "0.0.1",
+    "jina-version": "0.9.23",
+    "docker-command": "docker pull jinahub/pod.crafter.albumentationscrafter:0.0.1-0.9.23",
+    "name": "AlbumentationsCrafter",
+    "description": "Apply transformations from the Albumentations package to the image.",
+    "type": "pod",
+    "kind": "crafter",
+    "keywords": [
+      "image",
+      "transform",
+      "augmentation",
+      "albumentations"
+    ],
+    "platform": [
+      "linux/amd64"
+    ],
+    "license": "apache-2.0",
+    "url": "https://jina.ai",
+    "documentation": "https://github.com/jina-ai/jina-hub",
+    "author": "Tadej Svetina (@tadejsv)",
+    "avatar": null
+  },
+  {
+    "docker-name": "jinahub/pod.crafter.arraybytesreader",
+    "version": "0.0.7",
+    "jina-version": "0.9.23",
+    "docker-command": "docker pull jinahub/pod.crafter.arraybytesreader:0.0.7-0.9.23",
+    "name": "ArrayBytesReader",
+    "description": "converts a byte stream into a numpy array and save to the Document.",
+    "type": "pod",
+    "kind": "encoder",
+    "keywords": [
+      "Some keywords to describe the executor",
+      "separated by commas"
+    ],
+    "platform": [
+      "linux/amd64"
+    ],
+    "license": "apache-2.0",
+    "url": "https://jina.ai",
+    "documentation": "https://github.com/jina-ai/jina-hub",
+    "author": "Jina AI Dev-Team (dev-team@jina.ai)",
+    "avatar": null
+  },
+  {
+    "docker-name": "jinahub/pod.crafter.arraystringreader",
+    "version": "0.0.7",
+    "jina-version": "0.9.23",
+    "docker-command": "docker pull jinahub/pod.crafter.arraystringreader:0.0.7-0.9.23",
+    "name": "ArrayStringReader",
+    "description": "convertsthe string of numbers into a numpy array and save to the Document.",
+    "type": "pod",
+    "kind": "encoder",
+    "keywords": [
+      "Some keywords to describe the executor",
+      "separated by commas"
+    ],
+    "platform": [
+      "linux/amd64"
+    ],
+    "license": "apache-2.0",
+    "url": "https://jina.ai",
+    "documentation": "https://github.com/jina-ai/jina-hub",
+    "author": "Jina AI Dev-Team (dev-team@jina.ai)",
+    "avatar": null
+  },
+  {
+    "docker-name": "jinahub/pod.crafter.audiomonophoner",
+    "version": "0.0.8",
+    "jina-version": "0.9.23",
+    "docker-command": "docker pull jinahub/pod.crafter.audiomonophoner:0.0.8-0.9.23",
+    "name": "AudioMonophoner",
+    "description": "makes the audio signal monophonic on doc-level.",
+    "type": "pod",
+    "kind": "indexer",
+    "keywords": [
+      "audio",
+      "librosa"
+    ],
+    "platform": [
+      "linux/amd64"
+    ],
+    "license": "apache-2.0",
+    "url": "https://jina.ai",
+    "documentation": "https://github.com/jina-ai/jina-hub",
+    "author": "Jina AI Dev-Team (dev-team@jina.ai)",
+    "avatar": null
+  },
+  {
+    "docker-name": "jinahub/pod.crafter.audionormalizer",
+    "version": "0.0.8",
+    "jina-version": "0.9.23",
+    "docker-command": "docker pull jinahub/pod.crafter.audionormalizer:0.0.8-0.9.23",
+    "name": "AudioNormalizer",
+    "description": "normalizes the audio signal on doc-level.",
+    "type": "pod",
+    "kind": "ranker",
+    "keywords": [
+      "audio",
+      "librosa"
+    ],
+    "platform": [
+      "linux/amd64"
+    ],
+    "license": "apache-2.0",
+    "url": "https://jina.ai",
+    "documentation": "https://github.com/jina-ai/jina-hub",
+    "author": "Jina AI Dev-Team (dev-team@jina.ai)",
+    "avatar": null
+  },
+  {
+    "docker-name": "jinahub/pod.crafter.audioreader",
+    "version": "0.0.7",
+    "jina-version": "0.9.23",
+    "docker-command": "docker pull jinahub/pod.crafter.audioreader:0.0.7-0.9.23",
+    "name": "AudioReader",
+    "description": "AudioReader reads and resamples the audio signal on doc-level.",
+    "type": "pod",
+    "kind": "crafter",
+    "keywords": [
+      "audio",
+      "librosa"
+    ],
+    "platform": [
+      "linux/amd64"
+    ],
+    "license": "apache-2.0",
+    "url": "https://jina.ai",
+    "documentation": "https://github.com/jina-ai/jina-hub",
+    "author": "Jina AI Dev-Team (dev-team@jina.ai)",
+    "avatar": null
+  },
+  {
+    "docker-name": "jinahub/pod.crafter.audiosegmenter",
+    "version": "0.0.8",
+    "jina-version": "0.9.4",
+    "docker-command": "docker pull jinahub/pod.crafter.audiosegmenter:0.0.8-0.9.4",
+    "name": "AudioSegmenter",
+    "description": "provides the functions for segmenting audio signal.",
+    "type": "pod",
+    "kind": "segmenter",
+    "keywords": [
+      "audio",
+      "librosa"
+    ],
+    "platform": [
+      "linux/amd64"
+    ],
+    "license": "apache-2.0",
+    "url": "https://jina.ai",
+    "documentation": "https://github.com/jina-ai/jina-hub",
+    "author": "Jina AI Dev-Team (dev-team@jina.ai)",
+    "avatar": null
+  },
+  {
+    "docker-name": "jinahub/pod.crafter.audioslicer",
+    "version": "0.0.8",
+    "jina-version": "0.9.4",
+    "docker-command": "docker pull jinahub/pod.crafter.audioslicer:0.0.8-0.9.4",
+    "name": "AudioSlicer",
+    "description": "provides the functions for segmenting audio signal.",
+    "type": "pod",
+    "kind": "crafter",
+    "keywords": [
+      "audio",
+      "librosa"
+    ],
+    "platform": [
+      "linux/amd64"
+    ],
+    "license": "apache-2.0",
+    "url": "https://jina.ai",
+    "documentation": "https://github.com/jina-ai/jina-hub",
+    "author": "Jina AI Dev-Team (dev-team@jina.ai)",
+    "avatar": null
+  },
+  {
+    "docker-name": "jinahub/pod.crafter.centerimagecropper",
+    "version": "0.0.11",
+    "jina-version": "0.9.23",
+    "docker-command": "docker pull jinahub/pod.crafter.centerimagecropper:0.0.11-0.9.23",
+    "name": "CenterImageCropper",
+    "description": "crops the image with the center crop box. The coordinate is the same coordinate-system",
+    "type": "pod",
+    "kind": "crafter",
+    "keywords": [
+      "Some keywords to describe the executor",
+      "separated by commas"
+    ],
+    "platform": [
+      "linux/amd64"
+    ],
+    "license": "apache-2.0",
+    "url": "https://jina.ai",
+    "documentation": "https://github.com/jina-ai/jina-hub",
+    "author": "Jina AI Dev-Team (dev-team@jina.ai)",
+    "avatar": null
+  },
+  {
+    "docker-name": "jinahub/pod.crafter.deepsegmenter",
+    "version": "0.0.8",
+    "jina-version": "0.9.4",
+    "docker-command": "docker pull jinahub/pod.crafter.deepsegmenter:0.0.8-0.9.4",
+    "name": "DeepSegmenter",
+    "description": "Designed with ASR outputs in mind, DeepSegment uses BiLSTM + CRF for automatic sentence boundary detection. It significantly outperforms the standard libraries (spacy, nltk, corenlp ..) on imperfect text and performs similarly for perfectly punctuated text.",
+    "type": "pod",
+    "kind": "crafter",
+    "keywords": [
+      "Some keywords to describe the executor",
+      "separated by commas"
+    ],
+    "platform": [
+      "linux/amd64"
+    ],
+    "license": "apache-2.0",
+    "url": "https://jina.ai",
+    "documentation": "https://github.com/jina-ai/jina-hub",
+    "author": "Jina AI Dev-Team (dev-team@jina.ai)",
+    "avatar": null
+  },
+  {
+    "docker-name": "jinahub/pod.crafter.fiveimagecropper",
+    "version": "0.0.10",
+    "jina-version": "0.9.10",
+    "docker-command": "docker pull jinahub/pod.crafter.fiveimagecropper:0.0.10-0.9.10",
+    "name": "FiveImageCropper",
+    "description": "crops the image into four corners and the central crop.",
+    "type": "pod",
+    "kind": "crafter",
+    "keywords": [
+      "Some keywords to describe the executor",
+      "separated by commas"
+    ],
+    "platform": [
+      "linux/amd64"
+    ],
+    "license": "apache-2.0",
+    "url": "https://jina.ai",
+    "documentation": "https://github.com/jina-ai/jina-hub",
+    "author": "Jina AI Dev-Team (dev-team@jina.ai)",
+    "avatar": null
+  }
+]

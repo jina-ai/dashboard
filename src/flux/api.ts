@@ -1,21 +1,11 @@
 import axios from "axios";
 import logger from "../logger";
-import { hubURL, timeout } from "./config";
+import { timeout } from "./config";
 import { Message } from "../redux/logStream/logStream.types";
 import { TaskEvent } from "../redux/task/task.types";
 
 let logStream: EventSource;
 let taskStream: EventSource;
-
-const hub = axios.create({
-  baseURL: hubURL,
-  withCredentials: true,
-  timeout,
-  headers: {
-    "Content-Type": "application/json",
-    Accept: "application/json",
-  },
-});
 
 type Settings = {
   host: string;
@@ -101,42 +91,12 @@ const api = {
       taskStream.close();
     };
   },
-  getProfile: async () => {
-    const result = await hub.get("profile");
-    return result.data;
-  },
   getYAML: async (settings: Settings) => {
     const connectionString = `${settings.host}:${settings.port}${
       settings.yaml.startsWith("/") ? settings.yaml : "/" + settings.yaml
     }`;
     logger.log("api - getYAML - connectionString", connectionString);
     const result = await axios.get(connectionString, { timeout });
-    return result.data;
-  },
-  getImages: async () => {
-    const result = await hub.get("list");
-    return result.data;
-  },
-  getImage: async (id: string) => {
-    const result = await hub.get(`/images/${id}`);
-    return result.data;
-  },
-  postRating: async (imageId: string, stars: any) => {
-    const result = await hub.post(`/images/${imageId}/ratings`, { stars });
-    return result.data;
-  },
-  postReview: async (imageId: string, content: any) => {
-    const result = await hub.post(`/images/${imageId}/reviews`, { content });
-    return result.data;
-  },
-  searchHub: async (category: string, q: string, sort: string) => {
-    const result = await hub.get(
-      `/images?category=${category}&q=${q}&sort=${sort}`
-    );
-    return result.data;
-  },
-  logOut: async () => {
-    const result = await hub.post("/auth/logout");
     return result.data;
   },
 };

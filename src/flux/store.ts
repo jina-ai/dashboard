@@ -176,18 +176,6 @@ class StoreBase extends EventEmitter {
       case Constants.RECONNECT:
         this.reconnect();
         break;
-      case Constants.POST_RATING:
-        this.postRating(payload);
-        break;
-      case Constants.POST_REVIEW:
-        this.postReview(payload);
-        break;
-      case Constants.SEARCH_HUB:
-        this.searchHub(payload);
-        break;
-      case Constants.LOG_OUT:
-        this.logOut();
-        break;
       case Constants.LOAD_FLOW:
         this.loadFlow(payload);
         break;
@@ -220,9 +208,7 @@ class StoreBase extends EventEmitter {
     this.clearIntervals();
     _store = getInitialStore();
 
-    this.initJinaD();
-    this.initHub();
-    this.initUser();
+    await this.initFlowChart();
 
     this.emit("update-ui");
     this.emit("update-settings");
@@ -394,22 +380,6 @@ class StoreBase extends EventEmitter {
       _store.taskData.elapsed.seconds = formatSeconds(parseInt(elapsed));
       _store.taskData.elapsed.task_name = `Task: ${task_name}`;
     }
-  };
-
-  initHub = async () => {
-    try {
-      const images = await hub.getImages();
-      _store.hub = images;
-    } catch (e) {
-      _store.hub = false;
-    }
-    this.emit("update-hub");
-  };
-
-  initUser = async () => {
-    const user = await hub.getProfile();
-    _store.user = user;
-    this.emit("update-user");
   };
 
   reconnect() {
@@ -617,71 +587,6 @@ class StoreBase extends EventEmitter {
     setTimeout(this.init, 100);
   };
 
-  postRating = async ({ imageId, stars }: { imageId: string; stars: any }) => {
-    if (!_store.user) return (window.location.hash = "#/login");
-    let result;
-    try {
-      result = await hub.postRating(imageId, stars);
-    } catch (e) {
-      let error = String(e).includes("409") ? "Already Rated" : e;
-      return this.showError(error);
-    }
-    if (result.error) this.showError(result.error);
-    else if (result.data) {
-      const image = result.data;
-      _store.images[image.id] = image;
-      this.showBanner("Rating successfully posted", "success");
-    }
-    this.emit("update-hub");
-  };
-
-  postReview = async ({
-    imageId,
-    content,
-  }: {
-    imageId: string;
-    content: any;
-  }) => {
-    if (!_store.user) {
-      this.closeModal();
-      return (window.location.hash = "#/login");
-    }
-    this.closeModal();
-    let result;
-    try {
-      result = await hub.postReview(imageId, content);
-    } catch (e) {
-      let error = String(e).includes("409") ? "Already Reviewed" : e;
-      return this.showError(error);
-    }
-    if (result.error) this.showError(result.error);
-    else if (result.data) {
-      const image = result.data;
-      _store.images[image.id] = image;
-      this.showBanner("Review successfully posted", "success");
-    }
-    this.emit("update-hub");
-  };
-
-  logOut = async () => {
-    await hub.logOut();
-    window.location.reload();
-  };
-
-  searchHub = async ({
-    category,
-    q,
-    sort,
-  }: {
-    category: string;
-    q: string;
-    sort: string;
-  }) => {
-    const images = await hub.search(category, q, sort);
-    _store.hub = images;
-    this.emit("update-hub");
-  };
-
   showBanner = (message: string, theme: string) => {
     if (_bannerTimeout) clearTimeout(_bannerTimeout);
     _store.banner = { message: String(message), theme };
@@ -731,16 +636,6 @@ class StoreBase extends EventEmitter {
     return _store.user;
   };
 
-  getHubImages = () => {
-    return _store.hub;
-  };
-
-  getHubImage = async (imageId: string) => {
-    if (!_store.images[imageId]) {
-      _store.images[imageId] = await hub.getImage(imageId);
-    }
-    return _store.images[imageId];
-  };
 
   getSettings = () => {
     return _store.settings;

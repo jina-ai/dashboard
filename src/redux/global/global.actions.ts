@@ -17,16 +17,14 @@ import {
   ShowModalAction,
   ToggleSidebarAction,
 } from "./global.types";
-import { ThunkAction } from "redux-thunk";
-import { State } from "../index";
-import { Action } from "redux";
+import { AppThunk } from "../index";
 import store from "..";
 import jinad from "../../flux/jinad";
 
 export function handleConnectionStatus(
   connected: boolean,
   message: string
-): ThunkAction<void, State, unknown, Action<string>> {
+): AppThunk {
   return function (dispatch) {
     dispatch(_handleConnectionStatus(connected, message));
     if (connected) {
@@ -70,10 +68,7 @@ export function _hideBanner(): HideBannerAction {
   };
 }
 
-export function showBanner(
-  message: string,
-  theme: string
-): ThunkAction<void, State, unknown, Action<string>> {
+export function showBanner(message: string, theme: string): AppThunk {
   return function (dispatch) {
     dispatch(_showBanner(message, theme));
     setTimeout(() => {
@@ -107,12 +102,7 @@ export function closeModal(): CloseModalAction {
   };
 }
 
-export function connectJinaD(): ThunkAction<
-  void,
-  State,
-  unknown,
-  Action<string>
-> {
+export function connectJinaD(): AppThunk {
   return function (dispatch) {
     const settings = store.getState().settingsState.settings;
     function onConnectionStatus({

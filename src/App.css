@@ -547,26 +547,6 @@ code {
   background-color: #ff6666 !important;
 }
 
-.app-category{
-  display: inline-block;
-  padding-left: .5em;
-  padding-right: .5em;
-  border-radius: .25em;
-  color: black;
-  background:rgba(0, 153, 153, 0.25);
-}
-
-.app-title {
-  font-size: 1.25em;
-  font-weight: 700;
-  line-height: normal;
-}
-
-.app-subtitle {
-  font-weight: 600;
-  opacity: 0.5;
-}
-
 .description-container {
   opacity: 0.75;
   overflow: hidden;
