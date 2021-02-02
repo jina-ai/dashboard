@@ -15,26 +15,22 @@ const style: Styles = {
   content: {
     border: "none",
     bottom: "auto",
-    minHeight: "40rem", // set height
     left: "50%",
-    padding: "2rem",
     position: "fixed",
     right: "auto",
     top: "50%", // start from center
     transform: "translate(-50%,-50%)", // adjust top "up" based on height
     maxWidth: "30rem",
     overflow: "hidden",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
   },
 };
 
-const PodEdit = styled.div`
-  width: 25rem;
-  font-family: Montserrat;
-`;
-
 const PodEditContainer = styled.div`
-  margin: 2rem 1.5rem;
-  width: 100%;
+  width: 25rem;
+  margin-right: -1rem;
 `;
 
 const Header1 = styled.header`
@@ -51,6 +47,28 @@ const Header2 = styled.header`
   margin-bottom: 0.5rem;
 `;
 
+const PropertyTable = styled.div`
+  width: 104%;
+  margin-bottom: 1rem;
+  border: 0;
+  overflow: hidden;
+  overflow-y: scroll;
+  height: 20rem;
+  border-radius: 0.25em;
+
+  ::-webkit-scrollbar {
+    width: 1rem;
+  }
+
+  ::-webkit-scrollbar * {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #099 !important;
+    border-radius: 1rem;
+  }
+`;
 const Input = styled.input`
   width: 97%;
   background: #f1f3f4;
@@ -117,49 +135,47 @@ function PodEditComponent({ open, closeModal, modalParams }: Props) {
       closeTimeoutMS={100}
       style={style}
     >
-      <PodEdit>
-        <PodEditContainer>
-          <Header1>pods name</Header1>
+      <PodEditContainer>
+        <Header1>pods name</Header1>
 
-          <Input
-            value={label}
-            onChange={(e: { target: { value: string } }) =>
-              _updateLabel(e.target.value)
-            }
-            className="pod-name-input"
-          />
+        <Input
+          value={label}
+          onChange={(e: { target: { value: string } }) =>
+            _updateLabel(e.target.value)
+          }
+          className="pod-name-input"
+        />
 
-          <Header1>properties</Header1>
+        <Header1>properties</Header1>
 
-          <Input
-            placeholder="search properties..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
-          <div className="property-table d-flex flex-column flex-fill ">
-            {filteredProperties.map((property) => {
-              const { name, type } = property;
+        <Input
+          placeholder="search properties..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+        />
+        <PropertyTable>
+          {filteredProperties.map((property) => {
+            const { name, type } = property;
 
-              return (
-                <>
-                  <Header2>{name}</Header2>
-                  <Input
-                    placeholder={type}
-                    type={type === "int" ? "number" : "text"}
-                    value={node.properties[name] || ""}
-                    onChange={(e) => _updateNodeProp(name, e.target.value)}
-                    className="property-value-input"
-                  />
-                </>
-              );
-            })}
-          </div>
+            return (
+              <>
+                <Header2>{name}</Header2>
+                <Input
+                  placeholder={type}
+                  type={type === "int" ? "number" : "text"}
+                  value={node.properties[name] || ""}
+                  onChange={(e) => _updateNodeProp(name, e.target.value)}
+                  className="property-value-input"
+                />
+              </>
+            );
+          })}
+        </PropertyTable>
 
-          <DeleteButton variant="danger" onClick={_deleteNode}>
-            Delete Pod
-          </DeleteButton>
-        </PodEditContainer>
-      </PodEdit>
+        <DeleteButton variant="danger" onClick={_deleteNode}>
+          Delete Pod
+        </DeleteButton>
+      </PodEditContainer>
     </ReactModal>
   );
 }

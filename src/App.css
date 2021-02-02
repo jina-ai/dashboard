@@ -218,27 +218,6 @@ code {
   stroke: #6c757d;
 }
 
-.property-table {
-  width: 104%;
-  margin-bottom: 1rem;
-  border: 0;
-  overflow: hidden;
-  overflow-y: scroll;
-  max-height: 20rem;
-  border-radius: 0.25em;
-}
-
-.property-table::-webkit-scrollbar {
-  width: 1rem;
-}
-.property-table::-webkit-scrollbar * {
-  background: transparent;
-}
-.property-table::-webkit-scrollbar-thumb {
-  background: #099 !important;
-  border-radius: 1rem;
-}
-
 .pod-name-input {
   font-size: 1.25em !important;
   font-weight: 600 !important;
