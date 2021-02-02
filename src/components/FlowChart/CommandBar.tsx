@@ -25,13 +25,13 @@ const Button = styled.button`
   background: #009999;
   border: 0;
   margin-right: 1rem;
+  cursor: pointer;
 `;
 
-const PlayButton = styled.button`
-  background: #009999;
-  border: 0;
+const PlayButton = styled(Button)`
   margin: 0 2rem;
 `;
+
 export default function CommandBar({
   startFlow,
   stopFlow,

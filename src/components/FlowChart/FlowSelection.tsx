@@ -54,7 +54,6 @@ export default function FlowSelection({
   flows,
   loadFlow,
   selectedFlowId,
-  createNewFlow,
   showNewFlowModal,
   deleteFlow,
   connected,
@@ -74,9 +73,13 @@ export default function FlowSelection({
     margin-bottom: 1rem;
   `;
 
+  type FlowTapProps = {
+    selected: boolean;
+  };
+
   const FlowTap = styled.div`
     cursor: pointer;
-    font-weight: 500;
+    font-weight: ${(props: FlowTapProps) => (props.selected ? "bold" : 500)};
     font-size: 14px;
     display: flex;
     align-items: center;
@@ -113,14 +116,18 @@ export default function FlowSelection({
         />
       </SelectedFlowHeader>
 
-      <FlowTap onClick={showNewFlowModal}>
+      <FlowTap selected={false} onClick={showNewFlowModal}>
         New Flow <i className="material-icons plus-icon">add</i>
       </FlowTap>
 
-      <FlowHeader>My flow </FlowHeader>
+      <FlowHeader>My Flows </FlowHeader>
 
       {userFlows.map(([flowId, flow], idx) => (
-        <FlowTap onClick={() => loadFlow(flowId)} key={idx}>
+        <FlowTap
+          selected={currentFlow.name === flow.name}
+          onClick={() => loadFlow(flowId)}
+          key={idx}
+        >
           {flow.name}
           <ConnectionIndicator
             show={flow.type === "remote"}
@@ -131,9 +138,13 @@ export default function FlowSelection({
           )}
         </FlowTap>
       ))}
-      <FlowHeader>Examples</FlowHeader>
+      <FlowHeader>Example Flows</FlowHeader>
       {exampleFlows.map(([flowId, flow], idx) => (
-        <FlowTap onClick={() => loadFlow(flowId)} key={idx}>
+        <FlowTap
+          selected={currentFlow.name === flow.name}
+          onClick={() => loadFlow(flowId)}
+          key={idx}
+        >
           {flow.name}
         </FlowTap>
       ))}

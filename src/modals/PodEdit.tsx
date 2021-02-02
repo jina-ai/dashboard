@@ -136,7 +136,7 @@ function PodEditComponent({ open, closeModal, modalParams }: Props) {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
-          <div className="property-table">
+          <div className="property-table d-flex flex-column flex-fill ">
             {filteredProperties.map((property) => {
               const { name, type } = property;
 

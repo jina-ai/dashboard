@@ -46,9 +46,7 @@ const CreateOption = styled.div`
   background-color: #ffffff;
   width: 12rem;
   height: 12rem;
-  margin-top: 1rem;
-  margin-bottom: 0.5rem;
-  margin-right: 1rem;
+  margin: 0.5rem;
   display: flex;
   flex-direction: column;
   align-items: center;
