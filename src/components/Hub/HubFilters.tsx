@@ -1,29 +1,29 @@
 import React, { useState } from "react";
 import styled from "@emotion/styled";
 
-export type FilterObject = { [key: string]: boolean };
-export type FilterParamsObject = {
+export type FilterMap = { [key: string]: boolean };
+export type FilterParams = {
   kind: string[];
   keywords: string[];
 };
 export type Filter = {
   filterLabel: string;
-  values: FilterObject;
+  values: FilterMap;
 };
 type HubFilterProps = {
   filters: Filter[];
   setFilters: (filters: Filter[]) => void;
-  getHubImages: (filters: FilterParamsObject) => void;
+  getHubImages: (filters: FilterParams) => void;
 };
 
 export const getSelectedFilters = (filters: Filter[]) => {
   return {
-    kind: getKeysWithTrueValue(filters[0]),
-    keywords: getKeysWithTrueValue(filters[1]),
+    kind: getCheckedFilterValues(filters[0]),
+    keywords: getCheckedFilterValues(filters[1]),
   };
 };
 
-export const getKeysWithTrueValue = (filter: Filter) => {
+export const getCheckedFilterValues = (filter: Filter) => {
   return Object.keys(filter.values).reduce((acc, key) => {
     let filterValue = filter.values;
     return filterValue[key] ? [...acc, key] : acc;

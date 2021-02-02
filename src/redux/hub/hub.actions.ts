@@ -3,16 +3,21 @@ import {
   FETCH_HUB_IMAGES_SUCCESS,
   FETCH_HUB_IMAGES_FAILURE,
 } from "./hub.constants";
-import { HubActionTypes } from "./hub.types";
+import {
+  HubActionTypes,
+  HubImage,
+  FetchHubImagesSuccessAction,
+  FetchHubImagesFailureAction,
+} from "./hub.types";
 import { Dispatch } from "redux";
 import { getHubImages } from "../../services/hubApi";
-import { FilterParamsObject } from "../../components/Hub/HubFilters";
+import { FilterParams } from "../../components/Hub/HubFilters";
 import { AppThunk } from "..";
 
 const defaultParams = { kind: [], keywords: [] };
 
 export const fetchHubImages = (
-  filters: FilterParamsObject = defaultParams
+  filters: FilterParams = defaultParams
 ): AppThunk<Promise<void>> => async (dispatch: Dispatch<HubActionTypes>) => {
   try {
     dispatch({
@@ -21,13 +26,23 @@ export const fetchHubImages = (
 
     const images = await getHubImages(filters);
 
-    dispatch({
-      type: FETCH_HUB_IMAGES_SUCCESS,
-      payload: { images },
-    });
+    dispatch(fetchHubImagesSuccess(images));
   } catch (e) {
-    dispatch({
-      type: FETCH_HUB_IMAGES_FAILURE,
-    });
+    dispatch(fetchHubImagesFailure());
   }
+};
+
+const fetchHubImagesSuccess = (
+  images: HubImage[]
+): FetchHubImagesSuccessAction => {
+  return {
+    type: FETCH_HUB_IMAGES_SUCCESS,
+    payload: { images },
+  };
+};
+
+const fetchHubImagesFailure = (): FetchHubImagesFailureAction => {
+  return {
+    type: FETCH_HUB_IMAGES_FAILURE,
+  };
 };

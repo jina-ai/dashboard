@@ -6,15 +6,15 @@ import { selectHubImages } from "../../redux/hub/hub.selectors";
 import { HubImage } from "../../redux/hub/hub.types";
 import ImageCard from "./ImageCard";
 import HubFilters from "./HubFilters";
-import { Filter, FilterObject } from "./HubFilters";
+import { Filter, FilterMap } from "./HubFilters";
 
 export const removeDuplicates = (arrayWithDuplicates: string[]): string[] =>
   arrayWithDuplicates.filter((e, i) => {
     return arrayWithDuplicates.indexOf(e) === i;
   });
 
-export const convertArrayToFilterObject = (array: string[]): FilterObject =>
-  array.reduce((acc, f) => ({ ...acc, [f]: false }), {} as FilterObject);
+export const convertArrayToFilterObject = (array: string[]): FilterMap =>
+  array.reduce((acc, f) => ({ ...acc, [f]: false }), {} as FilterMap);
 
 export const getImageFilters = (images: HubImage[]) => {
   return [

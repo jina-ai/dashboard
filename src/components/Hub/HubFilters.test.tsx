@@ -1,9 +1,13 @@
-import { getSelectedFilters, getKeysWithTrueValue, Filter } from "./HubFilters";
+import {
+  getSelectedFilters,
+  getCheckedFilterValues,
+  Filter,
+} from "./HubFilters";
 
-describe("getKeysWithTrueValue", () => {
+describe("getCheckedFilterValues", () => {
   it("filters out keys with false value", () => {
     expect(
-      getKeysWithTrueValue(({
+      getCheckedFilterValues(({
         values: { a: false, b: true, c: false, d: true },
       } as unknown) as Filter)
     ).toEqual(["b", "d"]);
