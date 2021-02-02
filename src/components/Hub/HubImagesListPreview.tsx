@@ -15,16 +15,16 @@ const HubImagesListPreview = () => {
       author: "dev-team@jina.ai",
       description: "a minimum working unit of a containerized encoder",
       keywords: ["Search", "encode"],
-      version: '0.0.1',
-      "jina-version": '0.10.1'
+      version: "0.0.1",
+      "jina-version": "0.10.1",
     },
     {
       name: "Dummy MWU Encoder",
       author: "dev-team@jina.ai",
       description: "a minimum working unit of a containerized encoder",
       keywords: ["Search", "encode"],
-      version: '0.0.1',
-      "jina-version": '0.10.1'
+      version: "0.0.2",
+      "jina-version": "0.10.1",
     },
   ];
 
@@ -32,7 +32,10 @@ const HubImagesListPreview = () => {
     <>
       <SubTitle data-name="hubImagesPreviewSubtitle">Latest</SubTitle>
       {images.map((image) => (
-        <ImageCard image={image} key={`${image.name}.${image.version}.${image["jina-version"]}`} />
+        <ImageCard
+          image={image}
+          key={`${image.name}.${image.version}.${image["jina-version"]}`}
+        />
       ))}
     </>
   );

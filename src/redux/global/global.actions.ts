@@ -17,14 +17,12 @@ import {
   ShowModalAction,
   ToggleSidebarAction,
 } from "./global.types";
-import { ThunkAction } from "redux-thunk";
-import { State } from "../index";
-import { Action } from "redux";
+import { AppThunk } from "../index";
 
 export function handleConnectionStatus(
   status: string,
   message: string
-): ThunkAction<void, State, unknown, Action<string>> {
+): AppThunk {
   return function (dispatch) {
     dispatch(_handleConnectionStatus(status, message));
     if (status === "connected") {
@@ -68,10 +66,7 @@ export function _hideBanner(): HideBannerAction {
   };
 }
 
-export function showBanner(
-  message: string,
-  theme: string
-): ThunkAction<void, State, unknown, Action<string>> {
+export function showBanner(message: string, theme: string): AppThunk {
   return function (dispatch) {
     dispatch(_showBanner(message, theme));
     setTimeout(() => {

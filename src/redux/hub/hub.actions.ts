@@ -7,12 +7,13 @@ import { HubActionTypes } from "./hub.types";
 import { Dispatch } from "redux";
 import { getHubImages } from "../../services/hubApi";
 import { FilterParamsObject } from "../../components/Hub/HubFilters";
+import { AppThunk } from "..";
 
 const defaultParams = { kind: [], keywords: [] };
 
 export const fetchHubImages = (
   filters: FilterParamsObject = defaultParams
-) => async (dispatch: Dispatch<HubActionTypes>) => {
+): AppThunk<Promise<void>> => async (dispatch: Dispatch<HubActionTypes>) => {
   try {
     dispatch({
       type: FETCH_HUB_IMAGES,

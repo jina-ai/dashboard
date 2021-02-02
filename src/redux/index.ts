@@ -1,8 +1,8 @@
-import { combineReducers, createStore, applyMiddleware } from "redux";
+import { combineReducers, createStore, applyMiddleware, Action } from "redux";
 import flowReducer from "./flows/flows.reducer";
 import { FlowState } from "./flows/flows.types";
-import {HubState} from "./hub/hub.types"
-import hubReducer from "./hub/hub.reducer"
+import { HubState } from "./hub/hub.types";
+import hubReducer from "./hub/hub.reducer";
 import { composeWithDevTools } from "redux-devtools-extension";
 import { SettingsState } from "./settings/settings.types";
 import settingsReducer from "./settings/settings.reducer";
@@ -12,7 +12,7 @@ import api from "../flux/api";
 import { handleNewLog } from "./logStream/logStream.actions";
 import { GlobalState } from "./global/global.types";
 import globalReducer from "./global/global.reducer";
-import thunk from "redux-thunk";
+import thunk, { ThunkAction } from "redux-thunk";
 import { handleConnectionStatus } from "./global/global.actions";
 import taskReducer from "./task/task.reducer";
 import { handleNewTaskEvent } from "./task/task.actions";
@@ -26,6 +26,13 @@ export type State = {
   globalState: GlobalState;
   taskState: TaskState;
 };
+
+export type AppThunk<ReturnType = void> = ThunkAction<
+  ReturnType,
+  State,
+  unknown,
+  Action<string>
+>;
 
 const rootReducer = combineReducers({
   flowState: flowReducer,
