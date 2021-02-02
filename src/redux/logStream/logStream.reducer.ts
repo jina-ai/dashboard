@@ -7,11 +7,10 @@ import {
 import {
   LogStreamActionTypes,
   LogStreamState,
-  ProcessedLog,
   RawLog,
 } from "./logStream.types";
-import { nanoid } from "nanoid";
 import logger from "../../logger";
+import { transformLog } from "../../helpers";
 
 export default function logStreamReducer(
   state = intialLogStreamState,
@@ -32,7 +31,7 @@ export default function logStreamReducer(
 
 function _handleNewLog(state: LogStreamState, rawLog: RawLog): LogStreamState {
   logger.log("_handleNewLog");
-  const log = _transformLog(rawLog, state.logs.length);
+  const log = transformLog(rawLog, state.logs.length);
 
   const { name, level, unixTime } = log;
 
@@ -78,21 +77,4 @@ function _handleNewLog(state: LogStreamState, rawLog: RawLog): LogStreamState {
     logLevelOccurrences: newLogLevelOccurrences,
   };
   return newState;
-}
-
-function _transformLog(log: RawLog, idx: number): ProcessedLog {
-  const { uptime, type } = log;
-  const id = nanoid();
-  const timestamp = new Date(uptime);
-  const unixTime = Math.floor(timestamp.valueOf() / 1000);
-  const formattedTimestamp = timestamp.toLocaleString();
-  return {
-    ...log,
-    id,
-    idx,
-    unixTime,
-    timestamp,
-    formattedTimestamp,
-    level: type,
-  };
 }

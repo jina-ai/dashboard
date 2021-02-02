@@ -3,7 +3,7 @@ import { jsx } from "@emotion/react";
 import { Row, Col } from "react-bootstrap";
 import { memo } from "react";
 import { areEqual } from "react-window";
-import { ProcessedLog } from "../../flux/tranformLog";
+import { ProcessedLog } from "../../redux/logStream/logStream.types";
 
 type Props = {
   index: number;

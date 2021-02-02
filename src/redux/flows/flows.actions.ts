@@ -18,8 +18,6 @@ import {
   UpdateFlowPropertiesAction,
 } from "./flows.types";
 
-import jinad from "../../flux/jinad";
-
 import { ThunkAction } from "redux-thunk";
 import { Action } from "redux";
 
@@ -28,6 +26,7 @@ import { initLogStream } from "../logStream/logStream.actions";
 import store from "..";
 import { formatAsYAML } from "../../helpers";
 import logger from "../../logger";
+import jinadClient from "../../services/jinad";
 
 export function loadFlow(flowId: string): LoadFlowAction {
   return {
@@ -78,7 +77,7 @@ export function startFlow(
     logger.log("starting flow chart: ", chart);
     const yaml = formatAsYAML(chart);
     logger.log("starting flow yaml: ", chart);
-    const result = await jinad.startFlow(yaml);
+    const result = await jinadClient.startFlow(yaml);
     const { status, message, flow_id } = result;
 
     dispatch(updateFlowProperties({ ...flow, flow_id }));
@@ -105,7 +104,7 @@ export function stopFlow(
     if (!flow_id)
       return dispatch(showBanner("Flow is not deployed", "error") as any);
 
-    const result = await jinad.terminateFlow(flow_id);
+    const result = await jinadClient.terminateFlow(flow_id);
     const { status, message } = result;
 
     logger.log("stopFlow result: ", result);
@@ -124,7 +123,7 @@ export function initNetworkFlow(
     const flowProperties = store.getState().flowState.flows[selectedFlowId];
     const { flow_id } = flowProperties;
     if (!flow_id) return;
-    const flowResult = await jinad.getFlow(flow_id);
+    const flowResult = await jinadClient.getFlow(flow_id);
     logger.log("got network flow:", flowResult);
     if (flowResult.status === "error") {
       if (flowResult.message)

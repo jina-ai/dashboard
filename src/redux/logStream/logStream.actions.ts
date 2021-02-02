@@ -1,13 +1,16 @@
 import { HANDLE_NEW_LOG, SHOW_LOG_INDEX } from "./logStream.constants";
-import { handleNewLogAction, showLogAtIndexAction } from "./logStream.types";
+import {
+  handleNewLogAction,
+  showLogAtIndexAction,
+  RawLog,
+} from "./logStream.types";
 import { ThunkAction } from "redux-thunk";
 import { Action } from "redux";
 
-import jinad from "../../flux/jinad";
 import store from "..";
 import { showBanner } from "../global/global.actions";
-import { RawLog } from "../../flux/tranformLog";
 import logger from "../../logger";
+import jinadClient from "../../services/jinad";
 
 export function showLogAtIndex(logIndex: number): showLogAtIndexAction {
   return {
@@ -38,8 +41,8 @@ export function initLogStream(
       if (!connected) return dispatch(showBanner(message, "error") as any);
     }
 
-    let logsResult = await jinad.getLogs(workspace_id, flow_id);
-    logsResult = await jinad.getLogs(workspace_id, flow_id);
+    let logsResult = await jinadClient.getLogs(workspace_id, flow_id);
+    logsResult = await jinadClient.getLogs(workspace_id, flow_id);
 
     if (logsResult.status === "error") {
       if (logsResult.message)
@@ -58,7 +61,7 @@ export function initLogStream(
     logs.forEach(handleLog);
 
     const settings = store.getState().settingsState.settings;
-    jinad.listenForLogs(
+    jinadClient.listenForLogs(
       workspace_id,
       flow_id,
       settings,

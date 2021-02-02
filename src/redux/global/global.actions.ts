@@ -19,7 +19,7 @@ import {
 } from "./global.types";
 import { AppThunk } from "../index";
 import store from "..";
-import jinad from "../../flux/jinad";
+import jinadClient from "../../services/jinad";
 
 export function handleConnectionStatus(
   connected: boolean,
@@ -114,6 +114,6 @@ export function connectJinaD(): AppThunk {
     }) {
       dispatch(handleConnectionStatus(connected, message));
     }
-    jinad.connect(settings, onConnectionStatus);
+    jinadClient.connect(settings, onConnectionStatus);
   };
 }

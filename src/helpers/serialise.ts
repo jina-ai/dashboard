@@ -1,4 +1,4 @@
-import { ProcessedLog } from "./../flux/tranformLog";
+import { ProcessedLog } from "../redux/logStream/logStream.types";
 
 const toBlob = (content: string) => {
   return new Blob([content], { type: "text,plain;charset=utf-8" });

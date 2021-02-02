@@ -3,7 +3,6 @@ import _ from "lodash";
 import { nanoid } from "nanoid";
 import { Constants, Dispatcher, transformLog } from "./";
 import { parseYAML, formatForFlowchart, formatSeconds } from "../helpers";
-import hub from "./hub";
 import jinad from "./jinad";
 import logger from "../logger";
 import getSidebarNavItems from "../data/sidebar-nav-items";
@@ -635,7 +634,6 @@ class StoreBase extends EventEmitter {
   getUser = () => {
     return _store.user;
   };
-
 
   getSettings = () => {
     return _store.settings;

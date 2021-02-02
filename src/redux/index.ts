@@ -14,7 +14,7 @@ import thunk, { ThunkAction } from "redux-thunk";
 import { handleConnectionStatus } from "./global/global.actions";
 import taskReducer from "./task/task.reducer";
 import { TaskState } from "./task/task.types";
-import jinad from "../flux/jinad";
+import jinadClient from "../services/jinad";
 
 export type State = {
   flowState: FlowState;
@@ -46,13 +46,19 @@ const store = createStore(
   composeWithDevTools(applyMiddleware(thunk))
 );
 
-function _handleLogConnectionStatus({connected, message}:{connected:boolean,message:string}) {
+function _handleLogConnectionStatus({
+  connected,
+  message,
+}: {
+  connected: boolean;
+  message: string;
+}) {
   store.dispatch<any>(handleConnectionStatus(connected, message));
 }
 
-jinad.connect(
+jinadClient.connect(
   store.getState().settingsState.settings,
-  _handleLogConnectionStatus,
+  _handleLogConnectionStatus
 );
 
 export default store;
