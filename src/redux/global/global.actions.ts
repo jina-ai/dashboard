@@ -7,7 +7,6 @@ import {
   SHOW_ERROR,
   SHOW_MODAL,
   TOGGLE_SIDE_BAR,
-  CONNECT_JINAD,
 } from "./global.constants";
 import {
   CloseModalAction,
@@ -17,7 +16,6 @@ import {
   ShowErrorAction,
   ShowModalAction,
   ToggleSidebarAction,
-  ConnectJinaDAction,
 } from "./global.types";
 import { ThunkAction } from "redux-thunk";
 import { State } from "../index";
