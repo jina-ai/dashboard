@@ -1,4 +1,5 @@
 import { nanoid } from "nanoid";
+import { ProcessedLog, RawLog } from "../redux/logStream/logStream.types";
 const levels = [
   "INFO",
   "SUCCESS",
@@ -8,35 +9,6 @@ const levels = [
   "DEBUG",
 ] as const;
 export type Level = typeof levels[number];
-
-//todo look into possible refactoring of the types
-
-export type RawLogEntry = {
-  lastLog: number;
-  levels: {
-    [level in Level]: number;
-  };
-};
-export type RawLog = {
-  context: string;
-  host: string;
-  log_id: string;
-  message: string;
-  name: string;
-  process: string;
-  type: Level;
-  uptime: string;
-  workspace_path: string;
-};
-
-export type ProcessedLog = RawLog & {
-  id: string;
-  idx: number;
-  unixTime: number;
-  timestamp: Date;
-  formattedTimestamp: string;
-  level: Level;
-};
 
 function transformLog(log: RawLog, idx: number): ProcessedLog {
   const { uptime, type } = log;

@@ -8,6 +8,7 @@ import {
   DUPLICATE_FLOW,
   LOAD_FLOW,
   UPDATE_FLOW,
+  UPDATE_FLOW_PROPERTIES
 } from "./flows.constants";
 import {
   Flow,
@@ -37,15 +38,10 @@ function getExampleFlows() {
 
   Object.entries(exampleFlows).forEach(([id, flow]) => {
     const parsed = parseYAML(flow.yaml);
-    let canvas;
-    try {
-      canvas = parsed.data.with.board.canvas;
-    } catch (e) {
-      canvas = {};
-    }
-    const formatted = formatForFlowchart(parsed.data.pods, canvas);
+    const formatted = formatForFlowchart(parsed.data);
     flows[id] = {
       ...flow,
+      isConnected: false,
       flow: formatted,
     };
   });
@@ -71,11 +67,12 @@ export default function flowReducer(
       return _createNewFlow(state, action.payload);
     case UPDATE_FLOW:
       return _updateFlow(state, action.payload);
+    case UPDATE_FLOW_PROPERTIES:
+      return _updateFlowProperties(state,action.payload);
     case CREATE_NEW_FLOW:
       return _createNewFlow(state);
     case LOAD_FLOW:
       return _loadFlow(state, action.payload);
-
     default:
       return state;
   }
@@ -99,6 +96,7 @@ function _deleteFlow(state: FlowState, flowId: string): FlowState {
         _userFlow: {
           name: "Custom Flow 1",
           type: "user-generated",
+          isConnected: false,
           flow: initialFlow,
         },
         ...stateWithoutFlow.flows,
@@ -132,19 +130,14 @@ function _createNewFlow(state: FlowState, customYAML?: string): FlowState {
 
   if (customYAML) {
     const parsed = parseYAML(customYAML);
-    let canvas;
-    try {
-      canvas = parsed.data.with.board.canvas;
-    } catch (e) {
-      canvas = {};
-    }
-    flow = formatForFlowchart(parsed.data.pods, canvas);
+    flow = formatForFlowchart(parsed.data);
   }
 
   return {
     flows: {
       ...state.flows,
       [id]: {
+        isConnected: false,
         name: `${prefixString} ${largestNumber + 1}`,
         type: "user-generated",
         flow,
@@ -163,6 +156,21 @@ function _updateFlow(state: FlowState, newFlow: Flow): FlowState {
         [state.selectedFlow]: {
           ...state.flows[state.selectedFlow],
           flow: newFlow,
+        },
+      },
+    };
+  } else return state;
+}
+
+function _updateFlowProperties(state: FlowState, newFlowProperties: FlowProperties): FlowState {
+  if (state.selectedFlow) {
+    return {
+      selectedFlow: state.selectedFlow,
+      flows: {
+        ...state.flows,
+        [state.selectedFlow]: {
+          ...state.flows[state.selectedFlow],
+          ...newFlowProperties
         },
       },
     };

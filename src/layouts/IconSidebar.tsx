@@ -27,11 +27,7 @@ import {
   selectUser,
 } from "../redux/global/global.selectors";
 import store from "../redux";
-import {
-  closeModal,
-  showBanner,
-  toggleSidebar,
-} from "../redux/global/global.actions";
+import { showBanner, toggleSidebar,closeModal,connectJinaD } from "../redux/global/global.actions";
 
 type IconSideBarLayoutProps = {
   children: React.ReactNode;
@@ -81,9 +77,7 @@ const IconSidebarLayout = (props: IconSideBarLayoutProps) => {
   };
 
   const reconnect = () => {
-    Dispatcher.dispatch({
-      actionType: Constants.RECONNECT,
-    });
+    dispatch(connectJinaD());
   };
 
   const logOut = () => {

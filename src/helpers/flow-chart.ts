@@ -1,7 +1,20 @@
 // @ts-nocheck
 const settings = require("./../settings");
 
-export const formatForFlowchart = (pods, canvas) => {
+type ParsedYAML = {
+  pods: Array | { [key: string]: any };
+  with?: {
+    board?: {
+      canvas?: { [key: string]: { x: number; y: number } };
+    };
+  };
+  version?: string;
+};
+
+export const formatForFlowchart = (data: ParsedYAML) => {
+  let pods = data.pods;
+  let canvas = data.with?.board?.canvas;
+
   const formatted = {
     offset: {
       x: 0,
@@ -12,7 +25,7 @@ export const formatForFlowchart = (pods, canvas) => {
     selected: {},
     hovered: {},
     scale: 1,
-    with: {},
+    with: data.with,
   };
 
   let nodes = {};

@@ -41,8 +41,8 @@ describe("global reducer", () => {
 
     it(" should add a new process", () => {
       expect(numberNewProcesses - numberOldProcesses).toEqual(1);
-      expect(newGlobalState.processes[testMessage.data.process]).toEqual(
-        testMessage.data.name
+      expect(newGlobalState.processes[testMessage.process]).toEqual(
+        testMessage.name
       );
     });
   });
@@ -50,7 +50,7 @@ describe("global reducer", () => {
   describe("when handling connection", () => {
     const newGlobalState = reducer(
       initialGlobalState,
-      _handleConnectionStatus("connected", testMessage_0)
+      _handleConnectionStatus(true, testMessage_0)
     );
 
     it("should be able to connect", () => {
@@ -60,7 +60,7 @@ describe("global reducer", () => {
     it("should disable loading", () => {
       const newGlobalState = reducer(
         initialGlobalState,
-        _handleConnectionStatus("connected", testMessage_0)
+        _handleConnectionStatus(true, testMessage_0)
       );
       expect(newGlobalState.loading).toBe(false);
     });
@@ -69,12 +69,12 @@ describe("global reducer", () => {
       const loggerSpy = jest.spyOn(logger, "log");
       reducer(
         initialGlobalState,
-        _handleConnectionStatus("connected", testMessage_0)
+        _handleConnectionStatus(true, testMessage_0)
       );
       expect(loggerSpy).toHaveBeenNthCalledWith(
         1,
         "handleLogConnectionStatus - status",
-        "connected"
+        true
       );
       expect(loggerSpy).toHaveBeenNthCalledWith(
         2,
@@ -86,7 +86,7 @@ describe("global reducer", () => {
     it("should be able to disconnect", () => {
       const disconnectedState = reducer(
         newGlobalState,
-        _handleConnectionStatus("disconnected", testMessage_0)
+        _handleConnectionStatus(false, testMessage_0)
       );
       expect(disconnectedState.connected).toBe(false);
     });

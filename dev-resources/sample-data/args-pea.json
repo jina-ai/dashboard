@@ -1,0 +1,203 @@
+{
+	"name": {
+			"title": "Name",
+			"description": "\nThe name of this object.\n\nThis will be used in the following places:\n- how you refer to this object in Python/YAML/CLI\n- log message\n- ...\n\nWhen not given, then the default naming strategy will apply.\n                    ",
+			"type": "string"
+	},
+	"log_config": {
+			"title": "Log Config",
+			"description": "The YAML config of the logger used in this object.",
+			"default": "/usr/local/lib/python3.7/site-packages/jina/resources/logging.default.yml",
+			"type": "string"
+	},
+	"show_exc_info": {
+			"title": "Show Exc Info",
+			"description": "If set, then exception stack information to be added to the logging message, useful in debugging",
+			"default": false,
+			"type": "boolean"
+	},
+	"port_ctrl": {
+			"title": "Port Ctrl",
+			"description": "The port for controlling the runtime, default a random port between [49152, 65535]",
+			"example": 37449,
+			"type": "integer"
+	},
+	"ctrl_with_ipc": {
+			"title": "Ctrl With Ipc",
+			"description": "If set, use ipc protocol for control socket",
+			"default": false,
+			"type": "boolean"
+	},
+	"timeout_ctrl": {
+			"title": "Timeout Ctrl",
+			"description": "The timeout in milliseconds of the control request, -1 for waiting forever",
+			"default": 5000,
+			"type": "integer"
+	},
+	"ssh_server": {
+			"title": "Ssh Server",
+			"description": "The SSH server through which the tunnel will be created, can actually be a fully specified \"user@server:port\" ssh url.",
+			"type": "string"
+	},
+	"ssh_keyfile": {
+			"title": "Ssh Keyfile",
+			"description": "This specifies a key to be used in ssh login, default None. regular default ssh keys will be used without specifying this argument.",
+			"type": "string"
+	},
+	"ssh_password": {
+			"title": "Ssh Password",
+			"description": "The ssh password to the ssh server.",
+			"type": "string"
+	},
+	"uses": {
+			"title": "Uses",
+			"description": "\nThe config of the executor, it could be one of the followings: \n- an Executor-level YAML file path (*.yml/yaml) \n- a name of a class inherited from \"jina.Executor\"\n- a docker image (must start with \"docker://\")\n- builtin executors, e.g. \"_pass\", \"_logforward\", \"_merge\" \n- the string literal of a YAML config (must start with \"!\")\n- the string literal of a JSON config\n- the string literal of a YAML driver config (must start with \"- !!\")\n\nWhen use it under Python, one can use the following values additionally:\n- a Python dict that represents the config\n- a text file stream has `.read()` interface\n",
+			"default": "_pass",
+			"type": "string"
+	},
+	"py_modules": {
+			"title": "Py Modules",
+			"description": "\nThe customized python modules need to be imported before loading the executor\n\nNote, when importing multiple files and there is a dependency between them, then one has to write the dependencies in \nreverse order. That is, if `__init__.py` depends on `A.py`, which again depends on `B.py`, then you need to write: \n\n--py-modules __init__.py --py-modules B.py --py-modules A.py\n\n",
+			"type": "string"
+	},
+	"port_in": {
+			"title": "Port In",
+			"description": "The port for input data, default a random port between [49152, 65535]",
+			"example": 58461,
+			"type": "integer"
+	},
+	"port_out": {
+			"title": "Port Out",
+			"description": "The port for output data, default a random port between [49152, 65535]",
+			"example": 45745,
+			"type": "integer"
+	},
+	"host_in": {
+			"title": "Host In",
+			"description": "The host address for input, by default it is 0.0.0.0",
+			"default": "0.0.0.0",
+			"type": "string"
+	},
+	"host_out": {
+			"title": "Host Out",
+			"description": "The host address for output, by default it is 0.0.0.0",
+			"default": "0.0.0.0",
+			"type": "string"
+	},
+	"socket_in": {
+			"title": "Socket In",
+			"description": "The socket type for input port",
+			"default": "PULL_BIND",
+			"type": "string"
+	},
+	"socket_out": {
+			"title": "Socket Out",
+			"description": "The socket type for output port",
+			"default": "PUSH_BIND",
+			"type": "string"
+	},
+	"dump_interval": {
+			"title": "Dump Interval",
+			"description": "Serialize the model in the pod every n seconds if model changes. -1 means --read-only. ",
+			"default": 240,
+			"type": "integer"
+	},
+	"read_only": {
+			"title": "Read Only",
+			"description": "If set, do not allow the pod to modify the model, dump_interval will be ignored",
+			"default": false,
+			"type": "boolean"
+	},
+	"memory_hwm": {
+			"title": "Memory Hwm",
+			"description": "The memory high watermark of this pod in Gigabytes, pod will restart when this is reached. -1 means no restriction",
+			"default": -1,
+			"type": "integer"
+	},
+	"on_error_strategy": {
+			"title": "On Error Strategy",
+			"description": "\nThe skip strategy on exceptions.\n\n- IGNORE: Ignore it, keep running all Drivers & Executors logics in the sequel flow\n- SKIP_EXECUTOR: Skip all Executors in the sequel, but drivers are still called\n- SKIP_HANDLE: Skip all Drivers & Executors in the sequel, only `pre_hook` and `post_hook` are called\n- THROW_EARLY: Immediately throw the exception, the sequel flow will not be running at all \n                    \nNote, `IGNORE`, `SKIP_EXECUTOR` and `SKIP_HANDLE` do not guarantee the success execution in the sequel flow. If something \nis wrong in the upstream, it is hard to carry this exception and moving forward without any side-effect.\n",
+			"default": "IGNORE",
+			"type": "string"
+	},
+	"uses_internal": {
+			"title": "Uses Internal",
+			"description": "\nThe config runs inside the Docker container. \n\nSyntax and function are the same as `--uses`. This is designed when `--uses=\"docker://...\"` this config is passed to \nthe Docker container.\n",
+			"default": "BaseExecutor",
+			"type": "string"
+	},
+	"entrypoint": {
+			"title": "Entrypoint",
+			"description": "The entrypoint command overrides the ENTRYPOINT in Docker image. when not set then the Docker image ENTRYPOINT takes effective.",
+			"type": "string"
+	},
+	"pull_latest": {
+			"title": "Pull Latest",
+			"description": "Pull the latest image before running",
+			"default": false,
+			"type": "boolean"
+	},
+	"volumes": {
+			"title": "Volumes",
+			"description": "\nThe path on the host to be mounted inside the container. \n\nNote, \n- If separated by `:`, then the first part will be considered as the local host path and the second part is the path in the container system. \n- If no split provided, then the basename of that directory will be mounted into container's root path, e.g. `--volumes=\"/user/test/my-workspace\"` will be mounted into \"/my-workspace\" inside the container. \n- All volumes are mounted with read-write mode.\n",
+			"type": "string"
+	},
+	"host": {
+			"title": "Host",
+			"description": "The host address of the runtime, by default it is 0.0.0.0.",
+			"default": "0.0.0.0",
+			"type": "string"
+	},
+	"port_expose": {
+			"title": "Port Expose",
+			"description": "The port of the host exposed to the public",
+			"example": 37707,
+			"type": "integer"
+	},
+	"silent_remote_logs": {
+			"title": "Silent Remote Logs",
+			"description": "Do not display the streaming of remote logs on local console",
+			"default": false,
+			"type": "boolean"
+	},
+	"upload_files": {
+			"title": "Upload Files",
+			"description": "\nThe files on the host to be uploaded to the remote\nworkspace. This can be useful when your Pod has more\nfile dependencies beyond a single YAML file, e.g.\nPython files, data files. \n\nNote, \n- currently only flatten structure is supported, which means if you upload `[./foo/a.py, ./foo/b.pp, ./bar/c.yml]`, then they will be put under the _same_ workspace on the remote, losing all hierarchies. \n- by default, `--uses` YAML file is always uploaded. \n- uploaded files are by default isolated across the runs. To ensure files are submitted to the same workspace across different runs, use `--workspace-id` to specify the workspace.\n",
+			"type": "string"
+	},
+	"workspace_id": {
+			"title": "Workspace Id",
+			"description": "The UUID for identifying the workspace on remote. When not given then remote will assign a random one. Multiple Pea/Pod/Flow will work under the same workspace if they share the same `workspace-id`.",
+			"type": "string"
+	},
+	"daemon": {
+			"title": "Daemon",
+			"description": "The Pea attempts to terminate all of its Runtime child processes/threads on existing. setting it to true basically tell the Pea do not wait on the Runtime when closing",
+			"default": false,
+			"type": "boolean"
+	},
+	"runtime_backend": {
+			"title": "Runtime Backend",
+			"description": "The parallel backend of the runtime inside the Pea",
+			"default": "PROCESS",
+			"type": "string"
+	},
+	"runtime_cls": {
+			"title": "Runtime Cls",
+			"description": "The runtime class to run inside the Pea",
+			"default": "ZEDRuntime",
+			"type": "string"
+	},
+	"timeout_ready": {
+			"title": "Timeout Ready",
+			"description": "The timeout in milliseconds of a Pea waits for the runtime to be ready, -1 for waiting forever",
+			"default": 10000,
+			"type": "integer"
+	},
+	"expose_public": {
+			"title": "Expose Public",
+			"description": "If set, expose the public IP address to remote when necessary, by default it exposesprivate IP address, which only allows accessing under the same network/subnet",
+			"default": false,
+			"type": "boolean"
+	}
+}

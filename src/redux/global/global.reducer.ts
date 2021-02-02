@@ -63,7 +63,7 @@ export default function globalReducer(
         ...state,
         processes: {
           ...state.processes,
-          [action.payload.data.process]: action.payload.data.name,
+          [action.payload.process]: action.payload.name,
         },
       };
     default:
@@ -73,11 +73,10 @@ export default function globalReducer(
 
 function _handleConnectionStatus(
   state: GlobalState,
-  { status, message }: { status: string; message: string }
+  { connected, message }: { connected: boolean; message: string }
 ): GlobalState {
-  logger.log("handleLogConnectionStatus - status", status);
+  logger.log("handleLogConnectionStatus - status", connected);
   logger.log("handleLogConnectionStatus - message", message);
-  const connected = status === "connected";
   return {
     ...state,
     loading: false,

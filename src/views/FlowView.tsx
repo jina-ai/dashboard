@@ -13,6 +13,8 @@ import {
   duplicateFlow,
   loadFlow,
   updateFlow,
+  startFlow,
+  stopFlow
 } from "../redux/flows/flows.actions";
 import html2canvas from "html2canvas";
 import { cloneDeep } from "lodash";
@@ -169,9 +171,17 @@ export default function FlowView() {
   };
 
   const handleDuplicateFlow = () => {
-    const yaml = formatAsYAML(chart);
-    dispatch(duplicateFlow(yaml));
+    const flowYAML = formatAsYAML(chart);
+    dispatch(duplicateFlow(flowYAML));
   };
+
+  const handleStartFlow = () =>{
+    dispatch(startFlow(selectedFlowId));
+  }
+
+  const handleStopFlow = () =>{
+    dispatch(stopFlow(selectedFlowId));
+  }
 
   const readonly = flowType !== "user-generated";
 
@@ -195,6 +205,8 @@ export default function FlowView() {
               deleteFlow={handleDeleteFlow}
             />
             <CommandBar
+              startFlow={handleStartFlow}
+              stopFlow={handleStopFlow}
               copyChart={copyChartAsYAML}
               importChart={showImportModal}
               exportImage={exportImage}

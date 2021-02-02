@@ -1,9 +1,12 @@
-import { LogStreamState, Message } from "./logStream.types";
+import { LogStreamState, RawLog } from "./logStream.types";
 
 const startDate = new Date(0);
+const startDateUptime = startDate.toISOString();
 const startEpochMilliSeconds = startDate.getTime();
 const startEpochSeconds = startEpochMilliSeconds / 1000;
+
 const oneSecLaterDate = new Date(startEpochMilliSeconds + 1000);
+const oneSecLaterUptime = oneSecLaterDate.toISOString();
 const oneSecLaterEpochSeconds = oneSecLaterDate.getTime() / 1000;
 const startFormattedTimeStamp = startDate.toLocaleString();
 const oneSecLaterFormattedTimeStamp = oneSecLaterDate.toLocaleString();
@@ -25,20 +28,16 @@ export const testLogStreamState1: LogStreamState = {
   },
   logs: [
     {
-      created: startEpochSeconds,
-      filename: "testFile_0.py",
-      funcName: "testFunc_0",
-      levelname: "INFO",
-      lineno: 0,
-      module: "testModule_0",
-      msg: "testMsg_0",
+      log_id: "log_id_0",
+      uptime: startDateUptime,
+      workspace_path: "/testPath_0.py",
+      host: "host_0",
+      context: "testContext_0",
+      type: "INFO",
+      level: "INFO",
+      message: "testMsg_0",
       name: "testName_0",
-      pathname: "testPathName_0",
-      process: 0,
-      processName: "testProcessName_0",
-      thread: 0,
-      threadName: "testThreadName_0",
-      createdDate: startDate,
+      process: "0",
       id: "testId_0",
       idx: 0,
       unixTime: 0,
@@ -59,22 +58,16 @@ export const testLogStreamState1: LogStreamState = {
   },
 };
 
-export const testMessage: Message = {
-  data: {
-    created: oneSecLaterEpochSeconds,
-    filename: "testFile_1.py",
-    funcName: "testFunc_1",
-    levelname: "INFO",
-    lineno: 1,
-    module: "testModule_1",
-    msg: "testMsg_1",
-    name: "testName_1",
-    pathname: "testPathName_1",
-    process: 1,
-    processName: "testProcessName_1",
-    thread: 1,
-    threadName: "testThreadName_1",
-  },
+export const testMessage: RawLog = {
+  log_id: "log_id_1",
+  uptime: oneSecLaterUptime,
+  host: "host_1",
+  type: "INFO",
+  workspace_path: "testFile_1.py",
+  message: "testMsg_1",
+  name: "testName_1",
+  process: "1",
+  context: "testContext_1"
 };
 
 export const testLogStreamState2: LogStreamState = {
@@ -105,20 +98,16 @@ export const testLogStreamState2: LogStreamState = {
   },
   logs: [
     {
-      created: startEpochSeconds,
-      filename: "testFile_0.py",
-      funcName: "testFunc_0",
-      levelname: "INFO",
-      lineno: 0,
-      module: "testModule_0",
-      msg: "testMsg_0",
+      log_id: "log_id_0",
+      uptime: startDateUptime,
+      workspace_path: "/testPath_0.py",
+      host: "host_0",
+      context: "testContext_0",
+      type: "INFO",
+      level: "INFO",
+      message: "testMsg_0",
       name: "testName_0",
-      pathname: "testPathName_0",
-      process: 0,
-      processName: "testProcessName_0",
-      thread: 0,
-      threadName: "testThreadName_0",
-      createdDate: startDate,
+      process: "0",
       id: "testId_0",
       idx: 0,
       unixTime: 0,
@@ -126,20 +115,16 @@ export const testLogStreamState2: LogStreamState = {
       formattedTimestamp: startFormattedTimeStamp,
     },
     {
-      created: oneSecLaterEpochSeconds,
-      filename: "testFile_1.py",
-      funcName: "testFunc_1",
-      levelname: "INFO",
-      lineno: 1,
-      module: "testModule_1",
-      msg: "testMsg_1",
+      log_id: "log_id_1",
+      uptime: oneSecLaterUptime,
+      workspace_path: "testFile_1.py",
+      host: "host_1",
+      context: "testContext_1",
+      type: "INFO",
+      level: "INFO",
+      message: "testMsg_1",
       name: "testName_1",
-      pathname: "testPathName_1",
-      process: 1,
-      processName: "testProcessName_1",
-      thread: 1,
-      threadName: "testThreadName_1",
-      createdDate: oneSecLaterDate,
+      process: "1",
       id: "testId_1",
       idx: 1,
       unixTime: 1,

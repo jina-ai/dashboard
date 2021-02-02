@@ -7,12 +7,10 @@ import {
 import {
   LogStreamActionTypes,
   LogStreamState,
-  Message,
-  ProcessedLog,
   RawLog,
 } from "./logStream.types";
-import { fromUnixTime } from "date-fns";
-import { nanoid } from "nanoid";
+import logger from "../../logger";
+import { transformLog } from "../../helpers";
 
 export default function logStreamReducer(
   state = intialLogStreamState,
@@ -31,14 +29,11 @@ export default function logStreamReducer(
   }
 }
 
-function _handleNewLog(
-  state: LogStreamState,
-  message: Message
-): LogStreamState {
-  const { data } = message;
-  const log = _transformLog(data, state.logs.length);
+function _handleNewLog(state: LogStreamState, rawLog: RawLog): LogStreamState {
+  logger.log("_handleNewLog");
+  const log = transformLog(rawLog, state.logs.length);
 
-  const { name, levelname, unixTime } = log;
+  const { name, level, unixTime } = log;
 
   const newLogs = [...state.logs, log];
 
@@ -51,13 +46,13 @@ function _handleNewLog(
     [name]: newLogSourceValue,
   };
 
-  const newLogLevelValue = state.logLevels[levelname]
-    ? state.logLevels[levelname] + 1
+  const newLogLevelValue = state.logLevels[level]
+    ? state.logLevels[level] + 1
     : 1;
 
   const newLogLevels = {
     ...state.logLevels,
-    [levelname]: newLogLevelValue,
+    [level]: newLogLevelValue,
   };
 
   const newLogLevelOccurrence = state.logLevelOccurrences[unixTime]
@@ -69,7 +64,7 @@ function _handleNewLog(
     [unixTime]: newLogLevelOccurrence,
   };
 
-  newLogLevelOccurrences[unixTime].levels[levelname]++;
+  newLogLevelOccurrences[unixTime].levels[level]++;
   newLogLevelOccurrences[unixTime].lastLog = log.idx;
 
   const newState = {
@@ -80,22 +75,4 @@ function _handleNewLog(
     logLevelOccurrences: newLogLevelOccurrences,
   };
   return newState;
-}
-
-function _transformLog(log: RawLog, idx: number): ProcessedLog {
-  const { created } = log;
-  const createdDate = fromUnixTime(created);
-  const id = nanoid();
-  const unixTime = Math.floor(created);
-  const timestamp = new Date(unixTime * 1000);
-  const formattedTimestamp = timestamp.toLocaleString();
-  return {
-    ...log,
-    createdDate,
-    id,
-    idx,
-    unixTime,
-    timestamp,
-    formattedTimestamp,
-  };
 }

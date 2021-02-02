@@ -18,27 +18,29 @@ import {
   ToggleSidebarAction,
 } from "./global.types";
 import { AppThunk } from "../index";
+import store from "..";
+import jinadClient from "../../services/jinad";
 
 export function handleConnectionStatus(
-  status: string,
+  connected: boolean,
   message: string
 ): AppThunk {
   return function (dispatch) {
-    dispatch(_handleConnectionStatus(status, message));
-    if (status === "connected") {
+    dispatch(_handleConnectionStatus(connected, message));
+    if (connected) {
       dispatch(showBanner(message, "success"));
     }
   };
 }
 
 export function _handleConnectionStatus(
-  status: string,
+  connected: boolean,
   message: string
 ): HandleConnectionStatusAction {
   return {
     type: HANDLE_CONNECTION_STATUS,
     payload: {
-      status,
+      connected,
       message,
     },
   };
@@ -97,5 +99,21 @@ export function showModal(modal: string, modalParams?: any): ShowModalAction {
 export function closeModal(): CloseModalAction {
   return {
     type: CLOSE_MODAL,
+  };
+}
+
+export function connectJinaD(): AppThunk {
+  return function (dispatch) {
+    const settings = store.getState().settingsState.settings;
+    function onConnectionStatus({
+      connected,
+      message,
+    }: {
+      connected: boolean;
+      message: string;
+    }) {
+      dispatch(handleConnectionStatus(connected, message));
+    }
+    jinadClient.connect(settings, onConnectionStatus);
   };
 }

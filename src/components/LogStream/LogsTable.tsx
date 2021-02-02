@@ -28,7 +28,7 @@ const SEARCH_FIELDS = [
   "filename",
   "funcName",
   "module",
-  "msg",
+  "message",
   "pathname",
   "name",
 ];
@@ -261,7 +261,7 @@ function LogsTable({ data, showLogDetails }: Props) {
 
   let resultData = (unfiltered || []).filter((result) =>
     applyFilters(result as any, {
-      levelname: selectedLevels.map(({ value }) => value),
+      level: selectedLevels.map(({ value }) => value),
       name: selectedSources.map(({ value }) => value),
     })
   );
@@ -279,7 +279,7 @@ function LogsTable({ data, showLogDetails }: Props) {
       );
 
       if (!pod.data.length) return;
-      pod.levels = _.countBy(pod.data, "levelname");
+      pod.levels = _.countBy(pod.data, "level");
       groupedData[podName] = pod;
     });
   } else if (currentView === "group-level") {
@@ -288,7 +288,7 @@ function LogsTable({ data, showLogDetails }: Props) {
       const levelItem: any = {};
 
       levelItem.data = (resultData || []).filter(
-        (log: any) => log.levelname === level
+        (log: any) => log.level === level
       );
 
       if (!levelItem.data.length) return;

@@ -6,17 +6,15 @@ import hubReducer from "./hub/hub.reducer";
 import { composeWithDevTools } from "redux-devtools-extension";
 import { SettingsState } from "./settings/settings.types";
 import settingsReducer from "./settings/settings.reducer";
-import { LogStreamState, Message } from "./logStream/logStream.types";
+import { LogStreamState } from "./logStream/logStream.types";
 import logStreamReducer from "./logStream/logStream.reducer";
-import api from "../flux/api";
-import { handleNewLog } from "./logStream/logStream.actions";
 import { GlobalState } from "./global/global.types";
 import globalReducer from "./global/global.reducer";
 import thunk, { ThunkAction } from "redux-thunk";
 import { handleConnectionStatus } from "./global/global.actions";
 import taskReducer from "./task/task.reducer";
-import { handleNewTaskEvent } from "./task/task.actions";
-import { TaskEvent, TaskState } from "./task/task.types";
+import { TaskState } from "./task/task.types";
+import jinadClient from "../services/jinad";
 
 export type State = {
   flowState: FlowState;
@@ -48,25 +46,19 @@ const store = createStore(
   composeWithDevTools(applyMiddleware(thunk))
 );
 
-function _handleLogConnectionStatus(status: string, message: string) {
-  store.dispatch<any>(handleConnectionStatus(status, message));
+function _handleLogConnectionStatus({
+  connected,
+  message,
+}: {
+  connected: boolean;
+  message: string;
+}) {
+  store.dispatch<any>(handleConnectionStatus(connected, message));
 }
 
-function _handleNewLog(message: Message) {
-  store.dispatch(handleNewLog(message));
-}
-
-function _handleNewTaskEvent(testEvent: TaskEvent) {
-  store.dispatch(
-    handleNewTaskEvent(testEvent, store.getState().globalState.processes)
-  );
-}
-
-api.connect(
+jinadClient.connect(
   store.getState().settingsState.settings,
-  _handleLogConnectionStatus,
-  _handleNewLog,
-  _handleNewTaskEvent
+  _handleLogConnectionStatus
 );
 
 export default store;

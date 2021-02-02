@@ -5,6 +5,7 @@ export {
 } from "./serialise";
 
 export { formatForFlowchart } from "./flow-chart";
+export { transformLog } from "./transform-log";
 
 export {
   formatBytes,

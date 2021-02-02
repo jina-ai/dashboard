@@ -6,6 +6,7 @@ import {
   SHOW_ERROR,
   SHOW_MODAL,
   TOGGLE_SIDE_BAR,
+  CONNECT_JINAD,
 } from "./global.constants";
 import { handleNewLogAction } from "../logStream/logStream.types";
 
@@ -94,7 +95,7 @@ export type GlobalState = {
 export type HandleConnectionStatusAction = {
   type: typeof HANDLE_CONNECTION_STATUS;
   payload: {
-    status: string;
+    connected: boolean;
     message: string;
   };
 };
@@ -134,6 +135,10 @@ export type CloseModalAction = {
   type: typeof CLOSE_MODAL;
 };
 
+export type ConnectJinaDAction = {
+  type: typeof CONNECT_JINAD;
+};
+
 export type GlobalActionTypes =
   | HandleConnectionStatusAction
   | ToggleSidebarAction
@@ -142,4 +147,5 @@ export type GlobalActionTypes =
   | ShowErrorAction
   | ShowModalAction
   | CloseModalAction
-  | handleNewLogAction;
+  | handleNewLogAction
+  | ConnectJinaDAction;
