@@ -11,12 +11,12 @@ import store from "./redux";
 
 let App;
 
-if (process.env.REACT_APP_TARGET === "dashboard") {
-  const { Dashboard } = require("./apps/Dashboard");
-  App = Dashboard;
-} else {
+if (process.env.REACT_APP_TARGET === "hub") {
   const { Hub } = require("./apps/Hub");
   App = Hub;
+} else {
+  const { Dashboard } = require("./apps/Dashboard");
+  App = Dashboard;
 }
 
 ReactDOM.render(
