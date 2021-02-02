@@ -10,6 +10,7 @@ Array [
   </span>,
   <div
     className="clickable mb-4 h-100 image-card card"
+    data-name="hubImage"
   >
     <div
       className="pb-0 mb-0 pt-3 card-body"
@@ -26,12 +27,14 @@ Array [
             Dummy MWU Encoder
           </div>
           <div
-            className="css-kvh4bx"
+            className="css-19r673l"
+            data-name="hubImageTags"
           >
             Search
           </div>
           <div
-            className="css-kvh4bx"
+            className="css-19r673l"
+            data-name="hubImageTags"
           >
             encode
           </div>
@@ -62,6 +65,7 @@ Array [
   </div>,
   <div
     className="clickable mb-4 h-100 image-card card"
+    data-name="hubImage"
   >
     <div
       className="pb-0 mb-0 pt-3 card-body"
@@ -78,12 +82,14 @@ Array [
             Dummy MWU Encoder
           </div>
           <div
-            className="css-kvh4bx"
+            className="css-19r673l"
+            data-name="hubImageTags"
           >
             Search
           </div>
           <div
-            className="css-kvh4bx"
+            className="css-19r673l"
+            data-name="hubImageTags"
           >
             encode
           </div>

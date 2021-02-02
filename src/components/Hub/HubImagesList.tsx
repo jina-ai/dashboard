@@ -1,86 +1,88 @@
 import React, { useEffect, useState, useCallback } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { Row, Col } from "react-bootstrap";
-import { Dispatcher, Constants, Store } from "../../flux";
-import { MultiFilterSelect } from "../Common/MultiFilterSelect";
-import { ExpandingSearchbar } from "../Common/ExpandingSearchbar";
+import { fetchHubImages } from "../../redux/hub/hub.actions";
+import { selectHubImages } from "../../redux/hub/hub.selectors";
+import { HubImage } from "../../redux/hub/hub.types";
 import ImageCard from "./ImageCard";
+import HubFilters from "./HubFilters";
+import { Filter, FilterMap } from "./HubFilters";
 
-const categoryOptions = [
-  { value: "all", label: "All Categories" },
-  { value: "search", label: "Search" },
-  { value: "configurations", label: "Configurations" },
-];
-
-const sortOptions = [
-  { value: "suggested", label: "Suggested" },
-  { value: "highestRating", label: "Highest Rated" },
-  { value: "newest", label: "Newest" },
-];
-
-const HubImagesList = () => {
-  const [images, setImages] = useState([]);
-  const [sortType, setSortType] = useState("");
-  const [category, setCategory] = useState("");
-  const [searchQuery, setSearchQuery] = useState("");
-
-  useEffect(() => {
-    Store.on("update-hub", getHubImages);
-    // cleanup
-    return () => {
-      Store.removeListener("update-hub", getHubImages);
-    };
+export const removeDuplicates = (arrayWithDuplicates: string[]): string[] =>
+  arrayWithDuplicates.filter((e, i) => {
+    return arrayWithDuplicates.indexOf(e) === i;
   });
 
-  const search = useCallback(() => {
-    Dispatcher.dispatch({
-      actionType: Constants.SEARCH_HUB,
-      payload: { category, q: searchQuery, sort: sortType },
-    });
-  }, [sortType, category, searchQuery]);
+export const convertArrayToFilterObject = (array: string[]): FilterMap =>
+  array.reduce((acc, f) => ({ ...acc, [f]: false }), {} as FilterMap);
+
+export const getImageFilters = (images: HubImage[]) => {
+  return [
+    {
+      filterLabel: "Type of image",
+      values: convertArrayToFilterObject(
+        removeDuplicates(
+          images.reduce((acc, image) => [...acc, image.kind], [] as string[])
+        )
+      ),
+    },
+    {
+      filterLabel: "Key domain of the image",
+      values: convertArrayToFilterObject(
+        removeDuplicates(
+          images.reduce(
+            (acc, image) => [...acc, ...image.keywords],
+            [] as string[]
+          )
+        )
+      ),
+    },
+  ];
+};
+
+const HubImagesList = () => {
+  const dispatch = useDispatch();
+  const hubImages = useSelector(selectHubImages);
+  let [filters, setFilters] = useState([] as Filter[]);
 
   useEffect(() => {
-    search();
-  }, [search]);
+    hubImages && setFilters(getImageFilters(hubImages));
+  }, [hubImages]);
 
-  const getHubImages = () => {
-    const images = Store.getHubImages();
-    setImages(images);
-  };
+  useEffect(() => {
+    dispatch(fetchHubImages());
+  }, [dispatch]);
+
+  const getHubImages = useCallback(
+    (filters) => {
+      dispatch(fetchHubImages(filters));
+    },
+    [dispatch]
+  );
 
   return (
     <>
-      <Row className="mb-4">
-        <Col md="8">
-          <MultiFilterSelect
-            options={categoryOptions}
-            onFilterChange={(option: any[]) => setCategory(option[0].value)}
-            className="hub-select mb-2 mr-0 mb-md-0 mr-md-2"
-            placeholder="All Categories"
-            isSearchable={false}
-          />
-          <MultiFilterSelect
-            options={sortOptions}
-            onFilterChange={(option: any[]) => setSortType(option[0].value)}
-            className="hub-select mb-2 mr-0 mb-md-0 mr-md-2"
-            placeholder="Suggested"
-            isSearchable={false}
-          />
-        </Col>
-        <Col md="4">
-          <ExpandingSearchbar
-            variant="gray"
-            placeholder="search hub..."
-            value={searchQuery}
-            onChange={setSearchQuery}
-          />
-        </Col>
-      </Row>
       <Row>
-        {Object.keys(images).map((imageId) => (
-          <Col key={imageId} md="3" className="mb-4">
-            <ImageCard image={(images as any)[imageId]} />
-          </Col>
-        ))}
+        <Col md="2">
+          <HubFilters
+            filters={filters}
+            setFilters={setFilters}
+            getHubImages={getHubImages}
+          />
+        </Col>
+        <Col md="10">
+          <Row data-name="hubImagesList">
+            {hubImages.map((image) => (
+              <Col
+                key={`${image.name}.${image.version}.${image["jina-version"]}`}
+                md="4"
+                className="mb-4"
+              >
+                <ImageCard image={image} />
+              </Col>
+            ))}
+          </Row>
+        </Col>
       </Row>
     </>
   );
