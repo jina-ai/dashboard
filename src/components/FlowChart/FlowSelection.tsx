@@ -1,8 +1,6 @@
 import React from "react";
-
 import styled from "@emotion/styled";
 import { useTheme } from "@emotion/react";
-import deleteIcon from "../../assets/icons/Delete.svg";
 
 type ConnectionIndicatorProps = {
   connected: boolean;
@@ -35,7 +33,17 @@ type DeleteFlowProps = {
 };
 
 function DeleteFlowButton({ deleteFlow }: DeleteFlowProps) {
-  return <img alt={"deleteFlowButton"} src={deleteIcon} onClick={deleteFlow} />;
+  const Delete = styled.div`
+    font-size: 1.25rem;
+    margin-right: -0.125rem;
+  `;
+  return (
+    <Delete>
+      <i onClick={deleteFlow} className="material-icons">
+        delete
+      </i>
+    </Delete>
+  );
 }
 
 type FlowSelectionProps = {
