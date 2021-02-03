@@ -77,15 +77,28 @@ export type User = {
 export type Processes = {
   [processNum: number]: string;
 };
+
+export type Modal =
+  | null
+  | "logDetails"
+  | "newFlow"
+  | "import"
+  | "review"
+  | "podEdit";
+
+export type ModalParams = {
+  imageId?: string;
+  nodeId?: string;
+  rerenderCanvas?: any;
+} | null;
+
 export type GlobalState = {
   user: User;
   connected: boolean;
   banner: Banner;
   loading: boolean;
-  modal: string;
-  modalParams: {
-    imageId: string;
-  } | null;
+  modal: Modal;
+  modalParams: ModalParams;
   menuVisible: boolean;
   navItems: TNavItem[];
   processes: Processes;
@@ -126,7 +139,7 @@ export type ShowErrorAction = {
 export type ShowModalAction = {
   type: typeof SHOW_MODAL;
   payload: {
-    modal: string;
+    modal: Modal;
     modalParams: any;
   };
 };

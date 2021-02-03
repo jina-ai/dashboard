@@ -3,18 +3,19 @@ import { useSelector, useDispatch } from "react-redux";
 import {
   selectFlowChart,
   selectFlows,
+  selectRerender,
   selectSelectedFlowId,
+  selectTooltipConfig,
 } from "../redux/flows/flows.selectors";
 import * as actions from "@bastinjafari/react-flow-chart-with-tooltips-and-multi-select/src/container/actions";
-import { tooltipConfig } from "../data/tooltipConfig";
 import {
   createNewFlow,
   deleteFlow,
   duplicateFlow,
   loadFlow,
-  updateFlow,
   startFlow,
-  stopFlow
+  stopFlow,
+  updateFlow,
 } from "../redux/flows/flows.actions";
 import html2canvas from "html2canvas";
 import { cloneDeep } from "lodash";
@@ -36,8 +37,19 @@ import { showModal } from "../redux/global/global.actions";
 import { selectConnectionStatus } from "../redux/global/global.selectors";
 import { PROPERTY_LIST } from "../redux/logStream/logStream.constants";
 
+import styled from "@emotion/styled";
+
+const FlowViewContainer = styled.div`
+  display: flex;
+`;
+
+const FlowContainer = styled.div`
+  overflow: hidden;
+`;
+
 export default function FlowView() {
   const dispatch = useDispatch();
+  useState(useSelector(selectRerender));
   const connected = useSelector(selectConnectionStatus);
   const selectedFlowId = useSelector(selectSelectedFlowId);
   const flows = useSelector(selectFlows);
@@ -45,9 +57,8 @@ export default function FlowView() {
   const { flow: chart, type: flowType } = flowChart;
   const chartWithTooltips = {
     ...chart,
-    ...tooltipConfig,
+    ...useSelector(selectTooltipConfig),
   };
-
   const [showOverlay, setShowOverlay] = useState<boolean>(false);
 
   const actionCallbacks = Object.keys(actions).reduce((obj: any, key: any) => {
@@ -156,6 +167,10 @@ export default function FlowView() {
     dispatch(showModal("import"));
   };
 
+  const showNewFlowModal = () => {
+    dispatch(showModal("newFlow"));
+  };
+
   const handleCreateNewFlow = (e: any) => {
     e.preventDefault();
     e.stopPropagation();
@@ -175,13 +190,13 @@ export default function FlowView() {
     dispatch(duplicateFlow(flowYAML));
   };
 
-  const handleStartFlow = () =>{
+  const handleStartFlow = () => {
     dispatch(startFlow(selectedFlowId));
-  }
+  };
 
-  const handleStopFlow = () =>{
+  const handleStopFlow = () => {
     dispatch(stopFlow(selectedFlowId));
-  }
+  };
 
   const readonly = flowType !== "user-generated";
 
@@ -194,46 +209,54 @@ export default function FlowView() {
         <Row noGutters className="page-header mb-4">
           <PageTitle title="Flow Design" className="text-sm-left mb-3" />
         </Row>
-        <div className="flow-container d-flex flex-column flex-md-row">
-          <Card className="chart-section-container mr-md-4 mb-4">
-            <FlowSelection
-              connected={connected}
-              flows={flows}
-              selectedFlowId={selectedFlowId}
-              createNewFlow={handleCreateNewFlow}
-              loadFlow={(flowId) => dispatch(loadFlow(flowId))}
-              deleteFlow={handleDeleteFlow}
-            />
-            <CommandBar
-              startFlow={handleStartFlow}
-              stopFlow={handleStopFlow}
-              copyChart={copyChartAsYAML}
-              importChart={showImportModal}
-              exportImage={exportImage}
-            />
-            <div className="chart-container">
-              <div
-                className="capture-overlay"
-                style={{ display: showOverlay ? "" : "none" }}
-              >
-                <div className="capture-overlay-top"></div>
-                <div className="capture-overlay-bottom"></div>
-              </div>
-              <FlowChart
-                chart={(chart as unknown) as IChart}
-                Components={{
-                  TooltipComponent: Tooltip,
-                  NodeInner: CustomNode as any,
-                  Port: CustomPort,
-                }}
-                callbacks={actionCallbacks}
-                config={{
-                  readonly,
-                  validateLink: validateLink,
-                }}
+
+        <FlowViewContainer>
+          <FlowSelection
+            connected={connected}
+            flows={flows}
+            selectedFlowId={selectedFlowId}
+            showNewFlowModal={showNewFlowModal}
+            createNewFlow={handleCreateNewFlow}
+            loadFlow={(flowId) => dispatch(loadFlow(flowId))}
+            deleteFlow={handleDeleteFlow}
+          />
+
+          <FlowContainer>
+            <Card className="chart-section-container mr-md-4 mb-4">
+              <CommandBar
+                startFlow={handleStartFlow}
+                stopFlow={handleStopFlow}
+                copyChart={copyChartAsYAML}
+                importChart={showImportModal}
+                exportImage={exportImage}
               />
-            </div>
-          </Card>
+              <div className="chart-container">
+                <div
+                  className="capture-overlay"
+                  style={{ display: showOverlay ? "" : "none" }}
+                >
+                  <div className="capture-overlay-top" />
+                  <div className="capture-overlay-bottom" />
+                </div>
+
+                <FlowChart
+                  chart={chart as IChart}
+                  Components={{
+                    TooltipComponent: Tooltip,
+                    NodeInner: CustomNode as any,
+                    Port: CustomPort,
+                  }}
+                  callbacks={actionCallbacks}
+                  config={{
+                    readonly,
+                    validateLink: validateLink,
+                    smartRouting: true,
+                  }}
+                />
+              </div>
+            </Card>
+          </FlowContainer>
+
           <Sidebar
             availableProperties={PROPERTY_LIST}
             duplicateFlow={handleDuplicateFlow}
@@ -243,7 +266,7 @@ export default function FlowView() {
             updateNode={updateNode}
             updateLink={updateLink}
           />
-        </div>
+        </FlowViewContainer>
       </div>
     </Container>
   );

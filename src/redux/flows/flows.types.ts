@@ -1,9 +1,12 @@
 import {
   CREATE_NEW_FLOW,
   DELETE_FLOW,
+  DELETE_NODE,
   DUPLICATE_FLOW,
   LOAD_FLOW,
+  RERENDER,
   UPDATE_FLOW,
+  UPDATE_NODE,
   UPDATE_FLOW_PROPERTIES,
 } from "./flows.constants";
 import {
@@ -12,7 +15,7 @@ import {
   INode,
 } from "@bastinjafari/react-flow-chart-with-tooltips-and-multi-select";
 
-export interface Node extends Omit<INode, "type"> {
+export interface Node extends INode {
   label?: string;
   needs?:
     | {
@@ -22,6 +25,8 @@ export interface Node extends Omit<INode, "type"> {
   send_to?: {};
   depth?: number;
 }
+
+export type NodeUpdate = Partial<Node>;
 
 type colors = "red";
 
@@ -76,8 +81,16 @@ export type CreateNewFlowAction = {
 };
 
 export type FlowState = {
+  rerender: boolean;
   selectedFlow: string;
   flows: Flows;
+  tooltipConfig: {
+    tooltipsGlobal: {
+      showTooltip: boolean;
+      toogleOffWhenClicked: string;
+      text: string;
+    };
+  };
 };
 export type UpdateFlowAction = {
   type: typeof UPDATE_FLOW;
@@ -96,10 +109,27 @@ export type DeleteFlowAction = {
   payload: string;
 };
 
+export type UpdateNodeAction = {
+  type: typeof UPDATE_NODE;
+  payload: { nodeId: string; nodeUpdate: NodeUpdate };
+};
+
+export type DeleteNodeAction = {
+  type: typeof DELETE_NODE;
+  payload: string;
+};
+
+export type RerenderAction = {
+  type: typeof RERENDER;
+};
+
 export type FlowActionTypes =
   | LoadFlowAction
   | CreateNewFlowAction
   | UpdateFlowAction
   | UpdateFlowPropertiesAction
   | DuplicateFlowAction
-  | DeleteFlowAction;
+  | DeleteFlowAction
+  | UpdateNodeAction
+  | DeleteNodeAction
+  | RerenderAction;
