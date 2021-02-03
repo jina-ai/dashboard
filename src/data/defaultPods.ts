@@ -7,26 +7,26 @@ const dedaultPods = [
   {
     name: "loader",
     yaml_path: "yaml/craft-load.yml",
-    replicas: 3,
+    parallel: 3,
     read_only: "true",
   },
   {
     name: "splittor",
     yaml_path: "pods/craft-split.yml",
-    replicas: 3,
+    parallel: 3,
     read_only: "true",
   },
   {
     name: "encoder",
     yaml_path: "pods/encode.yml",
-    replicas: 3,
+    parallel: 3,
     timeout_ready: 1200000,
     read_only: "true",
   },
   {
     name: "chunk_indexer",
     yaml_path: "pods/index-chunk.yml",
-    replicas: 3,
+    parallel: 3,
     separated_workspace: "true",
   },
   {
@@ -45,13 +45,13 @@ const dedaultPods = [
   {
     name: "flipper",
     yaml_path: "yaml/craft-flip.yml",
-    replicas: 3,
+    parallel: 3,
     read_only: "true",
   },
   {
     name: "normalizer",
     yaml_path: "yaml/craft-normalize.yml",
-    replicas: 3,
+    parallel: 3,
     read_only: "true",
   },
   {
@@ -62,7 +62,7 @@ const dedaultPods = [
   {
     name: "chunk_seg",
     yaml_path: "pods/craft.yml",
-    replicas: 3,
+    parallel: 3,
   },
 ];
 
