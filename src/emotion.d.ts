@@ -5,7 +5,7 @@ import "@emotion/react";
 declare module "@emotion/react" {
   export interface Theme {
     palette: {
-      background: { default: string };
+      background: string;
       primary: string;
       secondary: string;
       warning: string;
