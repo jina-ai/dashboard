@@ -12,6 +12,7 @@ import {
   DELETE_NODE,
   RERENDER,
   UPDATE_FLOW_PROPERTIES,
+  IMPORT_FLOW,
 } from "./flows.constants";
 import {
   Flow,
@@ -97,6 +98,10 @@ export default function flowReducer(
       newState = _createNewFlow(state, action.payload);
       saveFlowsToStorage(newState);
       return newState;
+    case IMPORT_FLOW:
+      newState = _importFlow(state, action.payload);
+      saveFlowsToStorage(newState);
+      return newState;
     case UPDATE_FLOW:
       newState = _updateFlow(state, action.payload);
       saveFlowsToStorage(newState);
@@ -157,6 +162,10 @@ function _deleteFlow(state: FlowState, flowId: string): FlowState {
   }
 
   return stateWithoutFlow;
+}
+
+function _importFlow(state: FlowState, customYAML: string): FlowState {
+  return _createNewFlow(state, customYAML);
 }
 
 function _createNewFlow(state: FlowState, customYAML?: string): FlowState {

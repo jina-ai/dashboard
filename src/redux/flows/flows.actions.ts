@@ -8,6 +8,7 @@ import {
   RERENDER,
   UPDATE_FLOW,
   UPDATE_FLOW_PROPERTIES,
+  IMPORT_FLOW,
 } from "./flows.constants";
 import {
   CreateNewFlowAction,
@@ -23,6 +24,7 @@ import {
   UpdateFlowAction,
   UpdateNodeAction,
   UpdateFlowPropertiesAction,
+  ImportFlowAction,
 } from "./flows.types";
 
 import { ThunkAction } from "redux-thunk";
@@ -64,6 +66,12 @@ export function updateFlowProperties(
 export function duplicateFlow(flowYAML: string): DuplicateFlowAction {
   return {
     type: DUPLICATE_FLOW,
+    payload: flowYAML,
+  };
+}
+export function importFlow(flowYAML: string): ImportFlowAction {
+  return {
+    type: IMPORT_FLOW,
     payload: flowYAML,
   };
 }

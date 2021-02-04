@@ -1,5 +1,6 @@
-import { getLogLevelCharts } from "../format";
-import { getLogLevelChartsData } from "./format.testData";
+import { getLogLevelCharts, parseYAML } from "../format";
+import { getLogLevelChartsData, parsedYamlObject } from "./format.testData";
+import { v1YAML } from "./flow-chart.testData";
 
 describe("getLogLevelCharts", () => {
   it("should create correct logLevelCharts", () => {
@@ -20,5 +21,12 @@ describe("getLogLevelCharts", () => {
     expect(numTicks).toEqual(MAX_CHART_TICKS_TEST);
     expect(lastTimestamp).toEqual(currentDateTest.getTime() / 1000);
     expect(data).toEqual(logLevelChartTest);
+  });
+});
+
+describe("parseYAML", () => {
+  it("should correctly parse YAML with !Flow syntax", () => {
+    const result = parseYAML(v1YAML);
+    expect(result).toEqual(parsedYamlObject);
   });
 });
