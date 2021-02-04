@@ -28,7 +28,7 @@ export const fetchHubImages = (
 
     dispatch(fetchHubImagesSuccess(images));
   } catch (e) {
-    dispatch(fetchHubImagesFailure());
+    dispatch(fetchHubImagesFailure(e));
   }
 };
 
@@ -41,8 +41,9 @@ const fetchHubImagesSuccess = (
   };
 };
 
-const fetchHubImagesFailure = (): FetchHubImagesFailureAction => {
+const fetchHubImagesFailure = (error: Error): FetchHubImagesFailureAction => {
   return {
     type: FETCH_HUB_IMAGES_FAILURE,
+    payload: { error },
   };
 };
