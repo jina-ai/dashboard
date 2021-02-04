@@ -18,7 +18,7 @@ const theme = {
     critical: "#ff4540",
     debug: "#7E7278",
     tagBackground: DADGREY,
-    hightlight: SKY_DIVING_IN_THE_BLUE,
+    highlight: SKY_DIVING_IN_THE_BLUE,
   },
 };
 
