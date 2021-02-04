@@ -1,4 +1,5 @@
 import defaultPods from "../../../src/data/defaultPods";
+import { defaultHost, defaultPort } from "../../../src/redux/settings/settings.constants";
 
 describe("The Flow Page", () => {
   beforeEach(() => {
@@ -11,7 +12,9 @@ describe("The Flow Page", () => {
     });
 
     it("should display the connected message", () => {
-      cy.dataName("connection-notification-online").should("contain", "Successfully connected to Jina at http://localhost:5000");
+      const host = localStorage.getItem("preferences-host") || defaultHost
+      const port = localStorage.getItem("preferences-port") || defaultPort
+      cy.dataName("connection-notification-online").should("contain", `Successfully connected to Jina at ${host}:${port}`);
     });
   });
 
