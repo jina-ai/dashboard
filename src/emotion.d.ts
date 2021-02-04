@@ -14,6 +14,8 @@ declare module "@emotion/react" {
       info: string;
       critical: string;
       debug: string;
+      tagBackground: string;
+      highlight: string;
     };
   }
 }

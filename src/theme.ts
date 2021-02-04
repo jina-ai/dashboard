@@ -3,6 +3,8 @@ const GOLDEN_TANOI = "#FFCC66";
 const BITTER_SWEET = "#ff6666";
 const SCOOTER_GREEN = "#32C8CD";
 const WHITE = "#FFFFFF";
+const DADGREY = "#DAD7FE";
+const SKY_DIVING_IN_THE_BLUE = "#007AFF";
 
 const theme = {
   palette: {
@@ -15,6 +17,8 @@ const theme = {
     info: PERSIAN_GREEN,
     critical: "#ff4540",
     debug: "#7E7278",
+    tagBackground: DADGREY,
+    hightlight: SKY_DIVING_IN_THE_BLUE,
   },
 };
 

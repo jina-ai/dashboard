@@ -14,7 +14,7 @@ type Props = {
 };
 
 const Tag = styled.div`
-  background: #dad7fe;
+  background: ${(props) => props.theme.palette.tagBackground};
   border-radius: 6px;
   display: inline-block;
   padding: 0.25rem;
