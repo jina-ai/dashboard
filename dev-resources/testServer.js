@@ -200,8 +200,8 @@ function updateEmitterStatus() {
 }
 
 function printEmitterStatus() {
-	process.stdout.clearLine();
-	process.stdout.cursorTo(0);
+	readline.clearLine(process.stdout, 0)
+	readline.cursorTo(process.stdout, 0, null)
 	process.stdout.write(
 		`Active Streams: ${_activeStreams ? chalk.green(_activeStreams) : chalk.gray(_activeStreams)
 		} | Messages Sent: ${_messagesSent ? _messagesSent : chalk.gray(_messagesSent)
