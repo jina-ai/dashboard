@@ -5,9 +5,9 @@ describe("The Flow Page", () => {
     cy.visit("/#/flow");
   });
 
-  context("When the dev server is connected", () => {
-    it("should display the connection", () => {
-      cy.dataName("connection-notification-body").contains("Logserver connection established at http://localhost:5000");
+  context("When JinaD isn't connected", () => {
+    it("should display the offline message", () => {
+      cy.dataName("connection-notification-body").contains("Could not connect to Jina instance");
     });
   });
 

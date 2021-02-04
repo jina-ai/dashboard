@@ -26,12 +26,7 @@ function InfoToast({ data }: Props) {
             <span className="text-uppercase">{data.theme}</span>
           </strong>
         </Toast.Header>
-        <Toast.Body
-          className="text-white"
-          data-name="connection-notification-body"
-        >
-          {data.message}
-        </Toast.Body>
+        <Toast.Body className="text-white">{data.message}</Toast.Body>
       </Toast>
     </div>
   );
