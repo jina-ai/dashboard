@@ -200,16 +200,18 @@ function updateEmitterStatus() {
 }
 
 function printEmitterStatus() {
-	readline.clearLine(process.stdout, 0)
-	readline.cursorTo(process.stdout, 0, null)
-	process.stdout.write(
-		`Active Streams: ${_activeStreams ? chalk.green(_activeStreams) : chalk.gray(_activeStreams)
-		} | Messages Sent: ${_messagesSent ? _messagesSent : chalk.gray(_messagesSent)
-		} | Current Speed: ${_currentSpeed
-			? `${_currentSpeed} msg/s`
-			: chalk.gray(`${_currentSpeed} msg/s`)
-		}`
-	);
+	if(process.env.NODE_ENV !== 'test') {
+		readline.clearLine(process.stdout, 0)
+		readline.cursorTo(process.stdout, 0, null)
+		process.stdout.write(
+			`Active Streams: ${_activeStreams ? chalk.green(_activeStreams) : chalk.gray(_activeStreams)
+			} | Messages Sent: ${_messagesSent ? _messagesSent : chalk.gray(_messagesSent)
+			} | Current Speed: ${_currentSpeed
+				? `${_currentSpeed} msg/s`
+				: chalk.gray(`${_currentSpeed} msg/s`)
+			}`
+		);
+	}
 }
 
 function init() {
