@@ -25,12 +25,6 @@ const navItems: TNavItem[] = [
     matches: ["logs"],
   },
   {
-    title: "Task",
-    to: "/task",
-    iconName: "assessment",
-    matches: ["task"],
-  },
-  {
     title: "Flow Design",
     to: "/flow",
     iconName: "device_hub",
