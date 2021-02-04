@@ -1,0 +1,15 @@
+name: Sync version with Jina core / JinaD
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'version'
+        required: true
+        default: '0.0.0'
+
+jobs:
+  say_hello:
+    runs-on: ubuntu-latest
+    steps:
+    - run: |
+        echo "Updating version to ${{ github.event.inputs.version }}!"
