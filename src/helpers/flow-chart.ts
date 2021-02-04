@@ -33,7 +33,7 @@ export const formatForFlowchart = (data: ParsedYAML) => {
 
   let prevNode = false;
 
-  if (Array.isArray(pods)) {
+  if (data.version?.includes("1")) {
     let newPods = {};
     pods.forEach((pod) => {
       const id = pod.name;

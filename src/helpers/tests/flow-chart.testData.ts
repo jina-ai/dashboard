@@ -53,10 +53,6 @@ pods:
     needs: [doc_idx, chunk_idx]
 `;
 
-export const parsedLegacyYaml = {};
-
-export const parsedV1Yaml = {};
-
 export const formattedFlow = {
   offset: { x: 0, y: 0 },
   nodes: {

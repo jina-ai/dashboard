@@ -7,6 +7,7 @@ import {
   loadFlow,
   updateFlow,
   updateNode,
+  importFlow,
 } from "./flows.actions";
 import { initialFlow } from "./flows.constants";
 import { testFlowState } from "./flows.testData";
@@ -38,6 +39,31 @@ describe("flows reducer", () => {
       const flowStateWithDuplicatedFlowerFlow = reducer(
         testFlowState,
         duplicateFlow(flowerYaml)
+      );
+      const newNumberOfFlows = Object.keys(
+        flowStateWithDuplicatedFlowerFlow.flows
+      ).length;
+      const duplicatedFlowerFlowIdAndProperty = Object.entries(
+        flowStateWithDuplicatedFlowerFlow.flows
+      ).find(([flowId, flowProperty]) => flowProperty.name === "Custom Flow 3");
+
+      expect(newNumberOfFlows - oldNumberOfFlows).toBe(1);
+      expect(duplicatedFlowerFlowIdAndProperty).toBeDefined();
+      if (duplicatedFlowerFlowIdAndProperty) {
+        expect(duplicatedFlowerFlowIdAndProperty[1].flow).toEqual(
+          testFlowState.flows.flower.flow
+        );
+      }
+    }
+  });
+
+  it("should import a new flow from YAML", () => {
+    const flowerYaml = testFlowState.flows.flower.yaml;
+    if (flowerYaml) {
+      const oldNumberOfFlows = Object.keys(testFlowState.flows).length;
+      const flowStateWithDuplicatedFlowerFlow = reducer(
+        testFlowState,
+        importFlow(flowerYaml)
       );
       const newNumberOfFlows = Object.keys(
         flowStateWithDuplicatedFlowerFlow.flows
