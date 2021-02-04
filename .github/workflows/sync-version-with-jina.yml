@@ -8,8 +8,16 @@ on:
         default: '0.0.0'
 
 jobs:
-  say_hello:
+  update-version:
     runs-on: ubuntu-latest
     steps:
-    - run: |
+    - uses: actions/checkout@v2
+    - name: update version
+      run: |
         echo "Updating version to ${{ github.event.inputs.version }}!"
+        npm version ${github.event.inputs.version}
+    - name: tag and push
+      run: |
+        git tag ${github.event.inputs.version}
+        git push --follow-tags
+        git push --tags
