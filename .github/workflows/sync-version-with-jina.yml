@@ -19,6 +19,8 @@ jobs:
     - name: update version
       run: |
         echo "Updating version to ${{ github.event.inputs.version }}!"
+        git config --local user.email "dev-bot@jina.ai"
+        git config --local user.name "Jina Dev Bot"
         npm version ${{ github.event.inputs.version }}
     - name: tag and push
       run: |
