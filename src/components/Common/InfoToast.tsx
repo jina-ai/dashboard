@@ -18,7 +18,10 @@ function InfoToast({ data }: Props) {
   if (!data) return null;
   const icon = getIcon(data.theme);
   return (
-    <div className="notifications-container">
+    <div
+      data-name="connection-notification-online"
+      className="notifications-container"
+    >
       <Toast className={`toast-${data.theme} text-white`}>
         <Toast.Header className="text-white" closeButton={false}>
           <strong className="mr-auto">

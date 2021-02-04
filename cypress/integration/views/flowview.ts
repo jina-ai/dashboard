@@ -5,10 +5,15 @@ describe("The Flow Page", () => {
     cy.visit("/#/flow");
   });
 
-  context("When JinaD isn't connected", () => {
-    it("should display the offline message", () => {
-      cy.dataName("connection-notification-body").contains("Could not connect to Jina instance");
+  context("When JinaD is connected", () => {
+    it("shouldn't display the offline message", () => {
+      cy.dataName("connection-notification-offline").should('not.exist');
     });
+
+    it("should display the connected message", () => {
+      cy.dataName("connection-notification-online").should("contain", "Successfully connected to Jina at http://localhost:5000");
+    });
+
   });
 
   context("When a new flow is created", () => {

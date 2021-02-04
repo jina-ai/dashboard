@@ -9,7 +9,7 @@ function ConnectionToast({ reconnect }: Props) {
   return (
     <div
       className="notifications-container"
-      data-name="connection-notification-body"
+      data-name="connection-notification-offline"
     >
       <Toast className="bg-warning">
         <Toast.Header className="bg-warning text-white" closeButton={false}>
