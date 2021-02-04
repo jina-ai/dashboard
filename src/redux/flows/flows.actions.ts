@@ -1,20 +1,27 @@
 import {
   CREATE_NEW_FLOW,
   DELETE_FLOW,
+  DELETE_NODE,
+  UPDATE_NODE,
   DUPLICATE_FLOW,
   LOAD_FLOW,
+  RERENDER,
   UPDATE_FLOW,
   UPDATE_FLOW_PROPERTIES,
 } from "./flows.constants";
 import {
   CreateNewFlowAction,
   DeleteFlowAction,
+  DeleteNodeAction,
   DuplicateFlowAction,
   Flow,
   FlowProperties,
   FlowState,
   LoadFlowAction,
+  NodeUpdate,
+  RerenderAction,
   UpdateFlowAction,
+  UpdateNodeAction,
   UpdateFlowPropertiesAction,
 } from "./flows.types";
 
@@ -64,6 +71,26 @@ export function deleteFlow(flowId: string): DeleteFlowAction {
   return {
     type: DELETE_FLOW,
     payload: flowId,
+  };
+}
+export function updateNode(
+  nodeId: string,
+  nodeUpdate: NodeUpdate
+): UpdateNodeAction {
+  return {
+    type: UPDATE_NODE,
+    payload: { nodeId, nodeUpdate },
+  };
+}
+export function deleteNode(nodeId: string): DeleteNodeAction {
+  return {
+    type: DELETE_NODE,
+    payload: nodeId,
+  };
+}
+export function rerender(): RerenderAction {
+  return {
+    type: RERENDER,
   };
 }
 

@@ -5,10 +5,12 @@ const SCOOTER_GREEN = "#32C8CD";
 const WHITE = "#FFFFFF";
 const DADGREY = "#DAD7FE";
 const SKY_DIVING_IN_THE_BLUE = "#007AFF";
+const BLACK = "#000000";
 
 const theme = {
   palette: {
     background: WHITE,
+    headerTextColor: BLACK,
     primary: PERSIAN_GREEN,
     secondary: GOLDEN_TANOI,
     warning: GOLDEN_TANOI,

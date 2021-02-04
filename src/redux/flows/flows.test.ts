@@ -2,9 +2,11 @@ import reducer from "./flows.reducer";
 import {
   createNewFlow,
   deleteFlow,
+  deleteNode,
   duplicateFlow,
   loadFlow,
   updateFlow,
+  updateNode,
 } from "./flows.actions";
 import { initialFlow } from "./flows.constants";
 import { testFlowState } from "./flows.testData";
@@ -29,7 +31,7 @@ describe("flows reducer", () => {
     ).toBeUndefined();
   });
 
-  it("should duplicate a the flower flow", () => {
+  it("should duplicate the flower flow", () => {
     const flowerYaml = testFlowState.flows.flower.yaml;
     if (flowerYaml) {
       const oldNumberOfFlows = Object.keys(testFlowState.flows).length;
@@ -85,5 +87,33 @@ describe("flows reducer", () => {
       loadFlow("testFlow2")
     );
     expect(flowStateWithLoadedFlow.selectedFlow).toEqual("testFlow2");
+  });
+
+  it("should update nodes", () => {
+    const oldNode = testFlowState.flows.testFlow1.flow.nodes.gateway;
+    const nodeUpdate = {
+      label: "newLabel",
+      properties: {
+        newProp: 234,
+      },
+    };
+    const flowStateWithUpdatedNode = reducer(
+      testFlowState,
+      updateNode("gateway", nodeUpdate)
+    );
+    expect(
+      flowStateWithUpdatedNode.flows.testFlow1.flow.nodes.gateway
+    ).toEqual({ ...oldNode, ...nodeUpdate });
+  });
+
+  it("should delete nodes", () => {
+    expect(testFlowState.flows.testFlow1.flow.nodes.gateway).toBeDefined();
+    const flowStateWithDeletedNode = reducer(
+      testFlowState,
+      deleteNode("gateway")
+    );
+    expect(
+      flowStateWithDeletedNode.flows.testFlow1.flow.nodes.gateway
+    ).toBeUndefined();
   });
 });

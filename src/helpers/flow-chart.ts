@@ -45,6 +45,7 @@ export const formatForFlowchart = (data: ParsedYAML) => {
   Object.keys(pods).forEach((id) => {
     const pod = pods[id] || {};
     let node = {
+      type: "input-output",
       id,
       label: id,
       ports: {},

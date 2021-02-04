@@ -10,12 +10,14 @@ type Props = {
   properties: {
     [key: string]: any;
   };
+  idx: number;
 };
 
-export default function SidebarItem({ label, ports, properties }: Props) {
+export default function SidebarItem({ label, ports, properties, idx }: Props) {
   const ref: React.RefObject<HTMLInputElement> = React.createRef();
   return (
     <div
+      data-name={`SideBarItem-${idx}`}
       ref={ref}
       className="mb-3 draggable-container"
       draggable={true}

@@ -1,5 +1,4 @@
 import React from "react";
-// @ts-ignore
 import { Container, Navbar, Nav } from "shards-react";
 import { NavbarSpacer } from "./NavbarSpacer";
 import { ConnectionIndicator } from "./ConnectionIndicator";
@@ -32,7 +31,6 @@ type Props = {
 
 function MainNavbar({
   usesConnection,
-  logOut,
   toggleSidebar,
   reconnect,
   connected,
