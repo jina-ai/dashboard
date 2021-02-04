@@ -10,8 +10,8 @@ type Props = {
   importChart: () => void;
   copyChart: () => void;
   exportImage: (format: string) => void;
-  startFlow:()=>void;
-  stopFlow:()=>void;
+  startFlow: () => void;
+  stopFlow: () => void;
 };
 
 const ButtonGroup = styled.div`
@@ -26,6 +26,9 @@ const Button = styled.button`
   border: 0;
   margin-right: 1rem;
   cursor: pointer;
+  :focus {
+    outline: 0px;
+  }
 `;
 
 const PlayButton = styled(Button)`
