@@ -19,7 +19,7 @@ jobs:
     - name: update version
       run: |
         echo "Updating version to ${{ github.event.inputs.version }}!"
-        npm version ${github.event.inputs.version}
+        npm version ${{ github.event.inputs.version }}
     - name: tag and push
       run: |
         git tag ${github.event.inputs.version}
