@@ -58,12 +58,14 @@ function getExampleFlows() {
 
   Object.entries(exampleFlows).forEach(([id, flow]) => {
     const parsed = parseYAML(flow.yaml);
-    const formatted = formatForFlowchart(parsed.data);
-    flows[id] = {
-      ...flow,
-      isConnected: false,
-      flow: formatted,
-    };
+    if (parsed?.data) {
+      const formatted = formatForFlowchart(parsed.data);
+      flows[id] = {
+        ...flow,
+        isConnected: false,
+        flow: formatted,
+      };
+    }
   });
   return flows;
 }
@@ -190,7 +192,7 @@ function _createNewFlow(state: FlowState, customYAML?: string): FlowState {
 
   if (customYAML) {
     const parsed = parseYAML(customYAML);
-    flow = formatForFlowchart(parsed.data);
+    if (parsed?.data) flow = formatForFlowchart(parsed.data);
   }
 
   return {

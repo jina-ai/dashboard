@@ -25,10 +25,11 @@ export const parseYAML = (yamlSTR: string) => {
 
   try {
     const data = YAML.parse(yamlStrWithoutTag);
+    if (typeof data !== "object" || data === null)
+      throw new Error("Invalid YAML");
     return { data };
   } catch (error) {
-    alert("Error Parsing YAML:\n" + error);
-    return { error };
+    alert("Error Parsing YAML:\n" + error.message);
   }
 };
 
