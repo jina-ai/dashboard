@@ -28,7 +28,7 @@ function PodMenu() {
         {defaultPods.map((pod, idx) => {
           return (
             <SidebarItem
-              data-name={`SideBarItem-${idx}`}
+              idx={idx}
               key={idx}
               ports={{
                 inPort: {
