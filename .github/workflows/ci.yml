@@ -1,7 +1,6 @@
 name: "Unit, integration tests"
 on:
   push:
-  pull_request_target:
 jobs:
   unit-test:
     runs-on: ubuntu-latest
