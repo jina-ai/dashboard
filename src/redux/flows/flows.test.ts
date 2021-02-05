@@ -63,21 +63,21 @@ describe("flows reducer", () => {
     const flowerYaml = testFlowState.flows.flower.yaml;
     if (flowerYaml) {
       const oldNumberOfFlows = Object.keys(testFlowState.flows).length;
-      const flowStateWithDuplicatedFlowerFlow = reducer(
+      const flowStateWithImportedFlowerFlow = reducer(
         testFlowState,
         importFlow(flowerYaml)
       );
       const newNumberOfFlows = Object.keys(
-        flowStateWithDuplicatedFlowerFlow.flows
+        flowStateWithImportedFlowerFlow.flows
       ).length;
-      const duplicatedFlowerFlowIdAndProperty = Object.entries(
-        flowStateWithDuplicatedFlowerFlow.flows
+      const importedFlowerFlowIdAndProperty = Object.entries(
+        flowStateWithImportedFlowerFlow.flows
       ).find(([flowId, flowProperty]) => flowProperty.name === "Custom Flow 3");
 
       expect(newNumberOfFlows - oldNumberOfFlows).toBe(1);
-      expect(duplicatedFlowerFlowIdAndProperty).toBeDefined();
-      if (duplicatedFlowerFlowIdAndProperty) {
-        expect(duplicatedFlowerFlowIdAndProperty[1].flow).toEqual(
+      expect(importedFlowerFlowIdAndProperty).toBeDefined();
+      if (importedFlowerFlowIdAndProperty) {
+        expect(importedFlowerFlowIdAndProperty[1].flow).toEqual(
           testFlowState.flows.flower.flow
         );
       }

@@ -1,4 +1,4 @@
-import { queryParamsSerializer } from "../hubApi";
+import { serializeQueryParams } from "../hubApi";
 describe("parameter serializer", () => {
   it("serializes params", () => {
     const paramsObject = {
@@ -8,7 +8,7 @@ describe("parameter serializer", () => {
       emptyArray: [],
     };
 
-    expect(queryParamsSerializer(paramsObject)).toEqual(
+    expect(serializeQueryParams(paramsObject)).toEqual(
       "kind=encoder&type=script"
     );
   });

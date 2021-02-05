@@ -28,13 +28,13 @@ export const parseYAML = (yamlSTR: string) => {
 
 export const decodePropValue = (
   argName,
-  value,
+  propValue,
   possibleArguments: FlowArgument[]
 ) => {
   const argument = possibleArguments.find((arg) => arg.name === argName);
-  if (!argument) return value;
-  if (argument.type === "boolean") return String(value) === "true";
-  return value;
+  if (!argument) return propValue;
+  if (argument.type === "boolean") return String(propValue) === "true";
+  return propValue;
 };
 
 const unpackIfLengthOne = (arr) =>

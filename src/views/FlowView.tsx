@@ -38,6 +38,7 @@ import { showModal } from "../redux/global/global.actions";
 import { selectConnectionStatus } from "../redux/global/global.selectors";
 
 import styled from "@emotion/styled";
+import logger from "../logger";
 
 const FlowViewContainer = styled.div`
   display: flex;
@@ -152,7 +153,7 @@ export default function FlowView() {
   };
 
   const copyChartAsYAML = useCallback(() => {
-    console.log("chart to copy: ", chart);
+    logger.log("copyChartAsYAML | chart:", chart);
     copyToClipboard(formatAsYAML(chart, flowArguments));
     alert("Chart copied to clipboard as YAML");
   }, [chart, flowArguments]);
