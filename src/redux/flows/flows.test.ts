@@ -8,9 +8,11 @@ import {
   updateFlow,
   updateNode,
   importFlow,
+  updateFlowArguments,
+  updateFlowProperties,
 } from "./flows.actions";
 import { initialFlow } from "./flows.constants";
-import { testFlowState } from "./flows.testData";
+import { testFlowArguments, testFlowState } from "./flows.testData";
 
 describe("flows reducer", () => {
   it("should delete a flows", () => {
@@ -61,21 +63,21 @@ describe("flows reducer", () => {
     const flowerYaml = testFlowState.flows.flower.yaml;
     if (flowerYaml) {
       const oldNumberOfFlows = Object.keys(testFlowState.flows).length;
-      const flowStateWithDuplicatedFlowerFlow = reducer(
+      const flowStateWithImportedFlowerFlow = reducer(
         testFlowState,
         importFlow(flowerYaml)
       );
       const newNumberOfFlows = Object.keys(
-        flowStateWithDuplicatedFlowerFlow.flows
+        flowStateWithImportedFlowerFlow.flows
       ).length;
-      const duplicatedFlowerFlowIdAndProperty = Object.entries(
-        flowStateWithDuplicatedFlowerFlow.flows
+      const importedFlowerFlowIdAndProperty = Object.entries(
+        flowStateWithImportedFlowerFlow.flows
       ).find(([flowId, flowProperty]) => flowProperty.name === "Custom Flow 3");
 
       expect(newNumberOfFlows - oldNumberOfFlows).toBe(1);
-      expect(duplicatedFlowerFlowIdAndProperty).toBeDefined();
-      if (duplicatedFlowerFlowIdAndProperty) {
-        expect(duplicatedFlowerFlowIdAndProperty[1].flow).toEqual(
+      expect(importedFlowerFlowIdAndProperty).toBeDefined();
+      if (importedFlowerFlowIdAndProperty) {
+        expect(importedFlowerFlowIdAndProperty[1].flow).toEqual(
           testFlowState.flows.flower.flow
         );
       }
@@ -141,5 +143,38 @@ describe("flows reducer", () => {
     expect(
       flowStateWithDeletedNode.flows.testFlow1.flow.nodes.gateway
     ).toBeUndefined();
+  });
+
+  it("should update flow arguments", () => {
+    const flowStateWithUpdatedArguments = reducer(
+      testFlowState,
+      updateFlowArguments(testFlowArguments)
+    );
+    expect(flowStateWithUpdatedArguments.flowArguments).toEqual(
+      testFlowArguments
+    );
+  });
+
+  it("should update selected flow properties", () => {
+    const { flow } = testFlowState.flows.testFlow1;
+    const flowStateWithUpdatedProperties = reducer(
+      testFlowState,
+      updateFlowProperties({
+        name: "Modified Name",
+        type: "modified-type",
+        isConnected: true,
+        flow,
+      })
+    );
+    expect(flowStateWithUpdatedProperties.flows.testFlow1.name).toEqual(
+      "Modified Name"
+    );
+    expect(flowStateWithUpdatedProperties.flows.testFlow1.type).toEqual(
+      "modified-type"
+    );
+    expect(flowStateWithUpdatedProperties.flows.testFlow1.isConnected).toEqual(
+      true
+    );
+    expect(flowStateWithUpdatedProperties.flows.testFlow1.flow).toEqual(flow);
   });
 });

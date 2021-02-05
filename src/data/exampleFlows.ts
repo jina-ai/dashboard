@@ -40,7 +40,6 @@ const exampleFlows = {
         needs: chunk_seg
       chunk_idx:
         uses: pods/chunk.yml
-        shards: $SHARDS
         separated_workspace: true
         polling: all
         uses_reducing: _merge_all
@@ -163,7 +162,6 @@ const exampleFlows = {
         needs: splittor
       chunk_indexer:
         uses: pods/index-chunk.yml
-        shards: $SHARDS
         separated_workspace: true
         polling: all
         reducing_uses: _merge_all
@@ -176,10 +174,10 @@ const exampleFlows = {
         needs: ranker
     `,
   },
-  blankFlow:{
+  blankFlow: {
     name: "Test Flow",
     type: "example",
-    yaml:`!Flow
+    yaml: `!Flow
     with:
       rest_api: true
       port_expose: 5555
@@ -189,8 +187,8 @@ const exampleFlows = {
       pod2:
         read_only: true
       pod3:
-        read_only: true`
-  }
+        read_only: true`,
+  },
 };
 
 export default exampleFlows;

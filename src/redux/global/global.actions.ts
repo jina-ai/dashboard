@@ -1,5 +1,7 @@
 import {
   CLOSE_MODAL,
+  FETCH_ARGUMENTS_FROM_API,
+  FETCH_ARGUMENTS_FROM_DAEMON,
   HANDLE_CONNECTION_STATUS,
   HIDE_BANNER,
   HIDE_BANNER_TIMEOUT,
@@ -21,6 +23,9 @@ import {
 import { AppThunk } from "../index";
 import store from "..";
 import jinadClient from "../../services/jinad";
+import { getJinaFlowArguments } from "../../services/jinaApi";
+import { updateFlowArguments } from "../flows/flows.actions";
+import logger from "../../logger";
 
 export function handleConnectionStatus(
   connected: boolean,
@@ -30,6 +35,9 @@ export function handleConnectionStatus(
     dispatch(_handleConnectionStatus(connected, message));
     if (connected) {
       dispatch(showBanner(message, "success"));
+      dispatch(fetchArgumentsFromDaemon());
+    } else {
+      dispatch(fetchArgumentsFromApi());
     }
   };
 }
@@ -44,6 +52,24 @@ export function _handleConnectionStatus(
       connected,
       message,
     },
+  };
+}
+
+export function fetchArgumentsFromApi(): AppThunk {
+  return async function (dispatch) {
+    dispatch({ type: FETCH_ARGUMENTS_FROM_API });
+    let flowArguments = await getJinaFlowArguments();
+    logger.log("loadFlowArgumentsFromApi | flowArguments:", flowArguments);
+    return dispatch(updateFlowArguments(flowArguments));
+  };
+}
+
+export function fetchArgumentsFromDaemon(): AppThunk {
+  return async function (dispatch) {
+    dispatch({ type: FETCH_ARGUMENTS_FROM_DAEMON });
+    let flowArguments = await jinadClient.getJinaFlowArguments();
+    logger.log("loadFlowArgumentsFromDaemon | flowArguments:", flowArguments);
+    return dispatch(updateFlowArguments(flowArguments));
   };
 }
 

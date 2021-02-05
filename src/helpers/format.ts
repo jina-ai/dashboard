@@ -3,13 +3,7 @@ import * as YAML from "yaml";
 import { getInitialLogLevel } from "../redux/logStream/logStream.constants";
 import _ from "lodash";
 import { Level, LogLevelOccurrences } from "../redux/logStream/logStream.types";
-
-import { PROPERTY_LIST } from "../redux/logStream/logStream.constants";
-
-type PropertyMap = { [key: string]: PodPropertyType };
-const propertyTypes: PropertyMap = {};
-
-PROPERTY_LIST.forEach((prop) => (propertyTypes[prop.name] = prop.type));
+import { FlowArgument, FlowArguments } from "../redux/flows/flows.types";
 
 const getNodeLabelsByPortId = ({ from, to }, nodes) => ({
   [from.portId]: nodes[from.nodeId].label || nodes[from.nodeId].properties.name,
@@ -32,13 +26,24 @@ export const parseYAML = (yamlSTR: string) => {
   }
 };
 
-export const decodePropValue = (propName, propValue) =>
-  propertyTypes[propName] === "bool" ? propValue === "true" : propValue;
+export const decodePropValue = (
+  argName,
+  propValue,
+  possibleArguments: FlowArgument[]
+) => {
+  const argument = possibleArguments.find((arg) => arg.name === argName);
+  if (!argument) return propValue;
+  if (argument.type === "boolean") return String(propValue) === "true";
+  return propValue;
+};
+
 const unpackIfLengthOne = (arr) =>
   Array.isArray(arr) && arr.length === 1 ? arr[0] : arr;
 
-export const formatAsYAML = (chart) => {
+export const formatAsYAML = (chart, flowArguments: FlowArguments) => {
   const { with: chartWith, nodes, links } = chart;
+
+  const { pod: podArguments } = flowArguments;
 
   const needsByPodLabel = Object.values(links).reduce((acc, curr) => {
     const nodeLabelsByPortId = getNodeLabelsByPortId(curr, nodes);
@@ -52,30 +57,32 @@ export const formatAsYAML = (chart) => {
     return acc;
   }, {});
 
-  const pods = Object.values(nodes).reduce((acc, node) => {
-    const { label } = node;
-    if (!label) return acc;
+  const pods = Object.values(nodes)
+    .filter(({ label }) => label !== "gateway")
+    .reduce((acc, node) => {
+      const key = node.label || node.properties.name;
 
-    const podProperties = Object.entries(node.properties).reduce(
-      (acc, [key, propValue]) => {
-        acc[key] = decodePropValue(key, propValue);
-        return acc;
-      },
-      {}
-    );
-    if (needsByPodLabel[label]) {
-      podProperties.needs = unpackIfLengthOne(needsByPodLabel[label]);
-    }
+      const podProperties = Object.entries(node.properties).reduce(
+        (acc, [argName, propValue]) => {
+          acc[argName] = decodePropValue(argName, propValue, podArguments);
+          return acc;
+        },
+        {}
+      );
+      if (needsByPodLabel[key]) {
+        podProperties.needs = unpackIfLengthOne(needsByPodLabel[key]);
+      }
 
-    acc[label] = { ...podProperties };
-    return acc;
-  }, {});
+      acc[key] = { ...podProperties };
+      return acc;
+    }, {});
 
   const canvas = Object.values(nodes).reduce((acc, node) => {
     const {
       position: { x, y },
     } = node;
-    acc[node.label] = { x, y };
+    const key = node.label || node.properties.name;
+    acc[key] = { x: parseInt(x), y: parseInt(y) };
     return acc;
   }, {});
 

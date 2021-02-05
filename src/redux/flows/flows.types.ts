@@ -9,6 +9,7 @@ import {
   UPDATE_NODE,
   UPDATE_FLOW_PROPERTIES,
   IMPORT_FLOW,
+  UPDATE_FLOW_ARGUMENTS,
 } from "./flows.constants";
 import {
   IChart,
@@ -81,10 +82,27 @@ export type CreateNewFlowAction = {
   type: typeof CREATE_NEW_FLOW;
 };
 
+export type FlowArgumentType = "string" | "boolean" | "integer";
+
+export type FlowArgument = {
+  name: string;
+  description: string;
+  type: FlowArgumentType;
+  defaultValue?: string | number | boolean | null;
+};
+
+export type FlowArguments = {
+  version: string;
+  flow: FlowArgument[];
+  pea: FlowArgument[];
+  pod: FlowArgument[];
+};
+
 export type FlowState = {
   rerender: boolean;
   selectedFlow: string;
   flows: Flows;
+  flowArguments: FlowArguments;
   tooltipConfig: {
     tooltipsGlobal: {
       showTooltip: boolean;
@@ -96,6 +114,10 @@ export type FlowState = {
 export type UpdateFlowAction = {
   type: typeof UPDATE_FLOW;
   payload: Flow;
+};
+export type UpdateFlowArgumentsAction = {
+  type: typeof UPDATE_FLOW_ARGUMENTS;
+  payload: FlowArguments;
 };
 export type UpdateFlowPropertiesAction = {
   type: typeof UPDATE_FLOW_PROPERTIES;
@@ -139,4 +161,5 @@ export type FlowActionTypes =
   | UpdateNodeAction
   | DeleteNodeAction
   | RerenderAction
-  | ImportFlowAction;
+  | ImportFlowAction
+  | UpdateFlowArgumentsAction;

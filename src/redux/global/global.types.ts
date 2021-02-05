@@ -75,7 +75,7 @@ export type User = {
 } | null;
 
 export type Processes = {
-  [processNum: number]: string;
+  [processId: string]: string;
 };
 
 export type Modal =

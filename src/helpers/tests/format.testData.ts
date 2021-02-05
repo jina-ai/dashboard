@@ -727,23 +727,18 @@ export const parsedYamlObject = {
       {
         name: "segmenter",
         read_only: true,
-        show_exc_info: true,
         uses: "pods/segment.yml",
       },
       {
         name: "encoder",
         polling: "any",
         read_only: true,
-        shards: "$JINA_PARALLEL",
-        show_exc_info: true,
         timeout_ready: 600000,
         uses: "pods/encode.yml",
       },
       {
         name: "chunk_idx",
         polling: "any",
-        shards: "$JINA_SHARDS",
-        show_exc_info: true,
         uses: "pods/chunk.yml",
       },
       {
