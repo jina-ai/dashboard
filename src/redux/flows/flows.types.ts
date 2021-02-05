@@ -8,6 +8,7 @@ import {
   UPDATE_FLOW,
   UPDATE_NODE,
   UPDATE_FLOW_PROPERTIES,
+  IMPORT_FLOW,
 } from "./flows.constants";
 import {
   IChart,
@@ -123,6 +124,11 @@ export type RerenderAction = {
   type: typeof RERENDER;
 };
 
+export type ImportFlowAction = {
+  type: typeof IMPORT_FLOW;
+  payload: string;
+};
+
 export type FlowActionTypes =
   | LoadFlowAction
   | CreateNewFlowAction
@@ -132,4 +138,5 @@ export type FlowActionTypes =
   | DeleteFlowAction
   | UpdateNodeAction
   | DeleteNodeAction
-  | RerenderAction;
+  | RerenderAction
+  | ImportFlowAction;
