@@ -9,7 +9,7 @@ import { RawLog } from "../redux/logStream/logStream.types";
 import { TIMEOUT } from "./config";
 import { DaemonArgumentsResponse } from "./services.types";
 
-let jinad: AxiosInstance;
+export let jinadInstance: AxiosInstance;
 
 type Settings = {
   host: string;
@@ -36,11 +36,11 @@ const jinadClient = {
 
     const baseURL = `${settings.host}:${settings.port}`;
 
-    jinad = axios.create({ baseURL, timeout: TIMEOUT });
+    jinadInstance = axios.create({ baseURL, timeout: TIMEOUT });
 
     let result;
     try {
-      result = await jinad.get("/");
+      result = await jinadInstance.get("/");
       if (result.status === 200) {
         logger.log("api - connect successfully connected to jinad");
         return callback({
@@ -54,24 +54,23 @@ const jinadClient = {
     return callback({ connected: false, message: "failed to connect" });
   },
   getJinaFlowArguments: async (): Promise<FlowArguments> => {
-    alert("called");
-    const statusResult = await jinad.get("/status");
+    const statusResult = await jinadInstance.get("/status");
     const version = statusResult.data.jina.jina;
 
-    const flowResult = await jinad.get("/flows/arguments");
+    const flowResult = await jinadInstance.get("/flows/arguments");
     const flow = parseDaemonFlowMethodOptions(flowResult.data);
 
-    const podResult = await jinad.get("/pods/arguments");
+    const podResult = await jinadInstance.get("/pods/arguments");
     const pod = parseDaemonFlowMethodOptions(podResult.data);
 
-    const peaResult = await jinad.get("/peas/arguments");
+    const peaResult = await jinadInstance.get("/peas/arguments");
     const pea = parseDaemonFlowMethodOptions(peaResult.data);
 
     return { version, flow, pod, pea };
   },
   getDaemonStatus: async () => {
     try {
-      const result = await jinad.get("/status");
+      const result = await jinadInstance.get("/status");
       if (result.status === 200)
         return { status: "success", daemonStatus: result.data };
       return { status: "error", message: result.data };
@@ -81,7 +80,7 @@ const jinadClient = {
   },
   getWorkspaces: async () => {
     try {
-      const result = await jinad.get("/workspaces");
+      const result = await jinadInstance.get("/workspaces");
       if (result.status === 200)
         return { status: "success", workspaces: result.data };
       return { status: "error", message: result.data };
@@ -101,7 +100,7 @@ const jinadClient = {
       },
     };
     try {
-      const result = await jinad.post("/workspaces", formData, options);
+      const result = await jinadInstance.post("/workspaces", formData, options);
       if (result.status === 201)
         return { status: "success", workspace: result.data };
       return { status: "error", message: result.data };
@@ -111,7 +110,7 @@ const jinadClient = {
   },
   deleteWorkspace: async (workspace_id: string) => {
     try {
-      const result = await jinad.delete(`/workspaces/${workspace_id}`);
+      const result = await jinadInstance.delete(`/workspaces/${workspace_id}`);
       if (result.status === 200)
         return { status: "success", message: result.data };
     } catch (e) {
@@ -121,7 +120,7 @@ const jinadClient = {
   },
   deleteAllWorkspaces: async () => {
     try {
-      const result = await jinad.delete(`/workspaces/all`);
+      const result = await jinadInstance.delete(`/workspaces/all`);
       if (result.status === 200)
         return { status: "success", message: result.data };
     } catch (e) {
@@ -131,7 +130,7 @@ const jinadClient = {
   },
   getArgumentsForFlow: async () => {
     try {
-      const result = await jinad.get("/flows/arguments");
+      const result = await jinadInstance.get("/flows/arguments");
       if (result.status === 200)
         return { status: "success", arguments: result.data };
       return { status: "error", message: result.data };
@@ -141,7 +140,7 @@ const jinadClient = {
   },
   getFlow: async (flow_id: string) => {
     try {
-      const result = await jinad.get(`/flows/${flow_id}`);
+      const result = await jinadInstance.get(`/flows/${flow_id}`);
       if (result.status === 200)
         return { status: "success", flow: result.data };
       return {
@@ -167,7 +166,7 @@ const jinadClient = {
       },
     };
     try {
-      const result = await jinad.post(`/flows`, formData, options);
+      const result = await jinadInstance.post(`/flows`, formData, options);
       if (result.status === 201) {
         const flow_id = result.data;
         const message = `Successfuly started flow\nid: ${flow_id}`;
@@ -181,7 +180,7 @@ const jinadClient = {
   },
   terminateFlow: async (flow_id: string) => {
     try {
-      const result = await jinad.delete(`/flows/${flow_id}`);
+      const result = await jinadInstance.delete(`/flows/${flow_id}`);
       logger.log("terminate result", result);
       if (result.status === 200) {
         const message = `Successfuly terminated flow ${flow_id}`;
@@ -195,7 +194,7 @@ const jinadClient = {
   },
   terminateAllFlows: async () => {
     try {
-      const result = await jinad.delete("/flows/all");
+      const result = await jinadInstance.delete("/flows/all");
       if (result.status === 200)
         return { status: "success", message: result.data };
     } catch (e) {
@@ -205,7 +204,9 @@ const jinadClient = {
   },
   getLogs: async (workspace_id: string, flow_id: string) => {
     try {
-      const result = await jinad.get(`/logs/${workspace_id}/${flow_id}`);
+      const result = await jinadInstance.get(
+        `/logs/${workspace_id}/${flow_id}`
+      );
       if (result.status === 200) {
         const logs = result.data
           .split("\n")
@@ -258,7 +259,7 @@ const jinadClient = {
   },
   getArgumentsForPod: async () => {
     try {
-      const result = await jinad.get("/pods/arguments");
+      const result = await jinadInstance.get("/pods/arguments");
       if (result.status === 200)
         return { status: "success", arguments: result.data };
       return { status: "error", message: result.data };
@@ -268,7 +269,7 @@ const jinadClient = {
   },
   getPod: async (podId: string) => {
     try {
-      const result = await jinad.get(`/pods/${podId}`);
+      const result = await jinadInstance.get(`/pods/${podId}`);
       if (result.status === 200) return { status: "success", pod: result.data };
     } catch (e) {
       logger.log(`api - getPod ${podId} error: `, e);
@@ -277,7 +278,7 @@ const jinadClient = {
   },
   startPod: async (podArgs: Args) => {
     try {
-      const result = await jinad.post(`/pods`, podArgs);
+      const result = await jinadInstance.post(`/pods`, podArgs);
       if (result.status === 201) return { status: "success", pod: result.data };
       return { status: "error", message: result.data };
     } catch (e) {
@@ -286,7 +287,7 @@ const jinadClient = {
   },
   terminatePod: async (podId: string) => {
     try {
-      const result = await jinad.delete(`/pods/${podId}`);
+      const result = await jinadInstance.delete(`/pods/${podId}`);
       if (result.status === 200)
         return { status: "success", message: result.data };
     } catch (e) {
@@ -296,7 +297,7 @@ const jinadClient = {
   },
   terminateAllPods: async () => {
     try {
-      const result = await jinad.delete(`/pods/all`);
+      const result = await jinadInstance.delete(`/pods/all`);
       if (result.status === 200)
         return { status: "success", message: result.data };
     } catch (e) {
@@ -306,7 +307,7 @@ const jinadClient = {
   },
   getArgumentsForPea: async () => {
     try {
-      const result = await jinad.get("/peas/arguments");
+      const result = await jinadInstance.get("/peas/arguments");
       if (result.status === 200)
         return { status: "success", arguments: result.data };
       return { status: "error", message: result.data };
@@ -316,7 +317,7 @@ const jinadClient = {
   },
   getPea: async (peaId: string) => {
     try {
-      const result = await jinad.get(`/peas/${peaId}`);
+      const result = await jinadInstance.get(`/peas/${peaId}`);
       if (result.status === 200) return { status: "success", pea: result.data };
     } catch (e) {
       logger.log(`api - getPea error getting pea ${peaId}: `, e);
@@ -325,7 +326,7 @@ const jinadClient = {
   },
   startPea: async (peaArgs: Args) => {
     try {
-      const result = await jinad.post(`/peas`, peaArgs);
+      const result = await jinadInstance.post(`/peas`, peaArgs);
       if (result.status === 201) return { status: "success", pea: result.data };
       return { status: "error", message: result.data };
     } catch (e) {
@@ -334,7 +335,7 @@ const jinadClient = {
   },
   terminatePea: async (peaId: string) => {
     try {
-      const result = await jinad.delete(`/peas/${peaId}`);
+      const result = await jinadInstance.delete(`/peas/${peaId}`);
       if (result.status === 200)
         return { status: "success", message: result.data };
     } catch (e) {
@@ -344,7 +345,7 @@ const jinadClient = {
   },
   terminateAllPeas: async () => {
     try {
-      const result = await jinad.delete("/peas/all");
+      const result = await jinadInstance.delete("/peas/all");
       if (result.status === 200)
         return { status: "success", message: result.data };
     } catch (e) {

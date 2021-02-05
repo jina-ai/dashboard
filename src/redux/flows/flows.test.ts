@@ -8,9 +8,11 @@ import {
   updateFlow,
   updateNode,
   importFlow,
+  updateFlowArguments,
+  updateFlowProperties,
 } from "./flows.actions";
 import { initialFlow } from "./flows.constants";
-import { testFlowState } from "./flows.testData";
+import { testFlowArguments, testFlowState } from "./flows.testData";
 
 describe("flows reducer", () => {
   it("should delete a flows", () => {
@@ -141,5 +143,38 @@ describe("flows reducer", () => {
     expect(
       flowStateWithDeletedNode.flows.testFlow1.flow.nodes.gateway
     ).toBeUndefined();
+  });
+
+  it("should update flow arguments", () => {
+    const flowStateWithUpdatedArguments = reducer(
+      testFlowState,
+      updateFlowArguments(testFlowArguments)
+    );
+    expect(flowStateWithUpdatedArguments.flowArguments).toEqual(
+      testFlowArguments
+    );
+  });
+
+  it("should update selected flow properties", () => {
+    const { flow } = testFlowState.flows.testFlow1;
+    const flowStateWithUpdatedProperties = reducer(
+      testFlowState,
+      updateFlowProperties({
+        name: "Modified Name",
+        type: "modified-type",
+        isConnected: true,
+        flow,
+      })
+    );
+    expect(flowStateWithUpdatedProperties.flows.testFlow1.name).toEqual(
+      "Modified Name"
+    );
+    expect(flowStateWithUpdatedProperties.flows.testFlow1.type).toEqual(
+      "modified-type"
+    );
+    expect(flowStateWithUpdatedProperties.flows.testFlow1.isConnected).toEqual(
+      true
+    );
+    expect(flowStateWithUpdatedProperties.flows.testFlow1.flow).toEqual(flow);
   });
 });

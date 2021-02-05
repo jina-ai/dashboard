@@ -12,23 +12,39 @@ import {
   showModal,
   toggleSidebar,
   showBanner,
+  handleConnectionStatus,
 } from "./global.actions";
 import {
+  apiArgumentsURL,
+  testDaemonResponseFlowsArguments,
+  testDaemonResponsePodsArguments,
+  testDaemonResponsePeasArguments,
+  testDaemonResponseStatus,
   testError,
+  testJinaApiResponse,
   testMessage_0,
   testModal,
   testModalParams,
   testTheme,
 } from "./global.testData";
 import configureMockStore from "redux-mock-store";
+import axios from "axios";
+import { jinadInstance } from "../../services/jinad";
+import AxiosMockAdapter from "axios-mock-adapter";
 import thunk, { ThunkDispatch } from "redux-thunk";
 import { GlobalState } from "./global.types";
 import { AnyAction } from "redux";
 import { State } from "../index";
 
+const mockAxios = new AxiosMockAdapter(axios);
+const mockJinadClient = new AxiosMockAdapter(jinadInstance);
+
 const middlewares = [thunk];
 type DispatchExts = ThunkDispatch<State, void, AnyAction>;
-const mockStore = configureMockStore<GlobalState, DispatchExts>(middlewares);
+const mockGlobalStore = configureMockStore<GlobalState, DispatchExts>(
+  middlewares
+);
+const mockStore = configureMockStore<State, DispatchExts>(middlewares);
 
 describe("global reducer", () => {
   describe("when a new log is submitted", () => {
@@ -67,10 +83,7 @@ describe("global reducer", () => {
 
     it("should log the connection", () => {
       const loggerSpy = jest.spyOn(logger, "log");
-      reducer(
-        initialGlobalState,
-        _handleConnectionStatus(true, testMessage_0)
-      );
+      reducer(initialGlobalState, _handleConnectionStatus(true, testMessage_0));
       expect(loggerSpy).toHaveBeenNthCalledWith(
         1,
         "handleLogConnectionStatus - status",
@@ -153,7 +166,7 @@ describe("global reducer", () => {
 describe("global actions", () => {
   describe("when calling showBanner", () => {
     it("should open and close the banner after HIDE_BANNER_TIMEOUT", () => {
-      const store = mockStore(initialGlobalState);
+      const store = mockGlobalStore(initialGlobalState);
       jest.useFakeTimers();
       store.dispatch(showBanner(testMessage_0, testTheme));
       expect(store.getActions()).toEqual([
@@ -164,6 +177,42 @@ describe("global actions", () => {
         _showBanner(testMessage_0, testTheme),
         _hideBanner(),
       ]);
+    });
+  });
+
+  describe("when connection fails to establish with daemon", () => {
+    it("should fetch flow arguments from api.jina.ai", () => {
+      const store = mockStore();
+      mockAxios.onGet(apiArgumentsURL).reply(200, testJinaApiResponse);
+
+      const expectedAction = { type: "FETCH_ARGUMENTS_FROM_API" };
+
+      store.dispatch(handleConnectionStatus(false, "test_message"));
+      expect(
+        store.getActions().find((action) => action.type === expectedAction.type)
+      ).toEqual(expectedAction);
+    });
+  });
+
+  describe("when connection is successfully established with daemon", () => {
+    it("should fetch flow arguments from daeomon", () => {
+      const store = mockStore();
+      const expectedAction = { type: "FETCH_ARGUMENTS_FROM_DAEMON" };
+      mockJinadClient.onGet("/status").reply(200, testDaemonResponseStatus);
+      mockJinadClient
+        .onGet("/flows/arguments")
+        .reply(200, testDaemonResponseFlowsArguments);
+      mockJinadClient
+        .onGet("/pods/arguments")
+        .reply(200, testDaemonResponsePodsArguments);
+      mockJinadClient
+        .onGet("/peas/arguments")
+        .reply(200, testDaemonResponsePeasArguments);
+
+      store.dispatch(handleConnectionStatus(true, "test_message"));
+      expect(
+        store.getActions().find((action) => action.type === expectedAction.type)
+      ).toEqual(expectedAction);
     });
   });
 });

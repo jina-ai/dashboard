@@ -1,4 +1,4 @@
-import { FlowState } from "./flows.types";
+import { FlowArguments, FlowState } from "./flows.types";
 
 export const testFlowState: FlowState = {
   rerender: false,
@@ -436,4 +436,32 @@ export const testFlowState: FlowState = {
       },
     },
   },
+};
+
+export const testFlowArguments: FlowArguments = {
+  version: "1",
+  pod: [
+    {
+      defaultValue: "any",
+      description: "test_description_1",
+      name: "test_name_1",
+      type: "string",
+    },
+  ],
+  pea: [
+    {
+      defaultValue: 39399,
+      description: "test_description_2",
+      name: "test_name_2",
+      type: "integer",
+    },
+  ],
+  flow: [
+    {
+      defaultValue: true,
+      description: "test_description_3",
+      name: "test_name_3",
+      type: "boolean",
+    },
+  ],
 };

@@ -1,5 +1,7 @@
 import {
   CLOSE_MODAL,
+  FETCH_ARGUMENTS_FROM_API,
+  FETCH_ARGUMENTS_FROM_DAEMON,
   HANDLE_CONNECTION_STATUS,
   HIDE_BANNER,
   HIDE_BANNER_TIMEOUT,
@@ -33,27 +35,10 @@ export function handleConnectionStatus(
     dispatch(_handleConnectionStatus(connected, message));
     if (connected) {
       dispatch(showBanner(message, "success"));
-      dispatch(loadFlowArgumentsFromDaemon());
+      dispatch(fetchArgumentsFromDaemon());
     } else {
-      dispatch(loadFlowArgumentsFromApi());
+      dispatch(fetchArgumentsFromApi());
     }
-  };
-}
-
-export function loadFlowArgumentsFromDaemon(): AppThunk {
-  return async function (dispatch) {
-    alert("here we go");
-    let flowArguments = await jinadClient.getJinaFlowArguments();
-    console.log("loadFlowArgumentsFromDaemon | flowArguments:", flowArguments);
-    return dispatch(updateFlowArguments(flowArguments));
-  };
-}
-
-export function loadFlowArgumentsFromApi(): AppThunk {
-  return async function (dispatch) {
-    let flowArguments = await getJinaFlowArguments();
-    logger.log("loadFlowArgumentsFromApi | flowArguments:", flowArguments);
-    return dispatch(updateFlowArguments(flowArguments));
   };
 }
 
@@ -67,6 +52,24 @@ export function _handleConnectionStatus(
       connected,
       message,
     },
+  };
+}
+
+export function fetchArgumentsFromApi(): AppThunk {
+  return async function (dispatch) {
+    dispatch({ type: FETCH_ARGUMENTS_FROM_API });
+    let flowArguments = await getJinaFlowArguments();
+    logger.log("loadFlowArgumentsFromApi | flowArguments:", flowArguments);
+    return dispatch(updateFlowArguments(flowArguments));
+  };
+}
+
+export function fetchArgumentsFromDaemon(): AppThunk {
+  return async function (dispatch) {
+    dispatch({ type: FETCH_ARGUMENTS_FROM_DAEMON });
+    let flowArguments = await jinadClient.getJinaFlowArguments();
+    logger.log("loadFlowArgumentsFromDaemon | flowArguments:", flowArguments);
+    return dispatch(updateFlowArguments(flowArguments));
   };
 }
 
