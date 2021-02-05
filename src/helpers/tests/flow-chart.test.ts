@@ -1,6 +1,12 @@
 import { formatForFlowchart } from "../flow-chart";
-import { parseYAML } from "../format";
-import { legacyYAML, v1YAML, formattedFlow } from "./flow-chart.testData";
+import { formatAsYAML, parseYAML } from "../format";
+import {
+  legacyYAML,
+  v1YAML,
+  formattedFlow,
+  flowArguments,
+  formattedFlowAsYaml,
+} from "./flow-chart.testData";
 
 describe("formatForFlowchart", () => {
   it("should parse and format v1 yaml syntax into a flow object", () => {
@@ -24,5 +30,10 @@ describe("formatForFlowchart", () => {
 
     expect(parsedFlowLegacy).toEqual(parsedFlowV1);
     expect(parsedFlowV1).toEqual(formattedFlow);
+  });
+
+  it("should generate a valid YAML from a flow object", () => {
+    const yamlOutput = formatAsYAML(formattedFlow, flowArguments);
+    expect(yamlOutput).toEqual(formattedFlowAsYaml);
   });
 });

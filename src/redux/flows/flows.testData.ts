@@ -2,6 +2,12 @@ import { FlowState } from "./flows.types";
 
 export const testFlowState: FlowState = {
   rerender: false,
+  flowArguments: {
+    pod: [],
+    pea: [],
+    flow: [],
+    version: "",
+  },
   tooltipConfig: {
     tooltipsGlobal: {
       showTooltip: true,
@@ -14,7 +20,7 @@ export const testFlowState: FlowState = {
     testFlow1: {
       name: "Custom Flow 1",
       type: "user-generated",
-      isConnected:false,
+      isConnected: false,
       flow: {
         selected: {},
         hovered: {},
@@ -41,7 +47,7 @@ export const testFlowState: FlowState = {
     testFlow2: {
       name: "Custom Flow 2",
       type: "user-generated",
-      isConnected:false,
+      isConnected: false,
       flow: {
         selected: {},
         hovered: {},
@@ -68,7 +74,7 @@ export const testFlowState: FlowState = {
     flower: {
       name: "Flower Search Query",
       type: "example",
-      isConnected:false,
+      isConnected: false,
       yaml:
         "!Flow\n    with:\n      read_only: true\n      port_expose: $JINA_PORT\n      board:\n        canvas:\n          gateway:\n            x: 250\n            y: 150\n          loader:\n            x: 250\n            y: 257\n          flipper:\n            x: 252\n            y: 407\n          normalizer:\n            x: 239\n            y: 563\n          encoder:\n            x: 252\n            y: 712\n          chunk_indexer:\n            x: 250\n            y: 872\n          ranker:\n            x: 252\n            y: 1066\n          doc_indexer:\n            x: 253\n            y: 1199\n    pods:\n      gateway: {}\n      loader:\n        uses: yaml/craft-load.yml\n        read_only: true\n        needs: gateway\n      flipper:\n        uses: yaml/craft-flip.yml\n        read_only: true\n        needs: loader\n      normalizer:\n        uses: yaml/craft-normalize.yml\n        read_only: true\n        needs: flipper\n      encoder:\n        uses: $ENCODER\n        timeout_ready: 600000\n        read_only: true\n        needs: normalizer\n      chunk_indexer:\n        uses: yaml/index-chunk.yml\n        separated_workspace: true\n        polling: all\n        uses_reducing: _merge_all\n        needs: encoder\n      ranker:\n        uses: MinRanker\n        needs: chunk_indexer\n      doc_indexer:\n        uses: yaml/index-doc.yml\n        needs: ranker  \n    ",
       flow: {
@@ -387,48 +393,47 @@ export const testFlowState: FlowState = {
         selected: {},
         hovered: {},
         scale: 1,
-        "with":  {
-          "board":  {
-            "canvas":  {
-              "chunk_indexer":  {
-                "x": 250,
-                "y": 872,
+        with: {
+          board: {
+            canvas: {
+              chunk_indexer: {
+                x: 250,
+                y: 872,
               },
-              "doc_indexer":  {
-                "x": 253,
-                "y": 1199,
+              doc_indexer: {
+                x: 253,
+                y: 1199,
               },
-              "encoder":  {
-                "x": 252,
-                "y": 712,
+              encoder: {
+                x: 252,
+                y: 712,
               },
-              "flipper":  {
-                "x": 252,
-                "y": 407,
+              flipper: {
+                x: 252,
+                y: 407,
               },
-              "gateway":  {
-                "x": 250,
-                "y": 150,
+              gateway: {
+                x: 250,
+                y: 150,
               },
-              "loader":  {
-                "x": 250,
-                "y": 257,
+              loader: {
+                x: 250,
+                y: 257,
               },
-              "normalizer":  {
-                "x": 239,
-                "y": 563,
+              normalizer: {
+                x: 239,
+                y: 563,
               },
-              "ranker":  {
-                "x": 252,
-                "y": 1066,
+              ranker: {
+                x: 252,
+                y: 1066,
               },
             },
           },
-          "port_expose": "$JINA_PORT",
-          "read_only": true,
+          port_expose: "$JINA_PORT",
+          read_only: true,
         },
       },
     },
   },
 };
-

@@ -21,6 +21,9 @@ import {
 import { AppThunk } from "../index";
 import store from "..";
 import jinadClient from "../../services/jinad";
+import { getJinaFlowArguments } from "../../services/jinaApi";
+import { updateFlowArguments } from "../flows/flows.actions";
+import logger from "../../logger";
 
 export function handleConnectionStatus(
   connected: boolean,
@@ -30,7 +33,27 @@ export function handleConnectionStatus(
     dispatch(_handleConnectionStatus(connected, message));
     if (connected) {
       dispatch(showBanner(message, "success"));
+      dispatch(loadFlowArgumentsFromDaemon());
+    } else {
+      dispatch(loadFlowArgumentsFromApi());
     }
+  };
+}
+
+export function loadFlowArgumentsFromDaemon(): AppThunk {
+  return async function (dispatch) {
+    alert("here we go");
+    let flowArguments = await jinadClient.getJinaFlowArguments();
+    console.log("loadFlowArgumentsFromDaemon | flowArguments:", flowArguments);
+    return dispatch(updateFlowArguments(flowArguments));
+  };
+}
+
+export function loadFlowArgumentsFromApi(): AppThunk {
+  return async function (dispatch) {
+    let flowArguments = await getJinaFlowArguments();
+    logger.log("loadFlowArgumentsFromApi | flowArguments:", flowArguments);
+    return dispatch(updateFlowArguments(flowArguments));
   };
 }
 

@@ -13,10 +13,12 @@ import {
   RERENDER,
   UPDATE_FLOW_PROPERTIES,
   IMPORT_FLOW,
+  UPDATE_FLOW_ARGUMENTS,
 } from "./flows.constants";
 import {
   Flow,
   FlowActionTypes,
+  FlowArguments,
   FlowProperties,
   Flows,
   FlowState,
@@ -75,6 +77,12 @@ const initialState: FlowState = {
     ...getUserFlows(),
     ...getExampleFlows(),
   },
+  flowArguments: {
+    version: "0.0",
+    flow: [],
+    pea: [],
+    pod: [],
+  },
   tooltipConfig: {
     tooltipsGlobal: {
       showTooltip: true,
@@ -108,6 +116,9 @@ export default function flowReducer(
       return newState;
     case UPDATE_FLOW_PROPERTIES:
       newState = _updateFlowProperties(state, action.payload);
+      return newState;
+    case UPDATE_FLOW_ARGUMENTS:
+      newState = _updateFlowArguments(state, action.payload);
       return newState;
     case CREATE_NEW_FLOW:
       newState = _createNewFlow(state);
@@ -205,6 +216,16 @@ function _createNewFlow(state: FlowState, customYAML?: string): FlowState {
       },
     },
     selectedFlow: id,
+  };
+}
+
+function _updateFlowArguments(
+  state: FlowState,
+  flowArguments: FlowArguments
+): FlowState {
+  return {
+    ...state,
+    flowArguments,
   };
 }
 

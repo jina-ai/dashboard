@@ -2,7 +2,7 @@ import React from "react";
 import SidebarItem from "./SidebarItem";
 import defaultPods from "../../data/defaultPods";
 import { Button, Card } from "react-bootstrap";
-import { Flow } from "../../redux/flows/flows.types";
+import { Flow, FlowArgument } from "../../redux/flows/flows.types";
 
 function ReadOnly({ duplicateFlow }: { duplicateFlow: () => void }) {
   return (
@@ -17,11 +17,6 @@ function ReadOnly({ duplicateFlow }: { duplicateFlow: () => void }) {
     </div>
   );
 }
-
-type PropertyItem = {
-  name: string;
-  type: string;
-};
 
 function PodMenu() {
   return (
@@ -65,7 +60,7 @@ type FlowChartSidebarProps = {
     nodeFromId: string,
     nodeToId: string | undefined
   ) => void;
-  availableProperties: PropertyItem[];
+  arguments: FlowArgument[];
 };
 
 function FlowChartSidebar({ readonly, duplicateFlow }: FlowChartSidebarProps) {

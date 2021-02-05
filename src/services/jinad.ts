@@ -1,7 +1,13 @@
 import axios, { AxiosInstance } from "axios";
 import logger from "../logger";
+import {
+  FlowArgument,
+  FlowArguments,
+  FlowArgumentType,
+} from "../redux/flows/flows.types";
 import { RawLog } from "../redux/logStream/logStream.types";
 import { TIMEOUT } from "./config";
+import { DaemonArgumentsResponse } from "./services.types";
 
 let jinad: AxiosInstance;
 
@@ -46,6 +52,22 @@ const jinadClient = {
       logger.log("api - connect could not connect to jinad:", e);
     }
     return callback({ connected: false, message: "failed to connect" });
+  },
+  getJinaFlowArguments: async (): Promise<FlowArguments> => {
+    alert("called");
+    const statusResult = await jinad.get("/status");
+    const version = statusResult.data.jina.jina;
+
+    const flowResult = await jinad.get("/flows/arguments");
+    const flow = parseDaemonFlowMethodOptions(flowResult.data);
+
+    const podResult = await jinad.get("/pods/arguments");
+    const pod = parseDaemonFlowMethodOptions(podResult.data);
+
+    const peaResult = await jinad.get("/peas/arguments");
+    const pea = parseDaemonFlowMethodOptions(peaResult.data);
+
+    return { version, flow, pod, pea };
   },
   getDaemonStatus: async () => {
     try {
@@ -107,7 +129,7 @@ const jinadClient = {
     }
     return { status: "error" };
   },
-  getFlowArguments: async () => {
+  getArgumentsForFlow: async () => {
     try {
       const result = await jinad.get("/flows/arguments");
       if (result.status === 200)
@@ -234,7 +256,7 @@ const jinadClient = {
       callback({ connected: false, message: "Socket error" });
     });
   },
-  getPodArguments: async () => {
+  getArgumentsForPod: async () => {
     try {
       const result = await jinad.get("/pods/arguments");
       if (result.status === 200)
@@ -282,7 +304,7 @@ const jinadClient = {
     }
     return { status: "error" };
   },
-  getPeaArguments: async () => {
+  getArgumentsForPea: async () => {
     try {
       const result = await jinad.get("/peas/arguments");
       if (result.status === 200)
@@ -330,6 +352,26 @@ const jinadClient = {
     }
     return { status: "error" };
   },
+};
+
+const typeMap: { [key: string]: FlowArgumentType } = {
+  string: "string",
+  boolean: "boolean",
+  integer: "integer",
+  array: "string",
+};
+
+export const parseDaemonFlowMethodOptions = (
+  data: DaemonArgumentsResponse
+): FlowArgument[] => {
+  return Object.entries(data).map(
+    ([name, { description, default: defaultValue, type: itemType }]) => {
+      const type = typeMap[itemType];
+      if (typeof defaultValue === "undefined" || defaultValue === null)
+        return { name, description, type };
+      return { name, description, defaultValue, type };
+    }
+  );
 };
 
 export default jinadClient;

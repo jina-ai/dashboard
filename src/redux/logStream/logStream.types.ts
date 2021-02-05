@@ -60,12 +60,6 @@ export type Message = {
   data: RawLog;
 };
 
-type PodPropertyType = "str" | "int" | "bool" | "SocketType" | "ReplicaType";
-export type PodProperty = {
-  name: string;
-  type: PodPropertyType;
-};
-
 export type showLogAtIndexAction = {
   type: typeof SHOW_LOG_INDEX;
   payload: number;
