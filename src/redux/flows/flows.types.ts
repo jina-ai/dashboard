@@ -33,7 +33,7 @@ export type NodeUpdate = Partial<Node>;
 type colors = "red";
 
 interface Link extends ILink {
-  color: colors;
+  color?: colors;
 }
 
 export interface Flow extends Omit<IChart, "nodes" | "links"> {
