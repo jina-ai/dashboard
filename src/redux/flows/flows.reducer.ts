@@ -289,7 +289,18 @@ function _updateNode(
 
 function _deleteNode(state: FlowState, nodeId: string): FlowState {
   const newState = { ...state };
-  delete state.flows[newState.selectedFlow].flow.nodes[nodeId];
+
+  Object.keys(newState.flows[newState.selectedFlow].flow.links).forEach(
+    (linkId) => {
+      const link = newState.flows[newState.selectedFlow].flow.links[linkId];
+      if (link.from.nodeId === nodeId || link.to.nodeId === nodeId) {
+        delete newState.flows[newState.selectedFlow].flow.links[linkId];
+      }
+    }
+  );
+
+  delete newState.flows[newState.selectedFlow].flow.nodes[nodeId];
+
   return {
     ...newState,
   };
