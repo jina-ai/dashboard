@@ -59,7 +59,16 @@ export default function CommandBar({
             <img alt="Upload" src={Upload} />
           </Button>
           <Button onClick={copyChart}>
-            <img alt="Yaml" src={Yaml} />
+            <img
+              style={{
+                width: "3rem",
+                height: "auto",
+                marginLeft: "-0.5rem",
+                marginTop: "0.15rem",
+              }}
+              alt="Upload"
+              src={Yaml}
+            />
           </Button>
         </ButtonGroup>
       </div>
