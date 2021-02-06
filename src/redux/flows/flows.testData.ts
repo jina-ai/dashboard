@@ -39,8 +39,65 @@ export const testFlowState: FlowState = {
             properties: {},
             position: { x: 629, y: 72 },
           },
+          node0: {
+            id: "node0",
+            type: "input-output",
+            label: "node0",
+            ports: {
+              outPort: {
+                id: "outPort",
+                type: "output",
+              },
+              inPort: {
+                id: "inPort",
+                type: "input",
+              },
+            },
+            properties: {},
+            position: { x: 200, y: 200 },
+          },
+          node1: {
+            id: "node1",
+            type: "input-output",
+            label: "node1",
+            ports: {
+              outPort: {
+                id: "outPort",
+                type: "output",
+              },
+              inPort: {
+                id: "inPort",
+                type: "input",
+              },
+            },
+            properties: {},
+            position: { x: 400, y: 400 },
+          },
         },
-        links: {},
+        links: {
+          link1: {
+            id: "link1",
+            from: {
+              nodeId: "gateway",
+              portId: "outPort",
+            },
+            to: {
+              nodeId: "node0",
+              portId: "inPort",
+            },
+          },
+          link2: {
+            id: "link2",
+            from: {
+              nodeId: "node0",
+              portId: "outPort",
+            },
+            to: {
+              nodeId: "node1",
+              portId: "inPort",
+            },
+          },
+        },
         offset: { x: 0, y: 0 },
       },
     },

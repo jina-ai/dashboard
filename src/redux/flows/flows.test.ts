@@ -145,6 +145,21 @@ describe("flows reducer", () => {
     ).toBeUndefined();
   });
 
+  it("should delete links, when deleting nodes", () => {
+    expect(testFlowState.flows.testFlow1.flow.nodes.node0).toBeDefined();
+    expect(testFlowState.flows.testFlow1.flow.links).not.toEqual({});
+
+    const flowStateWithDeletedNode = reducer(
+      testFlowState,
+      deleteNode("node0")
+    );
+
+    expect(
+      flowStateWithDeletedNode.flows.testFlow1.flow.nodes.node0
+    ).toBeUndefined();
+    expect(flowStateWithDeletedNode.flows.testFlow1.flow.links).toEqual({});
+  });
+
   it("should update flow arguments", () => {
     const flowStateWithUpdatedArguments = reducer(
       testFlowState,
