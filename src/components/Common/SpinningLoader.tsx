@@ -14,7 +14,6 @@ const Spinner = styled.div`
     let { primary, background } = props.theme.palette;
     return `${primary} ${background} ${primary} ${background}`;
   }};
-  box-shadow: ${(props) => `0px 0px 20px -2px ${props.theme.palette.primary}`};
 `;
 const InnerSpinner = styled(Spinner)`
   position: absolute;

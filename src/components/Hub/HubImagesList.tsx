@@ -80,13 +80,13 @@ const HubImagesList = () => {
           </Col>
           <Col md="10">
             <Row data-name="hubImagesList">
-              {hubImages.map((image) => (
+              {hubImages.map((image, index) => (
                 <Col
                   key={`${image.name}.${image.version}.${image["jina-version"]}`}
                   md="4"
                   className="mb-4"
                 >
-                  <ImageCard image={image} />
+                  <ImageCard image={image} index={index} />
                 </Col>
               ))}
             </Row>

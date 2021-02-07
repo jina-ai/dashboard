@@ -5,6 +5,8 @@ const SCOOTER_GREEN = "#32C8CD";
 const WHITE = "#FFFFFF";
 const DADGREY = "#DAD7FE";
 const SKY_DIVING_IN_THE_BLUE = "#007AFF";
+const QUICK_SILVER = "#A6A6A6";
+const HONEYBEE = "#FFCC66";
 const BLACK = "#000000";
 
 const theme = {
@@ -20,6 +22,8 @@ const theme = {
     critical: "#ff4540",
     debug: "#7E7278",
     tagBackground: DADGREY,
+    tagPlatformBackground: HONEYBEE,
+    mutedText: QUICK_SILVER,
     highlight: SKY_DIVING_IN_THE_BLUE,
   },
 };

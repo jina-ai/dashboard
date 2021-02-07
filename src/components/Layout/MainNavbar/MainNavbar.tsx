@@ -27,6 +27,7 @@ type Props = {
   user: User | null;
   hideSidebarToggle?: boolean;
   showLogo?: boolean;
+  navigateButton?: () => React.ReactNode;
 };
 
 function MainNavbar({
@@ -35,6 +36,7 @@ function MainNavbar({
   reconnect,
   connected,
   showLogo,
+  navigateButton,
 }: Props) {
   return (
     <div className="main-navbar">
@@ -44,6 +46,7 @@ function MainNavbar({
           className="align-items-stretch flex-md-nowrap p-0 px-2"
         >
           {showLogo && <NavLogo />}
+          {navigateButton && navigateButton()}
           <NavbarSpacer />
           <Nav navbar className="flex-row">
             {usesConnection && (

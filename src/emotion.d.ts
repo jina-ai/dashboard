@@ -16,6 +16,8 @@ declare module "@emotion/react" {
       critical: string;
       debug: string;
       tagBackground: string;
+      tagPlatformBackground: string;
+      mutedText: string;
       highlight: string;
     };
   }
