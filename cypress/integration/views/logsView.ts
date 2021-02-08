@@ -25,6 +25,20 @@ describe('Logs page', () => {
         cy.dataName('logOccurenceDurationSelectedOption').should('contain.text', '15 Minutes')
       })
     })
-  })
 
+    context('when starting a flow',  () => {
+      it('should display the correct logging', () => {
+        cy.visit('#/flow')
+        cy.dataName('playButton').click()
+        cy.visit('#/logs')
+        cy.wait(5000)
+        cy.fixture('sample-output').then((output)=>{
+          console.log(output.logs[0])
+          output.logs.forEach((log, index) => {
+            cy.dataName(`logItem-${index}`).should('contain', log.message)
+          })
+        })
+      })
+    })
+  })
 })

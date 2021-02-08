@@ -46,10 +46,10 @@ export default function CommandBar({
     <div className="command-bar-container">
       <div className="command-bar">
         <ButtonGroup>
-          <PlayButton onClick={startFlow}>
+          <PlayButton data-name={"playButton"} onClick={startFlow}>
             <img alt="Play" src={Play} />
           </PlayButton>
-          <Button onClick={stopFlow}>
+          <Button data-name={"stopButton"} onClick={stopFlow}>
             <img alt="Stop" src={Stop} />
           </Button>
           <Button onClick={() => exportImage("png")}>
