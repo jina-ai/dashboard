@@ -6,7 +6,7 @@ import { NavbarToggle } from "./NavbarToggle";
 import { ConnectionIndicator } from "./ConnectionIndicator";
 import { NavLogo } from "./NavLogo";
 
-type User = {
+export type User = {
   displayName: string;
   emails: [{ value: string }];
   id: string;

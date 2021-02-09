@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Container, Row, Col } from "shards-react";
 
-import { MainNavbar } from "../components/Layout/MainNavbar/MainNavbar";
+import { MainNavbar, User } from "../components/Layout/MainNavbar/MainNavbar";
 import MainFooter from "../components/Layout/MainFooter";
 import { CookiesBanner } from "../components/Common/CookiesBanner";
 import { InfoToast } from "../components/Common/InfoToast";
@@ -10,10 +10,10 @@ import WriteReview from "../modals/WriteReview";
 
 import logger from "../logger";
 
-import { Store, Dispatcher, Constants } from "../flux";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import store from "../redux";
 import { showBanner } from "../redux/global/global.actions";
+import { selectBanner, selectModal } from "../redux/global/global.selectors";
 
 type HubLayoutProps = {
   children: React.ReactNode;
@@ -22,11 +22,21 @@ type HubLayoutProps = {
 };
 
 const HubLayout = (props: HubLayoutProps) => {
-  const modal = Store.getModal();
-  const modalParams = Store.getModalParams();
-  const banner = Store.getBanner();
+  const modal = useSelector(selectModal);
+  const banner = useSelector(selectBanner);
   const loggerEnabled = logger.isEnabled();
-  const user = Store.getUser();
+  const user: User = {
+    displayName: "dummyUser",
+    emails: [{ value: "dummyUser@dummy.com" }],
+    id: "idDummy",
+    nodeId: "idDummy_node",
+    photos: [{ value: "dummyPhoto" }],
+    profileUrl: "dummyUrl",
+    provider: "dummyProvider",
+    username: "dummyUsername",
+    _json: "dummyJSON",
+    _raw: "dummyRaw",
+  };
   const [acceptedCookies, setAcceptedCookies] = useState<boolean>(
     localStorage.getItem("accepted-cookies") === "true"
   );
@@ -41,19 +51,9 @@ const HubLayout = (props: HubLayoutProps) => {
     dispatch(closeModal());
   };
 
-  const submitReview = (content: any) => {
-    const { imageId } = modalParams;
-    Dispatcher.dispatch({
-      actionType: Constants.POST_REVIEW,
-      payload: { content, imageId },
-    });
-  };
+  const submitReview = (content: any) => {};
 
-  const logOut = () => {
-    Dispatcher.dispatch({
-      actionType: Constants.LOG_OUT,
-    });
-  };
+  const logOut = () => {};
 
   const enableLogger = () => {
     logger.enable();
@@ -72,11 +72,7 @@ const HubLayout = (props: HubLayoutProps) => {
     dispatch(showBanner("Debug Mode Disabled.", "warning"));
   };
 
-  const exportLogs = () => {
-    const storeCopy = Store.getStoreCopy();
-    logger.log("Store Snapshot", storeCopy);
-    logger.exportLogs();
-  };
+  const exportLogs = () => {};
 
   const { children, usesAuth, usesConnection } = props;
   return (
