@@ -63,7 +63,7 @@ Browse Hub images uploaded by other users! Search and filter images according to
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 # Getting started
-## 1. Start Jina Deamon
+## 1. Start Jina Daemon
 
 In order to use the dashboard you will need to start a Jina Deamon. You can do this by either using a Docker container that has been pre packaged for you or manually using a Command Line Interface (CLI).
 
