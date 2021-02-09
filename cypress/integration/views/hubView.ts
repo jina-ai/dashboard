@@ -1,5 +1,6 @@
 describe('Hub page', () => {
   before(() => {
+    cy.intercept('images', { fixture: 'hubImages'})
     cy.visit('/#/hub')
   })
 
@@ -17,7 +18,7 @@ describe('Hub page', () => {
   describe('hub images list preview', () => {
     it('shows a subset of hub images', () => {
       cy.dataName('hubImagesPreviewSubtitle').should('contain.text', 'Latest')
-      cy.dataName('hubImageTags').should('contain.text', 'Search')
+      cy.dataName('hubImageTags').should('contain.text', 'audio')
     })
   })
 
