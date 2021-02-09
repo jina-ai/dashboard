@@ -35,6 +35,7 @@ import {
   closeModal,
   connectJinaD,
 } from "../redux/global/global.actions";
+import { importFlow } from "../redux/flows/flows.actions";
 
 type IconSideBarLayoutProps = {
   children: React.ReactNode;
@@ -68,10 +69,8 @@ const IconSidebarLayout = (props: IconSideBarLayoutProps) => {
   };
 
   const importYAML = (yamlString: string) => {
-    Dispatcher.dispatch({
-      actionType: Constants.IMPORT_CUSTOM_YAML,
-      payload: yamlString,
-    });
+    dispatch(importFlow(yamlString));
+    _closeModal();
   };
 
   const submitReview = (content: any) => {

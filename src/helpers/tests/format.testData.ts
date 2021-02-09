@@ -720,3 +720,35 @@ export const getLogLevelChartsData = {
   currentDateTest: new Date(4000),
   logLevelChartTest,
 };
+
+export const parsedYamlObject = {
+  data: {
+    pods: [
+      {
+        name: "segmenter",
+        read_only: true,
+        uses: "pods/segment.yml",
+      },
+      {
+        name: "encoder",
+        polling: "any",
+        read_only: true,
+        timeout_ready: 600000,
+        uses: "pods/encode.yml",
+      },
+      {
+        name: "chunk_idx",
+        polling: "any",
+        uses: "pods/chunk.yml",
+      },
+      {
+        name: "doc_idx",
+        needs: "gateway",
+        polling: "any",
+        uses: "pods/doc.yml",
+      },
+      { name: "join_all", needs: ["doc_idx", "chunk_idx"], uses: "_merge" },
+    ],
+    version: "1",
+  },
+};

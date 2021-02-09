@@ -8,6 +8,8 @@ import {
   UPDATE_FLOW,
   UPDATE_NODE,
   UPDATE_FLOW_PROPERTIES,
+  IMPORT_FLOW,
+  UPDATE_FLOW_ARGUMENTS,
 } from "./flows.constants";
 import {
   IChart,
@@ -31,7 +33,7 @@ export type NodeUpdate = Partial<Node>;
 type colors = "red";
 
 interface Link extends ILink {
-  color: colors;
+  color?: colors;
 }
 
 export interface Flow extends Omit<IChart, "nodes" | "links"> {
@@ -80,10 +82,27 @@ export type CreateNewFlowAction = {
   type: typeof CREATE_NEW_FLOW;
 };
 
+export type FlowArgumentType = "string" | "boolean" | "integer";
+
+export type FlowArgument = {
+  name: string;
+  description: string;
+  type: FlowArgumentType;
+  defaultValue?: string | number | boolean | null;
+};
+
+export type FlowArguments = {
+  version: string;
+  flow: FlowArgument[];
+  pea: FlowArgument[];
+  pod: FlowArgument[];
+};
+
 export type FlowState = {
   rerender: boolean;
   selectedFlow: string;
   flows: Flows;
+  flowArguments: FlowArguments;
   tooltipConfig: {
     tooltipsGlobal: {
       showTooltip: boolean;
@@ -95,6 +114,10 @@ export type FlowState = {
 export type UpdateFlowAction = {
   type: typeof UPDATE_FLOW;
   payload: Flow;
+};
+export type UpdateFlowArgumentsAction = {
+  type: typeof UPDATE_FLOW_ARGUMENTS;
+  payload: FlowArguments;
 };
 export type UpdateFlowPropertiesAction = {
   type: typeof UPDATE_FLOW_PROPERTIES;
@@ -123,6 +146,11 @@ export type RerenderAction = {
   type: typeof RERENDER;
 };
 
+export type ImportFlowAction = {
+  type: typeof IMPORT_FLOW;
+  payload: string;
+};
+
 export type FlowActionTypes =
   | LoadFlowAction
   | CreateNewFlowAction
@@ -132,4 +160,6 @@ export type FlowActionTypes =
   | DeleteFlowAction
   | UpdateNodeAction
   | DeleteNodeAction
-  | RerenderAction;
+  | RerenderAction
+  | ImportFlowAction
+  | UpdateFlowArgumentsAction;

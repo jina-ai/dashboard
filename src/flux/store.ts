@@ -2,41 +2,11 @@ import { EventEmitter } from "events";
 import _ from "lodash";
 import { nanoid } from "nanoid";
 import { Constants, Dispatcher, transformLog } from "./";
-import { parseYAML, formatForFlowchart, formatSeconds } from "../helpers";
+import { parseYAML, formatSeconds } from "../helpers";
 import jinad from "./jinad";
 import logger from "../logger";
 import getSidebarNavItems from "../data/sidebar-nav-items";
-import exampleFlows from "../data/exampleFlows";
 import { HIDE_BANNER_TIMEOUT } from "../redux/global/global.constants";
-
-function getExampleFlows() {
-  const flows: LooseObject = {};
-
-  Object.entries(exampleFlows).forEach(([id, flow]) => {
-    const parsed = parseYAML(flow.yaml);
-    const formatted = formatForFlowchart(parsed.data);
-    flows[id] = {
-      ...flow,
-      flow: formatted,
-    };
-  });
-
-  return flows;
-}
-
-function getUserFlows() {
-  const storedFlows = localStorage.getItem("userFlows");
-  const userFlows = storedFlows ? JSON.parse(storedFlows) : null;
-  return _.isEmpty(userFlows)
-    ? {
-        _userFlow: {
-          name: "Custom Flow 1",
-          type: "user-generated",
-          flow: getInitialFlow(),
-        },
-      }
-    : userFlows;
-}
 
 function getInitialFlow() {
   return {
@@ -83,10 +53,6 @@ function getInitialStore(): LooseObject {
     modal: false,
     menuVisible: false,
     navItems: getSidebarNavItems(),
-    flows: {
-      ...getUserFlows(),
-      ...getExampleFlows(),
-    },
     selectedFlow: "_userFlow",
     logs: [],
     logSources: {},
@@ -228,20 +194,6 @@ class StoreBase extends EventEmitter {
     }
 
     logger.log("initFlowChart - flow", flow);
-
-    const parsed = formatForFlowchart(flow.data);
-    parsed.with = flow.data.with;
-
-    logger.log("initFlowChart - parsed", parsed);
-
-    let flows: LooseObject = {};
-    flows.connectedFlow = {
-      flow: parsed,
-      name: "Network Flow",
-      type: "remote",
-    };
-    _store.flows = { ...flows, ..._store.flows };
-    _store.selectedFlow = "connectedFlow";
 
     this.emit("update-ui");
     this.emit("update-flowchart");
@@ -527,8 +479,6 @@ class StoreBase extends EventEmitter {
     let flow;
 
     if (customYAML) {
-      const parsed = parseYAML(customYAML);
-      flow = formatForFlowchart(parsed.data);
     } else flow = getInitialFlow();
 
     _store.flows[id] = {
@@ -578,6 +528,7 @@ class StoreBase extends EventEmitter {
 
   saveSettings = (settings: LooseObject) => {
     logger.log("saveSettings - settings", settings);
+
     Object.keys(settings).forEach((key) => {
       localStorage.setItem(`preferences-${key}`, settings[key]);
     });

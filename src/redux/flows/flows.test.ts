@@ -7,9 +7,12 @@ import {
   loadFlow,
   updateFlow,
   updateNode,
+  importFlow,
+  updateFlowArguments,
+  updateFlowProperties,
 } from "./flows.actions";
 import { initialFlow } from "./flows.constants";
-import { testFlowState } from "./flows.testData";
+import { testFlowArguments, testFlowState } from "./flows.testData";
 
 describe("flows reducer", () => {
   it("should delete a flows", () => {
@@ -50,6 +53,31 @@ describe("flows reducer", () => {
       expect(duplicatedFlowerFlowIdAndProperty).toBeDefined();
       if (duplicatedFlowerFlowIdAndProperty) {
         expect(duplicatedFlowerFlowIdAndProperty[1].flow).toEqual(
+          testFlowState.flows.flower.flow
+        );
+      }
+    }
+  });
+
+  it("should import a new flow from YAML", () => {
+    const flowerYaml = testFlowState.flows.flower.yaml;
+    if (flowerYaml) {
+      const oldNumberOfFlows = Object.keys(testFlowState.flows).length;
+      const flowStateWithImportedFlowerFlow = reducer(
+        testFlowState,
+        importFlow(flowerYaml)
+      );
+      const newNumberOfFlows = Object.keys(
+        flowStateWithImportedFlowerFlow.flows
+      ).length;
+      const importedFlowerFlowIdAndProperty = Object.entries(
+        flowStateWithImportedFlowerFlow.flows
+      ).find(([flowId, flowProperty]) => flowProperty.name === "Custom Flow 3");
+
+      expect(newNumberOfFlows - oldNumberOfFlows).toBe(1);
+      expect(importedFlowerFlowIdAndProperty).toBeDefined();
+      if (importedFlowerFlowIdAndProperty) {
+        expect(importedFlowerFlowIdAndProperty[1].flow).toEqual(
           testFlowState.flows.flower.flow
         );
       }
@@ -115,5 +143,53 @@ describe("flows reducer", () => {
     expect(
       flowStateWithDeletedNode.flows.testFlow1.flow.nodes.gateway
     ).toBeUndefined();
+  });
+
+  it("should delete links, when deleting nodes", () => {
+    expect(testFlowState.flows.testFlow1.flow.nodes.node0).toBeDefined();
+    expect(testFlowState.flows.testFlow1.flow.links).not.toEqual({});
+
+    const flowStateWithDeletedNode = reducer(
+      testFlowState,
+      deleteNode("node0")
+    );
+
+    expect(
+      flowStateWithDeletedNode.flows.testFlow1.flow.nodes.node0
+    ).toBeUndefined();
+    expect(flowStateWithDeletedNode.flows.testFlow1.flow.links).toEqual({});
+  });
+
+  it("should update flow arguments", () => {
+    const flowStateWithUpdatedArguments = reducer(
+      testFlowState,
+      updateFlowArguments(testFlowArguments)
+    );
+    expect(flowStateWithUpdatedArguments.flowArguments).toEqual(
+      testFlowArguments
+    );
+  });
+
+  it("should update selected flow properties", () => {
+    const { flow } = testFlowState.flows.testFlow1;
+    const flowStateWithUpdatedProperties = reducer(
+      testFlowState,
+      updateFlowProperties({
+        name: "Modified Name",
+        type: "modified-type",
+        isConnected: true,
+        flow,
+      })
+    );
+    expect(flowStateWithUpdatedProperties.flows.testFlow1.name).toEqual(
+      "Modified Name"
+    );
+    expect(flowStateWithUpdatedProperties.flows.testFlow1.type).toEqual(
+      "modified-type"
+    );
+    expect(flowStateWithUpdatedProperties.flows.testFlow1.isConnected).toEqual(
+      true
+    );
+    expect(flowStateWithUpdatedProperties.flows.testFlow1.flow).toEqual(flow);
   });
 });

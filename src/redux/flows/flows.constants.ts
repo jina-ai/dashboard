@@ -11,6 +11,8 @@ export const DELETE_NODE = "DELETE_NODE";
 export const RERENDER = "RERENDER";
 export const START_FLOW = "START_FLOW";
 export const STOP_FLOW = "STOP_FLOW";
+export const IMPORT_FLOW = "IMPORT_FLOW";
+export const UPDATE_FLOW_ARGUMENTS = "UPDATE_FLOW_ARGUMENTS";
 
 export const initialFlow: Flow = {
   selected: {},

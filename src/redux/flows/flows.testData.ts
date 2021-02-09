@@ -1,7 +1,13 @@
-import { FlowState } from "./flows.types";
+import { FlowArguments, FlowState } from "./flows.types";
 
 export const testFlowState: FlowState = {
   rerender: false,
+  flowArguments: {
+    pod: [],
+    pea: [],
+    flow: [],
+    version: "",
+  },
   tooltipConfig: {
     tooltipsGlobal: {
       showTooltip: true,
@@ -14,7 +20,7 @@ export const testFlowState: FlowState = {
     testFlow1: {
       name: "Custom Flow 1",
       type: "user-generated",
-      isConnected:false,
+      isConnected: false,
       flow: {
         selected: {},
         hovered: {},
@@ -33,15 +39,72 @@ export const testFlowState: FlowState = {
             properties: {},
             position: { x: 629, y: 72 },
           },
+          node0: {
+            id: "node0",
+            type: "input-output",
+            label: "node0",
+            ports: {
+              outPort: {
+                id: "outPort",
+                type: "output",
+              },
+              inPort: {
+                id: "inPort",
+                type: "input",
+              },
+            },
+            properties: {},
+            position: { x: 200, y: 200 },
+          },
+          node1: {
+            id: "node1",
+            type: "input-output",
+            label: "node1",
+            ports: {
+              outPort: {
+                id: "outPort",
+                type: "output",
+              },
+              inPort: {
+                id: "inPort",
+                type: "input",
+              },
+            },
+            properties: {},
+            position: { x: 400, y: 400 },
+          },
         },
-        links: {},
+        links: {
+          link1: {
+            id: "link1",
+            from: {
+              nodeId: "gateway",
+              portId: "outPort",
+            },
+            to: {
+              nodeId: "node0",
+              portId: "inPort",
+            },
+          },
+          link2: {
+            id: "link2",
+            from: {
+              nodeId: "node0",
+              portId: "outPort",
+            },
+            to: {
+              nodeId: "node1",
+              portId: "inPort",
+            },
+          },
+        },
         offset: { x: 0, y: 0 },
       },
     },
     testFlow2: {
       name: "Custom Flow 2",
       type: "user-generated",
-      isConnected:false,
+      isConnected: false,
       flow: {
         selected: {},
         hovered: {},
@@ -68,7 +131,7 @@ export const testFlowState: FlowState = {
     flower: {
       name: "Flower Search Query",
       type: "example",
-      isConnected:false,
+      isConnected: false,
       yaml:
         "!Flow\n    with:\n      read_only: true\n      port_expose: $JINA_PORT\n      board:\n        canvas:\n          gateway:\n            x: 250\n            y: 150\n          loader:\n            x: 250\n            y: 257\n          flipper:\n            x: 252\n            y: 407\n          normalizer:\n            x: 239\n            y: 563\n          encoder:\n            x: 252\n            y: 712\n          chunk_indexer:\n            x: 250\n            y: 872\n          ranker:\n            x: 252\n            y: 1066\n          doc_indexer:\n            x: 253\n            y: 1199\n    pods:\n      gateway: {}\n      loader:\n        uses: yaml/craft-load.yml\n        read_only: true\n        needs: gateway\n      flipper:\n        uses: yaml/craft-flip.yml\n        read_only: true\n        needs: loader\n      normalizer:\n        uses: yaml/craft-normalize.yml\n        read_only: true\n        needs: flipper\n      encoder:\n        uses: $ENCODER\n        timeout_ready: 600000\n        read_only: true\n        needs: normalizer\n      chunk_indexer:\n        uses: yaml/index-chunk.yml\n        separated_workspace: true\n        polling: all\n        uses_reducing: _merge_all\n        needs: encoder\n      ranker:\n        uses: MinRanker\n        needs: chunk_indexer\n      doc_indexer:\n        uses: yaml/index-doc.yml\n        needs: ranker  \n    ",
       flow: {
@@ -387,48 +450,75 @@ export const testFlowState: FlowState = {
         selected: {},
         hovered: {},
         scale: 1,
-        "with":  {
-          "board":  {
-            "canvas":  {
-              "chunk_indexer":  {
-                "x": 250,
-                "y": 872,
+        with: {
+          board: {
+            canvas: {
+              chunk_indexer: {
+                x: 250,
+                y: 872,
               },
-              "doc_indexer":  {
-                "x": 253,
-                "y": 1199,
+              doc_indexer: {
+                x: 253,
+                y: 1199,
               },
-              "encoder":  {
-                "x": 252,
-                "y": 712,
+              encoder: {
+                x: 252,
+                y: 712,
               },
-              "flipper":  {
-                "x": 252,
-                "y": 407,
+              flipper: {
+                x: 252,
+                y: 407,
               },
-              "gateway":  {
-                "x": 250,
-                "y": 150,
+              gateway: {
+                x: 250,
+                y: 150,
               },
-              "loader":  {
-                "x": 250,
-                "y": 257,
+              loader: {
+                x: 250,
+                y: 257,
               },
-              "normalizer":  {
-                "x": 239,
-                "y": 563,
+              normalizer: {
+                x: 239,
+                y: 563,
               },
-              "ranker":  {
-                "x": 252,
-                "y": 1066,
+              ranker: {
+                x: 252,
+                y: 1066,
               },
             },
           },
-          "port_expose": "$JINA_PORT",
-          "read_only": true,
+          port_expose: "$JINA_PORT",
+          read_only: true,
         },
       },
     },
   },
 };
 
+export const testFlowArguments: FlowArguments = {
+  version: "1",
+  pod: [
+    {
+      defaultValue: "any",
+      description: "test_description_1",
+      name: "test_name_1",
+      type: "string",
+    },
+  ],
+  pea: [
+    {
+      defaultValue: 39399,
+      description: "test_description_2",
+      name: "test_name_2",
+      type: "integer",
+    },
+  ],
+  flow: [
+    {
+      defaultValue: true,
+      description: "test_description_3",
+      name: "test_name_3",
+      type: "boolean",
+    },
+  ],
+};

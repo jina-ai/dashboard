@@ -138,20 +138,20 @@ function LogsList({ data, firstCol, secondCol, showLogDetails, small }: any) {
 
   return (
     <div>
+      {!scrolledToBottom && (
+        <div
+          onClick={() => listRef.current.scrollToItem(data.length)}
+          className={`back-to-bottom active`}
+        >
+          <i className="material-icons">arrow_downward</i> Back to Bottom
+        </div>
+      )}
       <LogsTableHeader columns={{ firstCol, secondCol }} border={!small} />
       <div
         className={`log-stream-container${
           small ? "-small" : ""
         } p-0 border-top`}
       >
-        {!scrolledToBottom && (
-          <div
-            onClick={() => listRef.current.scrollToItem(data.length)}
-            className={`back-to-bottom active`}
-          >
-            <i className="material-icons">arrow_downward</i> Back to Bottom
-          </div>
-        )}
         <AutoSizer>
           {({ height, width }) => {
             const thirdCol = width - (firstCol + secondCol);

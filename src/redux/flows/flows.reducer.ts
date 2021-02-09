@@ -12,10 +12,13 @@ import {
   DELETE_NODE,
   RERENDER,
   UPDATE_FLOW_PROPERTIES,
+  IMPORT_FLOW,
+  UPDATE_FLOW_ARGUMENTS,
 } from "./flows.constants";
 import {
   Flow,
   FlowActionTypes,
+  FlowArguments,
   FlowProperties,
   Flows,
   FlowState,
@@ -57,12 +60,14 @@ function getExampleFlows() {
 
   Object.entries(exampleFlows).forEach(([id, flow]) => {
     const parsed = parseYAML(flow.yaml);
-    const formatted = formatForFlowchart(parsed.data);
-    flows[id] = {
-      ...flow,
-      isConnected: false,
-      flow: formatted,
-    };
+    if (parsed?.data) {
+      const formatted = formatForFlowchart(parsed.data);
+      flows[id] = {
+        ...flow,
+        isConnected: false,
+        flow: formatted,
+      };
+    }
   });
   return flows;
 }
@@ -73,6 +78,12 @@ const initialState: FlowState = {
   flows: {
     ...getUserFlows(),
     ...getExampleFlows(),
+  },
+  flowArguments: {
+    version: "0.0",
+    flow: [],
+    pea: [],
+    pod: [],
   },
   tooltipConfig: {
     tooltipsGlobal: {
@@ -97,12 +108,19 @@ export default function flowReducer(
       newState = _createNewFlow(state, action.payload);
       saveFlowsToStorage(newState);
       return newState;
+    case IMPORT_FLOW:
+      newState = _importFlow(state, action.payload);
+      saveFlowsToStorage(newState);
+      return newState;
     case UPDATE_FLOW:
       newState = _updateFlow(state, action.payload);
       saveFlowsToStorage(newState);
       return newState;
     case UPDATE_FLOW_PROPERTIES:
       newState = _updateFlowProperties(state, action.payload);
+      return newState;
+    case UPDATE_FLOW_ARGUMENTS:
+      newState = _updateFlowArguments(state, action.payload);
       return newState;
     case CREATE_NEW_FLOW:
       newState = _createNewFlow(state);
@@ -159,6 +177,10 @@ function _deleteFlow(state: FlowState, flowId: string): FlowState {
   return stateWithoutFlow;
 }
 
+function _importFlow(state: FlowState, customYAML: string): FlowState {
+  return _createNewFlow(state, customYAML);
+}
+
 function _createNewFlow(state: FlowState, customYAML?: string): FlowState {
   const prefixString = "Custom Flow";
 
@@ -181,7 +203,7 @@ function _createNewFlow(state: FlowState, customYAML?: string): FlowState {
 
   if (customYAML) {
     const parsed = parseYAML(customYAML);
-    flow = formatForFlowchart(parsed.data);
+    if (parsed?.data) flow = formatForFlowchart(parsed.data);
   }
 
   return {
@@ -196,6 +218,16 @@ function _createNewFlow(state: FlowState, customYAML?: string): FlowState {
       },
     },
     selectedFlow: id,
+  };
+}
+
+function _updateFlowArguments(
+  state: FlowState,
+  flowArguments: FlowArguments
+): FlowState {
+  return {
+    ...state,
+    flowArguments,
   };
 }
 
@@ -259,7 +291,18 @@ function _updateNode(
 
 function _deleteNode(state: FlowState, nodeId: string): FlowState {
   const newState = { ...state };
-  delete state.flows[newState.selectedFlow].flow.nodes[nodeId];
+
+  Object.keys(newState.flows[newState.selectedFlow].flow.links).forEach(
+    (linkId) => {
+      const link = newState.flows[newState.selectedFlow].flow.links[linkId];
+      if (link.from.nodeId === nodeId || link.to.nodeId === nodeId) {
+        delete newState.flows[newState.selectedFlow].flow.links[linkId];
+      }
+    }
+  );
+
+  delete newState.flows[newState.selectedFlow].flow.nodes[nodeId];
+
   return {
     ...newState,
   };

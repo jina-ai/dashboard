@@ -8,6 +8,8 @@ import {
   RERENDER,
   UPDATE_FLOW,
   UPDATE_FLOW_PROPERTIES,
+  IMPORT_FLOW,
+  UPDATE_FLOW_ARGUMENTS,
 } from "./flows.constants";
 import {
   CreateNewFlowAction,
@@ -23,6 +25,9 @@ import {
   UpdateFlowAction,
   UpdateNodeAction,
   UpdateFlowPropertiesAction,
+  ImportFlowAction,
+  FlowArguments,
+  UpdateFlowArgumentsAction,
 } from "./flows.types";
 
 import { ThunkAction } from "redux-thunk";
@@ -53,6 +58,14 @@ export function updateFlow(flow: Flow): UpdateFlowAction {
     payload: flow,
   };
 }
+export function updateFlowArguments(
+  flowArguments: FlowArguments
+): UpdateFlowArgumentsAction {
+  return {
+    type: UPDATE_FLOW_ARGUMENTS,
+    payload: flowArguments,
+  };
+}
 export function updateFlowProperties(
   flowProperties: FlowProperties
 ): UpdateFlowPropertiesAction {
@@ -64,6 +77,12 @@ export function updateFlowProperties(
 export function duplicateFlow(flowYAML: string): DuplicateFlowAction {
   return {
     type: DUPLICATE_FLOW,
+    payload: flowYAML,
+  };
+}
+export function importFlow(flowYAML: string): ImportFlowAction {
+  return {
+    type: IMPORT_FLOW,
     payload: flowYAML,
   };
 }
@@ -100,9 +119,10 @@ export function startFlow(
   return async function (dispatch) {
     logger.log("starting flow: ", selectedFlowId);
     const flow = store.getState().flowState.flows[selectedFlowId];
+    const { flowArguments } = store.getState().flowState;
     const { flow: chart } = flow;
     logger.log("starting flow chart: ", chart);
-    const yaml = formatAsYAML(chart);
+    const yaml = formatAsYAML(chart, flowArguments);
     logger.log("starting flow yaml: ", chart);
     const result = await jinadClient.startFlow(yaml);
     const { status, message, flow_id } = result;

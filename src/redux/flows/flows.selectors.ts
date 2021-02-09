@@ -10,6 +10,9 @@ export const selectTooltipConfig = (state: State) =>
 
 export const selectFlows = (state: State) => state.flowState.flows;
 
+export const selectFlowArguments = (state: State) =>
+  state.flowState.flowArguments;
+
 export const selectExampleFlowsKeyEntryPairs = (state: State) => {
   return Object.entries(state.flowState.flows).filter(
     (flowKeyEntryPair) => flowKeyEntryPair[1].type === "example"

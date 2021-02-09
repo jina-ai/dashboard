@@ -8,6 +8,8 @@ export const SHOW_ERROR = "SHOW_ERROR";
 export const SHOW_MODAL = "SHOW_MODAL";
 export const CLOSE_MODAL = "CLOSE_MODAL";
 export const CONNECT_JINAD = "CONNECT_JINAD";
+export const FETCH_ARGUMENTS_FROM_API = "FETCH_ARGUMENTS_FROM_API";
+export const FETCH_ARGUMENTS_FROM_DAEMON = "FETCH_ARGUMENTS_FROM_DAEMON";
 
 export const HIDE_BANNER_TIMEOUT = 5000;
 
@@ -60,5 +62,5 @@ export const initialGlobalState: GlobalState = {
   modal: null,
   modalParams: null,
   navItems,
-  processes: [],
+  processes: {},
 };

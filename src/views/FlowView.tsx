@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
+  selectFlowArguments,
   selectFlowChart,
   selectFlows,
   selectRerender,
@@ -35,9 +36,9 @@ import CustomPort from "../components/FlowChart/NodePort";
 import Sidebar from "../components/FlowChart/Sidebar";
 import { showModal } from "../redux/global/global.actions";
 import { selectConnectionStatus } from "../redux/global/global.selectors";
-import { PROPERTY_LIST } from "../redux/logStream/logStream.constants";
 
 import styled from "@emotion/styled";
+import logger from "../logger";
 
 const FlowViewContainer = styled.div`
   display: flex;
@@ -53,6 +54,7 @@ export default function FlowView() {
   const connected = useSelector(selectConnectionStatus);
   const selectedFlowId = useSelector(selectSelectedFlowId);
   const flows = useSelector(selectFlows);
+  const flowArguments = useSelector(selectFlowArguments);
   const flowChart = useSelector(selectFlowChart);
   const { flow: chart, type: flowType } = flowChart;
   const chartWithTooltips = {
@@ -150,10 +152,12 @@ export default function FlowView() {
     actionCallbacks.onDeleteKey({});
   };
 
-  const copyChartAsYAML = () => {
-    copyToClipboard(formatAsYAML(chart));
+  const copyChartAsYAML = useCallback(() => {
+    logger.log("copyChartAsYAML | chart:", chart);
+    copyToClipboard(formatAsYAML(chart, flowArguments));
     alert("Chart copied to clipboard as YAML");
-  };
+  }, [chart, flowArguments]);
+
   const validateLink = ({
     fromNodeId,
     toNodeId,
@@ -186,7 +190,7 @@ export default function FlowView() {
   };
 
   const handleDuplicateFlow = () => {
-    const flowYAML = formatAsYAML(chart);
+    const flowYAML = formatAsYAML(chart, flowArguments);
     dispatch(duplicateFlow(flowYAML));
   };
 
@@ -258,7 +262,7 @@ export default function FlowView() {
           </FlowContainer>
 
           <Sidebar
-            availableProperties={PROPERTY_LIST}
+            arguments={flowArguments.pod}
             duplicateFlow={handleDuplicateFlow}
             readonly={readonly}
             flow={chart}

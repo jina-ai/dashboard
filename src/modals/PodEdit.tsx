@@ -1,7 +1,9 @@
 import styled from "@emotion/styled";
-import { PROPERTY_LIST } from "../redux/logStream/logStream.constants";
 import { useDispatch, useSelector } from "react-redux";
-import { selectFlowChart } from "../redux/flows/flows.selectors";
+import {
+  selectFlowArguments,
+  selectFlowChart,
+} from "../redux/flows/flows.selectors";
 import React, { useEffect, useState } from "react";
 import { ModalParams } from "../redux/global/global.types";
 import ReactModal, { Styles } from "react-modal";
@@ -92,17 +94,18 @@ function PodEditComponent({ open, closeModal, modalParams }: Props) {
   const nodeId = modalParams?.nodeId || "";
 
   const flowChart = useSelector(selectFlowChart);
+  const flowArguments = useSelector(selectFlowArguments);
   const [node, setNode] = useState(flowChart.flow.nodes[nodeId]);
   const [searchQuery, setSearchQuery] = useState("");
-  const [filteredProperties, setFilteredProperties] = useState(PROPERTY_LIST);
+  const [filteredArguments, setFilteredArguments] = useState(flowArguments.pod);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const results = PROPERTY_LIST.filter((property: any) =>
-      property.name.toLowerCase().includes(searchQuery.toLowerCase())
+    const results = flowArguments.pod.filter((argument: any) =>
+      argument.name.toLowerCase().includes(searchQuery.toLowerCase())
     );
-    setFilteredProperties(results);
-  }, [searchQuery]);
+    setFilteredArguments(results);
+  }, [searchQuery, flowArguments]);
 
   const _updateLabel = (label: string) => {
     const nodeUpdate = { label };
@@ -154,15 +157,15 @@ function PodEditComponent({ open, closeModal, modalParams }: Props) {
           onChange={(e) => setSearchQuery(e.target.value)}
         />
         <PropertyTable>
-          {filteredProperties.map((property) => {
-            const { name, type } = property;
+          {filteredArguments.map((argument) => {
+            const { name, type } = argument;
 
             return (
               <>
                 <Header2>{name}</Header2>
                 <Input
                   placeholder={type}
-                  type={type === "int" ? "number" : "text"}
+                  type={type === "integer" ? "number" : "text"}
                   value={node.properties[name] || ""}
                   onChange={(e) => _updateNodeProp(name, e.target.value)}
                   className="property-value-input"
