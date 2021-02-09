@@ -1,5 +1,6 @@
 import { State } from "../index";
 
+// Todo: Ideally, we shouldn't remove keywords. This should be fixed with providing correct data
 const tagsToHide = [
   "Some keywords to describe the executor",
   "separated by commas",
