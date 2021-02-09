@@ -9,7 +9,6 @@ import "../assets/main.scss";
 import "../App.css";
 import { ErrorBoundary } from "react-error-boundary";
 import { FallbackPage } from "../views/FallbackPage";
-import { Store } from "../flux";
 
 const Hub = () => {
   document.title = "Jina Hub";
@@ -25,10 +24,7 @@ const Hub = () => {
               component={withTracker((props: any) => {
                 return (
                   <route.layout {...props} {...route.props}>
-                    <ErrorBoundary
-                      FallbackComponent={FallbackPage}
-                      onReset={() => Store.init()}
-                    >
+                    <ErrorBoundary FallbackComponent={FallbackPage}>
                       <route.component {...props} />
                     </ErrorBoundary>
                   </route.layout>

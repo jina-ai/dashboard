@@ -14,7 +14,6 @@ import LogDetails from "../modals/LogDetails";
 
 import logger from "../logger";
 
-import { Dispatcher, Constants } from "../flux";
 import { useDispatch, useSelector } from "react-redux";
 import {
   selectBanner,
@@ -73,13 +72,8 @@ const IconSidebarLayout = (props: IconSideBarLayoutProps) => {
     _closeModal();
   };
 
-  const submitReview = (content: any) => {
+  const submitReview = () => {
     if (modalParams) {
-      const { imageId } = modalParams;
-      Dispatcher.dispatch({
-        actionType: Constants.POST_REVIEW,
-        payload: { content, imageId },
-      });
     }
   };
 
@@ -87,11 +81,7 @@ const IconSidebarLayout = (props: IconSideBarLayoutProps) => {
     dispatch(connectJinaD());
   };
 
-  const logOut = () => {
-    Dispatcher.dispatch({
-      actionType: Constants.LOG_OUT,
-    });
-  };
+  const logOut = () => {};
 
   const _toggleSidebar = () => {
     dispatch(toggleSidebar());
