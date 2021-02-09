@@ -19,7 +19,7 @@ Jina Dashboard is a low-code monitoring and management environment for Jina. Wit
 To use the Jina hosted version of the Dashboard visit [the Jina website](https://dashboard.jina.ai/)
 
 <p align="center">
-<img src=".github/.README_images/overview.gif?raw=true" alt="log server settings" width="100%">
+<img src=".github/.README_images/overview.gif?raw=true" alt="log server settings" width="70%">
 </p>
 
 # 🌟 Features:
@@ -28,7 +28,7 @@ To use the Jina hosted version of the Dashboard visit [the Jina website](https:/
 Use Jina easily in the browser; no code required! Building flows within the user-friendly interface is easy, just start dragging pods into the design canvas. View the list of Pod properties and edit them using a visual menu. To create a custom Flow: connect Pods, upload a YAML file, or use an existing Flow template!
 
 <p align="center">
-<img src=".github/.README_images/flowCompose.gif?raw=true" alt="log server settings" width="100%">
+<img src=".github/.README_images/flowCompose.gif?raw=true" alt="log server settings" width="70%">
 </p>
 
 
@@ -36,7 +36,7 @@ Use Jina easily in the browser; no code required! Building flows within the user
 Dig deeper into your Jina Flow using the LogStream, and debug your Flow by viewing your logs in real-time! Jina makes it extremely easy to stay on top of your search deployment by allowing you to filter, group, and search logs based on Pod, log-level, or message!
 
 <p align="center">
-<img src=".github/.README_images/logging.gif?raw=true" alt="log server settings" width="100%">
+<img src=".github/.README_images/logging.gif?raw=true" alt="log server settings" width="70%">
 </p>
 
 ### **Hub Integration**
@@ -79,7 +79,7 @@ docker pull jinaai/jina:master-daemon
 docker run -p 8000:8000 -p 5555:5555 jinaai/jina:master-daemon
 ```
 <p align="center">
-<img src=".github/.README_images/jinaD_run_docker.png?raw=true" alt="log server settings" width="100%">
+<img src=".github/.README_images/jinaD_run_docker.png?raw=true" alt="log server settings" width="70%">
 </p>
 
 ### Using Jina Daemon with Command Line Interface (Not reccomended)
@@ -91,7 +91,7 @@ jinad
 ```
 
 <p align="center">
-<img src=".github/.README_images/jinaD_run_cli.png?raw=true" alt="log server settings" width="100%">
+<img src=".github/.README_images/jinaD_run_cli.png?raw=true" alt="log server settings" width="70%">
 </p>
 
 
