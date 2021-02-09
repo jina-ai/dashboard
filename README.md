@@ -23,7 +23,7 @@ To use the Jina Dashboard visit [the Jina website](https://dashboard.jina.ai/)
 # 🌟 Features:
 
 ### **Flow Design GUI**
-Use Jina easily in the browser; no code required! Exploring a user-friendly interface is easy, thanks to the drag and drop functionality. View the list of Pod properties and edit them using a visual menu. To create a custom Flow: connect Pods, upload a YAML file, or use an existing Flow template!
+Use Jina easily in the browser; no code required! Building flows within the user-friendly interface is easy, just start dragging pods into the design canvas. View the list of Pod properties and edit them using a visual menu. To create a custom Flow: connect Pods, upload a YAML file, or use an existing Flow template!
 
 <p align="center">
 <img src=".github/.README_images/flowCompose.gif?raw=true" alt="log server settings" width="100%">
@@ -31,14 +31,14 @@ Use Jina easily in the browser; no code required! Exploring a user-friendly inte
 
 
 ### **LogStream and Task Monitoring**
-Dig deeper into your Jina Flow using the LogStream, and debug your Flow by viewing your logs in real-time! Jina makes it extremely easy to stay on top of your search deployment by tracking key performance metrics. Identify bottlenecks within your Flow through the Jina Dashboard. Filter, group, and search based on Pod, log-level, or message!
+Dig deeper into your Jina Flow using the LogStream, and debug your Flow by viewing your logs in real-time! Jina makes it extremely easy to stay on top of your search deployment by allowing you to filter, group, and search logs based on Pod, log-level, or message!
 
 <p align="center">
 <img src=".github/.README_images/logging.gif?raw=true" alt="log server settings" width="100%">
 </p>
 
 ### **Hub Integration**
-Browse Hub images uploaded by other users! Search and filter images according to various tags. Identify all information needed to use the Hub Pods with ease. All you need is a simple Docker pull command, but Jina also provides more complex usage directions. Embrace the power of Open Source and a community-driven codebase!
+Browse Hub images uploaded by other users! Search and filter images according to various tags. Identify all information needed to use the Hub Pods with ease. All you need is a simple Docker pull command. Embrace the power of Open Source and a community-driven codebase!
 
 # Contents
 
@@ -62,7 +62,7 @@ Browse Hub images uploaded by other users! Search and filter images according to
 
 # Getting started
 ## 1. Start Jina Deamon
-In order to use the dashboard you will need to start a Jina Deamon. You can do this by either using a Docker container that has been pre packaged for you or manually using a CLI.
+In order to use the dashboard you will need to install and run a Jina Deamon. You can do this by either using a Docker container that has been pre-packaged for you or manually using a CLI.
 ### Using Jina Daemon with Docker (Reccommended)
 
 - Install [Docker](https://www.docker.com/) and run Docker Desktop
@@ -114,7 +114,7 @@ jinad
 # Self-host Dashboard
 You can also self-host a dashboard instance locally.
 
-Note: features like the Hub and GitHub login will not work when running the Dashboard locally. They are restricted to the `dashboard.jina.ai` origin. They are not necessary to view logs or interact with flows. If you would like to browse the Hub, do so from [dashboard.jina.ai](https://dashboard.jina.ai/).
+Note: features like the Hub will not work when running the Dashboard locally. They are restricted to the `dashboard.jina.ai` origin. They are not necessary to view logs or interact with flows. If you would like to browse the Hub, do so from [dashboard.jina.ai](https://dashboard.jina.ai/).
 
 ## Set up
 - Clone the GitHub repo
