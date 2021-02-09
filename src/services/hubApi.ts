@@ -13,5 +13,16 @@ export const getHubImages = async (filters: FilterParams) => {
   return response.data;
 };
 
+export const getDocumentationHTML = async (url: string) => {
+  const rawMarkdownURL = getRawMarkdownURL(url)
+  const rawMarkdownResponse = await axios.get(rawMarkdownURL)
+  const HTMLResponse = await axios.post("https://api.github.com/markdown", {text: rawMarkdownResponse.data})
+
+  return HTMLResponse.data
+}
+
 export const queryParamsSerializer = (params: Record<string, any>) =>
   queryString.stringify(params, { arrayFormat: "comma", skipNull: true });
+
+export const getRawMarkdownURL = (url: string): string =>
+  `${url.replace('github', 'raw.githubusercontent')}/master/README.md`

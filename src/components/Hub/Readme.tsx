@@ -1,12 +1,19 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import { Card, CardHeader, CardBody } from "shards-react";
+import {getDocumentationHTML} from "../../services/hubApi"
 
 type Props = {
-  readme: string;
   documentation: string;
 };
 
-export default function ReadMe({ readme, documentation }: Props) {
+export default function ReadMe({  documentation }: Props) {
+  let [readme, setReadme] = useState('')
+  useEffect(() => {
+    (async () => {
+      const readmeHTML = await getDocumentationHTML(documentation)
+      setReadme(readmeHTML)
+    })()
+  }, [])
   return (
     <Card className="readme-container mb-4">
       <CardHeader className="border-bottom d-flex flex-row">

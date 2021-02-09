@@ -22,6 +22,7 @@ export const Tag = styled.div`
   padding: 0.25rem;
   margin-right: 1rem;
   margin-bottom: 1rem;
+  white-space: nowrap;
 `;
 const Title = styled.div`
   font-size: 1.25em;

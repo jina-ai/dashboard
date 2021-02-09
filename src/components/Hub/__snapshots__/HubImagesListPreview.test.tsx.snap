@@ -8,115 +8,127 @@ Array [
   >
     Latest
   </span>,
-  <div
-    className="clickable mb-4 h-100 image-card card"
-    data-name="hubImage"
+  <a
+    className="css-sirbk0"
+    href="#/package/0"
+    onClick={[Function]}
   >
     <div
-      className="pb-0 mb-0 pt-3 card-body"
+      className="clickable mb-4 h-100 image-card card"
+      data-name="hubImage"
     >
       <div
-        className="row"
+        className="pb-0 mb-0 pt-3 card-body"
       >
         <div
-          className="px-0 col-12"
+          className="row"
         >
           <div
-            className="mb-2 css-14i9fhd"
-          >
-            Dummy MWU Encoder
-          </div>
-          <div
-            className="css-d6tsu"
-            data-name="hubImageTags"
-          >
-            Search
-          </div>
-          <div
-            className="css-d6tsu"
-            data-name="hubImageTags"
-          >
-            encode
-          </div>
-          <div
-            className="mb-2 css-k133o5"
-          >
-            dev-team@jina.ai
-          </div>
-        </div>
-        <div
-          className="px-0 pb-0 col-sm-12"
-        >
-          <div
-            className="description-container"
+            className="px-0 col-12"
           >
             <div
-              className="description-overlay"
-            />
-            <div
-              className="app-description"
+              className="mb-2 css-14i9fhd"
             >
-              a minimum working unit of a containerized encoder
+              Dummy MWU Encoder
+            </div>
+            <div
+              className="css-1gs0ali"
+              data-name="hubImageTags"
+            >
+              Search
+            </div>
+            <div
+              className="css-1gs0ali"
+              data-name="hubImageTags"
+            >
+              encode
+            </div>
+            <div
+              className="mb-2 css-k133o5"
+            >
+              dev-team@jina.ai
+            </div>
+          </div>
+          <div
+            className="px-0 pb-0 col-sm-12"
+          >
+            <div
+              className="description-container"
+            >
+              <div
+                className="description-overlay"
+              />
+              <div
+                className="app-description"
+              >
+                a minimum working unit of a containerized encoder
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>,
-  <div
-    className="clickable mb-4 h-100 image-card card"
-    data-name="hubImage"
+  </a>,
+  <a
+    className="css-sirbk0"
+    href="#/package/1"
+    onClick={[Function]}
   >
     <div
-      className="pb-0 mb-0 pt-3 card-body"
+      className="clickable mb-4 h-100 image-card card"
+      data-name="hubImage"
     >
       <div
-        className="row"
+        className="pb-0 mb-0 pt-3 card-body"
       >
         <div
-          className="px-0 col-12"
+          className="row"
         >
           <div
-            className="mb-2 css-14i9fhd"
-          >
-            Dummy MWU Encoder
-          </div>
-          <div
-            className="css-d6tsu"
-            data-name="hubImageTags"
-          >
-            Search
-          </div>
-          <div
-            className="css-d6tsu"
-            data-name="hubImageTags"
-          >
-            encode
-          </div>
-          <div
-            className="mb-2 css-k133o5"
-          >
-            dev-team@jina.ai
-          </div>
-        </div>
-        <div
-          className="px-0 pb-0 col-sm-12"
-        >
-          <div
-            className="description-container"
+            className="px-0 col-12"
           >
             <div
-              className="description-overlay"
-            />
-            <div
-              className="app-description"
+              className="mb-2 css-14i9fhd"
             >
-              a minimum working unit of a containerized encoder
+              Dummy MWU Encoder
+            </div>
+            <div
+              className="css-1gs0ali"
+              data-name="hubImageTags"
+            >
+              Search
+            </div>
+            <div
+              className="css-1gs0ali"
+              data-name="hubImageTags"
+            >
+              encode
+            </div>
+            <div
+              className="mb-2 css-k133o5"
+            >
+              dev-team@jina.ai
+            </div>
+          </div>
+          <div
+            className="px-0 pb-0 col-sm-12"
+          >
+            <div
+              className="description-container"
+            >
+              <div
+                className="description-overlay"
+              />
+              <div
+                className="app-description"
+              >
+                a minimum working unit of a containerized encoder
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>,
+  </a>,
 ]
 `;
