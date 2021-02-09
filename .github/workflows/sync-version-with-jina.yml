@@ -24,6 +24,5 @@ jobs:
         npm version --allow-same-version ${{ github.event.inputs.version }}
     - name: tag and push
       run: |
-        git tag ${{github.event.inputs.version}}
         git push --follow-tags
         git push --tags
