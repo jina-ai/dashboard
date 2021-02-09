@@ -17,17 +17,27 @@ export const removeDuplicates = (arrayWithDuplicates: string[]): string[] =>
     return arrayWithDuplicates.indexOf(e) === i;
   });
 
-export const convertArrayToFilterObject = (array: string[]): FilterMap =>
-  array.reduce((acc, f) => ({ ...acc, [f]: false }), {} as FilterMap);
+export const convertArrayToFilterObject = (
+  array: string[],
+  filter: Filter
+): FilterMap =>
+  array.reduce(
+    (acc, f) => ({
+      ...acc,
+      [f]: (filter?.values && filter.values[f]) || false,
+    }),
+    {} as FilterMap
+  );
 
-export const getImageFilters = (images: HubImage[]) => {
+export const getImageFilters = (images: HubImage[], filters: Filter[]) => {
   return [
     {
       filterLabel: "Type of image",
       values: convertArrayToFilterObject(
         removeDuplicates(
           images.reduce((acc, image) => [...acc, image.kind], [] as string[])
-        )
+        ),
+        filters[0]
       ),
     },
     {
@@ -38,7 +48,8 @@ export const getImageFilters = (images: HubImage[]) => {
             (acc, image) => [...acc, ...image.keywords],
             [] as string[]
           )
-        )
+        ),
+        filters[1]
       ),
     },
   ];
@@ -51,8 +62,8 @@ const HubImagesList = () => {
   let [filters, setFilters] = useState([] as Filter[]);
 
   useEffect(() => {
-    hubImages && setFilters(getImageFilters(hubImages));
-  }, [hubImages]);
+    hubImages && setFilters(getImageFilters(hubImages, filters));
+  }, [hubImages]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const getHubImages = useCallback(
     (filters) => {
