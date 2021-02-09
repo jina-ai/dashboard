@@ -54,10 +54,6 @@ const HubImagesList = () => {
     hubImages && setFilters(getImageFilters(hubImages));
   }, [hubImages]);
 
-  useEffect(() => {
-    dispatch(fetchHubImages());
-  }, [dispatch]);
-
   const getHubImages = useCallback(
     (filters) => {
       dispatch(fetchHubImages(filters));

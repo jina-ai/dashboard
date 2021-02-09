@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Switch, Route, useRouteMatch } from "react-router-dom";
 import { Container, Row } from "react-bootstrap";
+import { useDispatch } from "react-redux";
+import { fetchHubImages } from "../redux/hub/hub.actions";
 import { PageTitle } from "../components/Common/PageTitle";
 import HubOverviewActionsContainer from "../components/Hub/HubOverviewActionsContainer";
 import HubImagesListPreview from "../components/Hub/HubImagesListPreview";
@@ -8,6 +10,11 @@ import HubImagesList from "../components/Hub/HubImagesList";
 
 const HubView = () => {
   const { path } = useRouteMatch();
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(fetchHubImages());
+  }, [dispatch]);
+
   return (
     <Container fluid className="main-content-container px-0">
       <div className="px-4">
