@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import styled from "@emotion/styled";
 import { selectHubImages } from "../redux/hub/hub.selectors";
 import { Row, Col } from "react-bootstrap";
-import { Card, CardBody } from "shards-react";
+import { Card } from "shards-react";
 import ImageDetails from "../components/Hub/ImageDetails";
 import Readme from "../components/Hub/Readme";
 
@@ -12,11 +12,13 @@ const ImageContainer = styled.div`
   padding: 0 1.75rem;
 `;
 const ImageTitle = styled.h2`
-  color: ${props => props.theme.palette.headerTextColor}
-`
+  color: ${(props) => props.theme.palette.headerTextColor};
+  padding: 1rem;
+`;
 const ImageDescription = styled.p`
-  color: ${props => props.theme.palette.headerTextColor}
-`
+  color: ${(props) => props.theme.palette.headerTextColor};
+  padding: 1rem;
+`;
 
 const PackageView = () => {
   let { packageId } = useParams<{ packageId: string }>();
@@ -27,8 +29,10 @@ const PackageView = () => {
       <Row>
         <Col md="8">
           <Card>
-            <ImageTitle>{image.name}</ImageTitle>
-            <ImageDescription>{image.description}</ImageDescription>
+            <ImageTitle data-name="imageOverviewTitle">{image.name}</ImageTitle>
+            <ImageDescription data-name="imageOverviewDescription">
+              {image.description}
+            </ImageDescription>
           </Card>
           <Readme documentation={image.documentation} />
         </Col>
