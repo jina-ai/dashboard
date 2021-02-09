@@ -1,4 +1,6 @@
-# Dashboard (beta)
+<p align="center">
+<img src=".github/.README_images/Dashboard.png?raw=true" alt="dashboard logo" width="60%">
+</p>
 
 ![CD](https://github.com/jina-ai/dashboard/workflows/CD/badge.svg)
 [![Jina](https://github.com/jina-ai/jina/blob/master/.github/badges/jina-badge.svg "We fully commit to open-source")](https://jina.ai)
@@ -14,7 +16,7 @@
 
 Jina Dashboard is a low-code monitoring and management environment for Jina. With the Dashboard, you can build Jina Flows and manage them from a central location. Get detailed insights into the health of the Flow with the use of log stream analysis!
 
-To use the Jina Dashboard visit [the Jina website](https://dashboard.jina.ai/)
+To use the Jina hosted version of the Dashboard visit [the Jina website](https://dashboard.jina.ai/)
 
 <p align="center">
 <img src=".github/.README_images/overview.gif?raw=true" alt="log server settings" width="100%">
@@ -48,7 +50,7 @@ Browse Hub images uploaded by other users! Search and filter images according to
 - [Getting started](#getting-started)
   - [1. Start Jina Daemon](#1-start-jina-daemon)
     - [Using Jina Daemon with Docker (Reccommended)](#jinad-docker)
-    - [Using Jina Daemon with CLI (Not reccomended)](#jinad-cli)
+    - [Using Jina Daemon with Command Line Interface (Not reccomended)](#jinad-cli)
   - [2. Connect the Dashboard to Jina Daemon](#2-connect-the-dashboard-to-jina-daemon)
 - [Self-host Dashboard](#self-host-dashboard)
   - [Set up](#self-set)
@@ -62,7 +64,7 @@ Browse Hub images uploaded by other users! Search and filter images according to
 
 # Getting started
 ## 1. Start Jina Deamon
-In order to use the dashboard you will need to start a Jina Deamon. You can do this by either using a Docker container that has been pre packaged for you or manually using a CLI.
+In order to use the dashboard you will need to start a Jina Deamon. You can do this by either using a Docker container that has been pre packaged for you or manually using a Command Line Interface (CLI).
 ### Using Jina Daemon with Docker (Reccommended)
 
 - Install [Docker](https://www.docker.com/) and run Docker Desktop
@@ -78,7 +80,7 @@ docker run -p 8000:8000 -p 5555:5555 jinaai/jina:master-daemon
 <img src=".github/.README_images/jinaD_run_docker.png?raw=true" alt="log server settings" width="100%">
 </p>
 
-### Using Jina Daemon with CLI (Not reccomended)
+### Using Jina Daemon with Command Line Interface (Not reccomended)
 
 - Install [JinaD](../remote/jinad.md)
 - Run JinaD with
@@ -111,8 +113,8 @@ jinad
 
  - You should now be able to see the log stream and flow visualization.
 
-# Self-host Dashboard
-You can also self-host a dashboard instance locally.
+# Self-hosted Dashboard
+You can also use a self-hosted dashboard instance locally.
 
 Note: features like the Hub and GitHub login will not work when running the Dashboard locally. They are restricted to the `dashboard.jina.ai` origin. They are not necessary to view logs or interact with flows. If you would like to browse the Hub, do so from [dashboard.jina.ai](https://dashboard.jina.ai/).
 
@@ -163,8 +165,35 @@ The following resources help you to make a good first contribution:
 - [Contributing guidelines](https://github.com/jina-ai/jina/blob/master/CONTRIBUTING.md)
 - [Release cycles and development stages](https://github.com/jina-ai/jina/blob/master/RELEASE.md)
 
+# Community
+
+- [Code of conduct](https://github.com/jina-ai/jina/blob/master/.github/CODE_OF_CONDUCT.md) - play nicely with the Jina community
+- [Slack workspace](https://slack.jina.ai) - join #general on our Slack to meet the team and ask questions
+- [YouTube channel](https://youtube.com/c/jina-ai) - subscribe to the latest video tutorials, release demos, webinars and presentations.
+- [LinkedIn](https://www.linkedin.com/company/jinaai/) - get to know Jina AI as a company and find job opportunities
+- [![Twitter Follow](https://img.shields.io/twitter/follow/JinaAI_?label=Follow%20%40JinaAI_&style=social)](https://twitter.com/JinaAI_) - follow and interact with us using hashtag `#JinaSearch`
+- [Company](https://jina.ai) - know more about our company and how we are fully committed to open-source.
+
+# Open Governance
+
+<a href="https://www.youtube.com/c/jina-ai">
+<img align="right" width="25%" src="https://github.com/jina-ai/jina/blob/master/.github/images/eah-god.png?raw=true " />
+</a>
+
+As part of our open governance model, we host Jina's [Engineering All Hands]((https://hanxiao.io/2020/08/06/Engineering-All-Hands-in-Public/)) in public. This Zoom meeting recurs monthly on the second Tuesday of each month, at 14:00-15:30 (CET). Everyone can join in via the following calendar invite.
+
+- [Add to Google Calendar](https://calendar.google.com/event?action=TEMPLATE&tmeid=MHIybG03cjAwaXE3ZzRrYmVpaDJyZ2FpZjlfMjAyMDEwMTNUMTIwMDAwWiBjXzF0NW9nZnAyZDQ1djhmaXQ5ODFqMDhtY200QGc&tmsrc=c_1t5ogfp2d45v8fit981j08mcm4%40group.calendar.google.com&scp=ALL)
+- [Download .ics](https://hanxiao.io/2020/08/06/Engineering-All-Hands-in-Public/jina-ai-public.ics)
+
+The meeting will also be live-streamed and later published to our [YouTube channel](https://youtube.com/c/jina-ai).
+
+# Join Us
+
+Jina is an open-source project. [We are hiring](https://jobs.jina.ai) full-stack developers, evangelists, and PMs to build the next neural search ecosystem in open source.
+
+
 # License
 
-Copyright (c) 2020 Jina AI Limited. All rights reserved.
+Copyright (c) 2020-2021 Jina AI Limited. All rights reserved.
 
-Jina is licensed under the Apache License, Version 2.0. See [LICENSE](LICENSE) for the full license text.
+Jina is licensed under the Apache License, Version 2.0. [See LICENSE for the full license text.](LICENSE)
