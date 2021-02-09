@@ -1,6 +1,5 @@
 import React from "react";
 import { Container, Row, Col } from "react-bootstrap";
-import { Dispatcher, Constants, Store } from "../flux";
 import BuildHistory from "../components/Hub/BuildHistory";
 import { PageTitle } from "../components/Common/PageTitle";
 import Details from "../components/Hub/ImageDetails";
@@ -27,47 +26,25 @@ class PackageView extends React.Component<any, any> {
         repoTags: [],
       },
     };
-    Store.on("update-hub", this.getImageData);
   }
 
   componentDidMount = () => {
     this.getImageData();
   };
 
-  componentWillUnmount = () => {
-    Store.removeListener("update-hub", this.getImageData);
-  };
+  componentWillUnmount = () => {};
 
-  getImageData = async () => {
-    const imageData = (await Store.getHubImage(this.state.imageId)) || {};
-    this.setState({ imageData, loading: false });
-  };
+  getImageData = async () => {};
 
   copyCode = (content: any) => {
     copyToClipboard(content);
-    Dispatcher.dispatch({
-      actionType: Constants.SHOW_BANNER,
-      payload: ["Content copied to clipboard", "success"],
-    });
   };
 
-  newReview = () => {
-    const imageId = this.state.imageData.id;
-    const modal = "review";
-    Dispatcher.dispatch({
-      actionType: Constants.SHOW_MODAL,
-      payload: { modal, modalParams: { imageId } },
-    });
-  };
+  newReview = () => {};
 
   render = () => {
     const { imageData, loading } = this.state;
-    const {
-      name,
-      readmeHTML,
-      documentation,
-      reviews,
-    } = imageData;
+    const { name, readmeHTML, documentation, reviews } = imageData;
     return (
       <Container fluid className="main-content-container px-0">
         {loading ? (
@@ -77,10 +54,7 @@ class PackageView extends React.Component<any, any> {
         ) : (
           <div className="px-4">
             <Row noGutters className="page-header mb-4">
-              <PageTitle
-                title={name}
-                className="text-sm-left mb-3"
-              />
+              <PageTitle title={name} className="text-sm-left mb-3" />
               <Col md="6" />
             </Row>
             <Row>
