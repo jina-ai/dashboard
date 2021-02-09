@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import styled from "@emotion/styled";
+import { useTheme } from "@emotion/react";
 
 export type FilterMap = { [key: string]: boolean };
 export type FilterParams = {
@@ -46,12 +47,13 @@ const Checkbox = styled.input`
 `;
 type CheckboxLabelProps = {
   checked: boolean;
+  highlightColor: string;
 };
 const CheckboxLabel = styled.label`
   border: ${(props: CheckboxLabelProps) =>
-    props.checked ? "1px solid #007AFF" : "none"};
+    props.checked ? `1px solid ${props.highlightColor}` : "none"};
   border-radius: 0.25rem;
-  padding: 0.25rem;
+  padding: 0.25rem 0.5rem;
 `;
 
 const HubFilters = ({ filters, setFilters, getHubImages }: HubFilterProps) => {
@@ -108,12 +110,14 @@ const FilterCheckbox = ({
   handleFilterChange,
 }: FilterCheckboxProps) => {
   const [checked, setChecked] = useState(value);
+  const theme = useTheme();
+  const { highlight } = theme.palette;
   const handleFilterSelect = () => {
     setChecked(!checked);
     handleFilterChange(filterCategoryIndex, label, !checked);
   };
   return (
-    <CheckboxLabel checked={checked}>
+    <CheckboxLabel checked={checked} highlightColor={highlight || "cyan"}>
       <Checkbox
         type="checkbox"
         checked={checked}

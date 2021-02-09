@@ -1,8 +1,6 @@
 import React from "react";
 import { Container, Navbar, Nav } from "shards-react";
-
 import { NavbarSpacer } from "./NavbarSpacer";
-import { NavbarToggle } from "./NavbarToggle";
 import { ConnectionIndicator } from "./ConnectionIndicator";
 import { NavLogo } from "./NavLogo";
 
@@ -29,6 +27,7 @@ type Props = {
   user: User | null;
   hideSidebarToggle?: boolean;
   showLogo?: boolean;
+  navigateButton?: () => React.ReactNode;
 };
 
 function MainNavbar({
@@ -36,8 +35,8 @@ function MainNavbar({
   toggleSidebar,
   reconnect,
   connected,
-  hideSidebarToggle,
   showLogo,
+  navigateButton,
 }: Props) {
   return (
     <div className="main-navbar">
@@ -47,6 +46,7 @@ function MainNavbar({
           className="align-items-stretch flex-md-nowrap p-0 px-2"
         >
           {showLogo && <NavLogo />}
+          {navigateButton && navigateButton()}
           <NavbarSpacer />
           <Nav navbar className="flex-row">
             {usesConnection && (
@@ -56,7 +56,6 @@ function MainNavbar({
               />
             )}
           </Nav>
-          {!hideSidebarToggle && <NavbarToggle toggleSidebar={toggleSidebar} />}
         </Navbar>
       </Container>
     </div>

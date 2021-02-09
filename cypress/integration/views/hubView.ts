@@ -1,5 +1,6 @@
 describe('Hub page', () => {
   before(() => {
+    cy.intercept('images', { fixture: 'hubImages'})
     cy.visit('/#/hub')
   })
 
@@ -17,7 +18,7 @@ describe('Hub page', () => {
   describe('hub images list preview', () => {
     it('shows a subset of hub images', () => {
       cy.dataName('hubImagesPreviewSubtitle').should('contain.text', 'Latest')
-      cy.dataName('hubImageTags').should('contain.text', 'Search')
+      cy.dataName('hubImageTags').should('contain.text', 'audio')
     })
   })
 
@@ -47,5 +48,13 @@ describe('Hub page', () => {
       cy.dataName('hubImagesFilter').contains('nlp').click()
     })
 
+  })
+
+  describe('hub image overview', () => {
+    it('opens overview of hub image', () => {
+      cy.dataName('hubImage').contains('LaserEncoder').click()
+      cy.dataName('imageOverviewTitle').should('contain.text', 'LaserEncoder')
+      cy.dataName('imageOverviewDescription').should('contain.text', 'B x D')
+    })
   })
 })

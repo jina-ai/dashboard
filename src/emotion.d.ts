@@ -5,8 +5,8 @@ import "@emotion/react";
 declare module "@emotion/react" {
   export interface Theme {
     palette: {
+      background: string;
       headerTextColor: string;
-      background: { default: string };
       primary: string;
       secondary: string;
       warning: string;
@@ -15,6 +15,10 @@ declare module "@emotion/react" {
       info: string;
       critical: string;
       debug: string;
+      tagBackground: string;
+      tagPlatformBackground: string;
+      mutedText: string;
+      highlight: string;
     };
   }
 }

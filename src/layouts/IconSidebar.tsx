@@ -40,6 +40,7 @@ type IconSideBarLayoutProps = {
   children: React.ReactNode;
   usesAuth: boolean;
   usesConnection: boolean;
+  navigateButton?: () => React.ReactNode;
 };
 
 const IconSidebarLayout = (props: IconSideBarLayoutProps) => {
@@ -109,7 +110,7 @@ const IconSidebarLayout = (props: IconSideBarLayoutProps) => {
     logger.exportLogs();
   };
 
-  const { children, usesAuth, usesConnection } = props;
+  const { children, usesAuth, usesConnection, navigateButton } = props;
   return (
     <Container fluid className="icon-sidebar-nav">
       <Row>
@@ -127,6 +128,7 @@ const IconSidebarLayout = (props: IconSideBarLayoutProps) => {
             toggleSidebar={_toggleSidebar}
             reconnect={reconnect}
             connected={connected}
+            navigateButton={navigateButton}
           />
           <InfoToast data={banner} />
           {usesConnection && !loading && !connected && (

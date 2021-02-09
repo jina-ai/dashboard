@@ -14,6 +14,7 @@ import PackageView from "../views/PackageView";
 import LogIn from "../views/LogIn";
 
 import NotFound from "../views/NotFound";
+import NavigateButton from "../components/Common/NavigateButton";
 
 export const dashboardRoutes = [
   {
@@ -86,12 +87,13 @@ export const dashboardRoutes = [
     },
   },
   {
-    path: "/package",
+    path: "/package/:packageId",
     layout: IconSidebar,
     component: PackageView,
     props: {
-      usesConnection: false,
-      usesAuth: true,
+      navigateButton: () => (
+        <NavigateButton label={"❮  Back"} path={"/hub/explore"} />
+      ),
     },
   },
   {
