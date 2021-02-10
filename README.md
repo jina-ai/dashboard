@@ -42,6 +42,10 @@ Dig deeper into your Jina Flow using the LogStream, and debug your Flow by viewi
 ### **Hub Integration**
 Browse Hub images uploaded by other users! Search and filter images according to various tags. Identify all information needed to use the Hub Pods with ease. All you need is a simple Docker pull command. Embrace the power of Open Source and a community-driven codebase!
 
+<p align="center">
+<img src=".github/.README_images/hubView.gif?raw=true" alt="log server settings" width="70%">
+</p>
+
 # Contents
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
