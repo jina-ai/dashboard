@@ -53,15 +53,18 @@ Browse Hub images uploaded by other users! Search and filter images according to
 
 - [Getting started](#getting-started)
   - [1. Start Jina Daemon](#1-start-jina-daemon)
-    - [Using Jina Daemon with Docker (Reccommended)](#jinad-docker)
-    - [Using Jina Daemon with Command Line Interface (Not reccomended)](#jinad-cli)
+    - [Using Jina Daemon with Docker (Reccommended)](#using-jina-daemon-with-docker-reccommended)
+    - [Using Jina Daemon with Command Line Interface (Not reccomended)](#using-jina-daemon-with-command-line-interface-not-reccomended)
   - [2. Connect the Dashboard to Jina Daemon](#2-connect-the-dashboard-to-jina-daemon)
-- [Self-host Dashboard](#self-host-dashboard)
-  - [Set up](#self-set)
-  - [Run dashboard](#self-run)
+- [Self-hosted Dashboard](#self-hosted-dashboard)
+  - [Set up](#set-up)
+  - [Run dashboard](#run-dashboard)
     - [Run in debug mode](#run-in-debug-mode)
     - [Run in the live mode](#run-in-the-live-mode)
 - [Contributing](#contributing)
+- [Community](#community)
+- [Open Governance](#open-governance)
+- [Join Us](#join-us)
 - [License](#license)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
