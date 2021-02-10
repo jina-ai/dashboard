@@ -5,11 +5,11 @@ import { Redirect } from "react-router-dom";
 import { HubLayout } from "../layouts";
 
 // Route Views
-import HubView from "../views/HubView";
 import PackageView from "../views/PackageView";
 import LogIn from "../views/LogIn";
 import NotFound from "../views/NotFound";
 import NavigateButton from "../components/Common/NavigateButton";
+import HubImagesList from "../components/Hub/HubImagesList";
 
 export const hubRoutes = [
   {
@@ -30,7 +30,7 @@ export const hubRoutes = [
   {
     path: "/home",
     layout: HubLayout,
-    component: HubView,
+    component: HubImagesList,
     props: {
       usesConnection: false,
       usesAuth: true,
@@ -41,9 +41,7 @@ export const hubRoutes = [
     layout: HubLayout,
     component: PackageView,
     props: {
-      navigateButton: () => (
-        <NavigateButton label={"❮  Back"} path={"/hub/explore"} />
-      ),
+      navigateButton: () => <NavigateButton label={"❮  Back"} path={"/home"} />,
     },
   },
   {
