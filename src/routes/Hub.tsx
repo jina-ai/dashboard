@@ -9,6 +9,7 @@ import HubView from "../views/HubView";
 import PackageView from "../views/PackageView";
 import LogIn from "../views/LogIn";
 import NotFound from "../views/NotFound";
+import NavigateButton from "../components/Common/NavigateButton";
 
 export const hubRoutes = [
   {
@@ -36,12 +37,13 @@ export const hubRoutes = [
     },
   },
   {
-    path: "/package",
+    path: "/package/:packageId",
     layout: HubLayout,
     component: PackageView,
     props: {
-      usesConnection: false,
-      usesAuth: true,
+      navigateButton: () => (
+        <NavigateButton label={"❮  Back"} path={"/hub/explore"} />
+      ),
     },
   },
   {

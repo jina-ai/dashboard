@@ -19,6 +19,7 @@ type HubLayoutProps = {
   children: React.ReactNode;
   usesAuth: boolean;
   usesConnection: boolean;
+  navigateButton?: () => React.ReactNode;
 };
 
 const HubLayout = (props: HubLayoutProps) => {
@@ -74,7 +75,7 @@ const HubLayout = (props: HubLayoutProps) => {
 
   const exportLogs = () => {};
 
-  const { children, usesAuth, usesConnection } = props;
+  const { children, usesAuth, usesConnection, navigateButton } = props;
   return (
     <Container>
       <Row>
@@ -86,6 +87,7 @@ const HubLayout = (props: HubLayoutProps) => {
             hideSidebarToggle={true}
             showLogo
             user={user}
+            navigateButton={navigateButton}
           />
           <InfoToast data={banner} />
           {children}
