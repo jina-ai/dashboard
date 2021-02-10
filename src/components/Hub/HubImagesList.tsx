@@ -60,6 +60,9 @@ const HubImagesList = () => {
   const hubImages = useSelector(selectHubImages);
   const isHubImagesLoading = useSelector(selectIsHubImagesLoading);
   let [filters, setFilters] = useState([] as Filter[]);
+  if (hubImages.length === 0 && !isHubImagesLoading) {
+    dispatch(fetchHubImages());
+  }
 
   useEffect(() => {
     hubImages && setFilters(getImageFilters(hubImages, filters));
