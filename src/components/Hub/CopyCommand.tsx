@@ -1,13 +1,13 @@
-import React from "react";
-import { Card, CardBody } from "shards-react";
-import SyntaxHighlighter from "react-syntax-highlighter";
-import { atomOneLight } from "react-syntax-highlighter/dist/esm/styles/hljs";
-import { HubImage } from "../../redux/hub/hub.types";
+import React from "react"
+import { Card, CardBody } from "shards-react"
+import SyntaxHighlighter from "react-syntax-highlighter"
+import { atomOneLight } from "react-syntax-highlighter/dist/esm/styles/hljs"
+import { HubImage } from "../../redux/hub/hub.types"
 
 type Props = {
-  image: HubImage;
-  copyCode: (code: string) => void;
-};
+  image: HubImage
+  copyCode: (code: string) => void
+}
 
 export default function CopyCommand({ image, copyCode }: Props) {
   return (
@@ -22,5 +22,5 @@ export default function CopyCommand({ image, copyCode }: Props) {
         </SyntaxHighlighter>
       </CardBody>
     </Card>
-  );
+  )
 }
