@@ -3,16 +3,30 @@ describe("Flow design workflow", () => {
         cy.visit("/#/flow");
     });
 
+    const moveSideBarItemToCanvas = (sideBarItemId: number, x: number, y: number) => {
+        const dataTransfer = new DataTransfer;
+        cy.dataName(`SideBarItem-${sideBarItemId}`).trigger("dragstart", { dataTransfer, force: true });
+        cy.get(".chart-section-container").trigger("drop", x, y, { dataTransfer });
+    }
+
+    type CartesianCoordinate = [number, number]
+
+    const connectPoints = (startPoint: CartesianCoordinate, endPoint: CartesianCoordinate) => {
+        cy.get(".chart-section-container").trigger("mousedown", ...startPoint, {which: 1});
+        cy.get(".chart-section-container").trigger("mousemove", ...endPoint);
+        cy.get(".chart-section-container").trigger("mouseup", ...endPoint);
+    }
+
 
     context("When a new flow is created", () => {
         it("successfully let you pull new pods", () => {
-            const dataTransfer = new DataTransfer;
-            cy.dataName("SideBarItem-1").trigger("dragstart", { dataTransfer, force: true });
-            cy.get(".chart-section-container").trigger("drop", 50, 100, { dataTransfer });
-            cy.dataName("SideBarItem-2").trigger("dragstart", { dataTransfer, force: true });
-            cy.get(".chart-section-container").trigger("drop", 50, 200, { dataTransfer });
-            cy.get('[data-port-id="outPort"]').first().trigger("dragstart", { dataTransfer, force: true })
-            cy.get('[data-port-id="inPort"]').eq(1).trigger("drop", 52, 202, { dataTransfer, force: true });
+            moveSideBarItemToCanvas(1, 50, 100)
+            moveSideBarItemToCanvas(2, 50, 175)
+            connectPoints([150, 150], [150, 175])
+            moveSideBarItemToCanvas(3, 50, 250)
+            connectPoints([150, 225], [150, 250])
+            moveSideBarItemToCanvas(4, 50, 325)
+            connectPoints([150, 300], [150, 325])
             cy.percySnapshot("flow-design")
         });
     });
