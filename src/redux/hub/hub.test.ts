@@ -7,6 +7,7 @@ import {
 } from "./hub.constants";
 import { HubState, HubActionTypes, HubImage } from "./hub.types";
 import hubReducer from "./hub.reducer";
+import { selectHubImages, selectIsHubImagesLoading } from "./hub.selectors";
 import configureMockStore from "redux-mock-store";
 import thunk, { ThunkDispatch } from "redux-thunk";
 import { AnyAction } from "redux";
@@ -114,5 +115,35 @@ describe("hub reducer", () => {
         }
       ).error?.name
     ).toEqual("unfortunate error");
+  });
+});
+
+describe("hub selectors", () => {
+  describe("selectIsHubImagesLoading", () => {
+    it("returns hubstate loading property", () => {
+      expect(
+        selectIsHubImagesLoading({ hubState: { loading: true } } as State)
+      ).toBe(true);
+      expect(
+        selectIsHubImagesLoading({ hubState: { loading: false } } as State)
+      ).toBe(false);
+    });
+  });
+
+  describe("selectHubImages", () => {
+    const inputImages = [
+      { keywords: ["encoder", "audio"] },
+      { keywords: ["separated by commas"] },
+    ];
+
+    const expectedImages = [
+      { keywords: ["encoder", "audio"] },
+      { keywords: [] },
+    ];
+    it("filters keywords to remove placeholder keywords", () => {
+      expect(
+        selectHubImages({ hubState: { images: inputImages } } as State)
+      ).toEqual(expectedImages);
+    });
   });
 });

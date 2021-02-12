@@ -1,0 +1,59 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ImageCard 1`] = `
+<a
+  className="css-sirbk0"
+  href="#/package/7"
+  onClick={[Function]}
+>
+  <div
+    className="clickable mb-4 h-100 image-card card"
+    data-name="hubImage"
+  >
+    <div
+      className="pb-0 mb-0 pt-3 card-body"
+    >
+      <div
+        className="row"
+      >
+        <div
+          className="px-0 col-12"
+        >
+          <div
+            className="mb-2 css-14i9fhd"
+          >
+            Enel
+          </div>
+          <div
+            className="css-1gs0ali"
+            data-name="hubImageTags"
+          >
+            encoder
+          </div>
+          <div
+            className="mb-2 css-k133o5"
+          >
+            Oda
+          </div>
+        </div>
+        <div
+          className="px-0 pb-0 col-sm-12"
+        >
+          <div
+            className="description-container"
+          >
+            <div
+              className="description-overlay"
+            />
+            <div
+              className="app-description"
+            >
+              whatever
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</a>
+`;

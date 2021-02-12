@@ -26,5 +26,11 @@ export const getDocumentationHTML = async (url: string) => {
 export const serializeQueryParams = (params: Record<string, any>) =>
   queryString.stringify(params, { arrayFormat: "comma", skipNull: true });
 
-export const getRawMarkdownURL = (url: string): string =>
-  `${url.replace("github", "raw.githubusercontent")}/master/README.md`;
+export const getRawMarkdownURL = (url: string): string => {
+  const defaultRawMarkdownURL =
+    "https://raw.githubusercontent.com/jina-ai/jina-hub/master/README.md";
+
+  return url.includes("/blob/master/")
+    ? url.replace("github", "raw.githubusercontent").replace("/blob", "")
+    : defaultRawMarkdownURL;
+};
