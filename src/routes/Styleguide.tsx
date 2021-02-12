@@ -1,6 +1,6 @@
 import React from "react";
 import ColorsPage from "../components/Styleguide/ColorsPage";
-import MiscPage from "../components/Styleguide/MIscPage";
+import MiscPage from "../components/Styleguide/MiscPage";
 import TypographyPage from "../components/Styleguide/TypographyPage";
 export const styleGuideRoutes = [
   {

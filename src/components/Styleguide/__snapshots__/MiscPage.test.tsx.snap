@@ -1,0 +1,35 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Misc page 1`] = `
+<div>
+  <div
+    className="text-center text-md-left mb-sm-0 col-sm-3 col-12"
+  >
+    <h3
+      className="page-title"
+      data-name="title"
+    >
+      Misc
+    </h3>
+    <p
+      className="page-subtitle mt-2 mb-0"
+    />
+  </div>
+  <span
+    className="css-104iut4-MiscPage"
+  >
+    Loading Spinner
+  </span>
+  <div
+    className="css-18vjixk"
+  >
+    <div
+      className="css-11ue89k"
+    >
+      <div
+        className="css-jn4y13"
+      />
+    </div>
+  </div>
+</div>
+`;

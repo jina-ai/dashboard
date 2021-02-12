@@ -9,12 +9,16 @@ import styled from "@emotion/styled";
 import MainSidebar from "../components/Layout/MainSidebar/MainSidebar";
 import { TNavItem } from "../redux/global/global.types";
 import { styleGuideRoutes } from "../routes/Styleguide";
+import { mediaQuery } from "../styles/mediaQuery";
 
 const Container = styled.div`
   display: flex;
 `;
 const Aside = styled.aside`
   width: 25%;
+  ${mediaQuery("lg")} {
+    width: 16.67%;
+  }
 `;
 const Content = styled.article`
   flex-grow: 1;
