@@ -1,3 +1,4 @@
+
 describe('Logs page', () => {
   before(() => {
     cy.visit('/')
@@ -27,24 +28,36 @@ describe('Logs page', () => {
     })
   })
 
-  describe('click on Table view dropdown', () => {
-    it('shows a dropdown menu', () => {
-      cy.contains('table_rows').click()
-      cy.get('.ml-auto')
-      .should('contain', 'timestamp')
-      
-    })
-
-})
-
-describe('click on Group by  Pod in dropdown', () => {
-  it('shows logs grouped according to source', () => {
-    cy.contains('Group by Pod').click()
-    cy.get('.log-success')
-    .should('contain', 'check_circle')
+  describe('table view options', () => {
     
+    context('on changing table view', () => {
+        it('should initially display Table View option', () => {
+          
+           
+        cy.dataName('dropDownViewSelectedOption').click()
+        cy.contains('Group by Pod').scrollIntoView().click()
+                
+        })
+        
+        it('should click on All Sources', () => {
+          cy.dataName('dropDown-2-ViewSelectedOption').should('contain.text', 'All Sources')
+         cy.dataName('dropDown-2-ViewSelectedOption').click()
+        
+         })
+        
+         it('should click on All Levels', () => {
+           cy.dataName('dropDown-3-ViewSelectedOption').should('contain.text', 'All Levels')
+           cy.dataName('dropDown-3-ViewSelectedOption').click()
+        
+           })
+          
+           it('should click on Download Logs', () => {
+             cy.dataName('dropDown-4-ViewSelectedOption').should('contain.text', 'Download Logs')
+             cy.dataName('dropDown-4-ViewSelectedOption').click()
+      
+             })
   })
-
+  
 })
 
 })
