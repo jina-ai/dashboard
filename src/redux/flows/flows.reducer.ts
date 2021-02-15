@@ -32,7 +32,7 @@ interface LooseObject {
   [key: string]: any
 }
 
-const saveFlowsToStorage = (state: FlowState) => {
+export const saveFlowsToStorage = (state: FlowState) => {
   let toSave: LooseObject = {}
   const { flows } = state
   Object.entries(flows).forEach(([id, flow]: [string, any]) => {
