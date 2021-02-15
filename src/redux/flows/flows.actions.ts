@@ -7,9 +7,9 @@ import {
   LOAD_FLOW,
   RERENDER,
   UPDATE_FLOW,
-  UPDATE_FLOW_PROPERTIES,
+  SET_FLOW_PROPERTIES,
   IMPORT_FLOW,
-  UPDATE_FLOW_ARGUMENTS,
+  SET_FLOW_ARGUMENTS,
 } from "./flows.constants"
 import {
   CreateNewFlowAction,
@@ -58,19 +58,19 @@ export function updateFlow(flow: Flow): UpdateFlowAction {
     payload: flow,
   }
 }
-export function updateFlowArguments(
+export function setFlowArguments(
   flowArguments: FlowArguments
 ): UpdateFlowArgumentsAction {
   return {
-    type: UPDATE_FLOW_ARGUMENTS,
+    type: SET_FLOW_ARGUMENTS,
     payload: flowArguments,
   }
 }
-export function updateFlowProperties(
+export function setFlowProperties(
   flowProperties: FlowProperties
 ): UpdateFlowPropertiesAction {
   return {
-    type: UPDATE_FLOW_PROPERTIES,
+    type: SET_FLOW_PROPERTIES,
     payload: flowProperties,
   }
 }
@@ -127,7 +127,7 @@ export function startFlow(
     const result = await jinadClient.startFlow(yaml)
     const { status, message, flow_id } = result
 
-    dispatch(updateFlowProperties({ ...flow, flow_id }))
+    dispatch(setFlowProperties({ ...flow, flow_id }))
 
     if (status === "error") return dispatch(showBanner(message, "error") as any)
 
@@ -177,9 +177,9 @@ export function initNetworkFlow(
     }
     const { workspace_id } = flowResult.flow
 
-    dispatch(updateFlowProperties({ ...flowProperties, workspace_id }))
+    dispatch(setFlowProperties({ ...flowProperties, workspace_id }))
 
     //See: https://github.com/jina-ai/jina/issues/1812
-    dispatch(initLogStream(workspace_id, flow_id))
+    setTimeout(() => dispatch(initLogStream(workspace_id, flow_id)), 5000)
   }
 }
