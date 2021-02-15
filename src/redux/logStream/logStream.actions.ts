@@ -42,7 +42,6 @@ export function initLogStream(
     }
 
     let logsResult = await jinadClient.getLogs(workspace_id, flow_id);
-    logsResult = await jinadClient.getLogs(workspace_id, flow_id);
 
     if (logsResult.status === "error") {
       if (logsResult.message)

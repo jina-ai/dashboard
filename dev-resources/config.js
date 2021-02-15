@@ -1,3 +1,4 @@
+
 module.exports = {
   updateStatusInterval: 1000,
   jina_version: "0.9.18",
@@ -19,7 +20,7 @@ module.exports = {
     },
     messageInterval: 100,
     messageLoops:100,
-    source: "sample-data/sample-output.json"
+    source: "../cypress/fixtures/sample-output.json"
   },
   recorder: {
     url: "http://localhost:5000",
