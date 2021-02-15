@@ -1,4 +1,4 @@
-import reducer from "./flows.reducer"
+import reducer, { saveFlowsToStorage } from "./flows.reducer"
 import {
   createNewFlow,
   deleteFlow,
@@ -14,15 +14,27 @@ import {
 import { initialFlow } from "./flows.constants"
 import { testFlowArguments, testFlowState } from "./flows.testData"
 
+function getFlowFromStorage(id: string) {
+  const userFlowsString = localStorage.getItem("userFlows")
+  if (userFlowsString) {
+    const parsed = JSON.parse(userFlowsString)
+    return parsed[id]
+  } else return undefined
+}
 describe("flows reducer", () => {
-  it("should delete a flows", () => {
+  beforeAll(() => {
+    saveFlowsToStorage(testFlowState)
+  })
+
+  it("should delete a flow from redux and storage", () => {
+    expect(getFlowFromStorage("testFlow2")).toBeDefined()
     const oldNumberOfFlows = Object.keys(testFlowState.flows).length
+
     const flowStateWithoutFlow2 = reducer(
       testFlowState,
       deleteFlow("testFlow2")
     )
     const newNumberOfFlows = Object.keys(flowStateWithoutFlow2.flows).length
-
     expect(oldNumberOfFlows - newNumberOfFlows).toEqual(1)
     expect(
       Object.keys(testFlowState.flows).find((flowId) => flowId === "testFlow2")
@@ -32,9 +44,10 @@ describe("flows reducer", () => {
         (flowId) => flowId === "testFlow2"
       )
     ).toBeUndefined()
+    expect(getFlowFromStorage("testFlow2")).toBeUndefined()
   })
 
-  it("should duplicate the flower flow", () => {
+  it("should duplicate the flower flow and save it to storage", () => {
     const flowerYaml = testFlowState.flows.flower.yaml
     if (flowerYaml) {
       const oldNumberOfFlows = Object.keys(testFlowState.flows).length
@@ -52,14 +65,17 @@ describe("flows reducer", () => {
       expect(newNumberOfFlows - oldNumberOfFlows).toBe(1)
       expect(duplicatedFlowerFlowIdAndProperty).toBeDefined()
       if (duplicatedFlowerFlowIdAndProperty) {
-        expect(duplicatedFlowerFlowIdAndProperty[1].flow).toEqual(
+        const [id, property] = duplicatedFlowerFlowIdAndProperty
+        expect(property.flow).toEqual(testFlowState.flows.flower.flow)
+
+        expect(getFlowFromStorage(id).flow).toEqual(
           testFlowState.flows.flower.flow
         )
       }
     }
   })
 
-  it("should import a new flow from YAML", () => {
+  it("should import a new flow from YAML and save it to storage", () => {
     const flowerYaml = testFlowState.flows.flower.yaml
     if (flowerYaml) {
       const oldNumberOfFlows = Object.keys(testFlowState.flows).length
@@ -77,14 +93,14 @@ describe("flows reducer", () => {
       expect(newNumberOfFlows - oldNumberOfFlows).toBe(1)
       expect(importedFlowerFlowIdAndProperty).toBeDefined()
       if (importedFlowerFlowIdAndProperty) {
-        expect(importedFlowerFlowIdAndProperty[1].flow).toEqual(
-          testFlowState.flows.flower.flow
-        )
+        const [id, property] = importedFlowerFlowIdAndProperty
+        expect(property.flow).toEqual(testFlowState.flows.flower.flow)
+        expect(getFlowFromStorage(id).flow).toEqual(property.flow)
       }
     }
   })
 
-  it("should update a flows", () => {
+  it("should update a flow and save it to storage", () => {
     const testFlow2Flow = testFlowState.flows.testFlow2.flow
     const selectedFlow = testFlowState.selectedFlow
     const updatedState = reducer(testFlowState, updateFlow(testFlow2Flow))
@@ -92,9 +108,11 @@ describe("flows reducer", () => {
     if (selectedFlow) {
       expect(updatedState.flows[selectedFlow].flow).toEqual(testFlow2Flow)
     }
+
+    expect(getFlowFromStorage("testFlow2").flow).toEqual(testFlow2Flow)
   })
 
-  it("should create new flows", () => {
+  it("should create a new flow and save it to storage", () => {
     const oldNumberOfFlows = Object.keys(testFlowState.flows).length
     const flowStateWithNewFlow = reducer(testFlowState, createNewFlow())
     const newNumberOfFlows = Object.keys(flowStateWithNewFlow.flows).length
@@ -105,7 +123,9 @@ describe("flows reducer", () => {
     expect(newNumberOfFlows - oldNumberOfFlows).toBe(1)
     expect(newFlowIdAndProperty).toBeDefined()
     if (newFlowIdAndProperty) {
-      expect(newFlowIdAndProperty[1].flow).toEqual(initialFlow)
+      const [id, property] = newFlowIdAndProperty
+      expect(property.flow).toEqual(initialFlow)
+      expect(getFlowFromStorage(id).flow).toEqual(property.flow)
     }
   })
 
@@ -117,7 +137,7 @@ describe("flows reducer", () => {
     expect(flowStateWithLoadedFlow.selectedFlow).toEqual("testFlow2")
   })
 
-  it("should update nodes", () => {
+  it("should update nodes and save it to storage", () => {
     const oldNode = testFlowState.flows.testFlow1.flow.nodes.gateway
     const nodeUpdate = {
       label: "newLabel",
@@ -132,6 +152,10 @@ describe("flows reducer", () => {
     expect(
       flowStateWithUpdatedNode.flows.testFlow1.flow.nodes.gateway
     ).toEqual({ ...oldNode, ...nodeUpdate })
+
+    expect(getFlowFromStorage("testFlow1")).toEqual(
+      flowStateWithUpdatedNode.flows.testFlow1
+    )
   })
 
   it("should delete nodes", () => {
@@ -143,6 +167,10 @@ describe("flows reducer", () => {
     expect(
       flowStateWithDeletedNode.flows.testFlow1.flow.nodes.gateway
     ).toBeUndefined()
+
+    expect(getFlowFromStorage("testFlow1")).toEqual(
+      flowStateWithDeletedNode.flows.testFlow1
+    )
   })
 
   it("should delete links, when deleting nodes", () => {
@@ -155,16 +183,18 @@ describe("flows reducer", () => {
       flowStateWithDeletedNode.flows.testFlow1.flow.nodes.node0
     ).toBeUndefined()
     expect(flowStateWithDeletedNode.flows.testFlow1.flow.links).toEqual({})
+
+    expect(getFlowFromStorage("testFlow1")).toEqual(
+      flowStateWithDeletedNode.flows.testFlow1
+    )
   })
 
   it("should set flow arguments", () => {
-    const flowStateWithUpdatedArguments = reducer(
+    const flowStateWithSetArguments = reducer(
       testFlowState,
       setFlowArguments(testFlowArguments)
     )
-    expect(flowStateWithUpdatedArguments.flowArguments).toEqual(
-      testFlowArguments
-    )
+    expect(flowStateWithSetArguments.flowArguments).toEqual(testFlowArguments)
   })
 
   it("should set selected flow properties", () => {
