@@ -5,38 +5,42 @@ import {
   DUPLICATE_FLOW,
   LOAD_FLOW,
   RERENDER,
+  UPDATE_FLOW,
   UPDATE_NODE,
-  UPDATE_SELECTED_FLOW,
+  SET_FLOW_PROPERTIES,
   IMPORT_FLOW,
   SET_FLOW_ARGUMENTS,
-  ADD_NODE,
-  ADD_LINK,
-  DELETE_LINK,
-  UPDATE_NODE_DATA,
 } from "./flows.constants"
-import { Node, XYPosition } from "react-flow-renderer/dist/types"
+import {
+  IChart,
+  ILink,
+  INode,
+} from "@bastinjafari/react-flow-chart-with-tooltips-and-multi-select"
 
-import { Elements } from "react-flow-renderer"
-import { Connection } from "react-flow-renderer/nocss"
-
-export type Pod = {
-  needs: string
+export interface Node extends INode {
+  label?: string
+  needs?:
+    | {
+        [pod: string]: boolean
+      }
+    | {}
+  send_to?: {}
+  depth?: number
 }
 
-export type NodeId = string
-export type LinkId = string
-//todo maybe this will be obsolete
 export type NodeUpdate = Partial<Node>
-export type NodeDataUpdate = Partial<NodeData>
 
-export type DeleteLinkProps = LinkId | Connection
+type colors = "red"
 
-export type NodeData = {
-  [key: string]: any
+interface Link extends ILink {
+  color?: colors
 }
 
-export interface FlowChart {
-  elements: Elements //todo inherit this ad type data properly
+export interface Flow extends Omit<IChart, "nodes" | "links"> {
+  nodes: { [id: string]: Node }
+  links: {
+    [id: string]: Link
+  }
   with?:
     | {
         logserver: string
@@ -55,21 +59,18 @@ export interface FlowChart {
     | {}
 }
 
-type FlowType = "user-generated" | "remote" | "example"
-
-export type Flow = {
+export type FlowProperties = {
   name: string
-  type: FlowType
+  type: string
   isConnected: boolean
   workspace_id?: string
   flow_id?: string
-  flowChart: FlowChart
+  flow: Flow
   yaml?: string
 }
-export type FlowUpdate = Partial<Flow>
 
 export type Flows = {
-  [flowId: string]: Flow
+  [flowId: string]: FlowProperties
 }
 
 export type LoadFlowAction = {
@@ -99,7 +100,7 @@ export type FlowArguments = {
 
 export type FlowState = {
   rerender: boolean
-  selectedFlowId: string
+  selectedFlow: string
   flows: Flows
   flowArguments: FlowArguments
   tooltipConfig: {
@@ -110,13 +111,17 @@ export type FlowState = {
     }
   }
 }
-export type SetFlowArgumentsAction = {
+export type UpdateFlowAction = {
+  type: typeof UPDATE_FLOW
+  payload: Flow
+}
+export type UpdateFlowArgumentsAction = {
   type: typeof SET_FLOW_ARGUMENTS
   payload: FlowArguments
 }
-export type UpdateSelectedFlowAction = {
-  type: typeof UPDATE_SELECTED_FLOW
-  payload: FlowUpdate
+export type UpdateFlowPropertiesAction = {
+  type: typeof SET_FLOW_PROPERTIES
+  payload: FlowProperties
 }
 export type DuplicateFlowAction = {
   type: typeof DUPLICATE_FLOW
@@ -127,38 +132,14 @@ export type DeleteFlowAction = {
   payload: string
 }
 
-export type AddNodeAction = {
-  type: typeof ADD_NODE
-  payload: {
-    data?: NodeData
-    id: string
-    position: XYPosition
-  }
-}
-
 export type UpdateNodeAction = {
   type: typeof UPDATE_NODE
   payload: { nodeId: string; nodeUpdate: NodeUpdate }
 }
 
-export type UpdateNodePropertiesAction = {
-  type: typeof UPDATE_NODE_DATA
-  payload: { nodeId: string; nodePropertiesUpdate: NodeDataUpdate }
-}
-
 export type DeleteNodeAction = {
   type: typeof DELETE_NODE
   payload: string
-}
-
-export type AddLinkAction = {
-  type: typeof ADD_LINK
-  payload: Connection
-}
-
-export type DeleteLinkAction = {
-  type: typeof DELETE_LINK
-  payload: DeleteLinkProps
 }
 
 export type RerenderAction = {
@@ -173,15 +154,12 @@ export type ImportFlowAction = {
 export type FlowActionTypes =
   | LoadFlowAction
   | CreateNewFlowAction
-  | UpdateSelectedFlowAction
+  | UpdateFlowAction
+  | UpdateFlowPropertiesAction
   | DuplicateFlowAction
-  | SetFlowArgumentsAction
   | DeleteFlowAction
   | UpdateNodeAction
   | DeleteNodeAction
   | RerenderAction
   | ImportFlowAction
-  | AddNodeAction
-  | AddLinkAction
-  | DeleteLinkAction
-  | UpdateNodePropertiesAction
+  | UpdateFlowArgumentsAction
