@@ -1,8 +1,8 @@
-import React from "react";
-import SidebarItem from "./SidebarItem";
-import defaultPods from "../../data/defaultPods";
-import { Button, Card } from "react-bootstrap";
-import { Flow, FlowArgument } from "../../redux/flows/flows.types";
+import React from "react"
+import SidebarItem from "./SidebarItem"
+import defaultPods from "../../data/defaultPods"
+import { Button, Card } from "react-bootstrap"
+import { FlowChart, FlowArgument } from "../../redux/flows/flows.types"
 
 function ReadOnly({ duplicateFlow }: { duplicateFlow: () => void }) {
   return (
@@ -15,7 +15,7 @@ function ReadOnly({ duplicateFlow }: { duplicateFlow: () => void }) {
       <p className="my-4">To edit this flow, please duplicate it.</p>
       <Button onClick={duplicateFlow}>Duplicate Flow</Button>
     </div>
-  );
+  )
 }
 
 function PodMenu() {
@@ -42,33 +42,33 @@ function PodMenu() {
               }}
               properties={pod}
             />
-          );
+          )
         })}
       </div>
     </div>
-  );
+  )
 }
 
 type FlowChartSidebarProps = {
-  readonly: boolean;
-  flow: Flow;
-  duplicateFlow: () => void;
-  updateNode: (updates: any) => void;
-  deleteSelection: () => void;
+  readonly: boolean
+  flow: FlowChart
+  duplicateFlow: () => void
+  updateNode: (updates: any) => void
+  deleteSelection: () => void
   updateLink: (
     linkId: string,
     nodeFromId: string,
     nodeToId: string | undefined
-  ) => void;
-  arguments: FlowArgument[];
-};
+  ) => void
+  arguments: FlowArgument[]
+}
 
 function FlowChartSidebar({ readonly, duplicateFlow }: FlowChartSidebarProps) {
   return (
     <Card className="flowchart-sidebar mb-4">
       {readonly ? <ReadOnly duplicateFlow={duplicateFlow} /> : <PodMenu />}
     </Card>
-  );
+  )
 }
 
-export default FlowChartSidebar;
+export default FlowChartSidebar

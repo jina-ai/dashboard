@@ -14,7 +14,7 @@
 
 **Dashboard** allows you to build Jina Flows using a graphical interface. Drag and drop your pods quickly; no code required! Run Flows and monitor by exploring detailed Logs!
 
-Jina Dashboard is a low-code monitoring and management environment for Jina. With the Dashboard, you can build Jina Flows and manage them from a central location. Get detailed insights into the health of the Flow with the use of log stream analysis!
+Jina Dashboard is a low-code monitoring and management environment for Jina. With the Dashboard, you can build Jina Flows and manage them from a central location. Get detailed insights into the health of the FlowChart with the use of log stream analysis!
 
 To use the Jina hosted version of the Dashboard visit [the Jina website](https://dashboard.jina.ai/)
 
@@ -24,8 +24,8 @@ To use the Jina hosted version of the Dashboard visit [the Jina website](https:/
 
 # 🌟 Features:
 
-### **Flow Design GUI**
-Use Jina easily in the browser; no code required! Building flows within the user-friendly interface is easy, just start dragging pods into the design canvas. View the list of Pod properties and edit them using a visual menu. To create a custom Flow: connect Pods, upload a YAML file, or use an existing Flow template!
+### **FlowChart Design GUI**
+Use Jina easily in the browser; no code required! Building flows within the user-friendly interface is easy, just start dragging pods into the design canvas. View the list of Pod properties and edit them using a visual menu. To create a custom FlowChart: connect Pods, upload a YAML file, or use an existing FlowChart template!
 
 <p align="center">
 <img src=".github/.README_images/flowCompose.gif?raw=true" alt="log server settings" width="70%">
@@ -33,7 +33,7 @@ Use Jina easily in the browser; no code required! Building flows within the user
 
 
 ### **LogStream and Task Monitoring**
-Dig deeper into your Jina Flow using the LogStream, and debug your Flow by viewing your logs in real-time! Jina makes it extremely easy to stay on top of your search deployment by allowing you to filter, group, and search logs based on Pod, log-level, or message!
+Dig deeper into your Jina FlowChart using the LogStream, and debug your FlowChart by viewing your logs in real-time! Jina makes it extremely easy to stay on top of your search deployment by allowing you to filter, group, and search logs based on Pod, log-level, or message!
 
 <p align="center">
 <img src=".github/.README_images/logging.gif?raw=true" alt="log server settings" width="70%">
@@ -120,7 +120,7 @@ jinad
 <img src=".github/.README_images/2859cc17.png?raw=true" alt="log server settings" width="80%">
 </p>
 
- - You should now be able to see the log stream and flow visualization.
+ - You should now be able to see the log stream and flowChart visualization.
 
 # Self-hosted Dashboard
 You can also use a self-hosted dashboard instance locally.

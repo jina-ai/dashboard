@@ -1,26 +1,26 @@
-import { State } from "../index";
+import { State } from "../index"
 
-export const selectFlowChart = (state: State) =>
-  state.flowState.flows[state.flowState.selectedFlow];
+export const selectFlow = (state: State) =>
+  state.flowState.flows[state.flowState.selectedFlow]
 
-export const selectRerender = (state: State) => state.flowState.rerender;
+export const selectRerender = (state: State) => state.flowState.rerender
 
 export const selectTooltipConfig = (state: State) =>
-  state.flowState.tooltipConfig;
+  state.flowState.tooltipConfig
 
-export const selectFlows = (state: State) => state.flowState.flows;
+export const selectFlows = (state: State) => state.flowState.flows
 
 export const selectFlowArguments = (state: State) =>
-  state.flowState.flowArguments;
+  state.flowState.flowArguments
 
 export const selectExampleFlowsKeyEntryPairs = (state: State) => {
   return Object.entries(state.flowState.flows).filter(
     (flowKeyEntryPair) => flowKeyEntryPair[1].type === "example"
-  );
-};
+  )
+}
 
 export const selectSelectedNode = (state: State) =>
-  state.flowState.flows[state.flowState.selectedFlow].flow.selected;
+  state.flowState.flows[state.flowState.selectedFlow].flowChart.selected
 
 export const selectSelectedFlowId = (state: State) =>
-  state.flowState.selectedFlow;
+  state.flowState.selectedFlow

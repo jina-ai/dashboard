@@ -18,7 +18,7 @@ import styled from "@emotion/styled"
 import { useDispatch, useSelector } from "react-redux"
 import {
   selectFlowArguments,
-  selectFlowChart,
+  selectFlow,
   selectFlows,
   selectRerender,
   selectSelectedFlowId,
@@ -50,7 +50,7 @@ const elements = [
   {
     id: "2",
     // you can also pass a React component as a label
-    data: { label: <div>Default Node</div> },
+    data: { label: <h1>Default Node</h1> },
     position: { x: 100, y: 125 },
   },
   {
@@ -71,8 +71,8 @@ export default function FlowView() {
   const selectedFlowId = useSelector(selectSelectedFlowId)
   const flows = useSelector(selectFlows)
   const flowArguments = useSelector(selectFlowArguments)
-  const flowChart = useSelector(selectFlowChart)
-  const { flow: chart, type: flowType } = flowChart
+  const flowChart = useSelector(selectFlow)
+  const { flowChart: chart, type: flowType } = flowChart
 
   const copyChartAsYAML = useCallback(() => {
     logger.log("copyChartAsYAML | chart:", chart)
@@ -163,7 +163,7 @@ export default function FlowView() {
           download
         </a>
         <Row noGutters className="page-header mb-4">
-          <PageTitle title="Flow Design" className="text-sm-left mb-3" />
+          <PageTitle title="FlowChart Design" className="text-sm-left mb-3" />
         </Row>
 
         <FlowViewContainer>
@@ -196,7 +196,7 @@ export default function FlowView() {
                 </div>
               </div>
 
-              <div style={{ height: 300, width: 500 }}>
+              <div style={{ height: 1000, width: 1000 }}>
                 <ReactFlow elements={elements} />
               </div>
             </Card>

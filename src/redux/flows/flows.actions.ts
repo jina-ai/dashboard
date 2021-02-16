@@ -16,6 +16,7 @@ import {
   DeleteFlowAction,
   DeleteNodeAction,
   DuplicateFlowAction,
+  FlowChart,
   Flow,
   FlowProperties,
   FlowState,
@@ -52,7 +53,7 @@ export function createNewFlow(): CreateNewFlowAction {
     type: CREATE_NEW_FLOW,
   }
 }
-export function updateFlow(flow: Flow): UpdateFlowAction {
+export function updateFlow(flow: FlowChart): UpdateFlowAction {
   return {
     type: UPDATE_FLOW,
     payload: flow,
