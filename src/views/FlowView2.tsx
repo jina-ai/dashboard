@@ -9,7 +9,6 @@ import {
   loadFlow,
   startFlow,
   stopFlow,
-  updateFlow,
 } from "../redux/flows/flows.actions"
 import CommandBar from "../components/FlowChart/CommandBar"
 
@@ -28,7 +27,6 @@ import { showModal } from "../redux/global/global.actions"
 import logger from "../logger"
 import { copyToClipboard, formatAsYAML } from "../helpers"
 import html2canvas from "html2canvas"
-import { cloneDeep } from "lodash"
 import ReactFlow from "react-flow-renderer"
 
 const FlowViewContainer = styled.div`
@@ -122,24 +120,24 @@ export default function FlowView() {
 
   //todo remove any
   const updateNode = (node: any) => {
-    let newChart = cloneDeep(chart)
-    newChart.nodes[node.id].label = node.label
-
-    let props = {
-      ...node.properties,
-      ...node.newProperties,
-    }
-
-    Object.keys(props).forEach((id) => {
-      if (props[id] === "" || typeof props[id] === "undefined") {
-        delete props[id]
-      }
-    })
-
-    newChart.nodes[node.id].properties = props
-    dispatch(updateFlow({ ...chart, ...newChart }))
-
-    return newChart.nodes[node.id]
+    // let newChart = cloneDeep(chart)
+    // newChart.elements[node.id].label = node.label
+    //
+    // let props = {
+    //   ...node.properties,
+    //   ...node.newProperties,
+    // }
+    //
+    // Object.keys(props).forEach((id) => {
+    //   if (props[id] === "" || typeof props[id] === "undefined") {
+    //     delete props[id]
+    //   }
+    // })
+    //
+    // newChart.nodes[node.id].properties = props
+    // dispatch(updateFlow({ ...chart, ...newChart }))
+    //
+    // return newChart.nodes[node.id]
   }
 
   const updateLink = (
@@ -147,13 +145,13 @@ export default function FlowView() {
     fromId: string,
     toId: string | undefined
   ) => {
-    if (fromId === toId) return
-    let newChart = cloneDeep(chart)
-
-    newChart.links[linkId].from.nodeId = fromId
-    newChart.links[linkId].to.nodeId = toId
-
-    dispatch(updateFlow({ ...chart, ...newChart }))
+    // if (fromId === toId) return
+    // let newChart = cloneDeep(chart)
+    //
+    // newChart.links[linkId].from.nodeId = fromId
+    // newChart.links[linkId].to.nodeId = toId
+    //
+    // dispatch(updateFlow({ ...chart, ...newChart }))
   }
 
   return (

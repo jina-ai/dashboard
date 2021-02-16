@@ -27,7 +27,6 @@ import FlowSelection from "../components/FlowChart/FlowSelection"
 import CommandBar from "../components/FlowChart/CommandBar"
 import {
   FlowChart,
-  IChart,
   IOnLinkCompleteInput,
 } from "@bastinjafari/react-flow-chart-with-tooltips-and-multi-select"
 import Tooltip from "../components/FlowChart/Tooltip"
@@ -245,7 +244,6 @@ export default function FlowView() {
                 </div>
 
                 <FlowChart
-                  chart={chart as IChart}
                   Components={{
                     TooltipComponent: Tooltip,
                     NodeInner: CustomNode as any,
