@@ -1,128 +1,101 @@
-import { TaskActions, TaskEvent, TaskState } from "./task.types";
-import { HANDLE_NEW_TASK_EVENT, initialTaskState } from "./task.constants";
-import { Processes } from "../global/global.types";
-import { formatSeconds } from "../../helpers";
+import { TaskActions, TaskEvent, TaskState } from "./task.types"
+import { HANDLE_NEW_TASK_EVENT, initialTaskState } from "./task.constants"
+import { Processes } from "../global/global.types"
+import { formatSeconds } from "../../helpers"
+import produce from "immer"
 
-export default function taskReduxer(
-  state = initialTaskState,
-  action: TaskActions
-): TaskState {
+const taskReducer = produce((draft: TaskState, action: TaskActions) => {
   switch (action.type) {
     case HANDLE_NEW_TASK_EVENT:
-      return _handleNewTaskEvent(state, action.payload);
-    default:
-      return state;
-  }
-}
-
-function _handleNewTaskEvent(
-  state: TaskState,
-  payload: { taskEvent: TaskEvent; processes: Processes }
-): TaskState {
-  const { taskEvent, processes } = payload;
-
-  const event = { ...taskEvent };
-
-  const {
-    task_name,
-    process,
-    bar_len,
-    num_bars,
-    elapsed,
-    speed,
-    speed_unit,
-    bytes_recv,
-    bytes_sent,
-    msg_recv,
-    msg_sent,
-    num_reqs,
-    qps,
-  } = event;
-
-  let newProgress = { ...state.taskData.progress };
-
-  if (bar_len && num_bars) {
-    newProgress.currentRequest = num_reqs;
-    newProgress.bar_len = bar_len;
-    newProgress.num_bars = num_bars;
+      return _handleNewTaskEvent()
   }
 
-  let newMessages = [...state.taskData.messages];
-  let newBytes = [...state.taskData.bytes];
+  function _handleNewTaskEvent() {
+    const {
+      taskEvent,
+      processes,
+    }: { taskEvent: TaskEvent; processes: Processes } = action.payload
 
-  if (msg_recv && msg_sent) {
-    let index = state.taskData.messages
-      .map((obj: any) => obj.process)
-      .indexOf(process);
+    const event = { ...taskEvent }
 
-    let msgData = {
+    const {
+      task_name,
       process,
-      sent: msg_sent,
-      received: msg_recv,
-      node: processes[process],
-    };
+      bar_len,
+      num_bars,
+      elapsed,
+      speed,
+      speed_unit,
+      bytes_recv,
+      bytes_sent,
+      msg_recv,
+      msg_sent,
+      num_reqs,
+      qps,
+    } = event
 
-    let bytesData = {
-      process,
-      sent: bytes_sent,
-      received: bytes_recv,
-      node: processes[process],
-    };
-
-    if (index < 0) {
-      newMessages.push(msgData);
-      newBytes.push(bytesData);
-    } else {
-      newMessages[index] = msgData;
-      newBytes[index] = bytesData;
+    if (bar_len && num_bars) {
+      draft.taskData.progress.currentRequest = num_reqs
+      draft.taskData.progress.bar_len = bar_len
+      draft.taskData.progress.num_bars = num_bars
     }
 
-    newMessages = newMessages
-      .sort((a: any, b: any) => b.sent + b.received - (a.sent + a.received))
-      .slice(0, 20);
+    if (msg_recv && msg_sent) {
+      let index = draft.taskData.messages
+        .map((obj: any) => obj.process)
+        .indexOf(process)
 
-    newBytes = newBytes
-      .sort((a: any, b: any) => b.sent + b.received - (a.sent + a.received))
-      .slice(0, 20);
+      let msgData = {
+        process,
+        sent: msg_sent,
+        received: msg_recv,
+        node: processes[process],
+      }
+
+      let bytesData = {
+        process,
+        sent: bytes_sent,
+        received: bytes_recv,
+        node: processes[process],
+      }
+
+      if (index < 0) {
+        draft.taskData.messages.push(msgData)
+        draft.taskData.bytes.push(bytesData)
+      } else {
+        draft.taskData.messages[index] = msgData
+        draft.taskData.bytes[index] = bytesData
+      }
+
+      draft.taskData.messages = draft.taskData.messages
+        .sort((a: any, b: any) => b.sent + b.received - (a.sent + a.received))
+        .slice(0, 20)
+
+      draft.taskData.bytes = draft.taskData.bytes
+        .sort((a: any, b: any) => b.sent + b.received - (a.sent + a.received))
+        .slice(0, 20)
+    }
+
+    draft.taskData.lastUpdateChart = new Date()
+
+    if (qps) {
+      draft.taskData.qps.current = parseFloat(qps).toFixed(1)
+      draft.taskData.qps.history.push(parseFloat(qps).toFixed(3))
+      draft.taskData.qps.history.shift()
+    }
+
+    if (speed && speed_unit) {
+      draft.taskData.speed.unit = speed_unit
+      draft.taskData.speed.current = parseFloat(speed).toFixed(1)
+      draft.taskData.speed.history.push(parseFloat(speed).toFixed(3))
+      draft.taskData.speed.history.shift()
+    }
+
+    if (elapsed) {
+      draft.taskData.elapsed.seconds = formatSeconds(parseInt(elapsed))
+      draft.taskData.elapsed.task_name = `Task: ${task_name}`
+    }
   }
+}, initialTaskState)
 
-  const newLastUpdateChart = new Date();
-
-  let newQps = { ...state.taskData.qps };
-
-  if (qps) {
-    newQps.current = parseFloat(qps).toFixed(1);
-    newQps.history.push(parseFloat(qps).toFixed(3));
-    newQps.history.shift();
-  }
-
-  let newSpeed = { ...state.taskData.speed };
-
-  if (speed && speed_unit) {
-    newSpeed.unit = speed_unit;
-    newSpeed.current = parseFloat(speed).toFixed(1);
-    newSpeed.history.push(parseFloat(speed).toFixed(3));
-    newSpeed.history.shift();
-  }
-
-  let newElapsed = { ...state.taskData.elapsed };
-
-  if (elapsed) {
-    newElapsed.seconds = formatSeconds(parseInt(elapsed));
-    newElapsed.task_name = `Task: ${task_name}`;
-  }
-
-  return {
-    ...state,
-    taskData: {
-      ...state.taskData,
-      qps: newQps,
-      elapsed: newElapsed,
-      progress: newProgress,
-      speed: newSpeed,
-      lastUpdateChart: newLastUpdateChart,
-      messages: newMessages,
-      bytes: newBytes,
-    },
-  };
-}
+export default taskReducer
