@@ -1,34 +1,26 @@
-import { HubState, HubActionTypes } from "./hub.types";
+import { HubState, HubActionTypes } from "./hub.types"
 import {
   FETCH_HUB_IMAGES,
   FETCH_HUB_IMAGES_SUCCESS,
   FETCH_HUB_IMAGES_FAILURE,
   initialHubState,
-} from "./hub.constants";
+} from "./hub.constants"
+import produce from "immer"
 
-export default function hubReducer(
-  state: HubState = initialHubState,
-  action: HubActionTypes
-): HubState {
+const hubReducer = produce((draft: HubState, action: HubActionTypes) => {
   switch (action.type) {
     case FETCH_HUB_IMAGES:
-      return {
-        ...state,
-        loading: true,
-      };
+      draft.loading = true
+      break
     case FETCH_HUB_IMAGES_SUCCESS:
-      return {
-        ...state,
-        loading: false,
-        images: action.payload.images,
-      };
+      draft.loading = false
+      draft.images = action.payload.images
+      break
     case FETCH_HUB_IMAGES_FAILURE:
-      return {
-        ...state,
-        loading: false,
-        error: action.payload.error,
-      };
-    default:
-      return state;
+      draft.loading = false
+      draft.error = action.payload.error
+      break
   }
-}
+}, initialHubState)
+
+export default hubReducer
