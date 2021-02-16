@@ -19,8 +19,5 @@ export const selectExampleFlowsKeyEntryPairs = (state: State) => {
   )
 }
 
-export const selectSelectedNode = (state: State) =>
-  state.flowState.flows[state.flowState.selectedFlow].flowChart.selected
-
 export const selectSelectedFlowId = (state: State) =>
   state.flowState.selectedFlow

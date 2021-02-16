@@ -3,19 +3,16 @@ import {
   DELETE_FLOW,
   DELETE_NODE,
   DUPLICATE_FLOW,
+  IMPORT_FLOW,
   LOAD_FLOW,
   RERENDER,
   UPDATE_FLOW,
+  UPDATE_FLOW_ARGUMENTS,
+  UPDATE_FLOW_PROPERTIES,
   UPDATE_NODE,
-  SET_FLOW_PROPERTIES,
-  IMPORT_FLOW,
-  SET_FLOW_ARGUMENTS,
 } from "./flows.constants"
-import {
-  IChart,
-  ILink,
-  INode,
-} from "@bastinjafari/react-flow-chart-with-tooltips-and-multi-select"
+import { INode } from "@bastinjafari/react-flow-chart-with-tooltips-and-multi-select"
+import { Elements } from "react-flow-renderer"
 
 export interface Node extends INode {
   label?: string
@@ -29,18 +26,8 @@ export interface Node extends INode {
 }
 
 export type NodeUpdate = Partial<Node>
-
-type colors = "red"
-
-interface Link extends ILink {
-  color?: colors
-}
-
-export interface Flow extends Omit<IChart, "nodes" | "links"> {
-  nodes: { [id: string]: Node }
-  links: {
-    [id: string]: Link
-  }
+export interface FlowChart {
+  elements: Elements
   with?:
     | {
         logserver: string
@@ -59,18 +46,18 @@ export interface Flow extends Omit<IChart, "nodes" | "links"> {
     | {}
 }
 
-export type FlowProperties = {
+export type Flow = {
   name: string
   type: string
   isConnected: boolean
   workspace_id?: string
   flow_id?: string
-  flow: Flow
+  flowChart: FlowChart
   yaml?: string
 }
 
 export type Flows = {
-  [flowId: string]: FlowProperties
+  [flowId: string]: Flow
 }
 
 export type LoadFlowAction = {
@@ -113,15 +100,15 @@ export type FlowState = {
 }
 export type UpdateFlowAction = {
   type: typeof UPDATE_FLOW
-  payload: Flow
+  payload: FlowChart
 }
 export type UpdateFlowArgumentsAction = {
-  type: typeof SET_FLOW_ARGUMENTS
+  type: typeof UPDATE_FLOW_ARGUMENTS
   payload: FlowArguments
 }
 export type UpdateFlowPropertiesAction = {
-  type: typeof SET_FLOW_PROPERTIES
-  payload: FlowProperties
+  type: typeof UPDATE_FLOW_PROPERTIES
+  payload: Flow
 }
 export type DuplicateFlowAction = {
   type: typeof DUPLICATE_FLOW
