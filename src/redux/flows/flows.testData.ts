@@ -15,40 +15,90 @@ export const testFlowState: FlowState = {
       text: "Hold Shift and click to select multiple nodes",
     },
   },
-  selectedFlowId: "testFlow1",
+  selectedFlow: "testFlow1",
   flows: {
     testFlow1: {
       name: "Custom Flow 1",
       type: "user-generated",
       isConnected: false,
       flowChart: {
-        elements: [
-          {
+        selected: {},
+        hovered: {},
+        scale: 1,
+        nodes: {
+          gateway: {
             id: "gateway",
+            type: "input-output",
+            label: "gateway",
+            ports: {
+              outPort: {
+                id: "outPort",
+                type: "output",
+              },
+            },
+            properties: {},
             position: { x: 629, y: 72 },
-            type: "pod",
           },
-          {
+          node0: {
             id: "node0",
+            type: "input-output",
+            label: "node0",
+            ports: {
+              outPort: {
+                id: "outPort",
+                type: "output",
+              },
+              inPort: {
+                id: "inPort",
+                type: "input",
+              },
+            },
+            properties: {},
             position: { x: 200, y: 200 },
-            type: "pod",
           },
-          {
+          node1: {
             id: "node1",
+            type: "input-output",
+            label: "node1",
+            ports: {
+              outPort: {
+                id: "outPort",
+                type: "output",
+              },
+              inPort: {
+                id: "inPort",
+                type: "input",
+              },
+            },
+            properties: {},
             position: { x: 400, y: 400 },
-            type: "pod",
           },
-          {
-            id: "e-gateway-to-node0",
-            source: "gateway",
-            target: "node0",
+        },
+        links: {
+          link1: {
+            id: "link1",
+            from: {
+              nodeId: "gateway",
+              portId: "outPort",
+            },
+            to: {
+              nodeId: "node0",
+              portId: "inPort",
+            },
           },
-          {
-            id: "e-node0-to-node1",
-            source: "node0",
-            target: "node1",
+          link2: {
+            id: "link2",
+            from: {
+              nodeId: "node0",
+              portId: "outPort",
+            },
+            to: {
+              nodeId: "node1",
+              portId: "inPort",
+            },
           },
-        ],
+        },
+        offset: { x: 0, y: 0 },
       },
     },
     testFlow2: {
@@ -56,16 +106,26 @@ export const testFlowState: FlowState = {
       type: "user-generated",
       isConnected: false,
       flowChart: {
-        elements: [
-          {
+        selected: {},
+        hovered: {},
+        scale: 1,
+        nodes: {
+          gateway: {
             id: "gateway",
-            position: { x: 333, y: 312 },
-            type: "pod",
-            data: {
-              label: "gateway",
+            type: "input-output",
+            label: "gateway",
+            ports: {
+              outPort: {
+                id: "outPort",
+                type: "output",
+              },
             },
+            properties: {},
+            position: { x: 333, y: 312 },
           },
-        ],
+        },
+        links: {},
+        offset: { x: 312, y: 123 },
       },
     },
     flower: {
@@ -75,168 +135,321 @@ export const testFlowState: FlowState = {
       yaml:
         "!Flow\n    with:\n      read_only: true\n      port_expose: $JINA_PORT\n      board:\n        canvas:\n          gateway:\n            x: 250\n            y: 150\n          loader:\n            x: 250\n            y: 257\n          flipper:\n            x: 252\n            y: 407\n          normalizer:\n            x: 239\n            y: 563\n          encoder:\n            x: 252\n            y: 712\n          chunk_indexer:\n            x: 250\n            y: 872\n          ranker:\n            x: 252\n            y: 1066\n          doc_indexer:\n            x: 253\n            y: 1199\n    pods:\n      gateway: {}\n      loader:\n        uses: yaml/craft-load.yml\n        read_only: true\n        needs: gateway\n      flipper:\n        uses: yaml/craft-flip.yml\n        read_only: true\n        needs: loader\n      normalizer:\n        uses: yaml/craft-normalize.yml\n        read_only: true\n        needs: flipper\n      encoder:\n        uses: $ENCODER\n        timeout_ready: 600000\n        read_only: true\n        needs: normalizer\n      chunk_indexer:\n        uses: yaml/index-chunk.yml\n        separated_workspace: true\n        polling: all\n        uses_reducing: _merge_all\n        needs: encoder\n      ranker:\n        uses: MinRanker\n        needs: chunk_indexer\n      doc_indexer:\n        uses: yaml/index-doc.yml\n        needs: ranker  \n    ",
       flowChart: {
-        elements: [
-          {
+        offset: {
+          x: 0,
+          y: 0,
+        },
+        nodes: {
+          gateway: {
             id: "gateway",
+            type: "input-output",
+            label: "gateway",
+            ports: {
+              inPort: {
+                id: "inPort",
+                type: "input",
+              },
+              outPort: {
+                id: "outPort",
+                type: "output",
+              },
+            },
+            needs: {},
+            send_to: {},
             position: {
               x: 250,
               y: 150,
             },
-            type: "gateway",
-            data: {
-              label: "gateway",
-              depth: 0,
-            },
+            properties: {},
+            depth: 0,
           },
-          {
+          loader: {
             id: "loader",
+            type: "input-output",
+            label: "loader",
+            ports: {
+              inPort: {
+                id: "inPort",
+                type: "input",
+              },
+              outPort: {
+                id: "outPort",
+                type: "output",
+              },
+            },
+            needs: {
+              gateway: true,
+            },
+            send_to: {},
             position: {
               x: 250,
               y: 257,
             },
-            type: "pod",
-            data: {
-              label: "loader",
-              needs: ["gateway"],
+            properties: {
               uses: "yaml/craft-load.yml",
               read_only: true,
-              depth: 1,
             },
+            depth: 1,
           },
-          {
+          flipper: {
             id: "flipper",
+            type: "input-output",
+            label: "flipper",
+            ports: {
+              inPort: {
+                id: "inPort",
+                type: "input",
+              },
+              outPort: {
+                id: "outPort",
+                type: "output",
+              },
+            },
+            needs: {
+              loader: true,
+            },
+            send_to: {},
             position: {
               x: 252,
               y: 407,
             },
-            type: "pod",
-            data: {
-              label: "flipper",
-              needs: ["loader"],
+            properties: {
               uses: "yaml/craft-flip.yml",
               read_only: true,
-              depth: 2,
             },
+            depth: 2,
           },
-          {
+          normalizer: {
             id: "normalizer",
+            type: "input-output",
+            label: "normalizer",
+            ports: {
+              inPort: {
+                id: "inPort",
+                type: "input",
+              },
+              outPort: {
+                id: "outPort",
+                type: "output",
+              },
+            },
+            needs: {
+              flipper: true,
+            },
+            send_to: {},
             position: {
               x: 239,
               y: 563,
             },
-            type: "pod",
-            data: {
-              label: "normalizer",
-              needs: ["flipper"],
+            properties: {
               uses: "yaml/craft-normalize.yml",
               read_only: true,
-              depth: 3,
             },
+            depth: 3,
           },
-          {
+          encoder: {
             id: "encoder",
+            type: "input-output",
+            label: "encoder",
+            ports: {
+              inPort: {
+                id: "inPort",
+                type: "input",
+              },
+              outPort: {
+                id: "outPort",
+                type: "output",
+              },
+            },
+            needs: {
+              normalizer: true,
+            },
+            send_to: {},
             position: {
               x: 252,
               y: 712,
             },
-            type: "pod",
-            data: {
-              label: "encoder",
-              needs: ["normalizer"],
+            properties: {
               uses: "$ENCODER",
               timeout_ready: 600000,
               read_only: true,
-              depth: 4,
             },
+            depth: 4,
           },
-          {
+          chunk_indexer: {
             id: "chunk_indexer",
+            type: "input-output",
+            label: "chunk_indexer",
+            ports: {
+              inPort: {
+                id: "inPort",
+                type: "input",
+              },
+              outPort: {
+                id: "outPort",
+                type: "output",
+              },
+            },
+            needs: {
+              encoder: true,
+            },
+            send_to: {},
             position: {
               x: 250,
               y: 872,
             },
-            type: "pod",
-            data: {
-              label: "chunk_indexer",
-              needs: ["encoder"],
+            properties: {
               uses: "yaml/index-chunk.yml",
               separated_workspace: true,
               polling: "all",
               uses_reducing: "_merge_all",
-              depth: 5,
             },
+            depth: 5,
           },
-          {
+          ranker: {
             id: "ranker",
+            type: "input-output",
+            label: "ranker",
+            ports: {
+              inPort: {
+                id: "inPort",
+                type: "input",
+              },
+              outPort: {
+                id: "outPort",
+                type: "output",
+              },
+            },
+            needs: {
+              chunk_indexer: true,
+            },
+            send_to: {},
             position: {
               x: 252,
               y: 1066,
             },
-            type: "pod",
-            data: {
-              label: "ranker",
-              needs: ["chunk_indexer"],
+            properties: {
               uses: "MinRanker",
-              depth: 6,
             },
+            depth: 6,
           },
-          {
+          doc_indexer: {
             id: "doc_indexer",
+            type: "input-output",
+            label: "doc_indexer",
+            ports: {
+              inPort: {
+                id: "inPort",
+                type: "input",
+              },
+              outPort: {
+                id: "outPort",
+                type: "output",
+              },
+            },
+            needs: {
+              ranker: true,
+            },
+            send_to: {},
             position: {
               x: 253,
               y: 1199,
             },
-            type: "pod",
-            data: {
-              label: "doc_indexer",
-              needs: ["ranker"],
+            properties: {
               uses: "yaml/index-doc.yml",
-              depth: 7,
+            },
+            depth: 7,
+          },
+        },
+        links: {
+          "gateway-to-loader": {
+            color: "red",
+            id: "gateway-to-loader",
+            from: {
+              nodeId: "gateway",
+              portId: "outPort",
+            },
+            to: {
+              nodeId: "loader",
+              portId: "inPort",
             },
           },
-          {
-            id: "e-gateway-to-loader",
-            source: "gateway",
-            target: "loader",
-            type: "step",
+          "loader-to-flipper": {
+            color: "red",
+            id: "loader-to-flipper",
+            from: {
+              nodeId: "loader",
+              portId: "outPort",
+            },
+            to: {
+              nodeId: "flipper",
+              portId: "inPort",
+            },
           },
-          {
-            id: "e-loader-to-flipper",
-            source: "loader",
-            target: "flipper",
-            type: "step",
+          "flipper-to-normalizer": {
+            color: "red",
+            id: "flipper-to-normalizer",
+            from: {
+              nodeId: "flipper",
+              portId: "outPort",
+            },
+            to: {
+              nodeId: "normalizer",
+              portId: "inPort",
+            },
           },
-          {
-            id: "e-flipper-to-normalizer",
-            source: "flipper",
-            target: "normalizer",
-            type: "step",
+          "normalizer-to-encoder": {
+            color: "red",
+            id: "normalizer-to-encoder",
+            from: {
+              nodeId: "normalizer",
+              portId: "outPort",
+            },
+            to: {
+              nodeId: "encoder",
+              portId: "inPort",
+            },
           },
-          {
-            id: "e-normalizer-to-encoder",
-            source: "normalizer",
-            target: "encoder",
-            type: "step",
+          "encoder-to-chunk_indexer": {
+            color: "red",
+            id: "encoder-to-chunk_indexer",
+            from: {
+              nodeId: "encoder",
+              portId: "outPort",
+            },
+            to: {
+              nodeId: "chunk_indexer",
+              portId: "inPort",
+            },
           },
-          {
-            id: "e-encoder-to-chunk_indexer",
-            source: "encoder",
-            target: "chunk_indexer",
-            type: "step",
+          "chunk_indexer-to-ranker": {
+            color: "red",
+            id: "chunk_indexer-to-ranker",
+            from: {
+              nodeId: "chunk_indexer",
+              portId: "outPort",
+            },
+            to: {
+              nodeId: "ranker",
+              portId: "inPort",
+            },
           },
-          {
-            id: "e-chunk_indexer-to-ranker",
-            source: "chunk_indexer",
-            target: "ranker",
-            type: "step",
+          "ranker-to-doc_indexer": {
+            color: "red",
+            id: "ranker-to-doc_indexer",
+            from: {
+              nodeId: "ranker",
+              portId: "outPort",
+            },
+            to: {
+              nodeId: "doc_indexer",
+              portId: "inPort",
+            },
           },
-          {
-            id: "e-ranker-to-doc_indexer",
-            source: "ranker",
-            target: "doc_indexer",
-            type: "step",
-          },
-        ],
+        },
+        selected: {},
+        hovered: {},
+        scale: 1,
         with: {
           board: {
             canvas: {
