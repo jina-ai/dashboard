@@ -1,29 +1,9 @@
 // @ts-nocheck
-import { FlowChart, NodeData } from "../redux/flows/flows.types"
-import { Edge, Node, XYPosition } from "react-flow-renderer/dist/types"
+import { FlowChart } from "../redux/flows/flows.types"
+import { Edge, Node } from "react-flow-renderer/dist/types"
+
 const settings = require("./../settings")
 
-export const createNode = (
-  id: string,
-  data?: NodeData,
-  position: XYPosition
-): Node => {
-  return {
-    id,
-    type: id === "gateway" ? "gateway" : "pod",
-    data,
-    position,
-  }
-}
-
-export const createLink = (source: string, target: string): Edge => ({
-  id: `e-${source}-to-${target}`,
-  source,
-  target,
-  type: "step",
-})
-
-//todo type this properly
 type ParsedYAML = {
   pods: Array | { [key: string]: any }
   with?: {
@@ -67,23 +47,43 @@ export const formatForFlowchart = (data: ParsedYAML): FlowChart => {
   let prevNode
   Object.keys(pods).forEach((id) => {
     const pod = pods[id] || {}
-
-    let node: Node = createNode(id, pod, {})
-
-    node.data.label = id
-
-    if (prevNode && !node.data.needs && id !== "gateway") {
-      !node.data.needs && (node.data.needs = [])
-      node.data.needs.push(prevNode)
+    let node: Node = {
+      type: "input-output",
+      id,
+      data: {
+        label: id,
+        // ports: {},
+        needs: pod.needs ? [...pod.needs] : [],
+        send_to: {},
+        properties: { ...pod },
+        depth: undefined,
+      },
+      position: {},
     }
 
-    if (node?.data?.needs)
-      node.data.needs.forEach((parent) => links.push(createLink(parent, id)))
+    if (node.data.properties.needs) delete node.data.properties.needs
+
+    // node.data.ports["inPort"] = { id: "inPort", type: "input" };
+    // node.data.ports["outPort"] = { id: "outPort", type: "output" };
+
+    if (prevNode && !pod.needs && id !== "gateway") pod.needs = prevNode
+
+    node.data.needs.forEach((parent, idx) => {
+      let linkId = `e-${parent}-to-${id}`
+
+      let link: Edge = {
+        id: linkId,
+        source: parent,
+        target: id,
+      }
+      links.push(link)
+    })
 
     if (canvas && canvas[id]) {
       const { x, y } = canvas[id]
       node.position = { x: parseInt(x), y: parseInt(y) }
     }
+
     nodes.push(node)
     prevNode = id
   })
@@ -97,18 +97,19 @@ export const formatForFlowchart = (data: ParsedYAML): FlowChart => {
     const depth = getNodeDepth(nodes, node)
     node.data.depth = depth
 
-    depthPopulation[depth] === undefined
-      ? (depthPopulation[depth] = 1)
-      : (depthPopulation[depth] = depthPopulation[depth] + 1)
+    depthPopulation[depth] >= 0
+      ? depthPopulation[depth]++
+      : (depthPopulation[depth] = 0)
 
     if (!node.position.x)
       node.position = {
         y: depth * offsetY + offsetY,
-        x: depthPopulation[depth] * offsetX,
+        x: depthPopulation[depth] * offsetX + offsetX,
       }
   })
 
-  formatted.elements = [...nodes, ...links]
+  formatted.nodes = nodes
+  formatted.links = links
 
   return formatted
 }
@@ -116,16 +117,16 @@ export const formatForFlowchart = (data: ParsedYAML): FlowChart => {
 function getNodeDepth(nodes: Node[], node: Node): number {
   const parents = node.data.needs
 
-  if (!parents || parents.length === 0) return 0
+  if (parents.length === 0) return 0
   else {
     const parentDepthList = parents.map((parentId) => {
       const parent = nodes.find((node) => node.id === parentId)
       let depth
-      if (parent.data.depth) depth = parent.data.depth
-      else depth = getNodeDepth(nodes, parent)
+      if (parent.data.depth) depth = parent.data.depth + 1
+      else depth = getNodeDepth(nodes, parent) + 1
       return depth
     })
-    const max = Math.max(...parentDepthList) + 1
-    return max
+
+    return Math.max(parentDepthList)
   }
 }
