@@ -3,13 +3,12 @@ import * as YAML from "yaml"
 import { getInitialLogLevel } from "../redux/logStream/logStream.constants"
 import _ from "lodash"
 import { Level, LogLevelOccurrences } from "../redux/logStream/logStream.types"
-import {
-  FlowArgument,
-  FlowArguments,
-  FlowChart,
-} from "../redux/flows/flows.types"
-import { Edge, Node } from "react-flow-renderer/dist/types"
-import { isEdge, isNode } from "react-flow-renderer"
+import { FlowArgument, FlowArguments } from "../redux/flows/flows.types"
+
+const getNodeLabelsByPortId = ({ from, to }, nodes) => ({
+  [from.portId]: nodes[from.nodeId].label || nodes[from.nodeId].properties.name,
+  [to.portId]: nodes[to.nodeId].label || nodes[to.nodeId].properties.name,
+})
 
 export const parseYAML = (yamlSTR: string) => {
   //todo removing the !tag is kind a bootleg solution. We should look into the parsing
@@ -23,7 +22,8 @@ export const parseYAML = (yamlSTR: string) => {
     if (typeof data !== "object" || data === null)
       throw new Error("Invalid YAML")
     Object.keys(data.pods).forEach((podId) => {
-      if (data.pods[podId].needs && !Array.isArray(data.pods[podId].needs)) {
+      if (!data.pods[podId].needs) data.pods[podId].needs = []
+      else if (!Array.isArray(data.pods[podId].needs)) {
         data.pods[podId].needs = [data.pods[podId].needs]
       }
     })
@@ -48,58 +48,48 @@ export const decodePropValue = (
 const unpackIfLengthOne = (arr) =>
   Array.isArray(arr) && arr.length === 1 ? arr[0] : arr
 
-export const formatAsYAML = (
-  chart: FlowChart,
-  flowArguments: FlowArguments
-) => {
-  const { with: chartWith, elements } = chart
-
-  let nodes: Node[] = []
-  let links: Edge[] = []
-
-  elements.forEach((element) => {
-    if (isEdge(element)) links.push(element)
-    if (isNode(element)) nodes.push(element)
-  })
+export const formatAsYAML = (chart, flowArguments: FlowArguments) => {
+  const { with: chartWith, nodes, links } = chart
 
   const { pod: podArguments } = flowArguments
 
-  const childParentsMap = links.reduce((acc, curr) => {
-    const parent = curr.source
-    const child = curr.target
+  const needsByPodLabel = Object.values(links).reduce((acc, curr) => {
+    const nodeLabelsByPortId = getNodeLabelsByPortId(curr, nodes)
+    const needs = nodeLabelsByPortId.outPort
+    const neededBy = nodeLabelsByPortId.inPort
 
-    if (!acc[child]) {
-      acc[child] = []
+    if (!acc[neededBy]) {
+      acc[neededBy] = []
     }
-    acc[child].push(parent)
+    acc[neededBy].push(needs)
     return acc
   }, {})
 
-  const pods = nodes
-    .filter((node) => node.data.label !== "gateway")
+  const pods = Object.values(nodes)
+    .filter(({ label }) => label !== "gateway")
     .reduce((acc, node) => {
-      const key = node.data.label
+      const key = node.label || node.properties.name
 
-      const podProperties = Object.entries(node.data).reduce(
+      const podProperties = Object.entries(node.properties).reduce(
         (acc, [argName, propValue]) => {
           acc[argName] = decodePropValue(argName, propValue, podArguments)
           return acc
         },
         {}
       )
-      if (childParentsMap[key]) {
-        podProperties.needs = unpackIfLengthOne(childParentsMap[key])
+      if (needsByPodLabel[key]) {
+        podProperties.needs = unpackIfLengthOne(needsByPodLabel[key])
       }
 
       acc[key] = { ...podProperties }
       return acc
     }, {})
 
-  const canvas = nodes.reduce((acc, node) => {
+  const canvas = Object.values(nodes).reduce((acc, node) => {
     const {
       position: { x, y },
     } = node
-    const key = node.data.label || node.data.name
+    const key = node.label || node.properties.name
     acc[key] = { x: parseInt(x), y: parseInt(y) }
     return acc
   }, {})

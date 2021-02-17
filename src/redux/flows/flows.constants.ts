@@ -1,4 +1,4 @@
-import { Flow } from "./flows.types"
+import { FlowChart } from "./flows.types"
 
 export const LOAD_FLOW = "LOAD_FLOW"
 export const CREATE_NEW_FLOW = "CREATE_NEW_FLOW"
@@ -14,25 +14,12 @@ export const STOP_FLOW = "STOP_FLOW"
 export const IMPORT_FLOW = "IMPORT_FLOW"
 export const SET_FLOW_ARGUMENTS = "SET_FLOW_ARGUMENTS"
 
-export const initialFlow: Flow = {
-  selected: {},
-  hovered: {},
-  scale: 1,
-  nodes: {
-    gateway: {
+export const initialFlow: FlowChart = {
+  elements: [
+    {
       id: "gateway",
-      type: "input-output",
       label: "gateway",
-      ports: {
-        outPort: {
-          id: "outPort",
-          type: "output",
-        },
-      },
-      properties: {},
       position: { x: 629, y: 72 },
     },
-  },
-  links: {},
-  offset: { x: 0, y: 0 },
+  ],
 }

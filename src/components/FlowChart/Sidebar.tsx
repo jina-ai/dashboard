@@ -2,7 +2,8 @@ import React from "react"
 import SidebarItem from "./SidebarItem"
 import defaultPods from "../../data/defaultPods"
 import { Button, Card } from "react-bootstrap"
-import { FlowChart, FlowArgument } from "../../redux/flows/flows.types"
+import { FlowArgument } from "../../redux/flows/flows.types"
+import { Elements } from "react-flow-renderer"
 
 function ReadOnly({ duplicateFlow }: { duplicateFlow: () => void }) {
   return (
@@ -51,7 +52,7 @@ function PodMenu() {
 
 type FlowChartSidebarProps = {
   readonly: boolean
-  flow: FlowChart
+  elements: Elements
   duplicateFlow: () => void
   updateNode: (updates: any) => void
   deleteSelection: () => void
