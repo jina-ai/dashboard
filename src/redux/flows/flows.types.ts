@@ -3,29 +3,20 @@ import {
   DELETE_FLOW,
   DELETE_NODE,
   DUPLICATE_FLOW,
-  IMPORT_FLOW,
   LOAD_FLOW,
   RERENDER,
-  UPDATE_FLOW,
-  UPDATE_FLOW_ARGUMENTS,
-  UPDATE_FLOW_PROPERTIES,
+  UPDATE_SELECTED_FLOW_CHART,
   UPDATE_NODE,
+  UPDATE_SELECTED_FLOW,
+  IMPORT_FLOW,
+  SET_FLOW_ARGUMENTS,
 } from "./flows.constants"
-import { INode } from "@bastinjafari/react-flow-chart-with-tooltips-and-multi-select"
+import { Node } from "react-flow-renderer/dist/types"
+
 import { Elements } from "react-flow-renderer"
 
-export interface Node extends INode {
-  label?: string
-  needs?:
-    | {
-        [pod: string]: boolean
-      }
-    | {}
-  send_to?: {}
-  depth?: number
-}
-
 export type NodeUpdate = Partial<Node>
+
 export interface FlowChart {
   elements: Elements
   with?:
@@ -46,6 +37,8 @@ export interface FlowChart {
     | {}
 }
 
+export type FlowChartUpdate = Partial<FlowChart>
+
 export type Flow = {
   name: string
   type: string
@@ -55,6 +48,7 @@ export type Flow = {
   flowChart: FlowChart
   yaml?: string
 }
+export type FlowUpdate = Partial<Flow>
 
 export type Flows = {
   [flowId: string]: Flow
@@ -87,7 +81,7 @@ export type FlowArguments = {
 
 export type FlowState = {
   rerender: boolean
-  selectedFlow: string
+  selectedFlowId: string
   flows: Flows
   flowArguments: FlowArguments
   tooltipConfig: {
@@ -98,17 +92,17 @@ export type FlowState = {
     }
   }
 }
-export type UpdateFlowAction = {
-  type: typeof UPDATE_FLOW
-  payload: FlowChart
+export type UpdateFlowChartAction = {
+  type: typeof UPDATE_SELECTED_FLOW_CHART
+  payload: FlowChartUpdate
 }
-export type UpdateFlowArgumentsAction = {
-  type: typeof UPDATE_FLOW_ARGUMENTS
+export type SetFlowArgumentsAction = {
+  type: typeof SET_FLOW_ARGUMENTS
   payload: FlowArguments
 }
-export type UpdateFlowPropertiesAction = {
-  type: typeof UPDATE_FLOW_PROPERTIES
-  payload: Flow
+export type UpdateSelectedFlowAction = {
+  type: typeof UPDATE_SELECTED_FLOW
+  payload: FlowUpdate
 }
 export type DuplicateFlowAction = {
   type: typeof DUPLICATE_FLOW
@@ -141,12 +135,12 @@ export type ImportFlowAction = {
 export type FlowActionTypes =
   | LoadFlowAction
   | CreateNewFlowAction
-  | UpdateFlowAction
-  | UpdateFlowPropertiesAction
+  | UpdateFlowChartAction
+  | UpdateSelectedFlowAction
   | DuplicateFlowAction
   | DeleteFlowAction
   | UpdateNodeAction
   | DeleteNodeAction
   | RerenderAction
   | ImportFlowAction
-  | UpdateFlowArgumentsAction
+  | SetFlowArgumentsAction

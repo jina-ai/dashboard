@@ -5,13 +5,13 @@ import {
   deleteNode,
   duplicateFlow,
   loadFlow,
-  updateFlow,
+  updateFlowChart,
   updateNode,
   importFlow,
   setFlowArguments,
-  setFlowProperties,
+  updateSelectedFlow,
 } from "./flows.actions"
-import { initialFlow } from "./flows.constants"
+import { initialFlowChart } from "./flows.constants"
 import { testFlowArguments, testFlowState } from "./flows.testData"
 
 function getFlowFromStorage(id: string) {
@@ -66,10 +66,10 @@ describe("flows reducer", () => {
       expect(duplicatedFlowerFlowIdAndProperty).toBeDefined()
       if (duplicatedFlowerFlowIdAndProperty) {
         const [id, property] = duplicatedFlowerFlowIdAndProperty
-        expect(property.flow).toEqual(testFlowState.flows.flower.flow)
+        expect(property.flowChart).toEqual(testFlowState.flows.flower.flowChart)
 
         expect(getFlowFromStorage(id).flow).toEqual(
-          testFlowState.flows.flower.flow
+          testFlowState.flows.flower.flowChart
         )
       }
     }
@@ -94,19 +94,19 @@ describe("flows reducer", () => {
       expect(importedFlowerFlowIdAndProperty).toBeDefined()
       if (importedFlowerFlowIdAndProperty) {
         const [id, property] = importedFlowerFlowIdAndProperty
-        expect(property.flow).toEqual(testFlowState.flows.flower.flow)
-        expect(getFlowFromStorage(id).flow).toEqual(property.flow)
+        expect(property.flowChart).toEqual(testFlowState.flows.flower.flowChart)
+        expect(getFlowFromStorage(id).flow).toEqual(property.flowChart)
       }
     }
   })
 
-  it("should update a flow and save it to storage", () => {
-    const testFlow2Flow = testFlowState.flows.testFlow2.flow
-    const selectedFlow = testFlowState.selectedFlow
-    const updatedState = reducer(testFlowState, updateFlow(testFlow2Flow))
+  it("should update a flowChart and save it to storage", () => {
+    const testFlow2Flow = testFlowState.flows.testFlow2.flowChart
+    const selectedFlow = testFlowState.selectedFlowId
+    const updatedState = reducer(testFlowState, updateFlowChart(testFlow2Flow))
     expect(selectedFlow).toBeDefined()
     if (selectedFlow) {
-      expect(updatedState.flows[selectedFlow].flow).toEqual(testFlow2Flow)
+      expect(updatedState.flows[selectedFlow].flowChart).toEqual(testFlow2Flow)
     }
 
     expect(getFlowFromStorage("testFlow2").flow).toEqual(testFlow2Flow)
@@ -124,8 +124,8 @@ describe("flows reducer", () => {
     expect(newFlowIdAndProperty).toBeDefined()
     if (newFlowIdAndProperty) {
       const [id, property] = newFlowIdAndProperty
-      expect(property.flow).toEqual(initialFlow)
-      expect(getFlowFromStorage(id).flow).toEqual(property.flow)
+      expect(property.flowChart).toEqual(initialFlowChart)
+      expect(getFlowFromStorage(id).flow).toEqual(property.flowChart)
     }
   })
 
@@ -134,11 +134,11 @@ describe("flows reducer", () => {
       testFlowState,
       loadFlow("testFlow2")
     )
-    expect(flowStateWithLoadedFlow.selectedFlow).toEqual("testFlow2")
+    expect(flowStateWithLoadedFlow.selectedFlowId).toEqual("testFlow2")
   })
 
   it("should update nodes and save it to storage", () => {
-    const oldNode = testFlowState.flows.testFlow1.flow.nodes.gateway
+    const oldNode = testFlowState.flows.testFlow1.flowChart.nodes.gateway
     const nodeUpdate = {
       label: "newLabel",
       properties: {
@@ -150,7 +150,7 @@ describe("flows reducer", () => {
       updateNode("gateway", nodeUpdate)
     )
     expect(
-      flowStateWithUpdatedNode.flows.testFlow1.flow.nodes.gateway
+      flowStateWithUpdatedNode.flows.testFlow1.flowChart.nodes.gateway
     ).toEqual({ ...oldNode, ...nodeUpdate })
 
     expect(getFlowFromStorage("testFlow1")).toEqual(
@@ -159,13 +159,13 @@ describe("flows reducer", () => {
   })
 
   it("should delete nodes", () => {
-    expect(testFlowState.flows.testFlow1.flow.nodes.gateway).toBeDefined()
+    expect(testFlowState.flows.testFlow1.flowChart.nodes.gateway).toBeDefined()
     const flowStateWithDeletedNode = reducer(
       testFlowState,
       deleteNode("gateway")
     )
     expect(
-      flowStateWithDeletedNode.flows.testFlow1.flow.nodes.gateway
+      flowStateWithDeletedNode.flows.testFlow1.flowChart.nodes.gateway
     ).toBeUndefined()
 
     expect(getFlowFromStorage("testFlow1")).toEqual(
@@ -174,15 +174,15 @@ describe("flows reducer", () => {
   })
 
   it("should delete links, when deleting nodes", () => {
-    expect(testFlowState.flows.testFlow1.flow.nodes.node0).toBeDefined()
-    expect(testFlowState.flows.testFlow1.flow.links).not.toEqual({})
+    expect(testFlowState.flows.testFlow1.flowChart.nodes.node0).toBeDefined()
+    expect(testFlowState.flows.testFlow1.flowChart.links).not.toEqual({})
 
     const flowStateWithDeletedNode = reducer(testFlowState, deleteNode("node0"))
 
     expect(
-      flowStateWithDeletedNode.flows.testFlow1.flow.nodes.node0
+      flowStateWithDeletedNode.flows.testFlow1.flowChart.nodes.node0
     ).toBeUndefined()
-    expect(flowStateWithDeletedNode.flows.testFlow1.flow.links).toEqual({})
+    expect(flowStateWithDeletedNode.flows.testFlow1.flowChart.links).toEqual({})
 
     expect(getFlowFromStorage("testFlow1")).toEqual(
       flowStateWithDeletedNode.flows.testFlow1
@@ -201,7 +201,7 @@ describe("flows reducer", () => {
     const { flow } = testFlowState.flows.testFlow1
     const flowStateWithUpdatedProperties = reducer(
       testFlowState,
-      setFlowProperties({
+      updateSelectedFlow({
         name: "Modified Name",
         type: "modified-type",
         isConnected: true,
@@ -217,6 +217,8 @@ describe("flows reducer", () => {
     expect(flowStateWithUpdatedProperties.flows.testFlow1.isConnected).toEqual(
       true
     )
-    expect(flowStateWithUpdatedProperties.flows.testFlow1.flow).toEqual(flow)
+    expect(flowStateWithUpdatedProperties.flows.testFlow1.flowChart).toEqual(
+      flow
+    )
   })
 })
