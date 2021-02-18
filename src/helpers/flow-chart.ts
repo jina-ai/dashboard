@@ -108,8 +108,7 @@ export const formatForFlowchart = (data: ParsedYAML): FlowChart => {
       }
   })
 
-  formatted.nodes = nodes
-  formatted.links = links
+  formatted.elements = [...nodes, ...links]
 
   return formatted
 }
