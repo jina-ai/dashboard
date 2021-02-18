@@ -2,40 +2,36 @@ import _ from "lodash"
 import exampleFlows from "../../data/exampleFlows"
 import { formatForFlowchart, parseYAML } from "../../helpers"
 import {
-  initialFlow,
+  initialFlowChart,
   CREATE_NEW_FLOW,
   DELETE_FLOW,
   DUPLICATE_FLOW,
   LOAD_FLOW,
-  UPDATE_FLOW,
+  UPDATE_SELECTED_FLOW_CHART,
   UPDATE_NODE,
   DELETE_NODE,
   RERENDER,
-  SET_FLOW_PROPERTIES,
+  UPDATE_SELECTED_FLOW,
   IMPORT_FLOW,
   SET_FLOW_ARGUMENTS,
 } from "./flows.constants"
 import {
   Flow,
   FlowActionTypes,
-  FlowProperties,
+  FlowChartUpdate,
   Flows,
   FlowState,
+  FlowUpdate,
   NodeUpdate,
 } from "./flows.types"
 import { nanoid } from "nanoid"
 import produce from "immer"
-
-//todo type this properly
-
-interface LooseObject {
-  [key: string]: any
-}
+import { Edge, Node } from "react-flow-renderer/dist/types"
 
 export const saveFlowsToStorage = (state: FlowState) => {
-  let toSave: LooseObject = {}
+  let toSave: { [id: string]: Flow } = {}
   const { flows } = state
-  Object.entries(flows).forEach(([id, flow]: [string, any]) => {
+  Object.entries(flows).forEach(([id, flow]: [string, Flow]) => {
     if (flow.type === "user-generated") toSave[id] = flow
   })
   localStorage.setItem("userFlows", JSON.stringify(toSave))
@@ -49,7 +45,7 @@ function getUserFlows(): Flows {
         _userFlow: {
           name: "Custom Flow 1",
           type: "user-generated",
-          flowChart: initialFlow,
+          flowChart: initialFlowChart,
         },
       }
     : userFlows
@@ -74,7 +70,7 @@ function getExampleFlows() {
 
 const initialState: FlowState = {
   rerender: false,
-  selectedFlow: "_userFlow",
+  selectedFlowId: "_userFlow",
   flows: {
     ...getUserFlows(),
     ...getExampleFlows(),
@@ -114,13 +110,15 @@ export default function flowReducer(
       saveFlowsToStorage(newState)
       return newState
     }
-    case UPDATE_FLOW: {
-      const newState = _updateFlow(baseState, action.payload)
+    case UPDATE_SELECTED_FLOW_CHART: {
+      const newState = _updateSelectedFlowChart(baseState, action.payload)
       saveFlowsToStorage(newState)
       return newState
     }
-    case SET_FLOW_PROPERTIES: {
-      return _setFlowProperties(baseState, action.payload)
+    case UPDATE_SELECTED_FLOW: {
+      const newState = _updateSelectedFlow(baseState, action.payload)
+      saveFlowsToStorage(newState)
+      return newState
     }
     case SET_FLOW_ARGUMENTS: {
       return produce(baseState, (draftState) => {
@@ -134,7 +132,7 @@ export default function flowReducer(
     }
     case LOAD_FLOW:
       return produce(baseState, (draftState) => {
-        draftState.selectedFlow = action.payload
+        draftState.selectedFlowId = action.payload
       })
     case UPDATE_NODE: {
       const newState = _updateNode(baseState, action.payload)
@@ -160,22 +158,21 @@ function _deleteFlow(baseState: FlowState, flowId: string): FlowState {
   const newState = produce(baseState, (draftState) => {
     draftState.flows = _.omit(draftState.flows, flowId)
 
-    const nonExampleFlows = Object.entries(baseState.flows).filter(
-      ([id, flowProperties]: [string, FlowProperties]) =>
-        flowProperties.type !== "example"
+    const nonExampleFlows = Object.entries(draftState.flows).filter(
+      ([id, flow]: [string, Flow]) => flow.type !== "example"
     )
 
-    if (draftState.selectedFlow === flowId && nonExampleFlows.length) {
+    if (draftState.selectedFlowId === flowId && nonExampleFlows.length) {
       const idFirstNonExampleFlow = nonExampleFlows[0][0]
-      draftState.selectedFlow = idFirstNonExampleFlow
+      draftState.selectedFlowId = idFirstNonExampleFlow
     } else if (!nonExampleFlows.length) {
       draftState.flows._userFlow = {
         name: "Custom Flow 1",
         type: "user-generated",
         isConnected: false,
-        flow: initialFlow,
+        flowChart: initialFlowChart,
       }
-      draftState.selectedFlow = "_userFlow"
+      draftState.selectedFlowId = "_userFlow"
     }
   })
 
@@ -196,7 +193,7 @@ function _createNewFlow(baseState: FlowState, customYAML?: string): FlowState {
 
     const userFlowNumbers = userFlows
       .map(
-        (userFlow: FlowProperties) =>
+        (userFlow: Flow) =>
           parseInt(userFlow.name.substring(prefixString.length)) || 0
       )
       .sort((a, b) => a - b)
@@ -205,67 +202,98 @@ function _createNewFlow(baseState: FlowState, customYAML?: string): FlowState {
 
     const id = nanoid()
 
-    let flow = initialFlow
+    let flowChart = initialFlowChart
 
     if (customYAML) {
       const parsed = parseYAML(customYAML)
-      if (parsed?.data) flow = formatForFlowchart(parsed.data)
+      if (parsed?.data) flowChart = formatForFlowchart(parsed.data)
     }
 
     draftState.flows[id] = {
       isConnected: false,
       name: `${prefixString} ${largestNumber + 1}`,
       type: "user-generated",
-      flow,
+      flowChart,
     }
-    draftState.selectedFlow = id
+    draftState.selectedFlowId = id
   })
 }
 
-function _updateFlow(baseState: FlowState, newFlow: Flow): FlowState {
-  return produce(baseState, (draftState) => {
-    if (draftState.selectedFlow) {
-      draftState.flows[draftState.selectedFlow].flow = newFlow
-    }
-  })
-}
-
-function _setFlowProperties(
+function _updateSelectedFlowChart(
   baseState: FlowState,
-  newFlowProperties: FlowProperties
+  flowChartUpdate: FlowChartUpdate
 ): FlowState {
   return produce(baseState, (draftState) => {
-    if (draftState.selectedFlow) {
-      draftState.flows[draftState.selectedFlow] = newFlowProperties
+    if (draftState.selectedFlowId) {
+      const selectedFlow = draftState.flows[draftState.selectedFlowId]
+      draftState.flows[draftState.selectedFlowId] = {
+        ...selectedFlow,
+        ...flowChartUpdate,
+      }
     }
   })
 }
 
+function _updateSelectedFlow(
+  baseState: FlowState,
+  flowUpdate: FlowUpdate
+): FlowState {
+  return produce(baseState, (draftState) => {
+    if (draftState.selectedFlowId) {
+      const selectedFlow = draftState.flows[draftState.selectedFlowId]
+      draftState.flows[draftState.selectedFlowId] = {
+        ...selectedFlow,
+        ...flowUpdate,
+      }
+    }
+  })
+}
 function _updateNode(
   baseState: FlowState,
   { nodeId, nodeUpdate }: { nodeId: string; nodeUpdate: NodeUpdate }
 ): FlowState {
   return produce(baseState, (draftState) => {
-    const oldNode = draftState.flows[draftState.selectedFlow].flow.nodes[nodeId]
-    const newNode = {
-      ...oldNode,
-      ...nodeUpdate,
+    const selectedFlow = draftState.selectedFlowId
+    const oldNodeIndex = draftState.flows[
+      selectedFlow
+    ].flowChart.elements.findIndex((element) => element.id === nodeId)
+
+    if (oldNodeIndex > 0) {
+      const oldNode =
+        draftState.flows[selectedFlow].flowChart.elements[oldNodeIndex]
+      const newNode = {
+        ...oldNode,
+        ...nodeUpdate,
+      }
+      draftState.flows[selectedFlow].flowChart.elements[oldNodeIndex] = newNode
     }
-    draftState.flows[draftState.selectedFlow].flow.nodes[nodeId] = newNode
   })
 }
 
 function _deleteNode(baseState: FlowState, nodeId: string): FlowState {
   return produce(baseState, (draftState) => {
-    Object.keys(draftState.flows[draftState.selectedFlow].flow.links).forEach(
-      (linkId) => {
-        const link =
-          draftState.flows[draftState.selectedFlow].flow.links[linkId]
-        if (link.from.nodeId === nodeId || link.to.nodeId === nodeId) {
-          delete draftState.flows[draftState.selectedFlow].flow.links[linkId]
+    const selectedFlow = draftState.flows[draftState.selectedFlowId]
+    const withoutLinksAndNode = selectedFlow.flowChart.elements.filter(
+      (element) => {
+        function instanceOfEdge(object: any): object is Edge {
+          return "source" in object
         }
+
+        function instanceOfNode(object: any): object is Node {
+          return "position" in object
+        }
+
+        if (instanceOfNode(element)) return element.id !== nodeId
+
+        if (instanceOfEdge(element))
+          return element.source !== nodeId || element.target !== nodeId
+
+        return true
       }
     )
-    delete draftState.flows[draftState.selectedFlow].flow.nodes[nodeId]
+
+    draftState.flows[
+      draftState.selectedFlowId
+    ].flowChart.elements = withoutLinksAndNode
   })
 }

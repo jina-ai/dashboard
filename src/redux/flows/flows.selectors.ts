@@ -1,7 +1,7 @@
 import { State } from "../index"
 
 export const selectFlow = (state: State) =>
-  state.flowState.flows[state.flowState.selectedFlow]
+  state.flowState.flows[state.flowState.selectedFlowId]
 
 export const selectRerender = (state: State) => state.flowState.rerender
 
@@ -20,4 +20,4 @@ export const selectExampleFlowsKeyEntryPairs = (state: State) => {
 }
 
 export const selectSelectedFlowId = (state: State) =>
-  state.flowState.selectedFlow
+  state.flowState.selectedFlowId
