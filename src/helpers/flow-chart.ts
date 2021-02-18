@@ -48,8 +48,8 @@ export const formatForFlowchart = (data: ParsedYAML): FlowChart => {
   Object.keys(pods).forEach((id) => {
     const pod = pods[id] || {}
     let node: Node = {
-      type: "input-output",
       id,
+      type: id === "gateway" ? "input" : "default",
       data: {
         label: id,
         // ports: {},
