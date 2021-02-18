@@ -4,10 +4,11 @@ import { Col } from "shards-react";
 
 import SidebarMainNavbar from "./SidebarMainNavbar";
 import SidebarNavItems from "./SidebarNavItems";
+import { TNavItem } from "../../../redux/global/global.types";
 
 type Props = {
   menuVisible: boolean;
-  sidebarNavItems: any;
+  sidebarNavItems: TNavItem[];
   toggleSidebar: () => void;
 };
 

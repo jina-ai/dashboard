@@ -17,7 +17,10 @@ type Title =
   | "Flow Design"
   | "Hub"
   | "Settings"
-  | "Help";
+  | "Help"
+  | "Colors"
+  | "Typography"
+  | "Misc";
 
 type To =
   | "/home"
@@ -26,7 +29,10 @@ type To =
   | "/flow"
   | "/hub"
   | "/settings"
-  | "/help";
+  | "/help"
+  | "/colors"
+  | "/typography"
+  | "/misc";
 
 type IconName =
   | "home"
@@ -45,12 +51,15 @@ type Match =
   | "hub"
   | "package"
   | "settings"
-  | "help";
+  | "help"
+  | "colors"
+  | "typography"
+  | "misc";
 
 export type TNavItem = {
   title: Title;
   to: To;
-  iconName: IconName;
+  iconName?: IconName;
   matches: Match[];
 };
 

@@ -12,19 +12,11 @@ import { Card } from "shards-react";
 import ImageDetails from "../components/Hub/ImageDetails";
 import Readme from "../components/Hub/Readme";
 import SpinningLoader from "../components/Common/SpinningLoader";
+import { Title, Paragraph } from "../components/Common/Typography";
 
 const ImageContainer = styled.div`
   padding: 0 1.75rem;
 `;
-const ImageTitle = styled.h2`
-  color: ${(props) => props.theme.palette.headerTextColor};
-  padding: 1rem;
-`;
-const ImageDescription = styled.p`
-  color: ${(props) => props.theme.palette.headerTextColor};
-  padding: 1rem;
-`;
-
 const PackageView = () => {
   const dispatch = useDispatch();
   let { packageId } = useParams<{ packageId: string }>();
@@ -44,12 +36,10 @@ const PackageView = () => {
           <Row>
             <Col md="8">
               <Card>
-                <ImageTitle data-name="imageOverviewTitle">
-                  {image.name}
-                </ImageTitle>
-                <ImageDescription data-name="imageOverviewDescription">
+                <Title data-name="imageOverviewTitle">{image.name}</Title>
+                <Paragraph data-name="imageOverviewDescription">
                   {image.description}
-                </ImageDescription>
+                </Paragraph>
               </Card>
               <Readme documentation={image.documentation} />
             </Col>

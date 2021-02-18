@@ -14,8 +14,11 @@ import store from "./redux"
 let App
 
 if (process.env.REACT_APP_TARGET === "hub") {
-  const { Hub } = require("./apps/Hub")
-  App = Hub
+  const { Hub } = require("./apps/Hub");
+  App = Hub;
+} else if (process.env.REACT_APP_TARGET === "styleguide") {
+  const { Styleguide } = require("./apps/Styleguide");
+  App = Styleguide;
 } else {
   const { Dashboard } = require("./apps/Dashboard")
   App = Dashboard
