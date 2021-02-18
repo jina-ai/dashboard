@@ -3,76 +3,49 @@ import {
   getInitialLogLevel,
   intialLogStreamState,
   SHOW_LOG_INDEX,
-} from "./logStream.constants";
-import {
-  LogStreamActionTypes,
-  LogStreamState,
-  RawLog,
-} from "./logStream.types";
-import logger from "../../logger";
-import { transformLog } from "../../helpers";
+} from "./logStream.constants"
+import { LogStreamActionTypes, LogStreamState, RawLog } from "./logStream.types"
+import logger from "../../logger"
+import { transformLog } from "../../helpers"
+import produce from "immer"
 
-export default function logStreamReducer(
-  state = intialLogStreamState,
-  action: LogStreamActionTypes
-): LogStreamState {
-  switch (action.type) {
-    case SHOW_LOG_INDEX:
-      return {
-        ...state,
-        logIndex: action.payload,
-      };
-    case HANDLE_NEW_LOG:
-      return _handleNewLog(state, action.payload);
-    default:
-      return state;
-  }
-}
+const logStreamReducer = produce(
+  (draft: LogStreamState, action: LogStreamActionTypes) => {
+    switch (action.type) {
+      case SHOW_LOG_INDEX:
+        draft.logIndex = action.payload
+        break
+      case HANDLE_NEW_LOG:
+        _handleNewLog()
+    }
 
-function _handleNewLog(state: LogStreamState, rawLog: RawLog): LogStreamState {
-  logger.log("_handleNewLog");
-  const log = transformLog(rawLog, state.logs.length);
+    function _handleNewLog() {
+      const rawLog = action.payload as RawLog
+      logger.log("_handleNewLog")
+      const log = transformLog(rawLog, draft.logs.length)
 
-  const { name, level, unixTime } = log;
+      const { name, level, unixTime } = log
+      draft.logs.push(log)
 
-  const newLogs = [...state.logs, log];
+      const newLogSourceValue = draft.logSources[name]
+        ? draft.logSources[name] + 1
+        : 1
+      draft.logSources[name] = newLogSourceValue
 
-  const newLogSourceValue = state.logSources[name]
-    ? state.logSources[name] + 1
-    : 1;
+      const newLogLevelValue = draft.logLevels[level]
+        ? draft.logLevels[level] + 1
+        : 1
+      draft.logLevels[level] = newLogLevelValue
 
-  const newLogSources = {
-    ...state.logSources,
-    [name]: newLogSourceValue,
-  };
+      const newLogLevelOccurrence = draft.logLevelOccurrences[unixTime]
+        ? { ...draft.logLevelOccurrences[unixTime] }
+        : getInitialLogLevel()
+      draft.logLevelOccurrences[unixTime] = newLogLevelOccurrence
+      draft.logLevelOccurrences[unixTime].levels[level]++
+      draft.logLevelOccurrences[unixTime].lastLog = log.idx
+    }
+  },
+  intialLogStreamState
+)
 
-  const newLogLevelValue = state.logLevels[level]
-    ? state.logLevels[level] + 1
-    : 1;
-
-  const newLogLevels = {
-    ...state.logLevels,
-    [level]: newLogLevelValue,
-  };
-
-  const newLogLevelOccurrence = state.logLevelOccurrences[unixTime]
-    ? { ...state.logLevelOccurrences[unixTime] }
-    : getInitialLogLevel();
-
-  const newLogLevelOccurrences = {
-    ...state.logLevelOccurrences,
-    [unixTime]: newLogLevelOccurrence,
-  };
-
-  newLogLevelOccurrences[unixTime].levels[level]++;
-  newLogLevelOccurrences[unixTime].lastLog = log.idx;
-
-  const newState = {
-    ...state,
-    logs: newLogs,
-    logSources: newLogSources,
-    logLevels: newLogLevels,
-    logLevelOccurrences: newLogLevelOccurrences,
-  };
-  return newState;
-}
+export default logStreamReducer

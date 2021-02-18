@@ -25,6 +25,7 @@ const LogItem = memo(
     const { firstCol, secondCol, thirdCol } = columns;
     return (
       <div
+        data-name={`logItem-${index}`}
         className={`log log-${String(
           level
         ).toLowerCase()} px-4 border-bottom py-1`}
