@@ -5,7 +5,7 @@ import { Redirect } from "react-router-dom"
 import { IconSidebar } from "../layouts"
 
 // Route Views
-import FlowView from "../views/FlowView"
+import FlowView3 from "../views/FlowView"
 import FlowView2 from "../views/FlowView2"
 import { LogsView } from "../views/LogsView"
 import TaskView from "../views/TaskView"
@@ -36,7 +36,7 @@ export const dashboardRoutes = [
   {
     path: "/flow",
     layout: IconSidebar,
-    component: FlowView,
+    component: FlowView3,
     props: {
       usesConnection: true,
       usesAuth: false,
