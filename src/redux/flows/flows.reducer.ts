@@ -49,7 +49,7 @@ function getUserFlows(): Flows {
         _userFlow: {
           name: "Custom Flow 1",
           type: "user-generated",
-          flow: initialFlow,
+          flowChart: initialFlow,
         },
       }
     : userFlows
@@ -65,7 +65,7 @@ function getExampleFlows() {
       flows[id] = {
         ...flow,
         isConnected: false,
-        flow: formatted,
+        flowChart: formatted,
       }
     }
   })
