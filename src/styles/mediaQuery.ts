@@ -7,10 +7,10 @@ const breakPoints: BreakPointMap = {
   xxl: 1400,
 };
 
-export type BreakPoint = "xs" | "sm" | "md" | "lg" | "xl" | "xxl";
+export type BreakPoint = keyof typeof breakPoints;
 
 type MediaQueryMap = { [key in BreakPoint]: string };
-type BreakPointMap = { [key in BreakPoint]: number };
+type BreakPointMap = { [key: string]: number };
 
 const mediaQueries: MediaQueryMap = Object.keys(breakPoints).reduce(
   (acc, breakPoint) => ({
