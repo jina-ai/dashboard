@@ -15,7 +15,7 @@ export const testFlowState: FlowState = {
       text: "Hold Shift and click to select multiple nodes",
     },
   },
-  selectedFlow: "testFlow1",
+  selectedFlowId: "testFlow1",
   flows: {
     testFlow1: {
       name: "Custom Flow 1",

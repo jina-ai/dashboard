@@ -6,8 +6,8 @@ import {
   DUPLICATE_FLOW,
   LOAD_FLOW,
   RERENDER,
-  UPDATE_FLOW,
-  SET_FLOW_PROPERTIES,
+  UPDATE_SELECTED_FLOW_CHART,
+  UPDATE_SELECTED_FLOW,
   IMPORT_FLOW,
   SET_FLOW_ARGUMENTS,
 } from "./flows.constants"
@@ -16,19 +16,18 @@ import {
   DeleteFlowAction,
   DeleteNodeAction,
   DuplicateFlowAction,
-  FlowChart,
-  Flow,
-  FlowProperties,
   FlowState,
   LoadFlowAction,
   NodeUpdate,
   RerenderAction,
-  UpdateFlowAction,
+  UpdateFlowChartAction,
   UpdateNodeAction,
-  UpdateFlowPropertiesAction,
+  UpdateSelectedFlowAction,
   ImportFlowAction,
   FlowArguments,
-  UpdateFlowArgumentsAction,
+  SetFlowArgumentsAction,
+  FlowChartUpdate,
+  FlowUpdate,
 } from "./flows.types"
 
 import { ThunkAction } from "redux-thunk"
@@ -53,26 +52,28 @@ export function createNewFlow(): CreateNewFlowAction {
     type: CREATE_NEW_FLOW,
   }
 }
-export function updateFlow(flow: FlowChart): UpdateFlowAction {
+export function updateFlowChart(
+  flowChartUpdate: FlowChartUpdate
+): UpdateFlowChartAction {
   return {
-    type: UPDATE_FLOW,
-    payload: flow,
+    type: UPDATE_SELECTED_FLOW_CHART,
+    payload: flowChartUpdate,
   }
 }
 export function setFlowArguments(
   flowArguments: FlowArguments
-): UpdateFlowArgumentsAction {
+): SetFlowArgumentsAction {
   return {
     type: SET_FLOW_ARGUMENTS,
     payload: flowArguments,
   }
 }
-export function setFlowProperties(
-  flowProperties: FlowProperties
-): UpdateFlowPropertiesAction {
+export function updateSelectedFlow(
+  flowUpdate: FlowUpdate
+): UpdateSelectedFlowAction {
   return {
-    type: SET_FLOW_PROPERTIES,
-    payload: flowProperties,
+    type: UPDATE_SELECTED_FLOW,
+    payload: flowUpdate,
   }
 }
 export function duplicateFlow(flowYAML: string): DuplicateFlowAction {
@@ -121,14 +122,14 @@ export function startFlow(
     logger.log("starting flow: ", selectedFlowId)
     const flow = store.getState().flowState.flows[selectedFlowId]
     const { flowArguments } = store.getState().flowState
-    const { flow: chart } = flow
-    logger.log("starting flow chart: ", chart)
-    const yaml = formatAsYAML(chart, flowArguments)
-    logger.log("starting flow yaml: ", chart)
+    const { flowChart: elements } = flow
+    logger.log("starting flow chart: ", elements)
+    const yaml = formatAsYAML(elements, flowArguments)
+    logger.log("starting flow yaml: ", elements)
     const result = await jinadClient.startFlow(yaml)
     const { status, message, flow_id } = result
 
-    dispatch(setFlowProperties({ ...flow, flow_id }))
+    dispatch(updateSelectedFlow({ flow_id }))
 
     if (status === "error") return dispatch(showBanner(message, "error") as any)
 
@@ -178,7 +179,7 @@ export function initNetworkFlow(
     }
     const { workspace_id } = flowResult.flow
 
-    dispatch(setFlowProperties({ ...flowProperties, workspace_id }))
+    dispatch(updateSelectedFlow({ ...flowProperties, workspace_id }))
 
     //See: https://github.com/jina-ai/jina/issues/1812
     setTimeout(() => dispatch(initLogStream(workspace_id, flow_id)), 5000)
