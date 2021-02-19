@@ -10,18 +10,28 @@ import {
   UPDATE_SELECTED_FLOW,
   IMPORT_FLOW,
   SET_FLOW_ARGUMENTS,
-  ADD_NODE,
+  CREATE_NODE,
   ADD_LINK,
   DELETE_LINK,
 } from "./flows.constants"
-import { Node } from "react-flow-renderer/dist/types"
+import { Node, XYPosition } from "react-flow-renderer/dist/types"
 
 import { Elements } from "react-flow-renderer"
-import { DeleteLinkProps } from "./flows.actions"
+
+export type Pod = {
+  needs: string
+}
 
 export type NodeId = string
 export type LinkId = string
 export type NodeUpdate = Partial<Node>
+
+export type NodeConnection = {
+  source: NodeId
+  target: NodeId
+}
+
+export type DeleteLinkProps = LinkId | NodeConnection
 
 export type NodeProperties = {
   [key: string]: any //todo type this properly
@@ -124,10 +134,11 @@ export type DeleteFlowAction = {
 }
 
 export type AddNodeAction = {
-  type: typeof ADD_NODE
+  type: typeof CREATE_NODE
   payload: {
     properties: NodeProperties
     label: string
+    position: XYPosition
   }
 }
 
@@ -143,10 +154,7 @@ export type DeleteNodeAction = {
 
 export type AddLinkAction = {
   type: typeof ADD_LINK
-  payload: {
-    source: NodeId
-    target: NodeId
-  }
+  payload: NodeConnection
 }
 
 export type DeleteLinkAction = {
@@ -169,9 +177,12 @@ export type FlowActionTypes =
   | UpdateFlowChartAction
   | UpdateSelectedFlowAction
   | DuplicateFlowAction
+  | SetFlowArgumentsAction
   | DeleteFlowAction
   | UpdateNodeAction
   | DeleteNodeAction
   | RerenderAction
   | ImportFlowAction
-  | SetFlowArgumentsAction
+  | AddNodeAction
+  | AddLinkAction
+  | DeleteLinkAction

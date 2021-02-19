@@ -10,7 +10,7 @@ import {
   UPDATE_SELECTED_FLOW,
   IMPORT_FLOW,
   SET_FLOW_ARGUMENTS,
-  ADD_NODE,
+  CREATE_NODE,
   ADD_LINK,
   DELETE_LINK,
 } from "./flows.constants"
@@ -33,10 +33,10 @@ import {
   FlowUpdate,
   NodeProperties,
   NodeId,
-  LinkId,
   AddNodeAction,
   AddLinkAction,
   DeleteLinkAction,
+  DeleteLinkProps,
 } from "./flows.types"
 
 import { ThunkAction } from "redux-thunk"
@@ -48,6 +48,7 @@ import store from ".."
 import { formatAsYAML } from "../../helpers"
 import logger from "../../logger"
 import jinadClient from "../../services/jinad"
+import { XYPosition } from "react-flow-renderer/dist/types"
 
 export function loadFlow(flowId: string): LoadFlowAction {
   return {
@@ -113,13 +114,15 @@ export function deleteFlow(flowId: string): DeleteFlowAction {
 
 export function addNode(
   properties: NodeProperties,
-  label: string
+  label: string,
+  position: XYPosition
 ): AddNodeAction {
   return {
-    type: ADD_NODE,
+    type: CREATE_NODE,
     payload: {
       properties,
       label,
+      position,
     },
   }
 }
@@ -133,8 +136,6 @@ export function addLink(source: NodeId, target: NodeId): AddLinkAction {
     },
   }
 }
-
-export type DeleteLinkProps = LinkId | [NodeId, NodeId]
 
 export function deleteLink(deleteLinkProps: DeleteLinkProps): DeleteLinkAction {
   return {

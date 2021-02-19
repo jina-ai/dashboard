@@ -1,9 +1,11 @@
 // @ts-nocheck
 import { FlowChart } from "../redux/flows/flows.types"
 import { Edge, Node } from "react-flow-renderer/dist/types"
+import { createLink, createNode } from "../redux/flows/flows.reducer"
 
 const settings = require("./../settings")
 
+//todo type this properly
 type ParsedYAML = {
   pods: Array | { [key: string]: any }
   with?: {
@@ -47,19 +49,7 @@ export const formatForFlowchart = (data: ParsedYAML): FlowChart => {
   let prevNode
   Object.keys(pods).forEach((id) => {
     const pod = pods[id] || {}
-    let node: Node = {
-      id,
-      type: id === "gateway" ? "input" : "default",
-      data: {
-        label: id,
-        // ports: {},
-        needs: pod.needs ? [...pod.needs] : [],
-        send_to: {},
-        properties: { ...pod },
-        depth: undefined,
-      },
-      position: {},
-    }
+    let node: Node = createNode(id, pod, {})
 
     if (node.data.properties.needs) delete node.data.properties.needs
 
@@ -68,16 +58,9 @@ export const formatForFlowchart = (data: ParsedYAML): FlowChart => {
 
     if (prevNode && !pod.needs && id !== "gateway") pod.needs = prevNode
 
-    node.data.needs.forEach((parent, idx) => {
-      let linkId = `e-${parent}-to-${id}`
-
-      let link: Edge = {
-        id: linkId,
-        source: parent,
-        target: id,
-      }
-      links.push(link)
-    })
+    node.data.needs.forEach((parent, idx) =>
+      links.push(createLink(parent, idx))
+    )
 
     if (canvas && canvas[id]) {
       const { x, y } = canvas[id]
