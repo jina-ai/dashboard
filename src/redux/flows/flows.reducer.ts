@@ -2,8 +2,11 @@ import _ from "lodash"
 import exampleFlows from "../../data/exampleFlows"
 import { formatForFlowchart, parseYAML } from "../../helpers"
 import {
+  ADD_LINK,
   CREATE_NEW_FLOW,
+  CREATE_NODE,
   DELETE_FLOW,
+  DELETE_LINK,
   DELETE_NODE,
   DUPLICATE_FLOW,
   IMPORT_FLOW,
@@ -15,10 +18,42 @@ import {
   UPDATE_SELECTED_FLOW,
   UPDATE_SELECTED_FLOW_CHART,
 } from "./flows.constants"
-import { Flow, FlowActionTypes, Flows, FlowState } from "./flows.types"
+import {
+  Flow,
+  FlowActionTypes,
+  Flows,
+  FlowState,
+  NodeConnection,
+  NodeProperties,
+} from "./flows.types"
 import { nanoid } from "nanoid"
 import produce from "immer"
-import { Edge, Node } from "react-flow-renderer/dist/types"
+import { Edge, Node, XYPosition } from "react-flow-renderer/dist/types"
+import { isEdge, isNode } from "react-flow-renderer"
+import { isNodeConnection } from "../../helpers/typeCheckers"
+
+export const createNode = (
+  label: string,
+  properties: NodeProperties,
+  position: XYPosition
+): Node => ({
+  id: label,
+  type: label === "gateway" ? "input" : "default",
+  data: {
+    label,
+    needs: properties.needs ? [...properties.needs] : [],
+    send_to: {},
+    properties: { ...properties },
+    depth: undefined,
+  },
+  position,
+})
+
+export const createLink = (source: string, target: string): Edge => ({
+  id: `e-${source}-to-${target}`,
+  source,
+  target,
+})
 
 export const saveFlowsToStorage = (state: FlowState) => {
   let toSave: { [id: string]: Flow } = {}
@@ -171,17 +206,9 @@ const flowReducer = produce((draft: FlowState, action: FlowActionTypes) => {
       const selectedFlow = draft.flows[draft.selectedFlowId]
       const withoutLinksAndNode = selectedFlow.flowChart.elements.filter(
         (element) => {
-          function instanceOfEdge(object: any): object is Edge {
-            return "source" in object
-          }
+          if (isNode(element)) return element.id !== nodeId
 
-          function instanceOfNode(object: any): object is Node {
-            return "position" in object
-          }
-
-          if (instanceOfNode(element)) return element.id !== nodeId
-
-          if (instanceOfEdge(element))
+          if (isEdge(element))
             return element.source !== nodeId || element.target !== nodeId
 
           return true
@@ -191,6 +218,38 @@ const flowReducer = produce((draft: FlowState, action: FlowActionTypes) => {
       draft.flows[draft.selectedFlowId].flowChart.elements = withoutLinksAndNode
       break
     }
+    case CREATE_NODE:
+      const { properties, label, position } = action.payload
+      const newNode = createNode(label, properties, position)
+      draft.flows[draft.selectedFlowId].flowChart.elements.push(newNode)
+      break
+
+    case ADD_LINK:
+      const { source, target } = action.payload
+      const newLink = createLink(source, target)
+      draft.flows[draft.selectedFlowId].flowChart.elements.push(newLink)
+      break
+    case DELETE_LINK:
+      if (isNodeConnection(action.payload)) {
+        const { source, target } = action.payload as NodeConnection
+        draft.flows[draft.selectedFlowId].flowChart.elements = draft.flows[
+          draft.selectedFlowId
+        ].flowChart.elements.filter(
+          (element) =>
+            !isEdge(element) &&
+            element.source !== source &&
+            element.target !== target
+        )
+        //stoped here
+      } else {
+        const linkId = action.payload
+        draft.flows[draft.selectedFlowId].flowChart.elements = draft.flows[
+          draft.selectedFlowId
+        ].flowChart.elements.filter(
+          (element) => !isEdge(element) && linkId !== element.id
+        )
+      }
+      break
     //todo check if this can be deleted with the flow chart lib
     case RERENDER:
       draft.rerender = !draft.rerender
