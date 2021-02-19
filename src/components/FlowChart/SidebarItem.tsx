@@ -1,20 +1,19 @@
-import * as React from "react";
-import { REACT_FLOW_CHART } from "@bastinjafari/react-flow-chart-with-tooltips-and-multi-select";
-import ChartNode from "./ChartNode";
+import * as React from "react"
+import { REACT_FLOW_CHART } from "@bastinjafari/react-flow-chart-with-tooltips-and-multi-select"
+import ChartNode from "./ChartNode"
+import { NodeProperties } from "../../redux/flows/flows.types"
 
 type Props = {
-  label?: string;
+  label?: string
   ports: {
-    [key: string]: any;
-  };
-  properties: {
-    [key: string]: any;
-  };
-  idx: number;
-};
+    [key: string]: any
+  }
+  properties: NodeProperties
+  idx: number
+}
 
 export default function SidebarItem({ label, ports, properties, idx }: Props) {
-  const ref: React.RefObject<HTMLInputElement> = React.createRef();
+  const ref: React.RefObject<HTMLInputElement> = React.createRef()
   return (
     <div
       data-name={`SideBarItem-${idx}`}
@@ -25,10 +24,10 @@ export default function SidebarItem({ label, ports, properties, idx }: Props) {
         event.dataTransfer.setData(
           REACT_FLOW_CHART,
           JSON.stringify({ label, ports, properties })
-        );
+        )
       }}
     >
       <ChartNode node={{ properties, label }} />
     </div>
-  );
+  )
 }

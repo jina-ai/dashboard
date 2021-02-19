@@ -26,7 +26,7 @@ import { showModal } from "../redux/global/global.actions"
 import logger from "../logger"
 import { copyToClipboard, formatAsYAML } from "../helpers"
 import html2canvas from "html2canvas"
-import ReactFlow from "react-flow-renderer"
+import FlowChart from "../components/FlowChart/FlowChart"
 
 const FlowViewContainer = styled.div`
   display: flex;
@@ -168,9 +168,7 @@ export default function FlowView() {
                 </div>
               </div>
 
-              <div style={{ height: 1000, width: 1000 }}>
-                <ReactFlow elements={elements} />
-              </div>
+              <FlowChart elements={elements} />
             </Card>
           </FlowContainer>
 
