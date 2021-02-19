@@ -191,6 +191,7 @@ const flowReducer = produce((draft: FlowState, action: FlowActionTypes) => {
       draft.flows[draft.selectedFlowId].flowChart.elements = withoutLinksAndNode
       break
     }
+    //todo check if this can be deleted with the flow chart lib
     case RERENDER:
       draft.rerender = !draft.rerender
       break
