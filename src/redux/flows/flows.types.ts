@@ -10,12 +10,22 @@ import {
   UPDATE_SELECTED_FLOW,
   IMPORT_FLOW,
   SET_FLOW_ARGUMENTS,
+  ADD_NODE,
+  ADD_LINK,
+  DELETE_LINK,
 } from "./flows.constants"
 import { Node } from "react-flow-renderer/dist/types"
 
 import { Elements } from "react-flow-renderer"
+import { DeleteLinkProps } from "./flows.actions"
 
+export type NodeId = string
+export type LinkId = string
 export type NodeUpdate = Partial<Node>
+
+export type NodeProperties = {
+  [key: string]: any //todo type this properly
+}
 
 export interface FlowChart {
   elements: Elements
@@ -113,6 +123,14 @@ export type DeleteFlowAction = {
   payload: string
 }
 
+export type AddNodeAction = {
+  type: typeof ADD_NODE
+  payload: {
+    properties: NodeProperties
+    label: string
+  }
+}
+
 export type UpdateNodeAction = {
   type: typeof UPDATE_NODE
   payload: { nodeId: string; nodeUpdate: NodeUpdate }
@@ -121,6 +139,19 @@ export type UpdateNodeAction = {
 export type DeleteNodeAction = {
   type: typeof DELETE_NODE
   payload: string
+}
+
+export type AddLinkAction = {
+  type: typeof ADD_LINK
+  payload: {
+    source: NodeId
+    target: NodeId
+  }
+}
+
+export type DeleteLinkAction = {
+  type: typeof DELETE_LINK
+  payload: DeleteLinkProps
 }
 
 export type RerenderAction = {

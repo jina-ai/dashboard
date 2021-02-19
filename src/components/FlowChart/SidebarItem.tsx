@@ -1,20 +1,18 @@
 import * as React from "react"
-import Pod from "./Pod"
-import { NodeData } from "../../redux/flows/flows.types"
+import { REACT_FLOW_CHART } from "@bastinjafari/react-flow-chart-with-tooltips-and-multi-select"
+import ChartNode from "./ChartNode"
+import { NodeProperties } from "../../redux/flows/flows.types"
 
 type Props = {
-  label: string
-  data: NodeData
+  label?: string
+  ports: {
+    [key: string]: any
+  }
+  properties: NodeProperties
   idx: number
 }
 
-export default function SidebarItem({ label, data, idx }: Props) {
-  const onDragStart = (event: React.DragEvent<HTMLDivElement>) => {
-    const dataString = JSON.stringify({ label, ...data })
-    event.dataTransfer.setData("application/reactflow", dataString)
-    event.dataTransfer.effectAllowed = "move"
-  }
-
+export default function SidebarItem({ label, ports, properties, idx }: Props) {
   const ref: React.RefObject<HTMLInputElement> = React.createRef()
   return (
     <div
@@ -22,9 +20,14 @@ export default function SidebarItem({ label, data, idx }: Props) {
       ref={ref}
       className="mb-3 draggable-container"
       draggable={true}
-      onDragStart={onDragStart}
+      onDragStart={(event) => {
+        event.dataTransfer.setData(
+          REACT_FLOW_CHART,
+          JSON.stringify({ label, ports, properties })
+        )
+      }}
     >
-      <Pod label={label} />
+      <ChartNode node={{ properties, label }} />
     </div>
   )
 }
