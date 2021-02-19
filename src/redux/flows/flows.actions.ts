@@ -10,6 +10,9 @@ import {
   UPDATE_SELECTED_FLOW,
   IMPORT_FLOW,
   SET_FLOW_ARGUMENTS,
+  ADD_NODE,
+  ADD_LINK,
+  DELETE_LINK,
 } from "./flows.constants"
 import {
   CreateNewFlowAction,
@@ -28,6 +31,12 @@ import {
   SetFlowArgumentsAction,
   FlowChartUpdate,
   FlowUpdate,
+  NodeProperties,
+  NodeId,
+  LinkId,
+  AddNodeAction,
+  AddLinkAction,
+  DeleteLinkAction,
 } from "./flows.types"
 
 import { ThunkAction } from "redux-thunk"
@@ -52,6 +61,8 @@ export function createNewFlow(): CreateNewFlowAction {
     type: CREATE_NEW_FLOW,
   }
 }
+
+//todo remove this, since there should be more precise actions for that
 export function updateFlowChart(
   flowChartUpdate: FlowChartUpdate
 ): UpdateFlowChartAction {
@@ -60,6 +71,7 @@ export function updateFlowChart(
     payload: flowChartUpdate,
   }
 }
+
 export function setFlowArguments(
   flowArguments: FlowArguments
 ): SetFlowArgumentsAction {
@@ -68,6 +80,7 @@ export function setFlowArguments(
     payload: flowArguments,
   }
 }
+
 export function updateSelectedFlow(
   flowUpdate: FlowUpdate
 ): UpdateSelectedFlowAction {
@@ -76,24 +89,60 @@ export function updateSelectedFlow(
     payload: flowUpdate,
   }
 }
+
 export function duplicateFlow(flowYAML: string): DuplicateFlowAction {
   return {
     type: DUPLICATE_FLOW,
     payload: flowYAML,
   }
 }
+
 export function importFlow(flowYAML: string): ImportFlowAction {
   return {
     type: IMPORT_FLOW,
     payload: flowYAML,
   }
 }
+
 export function deleteFlow(flowId: string): DeleteFlowAction {
   return {
     type: DELETE_FLOW,
     payload: flowId,
   }
 }
+
+export function addNode(
+  properties: NodeProperties,
+  label: string
+): AddNodeAction {
+  return {
+    type: ADD_NODE,
+    payload: {
+      properties,
+      label,
+    },
+  }
+}
+
+export function addLink(source: NodeId, target: NodeId): AddLinkAction {
+  return {
+    type: ADD_LINK,
+    payload: {
+      source,
+      target,
+    },
+  }
+}
+
+export type DeleteLinkProps = LinkId | [NodeId, NodeId]
+
+export function deleteLink(deleteLinkProps: DeleteLinkProps): DeleteLinkAction {
+  return {
+    type: DELETE_LINK,
+    payload: deleteLinkProps,
+  }
+}
+
 export function updateNode(
   nodeId: string,
   nodeUpdate: NodeUpdate
@@ -103,12 +152,14 @@ export function updateNode(
     payload: { nodeId, nodeUpdate },
   }
 }
+
 export function deleteNode(nodeId: string): DeleteNodeAction {
   return {
     type: DELETE_NODE,
     payload: nodeId,
   }
 }
+
 export function rerender(): RerenderAction {
   return {
     type: RERENDER,
