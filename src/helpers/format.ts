@@ -22,8 +22,7 @@ export const parseYAML = (yamlSTR: string) => {
     if (typeof data !== "object" || data === null)
       throw new Error("Invalid YAML")
     Object.keys(data.pods).forEach((podId) => {
-      if (!data.pods[podId].needs) data.pods[podId].needs = []
-      else if (!Array.isArray(data.pods[podId].needs)) {
+      if (data.pods[podId].needs && !Array.isArray(data.pods[podId].needs)) {
         data.pods[podId].needs = [data.pods[podId].needs]
       }
     })

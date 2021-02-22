@@ -1,7 +1,7 @@
 import {
   LogLevelOccurrences,
   RawLogLevel,
-} from "../../redux/logStream/logStream.types";
+} from "../../redux/logStream/logStream.types"
 
 const logLevelOccurrencesTest: LogLevelOccurrences = {
   0: {
@@ -48,7 +48,7 @@ const logLevelOccurrencesTest: LogLevelOccurrences = {
       DEBUG: 0,
     },
   },
-};
+}
 
 const logLevelChartTest: RawLogLevel[] = [
   {
@@ -711,7 +711,7 @@ const logLevelChartTest: RawLogLevel[] = [
       DEBUG: 0,
     },
   },
-];
+]
 
 export const getLogLevelChartsData = {
   numSecondsTest: 60,
@@ -719,7 +719,7 @@ export const getLogLevelChartsData = {
   logLevelOccurrencesTest,
   currentDateTest: new Date(4000),
   logLevelChartTest,
-};
+}
 
 export const parsedYamlObject = {
   data: {
@@ -743,7 +743,7 @@ export const parsedYamlObject = {
       },
       {
         name: "doc_idx",
-        needs: "gateway",
+        needs: ["gateway"],
         polling: "any",
         uses: "pods/doc.yml",
       },
@@ -751,4 +751,4 @@ export const parsedYamlObject = {
     ],
     version: "1",
   },
-};
+}
