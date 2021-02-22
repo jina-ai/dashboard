@@ -58,9 +58,7 @@ export const formatForFlowchart = (data: ParsedYAML): FlowChart => {
 
     if (prevNode && !pod.needs && id !== "gateway") pod.needs = prevNode
 
-    node.data.needs.forEach((parent, idx) =>
-      links.push(createLink(parent, idx))
-    )
+    node.data.needs.forEach((parent) => links.push(createLink(parent, id)))
 
     if (canvas && canvas[id]) {
       const { x, y } = canvas[id]

@@ -38,7 +38,7 @@ export type NodeProperties = {
 }
 
 export interface FlowChart {
-  elements: Elements
+  elements: Elements //todo inherit this ad type data properly
   with?:
     | {
         logserver: string
