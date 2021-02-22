@@ -23,36 +23,12 @@ import {
   Flows,
   FlowState,
   NodeConnection,
-  NodeProperties,
 } from "./flows.types"
 import { nanoid } from "nanoid"
 import produce from "immer"
-import { Edge, Node, XYPosition } from "react-flow-renderer/dist/types"
 import { isEdge, isNode } from "react-flow-renderer"
 import { isNodeConnection } from "../../helpers/typeCheckers"
-
-export const createNode = (
-  id: string,
-  properties: NodeProperties,
-  position: XYPosition
-): Node => ({
-  id,
-  type: id === "gateway" ? "input" : "default",
-  data: {
-    label: id,
-    needs: properties.needs ? [...properties.needs] : [],
-    send_to: {},
-    properties: { ...properties },
-    depth: undefined,
-  },
-  position,
-})
-
-export const createLink = (source: string, target: string): Edge => ({
-  id: `e-${source}-to-${target}`,
-  source,
-  target,
-})
+import { createLink, createNode } from "../../helpers/flow-chart"
 
 export const saveFlowsToStorage = (state: FlowState) => {
   let toSave: { [id: string]: Flow } = {}
@@ -224,9 +200,10 @@ const flowReducer = produce((draft: FlowState, action: FlowActionTypes) => {
           draft.selectedFlowId
         ].flowChart.elements.filter(
           (element) =>
-            !isEdge(element) &&
-            element.source !== source &&
-            element.target !== target
+            !(
+              isEdge(element) &&
+              (element.source === source || element.target === target)
+            )
         )
       } else {
         const linkId = action.payload
