@@ -16,7 +16,6 @@ import {
   SET_FLOW_ARGUMENTS,
   UPDATE_NODE,
   UPDATE_SELECTED_FLOW,
-  UPDATE_SELECTED_FLOW_CHART,
 } from "./flows.constants"
 import {
   Flow,
@@ -154,17 +153,6 @@ const flowReducer = produce((draft: FlowState, action: FlowActionTypes) => {
         }
       }
       break
-    case UPDATE_SELECTED_FLOW_CHART: {
-      const flowChartUpdate = action.payload
-      if (draft.selectedFlowId) {
-        const selectedFlow = draft.flows[draft.selectedFlowId]
-        draft.flows[draft.selectedFlowId] = {
-          ...selectedFlow,
-          ...flowChartUpdate,
-        }
-      }
-      break
-    }
     case UPDATE_SELECTED_FLOW: {
       const flowUpdate = action.payload
       if (draft.selectedFlowId) {
