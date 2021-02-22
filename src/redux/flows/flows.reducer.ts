@@ -33,14 +33,14 @@ import { isEdge, isNode } from "react-flow-renderer"
 import { isNodeConnection } from "../../helpers/typeCheckers"
 
 export const createNode = (
-  label: string,
+  id: string,
   properties: NodeProperties,
   position: XYPosition
 ): Node => ({
-  id: label,
-  type: label === "gateway" ? "input" : "default",
+  id,
+  type: id === "gateway" ? "input" : "default",
   data: {
-    label,
+    label: id,
     needs: properties.needs ? [...properties.needs] : [],
     send_to: {},
     properties: { ...properties },
