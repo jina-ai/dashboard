@@ -240,7 +240,6 @@ const flowReducer = produce((draft: FlowState, action: FlowActionTypes) => {
             element.source !== source &&
             element.target !== target
         )
-        //stoped here
       } else {
         const linkId = action.payload
         draft.flows[draft.selectedFlowId].flowChart.elements = draft.flows[
