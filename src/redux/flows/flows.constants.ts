@@ -2,7 +2,6 @@ import { FlowChart } from "./flows.types"
 
 export const LOAD_FLOW = "LOAD_FLOW"
 export const CREATE_NEW_FLOW = "CREATE_NEW_FLOW"
-export const UPDATE_SELECTED_FLOW_CHART = "UPDATE_SELECTED_FLOW_CHART"
 export const UPDATE_SELECTED_FLOW = "UPDATE_SELECTED_FLOW"
 export const DUPLICATE_FLOW = "DUPLICATE_FLOW"
 export const CREATE_NODE = "CREATE_NODE"
