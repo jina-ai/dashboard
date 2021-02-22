@@ -5,7 +5,6 @@ import {
   DUPLICATE_FLOW,
   LOAD_FLOW,
   RERENDER,
-  UPDATE_SELECTED_FLOW_CHART,
   UPDATE_NODE,
   UPDATE_SELECTED_FLOW,
   IMPORT_FLOW,
@@ -56,8 +55,6 @@ export interface FlowChart {
       }
     | {}
 }
-
-export type FlowChartUpdate = Partial<FlowChart>
 
 export type Flow = {
   name: string
@@ -111,10 +108,6 @@ export type FlowState = {
       text: string
     }
   }
-}
-export type UpdateFlowChartAction = {
-  type: typeof UPDATE_SELECTED_FLOW_CHART
-  payload: FlowChartUpdate
 }
 export type SetFlowArgumentsAction = {
   type: typeof SET_FLOW_ARGUMENTS
@@ -174,7 +167,6 @@ export type ImportFlowAction = {
 export type FlowActionTypes =
   | LoadFlowAction
   | CreateNewFlowAction
-  | UpdateFlowChartAction
   | UpdateSelectedFlowAction
   | DuplicateFlowAction
   | SetFlowArgumentsAction

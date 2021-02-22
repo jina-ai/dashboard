@@ -5,7 +5,6 @@ import {
   deleteNode,
   duplicateFlow,
   loadFlow,
-  updateFlowChart,
   updateNode,
   importFlow,
   setFlowArguments,
@@ -14,14 +13,16 @@ import {
 import { initialFlowChart } from "./flows.constants"
 import { testFlowArguments, testFlowState } from "./flows.testData"
 import { isEdge } from "react-flow-renderer"
+import { Flow } from "./flows.types"
 
-function getFlowFromStorage(id: string) {
+function getFlowFromStorage(id: string): Flow | undefined {
   const userFlowsString = localStorage.getItem("userFlows")
   if (userFlowsString) {
     const parsed = JSON.parse(userFlowsString)
     return parsed[id]
   } else return undefined
 }
+
 describe("flows reducer", () => {
   beforeAll(() => {
     saveFlowsToStorage(testFlowState)
@@ -69,7 +70,7 @@ describe("flows reducer", () => {
         const [dupId, dupFlow] = duplicatedIdAndFlow
         expect(dupFlow.flowChart).toEqual(testFlowState.flows.flower.flowChart)
 
-        expect(getFlowFromStorage(dupId).flow).toEqual(
+        expect(getFlowFromStorage(dupId)?.flowChart).toEqual(
           testFlowState.flows.flower.flowChart
         )
       }
@@ -96,21 +97,9 @@ describe("flows reducer", () => {
       if (importedFlowerFlowIdAndProperty) {
         const [id, property] = importedFlowerFlowIdAndProperty
         expect(property.flowChart).toEqual(testFlowState.flows.flower.flowChart)
-        expect(getFlowFromStorage(id).flow).toEqual(property.flowChart)
+        expect(getFlowFromStorage(id)?.flowChart).toEqual(property.flowChart)
       }
     }
-  })
-
-  it("should update a flowChart and save it to storage", () => {
-    const testFlow2Flow = testFlowState.flows.testFlow2.flowChart
-    const selectedFlow = testFlowState.selectedFlowId
-    const updatedState = reducer(testFlowState, updateFlowChart(testFlow2Flow))
-    expect(selectedFlow).toBeDefined()
-    if (selectedFlow) {
-      expect(updatedState.flows[selectedFlow].flowChart).toEqual(testFlow2Flow)
-    }
-
-    expect(getFlowFromStorage("testFlow2").flow).toEqual(testFlow2Flow)
   })
 
   it("should create a new flow and save it to storage", () => {
@@ -126,7 +115,7 @@ describe("flows reducer", () => {
     if (newFlowIdAndProperty) {
       const [id, property] = newFlowIdAndProperty
       expect(property.flowChart).toEqual(initialFlowChart)
-      expect(getFlowFromStorage(id).flow).toEqual(property.flowChart)
+      expect(getFlowFromStorage(id).flowChart).toEqual(property.flowChart)
     }
   })
 
