@@ -173,19 +173,19 @@ const flowReducer = produce((draft: FlowState, action: FlowActionTypes) => {
       break
     case UPDATE_NODE: {
       const { nodeUpdate, nodeId } = action.payload
-      const selectedFlow = draft.selectedFlowId
+      const selectedFlowId = draft.selectedFlowId
       const oldNodeIndex = draft.flows[
-        selectedFlow
+        selectedFlowId
       ].flowChart.elements.findIndex((element) => element.id === nodeId)
 
-      if (oldNodeIndex > 0) {
+      if (oldNodeIndex >= 0) {
         const oldNode =
-          draft.flows[selectedFlow].flowChart.elements[oldNodeIndex]
+          draft.flows[selectedFlowId].flowChart.elements[oldNodeIndex]
         const newNode = {
           ...oldNode,
           ...nodeUpdate,
         }
-        draft.flows[selectedFlow].flowChart.elements[oldNodeIndex] = newNode
+        draft.flows[selectedFlowId].flowChart.elements[oldNodeIndex] = newNode
       }
       break
     }
@@ -197,7 +197,7 @@ const flowReducer = produce((draft: FlowState, action: FlowActionTypes) => {
           if (isNode(element)) return element.id !== nodeId
 
           if (isEdge(element))
-            return element.source !== nodeId || element.target !== nodeId
+            return element.source !== nodeId && element.target !== nodeId
 
           return true
         }
