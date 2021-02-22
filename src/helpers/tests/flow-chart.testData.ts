@@ -1,4 +1,4 @@
-import { FlowArguments } from "../../redux/flows/flows.types";
+import { FlowArguments } from "../../redux/flows/flows.types"
 
 export const legacyYAML = `!Flow
 pods:
@@ -20,7 +20,7 @@ pods:
   join_all:
     uses: _merge
     needs: [doc_idx,chunk_idx]
-`;
+`
 
 export const v1YAML = `!Flow
 version: '1'
@@ -43,150 +43,126 @@ pods:
   - name: join_all
     uses: _merge
     needs: [doc_idx, chunk_idx]
-`;
+`
 
 export const formattedFlow = {
-  offset: { x: 0, y: 0 },
-  nodes: {
-    gateway: {
-      type: "input-output",
+  elements: [
+    {
       id: "gateway",
-      label: "gateway",
-      ports: {
-        inPort: { id: "inPort", type: "input" },
-        outPort: { id: "outPort", type: "output" },
-      },
-      needs: {},
-      send_to: {},
+      type: "input",
       position: { y: 150, x: 250 },
-      properties: {},
-      depth: 0,
+      data: {
+        label: "gateway",
+        needs: [],
+        send_to: {},
+        properties: {},
+        depth: 0,
+      },
     },
-    segmenter: {
-      type: "input-output",
+    {
       id: "segmenter",
-      label: "segmenter",
-      ports: {
-        inPort: { id: "inPort", type: "input" },
-        outPort: { id: "outPort", type: "output" },
-      },
-      needs: { gateway: true },
-      send_to: {},
+      type: "default",
       position: { y: 300, x: 250 },
-      properties: {
-        uses: "pods/segment.yml",
-        read_only: true,
+      data: {
+        label: "segmenter",
+        needs: ["gateway"],
+        send_to: {},
+        properties: {
+          uses: "pods/segment.yml",
+          read_only: true,
+        },
+        depth: 1,
       },
-      depth: 1,
     },
-    encoder: {
-      type: "input-output",
+    {
       id: "encoder",
-      label: "encoder",
-      ports: {
-        inPort: { id: "inPort", type: "input" },
-        outPort: { id: "outPort", type: "output" },
-      },
-      needs: { segmenter: true },
-      send_to: {},
+      type: "default",
       position: { y: 450, x: 250 },
-      properties: {
-        uses: "pods/encode.yml",
-        polling: "any",
-        timeout_ready: 600000,
-        read_only: true,
+      data: {
+        label: "encoder",
+        needs: ["segmenter"],
+        send_to: {},
+        properties: {
+          uses: "pods/encode.yml",
+          polling: "any",
+          timeout_ready: 600000,
+          read_only: true,
+        },
+        depth: 2,
       },
-      depth: 2,
     },
-    chunk_idx: {
-      type: "input-output",
+    {
       id: "chunk_idx",
-      label: "chunk_idx",
-      ports: {
-        inPort: { id: "inPort", type: "input" },
-        outPort: { id: "outPort", type: "output" },
-      },
-      needs: { encoder: true },
-      send_to: {},
+      type: "default",
       position: { y: 600, x: 250 },
-      properties: {
-        polling: "any",
+      data: {
+        label: "chunk_idx",
+        needs: ["encoder"],
+        send_to: {},
+        properties: {
+          polling: "any",
 
-        uses: "pods/chunk.yml",
+          uses: "pods/chunk.yml",
+        },
+        depth: 3,
       },
-      depth: 3,
     },
-    doc_idx: {
-      type: "input-output",
+    {
       id: "doc_idx",
-      label: "doc_idx",
-      ports: {
-        inPort: { id: "inPort", type: "input" },
-        outPort: { id: "outPort", type: "output" },
-      },
-      needs: { gateway: true },
-      send_to: {},
+      type: "default",
       position: { y: 300, x: 500 },
-      properties: { polling: "any", uses: "pods/doc.yml" },
-      depth: 1,
-    },
-    join_all: {
-      type: "input-output",
-      id: "join_all",
-      label: "join_all",
-      ports: {
-        inPort: { id: "inPort", type: "input" },
-        outPort: { id: "outPort", type: "output" },
+      data: {
+        label: "doc_idx",
+        needs: ["gateway"],
+        send_to: {},
+        properties: { polling: "any", uses: "pods/doc.yml" },
+        depth: 1,
       },
-      needs: { doc_idx: true, chunk_idx: true },
-      send_to: {},
+    },
+    {
+      id: "join_all",
+      type: "default",
       position: { y: 750, x: 250 },
-      properties: { uses: "_merge" },
-      depth: 4,
+      data: {
+        label: "join_all",
+        needs: ["doc_idx", "chunk_idx"],
+        send_to: {},
+        properties: { uses: "_merge" },
+        depth: 4,
+      },
     },
-  },
-  links: {
-    "gateway-to-segmenter": {
-      color: "red",
-      id: "gateway-to-segmenter",
-      from: { nodeId: "gateway", portId: "outPort" },
-      to: { nodeId: "segmenter", portId: "inPort" },
+    {
+      id: "e-gateway-to-segmenter",
+      source: "gateway",
+      target: "segmenter",
     },
-    "segmenter-to-encoder": {
-      color: "red",
-      id: "segmenter-to-encoder",
-      from: { nodeId: "segmenter", portId: "outPort" },
-      to: { nodeId: "encoder", portId: "inPort" },
+    {
+      id: "e-segmenter-to-encoder",
+      source: "segmenter",
+      target: "encoder",
     },
-    "encoder-to-chunk_idx": {
-      color: "red",
-      id: "encoder-to-chunk_idx",
-      from: { nodeId: "encoder", portId: "outPort" },
-      to: { nodeId: "chunk_idx", portId: "inPort" },
+    {
+      id: "e-encoder-to-chunk_idx",
+      source: "encoder",
+      target: "chunk_idx",
     },
-    "gateway-to-doc_idx": {
-      color: "red",
-      id: "gateway-to-doc_idx",
-      from: { nodeId: "gateway", portId: "outPort" },
-      to: { nodeId: "doc_idx", portId: "inPort" },
+    {
+      id: "e-gateway-to-doc_idx",
+      source: "gateway",
+      target: "doc_idx",
     },
-    "doc_idx-to-join_all": {
-      color: "red",
-      id: "doc_idx-to-join_all",
-      from: { nodeId: "doc_idx", portId: "outPort" },
-      to: { nodeId: "join_all", portId: "inPort" },
+    {
+      id: "e-doc_idx-to-join_all",
+      source: "doc_idx",
+      target: "join_all",
     },
-    "chunk_idx-to-join_all": {
-      color: "red",
-      id: "chunk_idx-to-join_all",
-      from: { nodeId: "chunk_idx", portId: "outPort" },
-      to: { nodeId: "join_all", portId: "inPort" },
+    {
+      id: "e-chunk_idx-to-join_all",
+      source: "chunk_idx",
+      target: "join_all",
     },
-  },
-  selected: {},
-  hovered: {},
-  scale: 1,
-};
+  ],
+}
 
 export const formattedFlowAsYaml = `!Flow
 with:
@@ -234,7 +210,7 @@ pods:
     needs:
       - doc_idx
       - chunk_idx
-`;
+`
 
 export const flowArguments: FlowArguments = {
   version: "1",
@@ -519,4 +495,4 @@ export const flowArguments: FlowArguments = {
       type: "string",
     },
   ],
-};
+}

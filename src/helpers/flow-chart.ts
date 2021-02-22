@@ -1,9 +1,30 @@
 // @ts-nocheck
-import { FlowChart } from "../redux/flows/flows.types"
-import { Edge, Node } from "react-flow-renderer/dist/types"
-import { createLink, createNode } from "../redux/flows/flows.reducer"
-
+import { FlowChart, NodeProperties } from "../redux/flows/flows.types"
+import { Edge, Node, XYPosition } from "react-flow-renderer/dist/types"
 const settings = require("./../settings")
+
+export const createNode = (
+  id: string,
+  properties: NodeProperties,
+  position: XYPosition
+): Node => ({
+  id,
+  type: id === "gateway" ? "input" : "default",
+  data: {
+    label: id,
+    needs: properties.needs ? [...properties.needs] : [],
+    send_to: {},
+    properties: { ...properties },
+    depth: undefined,
+  },
+  position,
+})
+
+export const createLink = (source: string, target: string): Edge => ({
+  id: `e-${source}-to-${target}`,
+  source,
+  target,
+})
 
 //todo type this properly
 type ParsedYAML = {
@@ -53,10 +74,8 @@ export const formatForFlowchart = (data: ParsedYAML): FlowChart => {
 
     if (node.data.properties.needs) delete node.data.properties.needs
 
-    // node.data.ports["inPort"] = { id: "inPort", type: "input" };
-    // node.data.ports["outPort"] = { id: "outPort", type: "output" };
-
-    if (prevNode && !pod.needs && id !== "gateway") pod.needs = prevNode
+    if (prevNode && !pod.needs && id !== "gateway")
+      node.data.needs.push(prevNode)
 
     node.data.needs.forEach((parent) => links.push(createLink(parent, id)))
 
@@ -78,14 +97,14 @@ export const formatForFlowchart = (data: ParsedYAML): FlowChart => {
     const depth = getNodeDepth(nodes, node)
     node.data.depth = depth
 
-    depthPopulation[depth] >= 0
-      ? depthPopulation[depth]++
-      : (depthPopulation[depth] = 0)
+    depthPopulation[depth] === undefined
+      ? (depthPopulation[depth] = 1)
+      : (depthPopulation[depth] = depthPopulation[depth] + 1)
 
     if (!node.position.x)
       node.position = {
         y: depth * offsetY + offsetY,
-        x: depthPopulation[depth] * offsetX + offsetX,
+        x: depthPopulation[depth] * offsetX,
       }
   })
 
@@ -102,11 +121,11 @@ function getNodeDepth(nodes: Node[], node: Node): number {
     const parentDepthList = parents.map((parentId) => {
       const parent = nodes.find((node) => node.id === parentId)
       let depth
-      if (parent.data.depth) depth = parent.data.depth + 1
-      else depth = getNodeDepth(nodes, parent) + 1
+      if (parent.data.depth) depth = parent.data.depth
+      else depth = getNodeDepth(nodes, parent)
       return depth
     })
-
-    return Math.max(parentDepthList)
+    const max = Math.max(...parentDepthList) + 1
+    return max
   }
 }
