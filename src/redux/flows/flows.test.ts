@@ -13,6 +13,7 @@ import {
 } from "./flows.actions"
 import { initialFlowChart } from "./flows.constants"
 import { testFlowArguments, testFlowState } from "./flows.testData"
+import { isEdge } from "react-flow-renderer"
 
 function getFlowFromStorage(id: string) {
   const userFlowsString = localStorage.getItem("userFlows")
@@ -138,11 +139,15 @@ describe("flows reducer", () => {
   })
 
   it("should update nodes and save it to storage", () => {
-    const oldNode = testFlowState.flows.testFlow1.flowChart.nodes.gateway
+    const oldNode = testFlowState.flows.testFlow1.flowChart.elements.find(
+      (element) => element.id === "gateway"
+    )
     const nodeUpdate = {
-      label: "newLabel",
-      properties: {
-        newProp: 234,
+      data: {
+        label: "newLabel",
+        properties: {
+          newProp: 234,
+        },
       },
     }
     const flowStateWithUpdatedNode = reducer(
@@ -150,7 +155,9 @@ describe("flows reducer", () => {
       updateNode("gateway", nodeUpdate)
     )
     expect(
-      flowStateWithUpdatedNode.flows.testFlow1.flowChart.nodes.gateway
+      flowStateWithUpdatedNode.flows.testFlow1.flowChart.elements.find(
+        (element) => element.id === "gateway"
+      )
     ).toEqual({ ...oldNode, ...nodeUpdate })
 
     expect(getFlowFromStorage("testFlow1")).toEqual(
@@ -159,13 +166,19 @@ describe("flows reducer", () => {
   })
 
   it("should delete nodes", () => {
-    expect(testFlowState.flows.testFlow1.flowChart.nodes.gateway).toBeDefined()
+    expect(
+      testFlowState.flows.testFlow1.flowChart.elements.find(
+        (element) => element.id === "gateway"
+      )
+    ).toBeDefined()
     const flowStateWithDeletedNode = reducer(
       testFlowState,
       deleteNode("gateway")
     )
     expect(
-      flowStateWithDeletedNode.flows.testFlow1.flowChart.nodes.gateway
+      flowStateWithDeletedNode.flows.testFlow1.flowChart.elements.find(
+        (element) => element.id === "gateway"
+      )
     ).toBeUndefined()
 
     expect(getFlowFromStorage("testFlow1")).toEqual(
@@ -174,15 +187,29 @@ describe("flows reducer", () => {
   })
 
   it("should delete links, when deleting nodes", () => {
-    expect(testFlowState.flows.testFlow1.flowChart.nodes.node0).toBeDefined()
-    expect(testFlowState.flows.testFlow1.flowChart.links).not.toEqual({})
+    expect(
+      testFlowState.flows.testFlow1.flowChart.elements.find(
+        (element) => element.id === "node0"
+      )
+    ).toBeDefined()
+    expect(
+      testFlowState.flows.testFlow1.flowChart.elements.filter((element) =>
+        isEdge(element)
+      )
+    ).not.toEqual([])
 
     const flowStateWithDeletedNode = reducer(testFlowState, deleteNode("node0"))
 
     expect(
-      flowStateWithDeletedNode.flows.testFlow1.flowChart.nodes.node0
+      flowStateWithDeletedNode.flows.testFlow1.flowChart.elements.find(
+        (element) => element.id === "node0"
+      )
     ).toBeUndefined()
-    expect(flowStateWithDeletedNode.flows.testFlow1.flowChart.links).toEqual({})
+    expect(
+      flowStateWithDeletedNode.flows.testFlow1.flowChart.elements.filter(
+        (element) => isEdge(element)
+      )
+    ).toEqual({})
 
     expect(getFlowFromStorage("testFlow1")).toEqual(
       flowStateWithDeletedNode.flows.testFlow1
@@ -198,14 +225,14 @@ describe("flows reducer", () => {
   })
 
   it("should set selected flow properties", () => {
-    const { flow } = testFlowState.flows.testFlow1
+    const { flowChart } = testFlowState.flows.testFlow1
     const flowStateWithUpdatedProperties = reducer(
       testFlowState,
       updateSelectedFlow({
         name: "Modified Name",
         type: "modified-type",
         isConnected: true,
-        flow,
+        flowChart,
       })
     )
     expect(flowStateWithUpdatedProperties.flows.testFlow1.name).toEqual(
@@ -218,7 +245,7 @@ describe("flows reducer", () => {
       true
     )
     expect(flowStateWithUpdatedProperties.flows.testFlow1.flowChart).toEqual(
-      flow
+      flowChart
     )
   })
 })
