@@ -59,17 +59,17 @@ describe("flows reducer", () => {
       const newNumberOfFlows = Object.keys(
         flowStateWithDuplicatedFlowerFlow.flows
       ).length
-      const duplicatedFlowerFlowIdAndProperty = Object.entries(
+      const duplicatedIdAndFlow = Object.entries(
         flowStateWithDuplicatedFlowerFlow.flows
       ).find(([flowId, flowProperty]) => flowProperty.name === "Custom Flow 3")
 
       expect(newNumberOfFlows - oldNumberOfFlows).toBe(1)
-      expect(duplicatedFlowerFlowIdAndProperty).toBeDefined()
-      if (duplicatedFlowerFlowIdAndProperty) {
-        const [id, property] = duplicatedFlowerFlowIdAndProperty
-        expect(property.flowChart).toEqual(testFlowState.flows.flower.flowChart)
+      expect(duplicatedIdAndFlow).toBeDefined()
+      if (duplicatedIdAndFlow) {
+        const [dupId, dupFlow] = duplicatedIdAndFlow
+        expect(dupFlow.flowChart).toEqual(testFlowState.flows.flower.flowChart)
 
-        expect(getFlowFromStorage(id).flow).toEqual(
+        expect(getFlowFromStorage(dupId).flow).toEqual(
           testFlowState.flows.flower.flowChart
         )
       }

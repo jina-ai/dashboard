@@ -26,17 +26,17 @@ export const testFlowState: FlowState = {
           {
             id: "gateway",
             position: { x: 629, y: 72 },
-            type: "input-output",
+            type: "default",
           },
           {
             id: "node0",
             position: { x: 200, y: 200 },
-            type: "input-output",
+            type: "default",
           },
           {
             id: "node1",
             position: { x: 400, y: 400 },
-            type: "input-output",
+            type: "default",
           },
           {
             id: "link1",
@@ -60,7 +60,7 @@ export const testFlowState: FlowState = {
           {
             id: "gateway",
             position: { x: 333, y: 312 },
-            type: "input-output",
+            type: "default",
             data: {
               label: "gateway",
             },
@@ -82,9 +82,10 @@ export const testFlowState: FlowState = {
               x: 250,
               y: 150,
             },
-            type: "input-output",
+            type: "input",
             data: {
-              needs: {},
+              label: "gateway",
+              needs: [],
               send_to: {},
               properties: {},
               depth: 0,
@@ -96,12 +97,10 @@ export const testFlowState: FlowState = {
               x: 250,
               y: 257,
             },
-            type: "input-output",
+            type: "default",
             data: {
               label: "loader",
-              needs: {
-                gateway: true,
-              },
+              needs: ["gateway"],
               send_to: {},
               properties: {
                 uses: "yaml/craft-load.yml",
@@ -116,12 +115,10 @@ export const testFlowState: FlowState = {
               x: 252,
               y: 407,
             },
-            type: "input-output",
+            type: "default",
             data: {
               label: "flipper",
-              needs: {
-                loader: true,
-              },
+              needs: ["loader"],
               send_to: {},
               properties: {
                 uses: "yaml/craft-flip.yml",
@@ -136,11 +133,10 @@ export const testFlowState: FlowState = {
               x: 239,
               y: 563,
             },
-            type: "input-output",
+            type: "default",
             data: {
-              needs: {
-                flipper: true,
-              },
+              label: "normalizer",
+              needs: ["flipper"],
               send_to: {},
               properties: {
                 uses: "yaml/craft-normalize.yml",
@@ -155,12 +151,10 @@ export const testFlowState: FlowState = {
               x: 252,
               y: 712,
             },
-            type: "input-output",
+            type: "default",
             data: {
               label: "encoder",
-              needs: {
-                normalizer: true,
-              },
+              needs: ["normalizer"],
               send_to: {},
 
               properties: {
@@ -177,12 +171,10 @@ export const testFlowState: FlowState = {
               x: 250,
               y: 872,
             },
-            type: "input-output",
+            type: "default",
             data: {
               label: "chunk_indexer",
-              needs: {
-                encoder: true,
-              },
+              needs: ["encoder"],
               send_to: {},
               properties: {
                 uses: "yaml/index-chunk.yml",
@@ -199,12 +191,10 @@ export const testFlowState: FlowState = {
               x: 252,
               y: 1066,
             },
-            type: "input-output",
+            type: "default",
             data: {
               label: "ranker",
-              needs: {
-                chunk_indexer: true,
-              },
+              needs: ["chunk_indexer"],
               send_to: {},
               properties: {
                 uses: "MinRanker",
@@ -218,12 +208,10 @@ export const testFlowState: FlowState = {
               x: 253,
               y: 1199,
             },
-            type: "input-output",
+            type: "default",
             data: {
               label: "doc_indexer",
-              needs: {
-                ranker: true,
-              },
+              needs: ["ranker"],
               send_to: {},
               properties: {
                 uses: "yaml/index-doc.yml",
@@ -232,37 +220,37 @@ export const testFlowState: FlowState = {
             },
           },
           {
-            id: "gateway-to-loader",
+            id: "e-gateway-to-loader",
             source: "gateway",
             target: "loader",
           },
           {
-            id: "loader-to-flipper",
+            id: "e-loader-to-flipper",
             source: "loader",
             target: "flipper",
           },
           {
-            id: "flipper-to-normalizer",
+            id: "e-flipper-to-normalizer",
             source: "flipper",
             target: "normalizer",
           },
           {
-            id: "normalizer-to-encoder",
+            id: "e-normalizer-to-encoder",
             source: "normalizer",
             target: "encoder",
           },
           {
-            id: "encoder-to-chunk_indexer",
-            source: "normalizer",
+            id: "e-encoder-to-chunk_indexer",
+            source: "encoder",
             target: "chunk_indexer",
           },
           {
-            id: "chunk_indexer-to-ranker",
+            id: "e-chunk_indexer-to-ranker",
             source: "chunk_indexer",
             target: "ranker",
           },
           {
-            id: "ranker-to-doc_indexer",
+            id: "e-ranker-to-doc_indexer",
             source: "ranker",
             target: "doc_indexer",
           },
