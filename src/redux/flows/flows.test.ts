@@ -194,11 +194,12 @@ describe("flows reducer", () => {
         (element) => element.id === "node0"
       )
     ).toBeUndefined()
+
     expect(
       flowStateWithDeletedNode.flows.testFlow1.flowChart.elements.filter(
         (element) => isEdge(element)
       )
-    ).toEqual({})
+    ).toEqual([])
 
     expect(getFlowFromStorage("testFlow1")).toEqual(
       flowStateWithDeletedNode.flows.testFlow1
