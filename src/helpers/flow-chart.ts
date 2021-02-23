@@ -1,23 +1,17 @@
 // @ts-nocheck
-import { FlowChart, NodeProperties } from "../redux/flows/flows.types"
+import { FlowChart, NodeData } from "../redux/flows/flows.types"
 import { Edge, Node, XYPosition } from "react-flow-renderer/dist/types"
 
 const settings = require("./../settings")
 
 export const createNode = (
   id: string,
-  properties?: NodeProperties,
+  data?: NodeData,
   position: XYPosition
 ): Node => ({
   id,
   type: id === "gateway" ? "input" : "default",
-  data: {
-    label: id,
-    needs: properties?.needs ? [...properties.needs] : [],
-    send_to: {},
-    properties,
-    depth: undefined,
-  },
+  data,
   position,
 })
 
@@ -73,12 +67,15 @@ export const formatForFlowchart = (data: ParsedYAML): FlowChart => {
     const pod = pods[id] || {}
     let node: Node = createNode(id, pod, {})
 
-    if (node.data.properties.needs) delete node.data.properties.needs
+    if (node?.data?.properties?.needs) delete node.data.properties.needs
 
-    if (prevNode && !pod.needs && id !== "gateway")
+    if (prevNode && !pod.needs && id !== "gateway") {
+      !node.data.needs && (node.data.needs = [])
       node.data.needs.push(prevNode)
+    }
 
-    node.data.needs.forEach((parent) => links.push(createLink(parent, id)))
+    if (node?.data?.needs)
+      node.data.needs.forEach((parent) => links.push(createLink(parent, id)))
 
     if (canvas && canvas[id]) {
       const { x, y } = canvas[id]
@@ -117,7 +114,7 @@ export const formatForFlowchart = (data: ParsedYAML): FlowChart => {
 function getNodeDepth(nodes: Node[], node: Node): number {
   const parents = node.data.needs
 
-  if (parents.length === 0) return 0
+  if (!parents || parents.length === 0) return 0
   else {
     const parentDepthList = parents.map((parentId) => {
       const parent = nodes.find((node) => node.id === parentId)
