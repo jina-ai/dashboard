@@ -25,7 +25,7 @@ export default function FlowChart(props: Props) {
     setReactFlowInstance,
   ] = useState<OnLoadParams | null>(null)
 
-  const reactFlowWrapper = useRef<Element>(null)
+  const reactFlowWrapper = useRef<HTMLElement>(null)
 
   const onConnect = (params: Edge | Connection) => {
     if (params.source && params.target)
@@ -50,17 +50,22 @@ export default function FlowChart(props: Props) {
     event.preventDefault()
     const reactFlowBounds =
       reactFlowWrapper?.current?.getBoundingClientRect() || new DOMRect()
-
     const data = JSON.parse(event.dataTransfer.getData("application/reactflow"))
     const position = reactFlowInstance?.project({
       x: event.clientX - reactFlowBounds.left,
       y: event.clientY - reactFlowBounds.top,
     }) || { x: 0, y: 0 }
+
+    console.log(position)
     dispatch(addNode(getId(), position, data))
   }
 
   return (
-    <div style={{ height: 1000, width: 1000 }}>
+    <div
+      className="reactflow-wrapper"
+      ref={reactFlowWrapper as React.RefObject<HTMLDivElement>}
+      style={{ height: 1000, width: 1000 }}
+    >
       <ReactFlow
         elements={props.elements}
         onConnect={onConnect}
