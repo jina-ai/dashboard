@@ -50,12 +50,13 @@ export default function FlowChart(props: Props) {
     event.preventDefault()
     const reactFlowBounds =
       reactFlowWrapper?.current?.getBoundingClientRect() || new DOMRect()
+
+    const data = JSON.parse(event.dataTransfer.getData("application/reactflow"))
     const position = reactFlowInstance?.project({
       x: event.clientX - reactFlowBounds.left,
       y: event.clientY - reactFlowBounds.top,
     }) || { x: 0, y: 0 }
-
-    dispatch(addNode(getId(), position))
+    dispatch(addNode(getId(), position, data))
   }
 
   return (

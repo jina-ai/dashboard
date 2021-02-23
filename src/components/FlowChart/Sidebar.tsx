@@ -29,18 +29,9 @@ function PodMenu() {
         {defaultPods.map((pod, idx) => {
           return (
             <SidebarItem
+              label={pod.name || "Empty Pod"}
               idx={idx}
               key={idx}
-              ports={{
-                inPort: {
-                  id: "inPort",
-                  type: "input",
-                },
-                outPort: {
-                  id: "outPort",
-                  type: "output",
-                },
-              }}
               properties={pod}
             />
           )
