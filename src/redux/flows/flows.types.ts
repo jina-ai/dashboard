@@ -16,6 +16,7 @@ import {
 import { Node, XYPosition } from "react-flow-renderer/dist/types"
 
 import { Elements } from "react-flow-renderer"
+import { Connection } from "react-flow-renderer/nocss"
 
 export type Pod = {
   needs: string
@@ -25,12 +26,7 @@ export type NodeId = string
 export type LinkId = string
 export type NodeUpdate = Partial<Node>
 
-export type NodeConnection = {
-  source: NodeId
-  target: NodeId
-}
-
-export type DeleteLinkProps = LinkId | NodeConnection
+export type DeleteLinkProps = LinkId | Connection
 
 export type NodeProperties = {
   [key: string]: any //todo type this properly
