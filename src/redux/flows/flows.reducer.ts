@@ -166,8 +166,8 @@ const flowReducer = produce((draft: FlowState, action: FlowActionTypes) => {
       break
     }
     case ADD_NODE:
-      const { properties, id, position } = action.payload
-      const newNode = createNode(id, properties, position)
+      const { data, id, position } = action.payload
+      const newNode = createNode(id, data, position)
       draft.flows[draft.selectedFlowId].flowChart.elements.push(newNode)
       break
     case DELETE_NODE:

@@ -33,7 +33,7 @@ import {
   AddLinkAction,
   DeleteLinkAction,
   DeleteLinkProps,
-  NodeProperties,
+  NodeData,
 } from "./flows.types"
 
 import { ThunkAction } from "redux-thunk"
@@ -102,12 +102,12 @@ export function deleteFlow(flowId: string): DeleteFlowAction {
 export function addNode(
   id: string,
   position: XYPosition,
-  properties?: NodeProperties
+  data?: NodeData
 ): AddNodeAction {
   return {
     type: ADD_NODE,
     payload: {
-      properties,
+      data,
       id,
       position,
     },

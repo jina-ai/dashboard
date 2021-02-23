@@ -28,6 +28,11 @@ export type NodeUpdate = Partial<Node>
 
 export type DeleteLinkProps = LinkId | Connection
 
+export type NodeData = {
+  [key: string]: any //todo type this properly
+  properties?: NodeProperties
+}
+
 export type NodeProperties = {
   [key: string]: any //todo type this properly
 }
@@ -125,7 +130,7 @@ export type DeleteFlowAction = {
 export type AddNodeAction = {
   type: typeof ADD_NODE
   payload: {
-    properties?: NodeProperties
+    data?: NodeData
     id: string
     position: XYPosition
   }
@@ -143,7 +148,7 @@ export type DeleteNodeAction = {
 
 export type AddLinkAction = {
   type: typeof ADD_LINK
-  payload: NodeConnection
+  payload: Connection
 }
 
 export type DeleteLinkAction = {

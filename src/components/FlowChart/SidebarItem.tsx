@@ -3,22 +3,18 @@ import ChartNode from "./ChartNode"
 import { NodeProperties } from "../../redux/flows/flows.types"
 
 type Props = {
-  label?: string
-  ports: {
-    [key: string]: any
-  }
+  label: string
   properties: NodeProperties
   idx: number
 }
 
 export default function SidebarItem({ label, properties, idx }: Props) {
-  const onDragStart = (
-    event: React.DragEvent<HTMLDivElement>,
-    nodeType: string
-  ) => {
-    event.dataTransfer.setData("application/reactflow", nodeType)
+  const onDragStart = (event: React.DragEvent<HTMLDivElement>) => {
+    const dataString = JSON.stringify({ label: label, properties, idx })
+    event.dataTransfer.setData("application/reactflow", dataString)
     event.dataTransfer.effectAllowed = "move"
   }
+
   const ref: React.RefObject<HTMLInputElement> = React.createRef()
   return (
     <div
@@ -26,9 +22,7 @@ export default function SidebarItem({ label, properties, idx }: Props) {
       ref={ref}
       className="mb-3 draggable-container"
       draggable={true}
-      onDragStart={(event) =>
-        onDragStart(event, label === "gateway" ? "input" : "default")
-      }
+      onDragStart={onDragStart}
     >
       <ChartNode node={{ properties, label }} />
     </div>
