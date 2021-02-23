@@ -39,12 +39,12 @@ export const testFlowState: FlowState = {
             type: "default",
           },
           {
-            id: "link1",
+            id: "e-gateway-to-node0",
             source: "gateway",
             target: "node0",
           },
           {
-            id: "link2",
+            id: "e-node0-to-node1",
             source: "node0",
             target: "node1",
           },

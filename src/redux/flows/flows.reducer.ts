@@ -4,7 +4,7 @@ import { formatForFlowchart, parseYAML } from "../../helpers"
 import {
   ADD_LINK,
   CREATE_NEW_FLOW,
-  CREATE_NODE,
+  ADD_NODE,
   DELETE_FLOW,
   DELETE_LINK,
   DELETE_NODE,
@@ -165,7 +165,12 @@ const flowReducer = produce((draft: FlowState, action: FlowActionTypes) => {
       }
       break
     }
-    case DELETE_NODE: {
+    case ADD_NODE:
+      const { properties, id, position } = action.payload
+      const newNode = createNode(id, properties, position)
+      draft.flows[draft.selectedFlowId].flowChart.elements.push(newNode)
+      break
+    case DELETE_NODE:
       const nodeId = action.payload
       const selectedFlow = draft.flows[draft.selectedFlowId]
       const withoutLinksAndNode = selectedFlow.flowChart.elements.filter(
@@ -181,13 +186,6 @@ const flowReducer = produce((draft: FlowState, action: FlowActionTypes) => {
 
       draft.flows[draft.selectedFlowId].flowChart.elements = withoutLinksAndNode
       break
-    }
-    case CREATE_NODE:
-      const { properties, label, position } = action.payload
-      const newNode = createNode(label, properties, position)
-      draft.flows[draft.selectedFlowId].flowChart.elements.push(newNode)
-      break
-
     case ADD_LINK:
       const { source, target } = action.payload
       const newLink = createLink(source, target)
@@ -209,9 +207,7 @@ const flowReducer = produce((draft: FlowState, action: FlowActionTypes) => {
         const linkId = action.payload
         draft.flows[draft.selectedFlowId].flowChart.elements = draft.flows[
           draft.selectedFlowId
-        ].flowChart.elements.filter(
-          (element) => !isEdge(element) && linkId !== element.id
-        )
+        ].flowChart.elements.filter((element) => linkId !== element.id)
       }
       break
     //todo check if this can be deleted with the flow chart lib
