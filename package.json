@@ -116,6 +116,7 @@
     "react-dom": "^16.13.1",
     "react-error-boundary": "^3.0.2",
     "react-ga": "^2.7.0",
+    "react-grid-layout": "^1.2.0",
     "react-minisearch": "^2.6.3",
     "react-modal": "^3.11.2",
     "react-redux": "^7.2.2",
@@ -141,6 +142,7 @@
   "devDependencies": {
     "@percy/cypress": "^2.3.4",
     "@types/lunr": "^2.3.3",
+    "@types/react-grid-layout": "^1.1.1",
     "@types/react-select": "^3.0.19",
     "@types/react-test-renderer": "^17.0.0",
     "@types/react-virtualized-auto-sizer": "^1.0.0",
