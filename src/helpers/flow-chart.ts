@@ -13,7 +13,7 @@ export const createNode = (
   type: id === "gateway" ? "input" : "default",
   data: {
     label: id,
-    needs: properties.needs ? [...properties.needs] : [],
+    needs: properties?.needs ? [...properties.needs] : [],
     send_to: {},
     properties,
     depth: undefined,

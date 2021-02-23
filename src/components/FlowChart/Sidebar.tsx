@@ -54,13 +54,7 @@ type FlowChartSidebarProps = {
   readonly: boolean
   elements: Elements
   duplicateFlow: () => void
-  updateNode: (updates: any) => void
   deleteSelection: () => void
-  updateLink: (
-    linkId: string,
-    nodeFromId: string,
-    nodeToId: string | undefined
-  ) => void
   arguments: FlowArgument[]
 }
 

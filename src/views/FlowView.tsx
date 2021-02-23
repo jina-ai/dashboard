@@ -93,42 +93,6 @@ export default function FlowView() {
     dispatch(duplicateFlow(flowYAML))
   }
 
-  //todo remove any
-  const updateNode = (node: any) => {
-    // let newChart = cloneDeep(chart)
-    // newChart.elements[node.id].label = node.label
-    //
-    // let props = {
-    //   ...node.properties,
-    //   ...node.newProperties,
-    // }
-    //
-    // Object.keys(props).forEach((id) => {
-    //   if (props[id] === "" || typeof props[id] === "undefined") {
-    //     delete props[id]
-    //   }
-    // })
-    //
-    // newChart.nodes[node.id].properties = props
-    // dispatch(updateFlow({ ...chart, ...newChart }))
-    //
-    // return newChart.nodes[node.id]
-  }
-
-  const updateLink = (
-    linkId: string,
-    fromId: string,
-    toId: string | undefined
-  ) => {
-    // if (fromId === toId) return
-    // let newChart = cloneDeep(chart)
-    //
-    // newChart.links[linkId].from.nodeId = fromId
-    // newChart.links[linkId].to.nodeId = toId
-    //
-    // dispatch(updateFlow({ ...chart, ...newChart }))
-  }
-
   return (
     <Container fluid className="main-content-container px-0">
       <div className="px-4">
@@ -178,8 +142,6 @@ export default function FlowView() {
             readonly={flowType !== "user-generated"}
             elements={elements}
             deleteSelection={() => {}}
-            updateNode={updateNode}
-            updateLink={updateLink}
           />
         </FlowViewContainer>
       </div>
