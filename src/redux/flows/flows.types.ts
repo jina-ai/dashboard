@@ -9,7 +9,7 @@ import {
   UPDATE_SELECTED_FLOW,
   IMPORT_FLOW,
   SET_FLOW_ARGUMENTS,
-  CREATE_NODE,
+  ADD_NODE,
   ADD_LINK,
   DELETE_LINK,
 } from "./flows.constants"
@@ -127,10 +127,10 @@ export type DeleteFlowAction = {
 }
 
 export type AddNodeAction = {
-  type: typeof CREATE_NODE
+  type: typeof ADD_NODE
   payload: {
-    properties: NodeProperties
-    label: string
+    properties?: NodeProperties
+    id: string
     position: XYPosition
   }
 }

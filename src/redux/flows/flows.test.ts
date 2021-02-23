@@ -9,11 +9,15 @@ import {
   importFlow,
   setFlowArguments,
   updateSelectedFlow,
+  addNode,
+  addLink,
+  deleteLink,
 } from "./flows.actions"
 import { initialFlowChart } from "./flows.constants"
 import { testFlowArguments, testFlowState } from "./flows.testData"
-import { isEdge } from "react-flow-renderer"
+import { isEdge, isNode, Node } from "react-flow-renderer"
 import { Flow } from "./flows.types"
+import { Edge } from "react-flow-renderer/nocss"
 
 function getFlowFromStorage(id: string): Flow | undefined {
   const userFlowsString = localStorage.getItem("userFlows")
@@ -115,16 +119,53 @@ describe("flows reducer", () => {
     if (newFlowIdAndProperty) {
       const [id, property] = newFlowIdAndProperty
       expect(property.flowChart).toEqual(initialFlowChart)
-      expect(getFlowFromStorage(id).flowChart).toEqual(property.flowChart)
+      expect(getFlowFromStorage(id)?.flowChart).toEqual(property.flowChart)
     }
   })
 
-  it("should load a flows", () => {
+  it("should load a flow", () => {
     const flowStateWithLoadedFlow = reducer(
       testFlowState,
       loadFlow("testFlow2")
     )
     expect(flowStateWithLoadedFlow.selectedFlowId).toEqual("testFlow2")
+  })
+
+  it("should create a node and save it to storage", () => {
+    const newNodeId = "newNodeId"
+    const newPosition = { x: 1000, y: 1000 }
+    const newProperties = { newProp: "newProp" }
+
+    const newState = reducer(
+      testFlowState,
+      addNode(newNodeId, newPosition, newProperties)
+    )
+    const oldFlowChart =
+      testFlowState.flows[testFlowState.selectedFlowId].flowChart
+    const newFlowChart = newState.flows[newState.selectedFlowId].flowChart
+    const oldNodeCount = oldFlowChart.elements.filter((element) =>
+      isNode(element)
+    ).length
+    const newNodeCount = newFlowChart.elements.filter((element) =>
+      isNode(element)
+    ).length
+    const newNode = newFlowChart.elements.find(
+      (element) => element.id === newNodeId
+    ) as Node
+
+    expect(newNodeCount - oldNodeCount).toBe(1)
+    expect(newNode.position).toEqual(newPosition)
+    expect(newNode.data.properties).toEqual(newProperties)
+
+    const flowChartFromStorage = getFlowFromStorage(
+      testFlowState.selectedFlowId
+    )?.flowChart
+    const newNodeFromStorage = flowChartFromStorage?.elements.find(
+      (element) => element.id === newNodeId
+    ) as Node
+
+    expect(newNodeFromStorage.position).toEqual(newPosition)
+    expect(newNodeFromStorage.data.properties).toEqual(newProperties)
   })
 
   it("should update nodes and save it to storage", () => {
@@ -204,6 +245,112 @@ describe("flows reducer", () => {
     expect(getFlowFromStorage("testFlow1")).toEqual(
       flowStateWithDeletedNode.flows.testFlow1
     )
+  })
+
+  it("should add a link and save it to storage", () => {
+    const source = "gateway"
+    const target = "node1"
+
+    const newState = reducer(testFlowState, addLink(source, target))
+    const oldFlowChart =
+      testFlowState.flows[testFlowState.selectedFlowId].flowChart
+    const newFlowChart = newState.flows[newState.selectedFlowId].flowChart
+    const oldLinkCount = oldFlowChart.elements.filter((element) =>
+      isEdge(element)
+    ).length
+    const newLinkCount = newFlowChart.elements.filter((element) =>
+      isEdge(element)
+    ).length
+    const newLink = newFlowChart.elements.find(
+      (element) => element.id === `e-${source}-to-${target}`
+    ) as Edge
+
+    expect(newLinkCount - oldLinkCount).toBe(1)
+    expect(newLink.source).toBe(source)
+    expect(newLink.target).toBe(target)
+
+    const linkFromStorage = getFlowFromStorage(
+      testFlowState.selectedFlowId
+    )?.flowChart.elements.find(
+      (element) => element.id === `e-${source}-to-${target}`
+    ) as Edge
+
+    expect(linkFromStorage.source).toBe(source)
+    expect(linkFromStorage.target).toBe(target)
+  })
+
+  it("should delete a link from id and save that to storage", () => {
+    const deletedLinkId = "e-gateway-to-node0"
+
+    const oldLinkFromStorage = getFlowFromStorage(
+      testFlowState.selectedFlowId
+    )?.flowChart.elements.find(
+      (element) => element.id === deletedLinkId
+    ) as Edge
+
+    const newState = reducer(testFlowState, deleteLink(deletedLinkId))
+    const oldFlowChart =
+      testFlowState.flows[testFlowState.selectedFlowId].flowChart
+    const newFlowChart = newState.flows[newState.selectedFlowId].flowChart
+    const oldLinkCount = oldFlowChart.elements.filter((element) =>
+      isEdge(element)
+    ).length
+    const newLinkCount = newFlowChart.elements.filter((element) =>
+      isEdge(element)
+    ).length
+    const newLinkFromStorage = getFlowFromStorage(
+      testFlowState.selectedFlowId
+    )?.flowChart.elements.find(
+      (element) => element.id === deletedLinkId
+    ) as Edge
+
+    expect(oldLinkCount - newLinkCount).toBe(1)
+    expect(
+      oldFlowChart.elements.find((element) => element.id === deletedLinkId)
+    ).toBeDefined()
+    expect(
+      newFlowChart.elements.find((element) => element.id === deletedLinkId)
+    ).not.toBeDefined()
+    expect(oldLinkFromStorage).toBeDefined()
+    expect(newLinkFromStorage).not.toBeDefined()
+  })
+
+  it("should delete a link from nodeConnection and save that to storage", () => {
+    const source = "gateway"
+    const target = "node0"
+
+    const deletedLinkId = `e-${source}-to-${target}`
+    const oldLinkFromStorage = getFlowFromStorage(
+      testFlowState.selectedFlowId
+    )?.flowChart.elements.find(
+      (element) => element.id === deletedLinkId
+    ) as Edge
+
+    const newState = reducer(testFlowState, deleteLink({ source, target }))
+    const oldFlowChart =
+      testFlowState.flows[testFlowState.selectedFlowId].flowChart
+    const newFlowChart = newState.flows[newState.selectedFlowId].flowChart
+    const oldLinkCount = oldFlowChart.elements.filter((element) =>
+      isEdge(element)
+    ).length
+    const newLinkCount = newFlowChart.elements.filter((element) =>
+      isEdge(element)
+    ).length
+    const newLinkFromStorage = getFlowFromStorage(
+      testFlowState.selectedFlowId
+    )?.flowChart.elements.find(
+      (element) => element.id === deletedLinkId
+    ) as Edge
+
+    expect(oldLinkCount - newLinkCount).toBe(1)
+    expect(
+      oldFlowChart.elements.find((element) => element.id === deletedLinkId)
+    ).toBeDefined()
+    expect(
+      newFlowChart.elements.find((element) => element.id === deletedLinkId)
+    ).not.toBeDefined()
+    expect(oldLinkFromStorage).toBeDefined()
+    expect(newLinkFromStorage).not.toBeDefined()
   })
 
   it("should set flow arguments", () => {

@@ -1,11 +1,12 @@
 // @ts-nocheck
 import { FlowChart, NodeProperties } from "../redux/flows/flows.types"
 import { Edge, Node, XYPosition } from "react-flow-renderer/dist/types"
+
 const settings = require("./../settings")
 
 export const createNode = (
   id: string,
-  properties: NodeProperties,
+  properties?: NodeProperties,
   position: XYPosition
 ): Node => ({
   id,
@@ -14,7 +15,7 @@ export const createNode = (
     label: id,
     needs: properties.needs ? [...properties.needs] : [],
     send_to: {},
-    properties: { ...properties },
+    properties,
     depth: undefined,
   },
   position,
