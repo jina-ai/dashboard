@@ -1,5 +1,4 @@
 import * as React from "react"
-import { REACT_FLOW_CHART } from "@bastinjafari/react-flow-chart-with-tooltips-and-multi-select"
 import ChartNode from "./ChartNode"
 import { NodeProperties } from "../../redux/flows/flows.types"
 
@@ -12,7 +11,14 @@ type Props = {
   idx: number
 }
 
-export default function SidebarItem({ label, ports, properties, idx }: Props) {
+export default function SidebarItem({ label, properties, idx }: Props) {
+  const onDragStart = (
+    event: React.DragEvent<HTMLDivElement>,
+    nodeType: string
+  ) => {
+    event.dataTransfer.setData("application/reactflow", nodeType)
+    event.dataTransfer.effectAllowed = "move"
+  }
   const ref: React.RefObject<HTMLInputElement> = React.createRef()
   return (
     <div
@@ -20,12 +26,9 @@ export default function SidebarItem({ label, ports, properties, idx }: Props) {
       ref={ref}
       className="mb-3 draggable-container"
       draggable={true}
-      onDragStart={(event) => {
-        event.dataTransfer.setData(
-          REACT_FLOW_CHART,
-          JSON.stringify({ label, ports, properties })
-        )
-      }}
+      onDragStart={(event) =>
+        onDragStart(event, label === "gateway" ? "input" : "default")
+      }
     >
       <ChartNode node={{ properties, label }} />
     </div>
