@@ -6,11 +6,10 @@ import {
   DUPLICATE_FLOW,
   LOAD_FLOW,
   RERENDER,
-  UPDATE_SELECTED_FLOW_CHART,
   UPDATE_SELECTED_FLOW,
   IMPORT_FLOW,
   SET_FLOW_ARGUMENTS,
-  CREATE_NODE,
+  ADD_NODE,
   ADD_LINK,
   DELETE_LINK,
 } from "./flows.constants"
@@ -23,20 +22,18 @@ import {
   LoadFlowAction,
   NodeUpdate,
   RerenderAction,
-  UpdateFlowChartAction,
   UpdateNodeAction,
   UpdateSelectedFlowAction,
   ImportFlowAction,
   FlowArguments,
   SetFlowArgumentsAction,
-  FlowChartUpdate,
   FlowUpdate,
-  NodeProperties,
   NodeId,
   AddNodeAction,
   AddLinkAction,
   DeleteLinkAction,
   DeleteLinkProps,
+  NodeProperties,
 } from "./flows.types"
 
 import { ThunkAction } from "redux-thunk"
@@ -60,16 +57,6 @@ export function loadFlow(flowId: string): LoadFlowAction {
 export function createNewFlow(): CreateNewFlowAction {
   return {
     type: CREATE_NEW_FLOW,
-  }
-}
-
-//todo remove this, since there should be more precise actions for that
-export function updateFlowChart(
-  flowChartUpdate: FlowChartUpdate
-): UpdateFlowChartAction {
-  return {
-    type: UPDATE_SELECTED_FLOW_CHART,
-    payload: flowChartUpdate,
   }
 }
 
@@ -113,15 +100,15 @@ export function deleteFlow(flowId: string): DeleteFlowAction {
 }
 
 export function addNode(
-  properties: NodeProperties,
-  label: string,
-  position: XYPosition
+  id: string,
+  position: XYPosition,
+  properties?: NodeProperties
 ): AddNodeAction {
   return {
-    type: CREATE_NODE,
+    type: ADD_NODE,
     payload: {
       properties,
-      label,
+      id,
       position,
     },
   }
