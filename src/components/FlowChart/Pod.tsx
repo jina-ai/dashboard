@@ -1,12 +1,12 @@
 import React from "react"
-import { ChartNodeElement } from "./ChartNode"
 type Props = {
   label: string | undefined
 }
 
+//todo type NodeProps propserly with propser data data type
 export default function Pod({ label }: Props) {
   return (
-    <ChartNodeElement id={`chart-node-${label}`}>
+    <div className={`chart-node`} id={`chart-node-${label}`}>
       <div className="node-header">
         <div className={`p-1`}>
           <p className="m-1">
@@ -16,6 +16,6 @@ export default function Pod({ label }: Props) {
           </p>
         </div>
       </div>
-    </ChartNodeElement>
+    </div>
   )
 }
