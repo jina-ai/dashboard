@@ -10,7 +10,7 @@ export const createNode = (
   position: XYPosition
 ): Node => ({
   id,
-  type: id === "gateway" ? "input" : "default",
+  type: id === "gateway" ? "gateway" : "pod",
   data,
   position,
 })
