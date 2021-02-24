@@ -1,19 +1,20 @@
 // @ts-nocheck
 import { FlowChart, NodeData } from "../redux/flows/flows.types"
 import { Edge, Node, XYPosition } from "react-flow-renderer/dist/types"
-
 const settings = require("./../settings")
 
 export const createNode = (
   id: string,
   data?: NodeData,
   position: XYPosition
-): Node => ({
-  id,
-  type: id === "gateway" ? "gateway" : "pod",
-  data,
-  position,
-})
+): Node => {
+  return {
+    id,
+    type: id === "gateway" ? "gateway" : "pod",
+    data,
+    position,
+  }
+}
 
 export const createLink = (source: string, target: string): Edge => ({
   id: `e-${source}-to-${target}`,
@@ -65,6 +66,7 @@ export const formatForFlowchart = (data: ParsedYAML): FlowChart => {
   let prevNode
   Object.keys(pods).forEach((id) => {
     const pod = pods[id] || {}
+
     let node: Node = createNode(id, pod, {})
 
     if (node?.data?.properties?.needs) delete node.data.properties.needs
@@ -81,7 +83,6 @@ export const formatForFlowchart = (data: ParsedYAML): FlowChart => {
       const { x, y } = canvas[id]
       node.position = { x: parseInt(x), y: parseInt(y) }
     }
-
     nodes.push(node)
     prevNode = id
   })
