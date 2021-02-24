@@ -12,6 +12,7 @@ import {
   ADD_NODE,
   ADD_LINK,
   DELETE_LINK,
+  UPDATE_NODE_PROPERTIES,
 } from "./flows.constants"
 import { Node, XYPosition } from "react-flow-renderer/dist/types"
 
@@ -24,7 +25,9 @@ export type Pod = {
 
 export type NodeId = string
 export type LinkId = string
+//todo maybe this will be obsolete
 export type NodeUpdate = Partial<Node>
+export type NodePropertiesUpdate = Partial<NodeProperties>
 
 export type DeleteLinkProps = LinkId | Connection
 
@@ -141,6 +144,11 @@ export type UpdateNodeAction = {
   payload: { nodeId: string; nodeUpdate: NodeUpdate }
 }
 
+export type UpdateNodePropertiesAction = {
+  type: typeof UPDATE_NODE_PROPERTIES
+  payload: { nodeId: string; nodePropertiesUpdate: NodePropertiesUpdate }
+}
+
 export type DeleteNodeAction = {
   type: typeof DELETE_NODE
   payload: string
@@ -179,3 +187,4 @@ export type FlowActionTypes =
   | AddNodeAction
   | AddLinkAction
   | DeleteLinkAction
+  | UpdateNodePropertiesAction
