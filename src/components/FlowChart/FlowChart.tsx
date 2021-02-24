@@ -9,6 +9,7 @@ import {
   deleteNode,
 } from "../../redux/flows/flows.actions"
 import { isNode } from "react-flow-renderer/nocss"
+import ChartNode from "./ChartNode"
 
 type Props = {
   elements: Elements
@@ -16,6 +17,10 @@ type Props = {
 
 let id = 0
 const getId = () => `dndnode_${id++}`
+
+const nodeTypes = {
+  pod: ChartNode,
+}
 
 export default function FlowChart(props: Props) {
   const dispatch = useDispatch()
@@ -56,7 +61,6 @@ export default function FlowChart(props: Props) {
       y: event.clientY - reactFlowBounds.top,
     }) || { x: 0, y: 0 }
 
-    console.log(position)
     dispatch(addNode(getId(), position, data))
   }
 
@@ -73,6 +77,7 @@ export default function FlowChart(props: Props) {
         onLoad={onLoad}
         onDrop={onDrop}
         onDragOver={onDragOver}
+        nodeTypes={nodeTypes}
       />
     </div>
   )

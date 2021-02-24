@@ -2,17 +2,18 @@ import React from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { selectFlow } from "../../redux/flows/flows.selectors"
 import { showModal } from "../../redux/global/global.actions"
+import { NodeData } from "../../redux/flows/flows.types"
 
 type Props = {
-  node: {
-    properties: any
-    label: string | undefined
-    id?: string
-  }
+  data: NodeData
 }
 
-export default function ChartNode({ node }: Props) {
-  const { properties, label } = node
+//todo type NodeProps propserly with propser data data type
+export default function ChartNode({ data }: Props) {
+  console.log("data")
+  console.log(data)
+  const properties = {}
+  const label = data.label
   const list: any = []
   const dispatch = useDispatch()
   Object.keys(properties).forEach((prop, idx) => {

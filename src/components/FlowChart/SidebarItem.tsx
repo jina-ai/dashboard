@@ -24,7 +24,7 @@ export default function SidebarItem({ label, properties, idx }: Props) {
       draggable={true}
       onDragStart={onDragStart}
     >
-      <ChartNode node={{ properties, label }} />
+      <ChartNode data={{ properties, label }} />
     </div>
   )
 }
