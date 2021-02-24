@@ -7,8 +7,14 @@ import {
 import React, { useEffect, useState } from "react"
 import { ModalParams } from "../redux/global/global.types"
 import ReactModal, { Styles } from "react-modal"
-import { deleteNode, rerender, updateNode } from "../redux/flows/flows.actions"
+import {
+  deleteNode,
+  rerender,
+  updateNode,
+  updateNodeProperties,
+} from "../redux/flows/flows.actions"
 import { Button } from "react-bootstrap"
+import { NodePropertiesUpdate } from "../redux/flows/flows.types"
 
 const style: Styles = {
   overlay: {
@@ -91,13 +97,11 @@ type Props = {
 }
 
 function PodEditComponent({ open, closeModal, modalParams }: Props) {
-  console.log("modalParams")
-  console.log(modalParams)
   const nodeId = modalParams?.nodeId || ""
   const flowChart = useSelector(selectSelectedFlow)
   const flowArguments = useSelector(selectFlowArguments)
-  const [node, setNode] = useState(
-    flowChart.flowChart.elements.find((element) => element.id === nodeId)
+  const node = flowChart.flowChart.elements.find(
+    (element) => element.id === nodeId
   )
   const [searchQuery, setSearchQuery] = useState("")
   const [filteredArguments, setFilteredArguments] = useState(flowArguments.pod)
@@ -112,21 +116,15 @@ function PodEditComponent({ open, closeModal, modalParams }: Props) {
 
   const _updateLabel = (label: string) => {
     if (node?.id) {
-      const nodeUpdate = { data: label }
+      const nodeUpdate = { data: { label } }
       dispatch(updateNode(node.id, nodeUpdate))
-      setNode({ ...node, ...nodeUpdate })
       dispatch(rerender())
     }
   }
   const _updateNodeProp = (name: string, value: string) => {
     if (node?.id) {
-      const nodeUpdate = {
-        data: {
-          properties: { [name]: value },
-        },
-      }
-      dispatch(updateNode(node.id, nodeUpdate))
-      setNode({ ...node, ...nodeUpdate })
+      const nodePropertiesUpdate: NodePropertiesUpdate = { [name]: value }
+      dispatch(updateNodeProperties(node.id, nodePropertiesUpdate))
     }
   }
   const _deleteNode = () => {
@@ -138,6 +136,8 @@ function PodEditComponent({ open, closeModal, modalParams }: Props) {
   }
 
   const label = node?.data?.label || node?.data?.properties?.name || "Empty Pod"
+  console.log("node")
+  console.log(node)
 
   return (
     <ReactModal
@@ -171,15 +171,15 @@ function PodEditComponent({ open, closeModal, modalParams }: Props) {
         <PropertyTable>
           {filteredArguments.map((argument) => {
             const { name, type } = argument
-            console.log("node")
-            console.log(node)
             return (
               <>
                 <Header2>{name}</Header2>
                 <Input
                   placeholder={type}
                   type={type === "integer" ? "number" : "text"}
-                  value={node?.data?.properties[name] || ""}
+                  value={
+                    node?.data?.properties ? node?.data?.properties[name] : ""
+                  }
                   onChange={(e) => _updateNodeProp(name, e.target.value)}
                   className="property-value-input"
                 />

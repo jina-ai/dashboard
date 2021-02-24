@@ -16,6 +16,7 @@ import {
   SET_FLOW_ARGUMENTS,
   UPDATE_NODE,
   UPDATE_SELECTED_FLOW,
+  UPDATE_NODE_PROPERTIES,
 } from "./flows.constants"
 import {
   Flow,
@@ -23,6 +24,7 @@ import {
   Flows,
   FlowState,
   NodeConnection,
+  NodeProperties,
 } from "./flows.types"
 import { nanoid } from "nanoid"
 import produce from "immer"
@@ -154,15 +156,46 @@ const flowReducer = produce((draft: FlowState, action: FlowActionTypes) => {
         selectedFlowId
       ].flowChart.elements.findIndex((element) => element.id === nodeId)
 
+      console.log("nodeUpdate", nodeUpdate)
       if (oldNodeIndex >= 0) {
         const oldNode =
           draft.flows[selectedFlowId].flowChart.elements[oldNodeIndex]
+        console.log("oldNode", oldNode)
+
         const newNode = {
           ...oldNode,
           ...nodeUpdate,
         }
+        console.log("newnode")
+        console.log(newNode)
         draft.flows[selectedFlowId].flowChart.elements[oldNodeIndex] = newNode
       }
+      break
+    }
+    case UPDATE_NODE_PROPERTIES: {
+      const { nodePropertiesUpdate, nodeId } = action.payload
+      const selectedFlowId = draft.selectedFlowId
+      const oldNodeIndex = draft.flows[
+        selectedFlowId
+      ].flowChart.elements.findIndex((element) => element.id === nodeId)
+
+      if (oldNodeIndex >= 0) {
+        const oldNode =
+          draft.flows[selectedFlowId].flowChart.elements[oldNodeIndex]
+        console.log("oldNode", oldNode)
+
+        const newProperties: NodeProperties = {
+          ...oldNode.data.properties,
+          ...nodePropertiesUpdate,
+        }
+
+        console.log("newnodeProps")
+        console.log(newProperties)
+        draft.flows[selectedFlowId].flowChart.elements[
+          oldNodeIndex
+        ].data.properties = newProperties
+      }
+
       break
     }
     case ADD_NODE:

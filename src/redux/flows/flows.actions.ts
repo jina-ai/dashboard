@@ -12,6 +12,7 @@ import {
   ADD_NODE,
   ADD_LINK,
   DELETE_LINK,
+  UPDATE_NODE_PROPERTIES,
 } from "./flows.constants"
 import {
   CreateNewFlowAction,
@@ -34,6 +35,8 @@ import {
   DeleteLinkAction,
   DeleteLinkProps,
   NodeData,
+  UpdateNodePropertiesAction,
+  NodePropertiesUpdate,
 } from "./flows.types"
 
 import { ThunkAction } from "redux-thunk"
@@ -138,6 +141,16 @@ export function updateNode(
   return {
     type: UPDATE_NODE,
     payload: { nodeId, nodeUpdate },
+  }
+}
+
+export function updateNodeProperties(
+  nodeId: string,
+  nodePropertiesUpdate: NodePropertiesUpdate
+): UpdateNodePropertiesAction {
+  return {
+    type: UPDATE_NODE_PROPERTIES,
+    payload: { nodeId, nodePropertiesUpdate },
   }
 }
 
