@@ -1,6 +1,6 @@
 import { State } from "../index"
 
-export const selectFlow = (state: State) =>
+export const selectSelectedFlow = (state: State) =>
   state.flowState.flows[state.flowState.selectedFlowId]
 
 export const selectRerender = (state: State) => state.flowState.rerender

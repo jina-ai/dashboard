@@ -15,9 +15,6 @@ type Props = {
   elements: Elements
 }
 
-let id = 0
-const getId = () => `dndnode_${id++}`
-
 const nodeTypes = {
   pod: ChartNode,
 }
@@ -60,8 +57,9 @@ export default function FlowChart(props: Props) {
       x: event.clientX - reactFlowBounds.left,
       y: event.clientY - reactFlowBounds.top,
     }) || { x: 0, y: 0 }
-
-    dispatch(addNode(getId(), position, data))
+    console.log("data")
+    console.log(data)
+    dispatch(addNode(data.label, position, data))
   }
 
   return (

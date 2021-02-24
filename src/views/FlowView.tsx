@@ -17,7 +17,7 @@ import styled from "@emotion/styled"
 import { useDispatch, useSelector } from "react-redux"
 import {
   selectFlowArguments,
-  selectFlow,
+  selectSelectedFlow,
   selectRerender,
   selectSelectedFlowId,
 } from "../redux/flows/flows.selectors"
@@ -41,7 +41,7 @@ export default function FlowView() {
   const connected = useSelector(selectConnectionStatus)
   const selectedFlowId = useSelector(selectSelectedFlowId)
   const flowArguments = useSelector(selectFlowArguments)
-  const flow = useSelector(selectFlow)
+  const flow = useSelector(selectSelectedFlow)
   const {
     flowChart: { elements },
     type: flowType,
