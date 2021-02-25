@@ -1,4 +1,4 @@
-import axios, { AxiosInstance } from "axios"
+import axios from "axios"
 import { timeout } from "../helpers/utils"
 import logger from "../logger"
 import {
@@ -10,7 +10,7 @@ import { RawLog } from "../redux/logStream/logStream.types"
 import { FLOW_RETRIES, FLOW_RETRY_TIMEOUT, TIMEOUT } from "./config"
 import { DaemonArgumentsResponse } from "./services.types"
 
-export let jinadInstance: AxiosInstance
+export let jinadInstance = axios.create()
 
 type Settings = {
   host: string
@@ -34,7 +34,6 @@ type Args = { [key: string]: string | number | boolean }
 const jinadClient = {
   connect: async (settings: Settings, callback: ConnectionCallback) => {
     logger.log("api - connect - settings", settings)
-
     const baseURL = `${settings.host}:${settings.port}`
 
     jinadInstance = axios.create({ baseURL, timeout: TIMEOUT })
@@ -220,8 +219,13 @@ const jinadClient = {
       message: `Could not get logs for flow.\nFlowId:${flow_id}`,
     }
   },
-  waitForFlow: async (workspace_id: string, flow_id: string) => {
-    for (let i = 0; i < FLOW_RETRIES; ++i) {
+  waitForFlow: async (
+    workspace_id: string,
+    flow_id: string,
+    numRetries: number = FLOW_RETRIES,
+    retryTimeout: number = FLOW_RETRY_TIMEOUT
+  ) => {
+    for (let i = 0; i < numRetries; ++i) {
       logger.log(`checking for flow logs [${i + 1}]`)
       try {
         const result = await jinadInstance.get(
@@ -236,7 +240,7 @@ const jinadClient = {
       } catch (e) {
         logger.log(`no flow logs yet [${i + 1}]`)
       }
-      await timeout(FLOW_RETRY_TIMEOUT)
+      await timeout(retryTimeout)
     }
     return {
       status: "error",
