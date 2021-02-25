@@ -31,6 +31,8 @@ export default function FlowChart(props: Props) {
   const reactFlowWrapper = useRef<HTMLElement>(null)
 
   const onConnect = (params: Edge | Connection) => {
+    console.log("onConnect")
+
     if (params.source && params.target)
       dispatch(addLink(params.source, params.target))
   }
@@ -46,6 +48,7 @@ export default function FlowChart(props: Props) {
     setReactFlowInstance(_reactFlowInstance)
 
   const onDragOver = (event: React.DragEvent<HTMLDivElement>) => {
+    console.log("onDragOver")
     event.preventDefault()
     event.dataTransfer.dropEffect = "move"
   }
