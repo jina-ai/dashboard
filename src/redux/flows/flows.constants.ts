@@ -21,7 +21,7 @@ export const initialFlowChart: FlowChart = {
   elements: [
     {
       id: "gateway",
-      type: "input",
+      type: "gateway",
       data: { label: "gateway" },
       position: { x: 629, y: 72 },
     },
