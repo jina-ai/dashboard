@@ -20,6 +20,7 @@ export const createLink = (source: string, target: string): Edge => ({
   id: `e-${source}-to-${target}`,
   source,
   target,
+  type: "step",
 })
 
 //todo type this properly
