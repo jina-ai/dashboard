@@ -189,7 +189,7 @@ export default function FlowSelection({
 
       {userFlows.map(([flowId, flow], idx) => (
         <FlowTap
-          selected={currentFlow.name === flow.name}
+          selected={selectedFlowId === flowId}
           onClick={() => loadFlow(flowId)}
           key={idx}
         >
@@ -207,7 +207,7 @@ export default function FlowSelection({
       <FlowHeader>Example Flows</FlowHeader>
       {exampleFlows.map(([flowId, flow], idx) => (
         <FlowTap
-          selected={currentFlow.name === flow.name}
+          selected={selectedFlowId === flowId}
           onClick={() => loadFlow(flowId)}
           key={idx}
         >
