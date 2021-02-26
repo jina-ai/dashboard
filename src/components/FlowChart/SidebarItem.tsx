@@ -1,16 +1,16 @@
 import * as React from "react"
 import Pod from "./Pod"
-import { NodeProperties } from "../../redux/flows/flows.types"
+import { NodeData } from "../../redux/flows/flows.types"
 
 type Props = {
   label: string
-  properties: NodeProperties
+  data: NodeData
   idx: number
 }
 
-export default function SidebarItem({ label, properties, idx }: Props) {
+export default function SidebarItem({ label, data, idx }: Props) {
   const onDragStart = (event: React.DragEvent<HTMLDivElement>) => {
-    const dataString = JSON.stringify({ label: label, properties, idx })
+    const dataString = JSON.stringify({ label, ...data })
     event.dataTransfer.setData("application/reactflow", dataString)
     event.dataTransfer.effectAllowed = "move"
   }
@@ -24,7 +24,7 @@ export default function SidebarItem({ label, properties, idx }: Props) {
       draggable={true}
       onDragStart={onDragStart}
     >
-      <Pod label={label} properties={properties} />
+      <Pod label={label} />
     </div>
   )
 }

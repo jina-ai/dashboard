@@ -4,7 +4,6 @@ type Props = {
   label: string | undefined
 }
 
-//todo type NodeProps propserly with propser data data type
 export default function Pod({ label }: Props) {
   return (
     <ChartNodeElement id={`chart-node-${label}`}>

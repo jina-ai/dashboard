@@ -70,7 +70,7 @@ export const formatForFlowchart = (data: ParsedYAML): FlowChart => {
 
     let node: Node = createNode(id, pod, {})
 
-    if (node?.data?.properties?.needs) delete node.data.properties.needs
+    if (node?.data?.needs) delete node.data.needs
 
     if (prevNode && !pod.needs && id !== "gateway") {
       !node.data.needs && (node.data.needs = [])
