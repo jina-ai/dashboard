@@ -17,31 +17,6 @@
 // Core
 @import "variables";
 
-// Components
-@import "root";
-@import "reboot";
-@import "buttons";
-@import "button-group";
-@import "navbar";
-@import "badge";
-@import "alert";
-@import "input-group";
-@import "custom-forms";
-@import "custom-sliders";
-@import "charts";
-@import "images";
-@import "icons";
-@import "dropdown";
-@import "card";
-@import "utilities";
-
-// Plugins
-@import "plugins/data-tables";
-@import "plugins/dropzone";
-@import "plugins/tagsinput";
-@import "plugins/quill";
-@import "plugins/fullcalendar";
-
 // Blocks
 @import "blocks/main-navbar";
 @import "blocks/main-sidebar";
@@ -49,19 +24,3 @@
 @import "blocks/main-footer";
 @import "blocks/page-header";
 @import "blocks/header-navbar";
-
-// Templates
-@import "templates/common"; // Required common styles for all pages.
-@import "templates/analytics";
-@import "templates/ecommerce";
-@import "templates/transaction-history"; // Empty, feel free to add your custom styles.
-@import "templates/file-manager";
-@import "templates/user-profile";
-@import "templates/edit-user-profile";
-@import "templates/authentication"; // Register, Login, Forgot and Reset Password Templates
-@import "templates/blog-overview";
-@import "templates/blog-add-new-post";
-
-// Components
-@import "components/card-post";
-@import "components/error";
