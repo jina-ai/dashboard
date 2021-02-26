@@ -27,6 +27,7 @@ import logger from "../logger"
 import { copyToClipboard, formatAsYAML } from "../helpers"
 import html2canvas from "html2canvas"
 import FlowChart from "../components/FlowChart/FlowChart"
+import { Flow } from "../redux/flows/flows.types"
 
 const FlowViewContainer = styled.div`
   display: flex;
@@ -38,17 +39,14 @@ export default function FlowView() {
   const connected = useSelector(selectConnectionStatus)
   const selectedFlowId = useSelector(selectSelectedFlowId)
   const flowArguments = useSelector(selectFlowArguments)
-  const flow = useSelector(selectSelectedFlow)
-  const {
-    flowChart: { elements },
-    type: flowType,
-  } = flow
+  const flow = useSelector(selectSelectedFlow) as Flow
+  const { flowChart, type: flowType } = flow
 
   const copyChartAsYAML = useCallback(() => {
-    logger.log("copyChartAsYAML | chart:", elements)
-    copyToClipboard(formatAsYAML(elements, flowArguments))
+    logger.log("copyChartAsYAML | chart:", flowChart)
+    copyToClipboard(formatAsYAML(flowChart, flowArguments))
     alert("Chart copied to clipboard as YAML")
-  }, [elements, flowArguments])
+  }, [flowChart, flowArguments])
 
   const [showOverlay, setShowOverlay] = useState<boolean>(false)
   //todo fix overlay
@@ -87,7 +85,7 @@ export default function FlowView() {
   }
 
   const handleDuplicateFlow = () => {
-    const flowYAML = formatAsYAML(elements, flowArguments)
+    const flowYAML = formatAsYAML(flowChart, flowArguments)
     dispatch(duplicateFlow(flowYAML))
   }
 
@@ -120,14 +118,14 @@ export default function FlowView() {
               exportImage={exportImage}
             />
 
-            <FlowChart elements={elements} />
+            <FlowChart elements={flowChart.elements} />
           </Card>
 
           <Sidebar
             arguments={flowArguments.pod}
             duplicateFlow={handleDuplicateFlow}
             readonly={flowType !== "user-generated"}
-            elements={elements}
+            elements={flowChart.elements}
             deleteSelection={() => {}}
           />
         </FlowViewContainer>
