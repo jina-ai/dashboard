@@ -30,6 +30,7 @@ import produce from "immer"
 import { isEdge, isNode } from "react-flow-renderer"
 import { isNodeConnection } from "../../helpers/typeCheckers"
 import { createLink, createNode } from "../../helpers/flow-chart"
+import { Connection } from "react-flow-renderer/dist/types"
 
 export const saveFlowsToStorage = (state: FlowState) => {
   let toSave: { [id: string]: Flow } = {}
@@ -219,7 +220,7 @@ const flowReducer = produce((draft: FlowState, action: FlowActionTypes) => {
       break
     case DELETE_LINK:
       if (isNodeConnection(action.payload)) {
-        const { source, target } = action.payload as NodeConnection
+        const { source, target } = action.payload as Connection
         draft.flows[draft.selectedFlowId].flowChart.elements = draft.flows[
           draft.selectedFlowId
         ].flowChart.elements.filter(

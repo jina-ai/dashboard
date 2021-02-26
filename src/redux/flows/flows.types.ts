@@ -55,9 +55,11 @@ export interface FlowChart {
     | {}
 }
 
+type FlowType = "user-generated" | "remote" | "example"
+
 export type Flow = {
   name: string
-  type: string
+  type: FlowType
   isConnected: boolean
   workspace_id?: string
   flow_id?: string

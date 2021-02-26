@@ -229,8 +229,7 @@ export function initNetworkFlow(
   selectedFlowId: string
 ): ThunkAction<void, FlowState, unknown, Action<string>> {
   return async function (dispatch) {
-    const flowProperties = store.getState().flowState.flows[selectedFlowId]
-    const { flow_id } = flowProperties
+    const { flow_id } = store.getState().flowState.flows[selectedFlowId]
     if (!flow_id) return
     const flowResult = await jinadClient.getFlow(flow_id)
     logger.log("got network flow:", flowResult)
@@ -241,7 +240,7 @@ export function initNetworkFlow(
     }
     const { workspace_id } = flowResult.flow
 
-    dispatch(updateSelectedFlow({ ...flowProperties, workspace_id }))
+    dispatch(updateSelectedFlow({ workspace_id }))
 
     //See: https://github.com/jina-ai/jina/issues/1812
     setTimeout(() => dispatch(initLogStream(workspace_id, flow_id)), 5000)
