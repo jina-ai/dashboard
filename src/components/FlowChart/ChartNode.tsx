@@ -79,9 +79,7 @@ export default function ChartNode(type: NodeType) {
             }}
           >
             <Pod label={data.label} />
-            <Handle type="source" position="bottom" id="b">
-              <NodePortBottom />
-            </Handle>
+            <NodePortBottom type="source" position={Position.Bottom} />
           </ChartNodeElement>
         )
       }
