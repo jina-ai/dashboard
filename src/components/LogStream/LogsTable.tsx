@@ -309,13 +309,14 @@ function LogsTable({ data, showLogDetails }: Props) {
               options={Object.values(viewOptions)}
               onFilterChange={(option: any[]) => setView(option[0].value)}
               className="logstream-select mb-2 mr-0 mb-md-0 mr-md-2"
+              
               placeholder={
                 currentView === "table" ? (
-                  <span>
+                  <span data-name="dropDownViewSelectedOption">
                     <i className="material-icons mr-2">table_rows</i>Table View
-                  </span>
+                  </span >
                 ) : (
-                  <span>
+                  <span data-name='dropDownViewSelect'>
                     <i className="material-icons mr-2">view_list</i>
                     {viewOptions[currentView].label}
                   </span>
@@ -330,7 +331,7 @@ function LogsTable({ data, showLogDetails }: Props) {
                 onFilterChange={setSelectedSources}
                 className="logstream-select mb-2 mr-0 mb-md-0 mr-md-2"
                 placeholder={
-                  <span>
+                  <span data-name="dropDown-2-ViewSelectedOption" >
                     <i className="material-icons mr-2">mediation</i>All Sources
                   </span>
                 }
@@ -342,7 +343,7 @@ function LogsTable({ data, showLogDetails }: Props) {
               onFilterChange={setSelectedLevels}
               className="logstream-select mb-2 mr-0 mb-md-0 mr-md-2"
               placeholder={
-                <span>
+                <span data-name="dropDown-3-ViewSelectedOption">
                   <i className="material-icons mr-2">bar_chart</i>All Levels
                 </span>
               }
@@ -355,7 +356,7 @@ function LogsTable({ data, showLogDetails }: Props) {
               }
               className="logstream-select mb-2 mr-0 mb-md-0 mr-md-2"
               placeholder={
-                <span>
+                <span data-name="dropDown-4-ViewSelectedOption">
                   <i className="material-icons mr-2">download</i>Download Logs
                 </span>
               }
