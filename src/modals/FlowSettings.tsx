@@ -13,7 +13,7 @@ import {
   updateFlow,
   updateFlowProperties,
 } from "../redux/flows/flows.actions"
-import { Button } from "react-bootstrap"
+import { Button, FormCheck } from "react-bootstrap"
 import { FlowArgument } from "../redux/flows/flows.types"
 
 const style: Styles = {
@@ -101,15 +101,15 @@ type GlobalArguments = {
 }
 
 const globalArguments: GlobalArguments = {
-  port_expose: {
-    name: "port_expose",
-    description: "Which port to expose gRPC or REST interface",
-    type: "integer",
-  },
   rest_api: {
     name: "rest_api",
     description: "Whether to enable REST interface",
     type: "boolean",
+  },
+  port_expose: {
+    name: "port_expose",
+    description: "Which port to expose gRPC or REST interface",
+    type: "integer",
   },
 }
 
@@ -165,13 +165,25 @@ function FlowSettingsComponent({ open, closeModal }: Props) {
             return (
               <div key={idx}>
                 <Header2>{name}</Header2>
-                <Input
-                  placeholder={type}
-                  type={type === "integer" ? "number" : "text"}
-                  value={flowChart.flow.with ? flowChart.flow.with[name] : ""}
-                  onChange={(e) => _updateFlowWith(name, e.target.value)}
-                  className="property-value-input"
-                />
+                {type === "boolean" ? (
+                  <FormCheck
+                    type="switch"
+                    checked={
+                      flowChart.flow.with ? flowChart.flow.with[name] : false
+                    }
+                    onChange={(e: any) =>
+                      _updateFlowWith(name, e.target.checked)
+                    }
+                  ></FormCheck>
+                ) : (
+                  <Input
+                    placeholder={type}
+                    type={type === "integer" ? "number" : "text"}
+                    value={flowChart.flow.with ? flowChart.flow.with[name] : ""}
+                    onChange={(e) => _updateFlowWith(name, e.target.value)}
+                    className="property-value-input"
+                  />
+                )}
               </div>
             )
           })}

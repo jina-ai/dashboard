@@ -174,7 +174,9 @@ export default function FlowSelection({
     <FlowSelectionMenu>
       <SelectedFlowHeader>
         {currentFlow.name || <i>{FALLBACK_FLOW_NAME}</i>}
-        <FlowSettingsButton showFlowSettingsModal={showFlowSettingsModal} />
+        {currentFlow.type !== "example" && (
+          <FlowSettingsButton showFlowSettingsModal={showFlowSettingsModal} />
+        )}
         <TitleConnectionIndicator
           show={currentFlow.type === "remote"}
           connected={connected}
