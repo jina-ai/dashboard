@@ -15,5 +15,15 @@ exports[`Typograpy page 1`] = `
       className="page-subtitle mt-2 mb-0"
     />
   </div>
+  <h2
+    className="css-54zl4x"
+  >
+     Title 
+  </h2>
+  <p
+    className="css-54zl4x"
+  >
+    A paragraph that could span over multiple lines
+  </p>
 </div>
 `;
