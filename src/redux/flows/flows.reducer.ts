@@ -156,18 +156,15 @@ const flowReducer = produce((draft: FlowState, action: FlowActionTypes) => {
         selectedFlowId
       ].flowChart.elements.findIndex((element) => element.id === nodeId)
 
-      console.log("nodeUpdate", nodeUpdate)
       if (oldNodeIndex >= 0) {
         const oldNode =
           draft.flows[selectedFlowId].flowChart.elements[oldNodeIndex]
-        console.log("oldNode", oldNode)
 
         const newNode = {
           ...oldNode,
           ...nodeUpdate,
         }
-        console.log("newnode")
-        console.log(newNode)
+
         draft.flows[selectedFlowId].flowChart.elements[oldNodeIndex] = newNode
       }
       break
@@ -182,15 +179,12 @@ const flowReducer = produce((draft: FlowState, action: FlowActionTypes) => {
       if (oldNodeIndex >= 0) {
         const oldNode =
           draft.flows[selectedFlowId].flowChart.elements[oldNodeIndex]
-        console.log("oldNode", oldNode)
 
         const newProperties: NodeProperties = {
           ...oldNode.data.properties,
           ...nodePropertiesUpdate,
         }
 
-        console.log("newnodeProps")
-        console.log(newProperties)
         draft.flows[selectedFlowId].flowChart.elements[
           oldNodeIndex
         ].data.properties = newProperties
