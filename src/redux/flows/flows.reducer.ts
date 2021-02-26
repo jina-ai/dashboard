@@ -16,15 +16,14 @@ import {
   SET_FLOW_ARGUMENTS,
   UPDATE_NODE,
   UPDATE_SELECTED_FLOW,
-  UPDATE_NODE_PROPERTIES,
+  UPDATE_NODE_DATA,
 } from "./flows.constants"
 import {
   Flow,
   FlowActionTypes,
   Flows,
   FlowState,
-  NodeConnection,
-  NodeProperties,
+  NodeData,
 } from "./flows.types"
 import { nanoid } from "nanoid"
 import produce from "immer"
@@ -169,7 +168,7 @@ const flowReducer = produce((draft: FlowState, action: FlowActionTypes) => {
       }
       break
     }
-    case UPDATE_NODE_PROPERTIES: {
+    case UPDATE_NODE_DATA: {
       const { nodePropertiesUpdate, nodeId } = action.payload
       const selectedFlowId = draft.selectedFlowId
       const oldNodeIndex = draft.flows[
@@ -180,14 +179,14 @@ const flowReducer = produce((draft: FlowState, action: FlowActionTypes) => {
         const oldNode =
           draft.flows[selectedFlowId].flowChart.elements[oldNodeIndex]
 
-        const newProperties: NodeProperties = {
-          ...oldNode.data.properties,
+        const newData: NodeData = {
+          ...oldNode.data,
           ...nodePropertiesUpdate,
         }
 
         draft.flows[selectedFlowId].flowChart.elements[
           oldNodeIndex
-        ].data.properties = newProperties
+        ].data = newData
       }
 
       break

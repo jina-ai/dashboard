@@ -66,7 +66,7 @@ describe("flows reducer", () => {
       ).length
       const duplicatedIdAndFlow = Object.entries(
         flowStateWithDuplicatedFlowerFlow.flows
-      ).find(([flowId, flowProperty]) => flowProperty.name === "Custom Flow 3")
+      ).find(([flowId, flow]) => flow.name === "Custom Flow 3")
 
       expect(newNumberOfFlows - oldNumberOfFlows).toBe(1)
       expect(duplicatedIdAndFlow).toBeDefined()
@@ -92,16 +92,16 @@ describe("flows reducer", () => {
       const newNumberOfFlows = Object.keys(
         flowStateWithImportedFlowerFlow.flows
       ).length
-      const importedFlowerFlowIdAndProperty = Object.entries(
+      const importedFlowerFlowIdAndFlow = Object.entries(
         flowStateWithImportedFlowerFlow.flows
-      ).find(([flowId, flowProperty]) => flowProperty.name === "Custom Flow 3")
+      ).find(([flowId, flow]) => flow.name === "Custom Flow 3")
 
       expect(newNumberOfFlows - oldNumberOfFlows).toBe(1)
-      expect(importedFlowerFlowIdAndProperty).toBeDefined()
-      if (importedFlowerFlowIdAndProperty) {
-        const [id, property] = importedFlowerFlowIdAndProperty
-        expect(property.flowChart).toEqual(testFlowState.flows.flower.flowChart)
-        expect(getFlowFromStorage(id)?.flowChart).toEqual(property.flowChart)
+      expect(importedFlowerFlowIdAndFlow).toBeDefined()
+      if (importedFlowerFlowIdAndFlow) {
+        const [id, flow] = importedFlowerFlowIdAndFlow
+        expect(flow.flowChart).toEqual(testFlowState.flows.flower.flowChart)
+        expect(getFlowFromStorage(id)?.flowChart).toEqual(flow.flowChart)
       }
     }
   })
@@ -110,16 +110,16 @@ describe("flows reducer", () => {
     const oldNumberOfFlows = Object.keys(testFlowState.flows).length
     const flowStateWithNewFlow = reducer(testFlowState, createNewFlow())
     const newNumberOfFlows = Object.keys(flowStateWithNewFlow.flows).length
-    const newFlowIdAndProperty = Object.entries(
-      flowStateWithNewFlow.flows
-    ).find(([flowId, flowProperty]) => flowProperty.name === "Custom Flow 3")
+    const newFlowIdAndFlow = Object.entries(flowStateWithNewFlow.flows).find(
+      ([flowId, flow]) => flow.name === "Custom Flow 3"
+    )
 
     expect(newNumberOfFlows - oldNumberOfFlows).toBe(1)
-    expect(newFlowIdAndProperty).toBeDefined()
-    if (newFlowIdAndProperty) {
-      const [id, property] = newFlowIdAndProperty
-      expect(property.flowChart).toEqual(initialFlowChart)
-      expect(getFlowFromStorage(id)?.flowChart).toEqual(property.flowChart)
+    expect(newFlowIdAndFlow).toBeDefined()
+    if (newFlowIdAndFlow) {
+      const [id, flow] = newFlowIdAndFlow
+      expect(flow.flowChart).toEqual(initialFlowChart)
+      expect(getFlowFromStorage(id)?.flowChart).toEqual(flow.flowChart)
     }
   })
 
@@ -134,11 +134,11 @@ describe("flows reducer", () => {
   it("should create a node and save it to storage", () => {
     const newNodeId = "newNodeId"
     const newPosition = { x: 1000, y: 1000 }
-    const newProperties = { newProp: "newProp" }
+    const newData = { newProp: "newProp" }
 
     const newState = reducer(
       testFlowState,
-      addNode(newNodeId, newPosition, newProperties)
+      addNode(newNodeId, newPosition, newData)
     )
     const oldFlowChart =
       testFlowState.flows[testFlowState.selectedFlowId].flowChart
@@ -155,7 +155,7 @@ describe("flows reducer", () => {
 
     expect(newNodeCount - oldNodeCount).toBe(1)
     expect(newNode.position).toEqual(newPosition)
-    expect(newNode.data.properties).toEqual(newProperties)
+    expect(newNode.data).toEqual(newData)
 
     const flowChartFromStorage = getFlowFromStorage(
       testFlowState.selectedFlowId
@@ -165,7 +165,7 @@ describe("flows reducer", () => {
     ) as Node
 
     expect(newNodeFromStorage.position).toEqual(newPosition)
-    expect(newNodeFromStorage.data.properties).toEqual(newProperties)
+    expect(newNodeFromStorage.data).toEqual(newData)
   })
 
   it("should update nodes and save it to storage", () => {
@@ -175,9 +175,7 @@ describe("flows reducer", () => {
     const nodeUpdate = {
       data: {
         label: "newLabel",
-        properties: {
-          newProp: 234,
-        },
+        newProp: 234,
       },
     }
     const flowStateWithUpdatedNode = reducer(
@@ -251,7 +249,7 @@ describe("flows reducer", () => {
     const source = "gateway"
     const target = "node1"
 
-    const newState = reducer(testFlowState, addLink(source, target))
+    const newState = reducer(testFlowState, addLink(source, target, null, null))
     const oldFlowChart =
       testFlowState.flows[testFlowState.selectedFlowId].flowChart
     const newFlowChart = newState.flows[newState.selectedFlowId].flowChart
@@ -326,7 +324,10 @@ describe("flows reducer", () => {
       (element) => element.id === deletedLinkId
     ) as Edge
 
-    const newState = reducer(testFlowState, deleteLink({ source, target }))
+    const newState = reducer(
+      testFlowState,
+      deleteLink({ source, target, sourceHandle: null, targetHandle: null })
+    )
     const oldFlowChart =
       testFlowState.flows[testFlowState.selectedFlowId].flowChart
     const newFlowChart = newState.flows[newState.selectedFlowId].flowChart
@@ -361,9 +362,9 @@ describe("flows reducer", () => {
     expect(flowStateWithSetArguments.flowArguments).toEqual(testFlowArguments)
   })
 
-  it("should set selected flow properties", () => {
+  it("should update selected flow", () => {
     const { flowChart } = testFlowState.flows.testFlow1
-    const flowStateWithUpdatedProperties = reducer(
+    const updatedFlow = reducer(
       testFlowState,
       updateSelectedFlow({
         name: "Modified Name",
@@ -372,17 +373,9 @@ describe("flows reducer", () => {
         flowChart,
       })
     )
-    expect(flowStateWithUpdatedProperties.flows.testFlow1.name).toEqual(
-      "Modified Name"
-    )
-    expect(flowStateWithUpdatedProperties.flows.testFlow1.type).toEqual(
-      "modified-type"
-    )
-    expect(flowStateWithUpdatedProperties.flows.testFlow1.isConnected).toEqual(
-      true
-    )
-    expect(flowStateWithUpdatedProperties.flows.testFlow1.flowChart).toEqual(
-      flowChart
-    )
+    expect(updatedFlow.flows.testFlow1.name).toEqual("Modified Name")
+    expect(updatedFlow.flows.testFlow1.type).toEqual("modified-type")
+    expect(updatedFlow.flows.testFlow1.isConnected).toEqual(true)
+    expect(updatedFlow.flows.testFlow1.flowChart).toEqual(flowChart)
   })
 })

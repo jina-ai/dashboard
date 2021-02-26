@@ -12,7 +12,7 @@ import {
   ADD_NODE,
   ADD_LINK,
   DELETE_LINK,
-  UPDATE_NODE_PROPERTIES,
+  UPDATE_NODE_DATA,
 } from "./flows.constants"
 import {
   CreateNewFlowAction,
@@ -36,7 +36,7 @@ import {
   DeleteLinkProps,
   NodeData,
   UpdateNodePropertiesAction,
-  NodePropertiesUpdate,
+  NodeDataUpdate,
   Flow,
 } from "./flows.types"
 
@@ -155,10 +155,10 @@ export function updateNode(
 
 export function updateNodeProperties(
   nodeId: string,
-  nodePropertiesUpdate: NodePropertiesUpdate
+  nodePropertiesUpdate: NodeDataUpdate
 ): UpdateNodePropertiesAction {
   return {
-    type: UPDATE_NODE_PROPERTIES,
+    type: UPDATE_NODE_DATA,
     payload: { nodeId, nodePropertiesUpdate },
   }
 }

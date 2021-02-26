@@ -78,9 +78,9 @@ export const formatAsYAML = (
   const pods = nodes
     .filter((node) => node.data.label !== "gateway")
     .reduce((acc, node) => {
-      const key = node.data.label || node.data.properties.name
+      const key = node.data.label
 
-      const podProperties = Object.entries(node.data.properties).reduce(
+      const podProperties = Object.entries(node.data).reduce(
         (acc, [argName, propValue]) => {
           acc[argName] = decodePropValue(argName, propValue, podArguments)
           return acc
@@ -99,7 +99,7 @@ export const formatAsYAML = (
     const {
       position: { x, y },
     } = node
-    const key = node.data.label || node.data.properties.name
+    const key = node.data.label || node.data.name
     acc[key] = { x: parseInt(x), y: parseInt(y) }
     return acc
   }, {})

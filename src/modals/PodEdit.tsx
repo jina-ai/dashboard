@@ -14,7 +14,7 @@ import {
   updateNodeProperties,
 } from "../redux/flows/flows.actions"
 import { Button } from "react-bootstrap"
-import { NodePropertiesUpdate } from "../redux/flows/flows.types"
+import { NodeDataUpdate } from "../redux/flows/flows.types"
 
 const style: Styles = {
   overlay: {
@@ -123,7 +123,7 @@ function PodEditComponent({ open, closeModal, modalParams }: Props) {
   }
   const _updateNodeProp = (name: string, value: string) => {
     if (node?.id) {
-      const nodePropertiesUpdate: NodePropertiesUpdate = { [name]: value }
+      const nodePropertiesUpdate: NodeDataUpdate = { [name]: value }
       dispatch(updateNodeProperties(node.id, nodePropertiesUpdate))
     }
   }
@@ -135,7 +135,7 @@ function PodEditComponent({ open, closeModal, modalParams }: Props) {
     }
   }
 
-  const label = node?.data?.label || node?.data?.properties?.name || "Empty Pod"
+  const label = node?.data?.label || node?.data?.name || "Empty Pod"
   console.log("node")
   console.log(node)
 
@@ -177,9 +177,7 @@ function PodEditComponent({ open, closeModal, modalParams }: Props) {
                 <Input
                   placeholder={type}
                   type={type === "integer" ? "number" : "text"}
-                  value={
-                    node?.data?.properties ? node?.data?.properties[name] : ""
-                  }
+                  value={node?.data ? node?.data[name] : ""}
                   onChange={(e) => _updateNodeProp(name, e.target.value)}
                   className="property-value-input"
                 />
