@@ -37,6 +37,7 @@ import {
   NodeData,
   UpdateNodePropertiesAction,
   NodePropertiesUpdate,
+  Flow,
 } from "./flows.types"
 
 import { ThunkAction } from "redux-thunk"
@@ -49,6 +50,7 @@ import { formatAsYAML } from "../../helpers"
 import logger from "../../logger"
 import jinadClient from "../../services/jinad"
 import { XYPosition } from "react-flow-renderer/dist/types"
+import { ElementId } from "react-flow-renderer/dist/nocss/types"
 
 export function loadFlow(flowId: string): LoadFlowAction {
   return {
@@ -117,12 +119,19 @@ export function addNode(
   }
 }
 
-export function addLink(source: NodeId, target: NodeId): AddLinkAction {
+export function addLink(
+  source: NodeId,
+  target: NodeId,
+  sourceHandle: ElementId | null,
+  targetHandle: ElementId | null
+): AddLinkAction {
   return {
     type: ADD_LINK,
     payload: {
       source,
       target,
+      sourceHandle,
+      targetHandle,
     },
   }
 }
@@ -172,12 +181,13 @@ export function startFlow(
 ): ThunkAction<void, FlowState, unknown, Action<string>> {
   return async function (dispatch) {
     logger.log("starting flow: ", selectedFlowId)
-    const flow = store.getState().flowState.flows[selectedFlowId]
-    const { flowArguments } = store.getState().flowState
-    const { flowChart: elements } = flow
-    logger.log("starting flow chart: ", elements)
-    const yaml = formatAsYAML(elements, flowArguments)
-    logger.log("starting flow yaml: ", elements)
+    const flow = store.getState().flowState.flows[selectedFlowId] as Flow
+    const flowArguments = store.getState().flowState
+      .flowArguments as FlowArguments
+    const { flowChart } = flow
+    logger.log("starting flow chart: ", flowChart)
+    const yaml = formatAsYAML(flowChart, flowArguments)
+    logger.log("starting flow yaml: ", flowChart)
     const result = await jinadClient.startFlow(yaml)
     const { status, message, flow_id } = result
 

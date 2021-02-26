@@ -33,7 +33,7 @@ export default function FlowChart(props: Props) {
 
   const onConnect = (params: Edge | Connection) => {
     if (params.source && params.target)
-      dispatch(addLink(params.source, params.target))
+      dispatch(addLink(params.source, params.target, null, null))
   }
 
   const onElementsRemove = (elements: Elements) => {
