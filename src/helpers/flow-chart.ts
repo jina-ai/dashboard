@@ -127,7 +127,7 @@ function getNodeDepth(nodes: Node[], node: Node): number {
       else depth = getNodeDepth(nodes, parent)
       return depth
     })
-    const max = Math.max(...parentDepthList) + 1
+    const max = Math.min(...parentDepthList) + 1
     return max
   }
 }
