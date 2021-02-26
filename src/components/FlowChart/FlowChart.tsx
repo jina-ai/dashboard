@@ -47,7 +47,6 @@ export default function FlowChart(props: Props) {
     setReactFlowInstance(_reactFlowInstance)
 
   const onDragOver = (event: React.DragEvent<HTMLDivElement>) => {
-    console.log("onDragOver")
     event.preventDefault()
     event.dataTransfer.dropEffect = "move"
   }
@@ -71,7 +70,7 @@ export default function FlowChart(props: Props) {
     <div
       className="reactflow-wrapper"
       ref={reactFlowWrapper as React.RefObject<HTMLDivElement>}
-      style={{ height: 1000, width: 1000 }}
+      style={{ height: "100%", width: "100%" }}
     >
       <ReactFlow
         elements={props.elements}
