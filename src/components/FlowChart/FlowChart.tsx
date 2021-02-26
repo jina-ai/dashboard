@@ -1,5 +1,5 @@
 import ReactFlow, { Elements, isEdge, OnLoadParams } from "react-flow-renderer"
-import React, { useRef, useState } from "react"
+import React, { MouseEvent, useRef, useState } from "react"
 import { Connection, Edge } from "react-flow-renderer/dist/types"
 import { useDispatch } from "react-redux"
 import {
@@ -7,8 +7,9 @@ import {
   addNode,
   deleteLink,
   deleteNode,
+  updateNode,
 } from "../../redux/flows/flows.actions"
-import { isNode } from "react-flow-renderer/nocss"
+import { isNode, Node } from "react-flow-renderer"
 import ChartNode from "./ChartNode"
 
 type Props = {
@@ -31,8 +32,6 @@ export default function FlowChart(props: Props) {
   const reactFlowWrapper = useRef<HTMLElement>(null)
 
   const onConnect = (params: Edge | Connection) => {
-    console.log("onConnect")
-
     if (params.source && params.target)
       dispatch(addLink(params.source, params.target))
   }
@@ -61,9 +60,11 @@ export default function FlowChart(props: Props) {
       x: event.clientX - reactFlowBounds.left,
       y: event.clientY - reactFlowBounds.top,
     }) || { x: 0, y: 0 }
-    console.log("data")
-    console.log(data)
     dispatch(addNode(data.label, position, data))
+  }
+
+  const onNodeDragStop = (event: MouseEvent, node: Node) => {
+    dispatch(updateNode(node.id, { position: node.position }))
   }
 
   return (
@@ -79,6 +80,7 @@ export default function FlowChart(props: Props) {
         onLoad={onLoad}
         onDrop={onDrop}
         onDragOver={onDragOver}
+        onNodeDragStop={onNodeDragStop}
         nodeTypes={nodeTypes}
       />
     </div>
