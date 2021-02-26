@@ -102,12 +102,12 @@ type GlobalArguments = {
 
 const globalArguments: GlobalArguments = {
   port_expose: {
-    name: "Port",
+    name: "port_expose",
     description: "Which port to expose gRPC or REST interface",
     type: "integer",
   },
   rest_api: {
-    name: "Rest API",
+    name: "rest_api",
     description: "Whether to enable REST interface",
     type: "boolean",
   },
