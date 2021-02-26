@@ -31,6 +31,7 @@ import { Flow } from "../redux/flows/flows.types"
 
 const FlowViewContainer = styled.div`
   display: flex;
+  min-height: 58rem;
 `
 
 export default function FlowView() {
