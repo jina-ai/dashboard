@@ -5,8 +5,6 @@ import { Redirect } from "react-router-dom"
 import { IconSidebar } from "../layouts"
 
 // Route Views
-import FlowView3 from "../views/FlowView"
-import FlowView2 from "../views/FlowView2"
 import { LogsView } from "../views/LogsView"
 import TaskView from "../views/TaskView"
 import Settings from "../views/Settings"
@@ -16,6 +14,7 @@ import LogIn from "../views/LogIn"
 
 import NotFound from "../views/NotFound"
 import NavigateButton from "../components/Common/NavigateButton"
+import FlowView from "../views/FlowView"
 
 export const dashboardRoutes = [
   {
@@ -36,16 +35,7 @@ export const dashboardRoutes = [
   {
     path: "/flow",
     layout: IconSidebar,
-    component: FlowView3,
-    props: {
-      usesConnection: true,
-      usesAuth: false,
-    },
-  },
-  {
-    path: "/flow2",
-    layout: IconSidebar,
-    component: FlowView2,
+    component: FlowView,
     props: {
       usesConnection: true,
       usesAuth: false,

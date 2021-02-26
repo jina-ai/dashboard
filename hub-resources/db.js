@@ -31,7 +31,7 @@ module.exports = {
     const mongo = await MongoClient.connect(MONGO_URL, { useUnifiedTopology: true });
     db = mongo.db('JinaHub');
     console.log('Connected to Mongo');
-
+    return;
   },
   async newReview(review) {
     const reviewExists = await this.getReview(review.imageId, review.userId);

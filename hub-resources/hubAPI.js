@@ -251,7 +251,7 @@ async function loadHubImages() {
 		console.log('parsed image ', id);
 	}
 	console.log('images updated');
-
+	return;
 }
 
 async function getImageDetails(image, id) {
