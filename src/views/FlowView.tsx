@@ -32,9 +32,6 @@ const FlowViewContainer = styled.div`
   display: flex;
 `
 
-const FlowContainer = styled.div`
-  overflow: hidden;
-`
 export default function FlowView() {
   const dispatch = useDispatch()
   useState(useSelector(selectRerender))
@@ -54,7 +51,8 @@ export default function FlowView() {
   }, [elements, flowArguments])
 
   const [showOverlay, setShowOverlay] = useState<boolean>(false)
-
+  //todo fix overlay
+  console.log(showOverlay)
   const showCaptureOverlay = (showOverlay = true) => {
     setShowOverlay(showOverlay)
   }
@@ -113,28 +111,17 @@ export default function FlowView() {
             deleteFlow={(e, flowId) => dispatch(deleteFlow(flowId))}
           />
 
-          <FlowContainer>
-            <Card className="chart-section-container mr-md-4 mb-4">
-              <CommandBar
-                startFlow={() => dispatch(startFlow(selectedFlowId))}
-                stopFlow={() => dispatch(stopFlow(selectedFlowId))}
-                copyChart={copyChartAsYAML}
-                importChart={() => dispatch(showModal("import"))}
-                exportImage={exportImage}
-              />
-              <div className="chart-container">
-                <div
-                  className="capture-overlay"
-                  style={{ display: showOverlay ? "" : "none" }}
-                >
-                  <div className="capture-overlay-top" />
-                  <div className="capture-overlay-bottom" />
-                </div>
-              </div>
+          <Card className="chart-section-container mr-md-4 mb-4">
+            <CommandBar
+              startFlow={() => dispatch(startFlow(selectedFlowId))}
+              stopFlow={() => dispatch(stopFlow(selectedFlowId))}
+              copyChart={copyChartAsYAML}
+              importChart={() => dispatch(showModal("import"))}
+              exportImage={exportImage}
+            />
 
-              <FlowChart elements={elements} />
-            </Card>
-          </FlowContainer>
+            <FlowChart elements={elements} />
+          </Card>
 
           <Sidebar
             arguments={flowArguments.pod}
