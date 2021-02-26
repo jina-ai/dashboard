@@ -1,7 +1,7 @@
 import ReactFlow, { Elements, isEdge, OnLoadParams } from "react-flow-renderer"
 import React, { MouseEvent, useRef, useState } from "react"
 import { Connection, Edge } from "react-flow-renderer/dist/types"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import {
   addLink,
   addNode,
@@ -11,6 +11,7 @@ import {
 } from "../../redux/flows/flows.actions"
 import { isNode, Node } from "react-flow-renderer"
 import ChartNode from "./ChartNode"
+import { selectSelectedFlow } from "../../redux/flows/flows.selectors"
 
 type Props = {
   elements: Elements
@@ -23,7 +24,7 @@ const nodeTypes = {
 
 export default function FlowChart(props: Props) {
   const dispatch = useDispatch()
-
+  const flow = useSelector(selectSelectedFlow)
   const [
     reactFlowInstance,
     setReactFlowInstance,
@@ -81,6 +82,7 @@ export default function FlowChart(props: Props) {
         onDragOver={onDragOver}
         onNodeDragStop={onNodeDragStop}
         nodeTypes={nodeTypes}
+        nodesDraggable={flow.type !== "example"}
       />
     </div>
   )
