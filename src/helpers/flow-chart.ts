@@ -72,9 +72,7 @@ export const formatForFlowchart = (data: ParsedYAML): FlowChart => {
 
     node.data.label = id
 
-    if (node?.data?.needs) delete node.data.needs
-
-    if (prevNode && !pod.needs && id !== "gateway") {
+    if (prevNode && !node.data.needs && id !== "gateway") {
       !node.data.needs && (node.data.needs = [])
       node.data.needs.push(prevNode)
     }
@@ -127,7 +125,7 @@ function getNodeDepth(nodes: Node[], node: Node): number {
       else depth = getNodeDepth(nodes, parent)
       return depth
     })
-    const max = Math.min(...parentDepthList) + 1
+    const max = Math.max(...parentDepthList) + 1
     return max
   }
 }
