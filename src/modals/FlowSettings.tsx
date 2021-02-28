@@ -1,4 +1,4 @@
-import styled from "@emotion/styled"
+import styled from "@emotion/styled/macro"
 import { useDispatch, useSelector } from "react-redux"
 import {
   selectFlowChart,
@@ -13,8 +13,8 @@ import {
   updateFlow,
   updateFlowProperties,
 } from "../redux/flows/flows.actions"
-import { Button, FormCheck } from "react-bootstrap"
-import { FlowArgument } from "../redux/flows/flows.types"
+import { Button } from "react-bootstrap"
+import { globalArguments } from "../data/globalArguments"
 
 const style: Styles = {
   overlay: {
@@ -37,8 +37,9 @@ const style: Styles = {
 }
 
 const FlowSettingsContainer = styled.div`
-  width: 25rem;
-  margin-right: -1rem;
+  width: 100%;
+  padding-left: 1rem;
+  padding-right: 1rem;
 `
 
 const Header1 = styled.header`
@@ -51,34 +52,22 @@ const Header1 = styled.header`
 const Header2 = styled.header`
   font-weight: 600;
   font-size: 20px;
-  color: #009999;
   margin-bottom: 0.5rem;
 `
 
 const PropertyTable = styled.div`
-  width: 104%;
   margin-bottom: 1rem;
-  border: 0;
-  overflow: hidden;
-  overflow-y: scroll;
+  overflow-y: auto;
   height: 20rem;
   border-radius: 0.25em;
-
-  ::-webkit-scrollbar {
-    width: 1rem;
-  }
-
-  ::-webkit-scrollbar * {
-    background: transparent;
-  }
-
-  ::-webkit-scrollbar-thumb {
-    background: #099 !important;
-    border-radius: 1rem;
-  }
 `
+const PropertyItem = styled.div`
+  position: relative;
+  width: 100%;
+`
+
 const Input = styled.input`
-  width: 97%;
+  width: 100%;
   background: #f1f3f4;
   border-radius: 5px;
   padding: 0.5em;
@@ -87,7 +76,50 @@ const Input = styled.input`
 `
 
 const DeleteButton = styled(Button)`
-  width: 97%;
+  width: 100%;
+`
+
+const CheckBoxWrapper = styled.div`
+  position: relative;
+`
+const CheckBoxLabel = styled.label`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 41px;
+  height: 22px;
+  border-radius: 20px;
+  background: #a6a6a6;
+  cursor: pointer;
+  &::after {
+    content: "";
+    display: block;
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    margin: 2px;
+    background: #ffffff;
+    transition: 0.2s;
+  }
+`
+const CheckBox = styled.input`
+  opacity: 0;
+  z-index: 1;
+  border-radius: 15px;
+  width: 42px;
+  height: 26px;
+  &:checked + ${CheckBoxLabel} {
+    background: #32c8cd;
+    &::after {
+      content: "";
+      display: block;
+      border-radius: 50%;
+      width: 18px;
+      height: 18px;
+      margin-left: 21px;
+      transition: 0.2s;
+    }
+  }
 `
 
 type Props = {
@@ -96,21 +128,23 @@ type Props = {
   modalParams: ModalParams
 }
 
-type GlobalArguments = {
-  [key: string]: FlowArgument
+type SwitchInputProps = {
+  checked: boolean
+  setChecked: (checked: boolean) => void
 }
 
-const globalArguments: GlobalArguments = {
-  rest_api: {
-    name: "rest_api",
-    description: "Whether to enable REST interface",
-    type: "boolean",
-  },
-  port_expose: {
-    name: "port_expose",
-    description: "Which port to expose gRPC or REST interface",
-    type: "integer",
-  },
+function SwitchInput({ checked, setChecked }: SwitchInputProps) {
+  return (
+    <CheckBoxWrapper>
+      <CheckBox
+        id="checkbox"
+        type="checkbox"
+        checked={checked}
+        onChange={(e) => setChecked(e.target.checked)}
+      />
+      <CheckBoxLabel htmlFor="checkbox" />
+    </CheckBoxWrapper>
+  )
 }
 
 function FlowSettingsComponent({ open, closeModal }: Props) {
@@ -150,7 +184,6 @@ function FlowSettingsComponent({ open, closeModal }: Props) {
     >
       <FlowSettingsContainer>
         <Header1>Flow Name</Header1>
-
         <Input
           value={flowChart.name}
           onChange={(e: { target: { value: string } }) =>
@@ -163,18 +196,17 @@ function FlowSettingsComponent({ open, closeModal }: Props) {
           {Object.values(globalArguments).map((argument, idx) => {
             const { name, type } = argument
             return (
-              <div key={idx}>
+              <PropertyItem key={idx}>
                 <Header2>{name}</Header2>
                 {type === "boolean" ? (
-                  <FormCheck
-                    type="switch"
+                  <SwitchInput
                     checked={
                       flowChart.flow.with ? flowChart.flow.with[name] : false
                     }
-                    onChange={(e: any) =>
-                      _updateFlowWith(name, e.target.checked)
+                    setChecked={(checked: any) =>
+                      _updateFlowWith(name, checked)
                     }
-                  ></FormCheck>
+                  />
                 ) : (
                   <Input
                     placeholder={type}
@@ -184,7 +216,7 @@ function FlowSettingsComponent({ open, closeModal }: Props) {
                     className="property-value-input"
                   />
                 )}
-              </div>
+              </PropertyItem>
             )
           })}
         </PropertyTable>
