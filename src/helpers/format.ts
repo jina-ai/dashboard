@@ -11,6 +11,8 @@ import {
 import { Edge, Node } from "react-flow-renderer/dist/types"
 import { isEdge, isNode } from "react-flow-renderer"
 
+const customProperties = ["depth"] //todo generate this dynamically with proper typing
+
 export const parseYAML = (yamlSTR: string) => {
   //todo removing the !tag is kind a bootleg solution. We should look into the parsing
   //todo type this properly
@@ -82,6 +84,7 @@ export const formatAsYAML = (
 
       const podProperties = Object.entries(node.data).reduce(
         (acc, [argName, propValue]) => {
+          if (customProperties.includes(argName)) return acc
           acc[argName] = decodePropValue(argName, propValue, podArguments)
           return acc
         },
