@@ -11,7 +11,7 @@ import {
 import { Edge, Node } from "react-flow-renderer/dist/types"
 import { isEdge, isNode } from "react-flow-renderer"
 
-const customProperties = ["depth"] //todo generate this dynamically with proper typing
+const customProperties = ["depth", "label"] //todo generate this dynamically with proper typing
 
 export const parseYAML = (yamlSTR: string) => {
   //todo removing the !tag is kind a bootleg solution. We should look into the parsing

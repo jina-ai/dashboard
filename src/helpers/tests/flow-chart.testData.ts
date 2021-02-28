@@ -180,28 +180,28 @@ with:
         y: 750
 pods:
   segmenter:
+    needs: gateway
     uses: pods/segment.yml
     read_only: true
-    needs: gateway
   encoder:
+    needs: segmenter
     uses: pods/encode.yml
     polling: any
     timeout_ready: 600000
     read_only: true
-    needs: segmenter
   chunk_idx:
+    needs: encoder
     polling: any
     uses: pods/chunk.yml
-    needs: encoder
   doc_idx:
+    needs: gateway
     polling: any
     uses: pods/doc.yml
-    needs: gateway
   join_all:
-    uses: _merge
     needs:
       - doc_idx
       - chunk_idx
+    uses: _merge
 `
 
 export const flowArguments: FlowArguments = {
