@@ -5,7 +5,6 @@ import {
   UPDATE_NODE,
   DUPLICATE_FLOW,
   LOAD_FLOW,
-  RERENDER,
   UPDATE_SELECTED_FLOW,
   IMPORT_FLOW,
   SET_FLOW_ARGUMENTS,
@@ -22,7 +21,6 @@ import {
   FlowState,
   LoadFlowAction,
   NodeUpdate,
-  RerenderAction,
   UpdateNodeAction,
   UpdateSelectedFlowAction,
   ImportFlowAction,
@@ -167,12 +165,6 @@ export function deleteNode(nodeId: string): DeleteNodeAction {
   return {
     type: DELETE_NODE,
     payload: nodeId,
-  }
-}
-
-export function rerender(): RerenderAction {
-  return {
-    type: RERENDER,
   }
 }
 

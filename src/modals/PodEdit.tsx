@@ -9,7 +9,6 @@ import { ModalParams } from "../redux/global/global.types"
 import ReactModal, { Styles } from "react-modal"
 import {
   deleteNode,
-  rerender,
   updateNode,
   updateNodeProperties,
 } from "../redux/flows/flows.actions"
@@ -118,7 +117,6 @@ function PodEditComponent({ open, closeModal, modalParams }: Props) {
     if (node?.id) {
       const nodeUpdate = { data: { label } }
       dispatch(updateNode(node.id, nodeUpdate))
-      dispatch(rerender())
     }
   }
   const _updateNodeProp = (name: string, value: string) => {
@@ -131,7 +129,6 @@ function PodEditComponent({ open, closeModal, modalParams }: Props) {
     if (node?.id) {
       dispatch(deleteNode(node.id))
       closeModal()
-      dispatch(rerender())
     }
   }
 

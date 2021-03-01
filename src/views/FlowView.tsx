@@ -18,7 +18,6 @@ import { useDispatch, useSelector } from "react-redux"
 import {
   selectFlowArguments,
   selectSelectedFlow,
-  selectRerender,
   selectSelectedFlowId,
 } from "../redux/flows/flows.selectors"
 import { selectConnectionStatus } from "../redux/global/global.selectors"
@@ -36,7 +35,6 @@ const FlowViewContainer = styled.div`
 
 export default function FlowView() {
   const dispatch = useDispatch()
-  useState(useSelector(selectRerender))
   const connected = useSelector(selectConnectionStatus)
   const selectedFlowId = useSelector(selectSelectedFlowId)
   const flowArguments = useSelector(selectFlowArguments)

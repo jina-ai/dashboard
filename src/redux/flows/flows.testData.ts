@@ -1,7 +1,6 @@
 import { FlowArguments, FlowState } from "./flows.types"
 
 export const testFlowState: FlowState = {
-  rerender: false,
   flowArguments: {
     pod: [],
     pea: [],
