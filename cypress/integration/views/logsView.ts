@@ -1,4 +1,4 @@
-describe("Logs page", () => {
+describe('Logs page', () => {
   before(() => {
     cy.visit("/");
   });
@@ -46,32 +46,33 @@ describe("Logs page", () => {
     describe('table view options', () => {
 
       context('on changing table view', () => {
-        it('should initially display Table View option', () => {
-
-
-          cy.dataName('dropDownViewSelectedOption').click()
-          cy.contains('Group by Pod').scrollIntoView().click()
-
-        })
 
         it('should click on All Sources', () => {
-          cy.dataName('dropDown-2-ViewSelectedOption').should('contain.text', 'All Sources')
-          cy.dataName('dropDown-2-ViewSelectedOption').click()
+          cy.dataName('logStreamSourceSelectedOption').should('contain.text', 'All Sources')
+          cy.dataName('logStreamSourceSelectedOption').click()
+        })
 
+        it('should initially display Table View option', () => {
+          cy.dataName('logStreamViewSelectedOption').click()
+          cy.dataName('logStreamFilters').contains('Group by Pod').click()
+          cy.dataName('logStreamViewSelectedOption').click()
+          cy.dataName('logStreamFilters').contains('Group by Level').click()
         })
 
         it('should click on All Levels', () => {
-          cy.dataName('dropDown-3-ViewSelectedOption').should('contain.text', 'All Levels')
-          cy.dataName('dropDown-3-ViewSelectedOption').click()
-
+          cy.dataName('logStreamLevelSelectedOption').should('contain.text', 'All Levels')
+          cy.dataName('logStreamLevelSelectedOption').click()
+          cy.dataName('logStreamFilters').contains('SUCCESS').click()
         })
 
         it('should click on Download Logs', () => {
-          cy.dataName('dropDown-4-ViewSelectedOption').should('contain.text', 'Download Logs')
-          cy.dataName('dropDown-4-ViewSelectedOption').click()
-
+          cy.dataName('logStreamActionsSelect').should('contain.text', 'Download Logs')
+          cy.dataName('logStreamActionsSelect').click()
+          cy.dataName('logStreamFilters').contains('JSON').click()
         })
       })
+
     })
-  });
-});
+  })
+
+})
