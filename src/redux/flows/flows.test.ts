@@ -28,7 +28,7 @@ function getFlowFromStorage(id: string): Flow | undefined {
 }
 
 describe("flows reducer", () => {
-  beforeAll(() => {
+  beforeEach(() => {
     saveFlowsToStorage(testFlowState)
   })
 
@@ -316,7 +316,6 @@ describe("flows reducer", () => {
   it("should delete a link from nodeConnection and save that to storage", () => {
     const source = "gateway"
     const target = "node0"
-    saveFlowsToStorage(testFlowState) //todo remove this and see why the test is failing without it
 
     const deletedLinkId = `e-${source}-to-${target}`
     const oldLinkFromStorage = getFlowFromStorage(
