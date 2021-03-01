@@ -12,7 +12,6 @@ import {
   IMPORT_FLOW,
   initialFlowChart,
   LOAD_FLOW,
-  RERENDER,
   SET_FLOW_ARGUMENTS,
   UPDATE_NODE,
   UPDATE_SELECTED_FLOW,
@@ -73,7 +72,6 @@ function getExampleFlows() {
 }
 
 const initialState: FlowState = {
-  rerender: false,
   selectedFlowId: "_userFlow",
   flows: {
     ...getUserFlows(),
@@ -237,13 +235,9 @@ const flowReducer = produce((draft: FlowState, action: FlowActionTypes) => {
         ].flowChart.elements.filter((element) => linkId !== element.id)
       }
       break
-    //todo check if this can be deleted with the flow chart lib
-    case RERENDER:
-      draft.rerender = !draft.rerender
-      break
   }
 
-  action.type !== RERENDER && saveFlowsToStorage(draft)
+  saveFlowsToStorage(draft)
 }, initialState)
 
 function _createNewFlow(draft: FlowState, customYAML?: string): FlowState {

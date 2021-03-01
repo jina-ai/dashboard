@@ -99,7 +99,6 @@ export type Modal =
 export type ModalParams = {
   imageId?: string
   nodeId?: string
-  rerenderCanvas?: any
 } | null
 
 export type GlobalState = {

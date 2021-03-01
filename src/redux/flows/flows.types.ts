@@ -4,7 +4,6 @@ import {
   DELETE_NODE,
   DUPLICATE_FLOW,
   LOAD_FLOW,
-  RERENDER,
   UPDATE_NODE,
   UPDATE_SELECTED_FLOW,
   IMPORT_FLOW,
@@ -117,7 +116,6 @@ export type FlowArguments = {
 }
 
 export type FlowState = {
-  rerender: boolean
   selectedFlowId: string
   flows: Flows
   flowArguments: FlowArguments
@@ -180,10 +178,6 @@ export type DeleteLinkAction = {
   payload: DeleteLinkProps
 }
 
-export type RerenderAction = {
-  type: typeof RERENDER
-}
-
 export type ImportFlowAction = {
   type: typeof IMPORT_FLOW
   payload: string
@@ -198,7 +192,6 @@ export type FlowActionTypes =
   | DeleteFlowAction
   | UpdateNodeAction
   | DeleteNodeAction
-  | RerenderAction
   | ImportFlowAction
   | AddNodeAction
   | AddLinkAction

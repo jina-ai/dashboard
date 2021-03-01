@@ -3,8 +3,6 @@ import { State } from "../index"
 export const selectSelectedFlow = (state: State) =>
   state.flowState.flows[state.flowState.selectedFlowId]
 
-export const selectRerender = (state: State) => state.flowState.rerender
-
 export const selectTooltipConfig = (state: State) =>
   state.flowState.tooltipConfig
 
