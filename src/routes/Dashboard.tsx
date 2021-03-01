@@ -1,19 +1,20 @@
-import React from "react";
-import { Redirect } from "react-router-dom";
+import React from "react"
+import { Redirect } from "react-router-dom"
 
 // Layout Types
-import { IconSidebar } from "../layouts";
+import { IconSidebar } from "../layouts"
 
 // Route Views
-import FlowView from "../views/FlowView";
-import { LogsView } from "../views/LogsView";
-import TaskView from "../views/TaskView";
-import Settings from "../views/Settings";
-import HubView from "../views/HubView";
-import PackageView from "../views/PackageView";
-import LogIn from "../views/LogIn";
+import FlowView from "../views/FlowView"
+import { LogsView } from "../views/LogsView"
+import TaskView from "../views/TaskView"
+import Settings from "../views/Settings"
+import HubView from "../views/HubView"
+import PackageView from "../views/PackageView"
+import LogIn from "../views/LogIn"
 
-import NotFound from "../views/NotFound";
+import NotFound from "../views/NotFound"
+import NavigateButton from "../components/Common/NavigateButton"
 
 export const dashboardRoutes = [
   {
@@ -86,12 +87,13 @@ export const dashboardRoutes = [
     },
   },
   {
-    path: "/package",
+    path: "/package/:packageId",
     layout: IconSidebar,
     component: PackageView,
     props: {
-      usesConnection: false,
-      usesAuth: true,
+      navigateButton: () => (
+        <NavigateButton label={"❮  Back"} path={"/hub/explore"} />
+      ),
     },
   },
   {
@@ -103,4 +105,4 @@ export const dashboardRoutes = [
       usesAuth: true,
     },
   },
-];
+]

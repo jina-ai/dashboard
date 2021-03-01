@@ -1,21 +1,23 @@
-import React, { ReactNode } from "react";
-import { Card, Row, Col } from "react-bootstrap";
+import React, { ReactNode } from "react"
+import { Card, Row, Col } from "react-bootstrap"
 
 type Props = {
-  title: ReactNode;
-  content: string;
-  icon: string;
-  theme: string;
-  link: string;
-};
+  title: ReactNode
+  content: string
+  icon: string
+  theme: string
+  link: string
+  dataName: string
+}
 
-function HelpCard({ title, content, icon, theme, link }: Props) {
+function HelpCard({ title, content, icon, theme, link, dataName }: Props) {
   return (
     <a
       className="unstyled-link"
       href={link}
       target="_blank"
       rel="noopener noreferrer"
+      data-name={dataName}
     >
       <Card className="h-100">
         <Card.Body className="pt-3">
@@ -35,7 +37,7 @@ function HelpCard({ title, content, icon, theme, link }: Props) {
         </Card.Body>
       </Card>
     </a>
-  );
+  )
 }
 
-export { HelpCard };
+export { HelpCard }

@@ -1,4 +1,4 @@
-import { HANDLE_NEW_LOG, SHOW_LOG_INDEX } from "./logStream.constants";
+import { HANDLE_NEW_LOG, SHOW_LOG_INDEX } from "./logStream.constants"
 
 const levels = [
   "INFO",
@@ -7,76 +7,67 @@ const levels = [
   "ERROR",
   "CRITICAL",
   "DEBUG",
-] as const;
-export type Level = typeof levels[number];
+] as const
+export type Level = typeof levels[number]
 
 export type RawLogLevel = {
-  lastLog: number;
+  lastLog: number
   levels: {
-    [level in Level]: number;
-  };
-};
+    [level in Level]: number
+  }
+}
+
 export type RawLog = {
-  created: number;
-  filename: string;
-  funcName: string;
-  levelname: Level;
-  lineno: number;
-  module: string;
-  msg: string;
-  name: string;
-  pathname: string;
-  process: number;
-  processName: string;
-  thread: number;
-  threadName: string;
-};
+  context: string
+  host: string
+  log_id: string
+  message: string
+  name: string
+  process: string
+  type: Level
+  uptime: string
+  workspace_path: string
+}
 
 export type ProcessedLog = RawLog & {
-  createdDate: Date;
-  id: string;
-  idx: number;
-  unixTime: number;
-  timestamp: Date;
-  formattedTimestamp: string;
-};
+  id: string
+  idx: number
+  unixTime: number
+  timestamp: Date
+  formattedTimestamp: string
+  level: Level
+}
 
 export type LogLevels = {
-  [logLevel in Level]: number;
-};
+  [logLevel in Level]: number
+}
 
 export type LogLevelOccurrences = {
-  [timeStamp: number]: RawLogLevel;
-};
+  [timeStamp: number]: RawLogLevel
+}
 
 export type LogStreamState = {
-  logIndex: number;
-  logLevelOccurrences: LogLevelOccurrences;
-  logs: ProcessedLog[];
-  logLevels: LogLevels;
+  logIndex: number
+  logLevelOccurrences: LogLevelOccurrences
+  logs: ProcessedLog[]
+  logLevels: LogLevels
   logSources: {
-    [pea: string]: number;
-  };
-};
+    [pea: string]: number
+  }
+}
 
 export type Message = {
-  data: RawLog;
-};
-
-type PodPropertyType = "str" | "int" | "bool" | "SocketType" | "ReplicaType";
-export type PodProperty = {
-  name: string;
-  type: PodPropertyType;
-};
+  data: RawLog
+}
 
 export type showLogAtIndexAction = {
-  type: typeof SHOW_LOG_INDEX;
-  payload: number;
-};
+  type: typeof SHOW_LOG_INDEX
+  payload: number
+}
 
 export type handleNewLogAction = {
-  type: typeof HANDLE_NEW_LOG;
-  payload: Message;
-};
+  type: typeof HANDLE_NEW_LOG
+  payload: RawLog
+}
 
-export type LogStreamActionTypes = showLogAtIndexAction | handleNewLogAction;
+export type LogStreamActionTypes = showLogAtIndexAction | handleNewLogAction

@@ -1,16 +1,20 @@
-import React from "react";
-import { Badge } from "react-bootstrap";
+import React from "react"
+import { useDispatch, useSelector } from "react-redux"
+import { selectFlowChart } from "../../redux/flows/flows.selectors"
+import { showModal } from "../../redux/global/global.actions"
 
 type Props = {
   node: {
-    properties: any;
-    label: string | undefined;
-  };
-};
+    properties: any
+    label: string | undefined
+    id?: string
+  }
+}
 
 export default function ChartNode({ node }: Props) {
-  const { properties, label } = node;
-  const list: any = [];
+  const { properties, label } = node
+  const list: any = []
+  const dispatch = useDispatch()
   Object.keys(properties).forEach((prop, idx) => {
     if (properties[prop] && prop !== "name")
       list.push(
@@ -18,15 +22,19 @@ export default function ChartNode({ node }: Props) {
           <span className="text-bold mr-1">{prop}:</span>
           {properties[prop]}
         </div>
-      );
-  });
-  const isSpecial = Object.keys(properties).length > 0;
-  const isGateway = label === "gateway";
-  let labelText = typeof label === "undefined" ? properties.name : label || "";
+      )
+  })
+  const isSpecial = Object.keys(properties).length > 0
+  let labelText = typeof label === "undefined" ? properties.name : label || ""
+  const type = useSelector(selectFlowChart).type
   return (
     <div
-      className={`chart-node ${isGateway ? "gateway" : ""}`}
+      className={`chart-node`}
       id={`chart-node-${label}`}
+      onDoubleClick={() => {
+        type === "user-generated" &&
+          dispatch(showModal("podEdit", { nodeId: node.id }))
+      }}
     >
       <div className="node-header">
         <div className={`p-1 ${isSpecial ? "special" : ""}`}>
@@ -34,15 +42,9 @@ export default function ChartNode({ node }: Props) {
             <span className="text-bold">
               {labelText || <span className="text-warning">Empty Pod</span>}
             </span>
-            <Badge variant="primary" className="ml-2 mt-1 py-1 px-2">
-              {properties.replicas}
-            </Badge>
           </p>
         </div>
       </div>
-      {list.length > 0 && (
-        <div className="node-info border-top px-2">{list}</div>
-      )}
     </div>
-  );
+  )
 }

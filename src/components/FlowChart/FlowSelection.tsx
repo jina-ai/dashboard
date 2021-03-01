@@ -1,158 +1,161 @@
-import React, { useState } from "react";
-import { Dropdown } from "react-bootstrap";
-
-type SelectionIndicatorProps = {
-  selected: boolean;
-};
-
-function SelectionIndicator({ selected }: SelectionIndicatorProps) {
-  return selected ? (
-    <i className="material-icons text-primary">radio_button_checked</i>
-  ) : (
-    <i className="material-icons">radio_button_unchecked</i>
-  );
-}
+import React from "react"
+import styled from "@emotion/styled"
+import { useTheme } from "@emotion/react"
 
 type ConnectionIndicatorProps = {
-  connected: boolean;
-  show: boolean;
-};
+  connected: boolean
+  show: boolean
+}
 
 function ConnectionIndicator({ connected, show }: ConnectionIndicatorProps) {
-  if (!show) return null;
+  if (!show) return null
   return connected ? (
     <i className="material-icons ml-2 text-success">wifi</i>
   ) : (
     <i className="material-icons ml-2 text-warning">wifi_off</i>
-  );
+  )
 }
 
 function TitleConnectionIndicator({
   connected,
   show,
 }: ConnectionIndicatorProps) {
-  if (!show) return null;
+  if (!show) return null
   return connected ? (
     <i className="material-icons text-white ml-1 mr-2">wifi</i>
   ) : (
     <i className="material-icons text-warning ml-1 mr-2">wifi_off</i>
-  );
+  )
 }
 
 type DeleteFlowProps = {
-  deleteFlow: (e: any) => void;
-  show: boolean;
-};
-
-function DeleteFlowButton({ show, deleteFlow }: DeleteFlowProps) {
-  if (!show) return null;
-  return (
-    <i className="material-icons text-danger float-right" onClick={deleteFlow}>
-      delete
-    </i>
-  );
+  deleteFlow: (e: any) => void
 }
 
-type EditFlowsProps = {
-  toggleEditing: () => void;
-  isEditing: boolean;
-};
-
-function EditFlowsButton({ isEditing, toggleEditing }: EditFlowsProps) {
-  return isEditing ? (
-    <i
-      onClick={toggleEditing}
-      className="material-icons float-right cursor-pointer text-success"
-    >
-      done
-    </i>
-  ) : (
-    <i
-      onClick={toggleEditing}
-      className="material-icons float-right cursor-pointer"
-    >
-      edit
-    </i>
-  );
+function DeleteFlowButton({ deleteFlow }: DeleteFlowProps) {
+  const Delete = styled.div`
+    font-size: 1.25rem;
+    margin-right: -0.125rem;
+  `
+  return (
+    <Delete>
+      <i onClick={deleteFlow} className="material-icons">
+        delete
+      </i>
+    </Delete>
+  )
 }
 
 type FlowSelectionProps = {
   flows: {
-    [key: string]: any;
-  };
-  loadFlow: (flowId: string) => void;
-  createNewFlow: (e: any) => void;
-  deleteFlow: (e: any, flowId: string) => void;
-  selectedFlowId: string;
-  connected: boolean;
-};
+    [key: string]: any
+  }
+  showNewFlowModal: () => void
+  loadFlow: (flowId: string) => void
+  createNewFlow: (e: any) => void
+  deleteFlow: (e: any, flowId: string) => void
+  selectedFlowId: string
+  connected: boolean
+}
 
 export default function FlowSelection({
   flows,
   loadFlow,
   selectedFlowId,
-  createNewFlow,
+  showNewFlowModal,
   deleteFlow,
   connected,
 }: FlowSelectionProps) {
-  const [isEditing, setIsEditing] = useState(false);
+  const { palette } = useTheme()
 
-  const toggleEditing = () => {
-    setIsEditing((currentIsEditing) => !currentIsEditing);
-  };
+  const FlowSelectionMenu = styled.div`
+    font-family: "Montserrat", serif;
+    min-width: 12rem;
+    margin-right: 3rem;
+  `
+
+  const SelectedFlowHeader = styled.div`
+    font-weight: 600;
+    font-size: 20px;
+    color: ${palette.headerTextColor};
+    margin-bottom: 1rem;
+  `
+
+  type FlowTapProps = {
+    selected: boolean
+  }
+
+  const FlowTap = styled.div`
+    cursor: pointer;
+    font-weight: ${(props: FlowTapProps) => (props.selected ? "bold" : 500)};
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-left: 1rem;
+    margin-bottom: 1rem;
+  `
+
+  const FlowHeader = styled.div`
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 14px;
+    margin-bottom: 1rem;
+    color: ${palette.headerTextColor};
+  `
 
   const userFlows = Object.entries(flows).filter(
     ([id, flow]) => flow.type !== "example"
-  );
+  )
 
   const exampleFlows = Object.entries(flows).filter(
     ([id, flow]) => flow.type === "example"
-  );
+  )
 
-  const currentFlow = flows[selectedFlowId];
+  const currentFlow = flows[selectedFlowId]
 
   return (
-    <Dropdown className="flow-selection">
-      <Dropdown.Toggle>
+    <FlowSelectionMenu>
+      <SelectedFlowHeader>
         {currentFlow.name}
         <TitleConnectionIndicator
           show={currentFlow.type === "remote"}
           connected={connected}
         />
-      </Dropdown.Toggle>
-      <Dropdown.Menu>
-        <Dropdown.Item onClick={createNewFlow}>
-          <i className="material-icons">add</i>New Flow
-        </Dropdown.Item>
-        <Dropdown.Header className="text-uppercase">
-          Your Flows{" "}
-          <EditFlowsButton
-            isEditing={isEditing}
-            toggleEditing={toggleEditing}
+      </SelectedFlowHeader>
+
+      <FlowTap selected={false} onClick={showNewFlowModal}>
+        New Flow <i className="material-icons plus-icon">add</i>
+      </FlowTap>
+
+      <FlowHeader>My Flows </FlowHeader>
+
+      {userFlows.map(([flowId, flow], idx) => (
+        <FlowTap
+          selected={currentFlow.name === flow.name}
+          onClick={() => loadFlow(flowId)}
+          key={idx}
+        >
+          {flow.name}
+          <ConnectionIndicator
+            show={flow.type === "remote"}
+            connected={connected}
           />
-        </Dropdown.Header>
-        {userFlows.map(([flowId, flow], idx) => (
-          <Dropdown.Item onClick={() => loadFlow(flowId)} key={idx}>
-            <SelectionIndicator selected={flowId === selectedFlowId} />
-            {flow.name}
-            <ConnectionIndicator
-              show={flow.type === "remote"}
-              connected={connected}
-            />
-            <DeleteFlowButton
-              show={flow.type === "user-generated" && isEditing}
-              deleteFlow={(e: any) => deleteFlow(e, flowId)}
-            />
-          </Dropdown.Item>
-        ))}
-        <Dropdown.Header className="text-uppercase">Examples</Dropdown.Header>
-        {exampleFlows.map(([flowId, flow], idx) => (
-          <Dropdown.Item onClick={() => loadFlow(flowId)} key={idx}>
-            <SelectionIndicator selected={flowId === selectedFlowId} />
-            {flow.name}
-          </Dropdown.Item>
-        ))}
-      </Dropdown.Menu>
-    </Dropdown>
-  );
+          {flowId !== "_userFlow" && (
+            <DeleteFlowButton deleteFlow={(e: any) => deleteFlow(e, flowId)} />
+          )}
+        </FlowTap>
+      ))}
+      <FlowHeader>Example Flows</FlowHeader>
+      {exampleFlows.map(([flowId, flow], idx) => (
+        <FlowTap
+          selected={currentFlow.name === flow.name}
+          onClick={() => loadFlow(flowId)}
+          key={idx}
+        >
+          {flow.name}
+        </FlowTap>
+      ))}
+    </FlowSelectionMenu>
+  )
 }

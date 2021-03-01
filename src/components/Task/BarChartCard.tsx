@@ -1,9 +1,9 @@
-import React, { useRef, useEffect, useState, useCallback } from "react";
+import React, { useRef, useEffect, useState, useCallback } from "react"
 import ChartElement, {
   ChartConfiguration,
   ChartOptions,
   ChartData,
-} from "chart.js";
+} from "chart.js"
 import {
   Card,
   CardHeader,
@@ -12,17 +12,17 @@ import {
   Col,
   ButtonGroup,
   Button,
-} from "shards-react";
-import { formatBytes } from "../../helpers";
-import { useTheme } from "@emotion/react";
+} from "shards-react"
+import { formatBytes } from "../../helpers"
+import { useTheme } from "@emotion/react"
 
 function BarChartCard(props: any) {
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const [chartInstance, setChartInstance] = useState<ChartElement | null>(null);
-  const [currentTab, setCurrentTab] = useState("messages");
-  const { palette } = useTheme();
+  const canvasRef = useRef<HTMLCanvasElement | null>(null)
+  const [chartInstance, setChartInstance] = useState<ChartElement | null>(null)
+  const [currentTab, setCurrentTab] = useState("messages")
+  const { palette } = useTheme()
 
-  const chartData = props[currentTab];
+  const chartData = props[currentTab]
 
   const getChartOptions = useCallback((): ChartOptions => {
     return {
@@ -30,19 +30,19 @@ function BarChartCard(props: any) {
       tooltips: {
         callbacks: {
           title: function (tooltipItem: any) {
-            return `Pod: ${tooltipItem[0].xLabel}`;
+            return `Pod: ${tooltipItem[0].xLabel}`
           },
           label: (tooltipItem: any, data: any) => {
             let label = `${data.datasets[tooltipItem.datasetIndex].label}: ${
               currentTab === "bytes"
                 ? formatBytes(tooltipItem.value)
                 : tooltipItem.value
-            }`;
-            return label;
+            }`
+            return label
           },
           afterLabel: (tooltipItem: any) => {
-            let text = "\nProcess ID: " + chartData[tooltipItem.index].process;
-            return text;
+            let text = "\nProcess ID: " + chartData[tooltipItem.index].process
+            return text
           },
         },
       },
@@ -57,16 +57,16 @@ function BarChartCard(props: any) {
             stacked: true,
             ticks: {
               callback: (label: number) => {
-                if (currentTab === "bytes") return formatBytes(label);
-                return label > 999 ? `${(label / 1000).toFixed(0)}k` : label;
+                if (currentTab === "bytes") return formatBytes(label)
+                return label > 999 ? `${(label / 1000).toFixed(0)}k` : label
               },
             },
           },
         ],
       },
       maintainAspectRatio: false,
-    };
-  }, [chartData, currentTab]);
+    }
+  }, [chartData, currentTab])
 
   const getChartConfig = useCallback(
     (chartOptions: ChartOptions): ChartConfiguration => {
@@ -82,7 +82,7 @@ function BarChartCard(props: any) {
               data: chartData.map((d: any) => d.sent),
               backgroundColor: palette.primary,
               borderColor: palette.primary,
-              pointBackgroundColor: palette.background.default,
+              pointBackgroundColor: palette.background,
               pointHoverBackgroundColor: palette.primary,
               borderWidth: 1.5,
             },
@@ -92,16 +92,16 @@ function BarChartCard(props: any) {
               data: chartData.map((d: any) => d.received),
               backgroundColor: palette.success,
               borderColor: palette.success,
-              pointBackgroundColor: palette.background.default,
+              pointBackgroundColor: palette.background,
               pointHoverBackgroundColor: palette.success,
               borderWidth: 1.5,
             },
           ],
         },
-      };
+      }
     },
-    [chartData, palette.success, palette.primary, palette.background.default]
-  );
+    [chartData, palette.success, palette.primary, palette.background]
+  )
 
   const getChartData = useCallback(() => {
     return {
@@ -113,7 +113,7 @@ function BarChartCard(props: any) {
           data: chartData.map((d: any) => d.sent),
           backgroundColor: palette.primary,
           borderColor: palette.primary,
-          pointBackgroundColor: palette.background.default,
+          pointBackgroundColor: palette.background,
           pointHoverBackgroundColor: palette.primary,
           borderWidth: 1.5,
         },
@@ -123,36 +123,36 @@ function BarChartCard(props: any) {
           data: chartData.map((d: any) => d.received),
           backgroundColor: palette.success,
           borderColor: palette.success,
-          pointBackgroundColor: palette.background.default,
+          pointBackgroundColor: palette.background,
           pointHoverBackgroundColor: palette.success,
           borderWidth: 1.5,
         },
       ],
-    };
+    }
   }, [
     chartData,
     currentTab,
     palette.success,
     palette.primary,
-    palette.background.default,
-  ]);
+    palette.background,
+  ])
 
   useEffect(() => {
-    if (!canvasRef.current) return;
-    const chartOptions: ChartOptions = getChartOptions();
-    const chartConfig: ChartConfiguration = getChartConfig(chartOptions);
-    const newChartInstance = new ChartElement(canvasRef.current, chartConfig);
-    setChartInstance(newChartInstance);
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+    if (!canvasRef.current) return
+    const chartOptions: ChartOptions = getChartOptions()
+    const chartConfig: ChartConfiguration = getChartConfig(chartOptions)
+    const newChartInstance = new ChartElement(canvasRef.current, chartConfig)
+    setChartInstance(newChartInstance)
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
-    if (!chartInstance) return;
-    const newData: ChartData = getChartData();
-    const newOptions: ChartOptions = getChartOptions();
-    chartInstance.options = newOptions;
-    chartInstance.data = newData;
-    chartInstance.update();
-  }, [chartData, chartInstance, currentTab, getChartData, getChartOptions]);
+    if (!chartInstance) return
+    const newData: ChartData = getChartData()
+    const newOptions: ChartOptions = getChartOptions()
+    chartInstance.options = newOptions
+    chartInstance.data = newData
+    chartInstance.update()
+  }, [chartData, chartInstance, currentTab, getChartData, getChartOptions])
 
   return (
     <Card small className="h-100 mb-4">
@@ -186,7 +186,7 @@ function BarChartCard(props: any) {
         </div>
       </CardBody>
     </Card>
-  );
+  )
 }
 
-export default BarChartCard;
+export default BarChartCard

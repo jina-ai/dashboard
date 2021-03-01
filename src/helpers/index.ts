@@ -2,9 +2,10 @@ export {
   serializeLogsToCSVBlob,
   serializeLogsToTextBlob,
   serializeLogsToJSONBlob,
-} from "./serialise";
+} from "./serialise"
 
-export { formatForFlowchart } from "./flow-chart";
+export { formatForFlowchart } from "./flow-chart"
+export { transformLog } from "./transform-log"
 
 export {
   formatBytes,
@@ -12,6 +13,6 @@ export {
   formatAsYAML,
   decodePropValue,
   parseYAML,
-} from "./format";
+} from "./format"
 
-export { copyToClipboard } from "./utils";
+export { copyToClipboard } from "./utils"

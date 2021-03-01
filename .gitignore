@@ -31,4 +31,6 @@ yarn-error.log*
 
 # Cypress' recorded videos
 cypress/videos/
+# With percy, we're not handling snapshots ourselves but letting percy take care of it
+cypress/screenshots/
 

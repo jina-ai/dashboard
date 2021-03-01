@@ -1,0 +1,28 @@
+name: Sync version with Jina core
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'version'
+        required: true
+        default: '0.0.0'
+
+jobs:
+  update-version:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: setup node.js 12.x
+      uses: actions/setup-node@v1
+      with:
+        node-version: 12.x
+    - name: update version
+      run: |
+        echo "Updating version to ${{ github.event.inputs.version }}!"
+        git config --local user.email "dev-bot@jina.ai"
+        git config --local user.name "Jina Dev Bot"
+        npm version --allow-same-version ${{ github.event.inputs.version }}
+    - name: tag and push
+      run: |
+        git push --follow-tags
+        git push --tags

@@ -1,6 +1,6 @@
-import React from "react";
-import { Button, Form } from "react-bootstrap";
-import ReactModal, { Styles } from "react-modal";
+import React from "react"
+import { Button, Form } from "react-bootstrap"
+import ReactModal, { Styles } from "react-modal"
 
 const style: Styles = {
   overlay: {
@@ -20,16 +20,16 @@ const style: Styles = {
     maxWidth: "800px",
     overflow: "hidden",
   },
-};
+}
 
 type Props = {
-  open: boolean;
-  closeModal: () => void;
-  submitReview: (content: any) => void;
-};
+  open: boolean
+  closeModal: () => void
+  submitReview: (content: any) => void
+}
 
-export default ({ open, closeModal, submitReview }: Props) => {
-  let inputRef: any;
+const WriteReviewModal = ({ open, closeModal, submitReview }: Props) => {
+  let inputRef: any
   return (
     <ReactModal
       ariaHideApp={false}
@@ -70,5 +70,7 @@ export default ({ open, closeModal, submitReview }: Props) => {
         Submit
       </Button>
     </ReactModal>
-  );
-};
+  )
+}
+
+export default WriteReviewModal

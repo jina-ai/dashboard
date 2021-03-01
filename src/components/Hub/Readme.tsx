@@ -1,16 +1,24 @@
-import React from "react";
-import { Card, CardHeader, CardBody } from "shards-react";
+import React, { useState, useEffect } from "react"
+import { Card, CardHeader, CardBody } from "shards-react"
+import { getDocumentationHTML } from "../../services/hubApi"
+import SpinningLoader from "../Common/SpinningLoader"
 
 type Props = {
-  readme: string;
-  documentation: string;
-};
+  documentation: string
+}
 
-export default function ReadMe({ readme, documentation }: Props) {
+export default function ReadMe({ documentation }: Props) {
+  let [readme, setReadme] = useState("")
+  useEffect(() => {
+    ;(async () => {
+      const readmeHTML = await getDocumentationHTML(documentation)
+      setReadme(readmeHTML)
+    })()
+  }, [documentation])
   return (
     <Card className="readme-container mb-4">
       <CardHeader className="border-bottom d-flex flex-row">
-        <h6 className="m-0 d-inline-block">README.MD</h6>
+        <h6 className="m-0 d-inline-block">README.md</h6>
         <div className="flex-fill d-inline-block" />
         <a
           href={documentation}
@@ -28,9 +36,9 @@ export default function ReadMe({ readme, documentation }: Props) {
             dangerouslySetInnerHTML={{ __html: readme }}
           />
         ) : (
-          <h2 className="text-muted text-center py-4">No Readme Found</h2>
+          <SpinningLoader />
         )}
       </CardBody>
     </Card>
-  );
+  )
 }
