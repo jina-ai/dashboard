@@ -16,6 +16,17 @@ exports[`Colors page 1`] = `
     />
   </div>
   <div
+    className="css-4sqht"
+  >
+    <span
+      className="css-13fxtl5"
+    >
+      bodyBackground
+       
+      #f5f6f8
+    </span>
+  </div>
+  <div
     className="css-1dttzrv"
   >
     <span
