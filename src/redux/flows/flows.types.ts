@@ -19,20 +19,27 @@ import { Node, XYPosition } from "react-flow-renderer/dist/types"
 import { Elements } from "react-flow-renderer"
 import { Connection } from "react-flow-renderer/nocss"
 
-type Pod = {
-  name: string
-  uses: string
-  inspect?: string
-  add?: string
-  needs?: string[]
-  parallel?: string
-  timeout_ready?: number
-  separated_workspace?: boolean
+const PodNecessaryObject = {
+  name: "string",
+  uses: "string",
 }
-type CustomData = {
-  depth: number
-  label: string
+
+const PodOptionalObject = {
+  inspect: "string",
+  add: "string",
+  needs: ["string"],
+  parallel: "string",
+  timeout_ready: 0,
+  separated_workspace: true,
 }
+
+type Pod = typeof PodNecessaryObject & Partial<typeof PodOptionalObject>
+
+export const CustomDataObject = {
+  depth: 0,
+  label: "string",
+}
+type CustomData = typeof CustomDataObject
 
 export type Pods = Pod[]
 

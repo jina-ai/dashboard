@@ -4,13 +4,14 @@ import { getInitialLogLevel } from "../redux/logStream/logStream.constants"
 import _ from "lodash"
 import { Level, LogLevelOccurrences } from "../redux/logStream/logStream.types"
 import {
+  CustomDataObject,
   FlowArgument,
   FlowArguments,
   FlowChart,
 } from "../redux/flows/flows.types"
 import { Edge, Node, isEdge, isNode } from "react-flow-renderer"
 
-const customProperties = ["depth", "label"] //todo generate this dynamically with proper typing
+const customData = Object.keys(CustomDataObject)
 
 export const parseYAML = (yamlSTR: string) => {
   //todo removing the !tag is kind a bootleg solution. We should look into the parsing
@@ -83,7 +84,7 @@ export const formatAsYAML = (
 
       const podProperties = Object.entries(node.data).reduce(
         (acc, [argName, propValue]) => {
-          if (customProperties.includes(argName)) return acc
+          if (customData.includes(argName)) return acc
           acc[argName] = decodePropValue(argName, propValue, podArguments)
           return acc
         },
