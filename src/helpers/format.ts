@@ -14,8 +14,6 @@ import { Edge, Node, isEdge, isNode } from "react-flow-renderer"
 const customData = Object.keys(CustomDataObject)
 
 export const parseYAML = (yamlSTR: string) => {
-  //todo removing the !tag is kind a bootleg solution. We should look into the parsing
-  //todo type this properly
   let yamlStrWithoutTag = /^!/.test(yamlSTR)
     ? yamlSTR.split("\n").slice(1).join("\n")
     : yamlSTR
