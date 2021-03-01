@@ -6,6 +6,12 @@ describe("The Flow Page", () => {
     cy.visit("/#/flow");
   });
 
+  it("should have a working settings button", () => {
+    cy.dataName("settingsModal").should("not.exist")
+    cy.dataName("settingsButton").click()
+    cy.dataName("settingsModal").should("exist")
+  })
+
   context("When JinaD is connected", () => {
     it("shouldn't display the offline message", () => {
       cy.dataName("connection-notification-offline").should("not.exist");

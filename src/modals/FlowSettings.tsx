@@ -184,7 +184,7 @@ function FlowSettingsComponent({ open, closeModal }: Props) {
       closeTimeoutMS={100}
       style={style}
     >
-      <FlowSettingsContainer>
+      <FlowSettingsContainer data-name={"settingsModal"}>
         <Header1>Flow Name</Header1>
         <Input
           value={flow.name}

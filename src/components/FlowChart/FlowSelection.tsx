@@ -139,6 +139,7 @@ export default function FlowSelection() {
     `
     return (
       <Settings
+        data-name={"settingsButton"}
         onClick={() => {
           dispatch(showModal("flowSettings"))
         }}
