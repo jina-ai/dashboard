@@ -3,10 +3,7 @@ import { Card, Container, Row } from "shards-react"
 import { PageTitle } from "../components/Common/PageTitle"
 import FlowSelection from "../components/FlowChart/FlowSelection"
 import {
-  createNewFlow,
-  deleteFlow,
   duplicateFlow,
-  loadFlow,
   startFlow,
   stopFlow,
 } from "../redux/flows/flows.actions"
@@ -21,7 +18,6 @@ import {
   selectRerender,
   selectSelectedFlowId,
 } from "../redux/flows/flows.selectors"
-import { selectConnectionStatus } from "../redux/global/global.selectors"
 import { showModal } from "../redux/global/global.actions"
 import logger from "../logger"
 import { copyToClipboard, formatAsYAML } from "../helpers"
@@ -37,7 +33,6 @@ const FlowViewContainer = styled.div`
 export default function FlowView() {
   const dispatch = useDispatch()
   useState(useSelector(selectRerender))
-  const connected = useSelector(selectConnectionStatus)
   const selectedFlowId = useSelector(selectSelectedFlowId)
   const flowArguments = useSelector(selectFlowArguments)
   const flow = useSelector(selectSelectedFlow) as Flow
@@ -101,14 +96,7 @@ export default function FlowView() {
         </Row>
 
         <FlowViewContainer>
-          <FlowSelection
-            connected={connected}
-            selectedFlowId={selectedFlowId}
-            showNewFlowModal={() => dispatch(showModal("newFlow"))}
-            createNewFlow={() => dispatch(createNewFlow())}
-            loadFlow={(flowId) => dispatch(loadFlow(flowId))}
-            deleteFlow={(e, flowId) => dispatch(deleteFlow(flowId))}
-          />
+          <FlowSelection />
 
           <Card className="chart-section-container mr-md-4 mb-4">
             <CommandBar

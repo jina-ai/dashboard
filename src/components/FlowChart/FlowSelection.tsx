@@ -1,8 +1,14 @@
 import React from "react"
 import styled from "@emotion/styled"
 import { useTheme } from "@emotion/react"
-import { useSelector } from "react-redux"
-import { selectFlows } from "../../redux/flows/flows.selectors"
+import { useDispatch, useSelector } from "react-redux"
+import {
+  selectFlows,
+  selectSelectedFlowId,
+} from "../../redux/flows/flows.selectors"
+import { selectConnectionStatus } from "../../redux/global/global.selectors"
+import { showModal } from "../../redux/global/global.actions"
+import { deleteFlow, loadFlow } from "../../redux/flows/flows.actions"
 
 const FALLBACK_FLOW_NAME = "untitled flow"
 
@@ -52,30 +58,13 @@ function DeleteFlowButton({ deleteFlow }: DeleteFlowProps) {
   )
 }
 
-type FlowSettingsButtonProps = {
-  showFlowSettingsModal: (e: any) => void
-}
-
-type FlowSelectionProps = {
-  showFlowSettingsModal: () => void
-  showNewFlowModal: () => void
-  loadFlow: (flowId: string) => void
-  createNewFlow: (e: any) => void
-  deleteFlow: (e: any, flowId: string) => void
-  selectedFlowId: string
-  connected: boolean
-}
-
-export default function FlowSelection({
-  loadFlow,
-  selectedFlowId,
-  showNewFlowModal,
-  showFlowSettingsModal,
-  deleteFlow,
-  connected,
-}: FlowSelectionProps) {
+export default function FlowSelection() {
   const flows = useSelector(selectFlows)
+  const selectedFlowId = useSelector(selectSelectedFlowId)
+  const connected = useSelector(selectConnectionStatus)
   const { palette } = useTheme()
+
+  const dispatch = useDispatch()
 
   const FlowSelectionMenu = styled.div`
     font-family: "Montserrat", serif;
@@ -134,9 +123,7 @@ export default function FlowSelection({
     color: ${palette.headerTextColor};
   `
 
-  function FlowSettingsButton({
-    showFlowSettingsModal,
-  }: FlowSettingsButtonProps) {
+  function FlowSettingsButton() {
     const Settings = styled.div`
       cursor: pointer;
       position: absolute;
@@ -151,8 +138,17 @@ export default function FlowSelection({
       color: ${palette.mutedText};
     `
     return (
-      <Settings onClick={showFlowSettingsModal}>
-        <i className="material-icons" onClick={showFlowSettingsModal}>
+      <Settings
+        onClick={() => {
+          dispatch(showModal("flowSettings"))
+        }}
+      >
+        <i
+          className="material-icons"
+          onClick={() => {
+            dispatch(showModal("flowSettings"))
+          }}
+        >
           settings
         </i>
       </Settings>
@@ -173,16 +169,14 @@ export default function FlowSelection({
     <FlowSelectionMenu>
       <SelectedFlowHeader>
         {currentFlow.name || <i>{FALLBACK_FLOW_NAME}</i>}
-        {currentFlow.type !== "example" && (
-          <FlowSettingsButton showFlowSettingsModal={showFlowSettingsModal} />
-        )}
+        {currentFlow.type !== "example" && <FlowSettingsButton />}
         <TitleConnectionIndicator
           show={currentFlow.type === "remote"}
           connected={connected}
         />
       </SelectedFlowHeader>
 
-      <FlowTap selected={false} onClick={showNewFlowModal}>
+      <FlowTap selected={false} onClick={() => dispatch(showModal("newFlow"))}>
         New Flow <i className="material-icons plus-icon">add</i>
       </FlowTap>
 
@@ -191,7 +185,7 @@ export default function FlowSelection({
       {userFlows.map(([flowId, flow], idx) => (
         <FlowTap
           selected={selectedFlowId === flowId}
-          onClick={() => loadFlow(flowId)}
+          onClick={() => dispatch(loadFlow(flowId))}
           key={idx}
         >
           {flow.name || <i>{FALLBACK_FLOW_NAME}</i>}
@@ -201,7 +195,9 @@ export default function FlowSelection({
           />
           <FlowTapOverflowHider />
           {flowId !== "_userFlow" && (
-            <DeleteFlowButton deleteFlow={(e: any) => deleteFlow(e, flowId)} />
+            <DeleteFlowButton
+              deleteFlow={(e: any) => dispatch(deleteFlow(flowId))}
+            />
           )}
         </FlowTap>
       ))}

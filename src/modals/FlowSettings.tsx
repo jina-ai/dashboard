@@ -1,7 +1,7 @@
 import styled from "@emotion/styled/macro"
 import { useDispatch, useSelector } from "react-redux"
 import {
-  selectFlowChart,
+  selectSelectedFlow,
   selectSelectedFlowId,
 } from "../redux/flows/flows.selectors"
 import React from "react"
@@ -10,11 +10,11 @@ import ReactModal, { Styles } from "react-modal"
 import {
   deleteFlow,
   rerender,
-  updateFlow,
-  updateFlowProperties,
+  updateSelectedFlow,
 } from "../redux/flows/flows.actions"
 import { Button } from "react-bootstrap"
 import { globalArguments } from "../data/globalArguments"
+import { FlowUpdate } from "../redux/flows/flows.types"
 
 const style: Styles = {
   overlay: {
@@ -149,20 +149,22 @@ function SwitchInput({ checked, setChecked }: SwitchInputProps) {
 
 function FlowSettingsComponent({ open, closeModal }: Props) {
   const flowId = useSelector(selectSelectedFlowId)
-  const flowChart = useSelector(selectFlowChart)
+  const flow = useSelector(selectSelectedFlow)
   const dispatch = useDispatch()
 
   const _updateFlowName = (name: string) => {
-    const flowUpdate = { ...flowChart, name }
-    dispatch(updateFlowProperties(flowUpdate))
+    const flowUpdate = { ...flow, name }
+    dispatch(updateSelectedFlow(flowUpdate))
     dispatch(rerender())
   }
 
   const _updateFlowWith = (key: string, value: string) => {
-    const flowUpdate = { ...flowChart.flow }
-    if (!flowUpdate.with) flowUpdate.with = {}
-    flowUpdate.with[key] = value
-    dispatch(updateFlow(flowUpdate))
+    const flowUpdate = { ...flow } as FlowUpdate
+    if (!flowUpdate?.flowChart?.with && flowUpdate.flowChart) {
+      flowUpdate.flowChart.with = {}
+    }
+    if (flowUpdate.flowChart?.with) flowUpdate.flowChart.with[key] = value
+    dispatch(updateSelectedFlow(flowUpdate))
   }
 
   const _deleteFlow = () => {
@@ -185,7 +187,7 @@ function FlowSettingsComponent({ open, closeModal }: Props) {
       <FlowSettingsContainer>
         <Header1>Flow Name</Header1>
         <Input
-          value={flowChart.name}
+          value={flow.name}
           onChange={(e: { target: { value: string } }) =>
             _updateFlowName(e.target.value)
           }
@@ -201,7 +203,7 @@ function FlowSettingsComponent({ open, closeModal }: Props) {
                 {type === "boolean" ? (
                   <SwitchInput
                     checked={
-                      flowChart.flow.with ? flowChart.flow.with[name] : false
+                      flow.flowChart.with ? flow.flowChart.with[name] : false
                     }
                     setChecked={(checked: any) =>
                       _updateFlowWith(name, checked)
@@ -211,7 +213,7 @@ function FlowSettingsComponent({ open, closeModal }: Props) {
                   <Input
                     placeholder={type}
                     type={type === "integer" ? "number" : "text"}
-                    value={flowChart.flow.with ? flowChart.flow.with[name] : ""}
+                    value={flow.flowChart.with ? flow.flowChart.with[name] : ""}
                     onChange={(e) => _updateFlowWith(name, e.target.value)}
                     className="property-value-input"
                   />
