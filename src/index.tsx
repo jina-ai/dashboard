@@ -7,18 +7,19 @@ import * as Sentry from "@sentry/react"
 import { Integrations } from "@sentry/tracing"
 
 import "bootstrap/dist/css/bootstrap.min.css"
-import "./assets/main.scss"
+// Todo: Remove shards and associated styles when we stop using it
+import "./styles/shards-dashboards.scss"
 import "./App.css"
 import store from "./redux"
 
 let App
 
 if (process.env.REACT_APP_TARGET === "hub") {
-  const { Hub } = require("./apps/Hub");
-  App = Hub;
+  const { Hub } = require("./apps/Hub")
+  App = Hub
 } else if (process.env.REACT_APP_TARGET === "styleguide") {
-  const { Styleguide } = require("./apps/Styleguide");
-  App = Styleguide;
+  const { Styleguide } = require("./apps/Styleguide")
+  App = Styleguide
 } else {
   const { Dashboard } = require("./apps/Dashboard")
   App = Dashboard
