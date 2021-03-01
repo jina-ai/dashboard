@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { FlowChart, NodeData } from "../redux/flows/flows.types"
+import { FlowChart, NodeData, Pods } from "../redux/flows/flows.types"
 import { Edge, Node, XYPosition } from "react-flow-renderer/dist/types"
 const settings = require("./../settings")
 
@@ -22,15 +22,6 @@ export const createLink = (source: string, target: string): Edge => ({
   target,
   type: "step",
 })
-
-type Method = "add" | "needs" | "inspect"
-
-type Pod = {
-  name: string
-  [method: Method]: string[]
-}
-
-type Pods = Pod[]
 
 type ParsedYAML = {
   pods: Pods

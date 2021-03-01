@@ -19,10 +19,26 @@ import { Node, XYPosition } from "react-flow-renderer/dist/types"
 import { Elements } from "react-flow-renderer"
 import { Connection } from "react-flow-renderer/nocss"
 
-export type Pod = {
-  needs: string
+type Pod = {
+  name: string
+  uses: string
+  inspect?: string
+  add?: string
+  needs?: string[]
+  parallel?: string
+  timeout_ready?: number
+  separated_workspace?: boolean
+}
+type CustomData = {
+  depth: number
+  label: string
 }
 
+export type Pods = Pod[]
+
+type NodeData = CustomData & Pod
+
+export type FlowNode = Node<NodeData>
 export type NodeId = string
 export type LinkId = string
 //todo maybe this will be obsolete
@@ -30,10 +46,6 @@ export type NodeUpdate = Partial<Node>
 export type NodeDataUpdate = Partial<NodeData>
 
 export type DeleteLinkProps = LinkId | Connection
-
-export type NodeData = {
-  [key: string]: any
-}
 
 export interface FlowChart {
   elements: Elements //todo inherit this ad type data properly

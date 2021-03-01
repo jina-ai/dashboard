@@ -8,8 +8,7 @@ import {
   FlowArguments,
   FlowChart,
 } from "../redux/flows/flows.types"
-import { Edge, Node } from "react-flow-renderer/dist/types"
-import { isEdge, isNode } from "react-flow-renderer"
+import { Edge, Node, isEdge, isNode } from "react-flow-renderer"
 
 const customProperties = ["depth", "label"] //todo generate this dynamically with proper typing
 
