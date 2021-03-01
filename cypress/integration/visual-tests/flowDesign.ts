@@ -22,11 +22,11 @@ describe("Flow design workflow", () => {
         it("successfully let you pull new pods", () => {
             moveSideBarItemToCanvas(1, 50, 100)
             moveSideBarItemToCanvas(2, 50, 175)
-            connectPoints([150, 150], [150, 175])
+            connectPoints([180, 140], [180, 175])
             moveSideBarItemToCanvas(3, 50, 250)
-            connectPoints([150, 225], [150, 250])
+            connectPoints([180, 215], [180, 250])
             moveSideBarItemToCanvas(4, 50, 325)
-            connectPoints([150, 300], [150, 325])
+            connectPoints([180, 290], [180, 325])
             cy.percySnapshot("flow-design")
         });
     });

@@ -1,6 +1,8 @@
 import React from "react"
 import styled from "@emotion/styled"
 import { useTheme } from "@emotion/react"
+import { useSelector } from "react-redux"
+import { selectFlows } from "../../redux/flows/flows.selectors"
 
 const FALLBACK_FLOW_NAME = "untitled flow"
 
@@ -55,9 +57,6 @@ type FlowSettingsButtonProps = {
 }
 
 type FlowSelectionProps = {
-  flows: {
-    [key: string]: any
-  }
   showFlowSettingsModal: () => void
   showNewFlowModal: () => void
   loadFlow: (flowId: string) => void
@@ -68,7 +67,6 @@ type FlowSelectionProps = {
 }
 
 export default function FlowSelection({
-  flows,
   loadFlow,
   selectedFlowId,
   showNewFlowModal,
@@ -76,6 +74,7 @@ export default function FlowSelection({
   deleteFlow,
   connected,
 }: FlowSelectionProps) {
+  const flows = useSelector(selectFlows)
   const { palette } = useTheme()
 
   const FlowSelectionMenu = styled.div`
