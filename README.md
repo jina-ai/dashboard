@@ -25,7 +25,7 @@ To use the Jina hosted version of the Dashboard visit [the Jina website](https:/
 # 🌟 Features:
 
 ### **Flow Design GUI**
-Use Jina easily in the browser; no code required! Building flows within the user-friendly interface is easy, just start dragging pods into the design canvas. View the list of Pod properties and edit them using a visual menu. To create a custom Flow: connect Pods, upload a YAML file, or use an existing FlowChart template!
+Use Jina easily in the browser; no code required! Building flows within the user-friendly interface is easy, just start dragging pods into the design canvas. View the list of Pod properties and edit them using a visual menu. To create a custom Flow: connect Pods, upload a YAML file, or use an existing Flow template!
 
 <p align="center">
 <img src=".github/.README_images/flowCompose.gif?raw=true" alt="log server settings" width="70%">
