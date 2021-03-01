@@ -198,7 +198,6 @@ export function startFlow(
     dispatch(showBanner(message, "success") as any)
 
     dispatch(initNetworkFlow(selectedFlowId))
-    //TODO: initialize flow (logs, etc)
   }
 }
 
@@ -221,7 +220,6 @@ export function stopFlow(
     if (status === "error") return dispatch(showBanner(message, "error") as any)
 
     dispatch(showBanner(message, "success") as any)
-    //TODO: initialize flow (logs, etc)
   }
 }
 
