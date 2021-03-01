@@ -23,9 +23,17 @@ export const createLink = (source: string, target: string): Edge => ({
   type: "step",
 })
 
-//todo type this properly
+type Method = "add" | "needs" | "inspect"
+
+type Pod = {
+  name: string
+  [method: Method]: string[]
+}
+
+type Pods = Pod[]
+
 type ParsedYAML = {
-  pods: Array | { [key: string]: any }
+  pods: Pods
   with?: {
     board?: {
       canvas?: { [key: string]: { x: number; y: number } }
