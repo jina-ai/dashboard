@@ -4,32 +4,21 @@ import { showModal } from "../../redux/global/global.actions"
 import { useDispatch, useSelector } from "react-redux"
 import { selectSelectedFlow } from "../../redux/flows/flows.selectors"
 import styled from "@emotion/styled"
-
-export const ChartNodeElement = styled.div`
-  min-width: 16rem;
-  cursor: move;
-  text-align: center;
-  font-size: 14px;
-  background: #fff;
-  font-weight: 500;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  border-radius: 0.25em;
-  transition: 0.2s;
-  border: 1px solid rgba(0, 153, 153, 0.3);
-`
+import { useTheme } from "@emotion/react"
 
 type NodePortProps = {
   type: "source" | "target"
 }
 
 function NodePort({ type }: NodePortProps) {
+  const theme = useTheme()
   const NodePortTop = styled(Handle)`
     margin-top: -0.2rem;
     background-color: white;
     width: 1rem;
     height: 1rem;
     border-radius: 0.5rem;
-    border: 1px solid rgba(0, 153, 153, 0.3); //todo use theming
+    border: 1px solid ${theme.palette.primary};
     display: flex;
     align-items: center;
     justify-content: center;
@@ -65,6 +54,19 @@ type ChartNodeProps = Node | SidebarProps
 export default function ChartNode(props: ChartNodeProps) {
   const flowType = useSelector(selectSelectedFlow).type
   const dispatch = useDispatch()
+  const theme = useTheme()
+
+  const ChartNodeElement = styled.div`
+    min-width: 16rem;
+    cursor: move;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 500;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 0.25em;
+    transition: 0.2s;
+    border: 1px solid ${theme.palette.primary};
+  `
 
   function isNode(prop: ChartNodeProps): prop is Node {
     return (prop as Node).id !== undefined
