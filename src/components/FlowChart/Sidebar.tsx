@@ -27,14 +27,7 @@ function PodMenu() {
       </h5>
       <div className="p-3 scrollable flex-fill">
         {defaultPods.map((pod, idx) => {
-          return (
-            <SidebarItem
-              label={pod.name || "Empty Pod"}
-              idx={idx}
-              key={idx}
-              properties={pod}
-            />
-          )
+          return <SidebarItem label={pod.name || "Empty Pod"} idx={idx} />
         })}
       </div>
     </div>

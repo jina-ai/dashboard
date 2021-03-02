@@ -1,16 +1,14 @@
 import * as React from "react"
-import { NodeData } from "../../redux/flows/flows.types"
 import ChartNode from "./ChartNode"
 
 type Props = {
   label: string
-  data: NodeData
   idx: number
 }
 
-export default function SidebarItem({ label, data, idx }: Props) {
+export default function SidebarItem({ label, idx }: Props) {
   const onDragStart = (event: React.DragEvent<HTMLDivElement>) => {
-    const dataString = JSON.stringify({ label, ...data })
+    const dataString = JSON.stringify({ label })
     event.dataTransfer.setData("application/reactflow", dataString)
     event.dataTransfer.effectAllowed = "move"
   }

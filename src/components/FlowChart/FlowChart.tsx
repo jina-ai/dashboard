@@ -38,7 +38,7 @@ export default function FlowChart(props: Props) {
 
   const onConnect = (params: Link | NodeConnection) => {
     if (params.source && params.target)
-      dispatch(addLink(params.source, params.target, null, null))
+      dispatch(addLink(params.source, params.target))
   }
 
   const onElementsRemove = (elements: FlowElement[]) => {
