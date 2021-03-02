@@ -97,7 +97,7 @@ export default function FlowView() {
           download
         </a>
         <Row noGutters className="page-header mb-4">
-          <PageTitle title="FlowChart Design" className="text-sm-left mb-3" />
+          <PageTitle title="Flow Design" className="text-sm-left mb-3" />
         </Row>
 
         <FlowViewContainer>
