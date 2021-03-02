@@ -1,38 +1,43 @@
-import React from "react";
-import Select, { Props as SelectProps } from "react-select";
+import React from "react"
+import Select, {
+  OptionsType,
+  OptionTypeBase,
+  Props as SelectProps,
+} from "react-select"
+import { StylesConfig } from "react-select/src/styles"
 
-const customStyles = {
-  dropdownIndicator: (styles: any) => ({
+const customStyles: StylesConfig = {
+  dropdownIndicator: (styles) => ({
     ...styles,
     color: "black",
   }),
-  indicatorSeparator: (styles: any) => ({
+  indicatorSeparator: (styles) => ({
     ...styles,
     opacity: "0",
   }),
-  container: (provided: any, { selectProps: { width } }: any) => ({
+  container: (provided, { selectProps: { width } }) => ({
     ...provided,
     width: width,
   }),
-  option: (styles: any) => ({
+  option: (styles) => ({
     ...styles,
     cursor: "pointer",
   }),
-  control: (styles: any) => ({
+  control: (styles) => ({
     ...styles,
     cursor: "pointer",
     border: "none",
     background: "#F6F8FA",
   }),
-};
+}
 
 export type Props = {
-  onFilterChange: (val: any[]) => void;
-  options: { value: string; label: string }[];
-  isMulti?: boolean;
-  isSearchable?: boolean;
-  clearAfter?: boolean;
-} & SelectProps;
+  onFilterChange: (val: OptionsType<OptionTypeBase>[]) => void
+  options: { value: string; label: string }[]
+  isMulti?: boolean
+  isSearchable?: boolean
+  clearAfter?: boolean
+} & SelectProps
 
 function MultiFilterSelect({
   isMulti,
@@ -42,11 +47,11 @@ function MultiFilterSelect({
   options,
   ...rest
 }: Props) {
-  let value = clearAfter ? null : undefined;
+  let value = clearAfter ? null : undefined
   return (
     <Select
       onChange={(val) => {
-        onFilterChange(Array.isArray(val) ? val : !val ? [] : [val]);
+        onFilterChange(Array.isArray(val) ? val : !val ? [] : [val])
       }}
       value={value}
       isMulti={isMulti}
@@ -56,7 +61,7 @@ function MultiFilterSelect({
       isSearchable={isSearchable}
       {...rest}
     />
-  );
+  )
 }
 
-export { MultiFilterSelect };
+export { MultiFilterSelect }

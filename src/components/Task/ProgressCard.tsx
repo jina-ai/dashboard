@@ -1,18 +1,18 @@
-import React, { useEffect, useState, useRef } from "react";
-import { Card } from "shards-react";
+import React, { useEffect, useState, useRef } from "react"
+import { Card } from "shards-react"
 
-import ChartElement from "chart.js";
+import ChartElement from "chart.js"
 
 type Props = {
-  progress: any;
-};
+  progress: any //todo remove this when tasks are back
+}
 
 function ProgressCard({ progress }: Props) {
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const [chartInstance, setChartInstance] = useState<ChartElement | null>(null);
+  const canvasRef = useRef<HTMLCanvasElement | null>(null)
+  const [chartInstance, setChartInstance] = useState<ChartElement | null>(null)
 
   useEffect(() => {
-    if (!canvasRef.current) return;
+    if (!canvasRef.current) return
     const newChartInstance = new ChartElement(canvasRef.current, {
       type: "doughnut",
       data: {
@@ -34,13 +34,13 @@ function ProgressCard({ progress }: Props) {
           enabled: false,
         },
       },
-    });
-    setChartInstance(newChartInstance);
-  }, []);
+    })
+    setChartInstance(newChartInstance)
+  }, [])
 
   useEffect(() => {
-    if (!chartInstance) return;
-    const percent = (progress.num_bars / progress.bar_len || 1) * 100;
+    if (!chartInstance) return
+    const percent = (progress.num_bars / progress.bar_len || 1) * 100
     let newData = {
       datasets: [
         {
@@ -50,10 +50,10 @@ function ProgressCard({ progress }: Props) {
         },
       ],
       labels: ["Label 1", "Label 2"],
-    };
-    chartInstance.data = newData;
-    chartInstance.update();
-  }, [JSON.stringify(progress), chartInstance]); // eslint-disable-line react-hooks/exhaustive-deps
+    }
+    chartInstance.data = newData
+    chartInstance.update()
+  }, [JSON.stringify(progress), chartInstance]) // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <Card className="p-3 h-100">
@@ -75,7 +75,7 @@ function ProgressCard({ progress }: Props) {
         />
       </div>
     </Card>
-  );
+  )
 }
 
-export default ProgressCard;
+export default ProgressCard
