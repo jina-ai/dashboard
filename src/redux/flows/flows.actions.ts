@@ -33,7 +33,7 @@ import {
   DeleteLinkAction,
   DeleteLinkProps,
   NodeData,
-  UpdateNodePropertiesAction,
+  UpdateNodeDataAction,
   NodeDataUpdate,
   Flow,
 } from "./flows.types"
@@ -48,7 +48,6 @@ import { formatAsYAML } from "../../helpers"
 import logger from "../../logger"
 import jinadClient from "../../services/jinad"
 import { XYPosition } from "react-flow-renderer/dist/types"
-import { ElementId } from "react-flow-renderer/dist/nocss/types"
 
 export function loadFlow(flowId: string): LoadFlowAction {
   return {
@@ -117,19 +116,12 @@ export function addNode(
   }
 }
 
-export function addLink(
-  source: NodeId,
-  target: NodeId,
-  sourceHandle: ElementId | null,
-  targetHandle: ElementId | null
-): AddLinkAction {
+export function addLink(source: NodeId, target: NodeId): AddLinkAction {
   return {
     type: ADD_LINK,
     payload: {
       source,
       target,
-      sourceHandle,
-      targetHandle,
     },
   }
 }
@@ -151,13 +143,13 @@ export function updateNode(
   }
 }
 
-export function updateNodeProperties(
+export function updateNodeData(
   nodeId: string,
-  nodePropertiesUpdate: NodeDataUpdate
-): UpdateNodePropertiesAction {
+  nodeDataUpdate: NodeDataUpdate
+): UpdateNodeDataAction {
   return {
     type: UPDATE_NODE_DATA,
-    payload: { nodeId, nodePropertiesUpdate },
+    payload: { nodeId, nodeDataUpdate },
   }
 }
 

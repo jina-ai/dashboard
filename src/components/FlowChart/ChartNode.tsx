@@ -1,10 +1,11 @@
 import React from "react"
-import { Handle, Node, Position } from "react-flow-renderer"
+import { Handle, Position } from "react-flow-renderer"
 import { showModal } from "../../redux/global/global.actions"
 import { useDispatch, useSelector } from "react-redux"
 import { selectSelectedFlow } from "../../redux/flows/flows.selectors"
 import styled from "@emotion/styled"
 import { useTheme } from "@emotion/react"
+import { FlowNode } from "../../redux/flows/flows.types"
 
 type NodePortProps = {
   type: "source" | "target"
@@ -49,7 +50,7 @@ function NodePort({ type }: NodePortProps) {
 type SidebarProps = {
   label: string | undefined
 }
-type ChartNodeProps = Node | SidebarProps
+type ChartNodeProps = FlowNode | SidebarProps
 
 export default function ChartNode(props: ChartNodeProps) {
   const flowType = useSelector(selectSelectedFlow).type
@@ -68,8 +69,8 @@ export default function ChartNode(props: ChartNodeProps) {
     border: 1px solid ${theme.palette.primary};
   `
 
-  function isNode(prop: ChartNodeProps): prop is Node {
-    return (prop as Node).id !== undefined
+  function isNode(prop: ChartNodeProps): prop is FlowNode {
+    return (prop as FlowNode).id !== undefined
   }
 
   if (isNode(props)) {

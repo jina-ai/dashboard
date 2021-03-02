@@ -10,7 +10,7 @@ import ReactModal, { Styles } from "react-modal"
 import {
   deleteNode,
   updateNode,
-  updateNodeProperties,
+  updateNodeData,
 } from "../redux/flows/flows.actions"
 import { Button } from "react-bootstrap"
 import { NodeDataUpdate } from "../redux/flows/flows.types"
@@ -122,7 +122,7 @@ function PodEditComponent({ open, closeModal, modalParams }: Props) {
   const _updateNodeProp = (name: string, value: string) => {
     if (node?.id) {
       const nodePropertiesUpdate: NodeDataUpdate = { [name]: value }
-      dispatch(updateNodeProperties(node.id, nodePropertiesUpdate))
+      dispatch(updateNodeData(node.id, nodePropertiesUpdate))
     }
   }
   const _deleteNode = () => {
