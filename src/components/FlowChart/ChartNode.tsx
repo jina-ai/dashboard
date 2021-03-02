@@ -19,32 +19,48 @@ export const ChartNodeElement = styled.div`
   border: 1px solid rgba(0, 153, 153, 0.3);
 `
 
-const NodePortTop = styled(Handle)`
-  margin-top: -0.2rem;
-  background-color: white;
-  width: 1rem;
-  height: 1rem;
-  border-radius: 0.5rem;
-  border: 1px solid rgba(0, 153, 153, 0.3); //todo use theming
-  display: flex;
-  align-items: center;
-  justify-content: center;
+type NodePortProps = {
+  type: "source" | "target"
+}
 
-  &:after {
-    display: block;
+function NodePort({ type }: NodePortProps) {
+  const NodePortTop = styled(Handle)`
+    margin-top: -0.2rem;
+    background-color: white;
+    width: 1rem;
+    height: 1rem;
+    border-radius: 0.5rem;
+    border: 1px solid rgba(0, 153, 153, 0.3); //todo use theming
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-    content: "";
-    background-color: #099;
-    color: white;
-    border-radius: 0.25rem;
-    width: 0.5rem;
-    height: 0.5rem;
+    &:after {
+      display: block;
+
+      content: "";
+      background-color: #099;
+      color: white;
+      border-radius: 0.25rem;
+      width: 0.5rem;
+      height: 0.5rem;
+    }
+  `
+
+  const NodePortBottom = styled(NodePortTop)`
+    bottom: -0.45rem;
+  `
+  switch (type) {
+    case "source":
+      return <NodePortTop type={type} position={Position.Top} />
+    case "target":
+      return <NodePortBottom type={type} position={Position.Bottom} />
   }
-`
+}
 
-const NodePortBottom = styled(NodePortTop)`
-  bottom: -0.45rem;
-`
+function ChartNodeElement2(props: any) {
+  return <ChartNodeElement {...props}>{props.children}</ChartNodeElement>
+}
 
 type NodeType = "Pod" | "Gateway"
 export default function ChartNode(type: NodeType) {
@@ -54,17 +70,17 @@ export default function ChartNode(type: NodeType) {
         const type = useSelector(selectSelectedFlow).type
         const dispatch = useDispatch()
         return (
-          <ChartNodeElement
+          <ChartNodeElement2
             onDoubleClick={() => {
               type === "user-generated" &&
                 dispatch(showModal("podEdit", { nodeId: id }))
             }}
           >
-            <NodePortTop type="target" position={Position.Top} />
+            <NodePort type="target" />
 
             <Pod label={data.label} />
-            <NodePortBottom type="source" position={Position.Bottom} />
-          </ChartNodeElement>
+            <NodePort type="source" />
+          </ChartNodeElement2>
         )
       }
     case "Gateway":
@@ -72,15 +88,15 @@ export default function ChartNode(type: NodeType) {
         const type = useSelector(selectSelectedFlow).type
         const dispatch = useDispatch()
         return (
-          <ChartNodeElement
+          <ChartNodeElement2
             onDoubleClick={() => {
               type === "user-generated" &&
                 dispatch(showModal("podEdit", { nodeId: id }))
             }}
           >
             <Pod label={data.label} />
-            <NodePortBottom type="source" position={Position.Bottom} />
-          </ChartNodeElement>
+            <NodePort type="target" />
+          </ChartNodeElement2>
         )
       }
   }
