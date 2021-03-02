@@ -1,5 +1,5 @@
-import React from "react";
-import styled from "@emotion/styled";
+import React from "react"
+import styled from "@emotion/styled"
 
 const ActionItemContainer = styled.div`
   display: flex;
@@ -9,12 +9,12 @@ const ActionItemContainer = styled.div`
   border-radius: 0.75rem;
   padding: 1.5rem;
   width: 35%;
-`;
+`
 
 const ActionItemTitle = styled.span`
   font-weight: 600;
   font-size: 1.5rem;
-`;
+`
 
 const ActionButton = styled.button`
   background: ${(props) => props.theme.palette.primary};
@@ -23,22 +23,22 @@ const ActionButton = styled.button`
   padding: 1rem 1.5rem;
   font-size: 1rem;
   font-weight: 600;
-  color: #ffffff;
-`;
+  color: ${(props) => props.theme.palette.background};
+`
 
 type overviewActionType = {
-  title: string;
-  description: string;
-  buttonLabel: string;
-  buttonAction: () => void;
-};
+  title: string
+  description: string
+  buttonLabel: string
+  buttonAction: () => void
+}
 
 type HubOverviewActionProps = {
-  overviewAction: overviewActionType;
-};
+  overviewAction: overviewActionType
+}
 
 const HubOverviewAction = ({ overviewAction }: HubOverviewActionProps) => {
-  const { title, description, buttonLabel, buttonAction } = overviewAction;
+  const { title, description, buttonLabel, buttonAction } = overviewAction
   return (
     <ActionItemContainer>
       <>
@@ -54,7 +54,7 @@ const HubOverviewAction = ({ overviewAction }: HubOverviewActionProps) => {
         {buttonLabel}
       </ActionButton>
     </ActionItemContainer>
-  );
-};
+  )
+}
 
-export default HubOverviewAction;
+export default HubOverviewAction
