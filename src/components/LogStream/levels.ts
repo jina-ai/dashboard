@@ -1,7 +1,14 @@
-import { Theme } from "@emotion/react";
+import { Theme } from "@emotion/react"
+import { Level } from "../../redux/logStream/logStream.types"
 
-export const getLevels = (theme: Theme): { [key: string]: any } => {
-  const colorPalette = theme.palette;
+type LevelColors = {
+  [level in Level]: {
+    borderColor: string
+    backgroundColor: string
+  }
+}
+export const getLevels = (theme: Theme): LevelColors => {
+  const colorPalette = theme.palette
   return {
     INFO: {
       borderColor: colorPalette.info,
@@ -27,5 +34,5 @@ export const getLevels = (theme: Theme): { [key: string]: any } => {
       borderColor: colorPalette.debug,
       backgroundColor: "rgba(110, 114, 120, 0.9)",
     },
-  };
-};
+  }
+}
