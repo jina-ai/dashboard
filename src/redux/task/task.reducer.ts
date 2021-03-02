@@ -42,7 +42,7 @@ const taskReducer = produce((draft: TaskState, action: TaskActions) => {
 
     if (msg_recv && msg_sent) {
       let index = draft.taskData.messages
-        .map((obj: any) => obj.process)
+        .map((obj) => obj.process)
         .indexOf(process)
 
       let msgData = {
