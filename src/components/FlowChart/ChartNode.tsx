@@ -1,6 +1,5 @@
 import React from "react"
 import { Handle, Node, Position } from "react-flow-renderer"
-import Pod from "./Pod"
 import { showModal } from "../../redux/global/global.actions"
 import { useDispatch, useSelector } from "react-redux"
 import { selectSelectedFlow } from "../../redux/flows/flows.selectors"
@@ -75,7 +74,19 @@ function ChartNodeElement2({ type, node }: ChartNodeElementProps) {
       }}
     >
       {node.id !== "gateway" && <NodePort type="source" />}
-      <Pod label={node.data.label} />
+      <div id={`chart-node-${node.data.label}`}>
+        <div className="node-header">
+          <div className={`p-1`}>
+            <p className="m-1">
+              <span className="text-bold">
+                {node.data.label || (
+                  <span className="text-warning">Empty Pod</span>
+                )}
+              </span>
+            </p>
+          </div>
+        </div>
+      </div>{" "}
       <NodePort type="target" />
     </ChartNodeElement>
   )
