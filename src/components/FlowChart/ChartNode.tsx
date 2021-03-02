@@ -58,46 +58,39 @@ function NodePort({ type }: NodePortProps) {
   }
 }
 
-function ChartNodeElement2(props: any) {
-  return <ChartNodeElement {...props}>{props.children}</ChartNodeElement>
+type ChartNodeElementProps = {
+  type: "Gateway" | "Pod" | "Sidebar"
+  node: Node
+}
+function ChartNodeElement2({ type, node }: ChartNodeElementProps) {
+  const flowType = useSelector(selectSelectedFlow).type
+  const dispatch = useDispatch()
+
+  return (
+    <ChartNodeElement
+      onDoubleClick={() => {
+        flowType === "user-generated" &&
+          type !== "Sidebar" &&
+          dispatch(showModal("podEdit", { nodeId: node.id }))
+      }}
+    >
+      {node.id !== "gateway" && <NodePort type="source" />}
+      <Pod label={node.data.label} />
+      <NodePort type="target" />
+    </ChartNodeElement>
+  )
 }
 
 type NodeType = "Pod" | "Gateway"
 export default function ChartNode(type: NodeType) {
   switch (type) {
     case "Pod":
-      return function ChartNode({ id, data }: Node) {
-        const type = useSelector(selectSelectedFlow).type
-        const dispatch = useDispatch()
-        return (
-          <ChartNodeElement2
-            onDoubleClick={() => {
-              type === "user-generated" &&
-                dispatch(showModal("podEdit", { nodeId: id }))
-            }}
-          >
-            <NodePort type="target" />
-
-            <Pod label={data.label} />
-            <NodePort type="source" />
-          </ChartNodeElement2>
-        )
+      return function ChartNode(node: Node) {
+        return <ChartNodeElement2 type={type} node={node} />
       }
     case "Gateway":
-      return function ChartNode({ id, data }: Node) {
-        const type = useSelector(selectSelectedFlow).type
-        const dispatch = useDispatch()
-        return (
-          <ChartNodeElement2
-            onDoubleClick={() => {
-              type === "user-generated" &&
-                dispatch(showModal("podEdit", { nodeId: id }))
-            }}
-          >
-            <Pod label={data.label} />
-            <NodePort type="target" />
-          </ChartNodeElement2>
-        )
+      return function ChartNode(node: Node) {
+        return <ChartNodeElement2 type={"Gateway"} node={node} />
       }
   }
 }
