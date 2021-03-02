@@ -250,7 +250,7 @@ describe("flows reducer", () => {
     const source = "gateway"
     const target = "node1"
 
-    const newState = reducer(testFlowState, addLink(source, target, null, null))
+    const newState = reducer(testFlowState, addLink(source, target))
     const oldFlowChart =
       testFlowState.flows[testFlowState.selectedFlowId].flowChart
     const newFlowChart = newState.flows[newState.selectedFlowId].flowChart
