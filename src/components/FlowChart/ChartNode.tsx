@@ -57,32 +57,57 @@ function NodePort({ type }: NodePortProps) {
   }
 }
 
-export default function ChartNode(node?: Node) {
+type SidebarProps = {
+  label: string | undefined
+}
+type ChartNodeProps = Node | SidebarProps
+
+export default function ChartNode(props: ChartNodeProps) {
   const flowType = useSelector(selectSelectedFlow).type
   const dispatch = useDispatch()
 
-  return (
-    <ChartNodeElement
-      onDoubleClick={() => {
-        flowType === "user-generated" &&
-          dispatch(showModal("podEdit", { nodeId: node?.id }))
-      }}
-    >
-      {node?.id !== "gateway" && <NodePort type="source" />}
-      <div id={`chart-node-${node?.data.label}`}>
+  function isNode(prop: ChartNodeProps): prop is Node {
+    return (prop as Node).id !== undefined
+  }
+
+  if (isNode(props)) {
+    const node = props
+    return (
+      <ChartNodeElement
+        onDoubleClick={() => {
+          flowType === "user-generated" &&
+            dispatch(showModal("podEdit", { nodeId: node?.id }))
+        }}
+      >
+        {node.id !== "gateway" && <NodePort type="source" />}
+        <div id={`chart-node-${node.data.label}`}>
+          <div className="node-header">
+            <div className={`p-1`}>
+              <p className="m-1">
+                <span className="text-bold">
+                  {node.data.label || (
+                    <span className="text-warning">Empty Pod</span>
+                  )}
+                </span>
+              </p>
+            </div>
+          </div>
+        </div>{" "}
+        <NodePort type="target" />
+      </ChartNodeElement>
+    )
+  } else
+    return (
+      <ChartNodeElement id={`chart-node-${props.label}`}>
         <div className="node-header">
           <div className={`p-1`}>
             <p className="m-1">
               <span className="text-bold">
-                {node?.data.label || (
-                  <span className="text-warning">Empty Pod</span>
-                )}
+                {props.label || <span className="text-warning">Empty Pod</span>}
               </span>
             </p>
           </div>
         </div>
-      </div>{" "}
-      <NodePort type="target" />
-    </ChartNodeElement>
-  )
+      </ChartNodeElement>
+    )
 }

@@ -1,6 +1,6 @@
 import * as React from "react"
-import Pod from "./Pod"
 import { NodeData } from "../../redux/flows/flows.types"
+import ChartNode from "./ChartNode"
 
 type Props = {
   label: string
@@ -24,7 +24,7 @@ export default function SidebarItem({ label, data, idx }: Props) {
       draggable={true}
       onDragStart={onDragStart}
     >
-      <Pod label={label} />
+      <ChartNode label={label} />
     </div>
   )
 }
