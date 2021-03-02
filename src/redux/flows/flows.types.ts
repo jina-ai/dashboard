@@ -18,10 +18,10 @@ import { Edge, Node, XYPosition } from "react-flow-renderer"
 
 const PodNecessaryObject = {
   name: "string",
-  uses: "string",
 }
 
 const PodOptionalObject = {
+  uses: "string",
   inspect: "string",
   add: "string",
   needs: ["string"],
@@ -47,8 +47,6 @@ export const CustomDataObject = {
 
 type CustomData = typeof CustomDataObjectReq &
   Partial<typeof CustomDataObjectOpt>
-
-export type Pods = Pod[]
 
 export type NodeData = CustomData & Pod
 

@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { FlowChart, FlowNode, NodeData, Pods } from "../redux/flows/flows.types"
+import { FlowChart, FlowNode, NodeData, Pod } from "../redux/flows/flows.types"
 import { isEdge, isNode, XYPosition } from "react-flow-renderer"
 const settings = require("./../settings")
 
@@ -27,7 +27,7 @@ export const createLink = (source: string, target: string): FlowLink => ({
 })
 
 type ParsedYAML = {
-  pods: Pods
+  pods: Pod[]
   with?: {
     board?: {
       canvas?: { [key: string]: { x: number; y: number } }
