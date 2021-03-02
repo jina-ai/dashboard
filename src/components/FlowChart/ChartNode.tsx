@@ -57,11 +57,7 @@ function NodePort({ type }: NodePortProps) {
   }
 }
 
-type ChartNodeElementProps = {
-  type: "Gateway" | "Pod" | "Sidebar"
-  node: Node
-}
-function ChartNodeElement2({ type, node }: ChartNodeElementProps) {
+export default function ChartNode(node?: Node) {
   const flowType = useSelector(selectSelectedFlow).type
   const dispatch = useDispatch()
 
@@ -69,17 +65,16 @@ function ChartNodeElement2({ type, node }: ChartNodeElementProps) {
     <ChartNodeElement
       onDoubleClick={() => {
         flowType === "user-generated" &&
-          type !== "Sidebar" &&
-          dispatch(showModal("podEdit", { nodeId: node.id }))
+          dispatch(showModal("podEdit", { nodeId: node?.id }))
       }}
     >
-      {node.id !== "gateway" && <NodePort type="source" />}
-      <div id={`chart-node-${node.data.label}`}>
+      {node?.id !== "gateway" && <NodePort type="source" />}
+      <div id={`chart-node-${node?.data.label}`}>
         <div className="node-header">
           <div className={`p-1`}>
             <p className="m-1">
               <span className="text-bold">
-                {node.data.label || (
+                {node?.data.label || (
                   <span className="text-warning">Empty Pod</span>
                 )}
               </span>
@@ -90,8 +85,4 @@ function ChartNodeElement2({ type, node }: ChartNodeElementProps) {
       <NodePort type="target" />
     </ChartNodeElement>
   )
-}
-
-export default function ChartNode(node: Node) {
-  return <ChartNodeElement2 type={"Gateway"} node={node} />
 }
