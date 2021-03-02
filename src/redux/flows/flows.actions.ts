@@ -40,7 +40,6 @@ import {
 
 import { ThunkAction } from "redux-thunk"
 import { Action } from "redux"
-
 import { showBanner } from "../global/global.actions"
 import { initLogStream } from "../logStream/logStream.actions"
 import store from ".."

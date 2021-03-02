@@ -1,4 +1,6 @@
-const exampleFlows = {
+import { ExampleFlows } from "../redux/flows/flows.types"
+
+const exampleFlows: ExampleFlows = {
   pokedex: {
     name: "Pokedex Query",
     type: "example",
@@ -189,6 +191,6 @@ const exampleFlows = {
       pod3:
         read_only: true`,
   },
-};
+}
 
-export default exampleFlows;
+export default exampleFlows

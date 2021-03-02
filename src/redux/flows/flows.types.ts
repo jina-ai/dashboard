@@ -144,6 +144,14 @@ export type FlowState = {
     }
   }
 }
+
+export type ExampleFlows = {
+  [name: string]: {
+    name: string
+    type: FlowType
+    yaml: string
+  }
+}
 export type SetFlowArgumentsAction = {
   type: typeof SET_FLOW_ARGUMENTS
   payload: FlowArguments
