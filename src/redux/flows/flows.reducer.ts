@@ -26,9 +26,13 @@ import {
 } from "./flows.types"
 import { nanoid } from "nanoid"
 import produce from "immer"
-import { isEdge, isNode } from "react-flow-renderer"
 import { isNodeConnection } from "../../helpers/typeCheckers"
-import { createLink, createNode } from "../../helpers/flow-chart"
+import {
+  createLink,
+  createNode,
+  isFlowNode,
+  isLink,
+} from "../../helpers/flow-chart"
 import { Connection } from "react-flow-renderer/dist/types"
 
 export const saveFlowsToStorage = (state: FlowState) => {
@@ -168,7 +172,7 @@ const flowReducer = produce((draft: FlowState, action: FlowActionTypes) => {
       break
     }
     case UPDATE_NODE_DATA: {
-      const { nodePropertiesUpdate, nodeId } = action.payload
+      const { nodeDataUpdate, nodeId } = action.payload
       const selectedFlowId = draft.selectedFlowId
       const oldNodeIndex = draft.flows[
         selectedFlowId
@@ -180,7 +184,7 @@ const flowReducer = produce((draft: FlowState, action: FlowActionTypes) => {
 
         const newData: NodeData = {
           ...oldNode.data,
-          ...nodePropertiesUpdate,
+          ...nodeDataUpdate,
         }
 
         draft.flows[selectedFlowId].flowChart.elements[
@@ -200,9 +204,9 @@ const flowReducer = produce((draft: FlowState, action: FlowActionTypes) => {
       const selectedFlow = draft.flows[draft.selectedFlowId]
       const withoutLinksAndNode = selectedFlow.flowChart.elements.filter(
         (element) => {
-          if (isNode(element)) return element.id !== nodeId
+          if (isFlowNode(element)) return element.id !== nodeId
 
-          if (isEdge(element))
+          if (isLink(element))
             return element.source !== nodeId && element.target !== nodeId
 
           return true
@@ -224,7 +228,7 @@ const flowReducer = produce((draft: FlowState, action: FlowActionTypes) => {
         ].flowChart.elements.filter(
           (element) =>
             !(
-              isEdge(element) &&
+              isLink(element) &&
               (element.source === source || element.target === target)
             )
         )

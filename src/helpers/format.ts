@@ -8,8 +8,10 @@ import {
   FlowArgument,
   FlowArguments,
   FlowChart,
+  FlowNode,
+  Link,
 } from "../redux/flows/flows.types"
-import { Edge, Node, isEdge, isNode } from "react-flow-renderer"
+import { isFlowNode, isLink } from "./flow-chart"
 
 const customData = Object.keys(CustomDataObject)
 
@@ -54,12 +56,12 @@ export const formatAsYAML = (
 ) => {
   const { with: chartWith, elements } = chart
 
-  let nodes: Node[] = []
-  let links: Edge[] = []
+  let nodes: FlowNode[] = []
+  let links: Link[] = []
 
   elements.forEach((element) => {
-    if (isEdge(element)) links.push(element)
-    if (isNode(element)) nodes.push(element)
+    if (isLink(element)) links.push(element)
+    if (isFlowNode(element)) nodes.push(element)
   })
 
   const { pod: podArguments } = flowArguments

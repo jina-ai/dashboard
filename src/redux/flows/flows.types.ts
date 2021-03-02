@@ -13,10 +13,8 @@ import {
   DELETE_LINK,
   UPDATE_NODE_DATA,
 } from "./flows.constants"
-import { Node, XYPosition } from "react-flow-renderer/dist/types"
 
-import { Elements } from "react-flow-renderer"
-import { Connection } from "react-flow-renderer/nocss"
+import { Edge, Node, XYPosition } from "react-flow-renderer"
 
 const PodNecessaryObject = {
   name: "string",
@@ -34,27 +32,46 @@ const PodOptionalObject = {
 
 type Pod = typeof PodNecessaryObject & Partial<typeof PodOptionalObject>
 
-export const CustomDataObject = {
-  depth: 0,
+export const CustomDataObjectReq = {
   label: "string",
 }
-type CustomData = typeof CustomDataObject
+
+export const CustomDataObjectOpt = {
+  depth: 0,
+}
+
+export const CustomDataObject = {
+  ...CustomDataObjectOpt,
+  ...CustomDataObjectReq,
+}
+
+type CustomData = typeof CustomDataObjectReq &
+  Partial<typeof CustomDataObjectOpt>
 
 export type Pods = Pod[]
 
-type NodeData = CustomData & Pod
+export type NodeData = CustomData & Pod
 
 export type FlowNode = Node<NodeData>
+export type Link = Edge
+export type FlowElement = FlowNode | Link
 export type NodeId = string
 export type LinkId = string
-//todo maybe this will be obsolete
-export type NodeUpdate = Partial<Node>
+export type HandlerId = string
+export type NodeUpdate = Partial<FlowNode>
 export type NodeDataUpdate = Partial<NodeData>
 
-export type DeleteLinkProps = LinkId | Connection
+export type NodeConnection = {
+  source: NodeId
+  target: NodeId
+  sourceHandle?: HandlerId
+  targetHandle?: HandlerId
+}
+
+export type DeleteLinkProps = LinkId | NodeConnection
 
 export interface FlowChart {
-  elements: Elements //todo inherit this ad type data properly
+  elements: FlowElement[]
   with?:
     | {
         logserver: string
@@ -158,9 +175,9 @@ export type UpdateNodeAction = {
   payload: { nodeId: string; nodeUpdate: NodeUpdate }
 }
 
-export type UpdateNodePropertiesAction = {
+export type UpdateNodeDataAction = {
   type: typeof UPDATE_NODE_DATA
-  payload: { nodeId: string; nodePropertiesUpdate: NodeDataUpdate }
+  payload: { nodeId: string; nodeDataUpdate: NodeDataUpdate }
 }
 
 export type DeleteNodeAction = {
@@ -170,7 +187,7 @@ export type DeleteNodeAction = {
 
 export type AddLinkAction = {
   type: typeof ADD_LINK
-  payload: Connection
+  payload: NodeConnection
 }
 
 export type DeleteLinkAction = {
@@ -196,4 +213,4 @@ export type FlowActionTypes =
   | AddNodeAction
   | AddLinkAction
   | DeleteLinkAction
-  | UpdateNodePropertiesAction
+  | UpdateNodeDataAction
