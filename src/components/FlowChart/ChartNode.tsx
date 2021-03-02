@@ -83,12 +83,12 @@ export default function ChartNode(props: ChartNodeProps) {
         }}
       >
         {node.id !== "gateway" && <NodePort type="source" />}
-        <div id={`chart-node-${node.data.label}`}>
+        <div id={`chart-node-${node?.data?.label}`}>
           <div className="node-header">
             <div className={`p-1`}>
               <p className="m-1">
                 <span className="text-bold">
-                  {node.data.label || (
+                  {node?.data?.label || (
                     <span className="text-warning">Empty Pod</span>
                   )}
                 </span>
