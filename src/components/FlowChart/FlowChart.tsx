@@ -18,8 +18,8 @@ type Props = {
 }
 
 const nodeTypes = {
-  pod: ChartNode("Pod"),
-  gateway: ChartNode("Gateway"),
+  pod: ChartNode,
+  gateway: ChartNode,
 }
 
 export default function FlowChart(props: Props) {

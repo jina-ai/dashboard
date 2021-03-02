@@ -92,16 +92,6 @@ function ChartNodeElement2({ type, node }: ChartNodeElementProps) {
   )
 }
 
-type NodeType = "Pod" | "Gateway"
-export default function ChartNode(type: NodeType) {
-  switch (type) {
-    case "Pod":
-      return function ChartNode(node: Node) {
-        return <ChartNodeElement2 type={type} node={node} />
-      }
-    case "Gateway":
-      return function ChartNode(node: Node) {
-        return <ChartNodeElement2 type={"Gateway"} node={node} />
-      }
-  }
+export default function ChartNode(node: Node) {
+  return <ChartNodeElement2 type={"Gateway"} node={node} />
 }
