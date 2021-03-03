@@ -1,10 +1,16 @@
-import React from "react";
-import { Container, Row, Col } from "react-bootstrap";
-import { FallbackProps } from "react-error-boundary";
-import { PageTitle } from "../components/Common/PageTitle";
-import { Button } from "shards-react";
+import React from "react"
+import { Container, Row, Col } from "react-bootstrap"
+import { FallbackProps } from "react-error-boundary"
+import { PageTitle } from "../components/Common/PageTitle"
+import { Button } from "shards-react"
 
 function FallbackPage({ error, resetErrorBoundary }: FallbackProps) {
+  if (localStorage.getItem("storageCleared") === null) {
+    localStorage.clear()
+    localStorage.setItem("storageCleared", "true")
+    window.location.reload()
+  }
+
   return (
     <Container fluid className="main-content-container p-5">
       <Row noGutters className="page-header mb-4">
@@ -28,7 +34,7 @@ function FallbackPage({ error, resetErrorBoundary }: FallbackProps) {
         </Col>
       </Row>
     </Container>
-  );
+  )
 }
 
-export { FallbackPage };
+export { FallbackPage }
