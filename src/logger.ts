@@ -1,52 +1,52 @@
+// @ts-nocheck
 import { saveAs } from "file-saver"
 
 function handleErrorMessage(msg: string, url: string, line: string) {
-  // @ts-ignore
   logger.log("window.onerror - ERROR", msg, url, `line: ${line}`)
 }
 
-function pushLog(data: any) {
-  ;(window as any).logs.push(data)
+function pushLog(data) {
+  window.logs.push(data)
 }
 
 function clearLogs() {
-  ;(window as any).logs = []
+  window.logs = []
 }
 
 const logger = {
   log: function (...arg: any) {
-    if (!(window as any).logsEnabled) return
+    if (!window.logsEnabled) return
     let args = [...(arguments as any)]
     console.log(...args)
     pushLog(args)
   },
   isEnabled: function () {
-    return (window as any).logsEnabled
+    return window.logsEnabled
   },
   enable: function () {
     const _navigator: any = {}
-    for (let i in window.navigator) _navigator[i] = (window as any).navigator[i]
+    for (let i in window.navigator) _navigator[i] = window.navigator[i]
     clearLogs()
     pushLog(_navigator)
     window.addEventListener(
       "error",
       (handleErrorMessage as unknown) as EventListenerOrEventListenerObject
     )
-    ;(window as any).logsEnabled = true
+    window.logsEnabled = true
   },
   disable: function () {
     window.removeEventListener(
       "error",
       (handleErrorMessage as unknown) as EventListenerOrEventListenerObject
     )
-    ;(window as any).logsEnabled = false
+    window.logsEnabled = false
   },
   setFormat: function (format = "json") {
-    ;(window as any).logsFormat = format
+    window.logsFormat = format
   },
   exportLogs: function () {
-    const format = (window as any).logsFormat || "json"
-    const logs = (window as any).logs
+    const format = window.logsFormat || "json"
+    const logs = window.logs
     let content = "[\n"
     for (let i = 0; i < logs.length; ++i) {
       let args = logs[i]
