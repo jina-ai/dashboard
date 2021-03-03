@@ -104,6 +104,7 @@ code {
 
 .chart-section-container {
   max-height: 80vh;
+  width: 100%;
   overflow: hidden;
   display: flex;
   flex-direction: column;

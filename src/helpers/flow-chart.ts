@@ -1,142 +1,131 @@
 // @ts-nocheck
-const settings = require("./../settings");
+import { FlowChart, NodeData } from "../redux/flows/flows.types"
+import { Edge, Node, XYPosition } from "react-flow-renderer/dist/types"
+const settings = require("./../settings")
 
+export const createNode = (
+  id: string,
+  data?: NodeData,
+  position: XYPosition
+): Node => {
+  return {
+    id,
+    type: id === "gateway" ? "gateway" : "pod",
+    data,
+    position,
+  }
+}
+
+export const createLink = (source: string, target: string): Edge => ({
+  id: `e-${source}-to-${target}`,
+  source,
+  target,
+  type: "step",
+})
+
+//todo type this properly
 type ParsedYAML = {
-  pods: Array | { [key: string]: any };
+  pods: Array | { [key: string]: any }
   with?: {
     board?: {
-      canvas?: { [key: string]: { x: number; y: number } };
-    };
-  };
-  version?: string;
-};
+      canvas?: { [key: string]: { x: number; y: number } }
+    }
+  }
+  version?: string
+}
 
-export const formatForFlowchart = (data: ParsedYAML) => {
-  let pods = data.pods;
-  let canvas = data.with?.board?.canvas;
+export const formatForFlowchart = (data: ParsedYAML): FlowChart => {
+  let pods = data.pods
+  let canvas = data.with?.board?.canvas
 
-  const formatted = {
-    offset: {
-      x: 0,
-      y: 0,
-    },
-    nodes: {},
-    links: {},
-    selected: {},
-    hovered: {},
-    scale: 1,
+  const formatted: FlowChart = {
     with: data.with,
-  };
+  }
 
-  let nodes = {};
-  let links = {};
-
-  let prevNode = false;
+  let nodes: Node[] = []
+  let links: Edge[] = []
 
   if (data.version?.includes("1")) {
-    let newPods = {};
+    let podMap = {}
     pods.forEach((pod) => {
-      const id = pod.name;
-      delete pod.name;
-      newPods[id] = {
+      const id = pod.name
+      delete pod.name
+      podMap[id] = {
         ...pod,
-      };
-    });
-    pods = newPods;
+      }
+    })
+    pods = podMap
   }
 
   if (!pods.gateway) {
-    let newPods = {};
-    newPods = {
+    pods = {
       gateway: null,
       ...pods,
-    };
-    pods = newPods;
+    }
   }
 
+  let prevNode
   Object.keys(pods).forEach((id) => {
-    const pod = pods[id] || {};
-    let node = {
-      type: "input-output",
-      id,
-      label: id,
-      ports: {},
-      needs: {},
-      send_to: {},
-      position: {},
-      properties: { ...pod },
-    };
+    const pod = pods[id] || {}
 
-    if (node.properties.needs) delete node.properties.needs;
+    let node: Node = createNode(id, pod, {})
 
-    node.ports["inPort"] = { id: "inPort", type: "input" };
-    node.ports["outPort"] = { id: "outPort", type: "output" };
+    node.data.label = id
 
-    if (prevNode && !pod.needs && id !== "gateway") pod.needs = prevNode;
-
-    if (pod.needs) {
-      let parents = Array.isArray(pod.needs) ? pod.needs : [pod.needs];
-
-      for (let i = 0; i < parents.length; ++i) {
-        let nodeFrom = parents[i];
-        node.needs[nodeFrom] = true;
-
-        let linkId = `${nodeFrom}-to-${id}`;
-        let link = {
-          color: "red",
-          id: linkId,
-          from: { nodeId: nodeFrom, portId: "outPort" },
-          to: { nodeId: id, portId: "inPort" },
-        };
-        links[linkId] = link;
-      }
+    if (prevNode && !node.data.needs && id !== "gateway") {
+      !node.data.needs && (node.data.needs = [])
+      node.data.needs.push(prevNode)
     }
+
+    if (node?.data?.needs)
+      node.data.needs.forEach((parent) => links.push(createLink(parent, id)))
 
     if (canvas && canvas[id]) {
-      const { x, y } = canvas[id];
-      node.position = { x: parseInt(x), y: parseInt(y) };
+      const { x, y } = canvas[id]
+      node.position = { x: parseInt(x), y: parseInt(y) }
     }
+    nodes.push(node)
+    prevNode = id
+  })
 
-    nodes[id] = node;
-    prevNode = id;
-  });
-
-  const depthPopulation = {}; //how many nodes at each depth
-  const offsetX = settings.nodeOffset.x;
-  const offsetY = settings.nodeOffset.y;
+  const depthPopulation = {} //how many nodes at each depth
+  const offsetX = settings.nodeOffset.x
+  const offsetY = settings.nodeOffset.y
 
   //fallback: if no position encoded on canvas portion of YAML, infer the position using depth and order
-  Object.keys(nodes).forEach((id) => {
-    let depth = getNodeDepth(nodes, id, 0);
-    nodes[id].depth = depth;
+  nodes.forEach((node) => {
+    const depth = getNodeDepth(nodes, node)
+    node.data.depth = depth
 
-    if (depthPopulation[depth] >= 0) depthPopulation[depth]++;
-    else depthPopulation[depth] = 0;
+    depthPopulation[depth] === undefined
+      ? (depthPopulation[depth] = 1)
+      : (depthPopulation[depth] = depthPopulation[depth] + 1)
 
-    if (!nodes[id].position.x)
-      nodes[id].position = {
+    if (!node.position.x)
+      node.position = {
         y: depth * offsetY + offsetY,
-        x: depthPopulation[depth] * offsetX + offsetX,
-      };
-  });
+        x: depthPopulation[depth] * offsetX,
+      }
+  })
 
-  formatted.nodes = nodes;
-  formatted.links = links;
+  formatted.elements = [...nodes, ...links]
 
-  return formatted;
-};
+  return formatted
+}
 
-function getNodeDepth(nodes, currentId, currentDepth): number {
-  let parents = Object.keys(nodes[currentId].needs);
-  let longestDepth = 0;
+function getNodeDepth(nodes: Node[], node: Node): number {
+  const parents = node.data.needs
 
-  for (let i = 0; i < parents.length; ++i) {
-    let parent = parents[i];
-    let depth;
-    if (nodes[parent].depth) depth = nodes[parent].depth + 1;
-    else depth = getNodeDepth(nodes, parent, 1);
-    if (depth > longestDepth) longestDepth = depth;
+  if (!parents || parents.length === 0) return 0
+  else {
+    const parentDepthList = parents.map((parentId) => {
+      const parent = nodes.find((node) => node.id === parentId)
+      let depth
+      if (parent.data.depth) depth = parent.data.depth
+      else depth = getNodeDepth(nodes, parent)
+      return depth
+    })
+    const max = Math.max(...parentDepthList) + 1
+    return max
   }
-
-  return currentDepth + longestDepth;
 }

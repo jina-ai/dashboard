@@ -35,7 +35,6 @@ describe("Logs page", () => {
           cy.dataName("playButton").click();
           cy.visit("#/logs");
           cy.fixture("sample-output").then((output) => {
-            console.log(output.logs[0]);
             output.logs.forEach((log, index) => {
               cy.dataName(`logItem-${index}`).should("contain", log.message);
             });

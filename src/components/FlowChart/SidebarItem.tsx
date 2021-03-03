@@ -1,34 +1,30 @@
-import * as React from "react";
-import { REACT_FLOW_CHART } from "@bastinjafari/react-flow-chart-with-tooltips-and-multi-select";
-import ChartNode from "./ChartNode";
+import * as React from "react"
+import { NodeData } from "../../redux/flows/flows.types"
+import ChartNode from "./ChartNode"
 
 type Props = {
-  label?: string;
-  ports: {
-    [key: string]: any;
-  };
-  properties: {
-    [key: string]: any;
-  };
-  idx: number;
-};
+  label: string
+  data: NodeData
+  idx: number
+}
 
-export default function SidebarItem({ label, ports, properties, idx }: Props) {
-  const ref: React.RefObject<HTMLInputElement> = React.createRef();
+export default function SidebarItem({ label, data, idx }: Props) {
+  const onDragStart = (event: React.DragEvent<HTMLDivElement>) => {
+    const dataString = JSON.stringify({ label, ...data })
+    event.dataTransfer.setData("application/reactflow", dataString)
+    event.dataTransfer.effectAllowed = "move"
+  }
+
+  const ref: React.RefObject<HTMLInputElement> = React.createRef()
   return (
     <div
       data-name={`SideBarItem-${idx}`}
       ref={ref}
       className="mb-3 draggable-container"
       draggable={true}
-      onDragStart={(event) => {
-        event.dataTransfer.setData(
-          REACT_FLOW_CHART,
-          JSON.stringify({ label, ports, properties })
-        );
-      }}
+      onDragStart={onDragStart}
     >
-      <ChartNode node={{ properties, label }} />
+      <ChartNode label={label} />
     </div>
-  );
+  )
 }

@@ -1,14 +1,20 @@
-import styled from "@emotion/styled";
-import { useDispatch, useSelector } from "react-redux";
+import styled from "@emotion/styled"
+import { useDispatch, useSelector } from "react-redux"
 import {
   selectFlowArguments,
-  selectFlowChart,
-} from "../redux/flows/flows.selectors";
-import React, { useEffect, useState } from "react";
-import { ModalParams } from "../redux/global/global.types";
-import ReactModal, { Styles } from "react-modal";
-import { deleteNode, rerender, updateNode } from "../redux/flows/flows.actions";
-import { Button } from "react-bootstrap";
+  selectSelectedFlow,
+} from "../redux/flows/flows.selectors"
+import React, { useEffect, useState } from "react"
+import { ModalParams } from "../redux/global/global.types"
+import ReactModal, { Styles } from "react-modal"
+import {
+  deleteNode,
+  rerender,
+  updateNode,
+  updateNodeProperties,
+} from "../redux/flows/flows.actions"
+import { Button } from "react-bootstrap"
+import { NodeDataUpdate } from "../redux/flows/flows.types"
 
 const style: Styles = {
   overlay: {
@@ -28,26 +34,26 @@ const style: Styles = {
     alignItems: "center",
     justifyContent: "center",
   },
-};
+}
 
 const PodEditContainer = styled.div`
   width: 25rem;
   margin-right: -1rem;
-`;
+`
 
 const Header1 = styled.header`
   font-weight: 600;
   font-size: 30px;
   color: #009999;
   margin-bottom: 0.5rem;
-`;
+`
 
 const Header2 = styled.header`
   font-weight: 600;
   font-size: 20px;
   color: #009999;
   margin-bottom: 0.5rem;
-`;
+`
 
 const PropertyTable = styled.div`
   width: 104%;
@@ -70,7 +76,7 @@ const PropertyTable = styled.div`
     background: #099 !important;
     border-radius: 1rem;
   }
-`;
+`
 const Input = styled.input`
   width: 97%;
   background: #f1f3f4;
@@ -78,54 +84,60 @@ const Input = styled.input`
   padding: 0.5em;
   border: 0;
   margin-bottom: 0.5rem;
-`;
+`
 
 const DeleteButton = styled(Button)`
   width: 97%;
-`;
+`
 
 type Props = {
-  open: boolean;
-  closeModal: () => void;
-  modalParams: ModalParams;
-};
+  open: boolean
+  closeModal: () => void
+  modalParams: ModalParams
+}
 
 function PodEditComponent({ open, closeModal, modalParams }: Props) {
-  const nodeId = modalParams?.nodeId || "";
-
-  const flowChart = useSelector(selectFlowChart);
-  const flowArguments = useSelector(selectFlowArguments);
-  const [node, setNode] = useState(flowChart.flow.nodes[nodeId]);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [filteredArguments, setFilteredArguments] = useState(flowArguments.pod);
-  const dispatch = useDispatch();
+  const nodeId = modalParams?.nodeId || ""
+  const flowChart = useSelector(selectSelectedFlow)
+  const flowArguments = useSelector(selectFlowArguments)
+  const node = flowChart.flowChart.elements.find(
+    (element) => element.id === nodeId
+  )
+  const [searchQuery, setSearchQuery] = useState("")
+  const [filteredArguments, setFilteredArguments] = useState(flowArguments.pod)
+  const dispatch = useDispatch()
 
   useEffect(() => {
     const results = flowArguments.pod.filter((argument: any) =>
       argument.name.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-    setFilteredArguments(results);
-  }, [searchQuery, flowArguments]);
+    )
+    setFilteredArguments(results)
+  }, [searchQuery, flowArguments])
 
   const _updateLabel = (label: string) => {
-    const nodeUpdate = { label };
-    dispatch(updateNode(node.id, nodeUpdate));
-    setNode({ ...node, ...nodeUpdate });
-    dispatch(rerender());
-  };
+    if (node?.id) {
+      const nodeUpdate = { data: { label } }
+      dispatch(updateNode(node.id, nodeUpdate))
+      dispatch(rerender())
+    }
+  }
   const _updateNodeProp = (name: string, value: string) => {
-    const newNode = { ...node };
-    newNode.properties[name] = value;
-    dispatch(updateNode(node.id, newNode));
-    setNode(newNode);
-  };
+    if (node?.id) {
+      const nodePropertiesUpdate: NodeDataUpdate = { [name]: value }
+      dispatch(updateNodeProperties(node.id, nodePropertiesUpdate))
+    }
+  }
   const _deleteNode = () => {
-    dispatch(deleteNode(node.id));
-    closeModal();
-    dispatch(rerender());
-  };
+    if (node?.id) {
+      dispatch(deleteNode(node.id))
+      closeModal()
+      dispatch(rerender())
+    }
+  }
 
-  const label = node.label || node.properties.name;
+  const label = node?.data?.label || node?.data?.name || "Empty Pod"
+  console.log("node")
+  console.log(node)
 
   return (
     <ReactModal
@@ -158,20 +170,19 @@ function PodEditComponent({ open, closeModal, modalParams }: Props) {
         />
         <PropertyTable>
           {filteredArguments.map((argument) => {
-            const { name, type } = argument;
-
+            const { name, type } = argument
             return (
               <>
                 <Header2>{name}</Header2>
                 <Input
                   placeholder={type}
                   type={type === "integer" ? "number" : "text"}
-                  value={node.properties[name] || ""}
+                  value={node?.data ? node?.data[name] : ""}
                   onChange={(e) => _updateNodeProp(name, e.target.value)}
                   className="property-value-input"
                 />
               </>
-            );
+            )
           })}
         </PropertyTable>
 
@@ -180,7 +191,7 @@ function PodEditComponent({ open, closeModal, modalParams }: Props) {
         </DeleteButton>
       </PodEditContainer>
     </ReactModal>
-  );
+  )
 }
 
-export default PodEditComponent;
+export default PodEditComponent
