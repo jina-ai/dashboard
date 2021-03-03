@@ -10,7 +10,7 @@ import { MultiFilterSelect } from "../Common/MultiFilterSelect"
 import { LogItem } from "./LogItem"
 import { LogsTableHeader } from "./LogsTableHeader"
 import {
-  levels,
+  LEVELS,
   Levels,
   ProcessedLog,
   RawLog,
@@ -301,7 +301,7 @@ function LogsTable({ data, showLogDetails }: Props) {
     })
   } else if (currentView === "group-level") {
     groupedData = {}
-    levels.forEach((level: string) => {
+    LEVELS.forEach((level: string) => {
       const levelItem: any = {}
 
       levelItem.data = (resultData || []).filter(
@@ -355,7 +355,7 @@ function LogsTable({ data, showLogDetails }: Props) {
             )}
             <MultiFilterSelect
               isMulti
-              options={toOption(levels as any) as any}
+              options={toOption(LEVELS as any) as any}
               onFilterChange={setSelectedLevels}
               className="logstream-select mb-2 mr-0 mb-md-0 mr-md-2"
               placeholder={

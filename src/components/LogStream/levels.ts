@@ -1,13 +1,16 @@
 import { Theme } from "@emotion/react"
 import { Level } from "../../redux/logStream/logStream.types"
 
-type LevelColors = {
-  [level in Level]: {
-    borderColor: string
-    backgroundColor: string
-  }
+export type LevelColor = {
+  borderColor: string
+  backgroundColor: string
 }
-export const getLevels = (theme: Theme): LevelColors => {
+
+type LevelColors = {
+  [level in Level]: LevelColor
+}
+
+export const getLevelPalette = (theme: Theme): LevelColors => {
   const colorPalette = theme.palette
   return {
     INFO: {

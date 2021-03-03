@@ -1,10 +1,10 @@
 export type LogLevelPieChartData = {
-  [key: string]: number;
-};
+  [key: string]: number
+}
 
 export type LogLevelSummaryChartData = {
-  lastLog: number;
+  lastLog: number
   levels: {
-    [key: string]: any;
-  };
-}[];
+    [key: string]: any
+  }
+}[]

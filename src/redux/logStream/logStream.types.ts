@@ -1,6 +1,6 @@
 import { HANDLE_NEW_LOG, SHOW_LOG_INDEX } from "./logStream.constants"
 
-export const levels = [
+export const LEVELS = [
   "INFO",
   "SUCCESS",
   "WARNING",
@@ -9,7 +9,7 @@ export const levels = [
   "DEBUG",
 ] as const
 
-export type Level = typeof levels[number]
+export type Level = typeof LEVELS[number]
 
 export type Levels = {
   [level in Level]: number
