@@ -1,10 +1,7 @@
 import React from "react"
-import Select, {
-  OptionsType,
-  OptionTypeBase,
-  Props as SelectProps,
-} from "react-select"
+import Select, { Props as SelectProps } from "react-select"
 import { StylesConfig } from "react-select/src/styles"
+import { FilterSelection } from "../LogStream/LogsTable"
 
 const customStyles: StylesConfig = {
   dropdownIndicator: (styles) => ({
@@ -32,7 +29,7 @@ const customStyles: StylesConfig = {
 }
 
 export type Props = {
-  onFilterChange: (val: OptionsType<OptionTypeBase>[]) => void
+  onFilterChange: (something: FilterSelection[]) => void
   options: { value: string; label: string }[]
   isMulti?: boolean
   isSearchable?: boolean
@@ -51,6 +48,7 @@ function MultiFilterSelect({
   return (
     <Select
       onChange={(val) => {
+        console.log(val, "val")
         onFilterChange(Array.isArray(val) ? val : !val ? [] : [val])
       }}
       value={value}
