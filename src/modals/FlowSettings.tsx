@@ -7,11 +7,7 @@ import {
 import React from "react"
 import { ModalParams } from "../redux/global/global.types"
 import ReactModal, { Styles } from "react-modal"
-import {
-  deleteFlow,
-  rerender,
-  updateSelectedFlow,
-} from "../redux/flows/flows.actions"
+import { deleteFlow, updateSelectedFlow } from "../redux/flows/flows.actions"
 import { Button } from "react-bootstrap"
 import { globalArguments } from "../data/globalArguments"
 import { FlowUpdate } from "../redux/flows/flows.types"
@@ -155,7 +151,6 @@ function FlowSettingsComponent({ open, closeModal }: Props) {
   const _updateFlowName = (name: string) => {
     const flowUpdate = { ...flow, name }
     dispatch(updateSelectedFlow(flowUpdate))
-    dispatch(rerender())
   }
 
   const _updateFlowWith = (key: string, value: string) => {
@@ -170,7 +165,6 @@ function FlowSettingsComponent({ open, closeModal }: Props) {
   const _deleteFlow = () => {
     dispatch(deleteFlow(flowId))
     closeModal()
-    dispatch(rerender())
   }
 
   return (
