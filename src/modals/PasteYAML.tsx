@@ -1,6 +1,6 @@
-import React from "react";
-import { Button, Form } from "react-bootstrap";
-import ReactModal, { Styles } from "react-modal";
+import React from "react"
+import { Button, Form } from "react-bootstrap"
+import ReactModal, { Styles } from "react-modal"
 const style: Styles = {
   overlay: {
     backgroundColor: "rgba(38, 50, 56, 0.5)",
@@ -19,16 +19,16 @@ const style: Styles = {
     maxWidth: "800px",
     overflow: "hidden",
   },
-};
+}
 
 type Props = {
-  open: boolean;
-  closeModal: () => void;
-  importYAML: (yamlString: string) => void;
-};
+  open: boolean
+  closeModal: () => void
+  importYAML: (yamlString: string) => void
+}
 
 const PasteYAML = ({ open, closeModal, importYAML }: Props) => {
-  let inputRef: any;
+  let inputRef: HTMLTextAreaElement
   return (
     <ReactModal
       ariaHideApp={false}
@@ -57,7 +57,7 @@ const PasteYAML = ({ open, closeModal, importYAML }: Props) => {
           <Form.Label>Custom YAML:</Form.Label>
           <Form.Control
             placeholder="Paste Here"
-            ref={(ref: any) => (inputRef = ref)}
+            ref={(ref: HTMLTextAreaElement) => (inputRef = ref)}
             as="textarea"
             rows={10}
           />
@@ -70,7 +70,7 @@ const PasteYAML = ({ open, closeModal, importYAML }: Props) => {
         Continue
       </Button>
     </ReactModal>
-  );
-};
+  )
+}
 
-export default PasteYAML;
+export default PasteYAML
