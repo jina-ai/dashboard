@@ -1,15 +1,15 @@
 import {
-  CLOSE_MODAL,
-  FETCH_ARGUMENTS_FROM_API,
-  FETCH_ARGUMENTS_FROM_DAEMON,
-  HANDLE_CONNECTION_STATUS,
-  HIDE_BANNER,
-  HIDE_BANNER_TIMEOUT,
-  SHOW_BANNER,
-  SHOW_ERROR,
-  SHOW_MODAL,
-  TOGGLE_SIDE_BAR,
-} from "./global.constants";
+  MODAL_HIDDEN,
+  ARGUMENTS_FROM_API_FETCHED,
+  ARGUMENTS_FROM_DAEMON_FETCHED,
+  CONNECTION_STATUS_HANDLED,
+  BANNER_HIDDEN,
+  BANNER_HIDDEN_TIMEOUT,
+  BANNER_SHOWN,
+  ERROR_SHOWN,
+  MODAL_SHOWN,
+  SIDE_BAR_TOGGLED,
+} from "./global.constants"
 import {
   CloseModalAction,
   HandleConnectionStatusAction,
@@ -19,27 +19,27 @@ import {
   ShowErrorAction,
   ShowModalAction,
   ToggleSidebarAction,
-} from "./global.types";
-import { AppThunk } from "../index";
-import store from "..";
-import jinadClient from "../../services/jinad";
-import { getJinaFlowArguments } from "../../services/jinaApi";
-import { updateFlowArguments } from "../flows/flows.actions";
-import logger from "../../logger";
+} from "./global.types"
+import { AppThunk } from "../index"
+import store from ".."
+import jinadClient from "../../services/jinad"
+import { getJinaFlowArguments } from "../../services/jinaApi"
+import { updateFlowArguments } from "../flows/flows.actions"
+import logger from "../../logger"
 
 export function handleConnectionStatus(
   connected: boolean,
   message: string
 ): AppThunk {
   return function (dispatch) {
-    dispatch(_handleConnectionStatus(connected, message));
+    dispatch(_handleConnectionStatus(connected, message))
     if (connected) {
-      dispatch(showBanner(message, "success"));
-      dispatch(fetchArgumentsFromDaemon());
+      dispatch(showBanner(message, "success"))
+      dispatch(fetchArgumentsFromDaemon())
     } else {
-      dispatch(fetchArgumentsFromApi());
+      dispatch(fetchArgumentsFromApi())
     }
-  };
+  }
 }
 
 export function _handleConnectionStatus(
@@ -47,100 +47,100 @@ export function _handleConnectionStatus(
   message: string
 ): HandleConnectionStatusAction {
   return {
-    type: HANDLE_CONNECTION_STATUS,
+    type: CONNECTION_STATUS_HANDLED,
     payload: {
       connected,
       message,
     },
-  };
+  }
 }
 
 export function fetchArgumentsFromApi(): AppThunk {
   return async function (dispatch) {
-    dispatch({ type: FETCH_ARGUMENTS_FROM_API });
-    let flowArguments = await getJinaFlowArguments();
-    logger.log("loadFlowArgumentsFromApi | flowArguments:", flowArguments);
-    return dispatch(updateFlowArguments(flowArguments));
-  };
+    dispatch({ type: ARGUMENTS_FROM_API_FETCHED })
+    let flowArguments = await getJinaFlowArguments()
+    logger.log("loadFlowArgumentsFromApi | flowArguments:", flowArguments)
+    return dispatch(updateFlowArguments(flowArguments))
+  }
 }
 
 export function fetchArgumentsFromDaemon(): AppThunk {
   return async function (dispatch) {
-    dispatch({ type: FETCH_ARGUMENTS_FROM_DAEMON });
-    let flowArguments = await jinadClient.getJinaFlowArguments();
-    logger.log("loadFlowArgumentsFromDaemon | flowArguments:", flowArguments);
-    return dispatch(updateFlowArguments(flowArguments));
-  };
+    dispatch({ type: ARGUMENTS_FROM_DAEMON_FETCHED })
+    let flowArguments = await jinadClient.getJinaFlowArguments()
+    logger.log("loadFlowArgumentsFromDaemon | flowArguments:", flowArguments)
+    return dispatch(updateFlowArguments(flowArguments))
+  }
 }
 
 export function toggleSidebar(): ToggleSidebarAction {
   return {
-    type: TOGGLE_SIDE_BAR,
-  };
+    type: SIDE_BAR_TOGGLED,
+  }
 }
 
 export function _showBanner(message: string, theme: string): ShowBannerAction {
   return {
-    type: SHOW_BANNER,
+    type: BANNER_SHOWN,
     payload: {
       message,
       theme,
     },
-  };
+  }
 }
 
 export function _hideBanner(): HideBannerAction {
   return {
-    type: HIDE_BANNER,
-  };
+    type: BANNER_HIDDEN,
+  }
 }
 
 export function showBanner(message: string, theme: string): AppThunk {
   return function (dispatch) {
-    dispatch(_showBanner(message, theme));
+    dispatch(_showBanner(message, theme))
     setTimeout(() => {
-      dispatch(_hideBanner());
-    }, HIDE_BANNER_TIMEOUT);
-  };
+      dispatch(_hideBanner())
+    }, BANNER_HIDDEN_TIMEOUT)
+  }
 }
 
 export function showError(message: string): ShowErrorAction {
   return {
-    type: SHOW_ERROR,
+    type: ERROR_SHOWN,
     payload: {
       message,
     },
-  };
+  }
 }
 
 export function showModal(modal: Modal, modalParams?: any): ShowModalAction {
   return {
-    type: SHOW_MODAL,
+    type: MODAL_SHOWN,
     payload: {
       modal,
       modalParams: modalParams || null,
     },
-  };
+  }
 }
 
 export function closeModal(): CloseModalAction {
   return {
-    type: CLOSE_MODAL,
-  };
+    type: MODAL_HIDDEN,
+  }
 }
 
 export function connectJinaD(): AppThunk {
   return function (dispatch) {
-    const settings = store.getState().settingsState.settings;
+    const settings = store.getState().settingsState.settings
     function onConnectionStatus({
       connected,
       message,
     }: {
-      connected: boolean;
-      message: string;
+      connected: boolean
+      message: string
     }) {
-      dispatch(handleConnectionStatus(connected, message));
+      dispatch(handleConnectionStatus(connected, message))
     }
-    jinadClient.connect(settings, onConnectionStatus);
-  };
+    jinadClient.connect(settings, onConnectionStatus)
+  }
 }

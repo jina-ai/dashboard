@@ -1,17 +1,17 @@
-import { GlobalState, TNavItem } from "./global.types";
+import { GlobalState, TNavItem } from "./global.types"
 
-export const HANDLE_CONNECTION_STATUS = "HANDLE_CONNECTION_STATUS";
-export const TOGGLE_SIDE_BAR = "TOGGLE_SIDE_BAR";
-export const SHOW_BANNER = "SHOW_BANNER";
-export const HIDE_BANNER = "HIDE_BANNER";
-export const SHOW_ERROR = "SHOW_ERROR";
-export const SHOW_MODAL = "SHOW_MODAL";
-export const CLOSE_MODAL = "CLOSE_MODAL";
-export const CONNECT_JINAD = "CONNECT_JINAD";
-export const FETCH_ARGUMENTS_FROM_API = "FETCH_ARGUMENTS_FROM_API";
-export const FETCH_ARGUMENTS_FROM_DAEMON = "FETCH_ARGUMENTS_FROM_DAEMON";
+export const CONNECTION_STATUS_HANDLED = "CONNECTION_STATUS_HANDLED"
+export const SIDE_BAR_TOGGLED = "SIDE_BAR_TOGGLED"
+export const BANNER_SHOWN = "BANNER_SHOWN"
+export const BANNER_HIDDEN = "BANNER_HIDDEN"
+export const ERROR_SHOWN = "ERROR_SHOWN"
+export const MODAL_SHOWN = "MODAL_SHOWN"
+export const MODAL_HIDDEN = "MODAL_HIDDEN"
+export const JINAD_CONNECTED = "JINAD_CONNECTED"
+export const ARGUMENTS_FROM_API_FETCHED = "ARGUMENTS_FROM_API_FETCHED"
+export const ARGUMENTS_FROM_DAEMON_FETCHED = "ARGUMENTS_FROM_DAEMON_FETCHED"
 
-export const HIDE_BANNER_TIMEOUT = 5000;
+export const BANNER_HIDDEN_TIMEOUT = 5000
 
 const navItems: TNavItem[] = [
   {
@@ -50,7 +50,7 @@ const navItems: TNavItem[] = [
     iconName: "help",
     matches: ["help"],
   },
-];
+]
 
 export const initialGlobalState: GlobalState = {
   user: null,
@@ -63,4 +63,4 @@ export const initialGlobalState: GlobalState = {
   modalParams: null,
   navItems,
   processes: {},
-};
+}
