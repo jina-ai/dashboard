@@ -9,7 +9,12 @@ import { saveAs } from "file-saver"
 import { MultiFilterSelect } from "../Common/MultiFilterSelect"
 import { LogItem } from "./LogItem"
 import { LogsTableHeader } from "./LogsTableHeader"
-import { ProcessedLog } from "../../redux/logStream/logStream.types"
+import {
+  levels,
+  Levels,
+  ProcessedLog,
+  RawLog,
+} from "../../redux/logStream/logStream.types"
 import { ExpandingSearchbar } from "../Common/ExpandingSearchbar"
 import { LogGroup } from "./LogGroup"
 
@@ -33,14 +38,10 @@ const SEARCH_FIELDS = [
   "name",
 ]
 
-const levels = [
-  "INFO",
-  "SUCCESS",
-  "WARNING",
-  "ERROR",
-  "CRITICAL",
-  "DEBUG",
-] as const
+export type FilterSelection = {
+  label: string
+  value: string
+}
 
 const saveOptions = [
   { value: "csv", label: "CSV" },
@@ -98,17 +99,17 @@ const applyFilters = <T extends Record<string, T>>(
       : value === item[key]
   }, true)
 
-type Format = "json" | "csv" | "txt"
+export type Format = "json" | "csv" | "txt"
 
 type View = "group-pod" | "group-level" | "table"
 
 const generateFileName = (format: Format) => `jina-logs-${new Date()}.${format}`
 
-const saveLogData = (data: any, format: Format) => {
+const saveLogData = (log: ProcessedLog[], format: Format) => {
   const filename = generateFileName(format)
-  if (format === "csv") return saveAs(serializeLogsToCSVBlob(data), filename)
-  if (format === "json") return saveAs(serializeLogsToJSONBlob(data), filename)
-  if (format === "txt") return saveAs(serializeLogsToTextBlob(data), filename)
+  if (format === "csv") return saveAs(serializeLogsToCSVBlob(log), filename)
+  if (format === "json") return saveAs(serializeLogsToJSONBlob(log), filename)
+  if (format === "txt") return saveAs(serializeLogsToTextBlob(log), filename)
 }
 
 type Props = {
@@ -125,7 +126,19 @@ const arrayLikeToArray = (arrayLike: Readonly<any[]> | Set<any>) =>
 const toOption = (list: Readonly<any[]> | Set<any>) =>
   arrayLikeToArray(list).map((item) => ({ label: item, value: item }))
 
-function LogsList({ data, firstCol, secondCol, showLogDetails, small }: any) {
+function LogsList({
+  data,
+  firstCol,
+  secondCol,
+  showLogDetails,
+  small,
+}: {
+  data: any
+  firstCol: number
+  secondCol: number
+  showLogDetails: any
+  small: boolean
+}) {
   const listRef = useRef<any>()
   const [scrolledToBottom, setScrolledToBottom] = useState(true)
 
@@ -229,8 +242,8 @@ function GroupedLogs({
 function LogsTable({ data, showLogDetails }: Props) {
   const [currentView, setCurrentView] = useState(() => getInitialView())
 
-  const [selectedSources, setSelectedSources] = useState<any[]>([])
-  const [selectedLevels, setSelectedLevels] = useState<any[]>([])
+  const [selectedSources, setSelectedSources] = useState<FilterSelection[]>([])
+  const [selectedLevels, setSelectedLevels] = useState<FilterSelection[]>([])
 
   const [searchResults, setSearchResults] = useState<any[]>([])
   const [searchString, setSearchString] = useState("")
@@ -256,10 +269,16 @@ function LogsTable({ data, showLogDetails }: Props) {
   const unfiltered = searchString ? searchResults : data
   const sources = data.reduce((acc, curr) => acc.add(curr.name), new Set())
 
-  let groupedData: any
+  type GroupedData = {
+    [name: string]: {
+      data: RawLog[]
+      levels: Levels
+    }
+  }
+  let groupedData: GroupedData = {}
 
   let resultData = (unfiltered || []).filter((result) =>
-    applyFilters(result as any, {
+    applyFilters(result, {
       level: selectedLevels.map(({ value }) => value),
       name: selectedSources.map(({ value }) => value),
     })
@@ -272,7 +291,6 @@ function LogsTable({ data, showLogDetails }: Props) {
     groupedData = {}
     podNames.forEach((podName: string) => {
       const pod: any = {}
-
       pod.data = (resultData || []).filter(
         (log: any) => log.name && log.name.toLowerCase().startsWith(podName)
       )
@@ -349,9 +367,9 @@ function LogsTable({ data, showLogDetails }: Props) {
             <MultiFilterSelect
               clearAfter
               options={saveOptions}
-              onFilterChange={(option: any[]) =>
-                saveLogData(data, option[0].value)
-              }
+              onFilterChange={(option) => {
+                saveLogData(data, option[0].value as Format)
+              }}
               className="logstream-select mb-2 mr-0 mb-md-0 mr-md-2"
               placeholder={
                 <span>
@@ -376,6 +394,7 @@ function LogsTable({ data, showLogDetails }: Props) {
           secondCol={secondCol}
           data={resultData}
           showLogDetails={showLogDetails}
+          small={false}
         />
       ) : (
         <GroupedLogs
