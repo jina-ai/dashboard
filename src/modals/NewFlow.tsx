@@ -1,10 +1,10 @@
-import React from "react";
-import ReactModal, { Styles } from "react-modal";
-import styled from "@emotion/styled";
-import { useDispatch, useSelector } from "react-redux";
-import { closeModal, showModal } from "../redux/global/global.actions";
-import { createNewFlow, duplicateFlow } from "../redux/flows/flows.actions";
-import { selectExampleFlowsKeyEntryPairs } from "../redux/flows/flows.selectors";
+import React from "react"
+import ReactModal, { Styles } from "react-modal"
+import styled from "@emotion/styled"
+import { useDispatch, useSelector } from "react-redux"
+import { closeModal, showModal } from "../redux/global/global.actions"
+import { createNewFlow, duplicateFlow } from "../redux/flows/flows.actions"
+import { selectExampleFlowsKeyEntryPairs } from "../redux/flows/flows.selectors"
 
 const style: Styles = {
   overlay: {
@@ -23,7 +23,7 @@ const style: Styles = {
     maxWidth: "44rem",
     overflow: "hidden",
   },
-};
+}
 
 const CloseModal = styled.div`
   cursor: pointer;
@@ -33,13 +33,13 @@ const CloseModal = styled.div`
   color: #ffffff;
   float: right;
   line-height: 100%;
-`;
+`
 const CreateOptionsContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
   padding: 0 1rem 0 1rem;
   margin-bottom: 1rem;
-`;
+`
 
 const CreateOption = styled.div`
   cursor: pointer;
@@ -51,7 +51,7 @@ const CreateOption = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-`;
+`
 const CreateOptionAdd = () => {
   return (
     <i
@@ -64,51 +64,49 @@ const CreateOptionAdd = () => {
     >
       add
     </i>
-  );
-};
+  )
+}
 
 const OptionName = styled.span`
   color: black;
   font-size: 18px;
   font-weight: 600;
   text-align: center;
-`;
+`
 
 type Props = {
-  open: boolean;
-};
+  open: boolean
+}
 
 type NewFlowAction =
   | "close"
   | "create empty"
   | "create from yaml"
-  | "create from template";
+  | "create from template"
 
 const NewFlow = ({ open }: Props) => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
 
-  const exampleFlowsKeyEntryPairs = useSelector(
-    selectExampleFlowsKeyEntryPairs
-  );
+  const exampleFlowsKeyEntryPairs = useSelector(selectExampleFlowsKeyEntryPairs)
 
   const handleAction = (action: NewFlowAction, yaml?: string) => {
     switch (action) {
       case "close":
-        dispatch(closeModal());
-        break;
+        dispatch(closeModal())
+        break
       case "create from yaml":
-        dispatch(showModal("import"));
-        break;
+        dispatch(showModal("import"))
+        break
       case "create from template":
-        if (yaml) dispatch(duplicateFlow(yaml));
-        dispatch(closeModal());
-        break;
+        if (yaml) dispatch(duplicateFlow(yaml))
+        dispatch(closeModal())
+        break
       case "create empty":
-        dispatch(createNewFlow());
-        dispatch(closeModal());
-        break;
+        dispatch(createNewFlow())
+        dispatch(closeModal())
+        break
     }
-  };
+  }
 
   return (
     <ReactModal
@@ -140,8 +138,9 @@ const NewFlow = ({ open }: Props) => {
           <OptionName>from yaml</OptionName>
         </CreateOption>
 
-        {exampleFlowsKeyEntryPairs.map((exampleFlowsKeyEntryPair) => (
+        {exampleFlowsKeyEntryPairs.map((exampleFlowsKeyEntryPair, idx) => (
           <CreateOption
+            key={idx}
             onClick={() =>
               handleAction(
                 "create from template",
@@ -154,7 +153,7 @@ const NewFlow = ({ open }: Props) => {
         ))}
       </CreateOptionsContainer>
     </ReactModal>
-  );
-};
+  )
+}
 
-export default NewFlow;
+export default NewFlow

@@ -238,7 +238,7 @@ export function initNetworkFlow(
         dispatch(showBanner(flowResult.message, "error") as any)
       return
     }
-    const { workspace_id } = flowResult.flow;
+    const { workspace_id } = flowResult.flow
 
     dispatch(updateSelectedFlow({ workspace_id }))
 
