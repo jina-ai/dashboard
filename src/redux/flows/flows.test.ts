@@ -371,7 +371,7 @@ describe("flows reducer", () => {
       })
     )
     expect(updatedFlow.flows.testFlow1.name).toEqual("Modified Name")
-    expect(updatedFlow.flows.testFlow1.type).toEqual("modified-type")
+    expect(updatedFlow.flows.testFlow1.type).toEqual("user-generated")
     expect(updatedFlow.flows.testFlow1.isConnected).toEqual(true)
     expect(updatedFlow.flows.testFlow1.flowChart).toEqual(flowChart)
   })

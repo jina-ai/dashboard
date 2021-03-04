@@ -68,24 +68,23 @@ export type NodeConnection = {
 
 export type DeleteLinkProps = LinkId | NodeConnection
 
+export type With = {
+  logserver: string
+  compress_hwm: number
+  rest_api: boolean
+  port_expose: number
+  board: {
+    canvas: {
+      [pod: string]: {
+        x: number
+        y: number
+      }
+    }
+  }
+}
 export interface FlowChart {
   elements: FlowElement[]
-  with?:
-    | {
-        logserver: string
-        compress_hwm: number
-        rest_api: boolean
-        port_expose: number
-        board: {
-          canvas: {
-            [pod: string]: {
-              x: number
-              y: number
-            }
-          }
-        }
-      }
-    | {}
+  with?: With
 }
 
 type FlowType = "user-generated" | "remote" | "example"
