@@ -24,8 +24,7 @@ describe("settings reducer", () => {
       port: "",
     }
     Object.keys(newTestSettings).forEach((key) => {
-      const key2 = key as SettingName
-      newSettingsAfterUpdate[key2] = localStorage.getItem(
+      newSettingsAfterUpdate[key as SettingName] = localStorage.getItem(
         `preferences-${key}`
       ) as string
     })
