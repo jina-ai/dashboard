@@ -194,9 +194,9 @@ export default function FlowSelection() {
 
       {userFlows.map(([flowId, flow], idx) => (
         <FlowTap selected={selectedFlowId === flowId} key={idx}>
-          <i onClick={() => dispatch(loadFlow(flowId))}>
+          <span onClick={() => dispatch(loadFlow(flowId))}>
             {flow.name || FALLBACK_FLOW_NAME}
-          </i>
+          </span>
           <ConnectionIndicator
             show={flow.type === "remote"}
             connected={connected}
