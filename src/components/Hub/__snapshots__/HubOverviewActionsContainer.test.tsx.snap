@@ -15,7 +15,7 @@ Array [
       Find out what you can do in Jina hub and how you platform works.
     </p>
     <button
-      className="css-u2l7it"
+      className="css-y3x934"
       data-name="hubOverviewActionButtonLabel"
       onClick={[Function]}
     >
@@ -35,7 +35,7 @@ Array [
       Create flow
     </p>
     <button
-      className="css-u2l7it"
+      className="css-y3x934"
       data-name="hubOverviewActionButtonLabel"
       onClick={[Function]}
     >
