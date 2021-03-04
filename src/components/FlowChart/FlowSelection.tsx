@@ -40,9 +40,10 @@ function TitleConnectionIndicator({
 
 type DeleteFlowProps = {
   deleteFlow: (e: any) => void
+  idx: number
 }
 
-function DeleteFlowButton({ deleteFlow }: DeleteFlowProps) {
+function DeleteFlowButton({ deleteFlow, idx }: DeleteFlowProps) {
   const Delete = styled.div`
     font-size: 1.15rem;
     position: absolute;
@@ -51,7 +52,11 @@ function DeleteFlowButton({ deleteFlow }: DeleteFlowProps) {
   `
   return (
     <Delete>
-      <i onClick={deleteFlow} className="material-icons">
+      <i
+        data-name={`deleteFlowButton-${idx}`}
+        onClick={deleteFlow}
+        className="material-icons"
+      >
         delete
       </i>
     </Delete>
@@ -177,7 +182,11 @@ export default function FlowSelection() {
         />
       </SelectedFlowHeader>
 
-      <FlowTap selected={false} onClick={() => dispatch(showModal("newFlow"))}>
+      <FlowTap
+        data-name={"newFlowButton"}
+        selected={false}
+        onClick={() => dispatch(showModal("newFlow"))}
+      >
         New Flow <i className="material-icons plus-icon">add</i>
       </FlowTap>
 
@@ -198,6 +207,7 @@ export default function FlowSelection() {
           {flowId !== "_userFlow" && (
             <DeleteFlowButton
               deleteFlow={(e: any) => dispatch(deleteFlow(flowId))}
+              idx={idx}
             />
           )}
         </FlowTap>
