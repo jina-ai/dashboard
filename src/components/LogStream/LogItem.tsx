@@ -1,28 +1,28 @@
 /** @jsx jsx */
-import { jsx } from "@emotion/react";
-import { Row, Col } from "react-bootstrap";
-import { memo } from "react";
-import { areEqual } from "react-window";
-import { ProcessedLog } from "../../redux/logStream/logStream.types";
+import { jsx } from "@emotion/react"
+import { Row, Col } from "react-bootstrap"
+import { CSSProperties, memo } from "react"
+import { areEqual } from "react-window"
+import { ProcessedLog } from "../../redux/logStream/logStream.types"
 
 type Props = {
-  index: number;
-  style: any;
+  index: number
+  style: CSSProperties
   data: {
-    columns: { firstCol: number; secondCol: number; thirdCol: number };
-    items: ProcessedLog[];
-    showLogDetails: (log: any) => void;
-  };
-};
+    columns: { firstCol: number; secondCol: number; thirdCol: number }
+    items: ProcessedLog[]
+    showLogDetails: (log: ProcessedLog) => void
+  }
+}
 
 const LogItem = memo(
   ({ index, style, data: { columns, items, showLogDetails } }: Props) => {
-    const logData = items[index];
-    const { name, message, level, process, formattedTimestamp, idx } = logData;
-    let logName = String(name);
-    logName = logName.length > 20 ? logName.substring(0, 20) : logName;
-    let levelInitial = String(level)[0];
-    const { firstCol, secondCol, thirdCol } = columns;
+    const logData = items[index]
+    const { name, message, level, process, formattedTimestamp, idx } = logData
+    let logName = String(name)
+    logName = logName.length > 20 ? logName.substring(0, 20) : logName
+    let levelInitial = String(level)[0]
+    const { firstCol, secondCol, thirdCol } = columns
     return (
       <div
         data-name={`logItem-${index}`}
@@ -64,9 +64,9 @@ const LogItem = memo(
           </Col>
         </Row>
       </div>
-    );
+    )
   },
   areEqual
-);
+)
 
-export { LogItem };
+export { LogItem }
