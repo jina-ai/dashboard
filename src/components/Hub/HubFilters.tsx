@@ -1,60 +1,61 @@
-import React, { useState } from "react";
-import styled from "@emotion/styled";
-import { useTheme } from "@emotion/react";
+import React, { useState } from "react"
+import styled from "@emotion/styled"
+import { useTheme } from "@emotion/react"
 
-export type FilterMap = { [key: string]: boolean };
+export type FilterMap = { [key: string]: boolean }
 export type FilterParams = {
-  kind: string[];
-  keywords: string[];
-};
+  kind: string[]
+  keywords: string[]
+  name?: string | null
+}
 export type Filter = {
-  filterLabel: string;
-  values: FilterMap;
-};
+  filterLabel: string
+  values: FilterMap
+}
 type HubFilterProps = {
-  filters: Filter[];
-  setFilters: (filters: Filter[]) => void;
-  getHubImages: (filters: FilterParams) => void;
-};
+  filters: Filter[]
+  setFilters: (filters: Filter[]) => void
+  getHubImages: (filters: FilterParams) => void
+}
 
-export const getSelectedFilters = (filters: Filter[]) => {
+export const getSelectedFilters = (filters: Filter[]): FilterParams => {
   return {
     kind: getCheckedFilterValues(filters[0]),
     keywords: getCheckedFilterValues(filters[1]),
-  };
-};
+  }
+}
 
 export const getCheckedFilterValues = (filter: Filter) => {
   return Object.keys(filter.values).reduce((acc, key) => {
-    let filterValue = filter.values;
-    return filterValue[key] ? [...acc, key] : acc;
-  }, [] as string[]);
-};
+    let filterValue = filter.values
+    return filterValue[key] ? [...acc, key] : acc
+  }, [] as string[])
+}
 
 const FiltersTitle = styled.div`
   font-weight: 500;
   font-size: 1.25rem;
-`;
+`
 
 const FiltersContainer = styled.div`
   display: flex;
   flex-direction: column;
-`;
+`
 // Hide checkbox but keep it in the DOM for accessibility
 const Checkbox = styled.input`
   margin-right: -1rem;
   opacity: 0;
-`;
+`
 type CheckboxLabelProps = {
-  checked: boolean;
-  highlightColor: string;
-};
+  checked: boolean
+  highlightColor: string
+}
 const CheckboxLabel = styled.label`
   border: ${(props: CheckboxLabelProps) =>
     props.checked ? `1px solid ${props.highlightColor}` : "none"};
   border-radius: 0.25rem;
   padding: 0.25rem 0.5rem;
-`;
+`
 
 const HubFilters = ({ filters, setFilters, getHubImages }: HubFilterProps) => {
   const handleFilterChange = (
@@ -62,10 +63,10 @@ const HubFilters = ({ filters, setFilters, getHubImages }: HubFilterProps) => {
     key: string,
     value: boolean
   ) => {
-    filters[filterCategoryIndex].values[key] = value;
-    setFilters(filters);
-    getHubImages(getSelectedFilters(filters));
-  };
+    filters[filterCategoryIndex].values[key] = value
+    setFilters(filters)
+    getHubImages(getSelectedFilters(filters))
+  }
   return (
     <div data-name="hubImagesFilter">
       {filters &&
@@ -87,20 +88,20 @@ const HubFilters = ({ filters, setFilters, getHubImages }: HubFilterProps) => {
           </div>
         ))}
     </div>
-  );
-};
+  )
+}
 
 type FilterCheckboxProps = {
-  filter: Filter;
-  value: boolean;
-  label: string;
-  filterCategoryIndex: number;
+  filter: Filter
+  value: boolean
+  label: string
+  filterCategoryIndex: number
   handleFilterChange: (
     filterCategoryIndex: number,
     key: string,
     value: boolean
-  ) => void;
-};
+  ) => void
+}
 
 const FilterCheckbox = ({
   filter,
@@ -109,13 +110,13 @@ const FilterCheckbox = ({
   filterCategoryIndex,
   handleFilterChange,
 }: FilterCheckboxProps) => {
-  const [checked, setChecked] = useState(value);
-  const theme = useTheme();
-  const { highlight } = theme.palette;
+  const [checked, setChecked] = useState(value)
+  const theme = useTheme()
+  const { highlight } = theme.palette
   const handleFilterSelect = () => {
-    setChecked(!checked);
-    handleFilterChange(filterCategoryIndex, label, !checked);
-  };
+    setChecked(!checked)
+    handleFilterChange(filterCategoryIndex, label, !checked)
+  }
   return (
     <CheckboxLabel checked={checked} highlightColor={highlight || "cyan"}>
       <Checkbox
@@ -125,7 +126,7 @@ const FilterCheckbox = ({
       />
       {label}
     </CheckboxLabel>
-  );
-};
+  )
+}
 
-export default HubFilters;
+export default HubFilters
