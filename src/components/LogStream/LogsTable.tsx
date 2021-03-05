@@ -38,13 +38,13 @@ const SEARCH_FIELDS = [
   "name",
 ]
 
-type PodData = {
+type Pod = {
   data: ProcessedLog[]
   levels: Levels
 }
 
 type GroupedData = {
-  [podName: string]: PodData
+  [podName: string]: Pod
 }
 
 export type FilterSelection = {
@@ -295,14 +295,14 @@ function LogsTable({ data, showLogDetails }: Props) {
     )
     groupedData = {}
     podNames.forEach((podName: string) => {
-      const pod = {}
+      const pod: Partial<Pod> = {}
       pod.data = (resultData || []).filter(
         (log) => log.name && log.name.toLowerCase().startsWith(podName)
       )
 
       if (!pod.data.length) return
-      pod.levels = _.countBy(pod.data, "level")
-      groupedData[podName] = pod
+      pod.levels = _.countBy(pod.data, "level") as Levels
+      groupedData[podName] = pod as Pod
     })
   } else if (currentView === "group-level") {
     groupedData = {}
