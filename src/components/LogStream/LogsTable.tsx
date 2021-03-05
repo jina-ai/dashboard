@@ -10,10 +10,9 @@ import { MultiFilterSelect } from "../Common/MultiFilterSelect"
 import { LogItem } from "./LogItem"
 import { LogsTableHeader } from "./LogsTableHeader"
 import {
-  LEVELS,
   Levels,
+  LEVELS,
   ProcessedLog,
-  RawLog,
 } from "../../redux/logStream/logStream.types"
 import { ExpandingSearchbar } from "../Common/ExpandingSearchbar"
 import { LogGroup } from "./LogGroup"
@@ -38,6 +37,15 @@ const SEARCH_FIELDS = [
   "pathname",
   "name",
 ]
+
+type PodData = {
+  data: ProcessedLog[]
+  levels: Levels
+}
+
+type GroupedData = {
+  [podName: string]: PodData
+}
 
 export type FilterSelection = {
   label: string
@@ -137,12 +145,11 @@ function LogsList({
   data: ProcessedLog[]
   firstCol: number
   secondCol: number
-  showLogDetails: any
+  showLogDetails: (log: ProcessedLog) => void
   small: boolean
 }) {
   const listRef = useRef<any>()
   const [scrolledToBottom, setScrolledToBottom] = useState(true)
-  console.log(data, "data")
   useEffect(() => {
     if (listRef.current && scrolledToBottom) {
       listRef.current.scrollToItem(data.length)
@@ -198,11 +205,11 @@ function LogsList({
 }
 
 type GroupedLogProps = {
-  groupedData: any
+  groupedData: GroupedData
   grouping: string
-  firstCol: any
-  secondCol: any
-  showLogDetails: any
+  firstCol: number
+  secondCol: number
+  showLogDetails: (log: ProcessedLog) => void
 }
 
 function GroupedLogs({
@@ -216,7 +223,7 @@ function GroupedLogs({
     <Card.Body className="log-stream-container p-0 border-top">
       {Object.keys(groupedData).length && (
         <div className="log-group-container">
-          {Object.entries(groupedData).map(([key, data]: any, idx: number) => (
+          {Object.entries(groupedData).map(([key, data], idx: number) => (
             <LogGroup
               group={grouping}
               key={idx}
@@ -246,14 +253,16 @@ function LogsTable({ data, showLogDetails }: Props) {
   const [selectedSources, setSelectedSources] = useState<FilterSelection[]>([])
   const [selectedLevels, setSelectedLevels] = useState<FilterSelection[]>([])
 
-  const [searchResults, setSearchResults] = useState<any[]>([])
+  const [searchResults, setSearchResults] = useState<ProcessedLog[]>([])
   const [searchString, setSearchString] = useState("")
 
   const search = useCallback(async () => {
     const newData = data.slice(_lastNumLogs, data.length)
     _searchIndex.add(newData)
     _lastNumLogs = data.length
-    const searchResults = await _searchIndex.search(searchString)
+    const searchResults = (await _searchIndex.search(
+      searchString
+    )) as ProcessedLog[]
     setSearchResults(searchResults)
     // @ts-ignore
   }, [searchString, data.length]) // eslint-disable-line react-hooks/exhaustive-deps
@@ -270,13 +279,8 @@ function LogsTable({ data, showLogDetails }: Props) {
   const unfiltered = searchString ? searchResults : data
   const sources = data.reduce((acc, curr) => acc.add(curr.name), new Set())
 
-  type GroupedData = {
-    [name: string]: {
-      data: RawLog[]
-      levels: Levels
-    }
-  }
   let groupedData: GroupedData = {}
+  console.log(unfiltered, "unfiltered")
 
   let resultData = (unfiltered || []).filter((result) =>
     applyFilters(result, {
@@ -291,9 +295,9 @@ function LogsTable({ data, showLogDetails }: Props) {
     )
     groupedData = {}
     podNames.forEach((podName: string) => {
-      const pod: any = {}
+      const pod = {}
       pod.data = (resultData || []).filter(
-        (log: any) => log.name && log.name.toLowerCase().startsWith(podName)
+        (log) => log.name && log.name.toLowerCase().startsWith(podName)
       )
 
       if (!pod.data.length) return

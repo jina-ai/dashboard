@@ -1,6 +1,7 @@
 import React, { useState } from "react"
 import { Collapse } from "react-bootstrap"
 import logger from "../../logger"
+import { Levels } from "../../redux/logStream/logStream.types"
 
 type IconState = "success" | "pending" | "warning" | "failed"
 type Icons = {
@@ -84,7 +85,7 @@ type Props = {
   body: any
   numItems: number
   group: string
-  levels?: string[]
+  levels?: Levels
 }
 
 function LogGroup({ title, body, levels, numItems, group }: Props) {
