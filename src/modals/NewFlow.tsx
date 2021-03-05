@@ -128,7 +128,10 @@ const NewFlow = ({ open }: Props) => {
       </div>
 
       <CreateOptionsContainer>
-        <CreateOption onClick={() => handleAction("create empty")}>
+        <CreateOption
+          data-name={"createEmptyFLowButton"}
+          onClick={() => handleAction("create empty")}
+        >
           <CreateOptionAdd />
           <OptionName>empty flow</OptionName>
         </CreateOption>
