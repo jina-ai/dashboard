@@ -7,11 +7,7 @@ import {
 import React, { useEffect, useState } from "react"
 import { ModalParams } from "../redux/global/global.types"
 import ReactModal, { Styles } from "react-modal"
-import {
-  deleteNode,
-  updateNode,
-  updateNodeData,
-} from "../redux/flows/flows.actions"
+import { deleteNode, updateNodeData } from "../redux/flows/flows.actions"
 import { Button } from "react-bootstrap"
 import { NodeDataUpdate } from "../redux/flows/flows.types"
 
@@ -107,7 +103,7 @@ function PodEditComponent({ open, closeModal, modalParams }: Props) {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    const results = flowArguments.pod.filter((argument: any) =>
+    const results = flowArguments.pod.filter((argument) =>
       argument.name.toLowerCase().includes(searchQuery.toLowerCase())
     )
     setFilteredArguments(results)
@@ -115,8 +111,8 @@ function PodEditComponent({ open, closeModal, modalParams }: Props) {
 
   const _updateLabel = (label: string) => {
     if (node?.id) {
-      const nodeUpdate = { data: { label } }
-      dispatch(updateNode(node.id, nodeUpdate))
+      const nodeUpdate: NodeDataUpdate = { label }
+      dispatch(updateNodeData(node.id, nodeUpdate))
     }
   }
   const _updateNodeProp = (name: string, value: string) => {
