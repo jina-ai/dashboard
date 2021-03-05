@@ -4,9 +4,9 @@ import GoogleAnalytics from "react-ga"
 GoogleAnalytics.initialize(process.env.REACT_APP_GAID || "UA-164627626-1")
 
 const withTracker = (
-  WrappedComponent: typeof React.Component,
+  WrappedComponent: (props: any) => JSX.Element,
   options = {}
-) => {
+): typeof React.Component => {
   const trackPage = (page: string) => {
     if (process.env.NODE_ENV !== "production") {
       return
@@ -45,7 +45,7 @@ const withTracker = (
     }
   }
 
-  return HOC
+  return (HOC as unknown) as typeof React.Component
 }
 
 export default withTracker
