@@ -3,6 +3,7 @@ import { Card, Row, Col } from "react-bootstrap"
 import BarChart from "./BarChartBase"
 import { MultiFilterSelect } from "../Common/MultiFilterSelect"
 import { LogLevelSummaryChartData } from "./types"
+import { TimePreference } from "../../views/LogsView"
 
 const DEFAULT_HEIGHT = 10
 const DEFAULT_WIDTH = 70
@@ -17,8 +18,8 @@ type Props = {
     numSeconds: number
     numTicks: number
   }
-  showLog: (activePoints: {}[]) => void
-  setTimeSelection: (timeSelection: string) => void
+  showLog: (activePoints: { _index: number }[]) => void
+  setTimeSelection: (timeSelection: TimePreference) => void
   timeOptions: { [key: string]: { value: string; label: string } }
   selectedTime: string
   timeLabels: string[]

@@ -44,7 +44,7 @@ type Props = {
   height?: number
   numTicks?: number
   data: LogLevelSummaryChartData
-  onClick: (activePoints: {}[]) => void
+  onClick: (activePoints: { _index: number }[]) => void
   timeLabels: string[]
 }
 

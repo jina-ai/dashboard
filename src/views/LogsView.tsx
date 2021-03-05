@@ -1,30 +1,31 @@
-import React, { useEffect, useState } from "react";
-import { Container, Row, Col } from "react-bootstrap";
-import { LogLevelSummaryChart } from "../components/LogStream/LogLevelSummaryChart";
-import { LogLevelPieChart } from "../components/LogStream/LogLevelPieChart";
-import { PageTitle } from "../components/Common/PageTitle";
-import { LogsTable } from "../components/LogStream/LogsTable";
-import { useDispatch, useSelector } from "react-redux";
-import { showLogAtIndex } from "../redux/logStream/logStream.actions";
+import React, { useEffect, useState } from "react"
+import { Container, Row, Col } from "react-bootstrap"
+import { LogLevelSummaryChart } from "../components/LogStream/LogLevelSummaryChart"
+import { LogLevelPieChart } from "../components/LogStream/LogLevelPieChart"
+import { PageTitle } from "../components/Common/PageTitle"
+import { LogsTable } from "../components/LogStream/LogsTable"
+import { useDispatch, useSelector } from "react-redux"
+import { showLogAtIndex } from "../redux/logStream/logStream.actions"
 import {
   selectLogLevelOccurrences,
   selectLogLevels,
   selectLogs,
-} from "../redux/logStream/logStream.selectors";
+} from "../redux/logStream/logStream.selectors"
 
-import { getLogLevelCharts } from "../helpers/format";
-import { showModal } from "../redux/global/global.actions";
+import { getLogLevelCharts } from "../helpers/format"
+import { showModal } from "../redux/global/global.actions"
+import { RawLog } from "../redux/logStream/logStream.types"
 
-type TimePreference = "60second" | "15minute" | "1hour";
+export type TimePreference = "60second" | "15minute" | "1hour"
 
-const DEFAULT_TIME_SELECTION: TimePreference = "60second";
+const DEFAULT_TIME_SELECTION: TimePreference = "60second"
 
-const MAX_CHART_TICKS = 60;
+const MAX_CHART_TICKS = 60
 
-const TIME_PREFERENCE_NAME = "logs-time-preference";
+const TIME_PREFERENCE_NAME = "logs-time-preference"
 
 const timeOptions: {
-  [key: string]: { value: string; label: string; chartLabels: string[] };
+  [key: string]: { value: string; label: string; chartLabels: string[] }
 } = {
   "60second": {
     value: "60second",
@@ -41,37 +42,37 @@ const timeOptions: {
     label: "1 Hour",
     chartLabels: ["1h ago", "30m ago", ""],
   },
-};
+}
 
 const numSeconds: { [key: string]: number } = {
   "60second": 60,
   "15minute": 900,
   "1hour": 3600,
-};
+}
 
 function getUserTimePreference() {
-  const preference = localStorage.getItem(TIME_PREFERENCE_NAME);
-  if (preference && timeOptions[preference]) return preference;
-  return false;
+  const preference = localStorage.getItem(TIME_PREFERENCE_NAME)
+  if (preference && timeOptions[preference]) return preference
+  return false
 }
 
 function setUserTimePreference(preference: string) {
-  localStorage.setItem(TIME_PREFERENCE_NAME, preference);
+  localStorage.setItem(TIME_PREFERENCE_NAME, preference)
 }
 
 function getInitialTimeSelection() {
-  return getUserTimePreference() || DEFAULT_TIME_SELECTION;
+  return getUserTimePreference() || DEFAULT_TIME_SELECTION
 }
 
 function LogsView() {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
 
-  const logLevelOccurrences = useSelector(selectLogLevelOccurrences);
-  const logs = useSelector(selectLogs);
-  const logLevels = useSelector(selectLogLevels);
+  const logLevelOccurrences = useSelector(selectLogLevelOccurrences)
+  const logs = useSelector(selectLogs)
+  const logLevels = useSelector(selectLogLevels)
   const [selectedTime, setSelectedTime] = useState(() =>
     getInitialTimeSelection()
-  );
+  )
 
   const [logLevelCharts, setLogLevelCharts] = useState(() =>
     getLogLevelCharts(
@@ -80,38 +81,38 @@ function LogsView() {
       logLevelOccurrences,
       new Date()
     )
-  );
+  )
 
-  function showLogDetails(log: any) {
-    dispatch(showModal("logDetails", { log }));
+  function showLogDetails(log: RawLog) {
+    dispatch(showModal("logDetails", { log }))
   }
 
   function setTimeSelection(time: TimePreference) {
-    setSelectedTime(time);
-    setUserTimePreference(time);
+    setSelectedTime(time)
+    setUserTimePreference(time)
   }
 
   useEffect(() => {
-    const currentDate = new Date();
+    const currentDate = new Date()
     const newCharts = getLogLevelCharts(
       numSeconds[selectedTime],
       MAX_CHART_TICKS,
       logLevelOccurrences,
       currentDate
-    );
-    setLogLevelCharts({ ...newCharts });
-  }, [selectedTime, logLevelOccurrences]);
+    )
+    setLogLevelCharts({ ...newCharts })
+  }, [selectedTime, logLevelOccurrences])
 
-  function showLog(activePoints: any) {
-    const { data } = logLevelCharts;
-    let index = activePoints[0] && activePoints[0]._index;
+  function showLog(activePoints: { _index: number }[]) {
+    const { data } = logLevelCharts
+    let index = activePoints[0] && activePoints[0]._index
     if (index && typeof index !== "undefined") {
-      const { lastLog } = data[index];
-      dispatch(showLogAtIndex(lastLog));
+      const { lastLog } = data[index]
+      dispatch(showLogAtIndex(lastLog))
     }
   }
 
-  const timeSelection = timeOptions[selectedTime];
+  const timeSelection = timeOptions[selectedTime]
 
   return (
     <Container fluid className="main-content-container px-0">
@@ -137,7 +138,7 @@ function LogsView() {
         <LogsTable data={logs} showLogDetails={showLogDetails} />
       </div>
     </Container>
-  );
+  )
 }
 
-export { LogsView };
+export { LogsView }

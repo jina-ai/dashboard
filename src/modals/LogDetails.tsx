@@ -1,6 +1,7 @@
-import React from "react";
-import ReactModal, { Styles } from "react-modal";
-import { Row, Col } from "react-bootstrap";
+import React from "react"
+import ReactModal, { Styles } from "react-modal"
+import { Row, Col } from "react-bootstrap"
+import { RawLog } from "../redux/logStream/logStream.types"
 
 const style: Styles = {
   overlay: {
@@ -20,18 +21,18 @@ const style: Styles = {
     maxWidth: "800px",
     overflow: "hidden",
   },
-};
+}
 
-const hiddenKeys = ["message", "unixTime"];
+const hiddenKeys = ["message", "unixTime"]
 
 type Props = {
-  open: boolean;
-  closeModal: () => void;
-  modalParams: any;
-};
+  open: boolean
+  closeModal: () => void
+  modalParams: { log: RawLog }
+}
 
 const LogDetails = ({ open, closeModal, modalParams }: Props) => {
-  const log = modalParams?.log || {};
+  const log = modalParams?.log || {}
   return (
     <ReactModal
       ariaHideApp={false}
@@ -82,7 +83,7 @@ const LogDetails = ({ open, closeModal, modalParams }: Props) => {
           )}
       </div>
     </ReactModal>
-  );
-};
+  )
+}
 
-export default LogDetails;
+export default LogDetails

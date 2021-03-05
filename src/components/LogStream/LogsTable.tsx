@@ -23,6 +23,7 @@ import {
   serializeLogsToJSONBlob,
   serializeLogsToTextBlob,
 } from "../../helpers"
+import { TimePreference } from "../../views/LogsView"
 
 const ROW_SIZE = 30
 const DEFAULT_VIEW = "table"
@@ -40,7 +41,7 @@ const SEARCH_FIELDS = [
 
 export type FilterSelection = {
   label: string
-  value: string
+  value: TimePreference
 }
 
 const saveOptions = [
@@ -133,7 +134,7 @@ function LogsList({
   showLogDetails,
   small,
 }: {
-  data: any
+  data: ProcessedLog[]
   firstCol: number
   secondCol: number
   showLogDetails: any
@@ -141,7 +142,7 @@ function LogsList({
 }) {
   const listRef = useRef<any>()
   const [scrolledToBottom, setScrolledToBottom] = useState(true)
-
+  console.log(data, "data")
   useEffect(() => {
     if (listRef.current && scrolledToBottom) {
       listRef.current.scrollToItem(data.length)
