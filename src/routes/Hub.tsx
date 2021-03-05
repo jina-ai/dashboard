@@ -1,17 +1,30 @@
-import React from "react";
-import { Redirect } from "react-router-dom";
+import React from "react"
+import { Redirect } from "react-router-dom"
 
 // Layout Types
-import { HubLayout } from "../layouts";
+import { HubLayout } from "../layouts"
 
 // Route Views
-import PackageView from "../views/PackageView";
-import LogIn from "../views/LogIn";
-import NotFound from "../views/NotFound";
-import NavigateButton from "../components/Common/NavigateButton";
-import HubImagesList from "../components/Hub/HubImagesList";
+import PackageView from "../views/PackageView"
+import LogIn from "../views/LogIn"
+import NotFound from "../views/NotFound"
+import NavigateButton from "../components/Common/NavigateButton"
+import HubImagesList from "../components/Hub/HubImagesList"
+import { HubLayoutProps } from "../layouts/HubLayout"
 
-export const hubRoutes = [
+type Route<LayOutProps> = {
+  path: string
+  exact?: boolean
+  layout: (props: LayOutProps) => JSX.Element
+  component: () => JSX.Element
+  props?: {
+    usesConnection?: boolean
+    usesAuth?: boolean
+    navigateButton?: () => JSX.Element
+  }
+}
+
+export const hubRoutes: Route<HubLayoutProps>[] = [
   {
     path: "/",
     exact: true,
@@ -47,10 +60,10 @@ export const hubRoutes = [
   {
     path: "/login",
     layout: HubLayout,
-    component: LogIn,
+    component: () => <LogIn />,
     props: {
       usesConnection: false,
       usesAuth: true,
     },
   },
-];
+]
