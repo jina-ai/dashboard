@@ -23,8 +23,9 @@ type Route<LayOutProps> = {
     navigateButton?: () => JSX.Element
   }
 }
+export type HubRoute = Route<HubLayoutProps>
 
-export const hubRoutes: Route<HubLayoutProps>[] = [
+export const hubRoutes: HubRoute[] = [
   {
     path: "/",
     exact: true,
