@@ -45,14 +45,14 @@ describe("settings reducer", () => {
     })
 
     console.log = jest.fn()
-    ;(window as any).logs.push = jest.fn()
+    window.logs.push = jest.fn()
 
     reducer(testSettingsState, updateSettings(newTestSettings))
 
     expect(console.log).toHaveBeenCalledWith("saveSettings - settings", {
       ...newTestSettings,
     })
-    expect((window as any).logs.push).toHaveBeenCalledWith([
+    expect(window.logs.push).toHaveBeenCalledWith([
       "saveSettings - settings",
       newTestSettings,
     ])
