@@ -2,6 +2,7 @@ import React, { useState } from "react"
 import { Collapse } from "react-bootstrap"
 import logger from "../../logger"
 import { Levels } from "../../redux/logStream/logStream.types"
+import { ReactJSXElement } from "@emotion/react/types/jsx-namespace"
 
 type IconState = "success" | "pending" | "warning" | "failed"
 type Icons = {
@@ -82,7 +83,7 @@ function ExpandController({ expanded }: ExpandIndicator) {
 
 type Props = {
   title: string
-  body: string
+  body: ReactJSXElement
   numItems: number
   group: string
   levels?: Levels
