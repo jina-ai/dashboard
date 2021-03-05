@@ -1,11 +1,18 @@
-// @ts-nocheck
 import { saveAs } from "file-saver"
+
+declare global {
+  interface Window {
+    logs: any
+    logsEnabled: boolean
+    logsFormat: any
+  }
+}
 
 function handleErrorMessage(msg: string, url: string, line: string) {
   logger.log("window.onerror - ERROR", msg, url, `line: ${line}`)
 }
 
-function pushLog(data) {
+function pushLog(data: any[]) {
   window.logs.push(data)
 }
 
@@ -16,7 +23,7 @@ function clearLogs() {
 const logger = {
   log: function (...arg: any) {
     if (!window.logsEnabled) return
-    let args = [...(arguments as any)]
+    let args = [...arguments]
     console.log(...args)
     pushLog(args)
   },
@@ -25,7 +32,8 @@ const logger = {
   },
   enable: function () {
     const _navigator: any = {}
-    for (let i in window.navigator) _navigator[i] = window.navigator[i]
+    for (let i in window.navigator)
+      _navigator[i] = window.navigator[i as keyof Navigator]
     clearLogs()
     pushLog(_navigator)
     window.addEventListener(

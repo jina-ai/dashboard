@@ -1,6 +1,8 @@
-import React from "react";
-import { Button, Form } from "react-bootstrap";
-import ReactModal, { Styles } from "react-modal";
+import React from "react"
+import { Button, Form } from "react-bootstrap"
+import ReactModal, { Styles } from "react-modal"
+
+//todo type this properly when we have reviews again
 
 const style: Styles = {
   overlay: {
@@ -20,16 +22,16 @@ const style: Styles = {
     maxWidth: "800px",
     overflow: "hidden",
   },
-};
+}
 
 type Props = {
-  open: boolean;
-  closeModal: () => void;
-  submitReview: (content: any) => void;
-};
+  open: boolean
+  closeModal: () => void
+  submitReview: (content: any) => void
+}
 
 const WriteReviewModal = ({ open, closeModal, submitReview }: Props) => {
-  let inputRef: any;
+  let inputRef: any
   return (
     <ReactModal
       ariaHideApp={false}
@@ -70,7 +72,7 @@ const WriteReviewModal = ({ open, closeModal, submitReview }: Props) => {
         Submit
       </Button>
     </ReactModal>
-  );
-};
+  )
+}
 
-export default WriteReviewModal;
+export default WriteReviewModal
