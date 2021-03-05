@@ -44,6 +44,7 @@ function ExpandingSearchbar({
         </InputGroup.Prepend>
         <Form.Control
           type="text"
+          role="input"
           placeholder={placeholder}
           value={value}
           onChange={(e: any) => onChange(e.target.value)}
