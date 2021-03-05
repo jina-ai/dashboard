@@ -22,7 +22,6 @@ import {
   serializeLogsToJSONBlob,
   serializeLogsToTextBlob,
 } from "../../helpers"
-import { TimePreference } from "../../views/LogsView"
 
 const ROW_SIZE = 30
 const DEFAULT_VIEW = "table"
@@ -49,7 +48,7 @@ type GroupedData = {
 
 export type FilterSelection = {
   label: string
-  value: TimePreference
+  value: string
 }
 
 const saveOptions = [
@@ -99,7 +98,7 @@ const applyFilters = (
   item: ProcessedLog,
   filters: { [s: string]: unknown } | ArrayLike<unknown>
 ) =>
-  Object.entries(filters).reduce((acc, curr: [string, any]) => {
+  Object.entries(filters).reduce((acc, curr) => {
     const [key, value] = curr
     return acc && Array.isArray(value)
       ? value.length === 0
@@ -307,14 +306,12 @@ function LogsTable({ data, showLogDetails }: Props) {
   } else if (currentView === "group-level") {
     groupedData = {}
     LEVELS.forEach((level: string) => {
-      const levelItem: any = {}
+      const levelItem: Partial<Pod> = {}
 
-      levelItem.data = (resultData || []).filter(
-        (log: any) => log.level === level
-      )
+      levelItem.data = (resultData || []).filter((log) => log.level === level)
 
       if (!levelItem.data.length) return
-      groupedData[level] = levelItem
+      groupedData[level] = levelItem as Pod
     })
   }
 
@@ -329,7 +326,7 @@ function LogsTable({ data, showLogDetails }: Props) {
             <MultiFilterSelect
               clearAfter
               options={Object.values(viewOptions)}
-              onFilterChange={(option: any[]) => setView(option[0].value)}
+              onFilterChange={(option) => setView(option[0].value as View)}
               className="logstream-select mb-2 mr-0 mb-md-0 mr-md-2"
               placeholder={
                 currentView === "table" ? (
@@ -360,7 +357,7 @@ function LogsTable({ data, showLogDetails }: Props) {
             )}
             <MultiFilterSelect
               isMulti
-              options={toOption(LEVELS as any) as any}
+              options={toOption(LEVELS)}
               onFilterChange={setSelectedLevels}
               className="logstream-select mb-2 mr-0 mb-md-0 mr-md-2"
               placeholder={
