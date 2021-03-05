@@ -2,9 +2,9 @@ import { saveAs } from "file-saver"
 
 declare global {
   interface Window {
-    logs: any
+    logs: string[][]
     logsEnabled: boolean
-    logsFormat: any
+    logsFormat: string
   }
 }
 
@@ -23,7 +23,7 @@ function clearLogs() {
 const logger = {
   log: function (...arg: any) {
     if (!window.logsEnabled) return
-    let args = [...arguments]
+    let args = [...((arguments as unknown) as Array<any>)]
     console.log(...args)
     pushLog(args)
   },
