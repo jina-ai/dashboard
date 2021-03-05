@@ -33,7 +33,7 @@ const _icons: Icons = {
 type StatusString = "success" | "pending" | "warning" | "failed"
 
 type CountSummaryProps = {
-  levels?: any[]
+  levels?: Levels
   numItems: number
   title: string
 }
@@ -43,7 +43,7 @@ function CountSummary({ levels, numItems }: CountSummaryProps) {
   return <span className="ml-2 text-muted">({numItems})</span>
 }
 
-function getStatusFromLevels(levels: any): StatusString {
+function getStatusFromLevels(levels: Levels): StatusString {
   const keys = Object.keys(levels)
   if (
     keys.find((k) => k.toLowerCase() === "critical") ||
@@ -54,7 +54,7 @@ function getStatusFromLevels(levels: any): StatusString {
   return "success"
 }
 
-function StatusIcon({ levels }: { levels: any }) {
+function StatusIcon({ levels }: { levels: Levels }) {
   const status = getStatusFromLevels(levels)
   const icon = _icons[status]
   return (
@@ -82,7 +82,7 @@ function ExpandController({ expanded }: ExpandIndicator) {
 
 type Props = {
   title: string
-  body: any
+  body: string
   numItems: number
   group: string
   levels?: Levels
