@@ -18,7 +18,9 @@ describe("The Flow Page", () => {
   it("should create a flow and delete it", () => {
     cy.dataName("newFlowButton").click()
     cy.dataName("createEmptyFLowButton").click()
+    cy.dataName("CustomFlow2").should("exist")
     cy.dataName("deleteFlowButton-1").click()
+    cy.dataName("CustomFlow2").should("not.exist")
   })
 
   context("When JinaD is connected", () => {

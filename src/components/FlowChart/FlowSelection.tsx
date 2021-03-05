@@ -193,7 +193,11 @@ export default function FlowSelection() {
       <FlowHeader>My Flows </FlowHeader>
 
       {userFlows.map(([flowId, flow], idx) => (
-        <FlowTap selected={selectedFlowId === flowId} key={idx}>
+        <FlowTap
+          data-name={`${flow.name.replaceAll(" ", "")}`}
+          selected={selectedFlowId === flowId}
+          key={idx}
+        >
           <span onClick={() => dispatch(loadFlow(flowId))}>
             {flow.name || FALLBACK_FLOW_NAME}
           </span>
