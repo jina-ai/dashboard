@@ -95,17 +95,17 @@ let _searchIndex = FlexSearch.create({
   },
 })
 
-const applyFilters = <T extends Record<string, T>>(
-  item: T,
-  filters: { [key in keyof T]: T }
+const applyFilters = (
+  item: ProcessedLog,
+  filters: { [s: string]: unknown } | ArrayLike<unknown>
 ) =>
-  Object.entries(filters).reduce((acc, curr) => {
+  Object.entries(filters).reduce((acc, curr: [string, any]) => {
     const [key, value] = curr
     return acc && Array.isArray(value)
       ? value.length === 0
         ? true
-        : value.includes(item[key] as T)
-      : value === item[key]
+        : value.includes(item[key as keyof ProcessedLog])
+      : value === item[key as keyof ProcessedLog]
   }, true)
 
 export type Format = "json" | "csv" | "txt"
