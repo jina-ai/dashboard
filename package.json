@@ -5,8 +5,8 @@
   "homepage": "https://dashboard.jina.ai",
   "scripts": {
     "dev": "npm-run-all --parallel start_dev-server start-dashboard",
-    "start": "react-scripts start",
-    "start-dashboard": "react-scripts start",
+    "start": "react-scripts -r @cypress/instrument-cra start",
+    "start-dashboard": "react-scripts -r @cypress/instrument-cra start",
     "start-hub": "REACT_APP_TARGET=hub react-scripts start",
     "start-styleguide": "REACT_APP_TARGET=styleguide react-scripts start",
     "start_dev-server": "node dev-resources/testServer.js",
@@ -140,6 +140,8 @@
     "yargs": "^16.1.0"
   },
   "devDependencies": {
+    "@cypress/code-coverage": "^3.9.2",
+    "@cypress/instrument-cra": "^1.4.0",
     "@percy/cypress": "^2.3.4",
     "@types/lunr": "^2.3.3",
     "@types/react-select": "^3.0.19",
