@@ -1,4 +1,4 @@
-import { ProcessedLog } from "./../flux/tranformLog";
+import { ProcessedLog } from "../redux/logStream/logStream.types";
 
 const toBlob = (content: string) => {
   return new Blob([content], { type: "text,plain;charset=utf-8" });
@@ -6,9 +6,9 @@ const toBlob = (content: string) => {
 
 const serializeLogsToCSV = (logs: ProcessedLog[]): string => {
   const columns =
-    "created,formatted timestamp,name,process,level name,message,filename,line number,module,funcname,pathname\n";
+    "created,formatted timestamp,name,process,level name,message,context,host,workspace\n";
   const fileContent = logs.reduce((acc, log) => {
-    acc += `${log.created},"${log.formattedTimestamp}",${log.name},${log.process},${log.levelname},"${log.msg}",${log.filename},${log.lineno},${log.module},${log.funcName},${log.pathname}\n`;
+    acc += `${log.uptime},"${log.formattedTimestamp}",${log.name},${log.process},${log.level},"${log.message}",${log.context},${log.host},${log.workspace_path}\n`;
     return acc;
   }, columns);
   return fileContent;
@@ -24,7 +24,7 @@ const serializeLogsToJSON = (logs: ProcessedLog[]): string => {
 
 const serializeLogsToText = (logs: ProcessedLog[]): string => {
   const fileContent = logs.reduce((acc, log) => {
-    acc += `${log.formattedTimestamp} ${log.name}@${log.process} [${log.levelname}]: ${log.msg}\n`;
+    acc += `${log.formattedTimestamp} ${log.name}@${log.process} [${log.level}]: ${log.message}\n`;
     return acc;
   }, "");
   return fileContent;

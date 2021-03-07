@@ -1,18 +1,16 @@
-import React from "react";
-import { HashRouter as Router, Route } from "react-router-dom";
+import React from "react"
+import { HashRouter as Router, Route } from "react-router-dom"
 
-import { hubRoutes as routes } from "../routes";
-import withTracker from "../withTracker";
+import { hubRoutes as routes } from "../routes"
+import withTracker from "../withTracker"
 
-import "bootstrap/dist/css/bootstrap.min.css";
-import "../assets/main.scss";
-import "../App.css";
-import { ErrorBoundary } from "react-error-boundary";
-import { FallbackPage } from "../views/FallbackPage";
-import { Store } from "../flux";
+import "bootstrap/dist/css/bootstrap.min.css"
+import "../App.css"
+import { ErrorBoundary } from "react-error-boundary"
+import { FallbackPage } from "../views/FallbackPage"
 
 const Hub = () => {
-  document.title = "Jina Hub";
+  document.title = "Jina Hub"
   return (
     <Router basename={"/"}>
       <div>
@@ -25,21 +23,18 @@ const Hub = () => {
               component={withTracker((props: any) => {
                 return (
                   <route.layout {...props} {...route.props}>
-                    <ErrorBoundary
-                      FallbackComponent={FallbackPage}
-                      onReset={() => Store.init()}
-                    >
+                    <ErrorBoundary FallbackComponent={FallbackPage}>
                       <route.component {...props} />
                     </ErrorBoundary>
                   </route.layout>
-                );
+                )
               })}
             />
-          );
+          )
         })}
       </div>
     </Router>
-  );
-};
+  )
+}
 
-export { Hub };
+export { Hub }

@@ -1,0 +1,29 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Typograpy page 1`] = `
+<div>
+  <div
+    className="text-center text-md-left mb-sm-0 col-sm-3 col-12"
+  >
+    <h3
+      className="page-title"
+      data-name="title"
+    >
+      Typography
+    </h3>
+    <p
+      className="page-subtitle mt-2 mb-0"
+    />
+  </div>
+  <h2
+    className="css-54zl4x"
+  >
+     Title 
+  </h2>
+  <p
+    className="css-54zl4x"
+  >
+    A paragraph that could span over multiple lines
+  </p>
+</div>
+`;

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Collapse } from "react-bootstrap";
+import logger from "../../logger";
 
 const _icons: { [key: string]: any } = {
   success: {
@@ -29,7 +30,7 @@ type CountSummaryProps = {
 };
 
 function CountSummary({ levels, numItems }: CountSummaryProps) {
-  console.log("levels:", levels);
+  logger.log("levels:", levels);
   return <span className="ml-2 text-muted">({numItems})</span>;
 }
 

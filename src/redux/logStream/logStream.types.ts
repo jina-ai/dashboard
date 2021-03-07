@@ -16,29 +16,26 @@ export type RawLogLevel = {
     [level in Level]: number;
   };
 };
+
 export type RawLog = {
-  created: number;
-  filename: string;
-  funcName: string;
-  levelname: Level;
-  lineno: number;
-  module: string;
-  msg: string;
+  context: string;
+  host: string;
+  log_id: string;
+  message: string;
   name: string;
-  pathname: string;
-  process: number;
-  processName: string;
-  thread: number;
-  threadName: string;
+  process: string;
+  type: Level;
+  uptime: string;
+  workspace_path: string;
 };
 
 export type ProcessedLog = RawLog & {
-  createdDate: Date;
   id: string;
   idx: number;
   unixTime: number;
   timestamp: Date;
   formattedTimestamp: string;
+  level: Level;
 };
 
 export type LogLevels = {
@@ -63,12 +60,6 @@ export type Message = {
   data: RawLog;
 };
 
-type PodPropertyType = "str" | "int" | "bool" | "SocketType" | "ReplicaType";
-export type PodProperty = {
-  name: string;
-  type: PodPropertyType;
-};
-
 export type showLogAtIndexAction = {
   type: typeof SHOW_LOG_INDEX;
   payload: number;
@@ -76,7 +67,7 @@ export type showLogAtIndexAction = {
 
 export type handleNewLogAction = {
   type: typeof HANDLE_NEW_LOG;
-  payload: Message;
+  payload: RawLog;
 };
 
 export type LogStreamActionTypes = showLogAtIndexAction | handleNewLogAction;

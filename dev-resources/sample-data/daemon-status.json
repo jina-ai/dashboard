@@ -1,0 +1,79 @@
+{
+	"jina": {
+			"jina": "0.9.21",
+			"jina-proto": "0.0.77",
+			"jina-vcs-tag": "",
+			"libzmq": "4.3.3",
+			"pyzmq": "1.19.5",
+			"protobuf": "3.14.0",
+			"proto-backend": "cpp",
+			"grpcio": "1.35.0",
+			"pyyaml": "5.4.1",
+			"python": "3.7.9",
+			"platform": "Linux",
+			"platform-release": "4.19.121-linuxkit",
+			"platform-version": "#1 SMP Tue Dec 1 17:50:32 UTC 2020",
+			"architecture": "x86_64",
+			"processor": "",
+			"jina-resources": "/usr/local/lib/python3.7/site-packages/jina/resources"
+	},
+	"envs": {
+			"JINA_ARRAY_QUANT": "(unset)",
+			"JINA_BINARY_DELIMITER": "(unset)",
+			"JINA_CONTRIB_MODULE": "(unset)",
+			"JINA_CONTRIB_MODULE_IS_LOADING": "(unset)",
+			"JINA_CONTROL_PORT": "(unset)",
+			"JINA_DEFAULT_HOST": "(unset)",
+			"JINA_DISABLE_UVLOOP": "(unset)",
+			"JINA_EXECUTOR_WORKDIR": "(unset)",
+			"JINA_FULL_CLI": "(unset)",
+			"JINA_IPC_SOCK_TMP": "(unset)",
+			"JINA_LOG_CONFIG": "(unset)",
+			"JINA_LOG_ID": "(unset)",
+			"JINA_LOG_LEVEL": "(unset)",
+			"JINA_LOG_NO_COLOR": "(unset)",
+			"JINA_LOG_WORKSPACE": "(unset)",
+			"JINA_POD_NAME": "(unset)",
+			"JINA_RAISE_ERROR_EARLY": "(unset)",
+			"JINA_RANDOM_PORTS": "(unset)",
+			"JINA_RANDOM_PORT_MAX": "(unset)",
+			"JINA_RANDOM_PORT_MIN": "(unset)",
+			"JINA_SOCKET_HWM": "(unset)",
+			"JINA_VCS_VERSION": "",
+			"JINA_WARN_UNNAMED": "(unset)",
+			"JINA_WORKSPACE": "(unset)"
+	},
+	"peas": {
+			"size": 0,
+			"time_created": "2021-01-25T16:20:20.678113",
+			"time_updated": "2021-01-25T16:20:20.678113",
+			"num_add": 0,
+			"num_del": 0,
+			"items": {}
+	},
+	"pods": {
+			"size": 0,
+			"time_created": "2021-01-25T16:20:20.683468",
+			"time_updated": "2021-01-25T16:20:20.683468",
+			"num_add": 0,
+			"num_del": 0,
+			"items": {}
+	},
+	"flows": {
+			"size": 0,
+			"time_created": "2021-01-25T16:20:20.673240",
+			"time_updated": "2021-01-25T16:20:20.673240",
+			"num_add": 0,
+			"num_del": 0,
+			"items": {}
+	},
+	"workspaces": {
+			"size": 0,
+			"time_created": "2021-01-25T16:20:20.688127",
+			"time_updated": "2021-01-25T16:20:20.688127",
+			"num_add": 0,
+			"num_del": 0,
+			"items": {}
+	},
+	"used_memory": "71.9 KB"
+}

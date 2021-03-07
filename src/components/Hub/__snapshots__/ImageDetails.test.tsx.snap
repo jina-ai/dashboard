@@ -1,0 +1,70 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ImageDetails 1`] = `
+<div
+  className="readme-container mb-4 card"
+>
+  <div
+    className="pt-0 pb-2 card-body"
+  >
+    <div
+      className="css-1iyoj2o"
+    >
+      <div
+        className="css-1kjfrvx"
+      >
+        Tags
+      </div>
+      <div>
+        <div
+          className="css-1gs0ali"
+          data-name="hubImageTags"
+        >
+          encoder
+        </div>
+      </div>
+    </div>
+    <div
+      className="css-1iyoj2o"
+    >
+      <div
+        className="css-1kjfrvx"
+      >
+        Platform
+      </div>
+      <div>
+        <div
+          className="css-14vr8vv"
+          data-name="hubImageTags"
+        >
+          Enel
+        </div>
+      </div>
+    </div>
+    <div
+      className="css-1iyoj2o"
+    >
+      <div
+        className="css-1kjfrvx"
+      >
+        Docker Pull Command
+      </div>
+      <div>
+        whatever
+      </div>
+    </div>
+    <div
+      className="css-1iyoj2o"
+    >
+      <div
+        className="css-1kjfrvx"
+      >
+        Owner
+      </div>
+      <div>
+        Oda
+      </div>
+    </div>
+  </div>
+</div>
+`;

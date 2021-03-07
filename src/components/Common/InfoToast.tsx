@@ -18,7 +18,10 @@ function InfoToast({ data }: Props) {
   if (!data) return null;
   const icon = getIcon(data.theme);
   return (
-    <div className="notifications-container">
+    <div
+      data-name="connection-notification-online"
+      className="notifications-container"
+    >
       <Toast className={`toast-${data.theme} text-white`}>
         <Toast.Header className="text-white" closeButton={false}>
           <strong className="mr-auto">
@@ -26,12 +29,7 @@ function InfoToast({ data }: Props) {
             <span className="text-uppercase">{data.theme}</span>
           </strong>
         </Toast.Header>
-        <Toast.Body
-          className="text-white"
-          data-name="connection-notification-body"
-        >
-          {data.message}
-        </Toast.Body>
+        <Toast.Body className="text-white">{data.message}</Toast.Body>
       </Toast>
     </div>
   );

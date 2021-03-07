@@ -22,7 +22,7 @@ const style: Styles = {
   },
 };
 
-const hiddenKeys = ["msg", "unixTime"];
+const hiddenKeys = ["message", "unixTime"];
 
 type Props = {
   open: boolean;
@@ -61,13 +61,13 @@ const LogDetails = ({ open, closeModal, modalParams }: Props) => {
             <span className="text-bold">msg</span>
           </Col>
           <Col xs="9" className="border-bottom pb-1 px-0">
-            {log.msg}
+            {log.message}
           </Col>
         </Row>
         {Object.entries(log)
           .filter(([key, value]) => !hiddenKeys.includes(key))
           .map(([key, value]) =>
-            key === "msg" ? (
+            key === "message" ? (
               ""
             ) : (
               <Row className="px-3" key={key}>

@@ -1,7 +1,6 @@
 name: "Unit, integration tests"
 on:
   push:
-  pull_request_target:
 jobs:
   unit-test:
     runs-on: ubuntu-latest
@@ -36,3 +35,6 @@ jobs:
         with:
           start: npm run dev
           wait-on: 'http://localhost:3000'
+          command-prefix: 'percy exec -- npx'
+        env:
+          PERCY_TOKEN: ${{ secrets.percy_token }}

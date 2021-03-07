@@ -4,7 +4,7 @@ import { HelpCard } from "../components/Common/HelpCard";
 import { PageTitle } from "../components/Common/PageTitle";
 
 const NotFound = () => (
-  <Container fluid className="main-content-container px-4">
+  <Container fluid className="main-content-container px-4" data-name="helpPage">
     <Row noGutters className="page-header mb-4">
       <PageTitle title="Resources" className="text-sm-left mb-3" />
     </Row>
@@ -16,6 +16,7 @@ const NotFound = () => (
           link="https://101.jina.ai"
           icon="fas fa-egg"
           theme="warning"
+          dataName="jina-101-card"
         />
       </Col>
       <Col md="4" lg="3" className="mb-4">
@@ -25,6 +26,7 @@ const NotFound = () => (
           link="https://docs.jina.ai"
           icon="fas fa-book"
           theme="primary"
+          dataName="jina-docs-card"
         />
       </Col>
       <Col md="4" lg="3" className="mb-4">
@@ -34,6 +36,7 @@ const NotFound = () => (
           link="https://github.com/jina-ai/jina#jina-hello-world-"
           icon="fas fa-globe-europe"
           theme="error"
+          dataName="jina-hello-world-card"
         />
       </Col>
       <Col md="4" lg="3" className="mb-4">
@@ -47,6 +50,7 @@ const NotFound = () => (
           link="https://opensource.jina.ai"
           icon="fab fa-github"
           theme="info"
+          dataName="jina-github-card"
         />
       </Col>
       <Col md="4" lg="3" className="mb-4">
@@ -56,6 +60,7 @@ const NotFound = () => (
           link="https://www.linkedin.com/company/jinaai/jobs/"
           icon="fab fa-linkedin"
           theme="linkedin"
+          dataName="jina-linkedin-card"
         />
       </Col>
     </Row>

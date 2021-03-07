@@ -82,7 +82,7 @@ function BarChartCard(props: any) {
               data: chartData.map((d: any) => d.sent),
               backgroundColor: palette.primary,
               borderColor: palette.primary,
-              pointBackgroundColor: palette.background.default,
+              pointBackgroundColor: palette.background,
               pointHoverBackgroundColor: palette.primary,
               borderWidth: 1.5,
             },
@@ -92,7 +92,7 @@ function BarChartCard(props: any) {
               data: chartData.map((d: any) => d.received),
               backgroundColor: palette.success,
               borderColor: palette.success,
-              pointBackgroundColor: palette.background.default,
+              pointBackgroundColor: palette.background,
               pointHoverBackgroundColor: palette.success,
               borderWidth: 1.5,
             },
@@ -100,7 +100,7 @@ function BarChartCard(props: any) {
         },
       };
     },
-    [chartData, palette.success, palette.primary, palette.background.default]
+    [chartData, palette.success, palette.primary, palette.background]
   );
 
   const getChartData = useCallback(() => {
@@ -113,7 +113,7 @@ function BarChartCard(props: any) {
           data: chartData.map((d: any) => d.sent),
           backgroundColor: palette.primary,
           borderColor: palette.primary,
-          pointBackgroundColor: palette.background.default,
+          pointBackgroundColor: palette.background,
           pointHoverBackgroundColor: palette.primary,
           borderWidth: 1.5,
         },
@@ -123,7 +123,7 @@ function BarChartCard(props: any) {
           data: chartData.map((d: any) => d.received),
           backgroundColor: palette.success,
           borderColor: palette.success,
-          pointBackgroundColor: palette.background.default,
+          pointBackgroundColor: palette.background,
           pointHoverBackgroundColor: palette.success,
           borderWidth: 1.5,
         },
@@ -134,7 +134,7 @@ function BarChartCard(props: any) {
     currentTab,
     palette.success,
     palette.primary,
-    palette.background.default,
+    palette.background,
   ]);
 
   useEffect(() => {

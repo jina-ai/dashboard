@@ -1,0 +1,8 @@
+ignore:
+  - "src/components"
+  - "src/assets"
+  - "src/data"
+  - "src/views"
+  - "src/layouts"
+  - "src/styles"
+  - "src/modals"

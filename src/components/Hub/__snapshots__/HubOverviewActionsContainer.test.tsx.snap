@@ -1,0 +1,46 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`actions on hub homepage 1`] = `
+Array [
+  <div
+    className="css-1lmpp88"
+  >
+    <span
+      className="css-kysenj"
+      data-name="hubOverviewActionTitle"
+    >
+      Explore
+    </span>
+    <p>
+      Find out what you can do in Jina hub and how you platform works.
+    </p>
+    <button
+      className="css-y3x934"
+      data-name="hubOverviewActionButtonLabel"
+      onClick={[Function]}
+    >
+      Read more
+    </button>
+  </div>,
+  <div
+    className="css-1lmpp88"
+  >
+    <span
+      className="css-kysenj"
+      data-name="hubOverviewActionTitle"
+    >
+      Create
+    </span>
+    <p>
+      Create flow
+    </p>
+    <button
+      className="css-y3x934"
+      data-name="hubOverviewActionButtonLabel"
+      onClick={[Function]}
+    >
+      Let's Go
+    </button>
+  </div>,
+]
+`;

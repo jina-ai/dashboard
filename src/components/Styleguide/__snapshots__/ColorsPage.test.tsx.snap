@@ -1,0 +1,184 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Colors page 1`] = `
+<div>
+  <div
+    className="text-center text-md-left mb-sm-0 col-sm-3 col-12"
+  >
+    <h3
+      className="page-title"
+      data-name="title"
+    >
+      Colors
+    </h3>
+    <p
+      className="page-subtitle mt-2 mb-0"
+    />
+  </div>
+  <div
+    className="css-4sqht"
+  >
+    <span
+      className="css-13fxtl5"
+    >
+      bodyBackground
+       
+      #f5f6f8
+    </span>
+  </div>
+  <div
+    className="css-1dttzrv"
+  >
+    <span
+      className="css-13fxtl5"
+    >
+      background
+       
+      #FFFFFF
+    </span>
+  </div>
+  <div
+    className="css-1yov7ua"
+  >
+    <span
+      className="css-13fxtl5"
+    >
+      headerTextColor
+       
+      #000000
+    </span>
+  </div>
+  <div
+    className="css-1enftdj"
+  >
+    <span
+      className="css-13fxtl5"
+    >
+      primary
+       
+      #009999
+    </span>
+  </div>
+  <div
+    className="css-rf90rn"
+  >
+    <span
+      className="css-13fxtl5"
+    >
+      secondary
+       
+      #FFCC66
+    </span>
+  </div>
+  <div
+    className="css-rf90rn"
+  >
+    <span
+      className="css-13fxtl5"
+    >
+      warning
+       
+      #FFCC66
+    </span>
+  </div>
+  <div
+    className="css-dt0eag"
+  >
+    <span
+      className="css-13fxtl5"
+    >
+      error
+       
+      #ff6666
+    </span>
+  </div>
+  <div
+    className="css-hm5zhw"
+  >
+    <span
+      className="css-13fxtl5"
+    >
+      success
+       
+      #32C8CD
+    </span>
+  </div>
+  <div
+    className="css-1enftdj"
+  >
+    <span
+      className="css-13fxtl5"
+    >
+      info
+       
+      #009999
+    </span>
+  </div>
+  <div
+    className="css-q4du1v"
+  >
+    <span
+      className="css-13fxtl5"
+    >
+      critical
+       
+      #ff4540
+    </span>
+  </div>
+  <div
+    className="css-d501cm"
+  >
+    <span
+      className="css-13fxtl5"
+    >
+      debug
+       
+      #7E7278
+    </span>
+  </div>
+  <div
+    className="css-19tqen3"
+  >
+    <span
+      className="css-13fxtl5"
+    >
+      tagBackground
+       
+      #DAD7FE
+    </span>
+  </div>
+  <div
+    className="css-rf90rn"
+  >
+    <span
+      className="css-13fxtl5"
+    >
+      tagPlatformBackground
+       
+      #FFCC66
+    </span>
+  </div>
+  <div
+    className="css-1fad82b"
+  >
+    <span
+      className="css-13fxtl5"
+    >
+      mutedText
+       
+      #A6A6A6
+    </span>
+  </div>
+  <div
+    className="css-1e4rlla"
+  >
+    <span
+      className="css-13fxtl5"
+    >
+      highlight
+       
+      #007AFF
+    </span>
+  </div>
+</div>
+`;

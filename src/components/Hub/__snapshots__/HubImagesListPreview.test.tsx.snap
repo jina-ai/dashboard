@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`HubImagesListPreview 1`] = `
+Array [
+  <span
+    className="css-1gt7phv"
+    data-name="hubImagesPreviewSubtitle"
+  >
+    Latest
+  </span>,
+  <div
+    className="row"
+  />,
+]
+`;

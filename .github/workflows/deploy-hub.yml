@@ -18,13 +18,6 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - name: Install Packages
         run: npm ci
-      - name:  'Update version'
-        uses:  'phips28/gh-action-bump-version@master'
-        env:
-          GITHUB_TOKEN: ${{ secrets.JINA_DEV_BOT }}
-        with:
-          minor-wording:  'minor release'
-          major-wording:  'major release'
       - name: Create Build
         run: npm run build-hub
       - name: Deploy Build

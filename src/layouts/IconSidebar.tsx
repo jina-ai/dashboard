@@ -1,21 +1,20 @@
-import React, { useState } from "react";
-import { Container, Row, Col } from "shards-react";
+import React, { useState } from "react"
+import { Container, Row, Col } from "shards-react"
 
-import { MainNavbar } from "../components/Layout/MainNavbar/MainNavbar";
-import MainSidebar from "../components/Layout/MainSidebar/MainSidebar";
-import MainFooter from "../components/Layout/MainFooter";
-import { CookiesBanner } from "../components/Common/CookiesBanner";
-import { InfoToast } from "../components/Common/InfoToast";
-import { ConnectionToast } from "../components/Common/ConnectionToast";
+import { MainNavbar } from "../components/Layout/MainNavbar/MainNavbar"
+import MainSidebar from "../components/Layout/MainSidebar/MainSidebar"
+import MainFooter from "../components/Layout/MainFooter"
+import { CookiesBanner } from "../components/Common/CookiesBanner"
+import { InfoToast } from "../components/Common/InfoToast"
+import { ConnectionToast } from "../components/Common/ConnectionToast"
 
-import PasteYAML from "../modals/PasteYAML";
-import WriteReview from "../modals/WriteReview";
-import LogDetails from "../modals/LogDetails";
+import PasteYAML from "../modals/PasteYAML"
+import WriteReview from "../modals/WriteReview"
+import LogDetails from "../modals/LogDetails"
 
-import logger from "../logger";
+import logger from "../logger"
 
-import { Dispatcher, Constants } from "../flux";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux"
 import {
   selectBanner,
   selectConnectionStatus,
@@ -25,97 +24,94 @@ import {
   selectModalParams,
   selectSidebarItems,
   selectUser,
-} from "../redux/global/global.selectors";
-import store from "../redux";
-import { showBanner, toggleSidebar } from "../redux/global/global.actions";
+} from "../redux/global/global.selectors"
+import store from "../redux"
+import NewFlow from "../modals/NewFlow"
+import PodEdit from "../modals/PodEdit"
+import {
+  showBanner,
+  toggleSidebar,
+  closeModal,
+  connectJinaD,
+} from "../redux/global/global.actions"
+import { importFlow } from "../redux/flows/flows.actions"
+import FlowSettings from "../modals/FlowSettings"
 
 type IconSideBarLayoutProps = {
-  children: React.ReactNode;
-  usesAuth: boolean;
-  usesConnection: boolean;
-};
+  children: React.ReactNode
+  usesAuth: boolean
+  usesConnection: boolean
+  navigateButton?: () => React.ReactNode
+}
 
 const IconSidebarLayout = (props: IconSideBarLayoutProps) => {
-  const modal = useSelector(selectModal);
-  const modalParams = useSelector(selectModalParams);
-  const loading = useSelector(selectLoading);
-  const banner = useSelector(selectBanner);
-  const connected = useSelector(selectConnectionStatus);
-  const loggerEnabled = logger.isEnabled();
-  const menuVisible = useSelector(selectMenuState);
-  const sidebarNavItems = useSelector(selectSidebarItems);
-  const user = useSelector(selectUser);
+  const modal = useSelector(selectModal)
+  const modalParams = useSelector(selectModalParams)
+  const loading = useSelector(selectLoading)
+  const banner = useSelector(selectBanner)
+  const connected = useSelector(selectConnectionStatus)
+  const loggerEnabled = logger.isEnabled()
+  const menuVisible = useSelector(selectMenuState)
+  const sidebarNavItems = useSelector(selectSidebarItems)
+  const user = useSelector(selectUser)
   const [acceptedCookies, setAcceptedCookies] = useState<boolean>(
     localStorage.getItem("accepted-cookies") === "true"
-  );
+  )
 
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
   const acceptCookies = () => {
-    localStorage.setItem("accepted-cookies", String(true));
-    setAcceptedCookies(true);
-  };
+    localStorage.setItem("accepted-cookies", String(true))
+    setAcceptedCookies(true)
+  }
 
-  const closeModal = () => {
-    dispatch(closeModal());
-  };
+  const _closeModal = () => {
+    dispatch(closeModal())
+  }
 
   const importYAML = (yamlString: string) => {
-    Dispatcher.dispatch({
-      actionType: Constants.IMPORT_CUSTOM_YAML,
-      payload: yamlString,
-    });
-  };
+    dispatch(importFlow(yamlString))
+    _closeModal()
+  }
 
-  const submitReview = (content: any) => {
+  const submitReview = () => {
     if (modalParams) {
-      const { imageId } = modalParams;
-      Dispatcher.dispatch({
-        actionType: Constants.POST_REVIEW,
-        payload: { content, imageId },
-      });
     }
-  };
+  }
 
   const reconnect = () => {
-    Dispatcher.dispatch({
-      actionType: Constants.RECONNECT,
-    });
-  };
+    dispatch(connectJinaD())
+  }
 
-  const logOut = () => {
-    Dispatcher.dispatch({
-      actionType: Constants.LOG_OUT,
-    });
-  };
+  const logOut = () => {}
 
   const _toggleSidebar = () => {
-    dispatch(toggleSidebar());
-  };
+    dispatch(toggleSidebar())
+  }
 
   const enableLogger = () => {
-    logger.enable();
-    const storeCopy = store.getState();
-    logger.log("Store Snapshot", storeCopy);
+    logger.enable()
+    const storeCopy = store.getState()
+    logger.log("Store Snapshot", storeCopy)
     dispatch(
       showBanner(
         'Debug Mode Enabled. Click "Export Debug Data" to download Debug JSON.',
         "warning"
       )
-    );
-  };
+    )
+  }
 
   const disableLogger = () => {
-    logger.disable();
-    dispatch(showBanner("Debug Mode Disabled.", "warning"));
-  };
+    logger.disable()
+    dispatch(showBanner("Debug Mode Disabled.", "warning"))
+  }
 
   const exportLogs = () => {
-    const storeCopy = store.getState();
-    logger.log("Store Snapshot", storeCopy);
-    logger.exportLogs();
-  };
+    const storeCopy = store.getState()
+    logger.log("Store Snapshot", storeCopy)
+    logger.exportLogs()
+  }
 
-  const { children, usesAuth, usesConnection } = props;
+  const { children, usesAuth, usesConnection, navigateButton } = props
   return (
     <Container fluid className="icon-sidebar-nav">
       <Row>
@@ -133,6 +129,7 @@ const IconSidebarLayout = (props: IconSideBarLayoutProps) => {
             toggleSidebar={_toggleSidebar}
             reconnect={reconnect}
             connected={connected}
+            navigateButton={navigateButton}
           />
           <InfoToast data={banner} />
           {usesConnection && !loading && !connected && (
@@ -150,21 +147,36 @@ const IconSidebarLayout = (props: IconSideBarLayoutProps) => {
       </Row>
       <LogDetails
         open={modal === "logDetails"}
-        closeModal={closeModal}
+        closeModal={_closeModal}
         modalParams={modalParams}
       />
       <PasteYAML
         open={modal === "import"}
-        closeModal={closeModal}
+        closeModal={_closeModal}
         importYAML={importYAML}
       />
+      <NewFlow open={modal === "newFlow"} />
       <WriteReview
         open={modal === "review"}
-        closeModal={closeModal}
+        closeModal={_closeModal}
         submitReview={submitReview}
       />
+      {modal === "podEdit" && (
+        <PodEdit
+          open={modal === "podEdit"}
+          closeModal={_closeModal}
+          modalParams={modalParams}
+        />
+      )}
+      {modal === "flowSettings" && (
+        <FlowSettings
+          open={modal === "flowSettings"}
+          closeModal={_closeModal}
+          modalParams={modalParams}
+        />
+      )}
     </Container>
-  );
-};
+  )
+}
 
-export default IconSidebarLayout;
+export default IconSidebarLayout
