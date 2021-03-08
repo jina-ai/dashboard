@@ -1,39 +1,39 @@
-import React from "react";
-import styled from "@emotion/styled";
-import Play from "../../assets/icons/Play.svg";
-import Save from "../../assets/icons/Save.svg";
-import Stop from "../../assets/icons/Stop.svg";
-import Upload from "../../assets/icons/Upload.svg";
-import Yaml from "../../assets/icons/Yaml.svg";
+import React from "react"
+import styled from "@emotion/styled"
+import Play from "../../assets/icons/Play.svg"
+import Save from "../../assets/icons/Save.svg"
+import Stop from "../../assets/icons/Stop.svg"
+import Upload from "../../assets/icons/Upload.svg"
+import Yaml from "../../assets/icons/Yaml.svg"
 
 type Props = {
-  importChart: () => void;
-  copyChart: () => void;
-  exportImage: (format: string) => void;
-  startFlow: () => void;
-  stopFlow: () => void;
-};
+  importChart: () => void
+  copyChart: () => void
+  exportImage: (format: string) => void
+  startFlow: () => void
+  stopFlow: () => void
+}
 
 const ButtonGroup = styled.div`
   height: 3.125rem;
-  background: #009999;
+  background: ${(props) => props.theme.palette.primary};
   border-radius: 8px;
   display: flex;
-`;
+`
 
 const Button = styled.button`
-  background: #009999;
+  background: ${(props) => props.theme.palette.primary};
   border: 0;
   margin-right: 1rem;
   cursor: pointer;
   :focus {
     outline: 0px;
   }
-`;
+`
 
 const PlayButton = styled(Button)`
   margin: 0 2rem;
-`;
+`
 
 export default function CommandBar({
   startFlow,
@@ -73,5 +73,5 @@ export default function CommandBar({
         </ButtonGroup>
       </div>
     </div>
-  );
+  )
 }
