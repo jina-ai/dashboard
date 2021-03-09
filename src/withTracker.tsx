@@ -1,48 +1,51 @@
-import React from "react";
-import GoogleAnalytics from "react-ga";
+import React from "react"
+import GoogleAnalytics from "react-ga"
 
-GoogleAnalytics.initialize(process.env.REACT_APP_GAID || "UA-164627626-1");
+GoogleAnalytics.initialize(process.env.REACT_APP_GAID || "UA-164627626-1")
 
-const withTracker = (WrappedComponent: any, options = {}) => {
-  const trackPage = (page: any) => {
+const withTracker = (
+  WrappedComponent: (props: any) => JSX.Element,
+  options = {}
+): typeof React.Component => {
+  const trackPage = (page: string) => {
     if (process.env.NODE_ENV !== "production") {
-      return;
+      return
     }
 
     GoogleAnalytics.set({
       page,
       ...options,
-    });
-    GoogleAnalytics.pageview(page);
-  };
+    })
+    GoogleAnalytics.pageview(page)
+  }
 
-  const BASENAME = process.env.REACT_APP_BASENAME || "";
+  const BASENAME = process.env.REACT_APP_BASENAME || ""
 
+  type PrevProps = { location: { pathname: string; search: string } }
   // eslint-disable-next-line
-  const HOC = class extends React.Component<any, any> {
+  const HOC = class extends React.Component<PrevProps, string> {
     componentDidMount() {
       // eslint-disable-next-line
-      const page = this.props.location.pathname + this.props.location.search;
-      trackPage(`${BASENAME}${page}`);
+      const page = this.props.location.pathname + this.props.location.search
+      trackPage(`${BASENAME}${page}`)
     }
 
-    componentDidUpdate(prevProps: any) {
+    componentDidUpdate(prevProps: PrevProps) {
       const currentPage =
-        prevProps.location.pathname + prevProps.location.search;
-      const nextPage =
-        this.props.location.pathname + this.props.location.search;
+        prevProps.location.pathname + prevProps.location.search
+      const nextPage = this.props.location.pathname + this.props.location.search
 
       if (currentPage !== nextPage) {
-        trackPage(`${BASENAME}${nextPage}`);
+        trackPage(`${BASENAME}${nextPage}`)
       }
     }
 
     render() {
-      return <WrappedComponent {...this.props} />;
+      return <WrappedComponent {...this.props} />
     }
-  };
+  }
 
-  return HOC;
-};
+  return (HOC as unknown) as typeof React.Component
+}
 
-export default withTracker;
+export default withTracker

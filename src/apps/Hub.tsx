@@ -8,19 +8,20 @@ import "bootstrap/dist/css/bootstrap.min.css"
 import "../App.css"
 import { ErrorBoundary } from "react-error-boundary"
 import { FallbackPage } from "../views/FallbackPage"
+import { HubRoute } from "../routes/Hub"
 
 const Hub = () => {
   document.title = "Jina Hub"
   return (
     <Router basename={"/"}>
       <div>
-        {routes.map((route: any, index: number) => {
+        {routes.map((route: HubRoute, index: number) => {
           return (
             <Route
               key={index}
               path={route.path}
               exact={route.exact}
-              component={withTracker((props: any) => {
+              component={withTracker((props) => {
                 return (
                   <route.layout {...props} {...route.props}>
                     <ErrorBoundary FallbackComponent={FallbackPage}>

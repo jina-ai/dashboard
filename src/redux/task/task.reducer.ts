@@ -1,4 +1,4 @@
-import { TaskActions, TaskEvent, TaskState } from "./task.types"
+import { Message, TaskActions, TaskEvent, TaskState } from "./task.types"
 import { HANDLE_NEW_TASK_EVENT, initialTaskState } from "./task.constants"
 import { Processes } from "../global/global.types"
 import { formatSeconds } from "../../helpers"
@@ -42,7 +42,7 @@ const taskReducer = produce((draft: TaskState, action: TaskActions) => {
 
     if (msg_recv && msg_sent) {
       let index = draft.taskData.messages
-        .map((obj: any) => obj.process)
+        .map((obj) => obj.process)
         .indexOf(process)
 
       let msgData = {
@@ -68,11 +68,17 @@ const taskReducer = produce((draft: TaskState, action: TaskActions) => {
       }
 
       draft.taskData.messages = draft.taskData.messages
-        .sort((a: any, b: any) => b.sent + b.received - (a.sent + a.received))
+        .sort(
+          (a: Message, b: Message) =>
+            b.sent + b.received - (a.sent + a.received)
+        )
         .slice(0, 20)
 
       draft.taskData.bytes = draft.taskData.bytes
-        .sort((a: any, b: any) => b.sent + b.received - (a.sent + a.received))
+        .sort(
+          (a: Message, b: Message) =>
+            b.sent + b.received - (a.sent + a.received)
+        )
         .slice(0, 20)
     }
 

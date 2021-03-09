@@ -12,7 +12,6 @@ import {
   IMPORT_FLOW,
   initialFlowChart,
   LOAD_FLOW,
-  RERENDER,
   SET_FLOW_ARGUMENTS,
   UPDATE_NODE,
   UPDATE_SELECTED_FLOW,
@@ -27,9 +26,13 @@ import {
 } from "./flows.types"
 import { nanoid } from "nanoid"
 import produce from "immer"
-import { isEdge, isNode } from "react-flow-renderer"
 import { isNodeConnection } from "../../helpers/typeCheckers"
-import { createLink, createNode } from "../../helpers/flow-chart"
+import {
+  createLink,
+  createNode,
+  isFlowNode,
+  isFlowEdge,
+} from "../../helpers/flow-chart"
 import { Connection } from "react-flow-renderer/dist/types"
 
 export const saveFlowsToStorage = (state: FlowState) => {
@@ -73,7 +76,6 @@ function getExampleFlows() {
 }
 
 const initialState: FlowState = {
-  rerender: false,
   selectedFlowId: "_userFlow",
   flows: {
     ...getUserFlows(),
@@ -170,7 +172,7 @@ const flowReducer = produce((draft: FlowState, action: FlowActionTypes) => {
       break
     }
     case UPDATE_NODE_DATA: {
-      const { nodePropertiesUpdate, nodeId } = action.payload
+      const { nodeDataUpdate, nodeId } = action.payload
       const selectedFlowId = draft.selectedFlowId
       const oldNodeIndex = draft.flows[
         selectedFlowId
@@ -182,7 +184,7 @@ const flowReducer = produce((draft: FlowState, action: FlowActionTypes) => {
 
         const newData: NodeData = {
           ...oldNode.data,
-          ...nodePropertiesUpdate,
+          ...nodeDataUpdate,
         }
 
         draft.flows[selectedFlowId].flowChart.elements[
@@ -202,9 +204,9 @@ const flowReducer = produce((draft: FlowState, action: FlowActionTypes) => {
       const selectedFlow = draft.flows[draft.selectedFlowId]
       const withoutLinksAndNode = selectedFlow.flowChart.elements.filter(
         (element) => {
-          if (isNode(element)) return element.id !== nodeId
+          if (isFlowNode(element)) return element.id !== nodeId
 
-          if (isEdge(element))
+          if (isFlowEdge(element))
             return element.source !== nodeId && element.target !== nodeId
 
           return true
@@ -226,7 +228,7 @@ const flowReducer = produce((draft: FlowState, action: FlowActionTypes) => {
         ].flowChart.elements.filter(
           (element) =>
             !(
-              isEdge(element) &&
+              isFlowEdge(element) &&
               (element.source === source || element.target === target)
             )
         )
@@ -237,13 +239,9 @@ const flowReducer = produce((draft: FlowState, action: FlowActionTypes) => {
         ].flowChart.elements.filter((element) => linkId !== element.id)
       }
       break
-    //todo check if this can be deleted with the flow chart lib
-    case RERENDER:
-      draft.rerender = !draft.rerender
-      break
   }
 
-  action.type !== RERENDER && saveFlowsToStorage(draft)
+  saveFlowsToStorage(draft)
 }, initialState)
 
 function _createNewFlow(draft: FlowState, customYAML?: string): FlowState {

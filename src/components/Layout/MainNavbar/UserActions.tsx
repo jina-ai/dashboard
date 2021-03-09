@@ -1,5 +1,5 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React from "react"
+import { Link } from "react-router-dom"
 import {
   Dropdown,
   DropdownToggle,
@@ -10,27 +10,29 @@ import {
   NavLink,
   Button,
   // @ts-ignore
-} from "shards-react";
+} from "shards-react"
 
 type User = {
-  displayName: string;
-  emails: [{ value: string }];
-  id: string;
-  nodeId: string;
-  photos: [{ value: string }];
-  profileUrl: string;
-  provider: string;
-  username: string;
-  _json: any;
-  _raw: any;
-};
+  displayName: string
+  emails: [{ value: string }]
+  id: string
+  nodeId: string
+  photos: [{ value: string }]
+  profileUrl: string
+  provider: string
+  username: string
+  _json: {
+    avatar_url: string
+  }
+  _raw: string
+}
 
 type Props = {
-  userActionsVisible: boolean;
-  user: User | null;
-  logOut: () => void;
-  toggleUserActions: () => void;
-};
+  userActionsVisible: boolean
+  user: User | null
+  logOut: () => void
+  toggleUserActions: () => void
+}
 
 function UserActions({
   user,
@@ -66,7 +68,7 @@ function UserActions({
         </DropdownItem>
       </Collapse>
     </NavItem>
-  );
+  )
 }
 
-export { UserActions };
+export { UserActions }

@@ -1,27 +1,27 @@
-import React, { useRef, useState, useCallback, useEffect } from "react";
-import { Card } from "shards-react";
-import { useTheme } from "@emotion/react";
-import ChartElement, { ChartOptions } from "chart.js";
-
+import React, { useRef, useState, useCallback, useEffect } from "react"
+import { Card } from "shards-react"
+import { useTheme } from "@emotion/react"
+import ChartElement, { ChartOptions } from "chart.js"
+//todo type this when taskView is back
 type Props = {
   speed: {
-    history: any;
-    current: any;
-    unit: any;
-  };
-};
+    history: any
+    current: any
+    unit: any
+  }
+}
 
 function SpeedCard({ speed }: Props) {
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const [chartInstance, setChartInstance] = useState<ChartElement | null>(null);
-  const { history } = speed;
-  const { palette } = useTheme();
+  const canvasRef = useRef<HTMLCanvasElement | null>(null)
+  const [chartInstance, setChartInstance] = useState<ChartElement | null>(null)
+  const { history } = speed
+  const { palette } = useTheme()
 
-  let maxValue = Math.max(...history);
-  let minValue = Math.min(...history);
+  let maxValue = Math.max(...history)
+  let minValue = Math.min(...history)
 
   const getChartOptions = useCallback((): ChartOptions => {
-    const difference = maxValue - minValue;
+    const difference = maxValue - minValue
     return {
       maintainAspectRatio: true,
       responsive: true,
@@ -76,8 +76,8 @@ function SpeedCard({ speed }: Props) {
           },
         ],
       },
-    };
-  }, [maxValue, minValue]);
+    }
+  }, [maxValue, minValue])
 
   const getChartConfig = useCallback(
     (chartOptions) => {
@@ -97,21 +97,21 @@ function SpeedCard({ speed }: Props) {
           ],
         },
         options: chartOptions,
-      };
+      }
     },
     [history, palette.primary]
-  );
+  )
 
   useEffect(() => {
-    if (!canvasRef.current) return;
-    const chartOptions = getChartOptions();
-    const chartConfig = getChartConfig(chartOptions);
-    const newChartInstance = new ChartElement(canvasRef.current, chartConfig);
-    setChartInstance(newChartInstance);
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+    if (!canvasRef.current) return
+    const chartOptions = getChartOptions()
+    const chartConfig = getChartConfig(chartOptions)
+    const newChartInstance = new ChartElement(canvasRef.current, chartConfig)
+    setChartInstance(newChartInstance)
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
-    if (!chartInstance) return;
+    if (!chartInstance) return
     let newChartData = {
       ...chartInstance.data,
       ...{
@@ -126,17 +126,11 @@ function SpeedCard({ speed }: Props) {
           },
         ],
       },
-    };
-    chartInstance.options = getChartOptions();
-    chartInstance.data = newChartData;
-    chartInstance.update();
-  }, [
-    history,
-    chartInstance,
-    getChartOptions,
-    getChartConfig,
-    palette.primary,
-  ]);
+    }
+    chartInstance.options = getChartOptions()
+    chartInstance.data = newChartData
+    chartInstance.update()
+  }, [history, chartInstance, getChartOptions, getChartConfig, palette.primary])
 
   return (
     <Card className="pt-0 h-100 stats-small">
@@ -151,7 +145,7 @@ function SpeedCard({ speed }: Props) {
       </div>
       <canvas height="100" ref={canvasRef} className="stats-small-1" />
     </Card>
-  );
+  )
 }
 
-export default SpeedCard;
+export default SpeedCard

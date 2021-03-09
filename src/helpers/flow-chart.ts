@@ -1,13 +1,16 @@
 // @ts-nocheck
-import { FlowChart, NodeData } from "../redux/flows/flows.types"
-import { Edge, Node, XYPosition } from "react-flow-renderer/dist/types"
+import { FlowChart, FlowNode, NodeData, Pod } from "../redux/flows/flows.types"
+import { isEdge, isNode, XYPosition } from "react-flow-renderer"
 const settings = require("./../settings")
+
+export const isFlowEdge = isEdge
+export const isFlowNode = isNode
 
 export const createNode = (
   id: string,
   data?: NodeData,
   position: XYPosition
-): Node => {
+): FlowNode => {
   return {
     id,
     type: id === "gateway" ? "gateway" : "pod",
@@ -16,16 +19,15 @@ export const createNode = (
   }
 }
 
-export const createLink = (source: string, target: string): Edge => ({
+export const createLink = (source: string, target: string): FlowLink => ({
   id: `e-${source}-to-${target}`,
   source,
   target,
   type: "step",
 })
 
-//todo type this properly
 type ParsedYAML = {
-  pods: Array | { [key: string]: any }
+  pods: Pod[]
   with?: {
     board?: {
       canvas?: { [key: string]: { x: number; y: number } }
@@ -42,8 +44,8 @@ export const formatForFlowchart = (data: ParsedYAML): FlowChart => {
     with: data.with,
   }
 
-  let nodes: Node[] = []
-  let links: Edge[] = []
+  let nodes: FlowNode[] = []
+  let links: FlowLink[] = []
 
   if (data.version?.includes("1")) {
     let podMap = {}
@@ -68,7 +70,7 @@ export const formatForFlowchart = (data: ParsedYAML): FlowChart => {
   Object.keys(pods).forEach((id) => {
     const pod = pods[id] || {}
 
-    let node: Node = createNode(id, pod, {})
+    let node: FlowNode = createNode(id, pod, {})
 
     node.data.label = id
 
@@ -113,7 +115,7 @@ export const formatForFlowchart = (data: ParsedYAML): FlowChart => {
   return formatted
 }
 
-function getNodeDepth(nodes: Node[], node: Node): number {
+function getNodeDepth(nodes: FlowNode[], node: FlowNode): number {
   const parents = node.data.needs
 
   if (!parents || parents.length === 0) return 0

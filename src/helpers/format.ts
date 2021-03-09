@@ -4,18 +4,18 @@ import { getInitialLogLevel } from "../redux/logStream/logStream.constants"
 import _ from "lodash"
 import { Level, LogLevelOccurrences } from "../redux/logStream/logStream.types"
 import {
+  CustomDataObject,
   FlowArgument,
   FlowArguments,
   FlowChart,
+  FlowNode,
+  FlowEdge,
 } from "../redux/flows/flows.types"
-import { Edge, Node } from "react-flow-renderer/dist/types"
-import { isEdge, isNode } from "react-flow-renderer"
+import { isFlowNode, isFlowEdge } from "./flow-chart"
 
-const customProperties = ["depth", "label"] //todo generate this dynamically with proper typing
+const customData = Object.keys(CustomDataObject)
 
 export const parseYAML = (yamlSTR: string) => {
-  //todo removing the !tag is kind a bootleg solution. We should look into the parsing
-  //todo type this properly
   let yamlStrWithoutTag = /^!/.test(yamlSTR)
     ? yamlSTR.split("\n").slice(1).join("\n")
     : yamlSTR
@@ -56,17 +56,17 @@ export const formatAsYAML = (
 ) => {
   const { with: chartWith, elements } = chart
 
-  let nodes: Node[] = []
-  let links: Edge[] = []
+  let nodes: FlowNode[] = []
+  let flowEdges: FlowEdge[] = []
 
   elements.forEach((element) => {
-    if (isEdge(element)) links.push(element)
-    if (isNode(element)) nodes.push(element)
+    if (isFlowEdge(element)) flowEdges.push(element)
+    if (isFlowNode(element)) nodes.push(element)
   })
 
   const { pod: podArguments } = flowArguments
 
-  const childParentsMap = links.reduce((acc, curr) => {
+  const childParentsMap = flowEdges.reduce((acc, curr) => {
     const parent = curr.source
     const child = curr.target
 
@@ -84,7 +84,7 @@ export const formatAsYAML = (
 
       const podProperties = Object.entries(node.data).reduce(
         (acc, [argName, propValue]) => {
-          if (customProperties.includes(argName)) return acc
+          if (customData.includes(argName)) return acc
           acc[argName] = decodePropValue(argName, propValue, podArguments)
           return acc
         },

@@ -1,51 +1,52 @@
-import React, { useRef, useEffect, useState, useCallback } from "react";
+import React, { useRef, useEffect, useState, useCallback } from "react"
 import ChartElement, {
   ChartConfiguration,
   ChartOptions,
   ChartData,
   ChartDataSets,
-} from "chart.js";
-import { LogLevelSummaryChartData } from "./types";
-import { getLevels } from "./levels";
-import { Theme, useTheme } from "@emotion/react";
+} from "chart.js"
+import { LogLevelSummaryChartData } from "./types"
+import { getLevelPalette, LevelColor } from "./levels"
+import { Theme, useTheme } from "@emotion/react"
+import { LEVELS } from "../../redux/logStream/logStream.types"
 
-const DEFAULT_HEIGHT = 10;
-const DEFAULT_WIDTH = 100;
+const DEFAULT_HEIGHT = 10
+const DEFAULT_WIDTH = 100
 
 function getParsedDatasets(data: LogLevelSummaryChartData, theme: Theme) {
-  const levels = getLevels(theme);
-  const datasets = Object.keys(levels).map(
+  const levelPalette = getLevelPalette(theme)
+  const datasets = LEVELS.map(
     (level): ChartDataSets => {
-      const levelData = data.map((tick: any) => tick.levels[level]);
+      const levelData = data.map((tick) => tick.levels[level])
       return {
         barPercentage: 0.75,
         categoryPercentage: 1,
         label: level,
         fill: "start",
-        backgroundColor: levels[level].backgroundColor,
+        backgroundColor: levelPalette[level].backgroundColor,
         data: levelData,
-      };
+      }
     }
-  );
-  return datasets;
+  )
+  return datasets
 }
 
 function getLabels(amount?: number): number[] {
-  const labels = [];
+  const labels = []
   for (let i = 0; i < (amount || 0); ++i) {
-    labels.push(i);
+    labels.push(i)
   }
-  return labels;
+  return labels
 }
 
 type Props = {
-  width?: number;
-  height?: number;
-  numTicks?: number;
-  data: LogLevelSummaryChartData;
-  onClick: (activePoints: any) => void;
-  timeLabels: string[];
-};
+  width?: number
+  height?: number
+  numTicks?: number
+  data: LogLevelSummaryChartData
+  onClick: (activePoints: { _index: number }[]) => void
+  timeLabels: string[]
+}
 
 function ChartBase({
   width,
@@ -55,29 +56,29 @@ function ChartBase({
   onClick,
   timeLabels,
 }: Props) {
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const [chartInstance, setChartInstance] = useState<ChartElement | null>(null);
+  const canvasRef = useRef<HTMLCanvasElement | null>(null)
+  const [chartInstance, setChartInstance] = useState<ChartElement | null>(null)
   // Get theme from ThemeProvider (for usecases like dark mode)
-  const theme = useTheme();
+  const theme = useTheme()
 
-  function onClickChart(e: any) {
-    if (!chartInstance) return;
-    const activePoints = chartInstance.getElementsAtEvent(e);
-    onClick(activePoints);
+  function onClickChart(e: MouseEvent) {
+    if (!chartInstance) return
+    const activePoints = chartInstance.getElementsAtEvent(e)
+    onClick(activePoints)
   }
 
   const getXAxisLabel = useCallback(
-    (value: any, index: number, values: any) => {
-      if (index === 0) return timeLabels[0];
-      else if (index === Math.floor(values.length / 2)) return timeLabels[1];
-      return;
+    (value, index, values) => {
+      if (index === 0) return timeLabels[0]
+      else if (index === Math.floor(values.length / 2)) return timeLabels[1]
+      return
     },
     [timeLabels]
-  );
+  )
 
-  function getYAxisLabel(value: any) {
+  function getYAxisLabel(value: number) {
     if (Number.isInteger(value)) {
-      return value;
+      return value
     }
   }
 
@@ -87,8 +88,8 @@ function ChartBase({
         className="chart-legend mt-1 mb-3"
         data-name="logOccurencesChartLegend"
       >
-        {Object.entries(getLevels(theme)).map(
-          ([level, style]: [string, any]) => (
+        {Object.entries(getLevelPalette(theme)).map(
+          ([level, style]: [string, LevelColor]) => (
             <div className="chart-legend-item" key={level}>
               <div
                 className={`chart-legend-indicator mr-1 ${level.toLowerCase()}`}
@@ -99,11 +100,11 @@ function ChartBase({
           )
         )}
       </div>
-    );
+    )
   }
 
   useEffect(() => {
-    if (!canvasRef.current) return;
+    if (!canvasRef.current) return
     const chartOptions: ChartOptions = {
       animation: { duration: 0 },
       events: ["click"],
@@ -160,7 +161,7 @@ function ChartBase({
           },
         ],
       },
-    };
+    }
 
     const chartConfig: ChartConfiguration = {
       type: "bar",
@@ -168,21 +169,21 @@ function ChartBase({
         datasets: getParsedDatasets(data, theme),
       },
       options: chartOptions,
-    };
+    }
 
-    const newChartInstance = new ChartElement(canvasRef.current, chartConfig);
-    setChartInstance(newChartInstance);
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+    const newChartInstance = new ChartElement(canvasRef.current, chartConfig)
+    setChartInstance(newChartInstance)
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
-    if (!chartInstance) return;
+    if (!chartInstance) return
     const chartData: ChartData = {
       labels: getLabels(numTicks),
       datasets: getParsedDatasets(data, theme),
-    };
-    chartInstance.data = chartData;
-    chartInstance.update();
-  }, [data, chartInstance, numTicks, theme]);
+    }
+    chartInstance.data = chartData
+    chartInstance.update()
+  }, [data, chartInstance, numTicks, theme])
 
   useEffect(() => {
     if (
@@ -191,10 +192,10 @@ function ChartBase({
       chartInstance.options.scales.xAxes &&
       chartInstance.options.scales.xAxes[0].ticks
     ) {
-      chartInstance.options.scales.xAxes[0].ticks.callback = getXAxisLabel;
-      chartInstance.update();
+      chartInstance.options.scales.xAxes[0].ticks.callback = getXAxisLabel
+      chartInstance.update()
     }
-  }, [getXAxisLabel, chartInstance]);
+  }, [getXAxisLabel, chartInstance])
 
   return (
     <>
@@ -205,7 +206,7 @@ function ChartBase({
         ref={canvasRef}
       />
     </>
-  );
+  )
 }
 
-export default ChartBase;
+export default ChartBase
