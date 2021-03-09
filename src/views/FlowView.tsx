@@ -17,7 +17,6 @@ import {
   selectSelectedFlow,
   selectSelectedFlowId,
 } from "../redux/flows/flows.selectors"
-import { selectConnectionStatus } from "../redux/global/global.selectors"
 import { showModal } from "../redux/global/global.actions"
 import logger from "../logger"
 import { copyToClipboard, formatAsYAML } from "../helpers"

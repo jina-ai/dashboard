@@ -9,9 +9,9 @@ import {
   FlowArguments,
   FlowChart,
   FlowNode,
-  Link,
+  FlowEdge,
 } from "../redux/flows/flows.types"
-import { isFlowNode, isLink } from "./flow-chart"
+import { isFlowNode, isFlowEdge } from "./flow-chart"
 
 const customData = Object.keys(CustomDataObject)
 
@@ -57,16 +57,16 @@ export const formatAsYAML = (
   const { with: chartWith, elements } = chart
 
   let nodes: FlowNode[] = []
-  let links: Link[] = []
+  let flowEdges: FlowEdge[] = []
 
   elements.forEach((element) => {
-    if (isLink(element)) links.push(element)
+    if (isFlowEdge(element)) flowEdges.push(element)
     if (isFlowNode(element)) nodes.push(element)
   })
 
   const { pod: podArguments } = flowArguments
 
-  const childParentsMap = links.reduce((acc, curr) => {
+  const childParentsMap = flowEdges.reduce((acc, curr) => {
     const parent = curr.source
     const child = curr.target
 

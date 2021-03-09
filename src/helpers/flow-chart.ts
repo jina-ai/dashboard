@@ -3,7 +3,7 @@ import { FlowChart, FlowNode, NodeData, Pod } from "../redux/flows/flows.types"
 import { isEdge, isNode, XYPosition } from "react-flow-renderer"
 const settings = require("./../settings")
 
-export const isLink = isEdge
+export const isFlowEdge = isEdge
 export const isFlowNode = isNode
 
 export const createNode = (

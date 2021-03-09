@@ -13,10 +13,10 @@ import { selectSelectedFlow } from "../../redux/flows/flows.selectors"
 import {
   FlowElement,
   FlowNode,
-  Link,
+  FlowEdge,
   NodeConnection,
 } from "../../redux/flows/flows.types"
-import { isFlowNode, isLink } from "../../helpers/flow-chart"
+import { isFlowNode, isFlowEdge } from "../../helpers/flow-chart"
 type Props = {
   elements: FlowElement[]
 }
@@ -36,14 +36,14 @@ export default function FlowChart(props: Props) {
 
   const reactFlowWrapper = useRef<HTMLElement>(null)
 
-  const onConnect = (params: Link | NodeConnection) => {
+  const onConnect = (params: FlowEdge | NodeConnection) => {
     if (params.source && params.target)
       dispatch(addLink(params.source, params.target))
   }
 
   const onElementsRemove = (elements: FlowElement[]) => {
     elements.forEach((element) => {
-      if (isLink(element)) dispatch(deleteLink(element.id))
+      if (isFlowEdge(element)) dispatch(deleteLink(element.id))
       if (isFlowNode(element)) dispatch(deleteNode(element.id))
     })
   }

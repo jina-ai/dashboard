@@ -31,7 +31,7 @@ import {
   createLink,
   createNode,
   isFlowNode,
-  isLink,
+  isFlowEdge,
 } from "../../helpers/flow-chart"
 import { Connection } from "react-flow-renderer/dist/types"
 
@@ -206,7 +206,7 @@ const flowReducer = produce((draft: FlowState, action: FlowActionTypes) => {
         (element) => {
           if (isFlowNode(element)) return element.id !== nodeId
 
-          if (isLink(element))
+          if (isFlowEdge(element))
             return element.source !== nodeId && element.target !== nodeId
 
           return true
@@ -228,7 +228,7 @@ const flowReducer = produce((draft: FlowState, action: FlowActionTypes) => {
         ].flowChart.elements.filter(
           (element) =>
             !(
-              isLink(element) &&
+              isFlowEdge(element) &&
               (element.source === source || element.target === target)
             )
         )

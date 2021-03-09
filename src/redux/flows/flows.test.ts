@@ -15,9 +15,8 @@ import {
 } from "./flows.actions"
 import { initialFlowChart } from "./flows.constants"
 import { testFlowArguments, testFlowState } from "./flows.testData"
-import { Flow, FlowNode, Link, NodeDataUpdate } from "./flows.types"
-import { isFlowNode, isLink } from "../../helpers/flow-chart"
-import { isEdge } from "react-flow-renderer"
+import { Flow, FlowNode, FlowEdge, NodeDataUpdate } from "./flows.types"
+import { isFlowNode, isFlowEdge } from "../../helpers/flow-chart"
 
 function getFlowFromStorage(id: string): Flow | undefined {
   const userFlowsString = localStorage.getItem("userFlows")
@@ -223,7 +222,7 @@ describe("flows reducer", () => {
     ).toBeDefined()
     expect(
       testFlowState.flows.testFlow1.flowChart.elements.filter((element) =>
-        isEdge(element)
+        isFlowEdge(element)
       )
     ).not.toEqual([])
 
@@ -237,7 +236,7 @@ describe("flows reducer", () => {
 
     expect(
       flowStateWithDeletedNode.flows.testFlow1.flowChart.elements.filter(
-        (element) => isEdge(element)
+        (element) => isFlowEdge(element)
       )
     ).toEqual([])
 
@@ -255,14 +254,14 @@ describe("flows reducer", () => {
       testFlowState.flows[testFlowState.selectedFlowId].flowChart
     const newFlowChart = newState.flows[newState.selectedFlowId].flowChart
     const oldLinkCount = oldFlowChart.elements.filter((element) =>
-      isEdge(element)
+      isFlowEdge(element)
     ).length
     const newLinkCount = newFlowChart.elements.filter((element) =>
-      isEdge(element)
+      isFlowEdge(element)
     ).length
     const newLink = newFlowChart.elements.find(
       (element) => element.id === `e-${source}-to-${target}`
-    ) as Link
+    ) as FlowEdge
 
     expect(newLinkCount - oldLinkCount).toBe(1)
     expect(newLink.source).toBe(source)
@@ -272,7 +271,7 @@ describe("flows reducer", () => {
       testFlowState.selectedFlowId
     )?.flowChart.elements.find(
       (element) => element.id === `e-${source}-to-${target}`
-    ) as Link
+    ) as FlowEdge
 
     expect(linkFromStorage.source).toBe(source)
     expect(linkFromStorage.target).toBe(target)
@@ -285,23 +284,23 @@ describe("flows reducer", () => {
       testFlowState.selectedFlowId
     )?.flowChart.elements.find(
       (element) => element.id === deletedLinkId
-    ) as Link
+    ) as FlowEdge
 
     const newState = reducer(testFlowState, deleteLink(deletedLinkId))
     const oldFlowChart =
       testFlowState.flows[testFlowState.selectedFlowId].flowChart
     const newFlowChart = newState.flows[newState.selectedFlowId].flowChart
     const oldLinkCount = oldFlowChart.elements.filter((element) =>
-      isEdge(element)
+      isFlowEdge(element)
     ).length
     const newLinkCount = newFlowChart.elements.filter((element) =>
-      isEdge(element)
+      isFlowEdge(element)
     ).length
     const newLinkFromStorage = getFlowFromStorage(
       testFlowState.selectedFlowId
     )?.flowChart.elements.find(
       (element) => element.id === deletedLinkId
-    ) as Link
+    ) as FlowEdge
 
     expect(oldLinkCount - newLinkCount).toBe(1)
     expect(
@@ -323,23 +322,23 @@ describe("flows reducer", () => {
       testFlowState.selectedFlowId
     )?.flowChart.elements.find(
       (element) => element.id === deletedLinkId
-    ) as Link
+    ) as FlowEdge
 
     const newState = reducer(testFlowState, deleteLink({ source, target }))
     const oldFlowChart =
       testFlowState.flows[testFlowState.selectedFlowId].flowChart
     const newFlowChart = newState.flows[newState.selectedFlowId].flowChart
     const oldLinkCount = oldFlowChart.elements.filter((element) =>
-      isLink(element)
+      isFlowEdge(element)
     ).length
     const newLinkCount = newFlowChart.elements.filter((element) =>
-      isLink(element)
+      isFlowEdge(element)
     ).length
     const newLinkFromStorage = getFlowFromStorage(
       testFlowState.selectedFlowId
     )?.flowChart.elements.find(
       (element) => element.id === deletedLinkId
-    ) as Link
+    ) as FlowEdge
     expect(oldLinkCount - newLinkCount).toBe(1)
     expect(
       oldFlowChart.elements.find((element) => element.id === deletedLinkId)

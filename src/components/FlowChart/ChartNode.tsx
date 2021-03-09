@@ -69,11 +69,11 @@ export default function ChartNode(props: ChartNodeProps) {
     border: 1px solid ${theme.palette.primary};
   `
 
-  function isNode(prop: ChartNodeProps): prop is FlowNode {
+  function _isFlowNode(prop: ChartNodeProps): prop is FlowNode {
     return (prop as FlowNode).id !== undefined
   }
 
-  if (isNode(props)) {
+  if (_isFlowNode(props)) {
     const node = props
     return (
       <ChartNodeElement

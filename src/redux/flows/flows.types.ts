@@ -51,8 +51,8 @@ type CustomData = typeof CustomDataObjectReq &
 export type NodeData = CustomData & Pod
 
 export type FlowNode = Node<NodeData>
-export type Link = Edge
-export type FlowElement = FlowNode | Link
+export type FlowEdge = Edge
+export type FlowElement = FlowNode | FlowEdge
 export type NodeId = string
 export type LinkId = string
 export type HandlerId = string
