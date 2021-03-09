@@ -15,6 +15,7 @@ import LogIn from "../views/LogIn"
 import NotFound from "../views/NotFound"
 import NavigateButton from "../components/Common/NavigateButton"
 import FlowView from "../views/FlowView"
+import OAuthTestView from "../views/OAuthTestView"
 
 export const dashboardRoutes = [
   {
@@ -22,6 +23,12 @@ export const dashboardRoutes = [
     exact: true,
     layout: IconSidebar,
     component: () => <Redirect to="/logs" />,
+  },
+  {
+    path: "/oAuth",
+    exact: true,
+    layout: IconSidebar,
+    component: OAuthTestView,
   },
   {
     path: "/logs",
