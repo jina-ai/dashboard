@@ -1,5 +1,6 @@
 import React from "react"
 import { Form, InputGroup } from "react-bootstrap"
+import styled from "@emotion/styled"
 
 type Props = {
   value: string | number
@@ -8,6 +9,10 @@ type Props = {
   onChange: (newValue: string) => void
   onSearch?: (value: string | number) => void
 }
+
+const InputPrepend = styled(InputGroup.Prepend)`
+  cursor: pointer;
+`
 
 function ExpandingSearchbar({
   value,
@@ -32,7 +37,7 @@ function ExpandingSearchbar({
       }`}
     >
       <InputGroup>
-        <InputGroup.Prepend
+        <InputPrepend
           className="ml-auto"
           onClick={(event: React.MouseEvent<HTMLDivElement>) =>
             onSearch && onSearch(value)
@@ -41,7 +46,7 @@ function ExpandingSearchbar({
           <InputGroup.Text>
             <i className="material-icons">search</i>
           </InputGroup.Text>
-        </InputGroup.Prepend>
+        </InputPrepend>
         <Form.Control
           type="text"
           role="input"
