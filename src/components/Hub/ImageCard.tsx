@@ -1,19 +1,19 @@
-import React from "react";
-import { Row, Col, Card } from "react-bootstrap";
-import styled from "@emotion/styled";
-import { Link } from "react-router-dom";
+import React from "react"
+import { Row, Col, Card } from "react-bootstrap"
+import styled from "@emotion/styled"
+import { Link } from "react-router-dom"
 
 type HubImagePreview = {
-  name: string;
-  author: string;
-  description: string;
-  keywords: string[];
-};
+  name: string
+  author: string
+  description: string
+  keywords: string[]
+}
 
 type Props = {
-  image: HubImagePreview;
-  index: number;
-};
+  image: HubImagePreview
+  index: number
+}
 
 export const Tag = styled.div`
   background: ${(props) => props.theme.palette.tagBackground};
@@ -23,27 +23,27 @@ export const Tag = styled.div`
   margin-right: 1rem;
   margin-bottom: 1rem;
   white-space: nowrap;
-`;
+`
 const Title = styled.div`
   font-size: 1.25em;
   font-weight: 700;
   line-height: normal;
-`;
+`
 
 const SubTitle = styled.div`
   font-weight: 600;
   opacity: 0.5;
-`;
+`
 
 const ImageLink = styled(Link)`
   color: unset;
   &:hover {
     text-decoration: none;
   }
-`;
+`
 
 export default function ImageCard({ image, index }: Props) {
-  let { name, author, keywords, description } = image;
+  let { name, author, keywords, description } = image
 
   return (
     <ImageLink to={`/package/${index}`}>
@@ -52,8 +52,8 @@ export default function ImageCard({ image, index }: Props) {
           <Row>
             <Col xs="12" className="px-0">
               <Title className="mb-2">{name}</Title>
-              {keywords.map((keyword) => (
-                <Tag data-name="hubImageTags" key={keyword}>
+              {keywords.map((keyword, index) => (
+                <Tag data-name="hubImageTags" key={index}>
                   {keyword}
                 </Tag>
               ))}
@@ -69,5 +69,5 @@ export default function ImageCard({ image, index }: Props) {
         </Card.Body>
       </Card>
     </ImageLink>
-  );
+  )
 }
