@@ -25,7 +25,7 @@ export const dashboardRoutes = [
     component: () => <Redirect to="/logs" />,
   },
   {
-    path: "/login",
+    path: "/login2",
     exact: true,
     layout: IconSidebar,
     component: OAuthTestView,
