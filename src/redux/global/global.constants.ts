@@ -1,17 +1,19 @@
-import { GlobalState, TNavItem } from "./global.types";
+import { GlobalState, TNavItem } from "./global.types"
 
-export const HANDLE_CONNECTION_STATUS = "HANDLE_CONNECTION_STATUS";
-export const TOGGLE_SIDE_BAR = "TOGGLE_SIDE_BAR";
-export const SHOW_BANNER = "SHOW_BANNER";
-export const HIDE_BANNER = "HIDE_BANNER";
-export const SHOW_ERROR = "SHOW_ERROR";
-export const SHOW_MODAL = "SHOW_MODAL";
-export const CLOSE_MODAL = "CLOSE_MODAL";
-export const CONNECT_JINAD = "CONNECT_JINAD";
-export const FETCH_ARGUMENTS_FROM_API = "FETCH_ARGUMENTS_FROM_API";
-export const FETCH_ARGUMENTS_FROM_DAEMON = "FETCH_ARGUMENTS_FROM_DAEMON";
+export const HANDLE_CONNECTION_STATUS = "HANDLE_CONNECTION_STATUS"
+export const TOGGLE_SIDE_BAR = "TOGGLE_SIDE_BAR"
+export const SHOW_BANNER = "SHOW_BANNER"
+export const HIDE_BANNER = "HIDE_BANNER"
+export const SHOW_ERROR = "SHOW_ERROR"
+export const SHOW_MODAL = "SHOW_MODAL"
+export const CLOSE_MODAL = "CLOSE_MODAL"
+export const CONNECT_JINAD = "CONNECT_JINAD"
+export const FETCH_ARGUMENTS_FROM_API = "FETCH_ARGUMENTS_FROM_API"
+export const FETCH_ARGUMENTS_FROM_DAEMON = "FETCH_ARGUMENTS_FROM_DAEMON"
+export const LOGIN_GITHUB = "LOGIN_GITHUB"
+export const LOGOUT = "LOGOUT"
 
-export const HIDE_BANNER_TIMEOUT = 5000;
+export const HIDE_BANNER_TIMEOUT = 5000
 
 const navItems: TNavItem[] = [
   {
@@ -50,7 +52,7 @@ const navItems: TNavItem[] = [
     iconName: "help",
     matches: ["help"],
   },
-];
+]
 
 export const initialGlobalState: GlobalState = {
   user: null,
@@ -63,4 +65,4 @@ export const initialGlobalState: GlobalState = {
   modalParams: null,
   navItems,
   processes: {},
-};
+}

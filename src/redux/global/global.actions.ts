@@ -12,6 +12,7 @@ import {
 } from "./global.constants"
 import {
   CloseModalAction,
+  GithubCode,
   HandleConnectionStatusAction,
   HideBannerAction,
   Modal,
@@ -19,6 +20,7 @@ import {
   ShowErrorAction,
   ShowModalAction,
   ToggleSidebarAction,
+  User,
 } from "./global.types"
 import { AppThunk } from "../index"
 import store from ".."
@@ -26,6 +28,7 @@ import jinadClient from "../../services/jinad"
 import { getJinaFlowArguments } from "../../services/jinaApi"
 import { setFlowArguments } from "../flows/flows.actions"
 import logger from "../../logger"
+import { loginAndGetUserinfo } from "../../services/hubApi"
 
 export function handleConnectionStatus(
   connected: boolean,
@@ -142,5 +145,12 @@ export function connectJinaD(): AppThunk {
       dispatch(handleConnectionStatus(connected, message))
     }
     jinadClient.connect(settings, onConnectionStatus)
+  }
+}
+
+export function loginGithub(githubCode: GithubCode): AppThunk {
+  return async function (dispatch) {
+    const user: User = await loginAndGetUserinfo(githubCode)
+    console.log(user)
   }
 }

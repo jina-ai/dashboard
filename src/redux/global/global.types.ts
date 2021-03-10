@@ -7,6 +7,8 @@ import {
   SHOW_MODAL,
   TOGGLE_SIDE_BAR,
   CONNECT_JINAD,
+  LOGIN_GITHUB,
+  LOGOUT,
 } from "./global.constants"
 import { handleNewLogAction } from "../logStream/logStream.types"
 
@@ -64,6 +66,7 @@ export type TNavItem = {
 }
 
 type Tap = "logStream"
+export type GithubCode = string
 
 export type Banner = {
   message: string
@@ -71,16 +74,17 @@ export type Banner = {
 } | null
 
 export type User = {
-  displayName: string
-  emails: [{ value: string }]
-  id: string
-  nodeId: string
-  photos: [{ value: string }]
-  profileUrl: string
-  provider: string
   username: string
-  _json: string
-  _raw: string
+  displayName: string
+  emails: string[]
+  id: string
+  nodeId?: string
+  profileUrl?: string
+  provider?: string
+  _json?: string
+  _raw?: string
+  photos?: [{ value: string }]
+  githubCode?: string
 } | null
 
 export type Processes = {
@@ -161,6 +165,15 @@ export type ConnectJinaDAction = {
   type: typeof CONNECT_JINAD
 }
 
+export type LoginGithubAction = {
+  type: typeof LOGIN_GITHUB
+  payload: GithubCode
+}
+
+export type LogoutAction = {
+  type: typeof LOGOUT
+}
+
 export type GlobalActionTypes =
   | HandleConnectionStatusAction
   | ToggleSidebarAction
@@ -171,3 +184,5 @@ export type GlobalActionTypes =
   | CloseModalAction
   | handleNewLogAction
   | ConnectJinaDAction
+  | LoginGithubAction
+  | LogoutAction

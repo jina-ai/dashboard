@@ -6,13 +6,20 @@ import withTracker from "../withTracker"
 import { ErrorBoundary } from "react-error-boundary"
 import { FallbackPage } from "../views/FallbackPage"
 import * as queryString from "querystring"
+import { useDispatch } from "react-redux"
+import { loginGithub } from "../redux/global/global.actions"
+import { GithubCode } from "../redux/global/global.types"
 
 const Dashboard = () => {
   document.title = "Jina Dashboard"
+  const dispatch = useDispatch()
 
   useEffect(() => {
     const parsed = queryString.parse(window.location.search)
-    console.log(parsed["?code"])
+    const code = parsed["?code"] as GithubCode
+    if (code) {
+      dispatch(loginGithub(code))
+    }
   })
 
   return (

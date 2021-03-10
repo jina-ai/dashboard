@@ -1,6 +1,7 @@
 import axios from "axios"
 import * as queryString from "query-string"
 import { FilterParams } from "../components/Hub/HubFilters"
+import { GithubCode, User } from "../redux/global/global.types"
 
 const HUB_API_ENDPOINT = process.env.REACT_APP_HUB_API!
 
@@ -37,4 +38,21 @@ export const getRawMarkdownURL = (url: string): string => {
   return url.includes("/blob/master/")
     ? url.replace("github", "raw.githubusercontent").replace("/blob", "")
     : defaultRawMarkdownURL
+}
+
+export async function loginAndGetUserinfo(
+  githubCode: GithubCode
+): Promise<User> {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve({
+        displayName: "dummy",
+        username: "dummyUser",
+        emails: ["dummy@dummy.com"],
+        id: "1234sadf4234",
+        nodeId: "dsfs234asdf",
+        githubCode,
+      })
+    }, 4000)
+  })
 }
