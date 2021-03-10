@@ -5,6 +5,8 @@ import {
   HANDLE_CONNECTION_STATUS,
   HIDE_BANNER,
   HIDE_BANNER_TIMEOUT,
+  LOGIN,
+  LOGOUT,
   SHOW_BANNER,
   SHOW_ERROR,
   SHOW_MODAL,
@@ -16,11 +18,13 @@ import {
   HandleConnectionStatusAction,
   HideBannerAction,
   Modal,
+  LoginAction,
   ShowBannerAction,
   ShowErrorAction,
   ShowModalAction,
   ToggleSidebarAction,
   User,
+  LogoutAction,
 } from "./global.types"
 import { AppThunk } from "../index"
 import store from ".."
@@ -151,6 +155,19 @@ export function connectJinaD(): AppThunk {
 export function loginGithub(githubCode: GithubCode): AppThunk {
   return async function (dispatch) {
     const user: User = await loginAndGetUserinfo(githubCode)
-    console.log(user)
+    dispatch(_login(user))
+  }
+}
+
+function _login(user: User): LoginAction {
+  return {
+    type: LOGIN,
+    payload: { user },
+  }
+}
+
+export function logout(): LogoutAction {
+  return {
+    type: LOGOUT,
   }
 }

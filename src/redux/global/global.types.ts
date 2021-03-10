@@ -7,7 +7,7 @@ import {
   SHOW_MODAL,
   TOGGLE_SIDE_BAR,
   CONNECT_JINAD,
-  LOGIN_GITHUB,
+  LOGIN,
   LOGOUT,
 } from "./global.constants"
 import { handleNewLogAction } from "../logStream/logStream.types"
@@ -165,9 +165,9 @@ export type ConnectJinaDAction = {
   type: typeof CONNECT_JINAD
 }
 
-export type LoginGithubAction = {
-  type: typeof LOGIN_GITHUB
-  payload: GithubCode
+export type LoginAction = {
+  type: typeof LOGIN
+  payload: { user: User }
 }
 
 export type LogoutAction = {
@@ -184,5 +184,5 @@ export type GlobalActionTypes =
   | CloseModalAction
   | handleNewLogAction
   | ConnectJinaDAction
-  | LoginGithubAction
+  | LoginAction
   | LogoutAction

@@ -3,6 +3,8 @@ import {
   HANDLE_CONNECTION_STATUS,
   HIDE_BANNER,
   initialGlobalState,
+  LOGIN,
+  LOGOUT,
   SHOW_BANNER,
   SHOW_ERROR,
   SHOW_MODAL,
@@ -56,6 +58,12 @@ const globalReducer = produce(
         break
       case HANDLE_NEW_LOG:
         draft.processes[action.payload.process] = action.payload.name
+        break
+      case LOGIN:
+        draft.user = action.payload.user
+        break
+      case LOGOUT:
+        draft.user = null
         break
     }
   },
