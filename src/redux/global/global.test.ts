@@ -3,6 +3,7 @@ import {
   HIDE_BANNER_TIMEOUT,
   initialGlobalState,
   LOGIN,
+  SHOW_ERROR,
 } from "./global.constants"
 import { handleNewLog } from "../logStream/logStream.actions"
 import { testMessage } from "../logStream/logStream.testData"
@@ -223,6 +224,8 @@ describe("global actions", () => {
   })
 
   describe("when using login", () => {
+    const lambdaUrl = process.env.REACT_APP_GITHUB_LAMBDA
+
     const user = {
       displayName: "dummy",
       username: "dummyUser",
@@ -242,21 +245,34 @@ describe("global actions", () => {
         ...user,
         githubCode,
       }
-
       const expectedActions = [
         {
           type: LOGIN,
           payload: { user: githubUser },
         },
       ]
-
       const store = mockStore()
       mockAxios
-        .onGet(`/someLambda.com?githubCode=${githubCode}`)
+        .onGet(`/${lambdaUrl}?githubCode=${githubCode}`)
         .reply(200, { user: githubUser })
 
       return store.dispatch(loginGithub(githubCode)).then(() => {
-        // return of async actions
+        expect(store.getActions()).toEqual(expectedActions)
+      })
+    })
+
+    it("dispatches showError when a network error gets thrown", () => {
+      const githubCode = "abcd1234"
+      const expectedActions = [
+        {
+          type: SHOW_ERROR,
+          payload: { message: new Error("Network Error") },
+        },
+      ]
+      const store = mockStore()
+      mockAxios.onGet(`/${lambdaUrl}?githubCode=${githubCode}`).networkError()
+
+      return store.dispatch(loginGithub(githubCode)).then(() => {
         expect(store.getActions()).toEqual(expectedActions)
       })
     })

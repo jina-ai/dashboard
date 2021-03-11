@@ -155,10 +155,10 @@ export function connectJinaD(): AppThunk {
 }
 
 export function loginGithub(githubCode: GithubCode): AppThunk {
-  const lambdaUrl = `someLambda.com?githubCode=${githubCode}`
+  const lambdaUrl = process.env.REACT_APP_GITHUB_LAMBDA
   return (dispatch) => {
     return axios
-      .get(lambdaUrl)
+      .get(`${lambdaUrl}?githubCode=${githubCode}`)
       .then((res) => dispatch(_login(res.data.user)))
       .catch((ex) => dispatch(showError(ex)))
   }
