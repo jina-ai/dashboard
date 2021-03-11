@@ -287,7 +287,7 @@ describe("global actions", () => {
       const expectedActions = [
         {
           type: SHOW_ERROR,
-          payload: { message: new Error("No Lambda found") },
+          payload: { message: "No lambda found" },
         },
       ]
       const store = mockStore()

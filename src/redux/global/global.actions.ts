@@ -156,6 +156,12 @@ export function connectJinaD(): AppThunk {
 
 export function loginGithub(githubCode: GithubCode): AppThunk {
   const lambdaUrl = process.env.REACT_APP_GITHUB_LAMBDA
+  if (lambdaUrl === "undefined")
+    return (dispatch) => {
+      return new Promise((resolve) => {
+        resolve(dispatch(showError("No lambda found")))
+      })
+    }
   return (dispatch) => {
     return axios
       .get(`${lambdaUrl}?githubCode=${githubCode}`)
