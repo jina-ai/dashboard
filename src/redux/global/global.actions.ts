@@ -160,7 +160,7 @@ export function loginGithub(githubCode: GithubCode): AppThunk {
     return axios
       .get(lambdaUrl)
       .then((res) => dispatch(_login(res.data.user)))
-      .catch((ex) => logger.log(ex))
+      .catch((ex) => dispatch(showError(ex)))
   }
 }
 
