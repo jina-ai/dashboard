@@ -1,34 +1,34 @@
-import React from "react";
-import { Container, Navbar, Nav } from "shards-react";
-import { NavbarSpacer } from "./NavbarSpacer";
-import { ConnectionIndicator } from "./ConnectionIndicator";
-import { NavLogo } from "./NavLogo";
+import React from "react"
+import { Container, Navbar, Nav } from "shards-react"
+import { NavbarSpacer } from "./NavbarSpacer"
+import { ConnectionIndicator } from "./ConnectionIndicator"
+import { NavLogo } from "./NavLogo"
 
 export type User = {
-  displayName: string;
-  emails: [{ value: string }];
-  id: string;
-  nodeId: string;
-  photos: [{ value: string }];
-  profileUrl: string;
-  provider: string;
-  username: string;
-  _json: any;
-  _raw: any;
-};
+  displayName: string
+  emails: [{ value: string }]
+  id: string
+  nodeId: string
+  photos: [{ value: string }]
+  profileUrl: string
+  provider: string
+  username: string
+  _json: string
+  _raw: string
+}
 
 type Props = {
-  usesAuth: boolean;
-  usesConnection: boolean;
-  connected?: boolean;
-  logOut: () => void;
-  toggleSidebar?: () => void;
-  reconnect?: () => void;
-  user: User | null;
-  hideSidebarToggle?: boolean;
-  showLogo?: boolean;
-  navigateButton?: () => React.ReactNode;
-};
+  usesAuth: boolean
+  usesConnection: boolean
+  connected?: boolean
+  logOut: () => void
+  toggleSidebar?: () => void
+  reconnect?: () => void
+  user: User | null
+  hideSidebarToggle?: boolean
+  showLogo?: boolean
+  navigateButton?: () => React.ReactNode
+}
 
 function MainNavbar({
   usesConnection,
@@ -59,7 +59,7 @@ function MainNavbar({
         </Navbar>
       </Container>
     </div>
-  );
+  )
 }
 
-export { MainNavbar };
+export { MainNavbar }

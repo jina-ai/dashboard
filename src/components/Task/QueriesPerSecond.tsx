@@ -1,25 +1,25 @@
-import React, { useRef, useState, useCallback, useEffect } from "react";
-import { Card } from "shards-react";
+import React, { useRef, useState, useCallback, useEffect } from "react"
+import { Card } from "shards-react"
 
-import ChartElement, { ChartOptions } from "chart.js";
+import ChartElement, { ChartOptions } from "chart.js"
 
 type Props = {
   qps: {
-    history: any;
-    current: any;
-  };
-};
+    history: number[]
+    current: number
+  }
+}
 
 function QueriesPerSecondCard({ qps }: Props) {
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const [chartInstance, setChartInstance] = useState<ChartElement | null>(null);
-  const { history } = qps;
+  const canvasRef = useRef<HTMLCanvasElement | null>(null)
+  const [chartInstance, setChartInstance] = useState<ChartElement | null>(null)
+  const { history } = qps
 
-  let maxValue = Math.max(...history);
-  let minValue = Math.min(...history);
+  let maxValue = Math.max(...history)
+  let minValue = Math.min(...history)
 
   const getChartOptions = useCallback((): ChartOptions => {
-    const difference = maxValue - minValue;
+    const difference = maxValue - minValue
     return {
       maintainAspectRatio: true,
       responsive: true,
@@ -73,8 +73,8 @@ function QueriesPerSecondCard({ qps }: Props) {
           },
         ],
       },
-    };
-  }, [maxValue, minValue]);
+    }
+  }, [maxValue, minValue])
 
   const getChartConfig = useCallback(
     (chartOptions) => {
@@ -94,21 +94,21 @@ function QueriesPerSecondCard({ qps }: Props) {
           ],
         },
         options: chartOptions,
-      };
+      }
     },
     [history]
-  );
+  )
 
   useEffect(() => {
-    if (!canvasRef.current) return;
-    const chartOptions = getChartOptions();
-    const chartConfig = getChartConfig(chartOptions);
-    const newChartInstance = new ChartElement(canvasRef.current, chartConfig);
-    setChartInstance(newChartInstance);
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+    if (!canvasRef.current) return
+    const chartOptions = getChartOptions()
+    const chartConfig = getChartConfig(chartOptions)
+    const newChartInstance = new ChartElement(canvasRef.current, chartConfig)
+    setChartInstance(newChartInstance)
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
-    if (!chartInstance) return;
+    if (!chartInstance) return
     let newChartData = {
       ...chartInstance.data,
       ...{
@@ -123,11 +123,11 @@ function QueriesPerSecondCard({ qps }: Props) {
           },
         ],
       },
-    };
-    chartInstance.options = getChartOptions();
-    chartInstance.data = newChartData;
-    chartInstance.update();
-  }, [history, chartInstance, getChartOptions, getChartConfig]);
+    }
+    chartInstance.options = getChartOptions()
+    chartInstance.data = newChartData
+    chartInstance.update()
+  }, [history, chartInstance, getChartOptions, getChartConfig])
 
   return (
     <Card className="pt-0 h-100 stats-small">
@@ -142,7 +142,7 @@ function QueriesPerSecondCard({ qps }: Props) {
       </div>
       <canvas height="100" ref={canvasRef} className="stats-small-1" />
     </Card>
-  );
+  )
 }
 
-export default QueriesPerSecondCard;
+export default QueriesPerSecondCard

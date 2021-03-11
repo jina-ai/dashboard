@@ -7,14 +7,10 @@ import {
 import React from "react"
 import { ModalParams } from "../redux/global/global.types"
 import ReactModal, { Styles } from "react-modal"
-import {
-  deleteFlow,
-  rerender,
-  updateSelectedFlow,
-} from "../redux/flows/flows.actions"
+import { deleteFlow, updateSelectedFlow } from "../redux/flows/flows.actions"
 import { Button } from "react-bootstrap"
 import { globalArguments } from "../data/globalArguments"
-import { FlowUpdate } from "../redux/flows/flows.types"
+import { FlowUpdate, With } from "../redux/flows/flows.types"
 
 const style: Styles = {
   overlay: {
@@ -91,6 +87,7 @@ const CheckBoxLabel = styled.label`
   border-radius: 20px;
   background: #a6a6a6;
   cursor: pointer;
+
   &::after {
     content: "";
     display: block;
@@ -108,8 +105,10 @@ const CheckBox = styled.input`
   border-radius: 15px;
   width: 42px;
   height: 26px;
+
   &:checked + ${CheckBoxLabel} {
     background: #32c8cd;
+
     &::after {
       content: "";
       display: block;
@@ -155,14 +154,11 @@ function FlowSettingsComponent({ open, closeModal }: Props) {
   const _updateFlowName = (name: string) => {
     const flowUpdate = { ...flow, name }
     dispatch(updateSelectedFlow(flowUpdate))
-    dispatch(rerender())
   }
 
-  const _updateFlowWith = (key: string, value: string) => {
+  function _updateFlowWith<K extends keyof With>(key: K, value: With[K]) {
     const flowUpdate = { ...flow } as FlowUpdate
-    if (!flowUpdate?.flowChart?.with && flowUpdate.flowChart) {
-      flowUpdate.flowChart.with = {}
-    }
+
     if (flowUpdate.flowChart?.with) flowUpdate.flowChart.with[key] = value
     dispatch(updateSelectedFlow(flowUpdate))
   }
@@ -170,7 +166,6 @@ function FlowSettingsComponent({ open, closeModal }: Props) {
   const _deleteFlow = () => {
     dispatch(deleteFlow(flowId))
     closeModal()
-    dispatch(rerender())
   }
 
   return (
@@ -196,25 +191,39 @@ function FlowSettingsComponent({ open, closeModal }: Props) {
         <Header1>Settings</Header1>
         <PropertyTable>
           {Object.values(globalArguments).map((argument, idx) => {
-            const { name, type } = argument
             return (
               <PropertyItem key={idx}>
-                <Header2>{name}</Header2>
-                {type === "boolean" ? (
+                <Header2>{argument?.name}</Header2>
+                {argument?.type === "boolean" ? (
                   <SwitchInput
                     checked={
-                      flow.flowChart.with ? flow.flowChart.with[name] : false
+                      flow.flowChart.with
+                        ? !!flow.flowChart.with[argument?.name]
+                        : false
                     }
-                    setChecked={(checked: any) =>
-                      _updateFlowWith(name, checked)
+                    setChecked={(checked: boolean) =>
+                      _updateFlowWith<typeof argument.name>(
+                        argument?.name,
+                        checked
+                      )
                     }
                   />
                 ) : (
                   <Input
-                    placeholder={type}
-                    type={type === "integer" ? "number" : "text"}
-                    value={flow.flowChart.with ? flow.flowChart.with[name] : ""}
-                    onChange={(e) => _updateFlowWith(name, e.target.value)}
+                    placeholder={argument?.type}
+                    type={argument?.type === "integer" ? "number" : "text"}
+                    value={
+                      flow.flowChart.with && argument?.name
+                        ? flow.flowChart.with[argument.name].toString()
+                        : ""
+                    }
+                    onChange={(e) => {
+                      if (argument?.name)
+                        _updateFlowWith<typeof argument.name>(
+                          argument.name,
+                          e.target.value
+                        )
+                    }}
                     className="property-value-input"
                   />
                 )}

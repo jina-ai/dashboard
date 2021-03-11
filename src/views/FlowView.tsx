@@ -15,7 +15,6 @@ import { useDispatch, useSelector } from "react-redux"
 import {
   selectFlowArguments,
   selectSelectedFlow,
-  selectRerender,
   selectSelectedFlowId,
 } from "../redux/flows/flows.selectors"
 import { showModal } from "../redux/global/global.actions"
@@ -32,7 +31,6 @@ const FlowViewContainer = styled.div`
 
 export default function FlowView() {
   const dispatch = useDispatch()
-  useState(useSelector(selectRerender))
   const selectedFlowId = useSelector(selectSelectedFlowId)
   const flowArguments = useSelector(selectFlowArguments)
   const flow = useSelector(selectSelectedFlow) as Flow
@@ -92,7 +90,7 @@ export default function FlowView() {
           download
         </a>
         <Row noGutters className="page-header mb-4">
-          <PageTitle title="FlowChart Design" className="text-sm-left mb-3" />
+          <PageTitle title="Flow Design" className="text-sm-left mb-3" />
         </Row>
 
         <FlowViewContainer>

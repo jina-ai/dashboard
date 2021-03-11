@@ -1,8 +1,18 @@
-import React, { useState } from "react";
-import { Collapse } from "react-bootstrap";
-import logger from "../../logger";
+import React, { useState } from "react"
+import { Collapse } from "react-bootstrap"
+import logger from "../../logger"
+import { Levels } from "../../redux/logStream/logStream.types"
+import { ReactJSXElement } from "@emotion/react/types/jsx-namespace"
 
-const _icons: { [key: string]: any } = {
+type IconState = "success" | "pending" | "warning" | "failed"
+type Icons = {
+  [iconState in IconState]: {
+    name: string
+    color: string
+  }
+}
+
+const _icons: Icons = {
   success: {
     name: "check_circle",
     color: "success",
@@ -19,45 +29,45 @@ const _icons: { [key: string]: any } = {
     name: "cancel",
     color: "critical",
   },
-};
-
-type StatusString = "success" | "pending" | "warning" | "failed";
-
-type CountSummaryProps = {
-  levels?: any[];
-  numItems: number;
-  title: string;
-};
-
-function CountSummary({ levels, numItems }: CountSummaryProps) {
-  logger.log("levels:", levels);
-  return <span className="ml-2 text-muted">({numItems})</span>;
 }
 
-function getStatusFromLevels(levels: any): StatusString {
-  const keys = Object.keys(levels);
+type StatusString = "success" | "pending" | "warning" | "failed"
+
+type CountSummaryProps = {
+  levels?: Levels
+  numItems: number
+  title: string
+}
+
+function CountSummary({ levels, numItems }: CountSummaryProps) {
+  logger.log("levels:", levels)
+  return <span className="ml-2 text-muted">({numItems})</span>
+}
+
+function getStatusFromLevels(levels: Levels): StatusString {
+  const keys = Object.keys(levels)
   if (
     keys.find((k) => k.toLowerCase() === "critical") ||
     keys.find((k) => k.toLowerCase() === "error")
   )
-    return "failed";
-  if (keys.find((k) => k.toLowerCase() === "warning")) return "warning";
-  return "success";
+    return "failed"
+  if (keys.find((k) => k.toLowerCase() === "warning")) return "warning"
+  return "success"
 }
 
-function StatusIcon({ levels }: { levels: any }) {
-  const status = getStatusFromLevels(levels);
-  const icon = _icons[status];
+function StatusIcon({ levels }: { levels: Levels }) {
+  const status = getStatusFromLevels(levels)
+  const icon = _icons[status]
   return (
     <i className={`no-select material-icons log-${icon.color} mr-2`}>
       {icon.name}
     </i>
-  );
+  )
 }
 
 type ExpandIndicator = {
-  expanded: boolean;
-};
+  expanded: boolean
+}
 
 function ExpandController({ expanded }: ExpandIndicator) {
   return (
@@ -68,19 +78,19 @@ function ExpandController({ expanded }: ExpandIndicator) {
     >
       arrow_forward_ios
     </i>
-  );
+  )
 }
 
 type Props = {
-  title: string;
-  body: any;
-  numItems: number;
-  group: string;
-  levels?: string[];
-};
+  title: string
+  body: ReactJSXElement
+  numItems: number
+  group: string
+  levels?: Levels
+}
 
 function LogGroup({ title, body, levels, numItems, group }: Props) {
-  const [expanded, setExpanded] = useState(false);
+  const [expanded, setExpanded] = useState(false)
   return (
     <div className={`log-group-item m-2 ${expanded ? "bg-light" : ""}`}>
       <div
@@ -106,7 +116,7 @@ function LogGroup({ title, body, levels, numItems, group }: Props) {
         </div>
       </Collapse>
     </div>
-  );
+  )
 }
 
-export { LogGroup };
+export { LogGroup }

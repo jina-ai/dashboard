@@ -1,6 +1,5 @@
-import ReactFlow, { Elements, isEdge, OnLoadParams } from "react-flow-renderer"
+import ReactFlow, { OnLoadParams, ReactFlowProps } from "react-flow-renderer"
 import React, { MouseEvent, useRef, useState } from "react"
-import { Connection, Edge } from "react-flow-renderer/dist/types"
 import { useDispatch, useSelector } from "react-redux"
 import {
   addLink,
@@ -9,12 +8,17 @@ import {
   deleteNode,
   updateNode,
 } from "../../redux/flows/flows.actions"
-import { isNode, Node } from "react-flow-renderer"
 import ChartNode from "./ChartNode"
 import { selectSelectedFlow } from "../../redux/flows/flows.selectors"
-
+import {
+  FlowElement,
+  FlowNode,
+  FlowEdge,
+  NodeConnection,
+} from "../../redux/flows/flows.types"
+import { isFlowNode, isFlowEdge } from "../../helpers/flow-chart"
 type Props = {
-  elements: Elements
+  elements: FlowElement[]
 }
 
 const nodeTypes = {
@@ -32,15 +36,15 @@ export default function FlowChart(props: Props) {
 
   const reactFlowWrapper = useRef<HTMLElement>(null)
 
-  const onConnect = (params: Edge | Connection) => {
+  const onConnect = (params: FlowEdge | NodeConnection) => {
     if (params.source && params.target)
-      dispatch(addLink(params.source, params.target, null, null))
+      dispatch(addLink(params.source, params.target))
   }
 
-  const onElementsRemove = (elements: Elements) => {
+  const onElementsRemove = (elements: FlowElement[]) => {
     elements.forEach((element) => {
-      if (isEdge(element)) dispatch(deleteLink(element.id))
-      if (isNode(element)) dispatch(deleteNode(element.id))
+      if (isFlowEdge(element)) dispatch(deleteLink(element.id))
+      if (isFlowNode(element)) dispatch(deleteNode(element.id))
     })
   }
 
@@ -63,7 +67,7 @@ export default function FlowChart(props: Props) {
     dispatch(addNode(data.label, position, data))
   }
 
-  const onNodeDragStop = (event: MouseEvent, node: Node) => {
+  const onNodeDragStop = (event: MouseEvent, node: FlowNode) => {
     dispatch(updateNode(node.id, { position: node.position }))
   }
 
@@ -75,7 +79,7 @@ export default function FlowChart(props: Props) {
     >
       <ReactFlow
         elements={props.elements}
-        onConnect={onConnect}
+        onConnect={onConnect as ReactFlowProps["onConnect"]}
         onElementsRemove={onElementsRemove}
         onLoad={onLoad}
         onDrop={onDrop}

@@ -5,12 +5,6 @@ import { PageTitle } from "../components/Common/PageTitle"
 import { Button } from "shards-react"
 
 function FallbackPage({ error, resetErrorBoundary }: FallbackProps) {
-  if (localStorage.getItem("storageCleared") === null) {
-    localStorage.clear()
-    localStorage.setItem("storageCleared", "true")
-    window.location.reload()
-  }
-
   return (
     <Container fluid className="main-content-container p-5">
       <Row noGutters className="page-header mb-4">

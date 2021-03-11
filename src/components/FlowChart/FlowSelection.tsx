@@ -39,7 +39,7 @@ function TitleConnectionIndicator({
 }
 
 type DeleteFlowProps = {
-  deleteFlow: (e: any) => void
+  deleteFlow: () => void
   idx: number
 }
 
@@ -206,12 +206,10 @@ export default function FlowSelection() {
             connected={connected}
           />
           <FlowTapOverflowHider />
-          {flowId !== "_userFlow" && (
-            <DeleteFlowButton
-              deleteFlow={(e: any) => dispatch(deleteFlow(flowId))}
-              idx={idx}
-            />
-          )}
+          <DeleteFlowButton
+            idx={idx}
+            deleteFlow={() => dispatch(deleteFlow(flowId))}
+          />
         </FlowTap>
       ))}
       <FlowHeader>Example Flows</FlowHeader>

@@ -4,7 +4,6 @@ import {
   DELETE_NODE,
   DUPLICATE_FLOW,
   LOAD_FLOW,
-  RERENDER,
   UPDATE_NODE,
   UPDATE_SELECTED_FLOW,
   IMPORT_FLOW,
@@ -14,45 +13,78 @@ import {
   DELETE_LINK,
   UPDATE_NODE_DATA,
 } from "./flows.constants"
-import { Node, XYPosition } from "react-flow-renderer/dist/types"
 
-import { Elements } from "react-flow-renderer"
-import { Connection } from "react-flow-renderer/nocss"
+import { Edge, Node, XYPosition } from "react-flow-renderer"
 
-export type Pod = {
-  needs: string
+const PodNecessaryObject = {
+  name: "string",
 }
 
+const PodOptionalObject = {
+  uses: "string",
+  inspect: "string",
+  add: "string",
+  needs: ["string"],
+  parallel: "string",
+  timeout_ready: 0,
+  separated_workspace: true,
+}
+
+type Pod = typeof PodNecessaryObject & Partial<typeof PodOptionalObject>
+
+export const CustomDataObjectReq = {
+  label: "string",
+}
+
+export const CustomDataObjectOpt = {
+  depth: 0,
+}
+
+export const CustomDataObject = {
+  ...CustomDataObjectOpt,
+  ...CustomDataObjectReq,
+}
+
+type CustomData = typeof CustomDataObjectReq &
+  Partial<typeof CustomDataObjectOpt>
+
+export type NodeData = CustomData & Pod
+
+export type FlowNode = Node<NodeData>
+export type FlowEdge = Edge
+export type FlowElement = FlowNode | FlowEdge
 export type NodeId = string
 export type LinkId = string
-//todo maybe this will be obsolete
-export type NodeUpdate = Partial<Node>
+export type HandlerId = string
+export type NodeUpdate = Partial<FlowNode>
 export type NodeDataUpdate = Partial<NodeData>
 
-export type DeleteLinkProps = LinkId | Connection
-
-export type NodeData = {
-  [key: string]: any
+export type NodeConnection = {
+  source: NodeId
+  target: NodeId
+  sourceHandle?: HandlerId
+  targetHandle?: HandlerId
 }
 
-export interface FlowChart {
-  elements: Elements //todo inherit this ad type data properly
-  with?:
-    | {
-        logserver: string
-        compress_hwm: number
-        rest_api: boolean
-        port_expose: number
-        board: {
-          canvas: {
-            [pod: string]: {
-              x: number
-              y: number
-            }
-          }
-        }
+export type DeleteLinkProps = LinkId | NodeConnection
+
+export type With = {
+  logserver: string
+  compress_hwm: number
+  rest_api: boolean
+  port_expose: number
+  board: {
+    canvas: {
+      [pod: string]: {
+        x: number
+        y: number
       }
-    | {}
+    }
+  }
+}
+export interface FlowChart {
+  elements: FlowElement[]
+  with?: With
 }
 
 type FlowType = "user-generated" | "remote" | "example"
@@ -98,7 +130,6 @@ export type FlowArguments = {
 }
 
 export type FlowState = {
-  rerender: boolean
   selectedFlowId: string
   flows: Flows
   flowArguments: FlowArguments
@@ -108,6 +139,14 @@ export type FlowState = {
       toogleOffWhenClicked: string
       text: string
     }
+  }
+}
+
+export type ExampleFlows = {
+  [name: string]: {
+    name: string
+    type: FlowType
+    yaml: string
   }
 }
 export type SetFlowArgumentsAction = {
@@ -141,9 +180,9 @@ export type UpdateNodeAction = {
   payload: { nodeId: string; nodeUpdate: NodeUpdate }
 }
 
-export type UpdateNodePropertiesAction = {
+export type UpdateNodeDataAction = {
   type: typeof UPDATE_NODE_DATA
-  payload: { nodeId: string; nodePropertiesUpdate: NodeDataUpdate }
+  payload: { nodeId: string; nodeDataUpdate: NodeDataUpdate }
 }
 
 export type DeleteNodeAction = {
@@ -153,16 +192,12 @@ export type DeleteNodeAction = {
 
 export type AddLinkAction = {
   type: typeof ADD_LINK
-  payload: Connection
+  payload: NodeConnection
 }
 
 export type DeleteLinkAction = {
   type: typeof DELETE_LINK
   payload: DeleteLinkProps
-}
-
-export type RerenderAction = {
-  type: typeof RERENDER
 }
 
 export type ImportFlowAction = {
@@ -179,9 +214,8 @@ export type FlowActionTypes =
   | DeleteFlowAction
   | UpdateNodeAction
   | DeleteNodeAction
-  | RerenderAction
   | ImportFlowAction
   | AddNodeAction
   | AddLinkAction
   | DeleteLinkAction
-  | UpdateNodePropertiesAction
+  | UpdateNodeDataAction

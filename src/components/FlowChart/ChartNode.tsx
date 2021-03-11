@@ -1,35 +1,25 @@
 import React from "react"
-import { Handle, Node, Position } from "react-flow-renderer"
+import { Handle, Position } from "react-flow-renderer"
 import { showModal } from "../../redux/global/global.actions"
 import { useDispatch, useSelector } from "react-redux"
 import { selectSelectedFlow } from "../../redux/flows/flows.selectors"
 import styled from "@emotion/styled"
-
-export const ChartNodeElement = styled.div`
-  min-width: 16rem;
-  cursor: move;
-  text-align: center;
-  font-size: 14px;
-  background: #fff;
-  font-weight: 500;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  border-radius: 0.25em;
-  transition: 0.2s;
-  border: 1px solid rgba(0, 153, 153, 0.3);
-`
+import { useTheme } from "@emotion/react"
+import { FlowNode } from "../../redux/flows/flows.types"
 
 type NodePortProps = {
   type: "source" | "target"
 }
 
 function NodePort({ type }: NodePortProps) {
+  const theme = useTheme()
   const NodePortTop = styled(Handle)`
     margin-top: -0.2rem;
     background-color: white;
     width: 1rem;
     height: 1rem;
     border-radius: 0.5rem;
-    border: 1px solid rgba(0, 153, 153, 0.3); //todo use theming
+    border: 1px solid ${theme.palette.primary};
     display: flex;
     align-items: center;
     justify-content: center;
@@ -60,17 +50,30 @@ function NodePort({ type }: NodePortProps) {
 type SidebarProps = {
   label: string | undefined
 }
-type ChartNodeProps = Node | SidebarProps
+type ChartNodeProps = FlowNode | SidebarProps
 
 export default function ChartNode(props: ChartNodeProps) {
   const flowType = useSelector(selectSelectedFlow).type
   const dispatch = useDispatch()
+  const theme = useTheme()
 
-  function isNode(prop: ChartNodeProps): prop is Node {
-    return (prop as Node).id !== undefined
+  const ChartNodeElement = styled.div`
+    min-width: 16rem;
+    cursor: move;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 500;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 0.25em;
+    transition: 0.2s;
+    border: 1px solid ${theme.palette.primary};
+  `
+
+  function _isFlowNode(prop: ChartNodeProps): prop is FlowNode {
+    return (prop as FlowNode).id !== undefined
   }
 
-  if (isNode(props)) {
+  if (_isFlowNode(props)) {
     const node = props
     return (
       <ChartNodeElement
@@ -80,12 +83,12 @@ export default function ChartNode(props: ChartNodeProps) {
         }}
       >
         {node.id !== "gateway" && <NodePort type="source" />}
-        <div id={`chart-node-${node.data.label}`}>
+        <div id={`chart-node-${node?.data?.label}`}>
           <div className="node-header">
             <div className={`p-1`}>
               <p className="m-1">
                 <span className="text-bold">
-                  {node.data.label || (
+                  {node?.data?.label || (
                     <span className="text-warning">Empty Pod</span>
                   )}
                 </span>

@@ -5,7 +5,6 @@ import {
   UPDATE_NODE,
   DUPLICATE_FLOW,
   LOAD_FLOW,
-  RERENDER,
   UPDATE_SELECTED_FLOW,
   IMPORT_FLOW,
   SET_FLOW_ARGUMENTS,
@@ -22,7 +21,6 @@ import {
   FlowState,
   LoadFlowAction,
   NodeUpdate,
-  RerenderAction,
   UpdateNodeAction,
   UpdateSelectedFlowAction,
   ImportFlowAction,
@@ -35,14 +33,13 @@ import {
   DeleteLinkAction,
   DeleteLinkProps,
   NodeData,
-  UpdateNodePropertiesAction,
+  UpdateNodeDataAction,
   NodeDataUpdate,
   Flow,
 } from "./flows.types"
 
 import { ThunkAction } from "redux-thunk"
 import { Action } from "redux"
-
 import { showBanner } from "../global/global.actions"
 import { initLogStream } from "../logStream/logStream.actions"
 import store from ".."
@@ -50,7 +47,6 @@ import { formatAsYAML } from "../../helpers"
 import logger from "../../logger"
 import jinadClient from "../../services/jinad"
 import { XYPosition } from "react-flow-renderer/dist/types"
-import { ElementId } from "react-flow-renderer/dist/nocss/types"
 
 export function loadFlow(flowId: string): LoadFlowAction {
   return {
@@ -119,19 +115,12 @@ export function addNode(
   }
 }
 
-export function addLink(
-  source: NodeId,
-  target: NodeId,
-  sourceHandle: ElementId | null,
-  targetHandle: ElementId | null
-): AddLinkAction {
+export function addLink(source: NodeId, target: NodeId): AddLinkAction {
   return {
     type: ADD_LINK,
     payload: {
       source,
       target,
-      sourceHandle,
-      targetHandle,
     },
   }
 }
@@ -153,13 +142,13 @@ export function updateNode(
   }
 }
 
-export function updateNodeProperties(
+export function updateNodeData(
   nodeId: string,
-  nodePropertiesUpdate: NodeDataUpdate
-): UpdateNodePropertiesAction {
+  nodeDataUpdate: NodeDataUpdate
+): UpdateNodeDataAction {
   return {
     type: UPDATE_NODE_DATA,
-    payload: { nodeId, nodePropertiesUpdate },
+    payload: { nodeId, nodeDataUpdate },
   }
 }
 
@@ -167,12 +156,6 @@ export function deleteNode(nodeId: string): DeleteNodeAction {
   return {
     type: DELETE_NODE,
     payload: nodeId,
-  }
-}
-
-export function rerender(): RerenderAction {
-  return {
-    type: RERENDER,
   }
 }
 
@@ -198,7 +181,6 @@ export function startFlow(
     dispatch(showBanner(message, "success") as any)
 
     dispatch(initNetworkFlow(selectedFlowId))
-    //TODO: initialize flow (logs, etc)
   }
 }
 
@@ -221,7 +203,6 @@ export function stopFlow(
     if (status === "error") return dispatch(showBanner(message, "error") as any)
 
     dispatch(showBanner(message, "success") as any)
-    //TODO: initialize flow (logs, etc)
   }
 }
 

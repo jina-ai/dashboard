@@ -79,8 +79,8 @@ export type User = {
   profileUrl: string
   provider: string
   username: string
-  _json: any
-  _raw: any
+  _json: string
+  _raw: string
 } | null
 
 export type Processes = {
@@ -99,7 +99,6 @@ export type Modal =
 export type ModalParams = {
   imageId?: string
   nodeId?: string
-  rerenderCanvas?: any
 } | null
 
 export type GlobalState = {

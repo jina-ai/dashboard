@@ -1,21 +1,23 @@
-import React, { useEffect, useState, useCallback } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { Row, Col } from "react-bootstrap";
-import { fetchHubImages } from "../../redux/hub/hub.actions";
+import React, { useEffect, useState, useCallback } from "react"
+import { useSelector, useDispatch } from "react-redux"
+import { Row, Col } from "react-bootstrap"
+import { fetchHubImages } from "../../redux/hub/hub.actions"
 import {
   selectHubImages,
   selectIsHubImagesLoading,
-} from "../../redux/hub/hub.selectors";
-import { HubImage } from "../../redux/hub/hub.types";
-import ImageCard from "./ImageCard";
-import HubFilters from "./HubFilters";
-import SpinningLoader from "../Common/SpinningLoader";
-import { Filter, FilterMap } from "./HubFilters";
+} from "../../redux/hub/hub.selectors"
+import { HubImage } from "../../redux/hub/hub.types"
+import ImageCard from "./ImageCard"
+import HubFilters, { FilterParams, getSelectedFilters } from "./HubFilters"
+import SpinningLoader from "../Common/SpinningLoader"
+import { ExpandingSearchbar } from "../Common/ExpandingSearchbar"
+import { Filter, FilterMap } from "./HubFilters"
+import styled from "@emotion/styled"
 
 export const removeDuplicates = (arrayWithDuplicates: string[]): string[] =>
   arrayWithDuplicates.filter((e, i) => {
-    return arrayWithDuplicates.indexOf(e) === i;
-  });
+    return arrayWithDuplicates.indexOf(e) === i
+  })
 
 export const convertArrayToFilterObject = (
   array: string[],
@@ -27,7 +29,12 @@ export const convertArrayToFilterObject = (
       [f]: (filter?.values && filter.values[f]) || false,
     }),
     {} as FilterMap
-  );
+  )
+
+const SearchContainer = styled(Row)`
+  flex-direction: row-reverse;
+  padding: 1rem;
+`
 
 export const getImageFilters = (images: HubImage[], filters: Filter[]) => {
   return [
@@ -52,28 +59,33 @@ export const getImageFilters = (images: HubImage[], filters: Filter[]) => {
         filters[1]
       ),
     },
-  ];
-};
+  ]
+}
 
 const HubImagesList = () => {
-  const dispatch = useDispatch();
-  const hubImages = useSelector(selectHubImages);
-  const isHubImagesLoading = useSelector(selectIsHubImagesLoading);
-  let [filters, setFilters] = useState([] as Filter[]);
+  const dispatch = useDispatch()
+  const hubImages = useSelector(selectHubImages)
+  const isHubImagesLoading = useSelector(selectIsHubImagesLoading)
+  let [filters, setFilters] = useState([] as Filter[])
+  let [searchString, setSearchString] = useState("")
   if (hubImages.length === 0 && !isHubImagesLoading) {
-    dispatch(fetchHubImages());
+    dispatch(fetchHubImages())
   }
 
   useEffect(() => {
-    hubImages && setFilters(getImageFilters(hubImages, filters));
-  }, [hubImages]); // eslint-disable-line react-hooks/exhaustive-deps
+    hubImages && setFilters(getImageFilters(hubImages, filters))
+  }, [hubImages]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const getHubImages = useCallback(
-    (filters) => {
-      dispatch(fetchHubImages(filters));
+    (filters: FilterParams, searchQuery = searchString) => {
+      dispatch(fetchHubImages({ ...filters, name: searchQuery }))
     },
-    [dispatch]
-  );
+    [dispatch, searchString]
+  )
+
+  const onSearch = (searchQuery: string | number) => {
+    getHubImages(getSelectedFilters(filters), searchQuery)
+  }
 
   return (
     <>
@@ -89,6 +101,14 @@ const HubImagesList = () => {
             />
           </Col>
           <Col md="10">
+            <SearchContainer>
+              <ExpandingSearchbar
+                placeholder="search hub images..."
+                value={searchString}
+                onChange={setSearchString}
+                onSearch={onSearch}
+              />
+            </SearchContainer>
             <Row data-name="hubImagesList">
               {hubImages.map((image, index) => (
                 <Col
@@ -104,7 +124,7 @@ const HubImagesList = () => {
         </Row>
       )}
     </>
-  );
-};
+  )
+}
 
-export default HubImagesList;
+export default HubImagesList
