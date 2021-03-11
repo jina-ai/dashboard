@@ -276,5 +276,28 @@ describe("global actions", () => {
         expect(store.getActions()).toEqual(expectedActions)
       })
     })
+
+    it("dispatches showError when no lambda is set", () => {
+      const githubCode = "abcd1234"
+      const githubUser = {
+        ...user,
+        githubCode,
+      }
+      process.env.REACT_APP_GITHUB_LAMBDA = undefined
+      const expectedActions = [
+        {
+          type: SHOW_ERROR,
+          payload: { message: new Error("No Lambda found") },
+        },
+      ]
+      const store = mockStore()
+      mockAxios
+        .onGet(`/${lambdaUrl}?githubCode=${githubCode}`)
+        .reply(200, { user: githubUser })
+
+      return store.dispatch(loginGithub(githubCode)).then(() => {
+        expect(store.getActions()).toEqual(expectedActions)
+      })
+    })
   })
 })
