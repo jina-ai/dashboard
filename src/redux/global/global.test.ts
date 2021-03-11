@@ -18,6 +18,7 @@ import {
   showBanner,
   handleConnectionStatus,
   loginGithub,
+  logout,
 } from "./global.actions"
 import {
   apiArgumentsURL,
@@ -221,29 +222,38 @@ describe("global actions", () => {
     })
   })
 
-  describe("when logging in with Github", () => {
-    it("dispatches _login when fetching user data has been done", () => {
+  describe("when using login", () => {
+    const user = {
+      displayName: "dummy",
+      username: "dummyUser",
+      emails: ["dummy@dummy.com"],
+      id: "1234sadf4234",
+      nodeId: "dsfs234asdf",
+    }
+    it("erases user data when logging out", () => {
+      const loggedInState: GlobalState = { ...initialGlobalState, user }
+      expect(loggedInState.user).toBeDefined()
+      const loggedOutState = reducer(loggedInState, logout())
+      expect(loggedOutState.user).toBeNull()
+    })
+    it("dispatches _login when fetching github user data", () => {
       const githubCode = "abcd1234"
-      const user = {
-        displayName: "dummy",
-        username: "dummyUser",
-        emails: ["dummy@dummy.com"],
-        id: "1234sadf4234",
-        nodeId: "dsfs234asdf",
+      const githubUser = {
+        ...user,
         githubCode,
       }
 
       const expectedActions = [
         {
           type: LOGIN,
-          payload: { user },
+          payload: { user: githubUser },
         },
       ]
 
       const store = mockStore()
       mockAxios
         .onGet(`/someLambda.com?githubCode=${githubCode}`)
-        .reply(200, { user })
+        .reply(200, { user: githubUser })
 
       return store.dispatch(loginGithub(githubCode)).then(() => {
         // return of async actions
