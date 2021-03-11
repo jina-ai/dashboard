@@ -32,7 +32,6 @@ import jinadClient from "../../services/jinad"
 import { getJinaFlowArguments } from "../../services/jinaApi"
 import { setFlowArguments } from "../flows/flows.actions"
 import logger from "../../logger"
-import { loginAndGetUserinfo } from "../../services/hubApi"
 
 export function handleConnectionStatus(
   connected: boolean,
@@ -139,6 +138,7 @@ export function closeModal(): CloseModalAction {
 export function connectJinaD(): AppThunk {
   return function (dispatch) {
     const settings = store.getState().settingsState.settings
+
     function onConnectionStatus({
       connected,
       message,
@@ -148,14 +148,18 @@ export function connectJinaD(): AppThunk {
     }) {
       dispatch(handleConnectionStatus(connected, message))
     }
+
     jinadClient.connect(settings, onConnectionStatus)
   }
 }
 
 export function loginGithub(githubCode: GithubCode): AppThunk {
-  return async function (dispatch) {
-    const user: User = await loginAndGetUserinfo(githubCode)
-    dispatch(_login(user))
+  const lambdaUrl = `someLambda.com?githubCode=${githubCode}`
+  return (dispatch) => {
+    return fetch(lambdaUrl)
+      .then((res) => res.json())
+      .then((body) => dispatch(_login(body.user)))
+      .catch((ex) => logger.log(ex))
   }
 }
 
