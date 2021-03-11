@@ -4,6 +4,8 @@ import React from "react"
 import { Container, Row, Col, Card, CardBody } from "shards-react"
 
 function Login() {
+  const client_id = process.env.REACT_APP_CLIENT_ID
+
   return (
     <Container fluid className="main-content-container px-0">
       <Row noGutters className="h-100">
@@ -20,6 +22,7 @@ function Login() {
               <a
                 id="github-button"
                 className="btn btn-block btn-social btn-github"
+                href={`https://github.com/login/oauth/authorize?scope=user&client_id=${client_id}`}
               >
                 <i className="fab fa-github"></i> Sign in with GitHub
               </a>
