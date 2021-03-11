@@ -40,7 +40,6 @@ import thunk, { ThunkDispatch } from "redux-thunk"
 import { GlobalState } from "./global.types"
 import { AnyAction } from "redux"
 import { State } from "../index"
-import fetchMock from "fetch-mock"
 
 const mockAxios = new AxiosMockAdapter(axios)
 const mockJinadClient = new AxiosMockAdapter(jinadInstance)
@@ -233,12 +232,6 @@ describe("global actions", () => {
         nodeId: "dsfs234asdf",
         githubCode,
       }
-      fetchMock.getOnce(`/someLambda.com?githubCode=${githubCode}`, {
-        body: {
-          user,
-        },
-        headers: { "content-type": "application/json" },
-      })
 
       const expectedActions = [
         {
@@ -248,6 +241,9 @@ describe("global actions", () => {
       ]
 
       const store = mockStore()
+      mockAxios
+        .onGet(`/someLambda.com?githubCode=${githubCode}`)
+        .reply(200, { user })
 
       return store.dispatch(loginGithub(githubCode)).then(() => {
         // return of async actions
