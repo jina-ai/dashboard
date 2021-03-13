@@ -43,10 +43,11 @@ const ImageLink = styled(Link)`
 `
 
 export default function ImageCard({ image, index }: Props) {
-  let { name, author, keywords, description } = image
+  let { name, author, keywords, description } = image;
+  let url = btoa('/package/' + index);
 
   return (
-    <ImageLink to={`/package/${index}`}>
+    <ImageLink to={url}>
       <Card className="clickable mb-4 h-100 image-card" data-name="hubImage">
         <Card.Body className="pb-0 mb-0 pt-3">
           <Row>
