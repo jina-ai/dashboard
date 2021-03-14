@@ -237,7 +237,7 @@ We use [jest](https://jestjs.io/) for unit tests and [cypress](https://www.cypre
 
 To run unit tests, run `npm test`
 
-To run integration tests, run `npm cy:run`
+To run integration tests, run `npm run cy:run`
 
 
 <a name="-contributing-documentation"></a>
