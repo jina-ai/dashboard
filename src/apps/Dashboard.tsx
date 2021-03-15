@@ -13,7 +13,6 @@ import { GithubCode } from "../redux/global/global.types"
 const Dashboard = () => {
   document.title = "Jina Dashboard"
   const dispatch = useDispatch()
-
   useEffect(() => {
     const parsed = queryString.parse(window.location.search)
     const code = parsed["?code"] as GithubCode

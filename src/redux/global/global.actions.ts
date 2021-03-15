@@ -32,7 +32,7 @@ import jinadClient from "../../services/jinad"
 import { getJinaFlowArguments } from "../../services/jinaApi"
 import { setFlowArguments } from "../flows/flows.actions"
 import logger from "../../logger"
-import axios from "axios"
+import axios, { AxiosRequestConfig } from "axios"
 
 export function handleConnectionStatus(
   connected: boolean,
@@ -156,6 +156,7 @@ export function connectJinaD(): AppThunk {
 
 export function loginGithub(githubCode: GithubCode): AppThunk {
   const lambdaUrl = process.env.REACT_APP_GITHUB_LAMBDA
+
   if (lambdaUrl === "undefined")
     return (dispatch) => {
       return new Promise((resolve) => {
@@ -163,14 +164,20 @@ export function loginGithub(githubCode: GithubCode): AppThunk {
       })
     }
   return (dispatch) => {
+    const config: AxiosRequestConfig = {
+      headers: {
+        authorizationToken: githubCode,
+      },
+    }
     return axios
-      .get(`${lambdaUrl}?githubCode=${githubCode}`)
-      .then((res) => dispatch(_login(res.data.user)))
-      .catch((ex) => dispatch(showError(ex)))
+      .get(`${lambdaUrl}`, config)
+      .then((res) => dispatch(_login(res.data)))
+      .catch((ex: Error) => dispatch(showError(ex.message)))
   }
 }
 
 function _login(user: User): LoginAction {
+  alert(user)
   return {
     type: LOGIN,
     payload: { user },
