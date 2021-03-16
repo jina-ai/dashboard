@@ -216,7 +216,7 @@ export default function FlowSelection() {
       {exampleFlows.map(([flowId, flow], idx) => (
         <FlowTap
           selected={selectedFlowId === flowId}
-          onClick={() => loadFlow(flowId)}
+          onClick={() => dispatch(loadFlow(flowId))}
           key={idx}
           data-name={`exampleFlowButton-${idx}`}
         >
