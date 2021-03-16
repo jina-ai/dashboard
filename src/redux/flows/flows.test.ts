@@ -13,12 +13,22 @@ import {
   deleteLink,
   updateNodeData,
   createNewWorkspace,
+  deleteWorkspace,
+  updateSelectedWorkspace,
+  createNewWorkspace,
   loadWorkspace,
   deleteWorkspace,
   updateSelectedWorkspace,
 } from "./flows.actions"
 import { initialFlowChart } from "./flows.constants"
 import { testFlowArguments, testFlowState } from "./flows.testData"
+import {
+  Flow,
+  FlowNode,
+  FlowEdge,
+  NodeDataUpdate,
+  WorkspaceUpdate,
+} from "./flows.types"
 import {
   Flow,
   FlowNode,
@@ -393,6 +403,9 @@ describe("flows reducer", () => {
     expect(updatedFlow.flows.testFlow1.flowChart).toEqual(flowChart)
   })
 
+
+
+
   it("should create a new workspace and save it to storage", () => {
     const oldNumberOfWorkspaces = Object.keys(testFlowState.workspaces).length
     const flowStateWithNewWorkspace = reducer(
@@ -460,5 +473,71 @@ describe("flows reducer", () => {
       "user-generated"
     )
     expect(updatedFlowState.workspaces.testWorkspace1.isConnected).toEqual(true)
+  })
+
+
+
+
+  it("should create a new workspace", () => {
+    const oldNumberOfWorkspaces = Object.keys(testFlowState.workspaces).length
+    const flowStateWithNewWorkspace = reducer(
+      testFlowState,
+      createNewWorkspace()
+    )
+    const newNumberOfWorkspace = Object.keys(
+      flowStateWithNewWorkspace.workspaces
+    ).length
+
+    expect(newNumberOfWorkspace - oldNumberOfWorkspaces).toBe(1)
+  })
+
+  it("should delete a workspace", () => {
+    const oldNumberOfWorkspaces = Object.keys(testFlowState.workspaces).length
+    const flowStateWithNewWorkspace = reducer(
+      testFlowState,
+      createNewWorkspace()
+    )
+    const newNumberOfWorkspaces = Object.keys(
+      flowStateWithNewWorkspace.workspaces
+    ).length
+
+    expect(newNumberOfWorkspaces - oldNumberOfWorkspaces).toBe(1)
+
+    const newWorkSpaceId = Object.keys(flowStateWithNewWorkspace.workspaces)[
+      newNumberOfWorkspaces - 1
+    ]
+    const flowStateWithoutNewWorkspace = reducer(
+      testFlowState,
+      deleteWorkspace(newWorkSpaceId)
+    )
+
+    const newerNumberOfWorkspaces = Object.keys(
+      flowStateWithoutNewWorkspace.workspaces
+    ).length
+
+    expect(newNumberOfWorkspaces - newerNumberOfWorkspaces).toBe(1)
+    expect(flowStateWithNewWorkspace.workspaces[newWorkSpaceId]).toBeDefined()
+    expect(
+      flowStateWithoutNewWorkspace.workspaces[newWorkSpaceId]
+    ).toBeUndefined()
+  })
+
+  it("should update a workspace", () => {
+    const update: WorkspaceUpdate = {
+      name: "newName",
+      type: "user-generated",
+      daemon_endpoint: "newDaemonEndpoint",
+      workspace_id: "newWorkspaceId",
+      isConnected: true,
+      files: ["newFile1", "newFile2"],
+    }
+    const flowStateWithUpdatedWorkspace = reducer(
+      testFlowState,
+      updateSelectedWorkspace(update)
+    )
+    expect(testFlowState.workspaces["test_workspace"]).not.toEqual(update)
+    expect(flowStateWithUpdatedWorkspace.workspaces["test_workspace"]).toEqual(
+      update
+    )
   })
 })
