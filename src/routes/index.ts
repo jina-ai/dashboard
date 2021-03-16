@@ -1,2 +1,2 @@
-export const { dashboardRoutes } = require("./Dashboard");
-export const { hubRoutes } = require("./Hub");
+export { dashboardRoutes } from "./Dashboard"
+export { hubRoutes } from "./Hub"
