@@ -51,7 +51,5 @@ ReactDOM.render(
 )
 
 if (window.Cypress) {
-  console.log("Cypress")
-  console.log(store)
   window.store = store
 }

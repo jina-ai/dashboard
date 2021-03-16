@@ -45,7 +45,6 @@ describe("The Flow Page", () => {
               cy.dataName(`chart-node-${element?.data?.label}`).should("exist")
             if (isFlowEdge(element)) {
               edgeCount++
-              console.log(edgeCount, "edgeCount")
               cy.get(
                 `:nth-child(${edgeCount}) > .react-flow__edge-path`
               ).should("exist")
