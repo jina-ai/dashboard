@@ -75,8 +75,10 @@ export default function ChartNode(props: ChartNodeProps) {
 
   if (_isFlowNode(props)) {
     const node = props
+    console.log("flowNode")
     return (
       <ChartNodeElement
+        data-name={`chart-node-${node?.data?.label}`}
         onDoubleClick={() => {
           flowType === "user-generated" &&
             dispatch(showModal("podEdit", { nodeId: node?.id }))

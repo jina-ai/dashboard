@@ -218,6 +218,7 @@ export default function FlowSelection() {
           selected={selectedFlowId === flowId}
           onClick={() => loadFlow(flowId)}
           key={idx}
+          data-name={`exampleFlowButton-${idx}`}
         >
           {flow.name}
         </FlowTap>
