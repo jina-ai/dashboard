@@ -38,9 +38,18 @@ describe("The Flow Page", () => {
         exampleFlows.forEach((flow, idx) => {
           cy.dataName(`exampleFlowButton-${idx}`).should("contain", flow.name)
           cy.dataName(`exampleFlowButton-${idx}`).click()
+          let edgeCount = 0
+
           flow.flowChart.elements.forEach((element) => {
             if (isFlowNode(element))
               cy.dataName(`chart-node-${element?.data?.label}`).should("exist")
+            if (isFlowEdge(element)) {
+              edgeCount++
+              console.log(edgeCount, "edgeCount")
+              cy.get(
+                `:nth-child(${edgeCount}) > .react-flow__edge-path`
+              ).should("exist")
+            }
           })
         })
       })
