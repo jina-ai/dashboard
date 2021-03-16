@@ -1,41 +1,48 @@
 import {
-  CREATE_NEW_FLOW,
-  DELETE_FLOW,
-  DELETE_NODE,
-  UPDATE_NODE,
-  DUPLICATE_FLOW,
-  LOAD_FLOW,
-  UPDATE_SELECTED_FLOW,
-  IMPORT_FLOW,
-  SET_FLOW_ARGUMENTS,
-  ADD_NODE,
   ADD_LINK,
+  ADD_NODE,
+  CREATE_NEW_FLOW,
+  CREATE_NEW_WORKSPACE,
+  DELETE_FLOW,
   DELETE_LINK,
+  DELETE_NODE,
+  DELETE_WORKSPACE,
+  DUPLICATE_FLOW,
+  IMPORT_FLOW,
+  LOAD_FLOW,
+  SET_FLOW_ARGUMENTS,
+  UPDATE_NODE,
   UPDATE_NODE_DATA,
+  UPDATE_SELECTED_FLOW,
+  UPDATE_SELECTED_WORKSPACE,
 } from "./flows.constants"
 import {
-  CreateNewFlowAction,
-  DeleteFlowAction,
-  DeleteNodeAction,
-  DuplicateFlowAction,
-  FlowState,
-  LoadFlowAction,
-  NodeUpdate,
-  UpdateNodeAction,
-  UpdateSelectedFlowAction,
-  ImportFlowAction,
-  FlowArguments,
-  SetFlowArgumentsAction,
-  FlowUpdate,
-  NodeId,
-  AddNodeAction,
   AddLinkAction,
+  AddNodeAction,
+  CreateNewFlowAction,
+  CreateNewWorkspaceAction,
+  DeleteFlowAction,
   DeleteLinkAction,
   DeleteLinkProps,
-  NodeData,
-  UpdateNodeDataAction,
-  NodeDataUpdate,
+  DeleteNodeAction,
+  DeleteWorkspaceAction,
+  DuplicateFlowAction,
   Flow,
+  FlowArguments,
+  FlowState,
+  FlowUpdate,
+  ImportFlowAction,
+  LoadFlowAction,
+  NodeData,
+  NodeDataUpdate,
+  NodeId,
+  NodeUpdate,
+  SetFlowArgumentsAction,
+  UpdateNodeAction,
+  UpdateNodeDataAction,
+  UpdateSelectedFlowAction,
+  UpdateSelectedWorkspaceAction,
+  WorkspaceUpdate,
 } from "./flows.types"
 
 import { ThunkAction } from "redux-thunk"
@@ -47,6 +54,28 @@ import { formatAsYAML } from "../../helpers"
 import logger from "../../logger"
 import jinadClient from "../../services/jinad"
 import { XYPosition } from "react-flow-renderer/dist/types"
+
+export function createNewWorkspace(): CreateNewWorkspaceAction {
+  return {
+    type: CREATE_NEW_WORKSPACE,
+  }
+}
+
+export function updateSelectedWorkspace(
+  workspaceUpdate: WorkspaceUpdate
+): UpdateSelectedWorkspaceAction {
+  return {
+    type: UPDATE_SELECTED_WORKSPACE,
+    payload: workspaceUpdate,
+  }
+}
+
+export function deleteWorkspace(workspaceId: string): DeleteWorkspaceAction {
+  return {
+    type: DELETE_WORKSPACE,
+    payload: workspaceId,
+  }
+}
 
 export function loadFlow(flowId: string): LoadFlowAction {
   return {
