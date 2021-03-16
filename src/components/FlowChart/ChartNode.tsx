@@ -41,9 +41,9 @@ function NodePort({ type }: NodePortProps) {
   `
   switch (type) {
     case "source":
-      return <NodePortTop type={type} position={Position.Top} />
-    case "target":
       return <NodePortBottom type={type} position={Position.Bottom} />
+    case "target":
+      return <NodePortTop type={type} position={Position.Top} />
   }
 }
 
@@ -83,7 +83,7 @@ export default function ChartNode(props: ChartNodeProps) {
             dispatch(showModal("podEdit", { nodeId: node?.id }))
         }}
       >
-        {node.id !== "gateway" && <NodePort type="source" />}
+        {node.id !== "gateway" && <NodePort type="target" />}
         <div id={`chart-node-${node?.data?.label}`}>
           <div className="node-header">
             <div className={`p-1`}>
@@ -97,7 +97,7 @@ export default function ChartNode(props: ChartNodeProps) {
             </div>
           </div>
         </div>{" "}
-        <NodePort type="target" />
+        <NodePort type="source" />
       </ChartNodeElement>
     )
   } else
