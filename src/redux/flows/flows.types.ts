@@ -12,6 +12,10 @@ import {
   ADD_LINK,
   DELETE_LINK,
   UPDATE_NODE_DATA,
+  CREATE_NEW_WORKSPACE,
+  UPDATE_SELECTED_WORKSPACE,
+  ADD_FILES_TO_WORKSPACE,
+  DELETE_WORKSPACE,
 } from "./flows.constants"
 
 import { Edge, Node, XYPosition } from "react-flow-renderer"
@@ -89,6 +93,8 @@ export interface FlowChart {
 
 type FlowType = "user-generated" | "remote" | "example"
 
+type WorkspaceType = "user-generated" | "remote" | "example"
+
 export type Flow = {
   name: string
   type: FlowType
@@ -98,10 +104,25 @@ export type Flow = {
   flowChart: FlowChart
   yaml?: string
 }
+
+export type Workspace = {
+  name: string
+  type: WorkspaceType
+  daemon_endpoint: string
+  workspace_id: string
+  isConnected: boolean
+  files: string[]
+}
+
 export type FlowUpdate = Partial<Flow>
+export type WorkspaceUpdate = Partial<Workspace>
 
 export type Flows = {
   [flowId: string]: Flow
+}
+
+export type Workspaces = {
+  [workspaceId: string]: Workspace
 }
 
 export type LoadFlowAction = {
@@ -111,6 +132,24 @@ export type LoadFlowAction = {
 
 export type CreateNewFlowAction = {
   type: typeof CREATE_NEW_FLOW
+}
+
+export type CreateNewWorkspaceAction = {
+  type: typeof CREATE_NEW_WORKSPACE
+}
+
+export type UpdateSelectedWorkspaceAction = {
+  type: typeof UPDATE_SELECTED_WORKSPACE
+  payload: WorkspaceUpdate
+}
+
+export type AddFilesToWorkspaceAction = {
+  type: typeof ADD_FILES_TO_WORKSPACE
+}
+
+export type DeleteWorkspaceAction = {
+  type: typeof DELETE_WORKSPACE
+  payload: string
 }
 
 export type FlowArgumentType = "string" | "boolean" | "integer"
@@ -131,6 +170,8 @@ export type FlowArguments = {
 
 export type FlowState = {
   selectedFlowId: string
+  selectedWorkspaceId: string
+  workspaces: Workspaces
   flows: Flows
   flowArguments: FlowArguments
   tooltipConfig: {
@@ -219,3 +260,7 @@ export type FlowActionTypes =
   | AddLinkAction
   | DeleteLinkAction
   | UpdateNodeDataAction
+  | CreateNewWorkspaceAction
+  | UpdateSelectedWorkspaceAction
+  | AddFilesToWorkspaceAction
+  | DeleteWorkspaceAction
