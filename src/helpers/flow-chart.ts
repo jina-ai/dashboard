@@ -1,5 +1,11 @@
 // @ts-nocheck
-import { FlowChart, FlowNode, NodeData, Pod } from "../redux/flows/flows.types"
+import {
+  FlowChart,
+  FlowEdge,
+  FlowNode,
+  NodeData,
+  Pod,
+} from "../redux/flows/flows.types"
 import { isEdge, isNode, XYPosition } from "react-flow-renderer"
 const settings = require("./../settings")
 
@@ -19,7 +25,7 @@ export const createNode = (
   }
 }
 
-export const createLink = (source: string, target: string): FlowLink => ({
+export const createEdge = (source: string, target: string): FlowEdge => ({
   id: `e-${source}-to-${target}`,
   source,
   target,
@@ -80,7 +86,7 @@ export const formatForFlowchart = (data: ParsedYAML): FlowChart => {
     }
 
     if (node?.data?.needs)
-      node.data.needs.forEach((parent) => links.push(createLink(parent, id)))
+      node.data.needs.forEach((parent) => links.push(createEdge(parent, id)))
 
     if (canvas && canvas[id]) {
       const { x, y } = canvas[id]
