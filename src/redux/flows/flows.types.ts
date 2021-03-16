@@ -12,7 +12,6 @@ import {
   ADD_LINK,
   DELETE_LINK,
   UPDATE_NODE_DATA,
-  LOAD_WORKSPACE,
   CREATE_NEW_WORKSPACE,
   UPDATE_SELECTED_WORKSPACE,
   ADD_FILES_TO_WORKSPACE,
@@ -96,26 +95,21 @@ type FlowType = "user-generated" | "remote" | "example"
 
 type WorkspaceType = "user-generated" | "remote" | "example"
 
-type DaemonData = string | null
-
 export type Flow = {
   name: string
   type: FlowType
   isConnected: boolean
-  workspaceId: string
-  daemon_id?: DaemonData
+  workspace_id?: string
+  flow_id?: string
   flowChart: FlowChart
   yaml?: string
 }
 
 export type Workspace = {
-  jina_version: string
-  flowArguments: FlowArguments
-  selectedFlowId: string
   name: string
   type: WorkspaceType
-  daemon_endpoint: DaemonData
-  daemon_id: DaemonData
+  daemon_endpoint: string
+  workspace_id: string
   isConnected: boolean
   files: string[]
 }
@@ -138,11 +132,6 @@ export type LoadFlowAction = {
 
 export type CreateNewFlowAction = {
   type: typeof CREATE_NEW_FLOW
-}
-
-export type LoadWorkspaceAction = {
-  type: typeof LOAD_WORKSPACE
-  payload: string
 }
 
 export type CreateNewWorkspaceAction = {
@@ -173,33 +162,34 @@ export type FlowArgument = {
 }
 
 export type FlowArguments = {
+  version: string
   flow: FlowArgument[]
   pea: FlowArgument[]
   pod: FlowArgument[]
 }
 
 export type FlowState = {
+  selectedFlowId: string
   selectedWorkspaceId: string
   workspaces: Workspaces
   flows: Flows
+  flowArguments: FlowArguments
+  tooltipConfig: {
+    tooltipsGlobal: {
+      showTooltip: boolean
+      toogleOffWhenClicked: string
+      text: string
+    }
+  }
 }
 
 export type ExampleFlows = {
-  [id: string]: {
+  [name: string]: {
     name: string
+    type: FlowType
     yaml: string
-    workspaceId: string
   }
 }
-
-export type ExampleWorkspaces = {
-  [id: string]: {
-    jina_version: string
-    type: WorkspaceType
-    name: string
-  }
-}
-
 export type SetFlowArgumentsAction = {
   type: typeof SET_FLOW_ARGUMENTS
   payload: FlowArguments
@@ -270,7 +260,6 @@ export type FlowActionTypes =
   | AddLinkAction
   | DeleteLinkAction
   | UpdateNodeDataAction
-  | LoadWorkspaceAction
   | CreateNewWorkspaceAction
   | UpdateSelectedWorkspaceAction
   | AddFilesToWorkspaceAction

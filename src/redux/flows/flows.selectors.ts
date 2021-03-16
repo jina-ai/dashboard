@@ -11,6 +11,11 @@ export const selectSelectedFlow = (state: State) => {
 export const selectSelectedWorkspace = (state: State) =>
   state.flowState.workspaces[state.flowState.selectedWorkspaceId]
 
+export const selectTooltipConfig = (state: State) =>
+  state.flowState.tooltipConfig
+export const selectSelectedWorkspace = (state: State) =>
+  state.flowState.workspaces[state.flowState.selectedWorkspaceId]
+
 export const selectFlows = (state: State) => {
   const { selectedWorkspaceId } = state.flowState
   return _.pickBy(

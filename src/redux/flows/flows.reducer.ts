@@ -16,6 +16,9 @@ import {
   UPDATE_NODE,
   UPDATE_SELECTED_FLOW,
   UPDATE_NODE_DATA,
+  CREATE_NEW_WORKSPACE,
+  UPDATE_SELECTED_WORKSPACE,
+  DELETE_WORKSPACE,
   LOAD_WORKSPACE,
   CREATE_NEW_WORKSPACE,
   UPDATE_SELECTED_WORKSPACE,
@@ -48,12 +51,22 @@ import {
 } from "../../helpers/flow-chart"
 import { Connection } from "react-flow-renderer/dist/types"
 
-export const saveFlowsToStorage = (flows: Flows) => {
+export const saveFlowsToStorage = (state: FlowState) => {
   let toSave: { [id: string]: Flow } = {}
-  Object.entries(flows).forEach(([id, flow]) => {
+  const { flows } = state
+  Object.entries(flows).forEach(([id, flow]: [string, Flow]) => {
     if (flow.type === "user-generated") toSave[id] = flow
   })
   localStorage.setItem("userFlows", JSON.stringify(toSave))
+}
+
+export const saveWorkspacesToStorage = (state: FlowState) => {
+  let toSave: { [id: string]: Workspace } = {}
+  const { workspaces } = state
+  Object.entries(workspaces).forEach(([id, workspace]: [string, Workspace]) => {
+    if (workspace.type === "user-generated") toSave[id] = workspace
+  })
+  localStorage.setItem("userWorkspaces", JSON.stringify(toSave))
 }
 
 export const saveWorkspacesToStorage = (workspaces: Workspaces) => {
@@ -67,14 +80,31 @@ export const saveWorkspacesToStorage = (workspaces: Workspaces) => {
 function getUserFlows(): Flows {
   const storedFlows = localStorage.getItem("userFlows")
   const userFlows = storedFlows ? JSON.parse(storedFlows) : null
-  return _.isEmpty(userFlows) ? _.cloneDeep(defaultFlows) : userFlows
+  return _.isEmpty(userFlows)
+    ? {
+        _userFlow: {
+          name: "Custom Flow 1",
+          type: "user-generated",
+          flowChart: initialFlowChart,
+        },
+      }
+    : userFlows
 }
 
 function getUserWorkspaces(): Workspaces {
   const storedWorkspaces = localStorage.getItem("userWorkspaces")
   const userWorkspaces = storedWorkspaces ? JSON.parse(storedWorkspaces) : null
   return _.isEmpty(userWorkspaces)
-    ? _.cloneDeep(defaultWorkspaces)
+    ? {
+        _userWorkspace: {
+          name: "New Workspace 1",
+          type: "user-generated",
+          daemon_endpoint: "",
+          isConnected: false,
+          workspace_id: "",
+          files: [],
+        },
+      }
     : userWorkspaces
 }
 
@@ -110,6 +140,11 @@ const initialFlows = {
 }
 
 const initialState: FlowState = {
+  selectedFlowId: "_userFlow",
+  selectedWorkspaceId: "_userWorkspace",
+  workspaces: {
+    ...getUserWorkspaces(),
+  },
   selectedWorkspaceId: Object.keys(initialWorkspaces)[0],
   workspaces: {
     ...initialWorkspaces,
@@ -308,6 +343,46 @@ const flowReducer = produce((draft: FlowState, action: FlowActionTypes) => {
         }
       }
       break
+    case CREATE_NEW_WORKSPACE:
+      draft = _createNewWorkspace(draft)
+      break
+    case UPDATE_SELECTED_WORKSPACE: {
+      const workspaceUpdate = action.payload
+      if (draft.selectedWorkspaceId) {
+        const selectedWorkspace = draft.workspaces[draft.selectedWorkspaceId]
+        draft.workspaces[draft.selectedWorkspaceId] = {
+          ...selectedWorkspace,
+          ...workspaceUpdate,
+        }
+      }
+      break
+    }
+    case DELETE_WORKSPACE:
+      {
+        const workspaceId = action.payload as string
+        draft.workspaces = _.omit(draft.workspaces, workspaceId)
+
+        const nonExampleWorkspaces = Object.entries(draft.workspaces).filter(
+          ([id, workspace]: [string, Workspace]) => workspace.type !== "example"
+        )
+
+        if (draft.selectedWorkspaceId === workspaceId) {
+          const idFirstNonExampleWorkspace = nonExampleWorkspaces[0][0]
+          draft.selectedWorkspaceId = idFirstNonExampleWorkspace
+        } else if (!nonExampleWorkspaces.length) {
+          draft.workspaces._userWorkspace = {
+            name: "New Workspace 1",
+            type: "user-generated",
+            daemon_endpoint: "",
+            isConnected: false,
+            workspace_id: "",
+            files: [],
+          }
+        }
+        draft.selectedWorkspaceId = "_userWorkspace"
+      }
+      break
+  }
     }
     case DELETE_WORKSPACE:
       {
@@ -418,6 +493,37 @@ function _createNewWorkspace(draft: FlowState): FlowState {
   }
   draft = _createNewFlow(draft, undefined, flowId, workspaceId)
   draft.workspaces[workspaceId].selectedFlowId = flowId
+  return draft
+}
+
+function _createNewWorkspace(draft: FlowState, customYAML?: string): FlowState {
+  const prefixString = "My Workspace"
+
+  let userWorkspaces = Object.values(
+    draft.workspaces
+  ).filter((workspace: any) => workspace.name.startsWith(prefixString))
+
+  const userWorkspaceNumbers = userWorkspaces
+    .map(
+      (userWorkspace: Workspace) =>
+        parseInt(userWorkspace.name.substring(prefixString.length)) || 0
+    )
+    .sort((a, b) => a - b)
+
+  const largestNumber =
+    userWorkspaceNumbers[userWorkspaceNumbers.length - 1] || 0
+
+  const id = nanoid()
+
+  draft.workspaces[id] = {
+    name: `${prefixString} ${largestNumber + 1}`,
+    type: "user-generated",
+    daemon_endpoint: "",
+    isConnected: false,
+    workspace_id: "",
+    files: [],
+  }
+  draft.selectedFlowId = id
   return draft
 }
 
