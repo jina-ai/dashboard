@@ -7,6 +7,17 @@ export const testFlowState: FlowState = {
     flow: [],
     version: "",
   },
+  workspaces: {
+    test_workspace: {
+      name: "Test Workspace 1",
+      type: "user-generated",
+      daemon_endpoint: "",
+      isConnected: false,
+      workspace_id: "",
+      files: [],
+    },
+  },
+  selectedWorkspaceId: "test_workspace",
   tooltipConfig: {
     tooltipsGlobal: {
       showTooltip: true,
