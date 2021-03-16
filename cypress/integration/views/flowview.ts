@@ -25,6 +25,27 @@ describe("The Flow Page", () => {
     cy.dataName("CustomFlow2").should("not.exist")
   })
 
+  it("should render the examples correctly", () => {
+    cy.window()
+      .its("store")
+      .then((store) => {
+        const flowState = store.getState().flowState as FlowState
+
+        const exampleFlows = Object.entries(flowState.flows)
+          .filter(([id, flow]) => flow.type === "example")
+          .map(([id, flow]) => flow) as Flow[]
+
+        exampleFlows.forEach((flow, idx) => {
+          cy.dataName(`exampleFlowButton-${idx}`).should("contain", flow.name)
+          cy.dataName(`exampleFlowButton-${idx}`).click()
+          flow.flowChart.elements.forEach((element) => {
+            if (isFlowNode(element))
+              cy.dataName(`chart-node-${element?.data?.label}`).should("exist")
+          })
+        })
+      })
+  })
+
   context("When JinaD is connected", () => {
     it("shouldn't display the offline message", () => {
       cy.dataName("connection-notification-offline").should("not.exist")
@@ -51,26 +72,5 @@ describe("The Flow Page", () => {
         cy.get(".chart-section-container").trigger("drop", { dataTransfer })
       })
     })
-  })
-
-  it("should render the examples correctly", () => {
-    cy.window()
-      .its("store")
-      .then((store) => {
-        const flowState = store.getState().flowState as FlowState
-
-        const exampleFlows = Object.entries(flowState.flows)
-          .filter(([id, flow]) => flow.type === "example")
-          .map(([id, flow]) => flow) as Flow[]
-
-        exampleFlows.forEach((flow, idx) => {
-          cy.dataName(`exampleFlowButton-${idx}`).should("contain", flow.name)
-          cy.dataName(`exampleFlowButton-${idx}`).click()
-          flow.flowChart.elements.forEach((element) => {
-            if (isFlowNode(element))
-              cy.dataName(`chart-node-${element?.data?.label}`).should("exist")
-          })
-        })
-      })
   })
 })

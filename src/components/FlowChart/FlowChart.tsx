@@ -78,6 +78,7 @@ export default function FlowChart(props: Props) {
       style={{ height: "100%", width: "100%" }}
     >
       <ReactFlow
+        defaultZoom={0.5}
         elements={props.elements}
         onConnect={onConnect as ReactFlowProps["onConnect"]}
         onElementsRemove={onElementsRemove}
