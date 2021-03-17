@@ -96,11 +96,13 @@ type FlowType = "user-generated" | "remote" | "example"
 
 type WorkspaceType = "user-generated" | "remote" | "example"
 
+type DaemonData = string | null
+
 export type Flow = {
   name: string
   type: FlowType
   isConnected: boolean
-  daemon_id?: string
+  daemon_id?: DaemonData
   flowChart: FlowChart
   yaml?: string
 }
@@ -112,8 +114,8 @@ export type Workspace = {
   flows: Flows
   name: string
   type: WorkspaceType
-  daemon_endpoint: string
-  daemon_id: string
+  daemon_endpoint: DaemonData
+  daemon_id: DaemonData
   isConnected: boolean
   files: string[]
 }
