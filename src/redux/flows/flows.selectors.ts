@@ -11,6 +11,8 @@ export const selectTooltipConfig = (state: State) =>
 
 export const selectFlows = (state: State) => state.flowState.flows
 
+export const selectWorkspaces = (state: State) => state.flowState.workspaces
+
 export const selectFlowArguments = (state: State) =>
   state.flowState.flowArguments
 
@@ -22,3 +24,6 @@ export const selectExampleFlowsKeyEntryPairs = (state: State) => {
 
 export const selectSelectedFlowId = (state: State) =>
   state.flowState.selectedFlowId
+
+export const selectSelectedWorkspaceId = (state: State) =>
+  state.flowState.selectedWorkspaceId

@@ -12,6 +12,10 @@ import {
   ADD_LINK,
   DELETE_LINK,
   UPDATE_NODE_DATA,
+  LOAD_WORKSPACE,
+  CREATE_NEW_WORKSPACE,
+  DELETE_WORKSPACE,
+  UPDATE_SELECTED_WORKSPACE,
 } from "./flows.constants"
 import {
   CreateNewFlowAction,
@@ -36,6 +40,11 @@ import {
   UpdateNodeDataAction,
   NodeDataUpdate,
   Flow,
+  LoadWorkspaceAction,
+  CreateNewWorkspaceAction,
+  DeleteWorkspaceAction,
+  WorkspaceUpdate,
+  UpdateSelectedWorkspaceAction,
 } from "./flows.types"
 
 import { ThunkAction } from "redux-thunk"
@@ -156,6 +165,35 @@ export function deleteNode(nodeId: string): DeleteNodeAction {
   return {
     type: DELETE_NODE,
     payload: nodeId,
+  }
+}
+
+export function loadWorkspace(workspaceId: string): LoadWorkspaceAction {
+  return {
+    type: LOAD_WORKSPACE,
+    payload: workspaceId,
+  }
+}
+
+export function createNewWorkspace(): CreateNewWorkspaceAction {
+  return {
+    type: CREATE_NEW_WORKSPACE,
+  }
+}
+
+export function deleteWorkspace(workspaceId: string): DeleteWorkspaceAction {
+  return {
+    type: DELETE_WORKSPACE,
+    payload: workspaceId,
+  }
+}
+
+export function updateSelectedWorkspace(
+  workspaceUpdate: WorkspaceUpdate
+): UpdateSelectedWorkspaceAction {
+  return {
+    type: UPDATE_SELECTED_WORKSPACE,
+    payload: workspaceUpdate,
   }
 }
 
