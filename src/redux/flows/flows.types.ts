@@ -100,17 +100,20 @@ export type Flow = {
   name: string
   type: FlowType
   isConnected: boolean
-  workspace_id?: string
-  flow_id?: string
+  daemon_id?: string
   flowChart: FlowChart
   yaml?: string
 }
 
 export type Workspace = {
+  jina_version: string
+  flowArguments: FlowArguments
+  selectedFlowId: string
+  flows: Flows
   name: string
   type: WorkspaceType
   daemon_endpoint: string
-  workspace_id: string
+  daemon_id: string
   isConnected: boolean
   files: string[]
 }
@@ -168,25 +171,14 @@ export type FlowArgument = {
 }
 
 export type FlowArguments = {
-  version: string
   flow: FlowArgument[]
   pea: FlowArgument[]
   pod: FlowArgument[]
 }
 
 export type FlowState = {
-  selectedFlowId: string
   selectedWorkspaceId: string
   workspaces: Workspaces
-  flows: Flows
-  flowArguments: FlowArguments
-  tooltipConfig: {
-    tooltipsGlobal: {
-      showTooltip: boolean
-      toogleOffWhenClicked: string
-      text: string
-    }
-  }
 }
 
 export type ExampleFlows = {
