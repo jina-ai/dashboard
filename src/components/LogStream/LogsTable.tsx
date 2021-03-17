@@ -22,6 +22,7 @@ import {
   serializeLogsToJSONBlob,
   serializeLogsToTextBlob,
 } from "../../helpers"
+import { TimePreference } from "../../views/LogsView"
 
 const ROW_SIZE = 30
 const DEFAULT_VIEW = "table"
@@ -48,7 +49,7 @@ type GroupedData = {
 
 export type FilterSelection = {
   label: string
-  value: string
+  value: TimePreference
 }
 
 const saveOptions = [

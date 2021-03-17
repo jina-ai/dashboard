@@ -34,7 +34,7 @@ export type Props = {
   isMulti?: boolean
   isSearchable?: boolean
   clearAfter?: boolean
-} & SelectProps
+} & Omit<SelectProps, "isMulti">
 
 function MultiFilterSelect({
   isMulti,

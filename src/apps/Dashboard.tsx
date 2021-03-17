@@ -12,7 +12,7 @@ const Dashboard = () => {
   return (
     <Router basename={"/"}>
       <div>
-        {routes.map((route: any, index: number) => {
+        {routes.map((route, index: number) => {
           return (
             <Route
               path={route.path}

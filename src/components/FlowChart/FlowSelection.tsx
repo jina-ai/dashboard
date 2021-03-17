@@ -206,12 +206,10 @@ export default function FlowSelection() {
             connected={connected}
           />
           <FlowTapOverflowHider />
-          {flowId !== "_userFlow" && (
-            <DeleteFlowButton
-              deleteFlow={() => dispatch(deleteFlow(flowId))}
-              idx={idx}
-            />
-          )}
+          <DeleteFlowButton
+            idx={idx}
+            deleteFlow={() => dispatch(deleteFlow(flowId))}
+          />
         </FlowTap>
       ))}
       <FlowHeader>Example Flows</FlowHeader>
