@@ -16,6 +16,7 @@ import {
   UPDATE_NODE,
   UPDATE_SELECTED_FLOW,
   UPDATE_NODE_DATA,
+  LOAD_WORKSPACE,
   CREATE_NEW_WORKSPACE,
   UPDATE_SELECTED_WORKSPACE,
   DELETE_WORKSPACE,
@@ -78,7 +79,7 @@ function getUserWorkspaces(): Workspaces {
   return _.isEmpty(userWorkspaces)
     ? {
         _userWorkspace: {
-          name: "New Workspace 1",
+          name: "Workspace 1",
           type: "user-generated",
           daemon_endpoint: "",
           isConnected: false,
@@ -274,6 +275,9 @@ const flowReducer = produce((draft: FlowState, action: FlowActionTypes) => {
         ].flowChart.elements.filter((element) => linkId !== element.id)
       }
       break
+    case LOAD_WORKSPACE:
+      draft.selectedWorkspaceId = action.payload
+      break
     case CREATE_NEW_WORKSPACE:
       draft = _createNewWorkspace(draft)
       break
@@ -302,7 +306,7 @@ const flowReducer = produce((draft: FlowState, action: FlowActionTypes) => {
           draft.selectedWorkspaceId = idFirstNonExampleWorkspace
         } else if (!nonExampleWorkspaces.length) {
           draft.workspaces._userWorkspace = {
-            name: "New Workspace 1",
+            name: "Workspace 1",
             type: "user-generated",
             daemon_endpoint: "",
             isConnected: false,
@@ -321,7 +325,7 @@ const flowReducer = produce((draft: FlowState, action: FlowActionTypes) => {
 function _createNewFlow(draft: FlowState, customYAML?: string): FlowState {
   const prefixString = "Custom Flow"
 
-  let userFlows = Object.values(draft.flows).filter((flow: any) =>
+  let userFlows = Object.values(draft.flows).filter((flow: Flow) =>
     flow.name.startsWith(prefixString)
   )
 
@@ -353,12 +357,12 @@ function _createNewFlow(draft: FlowState, customYAML?: string): FlowState {
   return draft
 }
 
-function _createNewWorkspace(draft: FlowState, customYAML?: string): FlowState {
-  const prefixString = "My Workspace"
+function _createNewWorkspace(draft: FlowState): FlowState {
+  const prefixString = "Workspace"
 
   let userWorkspaces = Object.values(
     draft.workspaces
-  ).filter((workspace: any) => workspace.name.startsWith(prefixString))
+  ).filter((workspace: Workspace) => workspace.name.startsWith(prefixString))
 
   const userWorkspaceNumbers = userWorkspaces
     .map(
