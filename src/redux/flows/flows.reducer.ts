@@ -319,6 +319,7 @@ const flowReducer = produce((draft: FlowState, action: FlowActionTypes) => {
       break
   }
 
+  saveFlowsToStorage(draft)
   saveWorkspacesToStorage(draft)
 }, initialState)
 

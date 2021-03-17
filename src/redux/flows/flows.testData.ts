@@ -9,7 +9,7 @@ export const testFlowState: FlowState = {
   },
   workspaces: {
     testWorkspace1: {
-      name: "Test Workspace 1",
+      name: "Workspace 1",
       type: "user-generated",
       daemon_endpoint: "",
       isConnected: false,
@@ -17,7 +17,7 @@ export const testFlowState: FlowState = {
       files: [],
     },
     testWorkspace2: {
-      name: "Test Workspace 2",
+      name: "Workspace 2",
       type: "user-generated",
       daemon_endpoint: "",
       isConnected: false,
