@@ -20,10 +20,15 @@ import {
   CREATE_NEW_WORKSPACE,
   UPDATE_SELECTED_WORKSPACE,
   DELETE_WORKSPACE,
+  defaultFlow,
+  defaultJinaVersion,
+  defaultFlowArguments,
+  defaultSelectedFlowId,
 } from "./flows.constants"
 import {
   Flow,
   FlowActionTypes,
+  FlowElement,
   Flows,
   FlowState,
   NodeData,
@@ -34,7 +39,7 @@ import { nanoid } from "nanoid"
 import produce from "immer"
 import { isNodeConnection } from "../../helpers/typeCheckers"
 import {
-  createEdge,
+  createLink,
   createNode,
   isFlowNode,
   isFlowEdge,
@@ -43,7 +48,7 @@ import { Connection } from "react-flow-renderer/dist/types"
 
 export const saveFlowsToStorage = (state: FlowState) => {
   let toSave: { [id: string]: Flow } = {}
-  const { flows } = state
+  const { flows } = state.workspaces[state.selectedWorkspaceId]
   Object.entries(flows).forEach(([id, flow]: [string, Flow]) => {
     if (flow.type === "user-generated") toSave[id] = flow
   })
@@ -62,15 +67,7 @@ export const saveWorkspacesToStorage = (state: FlowState) => {
 function getUserFlows(): Flows {
   const storedFlows = localStorage.getItem("userFlows")
   const userFlows = storedFlows ? JSON.parse(storedFlows) : null
-  return _.isEmpty(userFlows)
-    ? {
-        _userFlow: {
-          name: "Custom Flow 1",
-          type: "user-generated",
-          flowChart: initialFlowChart,
-        },
-      }
-    : userFlows
+  return _.isEmpty(userFlows) ? defaultFlow : userFlows
 }
 
 function getUserWorkspaces(): Workspaces {
@@ -86,6 +83,12 @@ function getUserWorkspaces(): Workspaces {
           workspace_id: "",
           files: [],
         },
+        selectedFlowId: defaultSelectedFlowId,
+        flows: {
+          ...getUserFlows(),
+          ...getExampleFlows(),
+        },
+        flowArguments: defaultFlowArguments,
       }
     : userWorkspaces
 }
@@ -108,27 +111,9 @@ function getExampleFlows() {
 }
 
 const initialState: FlowState = {
-  selectedFlowId: "_userFlow",
   selectedWorkspaceId: "_userWorkspace",
   workspaces: {
     ...getUserWorkspaces(),
-  },
-  flows: {
-    ...getUserFlows(),
-    ...getExampleFlows(),
-  },
-  flowArguments: {
-    version: "0.0",
-    flow: [],
-    pea: [],
-    pod: [],
-  },
-  tooltipConfig: {
-    tooltipsGlobal: {
-      showTooltip: true,
-      toogleOffWhenClicked: "global",
-      text: "Hold Shift and click to select multiple nodes",
-    },
   },
 }
 
@@ -149,31 +134,47 @@ const flowReducer = produce((draft: FlowState, action: FlowActionTypes) => {
     case DELETE_FLOW:
       {
         const flowId = action.payload as string
-        draft.flows = _.omit(draft.flows, flowId)
-
-        const nonExampleFlows = Object.entries(draft.flows).filter(
-          ([id, flow]: [string, Flow]) => flow.type !== "example"
+        draft.workspaces[draft.selectedWorkspaceId].flows = _.omit(
+          draft.workspaces[draft.selectedWorkspaceId].flows,
+          flowId
         )
 
-        if (draft.selectedFlowId === flowId && nonExampleFlows.length) {
+        const nonExampleFlows = Object.entries(
+          draft.workspaces[draft.selectedWorkspaceId].flows
+        ).filter(([id, flow]: [string, Flow]) => flow.type !== "example")
+
+        if (
+          draft.workspaces[draft.selectedWorkspaceId].selectedFlowId ===
+            flowId &&
+          nonExampleFlows.length
+        ) {
           const idFirstNonExampleFlow = nonExampleFlows[0][0]
-          draft.selectedFlowId = idFirstNonExampleFlow
+          draft.workspaces[
+            draft.selectedWorkspaceId
+          ].selectedFlowId = idFirstNonExampleFlow
         } else if (!nonExampleFlows.length) {
-          draft.flows._userFlow = {
+          draft.workspaces[draft.selectedWorkspaceId].flows._userFlow = {
             name: "Custom Flow 1",
             type: "user-generated",
             isConnected: false,
             flowChart: initialFlowChart,
           }
-          draft.selectedFlowId = "_userFlow"
+          draft.workspaces[
+            draft.selectedWorkspaceId
+          ].selectedFlowId = defaultSelectedFlowId
         }
       }
       break
     case UPDATE_SELECTED_FLOW: {
       const flowUpdate = action.payload
-      if (draft.selectedFlowId) {
-        const selectedFlow = draft.flows[draft.selectedFlowId]
-        draft.flows[draft.selectedFlowId] = {
+      if (draft.workspaces[draft.selectedWorkspaceId].selectedFlowId) {
+        const selectedFlow =
+          draft.workspaces[draft.selectedWorkspaceId].flows[
+            draft.workspaces[draft.selectedWorkspaceId].selectedFlowId
+          ]
+        draft.workspaces[draft.selectedWorkspaceId].flows[
+          draft.workspaces[draft.selectedWorkspaceId].selectedFlowId
+        ] = {
           ...selectedFlow,
           ...flowUpdate,
         }
@@ -181,51 +182,58 @@ const flowReducer = produce((draft: FlowState, action: FlowActionTypes) => {
       break
     }
     case SET_FLOW_ARGUMENTS: {
-      draft.flowArguments = action.payload
+      draft.workspaces[draft.selectedWorkspaceId].flowArguments = action.payload
       break
     }
     case LOAD_FLOW:
-      draft.selectedFlowId = action.payload
+      draft.workspaces[draft.selectedWorkspaceId].selectedFlowId =
+        action.payload
       break
     case UPDATE_NODE: {
       const { nodeUpdate, nodeId } = action.payload
-      const selectedFlowId = draft.selectedFlowId
-      const oldNodeIndex = draft.flows[
+      const selectedFlowId =
+        draft.workspaces[draft.selectedWorkspaceId].selectedFlowId
+      const oldNodeIndex = draft.workspaces[draft.selectedWorkspaceId].flows[
         selectedFlowId
       ].flowChart.elements.findIndex((element) => element.id === nodeId)
 
       if (oldNodeIndex >= 0) {
         const oldNode =
-          draft.flows[selectedFlowId].flowChart.elements[oldNodeIndex]
+          draft.workspaces[draft.selectedWorkspaceId].flows[selectedFlowId]
+            .flowChart.elements[oldNodeIndex]
 
         const newNode = {
           ...oldNode,
           ...nodeUpdate,
         }
 
-        draft.flows[selectedFlowId].flowChart.elements[oldNodeIndex] = newNode
+        draft.workspaces[draft.selectedWorkspaceId].flows[
+          selectedFlowId
+        ].flowChart.elements[oldNodeIndex] = newNode
       }
       break
     }
     case UPDATE_NODE_DATA: {
       const { nodeDataUpdate, nodeId } = action.payload
-      const selectedFlowId = draft.selectedFlowId
-      const oldNodeIndex = draft.flows[
+      const selectedFlowId =
+        draft.workspaces[draft.selectedWorkspaceId].selectedFlowId
+      const oldNodeIndex = draft.workspaces[draft.selectedWorkspaceId].flows[
         selectedFlowId
       ].flowChart.elements.findIndex((element) => element.id === nodeId)
 
       if (oldNodeIndex >= 0) {
         const oldNode =
-          draft.flows[selectedFlowId].flowChart.elements[oldNodeIndex]
+          draft.workspaces[draft.selectedWorkspaceId].flows[selectedFlowId]
+            .flowChart.elements[oldNodeIndex]
 
         const newData: NodeData = {
           ...oldNode.data,
           ...nodeDataUpdate,
         }
 
-        draft.flows[selectedFlowId].flowChart.elements[
-          oldNodeIndex
-        ].data = newData
+        draft.workspaces[draft.selectedWorkspaceId].flows[
+          selectedFlowId
+        ].flowChart.elements[oldNodeIndex].data = newData
       }
 
       break
@@ -233,11 +241,16 @@ const flowReducer = produce((draft: FlowState, action: FlowActionTypes) => {
     case ADD_NODE:
       const { data, id, position } = action.payload
       const newNode = createNode(id, data, position)
-      draft.flows[draft.selectedFlowId].flowChart.elements.push(newNode)
+      draft.workspaces[draft.selectedWorkspaceId].flows[
+        draft.workspaces[draft.selectedWorkspaceId].selectedFlowId
+      ].flowChart.elements.push(newNode)
       break
     case DELETE_NODE:
       const nodeId = action.payload
-      const selectedFlow = draft.flows[draft.selectedFlowId]
+      const selectedFlow =
+        draft.workspaces[draft.selectedWorkspaceId].flows[
+          draft.workspaces[draft.selectedWorkspaceId].selectedFlowId
+        ]
       const withoutLinksAndNode = selectedFlow.flowChart.elements.filter(
         (element) => {
           if (isFlowNode(element)) return element.id !== nodeId
@@ -249,20 +262,28 @@ const flowReducer = produce((draft: FlowState, action: FlowActionTypes) => {
         }
       )
 
-      draft.flows[draft.selectedFlowId].flowChart.elements = withoutLinksAndNode
+      draft.workspaces[draft.selectedWorkspaceId].flows[
+        draft.workspaces[draft.selectedWorkspaceId].selectedFlowId
+      ].flowChart.elements = withoutLinksAndNode
       break
     case ADD_LINK:
       const { source, target } = action.payload
-      const newLink = createEdge(source, target)
-      draft.flows[draft.selectedFlowId].flowChart.elements.push(newLink)
+      const newLink = createLink(source, target)
+      draft.workspaces[draft.selectedWorkspaceId].flows[
+        draft.workspaces[draft.selectedWorkspaceId].selectedFlowId
+      ].flowChart.elements.push(newLink)
       break
     case DELETE_LINK:
       if (isNodeConnection(action.payload)) {
         const { source, target } = action.payload as Connection
-        draft.flows[draft.selectedFlowId].flowChart.elements = draft.flows[
-          draft.selectedFlowId
+        draft.workspaces[draft.selectedWorkspaceId].flows[
+          draft.workspaces[draft.selectedWorkspaceId].selectedFlowId
+        ].flowChart.elements = draft.workspaces[
+          draft.selectedWorkspaceId
+        ].flows[
+          draft.workspaces[draft.selectedWorkspaceId].selectedFlowId
         ].flowChart.elements.filter(
-          (element) =>
+          (element: FlowElement) =>
             !(
               isFlowEdge(element) &&
               (element.source === source || element.target === target)
@@ -270,9 +291,15 @@ const flowReducer = produce((draft: FlowState, action: FlowActionTypes) => {
         )
       } else {
         const linkId = action.payload
-        draft.flows[draft.selectedFlowId].flowChart.elements = draft.flows[
-          draft.selectedFlowId
-        ].flowChart.elements.filter((element) => linkId !== element.id)
+        draft.workspaces[draft.selectedWorkspaceId].flows[
+          draft.workspaces[draft.selectedWorkspaceId].selectedFlowId
+        ].flowChart.elements = draft.workspaces[
+          draft.selectedWorkspaceId
+        ].flows[
+          draft.workspaces[draft.selectedWorkspaceId].selectedFlowId
+        ].flowChart.elements.filter(
+          (element: FlowElement) => linkId !== element.id
+        )
       }
       break
     case LOAD_WORKSPACE:
@@ -310,8 +337,12 @@ const flowReducer = produce((draft: FlowState, action: FlowActionTypes) => {
             type: "user-generated",
             daemon_endpoint: "",
             isConnected: false,
-            workspace_id: "",
+            daemon_id: "",
             files: [],
+            jina_version: defaultJinaVersion,
+            selectedFlowId: defaultSelectedFlowId,
+            flowArguments: defaultFlowArguments,
+            flows: defaultFlow,
           }
         }
         draft.selectedWorkspaceId = "_userWorkspace"
@@ -319,15 +350,16 @@ const flowReducer = produce((draft: FlowState, action: FlowActionTypes) => {
       break
   }
 
+  saveFlowsToStorage(draft)
   saveWorkspacesToStorage(draft)
 }, initialState)
 
 function _createNewFlow(draft: FlowState, customYAML?: string): FlowState {
   const prefixString = "Custom Flow"
 
-  let userFlows = Object.values(draft.flows).filter((flow: Flow) =>
-    flow.name.startsWith(prefixString)
-  )
+  let userFlows = Object.values(
+    draft.workspaces[draft.selectedWorkspaceId].flows
+  ).filter((flow: Flow) => flow.name.startsWith(prefixString))
 
   const userFlowNumbers = userFlows
     .map(
@@ -347,13 +379,13 @@ function _createNewFlow(draft: FlowState, customYAML?: string): FlowState {
     if (parsed?.data) flowChart = formatForFlowchart(parsed.data)
   }
 
-  draft.flows[id] = {
+  draft.workspaces[draft.selectedWorkspaceId].flows[id] = {
     isConnected: false,
     name: `${prefixString} ${largestNumber + 1}`,
     type: "user-generated",
     flowChart,
   }
-  draft.selectedFlowId = id
+  draft.workspaces[draft.selectedWorkspaceId].selectedFlowId = id
   return draft
 }
 
@@ -377,14 +409,18 @@ function _createNewWorkspace(draft: FlowState): FlowState {
   const id = nanoid()
 
   draft.workspaces[id] = {
+    jina_version: defaultJinaVersion,
+    flowArguments: defaultFlowArguments,
+    selectedFlowId: defaultSelectedFlowId,
+    flows: defaultFlow,
     name: `${prefixString} ${largestNumber + 1}`,
     type: "user-generated",
     daemon_endpoint: "",
     isConnected: false,
-    workspace_id: "",
+    daemon_id: null,
     files: [],
   }
-  draft.selectedFlowId = id
+  draft.workspaces[draft.selectedWorkspaceId].selectedFlowId = id
   return draft
 }
 
