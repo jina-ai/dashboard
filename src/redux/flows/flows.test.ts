@@ -12,16 +12,34 @@ import {
   addLink,
   deleteLink,
   updateNodeData,
+  createNewWorkspace,
+  loadWorkspace,
+  deleteWorkspace,
+  updateSelectedWorkspace,
 } from "./flows.actions"
 import { initialFlowChart } from "./flows.constants"
 import { testFlowArguments, testFlowState } from "./flows.testData"
-import { Flow, FlowNode, FlowEdge, NodeDataUpdate } from "./flows.types"
+import {
+  Flow,
+  FlowNode,
+  FlowEdge,
+  NodeDataUpdate,
+  Workspace,
+} from "./flows.types"
 import { isFlowNode, isFlowEdge } from "../../helpers/flow-chart"
 
 function getFlowFromStorage(id: string): Flow | undefined {
   const userFlowsString = localStorage.getItem("userFlows")
   if (userFlowsString) {
     const parsed = JSON.parse(userFlowsString)
+    return parsed[id]
+  } else return undefined
+}
+
+function getWorkspaceFromStorage(id: string): Workspace | undefined {
+  const userWorkspacesString = localStorage.getItem("userWorkspaces")
+  if (userWorkspacesString) {
+    const parsed = JSON.parse(userWorkspacesString)
     return parsed[id]
   } else return undefined
 }
@@ -373,5 +391,74 @@ describe("flows reducer", () => {
     expect(updatedFlow.flows.testFlow1.type).toEqual("user-generated")
     expect(updatedFlow.flows.testFlow1.isConnected).toEqual(true)
     expect(updatedFlow.flows.testFlow1.flowChart).toEqual(flowChart)
+  })
+
+  it("should create a new workspace and save it to storage", () => {
+    const oldNumberOfWorkspaces = Object.keys(testFlowState.workspaces).length
+    const flowStateWithNewWorkspace = reducer(
+      testFlowState,
+      createNewWorkspace()
+    )
+    const newNumberOfWorkspaces = Object.keys(
+      flowStateWithNewWorkspace.workspaces
+    ).length
+    const newWorkspaceIdAndWorkspace = Object.entries(
+      flowStateWithNewWorkspace.workspaces
+    ).find(([workspaceId, workspace]) => workspace.name === "Workspace 3")
+
+    expect(newNumberOfWorkspaces - oldNumberOfWorkspaces).toBe(1)
+    expect(newWorkspaceIdAndWorkspace).toBeDefined()
+  })
+
+  it("should load a workspace", () => {
+    const flowStateWithLoadedWorkspace = reducer(
+      testFlowState,
+      loadWorkspace("testWorkspace2")
+    )
+    expect(flowStateWithLoadedWorkspace.selectedWorkspaceId).toEqual(
+      "testWorkspace2"
+    )
+  })
+
+  it("should delete a workspace from redux and storage", () => {
+    expect(getWorkspaceFromStorage("testWorkspace2")).toBeDefined()
+    const oldNumberOfWorkspaces = Object.keys(testFlowState.workspaces).length
+
+    const flowStateWithoutWorkspace2 = reducer(
+      testFlowState,
+      deleteWorkspace("testWorkspace2")
+    )
+    const newNumberOfWorkspaces = Object.keys(
+      flowStateWithoutWorkspace2.workspaces
+    ).length
+    expect(oldNumberOfWorkspaces - newNumberOfWorkspaces).toEqual(1)
+    expect(
+      Object.keys(testFlowState.workspaces).find(
+        (workspaceId) => workspaceId === "testWorkspace2"
+      )
+    ).toEqual("testWorkspace2")
+    expect(
+      Object.keys(flowStateWithoutWorkspace2.workspaces).find(
+        (workspaceId) => workspaceId === "testWorkspace2"
+      )
+    ).toBeUndefined()
+    expect(getWorkspaceFromStorage("testWorkspace2")).toBeUndefined()
+  })
+
+  it("should update selected workspace", () => {
+    const updatedFlowState = reducer(
+      testFlowState,
+      updateSelectedWorkspace({
+        name: "Modified Name",
+        isConnected: true,
+      })
+    )
+    expect(updatedFlowState.workspaces.testWorkspace1.name).toEqual(
+      "Modified Name"
+    )
+    expect(updatedFlowState.workspaces.testWorkspace1.type).toEqual(
+      "user-generated"
+    )
+    expect(updatedFlowState.workspaces.testWorkspace1.isConnected).toEqual(true)
   })
 })
