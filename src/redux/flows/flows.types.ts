@@ -12,6 +12,7 @@ import {
   ADD_LINK,
   DELETE_LINK,
   UPDATE_NODE_DATA,
+  LOAD_WORKSPACE,
   CREATE_NEW_WORKSPACE,
   UPDATE_SELECTED_WORKSPACE,
   ADD_FILES_TO_WORKSPACE,
@@ -132,6 +133,11 @@ export type LoadFlowAction = {
 
 export type CreateNewFlowAction = {
   type: typeof CREATE_NEW_FLOW
+}
+
+export type LoadWorkspaceAction = {
+  type: typeof LOAD_WORKSPACE
+  payload: string
 }
 
 export type CreateNewWorkspaceAction = {
@@ -260,6 +266,7 @@ export type FlowActionTypes =
   | AddLinkAction
   | DeleteLinkAction
   | UpdateNodeDataAction
+  | LoadWorkspaceAction
   | CreateNewWorkspaceAction
   | UpdateSelectedWorkspaceAction
   | AddFilesToWorkspaceAction

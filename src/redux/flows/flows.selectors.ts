@@ -26,6 +26,8 @@ export const selectFlows = (state: State) => {
 
 export const selectWorkspaces = (state: State) => state.flowState.workspaces
 
+export const selectWorkspaces = (state: State) => state.flowState.workspaces
+
 export const selectFlowArguments = (state: State) =>
   state.flowState.workspaces[state.flowState.selectedWorkspaceId].flowArguments
 
@@ -42,6 +44,9 @@ export const selectExampleFlowsKeyEntryPairs = (state: State) => {
 
 export const selectSelectedFlowId = (state: State) =>
   state.flowState.workspaces[state.flowState.selectedWorkspaceId].selectedFlowId
+
+export const selectSelectedWorkspaceId = (state: State) =>
+  state.flowState.selectedWorkspaceId
 
 export const selectSelectedWorkspaceId = (state: State) =>
   state.flowState.selectedWorkspaceId
