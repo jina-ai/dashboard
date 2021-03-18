@@ -246,13 +246,15 @@ export function updateSelectedWorkspace(
 }
 
 export function startFlow(
+  workspaceId: string,
   flowId: string
 ): ThunkAction<void, FlowState, unknown, Action<string>> {
   return async function (dispatch) {
-    const flow = store.getState().flowState.flows[flowId]
-    const flowArguments = store.getState().flowState.workspaces[
-      flow.workspaceId
-    ]?.flowArguments
+    const flowArguments = store.getState().flowState.workspaces[workspaceId]
+      ?.flowArguments
+    const flow = store.getState().flowState.workspaces[workspaceId]?.flows[
+      flowId
+    ]
 
     if (typeof flow === undefined)
       return dispatch(showBanner("Could not start flow", "error") as any)
@@ -262,7 +264,7 @@ export function startFlow(
     logger.log(
       "startFlow",
       "\n\tworkspaceId:",
-      flow.workspaceId,
+      workspaceId,
       "\n\tflowId: ",
       flowId,
       "\n\tchart:",
@@ -280,15 +282,18 @@ export function startFlow(
 
     dispatch(updateSelectedFlow({ daemon_id: flow_id }))
     dispatch(showBanner(message, "success") as any)
-    dispatch(initNetworkFlow(flowId))
+    dispatch(initNetworkFlow(workspaceId, flowId))
   }
 }
 
 export function stopFlow(
+  workspaceId: string,
   flowId: string
 ): ThunkAction<void, FlowState, unknown, Action<string>> {
   return async function (dispatch) {
-    const flow = store.getState().flowState.flows[flowId]
+    const flow = store.getState().flowState.workspaces[workspaceId]?.flows[
+      flowId
+    ]
     logger.log("stopFlow: ", flowId)
 
     if (typeof flow === undefined)
@@ -311,10 +316,13 @@ export function stopFlow(
 }
 
 export function initNetworkFlow(
+  workspaceId: string,
   flowId: string
 ): ThunkAction<void, FlowState, unknown, Action<string>> {
   return async function (dispatch) {
-    const flow = store.getState().flowState.flows[flowId]
+    const flow = store.getState().flowState.workspaces[workspaceId]?.flows[
+      flowId
+    ]
     const { daemon_id } = flow
     if (!daemon_id)
       return dispatch(showBanner("Could not initialize flow", "error") as any)
