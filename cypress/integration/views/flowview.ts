@@ -13,7 +13,7 @@ describe("The Flow Page", () => {
 
   it("should have a working settings button", () => {
     cy.dataName("settingsModal").should("not.exist")
-    cy.dataName("settingsButton").click()
+    cy.dataName("settingsButton").click({ force: true })
     cy.dataName("settingsModal").should("exist")
   })
 
