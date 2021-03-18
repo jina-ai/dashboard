@@ -102,6 +102,7 @@ export type Flow = {
   name: string
   type: FlowType
   isConnected: boolean
+  workspaceId: string
   daemon_id?: DaemonData
   flowChart: FlowChart
   yaml?: string
@@ -111,7 +112,6 @@ export type Workspace = {
   jina_version: string
   flowArguments: FlowArguments
   selectedFlowId: string
-  flows: Flows
   name: string
   type: WorkspaceType
   daemon_endpoint: DaemonData
@@ -181,15 +181,25 @@ export type FlowArguments = {
 export type FlowState = {
   selectedWorkspaceId: string
   workspaces: Workspaces
+  flows: Flows
 }
 
 export type ExampleFlows = {
-  [name: string]: {
+  [id: string]: {
     name: string
-    type: FlowType
     yaml: string
   }
 }
+
+export type ExampleWorkspaces = {
+  [id: string]: {
+    jina_version: string
+    type: WorkspaceType
+    name: string
+    flows: ExampleFlows
+  }
+}
+
 export type SetFlowArgumentsAction = {
   type: typeof SET_FLOW_ARGUMENTS
   payload: FlowArguments
@@ -204,7 +214,7 @@ export type DuplicateFlowAction = {
 }
 export type DeleteFlowAction = {
   type: typeof DELETE_FLOW
-  payload: { workspaceId: string; flowId: string }
+  payload: string
 }
 
 export type AddNodeAction = {
