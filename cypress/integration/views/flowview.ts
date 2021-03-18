@@ -68,17 +68,4 @@ describe("The Flow Page", () => {
       )
     })
   })
-
-  context("When a new flow is created", () => {
-    it("successfully let you pull new pods", () => {
-      defaultPods.forEach((pod, idx) => {
-        const dataTransfer = new DataTransfer()
-        cy.dataName(`SideBarItem-${idx}`).trigger("dragstart", {
-          dataTransfer,
-          force: true,
-        })
-        cy.get(".chart-section-container").trigger("drop", { dataTransfer })
-      })
-    })
-  })
 })
