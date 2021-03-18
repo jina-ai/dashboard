@@ -83,13 +83,13 @@ function getUserWorkspaces(): Workspaces {
           isConnected: false,
           workspace_id: "",
           files: [],
+          selectedFlowId: defaultSelectedFlowId,
+          flows: {
+            ...getUserFlows(),
+            ...getExampleFlows(),
+          },
+          flowArguments: defaultFlowArguments,
         },
-        selectedFlowId: defaultSelectedFlowId,
-        flows: {
-          ...getUserFlows(),
-          ...getExampleFlows(),
-        },
-        flowArguments: defaultFlowArguments,
       }
     : userWorkspaces
 }
