@@ -34,10 +34,12 @@ export const initialFlowChart: FlowChart = {
     },
   ],
 }
+export const defaultSelectedWorkspaceId = "_userWorkSpace"
 
 export const defaultFlow: Flows = {
   _userFlow: {
     name: "Custom Flow 1",
+    workspaceId: defaultSelectedWorkspaceId,
     type: "user-generated",
     flowChart: initialFlowChart,
     isConnected: false,
