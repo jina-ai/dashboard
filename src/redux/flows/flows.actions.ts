@@ -144,10 +144,13 @@ export function importFlow(flowYAML: string): ImportFlowAction {
   }
 }
 
-export function deleteFlow(flowId: string): DeleteFlowAction {
+export function deleteFlow(
+  workspaceId: string,
+  flowId: string
+): DeleteFlowAction {
   return {
     type: DELETE_FLOW,
-    payload: flowId,
+    payload: { workspaceId, flowId },
   }
 }
 
