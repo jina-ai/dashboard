@@ -136,6 +136,7 @@ export type LoadFlowAction = {
 
 export type CreateNewFlowAction = {
   type: typeof CREATE_NEW_FLOW
+  payload: string
 }
 
 export type LoadWorkspaceAction = {
@@ -198,11 +199,11 @@ export type UpdateSelectedFlowAction = {
 }
 export type DuplicateFlowAction = {
   type: typeof DUPLICATE_FLOW
-  payload: string
+  payload: { workspaceId: string; flowId: string }
 }
 export type DeleteFlowAction = {
   type: typeof DELETE_FLOW
-  payload: string
+  payload: { workspaceId: string; flowId: string }
 }
 
 export type AddNodeAction = {
