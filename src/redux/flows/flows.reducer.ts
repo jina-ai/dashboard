@@ -134,11 +134,9 @@ const flowReducer = produce((draft: FlowState, action: FlowActionTypes) => {
     }
     case DELETE_FLOW:
       {
-        const flowId = action.payload as string
-        draft.workspaces[draft.selectedWorkspaceId].flows = _.omit(
-          draft.workspaces[draft.selectedWorkspaceId].flows,
-          flowId
-        )
+        const { flowId, workspaceId } = action.payload
+        const { flows } = draft.workspaces[workspaceId]
+        draft.workspaces[workspaceId].flows = _.omit(flows, flowId)
 
         const nonExampleFlows = Object.entries(
           draft.workspaces[draft.selectedWorkspaceId].flows
