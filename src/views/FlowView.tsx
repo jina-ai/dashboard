@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from "react"
 import { Card, Container, Row } from "shards-react"
 import { PageTitle } from "../components/Common/PageTitle"
-import FlowSelection from "../components/FlowChart/FlowSelection"
+import WorkspaceSelection from "../components/FlowChart/WorkspaceSelection"
 import {
   duplicateFlow,
   startFlow,
@@ -94,7 +94,7 @@ export default function FlowView() {
         </Row>
 
         <FlowViewContainer>
-          <FlowSelection />
+          <WorkspaceSelection />
 
           <Card className="chart-section-container mr-md-4 mb-4">
             <CommandBar
