@@ -18,19 +18,6 @@ describe("Flow design workflow", () => {
     cy.get(".chart-section-container").trigger("drop", x, y, { dataTransfer })
   }
 
-  type CartesianCoordinate = [number, number]
-
-  const connectPoints = (
-    startPoint: CartesianCoordinate,
-    endPoint: CartesianCoordinate
-  ) => {
-    cy.get(".chart-section-container").trigger("mousedown", ...startPoint, {
-      which: 1,
-    })
-    cy.get(".chart-section-container").trigger("mousemove", ...endPoint)
-    cy.get(".chart-section-container").trigger("mouseup", ...endPoint)
-  }
-
   context("When a new flow is created", () => {
     it("successfully let you pull new pods and connect them", () => {
       let firstPortLabel = "gateway"
@@ -38,8 +25,12 @@ describe("Flow design workflow", () => {
       defaultPods.forEach((pod, idx) => {
         if (idx !== 0 && idx < defaultPods.length - 1) {
           moveSideBarItemToCanvas(idx, 315, 100 + 50 * idx)
-          cy.dataName(`NodePortBottom-${firstPortLabel}`).trigger("mousedown")
-          cy.dataName(`NodePortTop-${secondPortLabel}`).trigger("mouseup")
+          cy.dataName(`NodePortBottom-${firstPortLabel}`).trigger("mousedown", {
+            force: true,
+          })
+          cy.dataName(`NodePortTop-${secondPortLabel}`).trigger("mouseup", {
+            force: true,
+          })
           firstPortLabel = secondPortLabel
           secondPortLabel = defaultPods[idx + 1].name
         }
