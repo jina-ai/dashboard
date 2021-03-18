@@ -16,6 +16,7 @@ import {
   selectFlowArguments,
   selectSelectedFlow,
   selectSelectedFlowId,
+  selectSelectedWorkspaceId,
 } from "../redux/flows/flows.selectors"
 import { showModal } from "../redux/global/global.actions"
 import logger from "../logger"
@@ -31,6 +32,7 @@ const FlowViewContainer = styled.div`
 export default function FlowView() {
   const dispatch = useDispatch()
   const selectedFlowId = useSelector(selectSelectedFlowId)
+  const selectedWorkspaceId = useSelector(selectSelectedWorkspaceId)
   const flowArguments = useSelector(selectFlowArguments)
   const flow = useSelector(selectSelectedFlow)
   let flowChart = flow?.flowChart
@@ -100,8 +102,12 @@ export default function FlowView() {
 
           <Card className="chart-section-container mr-md-4 mb-4">
             <CommandBar
-              startFlow={() => dispatch(startFlow(selectedFlowId))}
-              stopFlow={() => dispatch(stopFlow(selectedFlowId))}
+              startFlow={() =>
+                dispatch(startFlow(selectedWorkspaceId, selectedFlowId))
+              }
+              stopFlow={() =>
+                dispatch(stopFlow(selectedWorkspaceId, selectedFlowId))
+              }
               copyChart={copyChartAsYAML}
               importChart={() => dispatch(showModal("import"))}
               exportImage={exportImage}
