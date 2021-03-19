@@ -16,14 +16,12 @@ import {
   selectFlowArguments,
   selectSelectedFlow,
   selectSelectedFlowId,
-  selectSelectedWorkspaceId,
 } from "../redux/flows/flows.selectors"
 import { showModal } from "../redux/global/global.actions"
 import logger from "../logger"
 import { copyToClipboard, formatAsYAML } from "../helpers"
 import html2canvas from "html2canvas"
 import FlowChart from "../components/FlowChart/FlowChart"
-import { Flow } from "../redux/flows/flows.types"
 
 const FlowViewContainer = styled.div`
   display: flex;
@@ -33,10 +31,11 @@ const FlowViewContainer = styled.div`
 export default function FlowView() {
   const dispatch = useDispatch()
   const selectedFlowId = useSelector(selectSelectedFlowId)
-  const selectedWorkspaceId = useSelector(selectSelectedWorkspaceId)
   const flowArguments = useSelector(selectFlowArguments)
-  const flow = useSelector(selectSelectedFlow) as Flow
-  const { flowChart, type: flowType } = flow
+  const flow = useSelector(selectSelectedFlow)
+
+  let flowChart = flow?.flowChart
+  let flowType = flow?.type
 
   const copyChartAsYAML = useCallback(() => {
     logger.log("copyChartAsYAML | chart:", flowChart)
@@ -46,7 +45,7 @@ export default function FlowView() {
 
   const [showOverlay, setShowOverlay] = useState<boolean>(false)
   //todo fix overlay
-  console.log(showOverlay)
+  logger.log("showOverlay", showOverlay)
   const showCaptureOverlay = (showOverlay = true) => {
     setShowOverlay(showOverlay)
   }
@@ -85,6 +84,8 @@ export default function FlowView() {
     dispatch(duplicateFlow(flowYAML))
   }
 
+  if (!flowChart) return <>no flow</>
+
   return (
     <Container fluid className="main-content-container px-0">
       <div className="px-4">
@@ -100,12 +101,8 @@ export default function FlowView() {
 
           <Card className="chart-section-container mr-md-4 mb-4">
             <CommandBar
-              startFlow={() =>
-                dispatch(startFlow(selectedWorkspaceId, selectedFlowId))
-              }
-              stopFlow={() =>
-                dispatch(stopFlow(selectedWorkspaceId, selectedFlowId))
-              }
+              startFlow={() => dispatch(startFlow(selectedFlowId))}
+              stopFlow={() => dispatch(stopFlow(selectedFlowId))}
               copyChart={copyChartAsYAML}
               importChart={() => dispatch(showModal("import"))}
               exportImage={exportImage}

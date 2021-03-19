@@ -48,7 +48,6 @@ function MultiFilterSelect({
   return (
     <Select
       onChange={(val) => {
-        console.log(val, "val")
         onFilterChange(Array.isArray(val) ? val : !val ? [] : [val])
       }}
       value={value}

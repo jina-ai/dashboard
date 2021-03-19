@@ -23,6 +23,7 @@ import {
   serializeLogsToTextBlob,
 } from "../../helpers"
 import { TimePreference } from "../../views/LogsView"
+import logger from "../../logger"
 
 const ROW_SIZE = 30
 const DEFAULT_VIEW = "table"
@@ -280,7 +281,7 @@ function LogsTable({ data, showLogDetails }: Props) {
   const sources = data.reduce((acc, curr) => acc.add(curr.name), new Set())
 
   let groupedData: GroupedData = {}
-  console.log(unfiltered, "unfiltered")
+  logger.log("unfiltered logs", unfiltered)
 
   let resultData = (unfiltered || []).filter((result) =>
     applyFilters(result, {
