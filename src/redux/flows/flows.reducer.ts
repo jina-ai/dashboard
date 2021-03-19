@@ -350,7 +350,11 @@ const flowReducer = produce((draft: FlowState, action: FlowActionTypes) => {
   saveWorkspacesToStorage(draft)
 }, initialState)
 
-function _createNewFlow(draft: FlowState, customYAML?: string): FlowState {
+function _createNewFlow(
+  draft: FlowState,
+  customYAML?: string,
+  id = nanoid()
+): FlowState {
   const prefixString = "Custom Flow"
 
   let userFlows = Object.values(draft.flows).filter((flow: Flow) =>
@@ -365,8 +369,6 @@ function _createNewFlow(draft: FlowState, customYAML?: string): FlowState {
     .sort((a, b) => a - b)
 
   const largestNumber = userFlowNumbers[userFlowNumbers.length - 1] || 0
-
-  const id = nanoid()
 
   let flowChart = initialFlowChart
 
@@ -403,12 +405,13 @@ function _createNewWorkspace(draft: FlowState): FlowState {
   const largestNumber =
     userWorkspaceNumbers[userWorkspaceNumbers.length - 1] || 0
 
-  const id = nanoid()
+  const workspaceId = nanoid()
+  const flowId = nanoid()
 
-  draft.workspaces[id] = {
+  draft.workspaces[workspaceId] = {
     jina_version: defaultJinaVersion,
     flowArguments: defaultFlowArguments,
-    selectedFlowId: defaultSelectedFlowId,
+    selectedFlowId: flowId,
     name: `${prefixString} ${largestNumber + 1}`,
     type: "user-generated",
     daemon_endpoint: "",
@@ -416,7 +419,8 @@ function _createNewWorkspace(draft: FlowState): FlowState {
     daemon_id: null,
     files: [],
   }
-  draft.workspaces[draft.selectedWorkspaceId].selectedFlowId = id
+  draft = _createNewFlow(draft, undefined, flowId)
+  draft.workspaces[draft.selectedWorkspaceId].selectedFlowId = flowId
   return draft
 }
 
