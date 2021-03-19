@@ -129,8 +129,6 @@ function PodEditComponent({ open, closeModal, modalParams }: Props) {
   }
 
   const label = node?.data?.label || node?.data?.name || "Empty Pod"
-  console.log("node")
-  console.log(node)
 
   return (
     <ReactModal

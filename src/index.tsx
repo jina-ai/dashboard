@@ -49,3 +49,7 @@ ReactDOM.render(
   </ThemeProvider>,
   document.getElementById("root")
 )
+
+if (window.Cypress) {
+  window.store = store
+}
