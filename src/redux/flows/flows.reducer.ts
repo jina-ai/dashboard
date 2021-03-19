@@ -1,5 +1,5 @@
 import _ from "lodash"
-import exampleFlows from "../../data/exampleFlows"
+import { exampleFlows, exampleWorkspaces } from "../../data/exampleData"
 import { formatForFlowchart, parseYAML } from "../../helpers"
 import {
   ADD_LINK,
@@ -85,7 +85,6 @@ function getUserWorkspaces(): Workspaces {
           selectedFlowId: defaultSelectedFlowId,
           flows: {
             ...getUserFlows(),
-            ...getExampleFlows(),
           },
           flowArguments: defaultFlowArguments,
         },
@@ -112,14 +111,19 @@ function getExampleFlows() {
   return flows
 }
 
+function getExampleWorkspaces() {
+  return exampleWorkspaces
+}
+
 const initialState: FlowState = {
   selectedWorkspaceId: "_userWorkspace",
   workspaces: {
+    ...getExampleWorkspaces(),
     ...getUserWorkspaces(),
   },
   flows: {
-    ...getUserFlows(),
     ...getExampleFlows(),
+    ...getUserFlows(),
   },
 }
 
