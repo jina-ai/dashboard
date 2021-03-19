@@ -1,4 +1,4 @@
-import { FlowChart, Flows } from "./flows.types"
+import { FlowChart, Flows, Workspaces } from "./flows.types"
 
 export const LOAD_FLOW = "LOAD_FLOW"
 export const CREATE_NEW_FLOW = "CREATE_NEW_FLOW"
@@ -35,17 +35,9 @@ export const initialFlowChart: FlowChart = {
   ],
 }
 
-export const defaultFlow: Flows = {
-  _userFlow: {
-    name: "Custom Flow 1",
-    type: "user-generated",
-    flowChart: initialFlowChart,
-    isConnected: false,
-    daemon_id: null,
-  },
-}
+export const defaultSelectedWorkspaceId = "_userWorkspace"
 
-export const defaultSelectedFlowId = Object.keys(defaultFlow)[0] as string
+export const defaultSelectedFlowId = "userFlow"
 
 export const defaultJinaVersion = "1"
 
@@ -54,4 +46,29 @@ export const defaultFlowArguments = {
   flow: [],
   pea: [],
   pod: [],
+}
+
+export const defaultFlow: Flows = {
+  _userFlow: {
+    name: "Custom Flow 1",
+    type: "user-generated",
+    workspaceId: defaultSelectedWorkspaceId,
+    flowChart: initialFlowChart,
+    isConnected: false,
+    daemon_id: null,
+  },
+}
+
+export const initialWorkspace: Workspaces = {
+  _userWorkspace: {
+    name: "",
+    jina_version: "latest",
+    type: "user-generated",
+    daemon_endpoint: "",
+    isConnected: false,
+    daemon_id: "",
+    files: [],
+    selectedFlowId: defaultSelectedFlowId,
+    flowArguments: defaultFlowArguments,
+  },
 }
