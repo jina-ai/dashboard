@@ -343,6 +343,10 @@ const flowReducer = produce((draft: FlowState, action: FlowActionTypes) => {
             flowArguments: defaultFlowArguments,
           }
         }
+        draft.flows = _.pickBy(
+          draft.flows,
+          (flow) => flow.workspaceId !== workspaceId
+        )
         draft.selectedWorkspaceId = "_userWorkspace"
       }
       break
