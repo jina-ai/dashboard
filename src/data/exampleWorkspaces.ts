@@ -1,65 +1,75 @@
-import { ExampleFlows } from "../redux/flows/flows.types"
+import { ExampleWorkspaces } from "../redux/flows/flows.types"
 
-const exampleFlows: ExampleFlows = {
+const exampleWorkspaces: ExampleWorkspaces = {
   pokedex: {
-    name: "Pokedex Query",
+    jina_version: "latest",
     type: "example",
-    yaml: `!Flow
-    with:
-      read_only: true
-      rest_api: true
-      port_expose: $JINA_PORT
-      board:
-        canvas:
-          gateway:
-            x: 250
-            y: 150
+    name: "Pokedex Workspace",
+    flows: {
+      query: {
+        name: "Pokedex Query",
+        yaml: `!Flow
+        with:
+          read_only: true
+          rest_api: true
+          port_expose: $JINA_PORT
+          board:
+            canvas:
+              gateway:
+                x: 250
+                y: 150
+              chunk_seg:
+                x: 250
+                y: 268
+              tf_encode:
+                x: 250
+                y: 420
+              chunk_idx:
+                x: 250
+                y: 600
+              ranker:
+                x: 250
+                y: 836
+              doc_idx:
+                x: 249
+                y: 985
+        pods:
+          gateway: {}
           chunk_seg:
-            x: 250
-            y: 268
+            uses: pods/craft.yml
+            parallel: $PARALLEL
+            needs: gateway
           tf_encode:
-            x: 250
-            y: 420
+            uses: pods/encode.yml
+            parallel: $PARALLEL
+            timeout_ready: 600000
+            needs: chunk_seg
           chunk_idx:
-            x: 250
-            y: 600
+            uses: pods/chunk.yml
+            separated_workspace: true
+            polling: all
+            uses_reducing: _merge_all
+            timeout_ready: 100000
+            needs: tf_encode
           ranker:
-            x: 250
-            y: 836
+            uses: BiMatchRanker
+            needs: chunk_idx
           doc_idx:
-            x: 249
-            y: 985
-    pods:
-      gateway: {}
-      chunk_seg:
-        uses: pods/craft.yml
-        parallel: $PARALLEL
-        needs: gateway
-      tf_encode:
-        uses: pods/encode.yml
-        parallel: $PARALLEL
-        timeout_ready: 600000
-        needs: chunk_seg
-      chunk_idx:
-        uses: pods/chunk.yml
-        separated_workspace: true
-        polling: all
-        uses_reducing: _merge_all
-        timeout_ready: 100000
-        needs: tf_encode
-      ranker:
-        uses: BiMatchRanker
-        needs: chunk_idx
-      doc_idx:
-        uses: pods/doc.yml
-        needs: ranker
-    
-    `,
+            uses: pods/doc.yml
+            needs: ranker
+        
+        `,
+      },
+    },
   },
   flower: {
-    name: "Flower Search Query",
+    jina_version: "latest",
     type: "example",
-    yaml: `!Flow
+    name: "Flower Workspace",
+    flows: {
+      query: {
+        name: "Flower Query",
+        yaml: `!Flow
     with:
       read_only: true
       port_expose: $JINA_PORT
@@ -121,11 +131,17 @@ const exampleFlows: ExampleFlows = {
         uses: yaml/index-doc.yml
         needs: ranker  
     `,
+      },
+    },
   },
   southpark: {
-    name: "Southpark Query",
+    jina_version: "latest",
     type: "example",
-    yaml: `!Flow
+    name: "Southpark Workspace",
+    flows: {
+      query: {
+        name: "Southpark Query",
+        yaml: `!Flow
     with:
       read_only: true
       port_expose: $JINA_PORT
@@ -175,22 +191,9 @@ const exampleFlows: ExampleFlows = {
         uses: pods/index-doc.yml
         needs: ranker
     `,
-  },
-  blankFlow: {
-    name: "Test Flow",
-    type: "example",
-    yaml: `!Flow
-    with:
-      rest_api: true
-      port_expose: 5555
-    pods:
-      pod1:
-        read_only: true
-      pod2:
-        read_only: true
-      pod3:
-        read_only: true`,
+      },
+    },
   },
 }
 
-export default exampleFlows
+export default exampleWorkspaces
