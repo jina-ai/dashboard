@@ -1,17 +1,23 @@
+import _ from "lodash"
 import { State } from "../index"
 
 export const selectSelectedFlow = (state: State) => {
-  const workspace =
-    state.flowState.workspaces[state.flowState.selectedWorkspaceId]
-  const flow = workspace.flows[workspace.selectedFlowId]
-  return flow
+  const { selectedFlowId } = state.flowState.workspaces[
+    state.flowState.selectedWorkspaceId
+  ]
+  return state.flowState.flows[selectedFlowId]
 }
 
 export const selectSelectedWorkspace = (state: State) =>
   state.flowState.workspaces[state.flowState.selectedWorkspaceId]
 
-export const selectFlows = (state: State) =>
-  state.flowState.workspaces[state.flowState.selectedWorkspaceId].flows
+export const selectFlows = (state: State) => {
+  const { selectedWorkspaceId } = state.flowState
+  return _.pickBy(
+    state.flowState.flows,
+    (flow) => flow.workspaceId === selectedWorkspaceId
+  )
+}
 
 export const selectWorkspaces = (state: State) => state.flowState.workspaces
 
@@ -19,9 +25,14 @@ export const selectFlowArguments = (state: State) =>
   state.flowState.workspaces[state.flowState.selectedWorkspaceId].flowArguments
 
 export const selectExampleFlowsKeyEntryPairs = (state: State) => {
-  return Object.entries(
-    state.flowState.workspaces[state.flowState.selectedWorkspaceId].flows
-  ).filter((flowKeyEntryPair) => flowKeyEntryPair[1].type === "example")
+  const { selectedWorkspaceId } = state.flowState
+  const workspaceFlows = _.pickBy(
+    state.flowState.flows,
+    (flow) => flow.workspaceId === selectedWorkspaceId
+  )
+  return Object.entries(workspaceFlows).filter(
+    (flowKeyEntryPair) => flowKeyEntryPair[1].type === "example"
+  )
 }
 
 export const selectSelectedFlowId = (state: State) =>
