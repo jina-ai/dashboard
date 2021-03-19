@@ -37,7 +37,7 @@ export const initialFlowChart: FlowChart = {
 
 export const defaultSelectedWorkspaceId = "_userWorkspace"
 
-export const defaultSelectedFlowId = "userFlow"
+export const defaultSelectedFlowId = "_userFlow"
 
 export const defaultJinaVersion = "1"
 

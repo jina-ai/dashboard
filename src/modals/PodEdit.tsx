@@ -10,6 +10,7 @@ import ReactModal, { Styles } from "react-modal"
 import { deleteNode, updateNodeData } from "../redux/flows/flows.actions"
 import { Button } from "react-bootstrap"
 import { NodeDataUpdate } from "../redux/flows/flows.types"
+import logger from "../logger"
 
 const style: Styles = {
   overlay: {
@@ -129,6 +130,7 @@ function PodEditComponent({ open, closeModal, modalParams }: Props) {
   }
 
   const label = node?.data?.label || node?.data?.name || "Empty Pod"
+  logger.log("PodEdit node", node)
 
   return (
     <ReactModal
