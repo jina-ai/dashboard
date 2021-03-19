@@ -41,7 +41,6 @@ export const initialFlowChart: FlowChart = {
     },
   ],
 }
-export const defaultSelectedWorkspaceId = "_userWorkSpace"
 
 export const defaultSelectedWorkspaceId = "_userWorkspace"
 
@@ -61,7 +60,6 @@ export const defaultFlow: Flows = {
     name: "Custom Flow 1",
     workspaceId: defaultSelectedWorkspaceId,
     type: "user-generated",
-    workspaceId: defaultSelectedWorkspaceId,
     flowChart: initialFlowChart,
     isConnected: false,
     daemon_id: null,
