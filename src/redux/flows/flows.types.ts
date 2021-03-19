@@ -188,6 +188,7 @@ export type ExampleFlows = {
   [id: string]: {
     name: string
     yaml: string
+    workspaceId: string
   }
 }
 
@@ -196,7 +197,6 @@ export type ExampleWorkspaces = {
     jina_version: string
     type: WorkspaceType
     name: string
-    flows: ExampleFlows
   }
 }
 
