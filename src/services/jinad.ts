@@ -9,23 +9,10 @@ import {
 import { RawLog } from "../redux/logStream/logStream.types"
 import { FLOW_RETRIES, FLOW_RETRY_TIMEOUT, TIMEOUT } from "./config"
 import { DaemonArgumentsResponse } from "./services.types"
+import { Settings } from "../redux/settings/settings.types"
+import { ConnectionCallback } from "../redux/global/global.types"
 
 export let jinadInstance = axios.create()
-
-type Settings = {
-  jinadHost: string
-  jinadPort: string | number
-  log: string
-  profile: string
-  yaml: string
-  ready: string
-  shutdown: string
-}
-
-type ConnectionCallback = (data: {
-  connected: boolean
-  message: string
-}) => void
 
 type LogHandler = (log: RawLog) => void
 
