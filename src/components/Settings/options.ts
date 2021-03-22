@@ -39,6 +39,17 @@ export const baseOptions: Option[] = [
     value: "gatewayPort",
   },
 ]
+  {
+    label: "Gateway Host",
+    placeholder: "0.0.0.0",
+    value: "host",
+  },
+  {
+    label: "Gateway Port",
+    placeholder: "5555",
+    value: "port",
+  },
+]
 
 export const advancedOptions: Option[] = [
   {
