@@ -57,21 +57,6 @@ import logger from "../../logger"
 import jinadClient from "../../services/jinad"
 import { XYPosition } from "react-flow-renderer/dist/types"
 
-export function createNewWorkspace(): CreateNewWorkspaceAction {
-  return {
-    type: CREATE_NEW_WORKSPACE,
-  }
-}
-
-export function updateSelectedWorkspace(
-  workspaceUpdate: WorkspaceUpdate
-): UpdateSelectedWorkspaceAction {
-  return {
-    type: UPDATE_SELECTED_WORKSPACE,
-    payload: workspaceUpdate,
-  }
-}
-
 export function deleteWorkspace(workspaceId: string): DeleteWorkspaceAction {
   return {
     type: DELETE_WORKSPACE,
@@ -200,13 +185,6 @@ export function loadWorkspace(workspaceId: string): LoadWorkspaceAction {
 export function createNewWorkspace(): CreateNewWorkspaceAction {
   return {
     type: CREATE_NEW_WORKSPACE,
-  }
-}
-
-export function deleteWorkspace(workspaceId: string): DeleteWorkspaceAction {
-  return {
-    type: DELETE_WORKSPACE,
-    payload: workspaceId,
   }
 }
 
