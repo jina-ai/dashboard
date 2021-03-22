@@ -14,6 +14,21 @@ import { ConnectionCallback } from "../redux/global/global.types"
 
 export let jinadInstance = axios.create()
 
+type Settings = {
+  jinadHost: string
+  jinadPort: string | number
+  log: string
+  profile: string
+  yaml: string
+  ready: string
+  shutdown: string
+}
+
+type ConnectionCallback = (data: {
+  connected: boolean
+  message: string
+}) => void
+
 type LogHandler = (log: RawLog) => void
 
 type Args = { [key: string]: string | number | boolean }
@@ -21,6 +36,8 @@ type Args = { [key: string]: string | number | boolean }
 const jinadClient = {
   connect: async (settings: Settings, callback: ConnectionCallback) => {
     logger.log("api - connect - settings", settings)
+    const baseURL = `${settings.jinadHost}:${settings.jinadPort}`
+
     const baseURL = `${settings.jinadHost}:${settings.jinadPort}`
     jinadInstance = axios.create({ baseURL, timeout: TIMEOUT })
 
