@@ -1,7 +1,7 @@
 import defaultPods from "../../../src/data/defaultPods"
 import {
-  defaultHost,
-  defaultPort,
+  defaultJinaDHost,
+  defaultJinaDPort,
 } from "../../../src/redux/settings/settings.constants"
 import { Flow, FlowState } from "../../../src/redux/flows/flows.types"
 import { isFlowEdge, isFlowNode } from "../../../src/helpers/flow-chart"
@@ -60,8 +60,10 @@ describe("The Flow Page", () => {
     })
 
     it("should display the connected message", () => {
-      const host = localStorage.getItem("preferences-host") || defaultHost
-      const port = localStorage.getItem("preferences-port") || defaultPort
+      const host =
+        localStorage.getItem("preferences-jinaD-host") || defaultJinaDHost
+      const port =
+        localStorage.getItem("preferences-jinaD-port") || defaultJinaDPort
       cy.dataName("connection-notification-online").should(
         "contain",
         `Successfully connected to Jina at ${host}:${port}`
