@@ -21,12 +21,12 @@ export const baseOptions: Option[] = [
   {
     label: "JinaD Host",
     placeholder: "0.0.0.0",
-    value: "jinaDHost",
+    value: "jinadHost",
   },
   {
     label: "JinaD Port",
     placeholder: "5000",
-    value: "jinaDPort",
+    value: "jinadPort",
   },
   {
     label: "Gateway Host",
