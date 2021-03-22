@@ -1,32 +1,44 @@
-import { SettingName } from "../../redux/settings/settings.types";
+import { SettingName } from "../../redux/settings/settings.types"
 
 type LabelName =
-  | "Host"
+  | "JinaD Host"
+  | "JinaD Port"
+  | "Gateway Host"
+  | "Gateway Port"
   | "Log"
   | "Profile"
   | "YAML"
   | "Shutdown"
   | "Ready"
-  | "Port";
 
 type Option = {
-  label: LabelName;
-  placeholder: string;
-  value: SettingName;
-};
+  label: LabelName
+  placeholder: string
+  value: SettingName
+}
 
 export const baseOptions: Option[] = [
   {
-    label: "Host",
+    label: "JinaD Host",
     placeholder: "0.0.0.0",
     value: "host",
   },
   {
-    label: "Port",
+    label: "JinaD Port",
     placeholder: "5000",
     value: "port",
   },
-];
+  {
+    label: "Gateway Host",
+    placeholder: "0.0.0.0",
+    value: "host",
+  },
+  {
+    label: "Gateway Port",
+    placeholder: "5555",
+    value: "port",
+  },
+]
 
 export const advancedOptions: Option[] = [
   {
@@ -54,4 +66,4 @@ export const advancedOptions: Option[] = [
     placeholder: "/status/isready",
     value: "ready",
   },
-];
+]
