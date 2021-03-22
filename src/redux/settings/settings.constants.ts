@@ -9,11 +9,11 @@ export const UPDATE_SETTINGS = "UPDATE_SETTINGS"
 
 export const intialSettings: SettingsState = {
   settings: {
-    jinadHost:
-      localStorage.getItem("preferences-jinad-host") || defaultJinaDHost,
-    jinadPort: localStorage.getItem("preferences-port") || defaultJinaDPort,
+    jinaDHost:
+      localStorage.getItem("preferences-jinaD-host") || defaultJinaDHost,
+    jinaDPort: localStorage.getItem("preferences-port") || defaultJinaDPort,
     gatewayHost:
-      localStorage.getItem("preferences-jinad-host") || defaultGatewayHost,
+      localStorage.getItem("preferences-jinaD-host") || defaultGatewayHost,
     gatewayPort: localStorage.getItem("preferences-port") || defaultGatewayPort,
     log: localStorage.getItem("preferences-log") || "/stream/log",
     profile: localStorage.getItem("preferences-profile") || "/stream/profile",

@@ -62,9 +62,9 @@ describe("The Flow Page", () => {
 
     it("should display the connected message", () => {
       const host =
-        localStorage.getItem("preferences-jinad-host") || defaultJinaDHost
+        localStorage.getItem("preferences-jinaD-host") || defaultJinaDHost
       const port =
-        localStorage.getItem("preferences-jinad-port") || defaultJinaDPort
+        localStorage.getItem("preferences-jinaD-port") || defaultJinaDPort
       cy.dataName("connection-notification-online").should(
         "contain",
         `Successfully connected to Jina at ${host}:${port}`
