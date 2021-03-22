@@ -1,8 +1,8 @@
 import { UPDATE_SETTINGS } from "./settings.constants"
 
 export type SettingName =
-  | "jinaDHost"
-  | "jinaDPort"
+  | "jinadHost"
+  | "jinadPort"
   | "gatewayHost"
   | "gatewayPort"
   | "jinadHost"
