@@ -7,6 +7,9 @@ import {
 import AxiosMockAdapter from "axios-mock-adapter"
 import gatewayClient, { gatewayInstance } from "./gatewayClient"
 import logger from "../../logger"
+import { status_success_response, settings } from "./gatewayClient.testData"
+import AxiosMockAdapter from "axios-mock-adapter"
+import gatewayClient, { gatewayInstance } from "./gatewayClient"
 
 let mockGatewayClient: AxiosMockAdapter
 const mockConnectionCallback = jest.fn()
