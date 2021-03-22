@@ -219,7 +219,7 @@ export default function WorkspaceSelection() {
       {exampleWorkspaces.map(([workspaceId, workspace], idx) => (
         <WorkspaceTap
           selected={selectedWorkspaceId === workspaceId}
-          onClick={() => loadWorkspace(workspaceId)}
+          onClick={() => dispatch(loadWorkspace(workspaceId))}
           key={idx}
         >
           {workspace.name}
