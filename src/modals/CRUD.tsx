@@ -5,6 +5,9 @@ import gatewayClient from "../services/tests/gatewayClient"
 import store from "../redux"
 import { useDispatch } from "react-redux"
 import { handleGatewayConnectionStatus } from "../redux/global/global.actions"
+import store from "../redux"
+import { useDispatch } from "react-redux"
+import { handleConnectionStatus } from "../redux/global/global.actions"
 
 const style: Styles = {
   overlay: {
@@ -35,8 +38,16 @@ type Props = {
 function CRUD({ open, closeModal, modalParams }: Props) {
   const [searchText, setSearchText] = useState("")
   const [indexText, setIndexText] = useState("")
-
+  const dispatch = useDispatch()
   const [result, setResult] = useState("rsult")
+
+  function connect() {
+    gatewayClient.connect(
+      store.getState().settingsState.settings,
+      ({ connected, message }) =>
+        dispatch(handleConnectionStatus(connected, message))
+    )
+  }
 
   async function search() {
     const searchResult = await gatewayClient.search(searchText)
