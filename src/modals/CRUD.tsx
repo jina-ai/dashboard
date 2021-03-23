@@ -5,6 +5,7 @@ import gatewayClient from "../services/tests/gatewayClient"
 import store from "../redux"
 import { useDispatch } from "react-redux"
 import { handleGatewayConnectionStatus } from "../redux/global/global.actions"
+import { handleGatewayConnectionStatus } from "../redux/global/global.actions"
 import store from "../redux"
 import { useDispatch } from "react-redux"
 import { handleConnectionStatus } from "../redux/global/global.actions"
@@ -45,7 +46,7 @@ function CRUD({ open, closeModal, modalParams }: Props) {
     gatewayClient.connect(
       store.getState().settingsState.settings,
       ({ connected, message }) =>
-        dispatch(handleConnectionStatus(connected, message))
+        dispatch(handleGatewayConnectionStatus(connected, message))
     )
   }
 

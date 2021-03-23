@@ -30,7 +30,7 @@ const gatewayClient = {
   },
   search: async (searchRequest: string) => {
     try {
-      const result = await gatewayInstance.post("/search", {
+      const result = await gatewayInstance.post("/api/search", {
         top_k: 10,
         mode: "search",
         data: [searchRequest],
@@ -45,9 +45,9 @@ const gatewayClient = {
   },
   index: async (indexRequest: string) => {
     try {
-      const result = await gatewayInstance.post("/index", {
+      const result = await gatewayInstance.post("/api/index", {
         top_k: 10,
-        mode: "search",
+        mode: "index",
         data: [indexRequest],
       })
       if (result.status === 200) {
