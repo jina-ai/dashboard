@@ -48,7 +48,7 @@ export const defaultFlowArguments = {
   pod: [],
 }
 
-export const defaultFlow: Flows = {
+export const defaultFlows: Flows = {
   _userFlow: {
     name: "Custom Flow 1",
     workspaceId: defaultSelectedWorkspaceId,
@@ -59,9 +59,9 @@ export const defaultFlow: Flows = {
   },
 }
 
-export const initialWorkspace: Workspaces = {
+export const defaultWorkspaces: Workspaces = {
   _userWorkspace: {
-    name: "",
+    name: "Workspace 1",
     jina_version: "latest",
     type: "user-generated",
     daemon_endpoint: "",

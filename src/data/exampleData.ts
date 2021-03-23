@@ -39,7 +39,7 @@ export const exampleWorkspaces: Workspaces = {
 
 export const exampleFlows: ExampleFlows = {
   example_flow_pokedex: {
-    workspaceId: "pokedex",
+    workspaceId: "example_workspace_pokedex",
     name: "Pokedex Query",
     yaml: `!Flow
       with:
@@ -94,7 +94,7 @@ export const exampleFlows: ExampleFlows = {
       `,
   },
   example_flow_flower: {
-    workspaceId: "flower",
+    workspaceId: "example_workspace_flower",
     name: "Flower Query",
     yaml: `!Flow
   with:
@@ -159,7 +159,7 @@ export const exampleFlows: ExampleFlows = {
       needs: ranker  
   `,
   },
-  example_flow_southpark: {
+  example_workspace_southpark: {
     workspaceId: "southpark",
     name: "Southpark Query",
     yaml: `!Flow
