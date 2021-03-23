@@ -10,6 +10,7 @@ import {
   DUPLICATE_FLOW,
   IMPORT_FLOW,
   LOAD_FLOW,
+4  LOAD_WORKSPACE,
   SET_FLOW_ARGUMENTS,
   UPDATE_NODE,
   UPDATE_NODE_DATA,
@@ -45,7 +46,7 @@ import {
   UpdateNodeAction,
   UpdateNodeDataAction,
   UpdateSelectedFlowAction,
-  UpdateSelectedWorkspaceAction,
+  LoadWorkspaceAction,
   WorkspaceUpdate,
   ImportFlowAction,
   FlowArguments,
@@ -64,6 +65,7 @@ import {
   CreateNewWorkspaceAction,
   DeleteWorkspaceAction,
   WorkspaceUpdate,
+  UpdateSelectedWorkspaceAction,
   UpdateSelectedWorkspaceAction,
 } from "./flows.types"
 

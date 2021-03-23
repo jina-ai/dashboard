@@ -9,23 +9,10 @@ import {
 import { RawLog } from "../redux/logStream/logStream.types"
 import { FLOW_RETRIES, FLOW_RETRY_TIMEOUT, TIMEOUT } from "./config"
 import { DaemonArgumentsResponse } from "./services.types"
+import { Settings } from "../redux/settings/settings.types"
+import { ConnectionCallback } from "../redux/global/global.types"
 
 export let jinadInstance = axios.create()
-
-type Settings = {
-  host: string
-  port: string | number
-  log: string
-  profile: string
-  yaml: string
-  ready: string
-  shutdown: string
-}
-
-type ConnectionCallback = (data: {
-  connected: boolean
-  message: string
-}) => void
 
 type LogHandler = (log: RawLog) => void
 
@@ -34,8 +21,7 @@ type Args = { [key: string]: string | number | boolean }
 const jinadClient = {
   connect: async (settings: Settings, callback: ConnectionCallback) => {
     logger.log("api - connect - settings", settings)
-    const baseURL = `${settings.host}:${settings.port}`
-
+    const baseURL = `${settings.jinadHost}:${settings.jinadPort}`
     jinadInstance = axios.create({ baseURL, timeout: TIMEOUT })
 
     let result
@@ -254,10 +240,10 @@ const jinadClient = {
     callback: ConnectionCallback,
     handleLog: LogHandler
   ) => {
-    let origin = settings.host
+    let origin = settings.jinadHost
       .replace("http://", "ws://")
       .replace("https://", "wss://")
-    const baseURL = `${origin}:${settings.port}/logstream/${workspace_id}/${flow_id}`
+    const baseURL = `${origin}:${settings.jinadPort}/logstream/${workspace_id}/${flow_id}`
     logger.log("api - listenForLogs - baseURl:", baseURL)
     let socket: WebSocket
     try {

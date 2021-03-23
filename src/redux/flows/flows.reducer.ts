@@ -41,7 +41,7 @@ import { nanoid } from "nanoid"
 import produce from "immer"
 import { isNodeConnection } from "../../helpers/typeCheckers"
 import {
-  createLink,
+  createEdge,
   createNode,
   isFlowNode,
   isFlowEdge,
@@ -262,7 +262,7 @@ const flowReducer = produce((draft: FlowState, action: FlowActionTypes) => {
       break
     case ADD_LINK:
       const { source, target } = action.payload
-      const newLink = createLink(source, target)
+      const newLink = createEdge(source, target)
       draft.flows[
         draft.workspaces[draft.selectedWorkspaceId].selectedFlowId
       ].flowChart.elements.push(newLink)

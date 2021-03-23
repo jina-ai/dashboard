@@ -1,3 +1,5 @@
+import defaultPods from "../../../src/data/defaultPods"
+
 describe("Flow design workflow", () => {
   beforeEach(() => {
     cy.visit("/#/flow")
@@ -30,6 +32,7 @@ describe("Flow design workflow", () => {
   }
 
   context("When a new flow is created", () => {
+<<<<<<< HEAD
     it("successfully let you pull new pods", () => {
       moveSideBarItemToCanvas(1, 50, 100)
       moveSideBarItemToCanvas(2, 50, 175)
@@ -40,5 +43,26 @@ describe("Flow design workflow", () => {
       connectPoints([180, 290], [180, 325])
       cy.percySnapshot("flow-design")
     })
+=======
+      it("successfully let you pull new pods and connect them", () => {
+          let firstPortLabel = "gateway"
+          let secondPortLabel = defaultPods[1].name
+          defaultPods.forEach((pod, idx) => {
+              if (idx !== 0 && idx < defaultPods.length - 1) {
+                  moveSideBarItemToCanvas(idx, 315, 100 + 50 * idx)
+                  cy.dataName(`NodePortBottom-${firstPortLabel}`).trigger("mousedown", {
+                      force: true,
+                  })
+                  cy.dataName(`NodePortTop-${secondPortLabel}`).trigger("mouseup", {
+                      force: true,
+                  })
+                  firstPortLabel = secondPortLabel
+                  secondPortLabel = defaultPods[idx + 1].name
+              }
+          })
+
+          cy.percySnapshot("flow-design")
+      })
+>>>>>>> 700012502fbc01830cc31b33887d03ac33bf56cd
   })
 })

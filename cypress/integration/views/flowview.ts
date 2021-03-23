@@ -1,7 +1,7 @@
 import defaultPods from "../../../src/data/defaultPods"
 import {
-  defaultHost,
-  defaultPort,
+  defaultJinaDHost,
+  defaultJinaDPort,
 } from "../../../src/redux/settings/settings.constants"
 import { Flow, FlowState } from "../../../src/redux/flows/flows.types"
 import { isFlowEdge, isFlowNode } from "../../../src/helpers/flow-chart"
@@ -11,6 +11,7 @@ describe("The Flow Page", () => {
     cy.visit("/#/flow")
   })
 
+  //todo test that the play button doesn't crash anything when pressed
   it("should have a working settings button", () => {
     cy.dataName("settingsModal").should("not.exist")
     cy.dataName("settingsButton").click({ force: true })
@@ -60,8 +61,10 @@ describe("The Flow Page", () => {
     })
 
     it("should display the connected message", () => {
-      const host = localStorage.getItem("preferences-host") || defaultHost
-      const port = localStorage.getItem("preferences-port") || defaultPort
+      const host =
+        localStorage.getItem("preferences-jinad-host") || defaultJinaDHost
+      const port =
+        localStorage.getItem("preferences-jinad-port") || defaultJinaDPort
       cy.dataName("connection-notification-online").should(
         "contain",
         `Successfully connected to Jina at ${host}:${port}`
