@@ -2,6 +2,9 @@ import ReactModal, { Styles } from "react-modal"
 import { ModalParams } from "../redux/global/global.types"
 import React, { useState } from "react"
 import gatewayClient from "../services/tests/gatewayClient"
+import store from "../redux"
+import { useDispatch } from "react-redux"
+import { handleConnectionStatus } from "../redux/global/global.actions"
 
 const style: Styles = {
   overlay: {
@@ -32,8 +35,16 @@ type Props = {
 function CRUD({ open, closeModal, modalParams }: Props) {
   const [searchText, setSearchText] = useState("")
   const [indexText, setIndexText] = useState("")
-
+  const dispatch = useDispatch()
   const [result, setResult] = useState("rsult")
+
+  function connect() {
+    gatewayClient.connect(
+      store.getState().settingsState.settings,
+      ({ connected, message }) =>
+        dispatch(handleConnectionStatus(connected, message))
+    )
+  }
 
   async function search() {
     const searchResult = await gatewayClient.search(searchText)
@@ -60,6 +71,7 @@ function CRUD({ open, closeModal, modalParams }: Props) {
       closeTimeoutMS={100}
       style={style}
     >
+      <button onClick={connect}>connect</button>
       <textarea
         onChange={(event) => setSearchText(event.target.value)}
       ></textarea>

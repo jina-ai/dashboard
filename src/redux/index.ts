@@ -15,7 +15,6 @@ import { handleConnectionStatus } from "./global/global.actions"
 import taskReducer from "./task/task.reducer"
 import { TaskState } from "./task/task.types"
 import jinadClient from "../services/jinad"
-import gatewayClient from "../services/tests/gatewayClient"
 
 export type State = {
   flowState: FlowState
@@ -61,12 +60,5 @@ jinadClient.connect(
   store.getState().settingsState.settings,
   _handleLogConnectionStatus
 )
-
-setTimeout(() => {
-  gatewayClient.connect(
-    store.getState().settingsState.settings,
-    _handleLogConnectionStatus
-  )
-}, 2000)
 
 export default store
