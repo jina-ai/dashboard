@@ -35,6 +35,13 @@ type Props = {
 function CRUD({ open, closeModal, modalParams }: Props) {
   const [searchText, setSearchText] = useState("")
   const [indexText, setIndexText] = useState("")
+
+  function search() {
+    gatewayClient.search(searchText)
+  }
+
+  function index() {
+    gatewayClient.index(indexText)
   const dispatch = useDispatch()
   const [result, setResult] = useState("rsult")
 

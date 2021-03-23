@@ -46,11 +46,6 @@ export default function CommandBar({
   exportImage,
 }: Props) {
   const dispatch = useDispatch()
-
-  function handleCRUD() {
-    dispatch(showModal("CRUD"))
-  }
-
   return (
     <div className="command-bar-container">
       <div className="command-bar">
@@ -61,7 +56,7 @@ export default function CommandBar({
           <Button data-name={"stopButton"} onClick={stopFlow}>
             <img alt="Stop" src={Stop} />
           </Button>
-          <Button onClick={handleCRUD}>
+          <Button onClick={() => dispatch(showModal("CRUD"))}>
             <img alt="Save" src={Save} />
           </Button>
           <Button onClick={importChart}>
