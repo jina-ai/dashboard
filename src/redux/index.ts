@@ -11,7 +11,7 @@ import logStreamReducer from "./logStream/logStream.reducer"
 import { GlobalState } from "./global/global.types"
 import globalReducer from "./global/global.reducer"
 import thunk, { ThunkAction } from "redux-thunk"
-import { handleConnectionStatus } from "./global/global.actions"
+import { handleJinadConnectionStatus } from "./global/global.actions"
 import taskReducer from "./task/task.reducer"
 import { TaskState } from "./task/task.types"
 import jinadClient from "../services/jinad"
@@ -53,7 +53,7 @@ function _handleLogConnectionStatus({
   connected: boolean
   message: string
 }) {
-  store.dispatch<any>(handleConnectionStatus(connected, message))
+  store.dispatch<any>(handleJinadConnectionStatus(connected, message))
 }
 
 jinadClient.connect(

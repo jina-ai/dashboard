@@ -22,7 +22,6 @@ const jinadClient = {
   connect: async (settings: Settings, callback: ConnectionCallback) => {
     logger.log("api - connect - settings", settings)
     const baseURL = `${settings.jinadHost}:${settings.jinadPort}`
-
     jinadInstance = axios.create({ baseURL, timeout: TIMEOUT })
 
     let result

@@ -27,7 +27,7 @@ import { getJinaFlowArguments } from "../../services/jinaApi"
 import { setFlowArguments } from "../flows/flows.actions"
 import logger from "../../logger"
 
-export function handleConnectionStatus(
+export function handleJinadConnectionStatus(
   connected: boolean,
   message: string
 ): AppThunk {
@@ -38,6 +38,18 @@ export function handleConnectionStatus(
       dispatch(fetchArgumentsFromDaemon())
     } else {
       dispatch(fetchArgumentsFromApi())
+    }
+  }
+}
+
+export function handleGatewayConnectionStatus(
+  connected: boolean,
+  message: string
+): AppThunk {
+  return function (dispatch) {
+    dispatch(_handleConnectionStatus(connected, message))
+    if (connected) {
+      dispatch(showBanner(message, "success"))
     }
   }
 }
@@ -139,7 +151,7 @@ export function connectJinaD(): AppThunk {
       connected: boolean
       message: string
     }) {
-      dispatch(handleConnectionStatus(connected, message))
+      dispatch(handleJinadConnectionStatus(connected, message))
     }
     jinadClient.connect(settings, onConnectionStatus)
   }
