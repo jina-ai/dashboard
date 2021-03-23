@@ -11,6 +11,7 @@ describe("The Flow Page", () => {
     cy.visit("/#/flow")
   })
 
+  //todo test that the play button doesn't crash anything when pressed
   it("should have a working settings button", () => {
     cy.dataName("settingsModal").should("not.exist")
     cy.dataName("settingsButton").click({ force: true })

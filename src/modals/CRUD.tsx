@@ -33,12 +33,20 @@ function CRUD({ open, closeModal, modalParams }: Props) {
   const [searchText, setSearchText] = useState("")
   const [indexText, setIndexText] = useState("")
 
-  function search() {
-    gatewayClient.search(searchText)
+  const [result, setResult] = useState("rsult")
+
+  async function search() {
+    const searchResult = await gatewayClient.search(searchText)
+    if (searchResult) {
+      setResult(JSON.stringify(searchResult.data))
+    }
   }
 
-  function index() {
-    gatewayClient.index(indexText)
+  async function index() {
+    const indexResult = await gatewayClient.index(indexText)
+    if (indexResult) {
+      setResult(JSON.stringify(indexResult.data))
+    }
   }
 
   return (
@@ -60,6 +68,8 @@ function CRUD({ open, closeModal, modalParams }: Props) {
         onChange={(event) => setIndexText(event.target.value)}
       ></textarea>
       <button onClick={index}>Index</button>
+
+      <textarea value={result}></textarea>
     </ReactModal>
   )
 }
