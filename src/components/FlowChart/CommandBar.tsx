@@ -5,6 +5,8 @@ import Save from "../../assets/icons/Save.svg"
 import Stop from "../../assets/icons/Stop.svg"
 import Upload from "../../assets/icons/Upload.svg"
 import Yaml from "../../assets/icons/Yaml.svg"
+import { useDispatch } from "react-redux"
+import { showModal } from "../../redux/global/global.actions"
 
 type Props = {
   importChart: () => void
@@ -42,6 +44,7 @@ export default function CommandBar({
   copyChart,
   exportImage,
 }: Props) {
+  const dispatch = useDispatch()
   return (
     <div className="command-bar-container">
       <div className="command-bar">
@@ -52,7 +55,7 @@ export default function CommandBar({
           <Button data-name={"stopButton"} onClick={stopFlow}>
             <img alt="Stop" src={Stop} />
           </Button>
-          <Button onClick={() => exportImage("png")}>
+          <Button onClick={() => dispatch(showModal("CRUD"))}>
             <img alt="Save" src={Save} />
           </Button>
           <Button onClick={importChart}>

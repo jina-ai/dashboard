@@ -100,6 +100,7 @@ export type Modal =
   | "review"
   | "podEdit"
   | "flowSettings"
+  | "CRUD"
 
 export type ModalParams = {
   imageId?: string

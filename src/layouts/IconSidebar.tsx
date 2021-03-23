@@ -36,6 +36,7 @@ import {
 } from "../redux/global/global.actions"
 import { importFlow } from "../redux/flows/flows.actions"
 import FlowSettings from "../modals/FlowSettings"
+import CRUD from "../modals/CRUD"
 
 type IconSideBarLayoutProps = {
   children: React.ReactNode
@@ -171,6 +172,13 @@ const IconSidebarLayout = (props: IconSideBarLayoutProps) => {
       {modal === "flowSettings" && (
         <FlowSettings
           open={modal === "flowSettings"}
+          closeModal={_closeModal}
+          modalParams={modalParams}
+        />
+      )}
+      {modal === "CRUD" && (
+        <CRUD
+          open={modal === "CRUD"}
           closeModal={_closeModal}
           modalParams={modalParams}
         />
