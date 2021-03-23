@@ -37,6 +37,7 @@ const gatewayClient = {
       })
       if (result.status === 200) {
         logger.log("search - successful")
+        return result
       }
     } catch (e) {
       logger.log("search - error", e)
@@ -51,6 +52,7 @@ const gatewayClient = {
       })
       if (result.status === 200) {
         logger.log("index - successful")
+        return result
       }
     } catch (e) {
       logger.log("index - error", e)

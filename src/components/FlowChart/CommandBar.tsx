@@ -5,8 +5,9 @@ import Save from "../../assets/icons/Save.svg"
 import Stop from "../../assets/icons/Stop.svg"
 import Upload from "../../assets/icons/Upload.svg"
 import Yaml from "../../assets/icons/Yaml.svg"
-import { useDispatch } from "react-redux"
-import { showModal } from "../../redux/global/global.actions"
+import { useDispatch, useSelector } from "react-redux"
+import { showError, showModal } from "../../redux/global/global.actions"
+import { selectConnectionStatus } from "../../redux/global/global.selectors"
 
 type Props = {
   importChart: () => void
@@ -46,6 +47,16 @@ export default function CommandBar({
   exportImage,
 }: Props) {
   const dispatch = useDispatch()
+  const connected = useSelector(selectConnectionStatus)
+
+  function handleCRUD() {
+    if (!connected) {
+      dispatch(showError("Not Connected to JinaD"))
+    } else {
+      dispatch(showModal("CRUD"))
+    }
+  }
+
   return (
     <div className="command-bar-container">
       <div className="command-bar">
@@ -56,7 +67,7 @@ export default function CommandBar({
           <Button data-name={"stopButton"} onClick={stopFlow}>
             <img alt="Stop" src={Stop} />
           </Button>
-          <Button onClick={() => dispatch(showModal("CRUD"))}>
+          <Button onClick={handleCRUD}>
             <img alt="Save" src={Save} />
           </Button>
           <Button onClick={importChart}>

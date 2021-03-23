@@ -36,10 +36,20 @@ function CRUD({ open, closeModal, modalParams }: Props) {
   const [searchText, setSearchText] = useState("")
   const [indexText, setIndexText] = useState("")
 
-  function search() {
-    gatewayClient.search(searchText)
+  const [result, setResult] = useState("rsult")
+
+  async function search() {
+    const searchResult = await gatewayClient.search(searchText)
+    if (searchResult) {
+      setResult(JSON.stringify(searchResult.data))
+    }
   }
 
+  async function index() {
+    const indexResult = await gatewayClient.index(indexText)
+    if (indexResult) {
+      setResult(JSON.stringify(indexResult.data))
+    }
   function index() {
     gatewayClient.index(indexText)
   const dispatch = useDispatch()
