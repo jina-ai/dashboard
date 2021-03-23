@@ -13,8 +13,8 @@ import {
   deleteLink,
   updateNodeData,
   createNewWorkspace,
-  loadWorkspace,
   deleteWorkspace,
+  loadWorkspace,
   updateSelectedWorkspace,
 } from "./flows.actions"
 import { initialFlowChart } from "./flows.constants"
@@ -25,6 +25,7 @@ import {
   FlowEdge,
   NodeDataUpdate,
   Workspace,
+  WorkspaceUpdate,
 } from "./flows.types"
 import { isFlowNode, isFlowEdge } from "../../helpers/flow-chart"
 
@@ -46,7 +47,7 @@ function getWorkspaceFromStorage(id: string): Workspace | undefined {
 
 describe("flows reducer", () => {
   beforeEach(() => {
-    saveFlowsToStorage(testFlowState)
+    saveFlowsToStorage(testFlowState.flows)
   })
 
   it("should delete a flow from redux and storage", () => {
@@ -420,6 +421,37 @@ describe("flows reducer", () => {
     )
   })
 
+  it("should delete a workspace", () => {
+    const oldNumberOfWorkspaces = Object.keys(testFlowState.workspaces).length
+    const flowStateWithNewWorkspace = reducer(
+      testFlowState,
+      createNewWorkspace()
+    )
+    const newNumberOfWorkspaces = Object.keys(
+      flowStateWithNewWorkspace.workspaces
+    ).length
+
+    expect(newNumberOfWorkspaces - oldNumberOfWorkspaces).toBe(1)
+
+    const newWorkSpaceId = Object.keys(flowStateWithNewWorkspace.workspaces)[
+      newNumberOfWorkspaces - 1
+    ]
+    const flowStateWithoutNewWorkspace = reducer(
+      testFlowState,
+      deleteWorkspace(newWorkSpaceId)
+    )
+
+    const newerNumberOfWorkspaces = Object.keys(
+      flowStateWithoutNewWorkspace.workspaces
+    ).length
+
+    expect(newNumberOfWorkspaces - newerNumberOfWorkspaces).toBe(1)
+    expect(flowStateWithNewWorkspace.workspaces[newWorkSpaceId]).toBeDefined()
+    expect(
+      flowStateWithoutNewWorkspace.workspaces[newWorkSpaceId]
+    ).toBeUndefined()
+  })
+
   it("should delete a workspace from redux and storage", () => {
     expect(getWorkspaceFromStorage("testWorkspace2")).toBeDefined()
     const oldNumberOfWorkspaces = Object.keys(testFlowState.workspaces).length
@@ -443,6 +475,25 @@ describe("flows reducer", () => {
       )
     ).toBeUndefined()
     expect(getWorkspaceFromStorage("testWorkspace2")).toBeUndefined()
+  })
+
+  it("should update a workspace", () => {
+    const update: WorkspaceUpdate = {
+      name: "newName",
+      type: "user-generated",
+      daemon_endpoint: "newDaemonEndpoint",
+      daemon_id: "newWorkspaceId",
+      isConnected: true,
+      files: ["newFile1", "newFile2"],
+    }
+    const flowStateWithUpdatedWorkspace = reducer(
+      testFlowState,
+      updateSelectedWorkspace(update)
+    )
+    expect(testFlowState.workspaces["test_workspace"]).not.toEqual(update)
+    expect(flowStateWithUpdatedWorkspace.workspaces["test_workspace"]).toEqual(
+      update
+    )
   })
 
   it("should update selected workspace", () => {

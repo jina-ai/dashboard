@@ -34,7 +34,6 @@ import {
   FlowUpdate,
   ImportFlowAction,
   LoadFlowAction,
-  LoadWorkspaceAction,
   NodeData,
   NodeDataUpdate,
   NodeId,
@@ -43,8 +42,9 @@ import {
   UpdateNodeAction,
   UpdateNodeDataAction,
   UpdateSelectedFlowAction,
-  UpdateSelectedWorkspaceAction,
+  LoadWorkspaceAction,
   WorkspaceUpdate,
+  UpdateSelectedWorkspaceAction,
 } from "./flows.types"
 
 import { ThunkAction } from "redux-thunk"

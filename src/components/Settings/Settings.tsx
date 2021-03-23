@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState } from "react"
 import {
   Button,
   Card,
@@ -7,39 +7,40 @@ import {
   Col,
   Form,
   Row,
-} from "shards-react";
-import { Collapse } from "react-bootstrap";
+} from "shards-react"
+import { Collapse } from "react-bootstrap"
 
-import { advancedOptions, baseOptions } from "./options";
-import FormItem from "./FormItem";
-import {
-  SettingName,
-  SettingUpdate,
-} from "../../redux/settings/settings.types";
-import { useDispatch, useSelector } from "react-redux";
-import { updateSettings } from "../../redux/settings/settings.actions";
-import { selectSettings } from "../../redux/settings/settings.selectors";
+import { advancedOptions, baseOptions } from "./options"
+import FormItem from "./FormItem"
+import { SettingName, SettingUpdate } from "../../redux/settings/settings.types"
+import { useDispatch, useSelector } from "react-redux"
+import { updateSettings } from "../../redux/settings/settings.actions"
+import { selectSettings } from "../../redux/settings/settings.selectors"
 
 function SettingsCard() {
-  const [updates, setUpdates] = useState<SettingUpdate>({});
-  const [expanded, setExpanded] = useState(false);
+  const [updates, setUpdates] = useState<SettingUpdate>({})
+  const [expanded, setExpanded] = useState(false)
 
-  const settings = useSelector(selectSettings);
+  const settings = useSelector(selectSettings)
 
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
 
   function changeSetting(setting: SettingName, value: string) {
-    const newUpdates: SettingUpdate = { ...updates };
-    newUpdates[setting] = value;
-    setUpdates(newUpdates);
+    console.log(setting)
+    console.log(value)
+    const newUpdates: SettingUpdate = { ...updates }
+    console.log(newUpdates)
+
+    newUpdates[setting] = value
+    setUpdates(newUpdates)
   }
 
   function saveChanges() {
-    dispatch(updateSettings(updates));
+    dispatch(updateSettings(updates))
   }
 
   function toggleExpand() {
-    setExpanded(!expanded);
+    setExpanded(!expanded)
   }
 
   return (
@@ -107,7 +108,7 @@ function SettingsCard() {
         </Form>
       </CardBody>
     </Card>
-  );
+  )
 }
 
-export default SettingsCard;
+export default SettingsCard

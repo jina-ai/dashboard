@@ -9,9 +9,10 @@ import { FlowNode } from "../../redux/flows/flows.types"
 
 type NodePortProps = {
   type: "source" | "target"
+  portDataLabel: string
 }
 
-function NodePort({ type }: NodePortProps) {
+function NodePort({ type, portDataLabel }: NodePortProps) {
   const theme = useTheme()
   const NodePortTop = styled(Handle)`
     margin-top: -0.2rem;
@@ -41,9 +42,21 @@ function NodePort({ type }: NodePortProps) {
   `
   switch (type) {
     case "source":
-      return <NodePortTop type={type} position={Position.Top} />
+      return (
+        <NodePortBottom
+          data-name={`NodePortBottom-${portDataLabel}`}
+          type={type}
+          position={Position.Bottom}
+        />
+      )
     case "target":
-      return <NodePortBottom type={type} position={Position.Bottom} />
+      return (
+        <NodePortTop
+          data-name={`NodePortTop-${portDataLabel}`}
+          type={type}
+          position={Position.Top}
+        />
+      )
   }
 }
 
@@ -77,12 +90,18 @@ export default function ChartNode(props: ChartNodeProps) {
     const node = props
     return (
       <ChartNodeElement
+        data-name={`chart-node-${node?.data?.label}`}
         onDoubleClick={() => {
           flowType === "user-generated" &&
             dispatch(showModal("podEdit", { nodeId: node?.id }))
         }}
       >
-        {node.id !== "gateway" && <NodePort type="source" />}
+        {node.id !== "gateway" && (
+          <NodePort
+            portDataLabel={node?.data?.label || node.id}
+            type="target"
+          />
+        )}
         <div id={`chart-node-${node?.data?.label}`}>
           <div className="node-header">
             <div className={`p-1`}>
@@ -96,7 +115,7 @@ export default function ChartNode(props: ChartNodeProps) {
             </div>
           </div>
         </div>{" "}
-        <NodePort type="target" />
+        <NodePort type="source" portDataLabel={node?.data?.label || node.id} />
       </ChartNodeElement>
     )
   } else

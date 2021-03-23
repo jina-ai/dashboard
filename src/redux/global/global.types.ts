@@ -10,6 +10,11 @@ import {
 } from "./global.constants"
 import { handleNewLogAction } from "../logStream/logStream.types"
 
+export type ConnectionCallback = (data: {
+  connected: boolean
+  message: string
+}) => void
+
 type Title =
   | "Home"
   | "Log Stream"
@@ -95,6 +100,7 @@ export type Modal =
   | "review"
   | "podEdit"
   | "flowSettings"
+  | "CRUD"
 
 export type ModalParams = {
   imageId?: string
