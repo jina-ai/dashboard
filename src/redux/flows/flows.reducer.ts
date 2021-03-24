@@ -23,8 +23,6 @@ import {
   defaultFlow,
   defaultJinaVersion,
   defaultFlowArguments,
-  defaultSelectedFlowId,
-  defaultSelectedWorkspaceId,
 } from "./flows.constants"
 import {
   Flow,
@@ -146,31 +144,32 @@ const flowReducer = produce((draft: FlowState, action: FlowActionTypes) => {
         const flowId = action.payload
         draft.flows = _.omit(draft.flows, flowId)
 
-        const nonExampleFlows = Object.entries(draft.flows).filter(
-          ([id, flow]: [string, Flow]) => flow.type !== "example"
+        console.log("delete flowId: ", flowId)
+
+        const workspaceId = draft.selectedWorkspaceId
+
+        console.log("workspace: ", workspaceId)
+
+        const { selectedFlowId } = draft.workspaces[workspaceId]
+
+        const workspaceFlows = Object.entries(draft.flows).filter(
+          ([id, flow]: [string, Flow]) => {
+            return flow.workspaceId === workspaceId
+          }
         )
 
-        if (
-          draft.workspaces[draft.selectedWorkspaceId].selectedFlowId ===
-            flowId &&
-          nonExampleFlows.length
-        ) {
-          const idFirstNonExampleFlow = nonExampleFlows[0][0]
-          draft.workspaces[
-            draft.selectedWorkspaceId
-          ].selectedFlowId = idFirstNonExampleFlow
-        } else if (!nonExampleFlows.length) {
-          draft.flows._userFlow = {
-            name: "Custom Flow 1",
-            workspaceId: defaultSelectedWorkspaceId,
-            type: "user-generated",
-            isConnected: false,
-            flowChart: initialFlowChart,
-          }
-          draft.workspaces[
-            draft.selectedWorkspaceId
-          ].selectedFlowId = defaultSelectedFlowId
+        console.log("workspaceFlows:", workspaceFlows)
+
+        if (selectedFlowId === flowId && workspaceFlows.length) {
+          const firstFlowId = workspaceFlows[0][0]
+          draft.workspaces[workspaceId].selectedFlowId = firstFlowId
+          console.log("firstFlowId:", firstFlowId)
+        } else if (!workspaceFlows.length) {
+          const newFlowId = nanoid()
+          _createNewFlow(draft, undefined, newFlowId, workspaceId)
+          draft.workspaces[workspaceId].selectedFlowId = newFlowId
         }
+        console.log("new draft: ", JSON.parse(JSON.stringify(draft)))
       }
       break
     case UPDATE_SELECTED_FLOW: {

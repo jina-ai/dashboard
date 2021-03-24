@@ -22,6 +22,7 @@ import logger from "../logger"
 import { copyToClipboard, formatAsYAML } from "../helpers"
 import html2canvas from "html2canvas"
 import FlowChart from "../components/FlowChart/FlowChart"
+import FlowSelection from "../components/FlowChart/FlowSelection"
 
 const FlowViewContainer = styled.div`
   display: flex;
@@ -100,8 +101,8 @@ export default function FlowView() {
 
         <FlowViewContainer>
           <WorkspaceSelection />
-
           <Card className="chart-section-container mr-md-4 mb-4">
+            <FlowSelection />
             <CommandBar
               startFlow={() => dispatch(startFlow(selectedFlowId))}
               stopFlow={() => dispatch(stopFlow(selectedFlowId))}
@@ -109,7 +110,6 @@ export default function FlowView() {
               importChart={() => dispatch(showModal("import"))}
               exportImage={exportImage}
             />
-
             <FlowChart elements={flowChart.elements} />
           </Card>
 
