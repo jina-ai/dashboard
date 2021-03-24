@@ -1,4 +1,8 @@
-import ReactFlow, { OnLoadParams, ReactFlowProps } from "react-flow-renderer"
+import ReactFlow, {
+  Background,
+  OnLoadParams,
+  ReactFlowProps,
+} from "react-flow-renderer"
 import React, { MouseEvent, useRef, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import {
@@ -78,7 +82,7 @@ export default function FlowChart(props: Props) {
     >
       <ReactFlow
         defaultPosition={[0, 50]}
-        defaultZoom={0.5}
+        defaultZoom={1}
         elements={props.elements}
         onConnect={onConnect as ReactFlowProps["onConnect"]}
         onElementsRemove={onElementsRemove}
@@ -88,7 +92,9 @@ export default function FlowChart(props: Props) {
         onNodeDragStop={onNodeDragStop}
         nodeTypes={nodeTypes}
         nodesDraggable={flow.type !== "example"}
-      />
+      >
+        <Background variant="lines" gap={35} size={1} />
+      </ReactFlow>
     </div>
   )
 }
