@@ -171,8 +171,8 @@ We welcome all kinds of contributions from the open-source community, individual
 
 The following resources help you to make a good first contribution:
 
-- [Contributing guidelines](https://github.com/jina-ai/jina/blob/master/CONTRIBUTING.md)
-- [Release cycles and development stages](https://github.com/jina-ai/jina/blob/master/RELEASE.md)
+- [Contributing guidelines](CONTRIBUTING.md)
+- [Release cycles and development stages](deployment.md)
 
 # Community
 
