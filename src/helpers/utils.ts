@@ -1,3 +1,6 @@
+const version = require("../../package.json").version
+const localVersion = localStorage.getItem("version")
+
 export const copyToClipboard = (str: string) => {
   const temp = document.createElement("textarea")
   temp.value = str
@@ -10,4 +13,12 @@ export const copyToClipboard = (str: string) => {
 
 export const timeout = (ms: number) => {
   return new Promise((resolve) => setTimeout(resolve, ms))
+}
+
+export const versionCompare = () => {
+  if (localVersion === null) return true
+  const localVersionValue = parseInt(localVersion.replaceAll(".", ""))
+  const versionValue = parseInt(version.replaceAll(".", ""))
+
+  return localVersion === null || localVersionValue < versionValue
 }
