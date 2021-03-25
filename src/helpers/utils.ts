@@ -1,6 +1,3 @@
-const version = require("../../package.json").version
-const localVersion = localStorage.getItem("version")
-
 export const copyToClipboard = (str: string) => {
   const temp = document.createElement("textarea")
   temp.value = str
@@ -15,10 +12,27 @@ export const timeout = (ms: number) => {
   return new Promise((resolve) => setTimeout(resolve, ms))
 }
 
-export const versionCompare = () => {
-  if (localVersion === null) return true
-  const localVersionValue = parseInt(localVersion.replaceAll(".", ""))
-  const versionValue = parseInt(version.replaceAll(".", ""))
-
-  return localVersion === null || localVersionValue < versionValue
+export const newVersionLocalStorageReset = (
+  version: string,
+  localVersion: string | null
+) => {
+  if (localVersion === null) localStorage.setItem("version", version)
+  else {
+    const versionList = version.split(".")
+    const localVersionList = localVersion.split(".")
+    const majorVersion = parseInt(versionList[0])
+    const majorLocalVersion = parseInt(localVersionList[0])
+    const minorVersion = parseInt(versionList[1])
+    const minorLocalVersion = parseInt(localVersionList[1])
+    const patchVersion = parseInt(versionList[2])
+    const patchLocalVersion = parseInt(localVersionList[2])
+    if (
+      majorLocalVersion < majorVersion ||
+      minorLocalVersion < minorVersion ||
+      patchLocalVersion < patchVersion
+    ) {
+      localStorage.clear()
+      window.location.reload()
+    }
+  }
 }
