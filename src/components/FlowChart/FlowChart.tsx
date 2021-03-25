@@ -63,7 +63,7 @@ export default function FlowChart(props: Props) {
       x: event.clientX - reactFlowBounds.left,
       y: event.clientY - reactFlowBounds.top,
     }) || { x: 0, y: 0 }
-    dispatch(addNode(data.label, position, data))
+    dispatch(addNode(data.id, position, data))
   }
 
   const onNodeDragStop = (event: MouseEvent, node: FlowNode) => {
