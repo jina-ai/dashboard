@@ -218,7 +218,7 @@ export default function WorkspaceSelection() {
 
       <SubHeader>
         Files{" "}
-        <AddButton onClick={() => dispatch(createNewWorkspace())}>
+        <AddButton onClick={() => {}}>
           <i className="material-icons">add</i>
         </AddButton>
       </SubHeader>
