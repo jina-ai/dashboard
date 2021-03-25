@@ -42,12 +42,12 @@ function TitleConnectionIndicator({
 }
 
 type DeleteWorkspaceProps = {
-  deleteWorkspace: () => void
-  idx: number
+  onClick: () => void
 }
 
-function DeleteWorkspaceButton({ deleteWorkspace, idx }: DeleteWorkspaceProps) {
+function DeleteButton({ onClick }: DeleteWorkspaceProps) {
   const Delete = styled.div`
+    cursor: pointer;
     font-size: 1.15rem;
     position: absolute;
     top: 0;
@@ -55,11 +55,7 @@ function DeleteWorkspaceButton({ deleteWorkspace, idx }: DeleteWorkspaceProps) {
   `
   return (
     <Delete>
-      <i
-        data-name={`deleteWorkspaceButton-${idx}`}
-        onClick={deleteWorkspace}
-        className="material-icons"
-      >
+      <i onClick={onClick} className="material-icons">
         delete
       </i>
     </Delete>
@@ -76,14 +72,14 @@ export default function WorkspaceSelection() {
 
   const WorkspaceSelectionMenu = styled.div`
     font-family: "Montserrat", serif;
-    min-width: 12rem;
-    margin-right: 3rem;
+    width: 12rem;
+    margin-right: 1.5rem;
   `
 
   const SelectedWorkspaceHeader = styled.div`
     position: relative;
     font-weight: 600;
-    font-size: 20px;
+    font-size: 1.25em;
     color: ${palette.headerTextColor};
     margin-bottom: 1rem;
     white-space: nowrap;
@@ -125,11 +121,46 @@ export default function WorkspaceSelection() {
   `
 
   const WorkspaceHeader = styled.div`
-    cursor: pointer;
     font-weight: 600;
     font-size: 14px;
     margin-bottom: 1rem;
     color: ${palette.headerTextColor};
+  `
+
+  const SubHeader = styled.div`
+    font-weight: 600;
+    font-size: 14px;
+    margin-bottom: 0.5rem;
+    color: ${palette.headerTextColor};
+  `
+
+  const AddButton = styled.span`
+    float: right;
+    cursor: pointer;
+  `
+
+  const FilesList = styled.div`
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    margin-bottom: 1rem;
+    height: 10rem;
+    overflow-y: auto;
+    overflow-x: hidden;
+  `
+
+  const FileItem = styled.div`
+    font-weight: 400;
+    font-size: 0.85rem;
+    padding-top: 0.15rem;
+    padding-bottom: 0.15rem;
+    margin-top: 0.15rem;
+    margin-bottom: 0.15rem;
+    position: relative;
+  `
+
+  const FileIcon = styled.span`
+    opacity: 0.5;
+    margin-right: 0.25em;
   `
   //
   // function FlowSettingsButton() {
@@ -185,15 +216,48 @@ export default function WorkspaceSelection() {
         />
       </SelectedWorkspaceHeader>
 
-      <WorkspaceTap
-        data-name={"newWorkspaceButton"}
-        selected={false}
-        onClick={() => dispatch(createNewWorkspace())}
-      >
-        New Workspace <i className="material-icons plus-icon">add</i>
-      </WorkspaceTap>
+      <SubHeader>
+        Files{" "}
+        <AddButton onClick={() => dispatch(createNewWorkspace())}>
+          <i className="material-icons">add</i>
+        </AddButton>
+      </SubHeader>
+      <FilesList>
+        {/* TODO: map over actual files, delete actual files */}
+        <FileItem>
+          <FileIcon>
+            <i className="material-icons">file_present</i>
+          </FileIcon>
+          <span>py_modules.py</span>
+          <WorkspaceTapOverflowHider />
+          <DeleteButton onClick={console.log} />
+        </FileItem>
 
-      <WorkspaceHeader>My Workspaces </WorkspaceHeader>
+        <FileItem>
+          <FileIcon>
+            <i className="material-icons">file_present</i>
+          </FileIcon>
+          <span>py_modules.py</span>
+          <WorkspaceTapOverflowHider />
+          <DeleteButton onClick={console.log} />
+        </FileItem>
+
+        <FileItem>
+          <FileIcon>
+            <i className="material-icons">file_present</i>
+          </FileIcon>
+          <span>py_modules.py</span>
+          <WorkspaceTapOverflowHider />
+          <DeleteButton onClick={console.log} />
+        </FileItem>
+      </FilesList>
+
+      <WorkspaceHeader>
+        My Workspaces
+        <AddButton onClick={() => dispatch(createNewWorkspace())}>
+          <i className="material-icons">add</i>
+        </AddButton>
+      </WorkspaceHeader>
 
       {userWorkspaces.map(([workspaceId, workspace], idx) => (
         <WorkspaceTap
@@ -209,9 +273,8 @@ export default function WorkspaceSelection() {
             connected={connected}
           />
           <WorkspaceTapOverflowHider />
-          <DeleteWorkspaceButton
-            idx={idx}
-            deleteWorkspace={() => dispatch(deleteWorkspace(workspaceId))}
+          <DeleteButton
+            onClick={() => dispatch(deleteWorkspace(workspaceId))}
           />
         </WorkspaceTap>
       ))}
