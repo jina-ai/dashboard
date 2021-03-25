@@ -126,6 +126,7 @@ const initialState: FlowState = {
 }
 
 const flowReducer = produce((draft: FlowState, action: FlowActionTypes) => {
+  console.log("REDUCER ACTION: ", action)
   switch (action.type) {
     case CREATE_NEW_FLOW: {
       draft = _createNewFlow(draft)
@@ -139,39 +140,40 @@ const flowReducer = produce((draft: FlowState, action: FlowActionTypes) => {
       draft = _createNewFlow(draft, action.payload)
       break
     }
-    case DELETE_FLOW:
-      {
-        const flowId = action.payload
-        draft.flows = _.omit(draft.flows, flowId)
+    case DELETE_FLOW: {
+      const flowId = action.payload
+      console.log("delete flowId: ", flowId)
 
-        console.log("delete flowId: ", flowId)
+      console.log("flows before: ", JSON.parse(JSON.stringify(draft.flows)))
+      draft.flows = _.omit(draft.flows, flowId)
+      console.log("flows after: ", JSON.parse(JSON.stringify(draft.flows)))
 
-        const workspaceId = draft.selectedWorkspaceId
+      const workspaceId = draft.selectedWorkspaceId
 
-        console.log("workspace: ", workspaceId)
+      console.log("workspace: ", workspaceId)
 
-        const { selectedFlowId } = draft.workspaces[workspaceId]
+      const { selectedFlowId } = draft.workspaces[workspaceId]
 
-        const workspaceFlows = Object.entries(draft.flows).filter(
-          ([id, flow]: [string, Flow]) => {
-            return flow.workspaceId === workspaceId
-          }
-        )
-
-        console.log("workspaceFlows:", workspaceFlows)
-
-        if (selectedFlowId === flowId && workspaceFlows.length) {
-          const firstFlowId = workspaceFlows[0][0]
-          draft.workspaces[workspaceId].selectedFlowId = firstFlowId
-          console.log("firstFlowId:", firstFlowId)
-        } else if (!workspaceFlows.length) {
-          const newFlowId = nanoid()
-          _createNewFlow(draft, undefined, newFlowId, workspaceId)
-          draft.workspaces[workspaceId].selectedFlowId = newFlowId
+      const workspaceFlows = Object.entries(draft.flows).filter(
+        ([id, flow]: [string, Flow]) => {
+          return flow.workspaceId === workspaceId
         }
-        console.log("new draft: ", JSON.parse(JSON.stringify(draft)))
+      )
+
+      console.log("workspaceFlows:", JSON.parse(JSON.stringify(workspaceFlows)))
+
+      if (selectedFlowId === flowId && workspaceFlows.length) {
+        const firstFlowId = workspaceFlows[0][0]
+        draft.workspaces[workspaceId].selectedFlowId = firstFlowId
+        console.log("firstFlowId:", firstFlowId)
+      } else if (!workspaceFlows.length) {
+        const newFlowId = nanoid()
+        _createNewFlow(draft, undefined, newFlowId, workspaceId)
+        draft.workspaces[workspaceId].selectedFlowId = newFlowId
       }
+      console.log("new draft: ", JSON.parse(JSON.stringify(draft)))
       break
+    }
     case UPDATE_SELECTED_FLOW: {
       const flowUpdate = action.payload
       if (draft.workspaces[draft.selectedWorkspaceId].selectedFlowId) {
@@ -316,38 +318,37 @@ const flowReducer = produce((draft: FlowState, action: FlowActionTypes) => {
       }
       break
     }
-    case DELETE_WORKSPACE:
-      {
-        const workspaceId = action.payload as string
-        draft.workspaces = _.omit(draft.workspaces, workspaceId)
+    case DELETE_WORKSPACE: {
+      const workspaceId = action.payload as string
+      draft.workspaces = _.omit(draft.workspaces, workspaceId)
+      draft.flows = _.pickBy(
+        draft.flows,
+        (flow) => flow.workspaceId !== workspaceId
+      )
 
-        const nonExampleWorkspaces = Object.entries(draft.workspaces).filter(
-          ([id, workspace]: [string, Workspace]) => workspace.type !== "example"
-        )
+      const nonExampleWorkspaces = Object.entries(draft.workspaces).filter(
+        ([id, workspace]: [string, Workspace]) => workspace.type !== "example"
+      )
 
-        if (draft.selectedWorkspaceId === workspaceId) {
-          const idFirstNonExampleWorkspace = nonExampleWorkspaces[0][0]
-          draft.selectedWorkspaceId = idFirstNonExampleWorkspace
-        } else if (!nonExampleWorkspaces.length) {
-          draft.workspaces._userWorkspace = {
-            name: "Workspace 1",
-            type: "user-generated",
-            daemon_endpoint: "",
-            isConnected: false,
-            daemon_id: "",
-            files: [],
-            jina_version: defaultJinaVersion,
-            selectedFlowId: defaultSelectedFlowId,
-            flowArguments: defaultFlowArguments,
-          }
+      if (
+        draft.selectedWorkspaceId === workspaceId &&
+        nonExampleWorkspaces.length
+      ) {
+        const idFirstNonExampleWorkspace = nonExampleWorkspaces[0][0]
+        draft.selectedWorkspaceId = idFirstNonExampleWorkspace
+      } else if (!nonExampleWorkspaces.length) {
+        draft.workspaces = {
+          ..._.cloneDeep(defaultWorkspaces),
+          ...getExampleWorkspaces(),
         }
-        draft.flows = _.pickBy(
-          draft.flows,
-          (flow) => flow.workspaceId !== workspaceId
-        )
-        draft.selectedWorkspaceId = "_userWorkspace"
+        draft.flows = {
+          ..._.cloneDeep(defaultFlows),
+          ...getExampleFlows(),
+        }
+        draft.selectedWorkspaceId = Object.keys(draft.workspaces)[0]
       }
       break
+    }
   }
 
   saveWorkspacesToStorage(draft)
