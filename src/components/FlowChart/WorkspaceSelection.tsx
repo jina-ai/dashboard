@@ -288,6 +288,9 @@ export default function WorkspaceSelection() {
           {workspace.name}
         </WorkspaceTap>
       ))}
+      <WorkspaceTap selected={false} onClick={() => {}}>
+        Multi-Modal-Example
+      </WorkspaceTap>
     </WorkspaceSelectionMenu>
   )
 }
