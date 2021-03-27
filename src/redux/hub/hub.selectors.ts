@@ -17,3 +17,6 @@ export const selectHubImages = (state: State) =>
 
 export const selectIsHubImagesLoading = (state: State) =>
   state.hubState.loading;
+
+export const selectHubImagesFetchError = (state: State) =>
+  state.hubState.error
