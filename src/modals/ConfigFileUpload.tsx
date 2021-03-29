@@ -1,6 +1,5 @@
 import ReactModal, { Styles } from "react-modal"
-import { ModalParams } from "../redux/global/global.types"
-import React from "react"
+import React, { useState } from "react"
 import jinad from "../services/jinad"
 
 const style: Styles = {
@@ -26,18 +25,23 @@ const style: Styles = {
 type Props = {
   open: boolean
   closeModal: () => void
-  modalParams: ModalParams
+  next: () => void
 }
 
-function ConfigFileUpload({ open, closeModal }: Props) {
+function ConfigFileUpload({ open, closeModal, next }: Props) {
+  const [blobFiles, setBlobFiles] = useState<Blob[]>()
+
   function handleChange(selectorFiles: FileList | null) {
     if (selectorFiles) {
       const blobArray = Array.from(selectorFiles) as Blob[]
-      jinad.createWorkspace(blobArray)
+      setBlobFiles(blobArray)
     }
   }
 
-  const handleSubmission = () => {}
+  function handleSubmit() {
+    if (blobFiles) jinad.createWorkspace(blobFiles)
+    next()
+  }
 
   return (
     <ReactModal
@@ -55,7 +59,7 @@ function ConfigFileUpload({ open, closeModal }: Props) {
         multiple
         onChange={(e) => handleChange(e.target.files)}
       />
-      <button onClick={handleSubmission}>Submit</button>
+      <button onClick={handleSubmit}>Submit</button>
     </ReactModal>
   )
 }
