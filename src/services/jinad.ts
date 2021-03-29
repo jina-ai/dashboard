@@ -74,12 +74,13 @@ const jinadClient = {
       return { status: "error", message: e }
     }
   },
-  createWorkspace: async (files: (string | Blob)[]) => {
+  createWorkspace: async (files?: (string | Blob)[]) => {
     const formData = new FormData()
-    files.forEach((file: string | Blob) => {
-      if (typeof file === "string") formData.append("files", new Blob([file]))
-      else formData.append("files", file)
-    })
+    if (files)
+      files.forEach((file: string | Blob) => {
+        if (typeof file === "string") formData.append("files", new Blob([file]))
+        else formData.append("files", file)
+      })
     const options = {
       headers: {
         "Content-Type": "multipart/form-data",
@@ -88,7 +89,7 @@ const jinadClient = {
     try {
       const result = await jinadInstance.post("/workspaces", formData, options)
       if (result.status === 201)
-        return { status: "success", workspace: result.data }
+        return { status: "success", workspace_id: result.data }
       return { status: "error", message: result.data }
     } catch (e) {
       return { status: "error", message: e }

@@ -236,6 +236,25 @@ export function startFlow(
   }
 }
 
+export function createWorkspaceInDaemon(): ThunkAction<
+  void,
+  FlowState,
+  unknown,
+  Action<string>
+> {
+  return async function (dispatch) {
+    const result = await jinadClient.createWorkspace()
+    const { status, message, workspace_id } = result
+
+    logger.log("createWorkspaceInDaemon result", result)
+
+    if (status === "error") return dispatch(showBanner(message, "error") as any)
+
+    dispatch(updateSelectedWorkspace({ daemon_id: workspace_id }))
+    dispatch(showBanner(message, "success") as any)
+  }
+}
+
 export function stopFlow(
   flowId: string
 ): ThunkAction<void, FlowState, unknown, Action<string>> {
