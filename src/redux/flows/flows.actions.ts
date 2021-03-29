@@ -202,14 +202,29 @@ export function startFlow(
 ): ThunkAction<void, FlowState, unknown, Action<string>> {
   return async function (dispatch) {
     const flow = store.getState().flowState.flows[flowId]
-    const flowArguments = store.getState().flowState.workspaces[
-      flow.workspaceId
-    ]?.flowArguments
+    let {
+      flowArguments,
+      name: workspaceName,
+      daemon_id,
+    } = store.getState().flowState.workspaces[flow.workspaceId]
+    if (!daemon_id) {
+      console.log("no workspace found, creating workspace")
+      const creationResult = await jinadClient.createWorkspace(["empty_blob"]) //Creating a workspace in daemon requires files
+      const {
+        status: creationStatus,
+        message: creationMessage,
+        workspace_id,
+      } = creationResult
+      if (creationStatus === "error")
+        return dispatch(
+          showBanner(JSON.stringify(creationMessage), "error") as any
+        )
+      daemon_id = workspace_id as string
+      dispatch(updateSelectedFlow({ daemon_id }))
+      console.log("created workspace: ", daemon_id)
+    } else console.log("daemon id: ", daemon_id)
 
-    if (typeof flow === undefined)
-      return dispatch(showBanner("Could not start flow", "error") as any)
-
-    const { flowChart } = flow as Flow
+    const { flowChart, name: flowName } = flow as Flow
     const yaml = formatAsYAML(flowChart, flowArguments as FlowArguments)
     logger.log(
       "startFlow",
@@ -223,15 +238,21 @@ export function startFlow(
       yaml
     )
 
-    const result = await jinadClient.startFlow(yaml)
+    const result = await jinadClient.startFlow(yaml, daemon_id)
     const { status, message, flow_id } = result
 
     logger.log("startFlow result", result)
 
-    if (status === "error") return dispatch(showBanner(message, "error") as any)
+    if (status === "error")
+      return dispatch(showBanner(JSON.stringify(message), "error") as any)
 
     dispatch(updateSelectedFlow({ daemon_id: flow_id }))
-    dispatch(showBanner(message, "success") as any)
+    dispatch(
+      showBanner(
+        `Successfully started flow ${flowName} in workspace ${workspaceName}.`,
+        "success"
+      ) as any
+    )
     dispatch(initNetworkFlow(flowId))
   }
 }
@@ -255,6 +276,57 @@ export function createWorkspaceInDaemon(): ThunkAction<
   }
 }
 
+export function uploadFilesToWorkspace(
+  files: Blob[]
+): ThunkAction<void, FlowState, unknown, Action<string>> {
+  return async function (dispatch) {
+    const { selectedWorkspaceId } = store.getState().flowState
+    const workspace = store.getState().flowState.workspaces[selectedWorkspaceId]
+    let { daemon_id } = workspace
+    if (!daemon_id) {
+      console.log("no workspace found, creating a workspace...")
+      const creationResult = await jinadClient.createWorkspace(files)
+      const {
+        status: creationStatus,
+        message: creationMessage,
+        workspace_id,
+      } = creationResult
+      if (creationStatus === "error")
+        return dispatch(showBanner(creationMessage, "error") as any)
+      daemon_id = workspace_id as string
+      console.log("created:", workspace_id)
+    } else {
+      const result = await jinadClient.uploadFilesToWorkspace(daemon_id, files)
+      const { status, message } = result
+
+      logger.log("uploadFilesToWorkspace result", result)
+
+      if (status === "error")
+        return dispatch(showBanner(message, "error") as any)
+    }
+
+    const workspaceStatus = await jinadClient.getWorkspace(daemon_id)
+
+    console.log("WorkspaceStatus result: ", workspaceStatus)
+
+    if (workspaceStatus.status === "error")
+      return dispatch(showBanner(workspaceStatus.message, "error") as any)
+
+    dispatch(
+      updateSelectedWorkspace({
+        files: workspaceStatus.workspace.arguments,
+        daemon_id,
+      })
+    )
+    dispatch(
+      showBanner(
+        `Uploaded ${files.length} items to ${workspace.name}`,
+        "success"
+      ) as any
+    )
+  }
+}
+
 export function stopFlow(
   flowId: string
 ): ThunkAction<void, FlowState, unknown, Action<string>> {
@@ -265,7 +337,10 @@ export function stopFlow(
     if (typeof flow === undefined)
       return dispatch(showBanner("Could not stop flow", "error") as any)
 
-    const { daemon_id } = flow
+    const { daemon_id, name: flowName, workspaceId } = flow
+    const { name: workspaceName } = store.getState().flowState.workspaces[
+      workspaceId
+    ]
     logger.log("flow:", flow)
     logger.log("daemon_id:", daemon_id)
     if (!daemon_id)
@@ -277,7 +352,12 @@ export function stopFlow(
     logger.log("stopFlow result: ", result)
     if (status === "error") return dispatch(showBanner(message, "error") as any)
 
-    dispatch(showBanner(message, "success") as any)
+    dispatch(
+      showBanner(
+        `Successfully terminated flow ${flowName} in workspace ${workspaceName}.`,
+        "success"
+      ) as any
+    )
   }
 }
 

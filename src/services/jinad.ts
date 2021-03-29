@@ -41,7 +41,7 @@ const jinadClient = {
   },
   getJinaFlowArguments: async (): Promise<FlowArguments> => {
     const statusResult = await jinadInstance.get("/status")
-    const version = statusResult.data.jina.jina
+    const jina_version = statusResult.data.jina.jina
 
     const flowResult = await jinadInstance.get("/flows/arguments")
     const flow = parseDaemonFlowMethodOptions(flowResult.data)
@@ -52,7 +52,7 @@ const jinadClient = {
     const peaResult = await jinadInstance.get("/peas/arguments")
     const pea = parseDaemonFlowMethodOptions(peaResult.data)
 
-    return { version, flow, pod, pea }
+    return { jina_version, flow, pod, pea }
   },
   getDaemonStatus: async () => {
     try {
@@ -74,13 +74,48 @@ const jinadClient = {
       return { status: "error", message: e }
     }
   },
-  createWorkspace: async (files?: (string | Blob)[]) => {
+  getWorkspace: async (workspace_id: string) => {
+    console.log("getting workspace: ", workspace_id)
+    try {
+      const result = await jinadInstance.get(`/workspaces/${workspace_id}`)
+      if (result.status === 200)
+        return { status: "success", workspace: result.data }
+      return { status: "error", message: result.data }
+    } catch (e) {
+      return { status: "error", message: e }
+    }
+  },
+  createWorkspace: async (files?: string[] | Blob[]) => {
     const formData = new FormData()
     if (files)
       files.forEach((file: string | Blob) => {
         if (typeof file === "string") formData.append("files", new Blob([file]))
         else formData.append("files", file)
       })
+    const options = {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    }
+    try {
+      const result = await jinadInstance.post("/workspaces", formData, options)
+      if (result.status === 201)
+        return { status: "success", workspace_id: result.data }
+      return { status: "error", message: result.data }
+    } catch (e) {
+      return { status: "error", message: e }
+    }
+  },
+  uploadFilesToWorkspace: async (
+    workspace_id: string,
+    files: string[] | Blob[]
+  ) => {
+    const formData = new FormData()
+    files.forEach((file: string | Blob) => {
+      if (typeof file === "string") formData.append("files", new Blob([file]))
+      else formData.append("files", file)
+    })
+    formData.append("workspace_id", workspace_id)
     const options = {
       headers: {
         "Content-Type": "multipart/form-data",
