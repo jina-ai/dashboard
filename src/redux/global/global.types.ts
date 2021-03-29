@@ -101,6 +101,8 @@ export type Modal =
   | "podEdit"
   | "flowSettings"
   | "CRUD"
+  | "configFileUpload"
+  | "multiModalExample"
 
 export type ModalParams = {
   imageId?: string

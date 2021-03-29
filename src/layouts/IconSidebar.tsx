@@ -37,6 +37,8 @@ import {
 import { importFlow } from "../redux/flows/flows.actions"
 import FlowSettings from "../modals/FlowSettings"
 import CRUD from "../modals/CRUD"
+import ConfigFileUpload from "../modals/ConfigFileUpload"
+import MultiModalExample from "../modals/MultiModalExample"
 
 type IconSideBarLayoutProps = {
   children: React.ReactNode
@@ -179,6 +181,20 @@ const IconSidebarLayout = (props: IconSideBarLayoutProps) => {
       {modal === "CRUD" && (
         <CRUD
           open={modal === "CRUD"}
+          closeModal={_closeModal}
+          modalParams={modalParams}
+        />
+      )}
+      {modal === "multiModalExample" && (
+        <MultiModalExample
+          open={modal === "multiModalExample"}
+          closeModal={_closeModal}
+          modalParams={modalParams}
+        />
+      )}
+      {modal === "configFileUpload" && (
+        <ConfigFileUpload
+          open={modal === "configFileUpload"}
           closeModal={_closeModal}
           modalParams={modalParams}
         />

@@ -12,6 +12,7 @@ import {
   deleteWorkspace,
   loadWorkspace,
 } from "../../redux/flows/flows.actions"
+import { showModal } from "../../redux/global/global.actions"
 
 const FALLBACK_WORKSPACE_NAME = "untitled workspace"
 
@@ -288,6 +289,14 @@ export default function WorkspaceSelection() {
           {workspace.name}
         </WorkspaceTap>
       ))}
+      <WorkspaceTap
+        selected={false}
+        onClick={() => {
+          dispatch(showModal("multiModalExample"))
+        }}
+      >
+        Multi-Modal-Example
+      </WorkspaceTap>
     </WorkspaceSelectionMenu>
   )
 }
