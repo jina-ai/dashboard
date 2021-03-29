@@ -25,10 +25,10 @@ const style: Styles = {
 type Props = {
   open: boolean
   closeModal: () => void
-  next: () => void
+  startScript: () => void
 }
 
-function ConfigFileUpload({ open, closeModal, next }: Props) {
+function ConfigFileUpload({ open, closeModal, startScript }: Props) {
   const [blobFiles, setBlobFiles] = useState<Blob[]>()
 
   function handleChange(selectorFiles: FileList | null) {
@@ -39,8 +39,7 @@ function ConfigFileUpload({ open, closeModal, next }: Props) {
   }
 
   function handleSubmit() {
-    if (blobFiles) jinad.createWorkspace(blobFiles)
-    next()
+    if (blobFiles) jinad.createWorkspace(blobFiles).then(startScript)
   }
 
   return (
