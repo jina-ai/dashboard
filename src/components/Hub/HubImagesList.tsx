@@ -26,7 +26,9 @@ export const convertArrayToFilterObject = (
   array.reduce(
     (acc, f) => ({
       ...acc,
-      [f]: (filter?.values && filter.values[f]) || false,
+      [f]:
+        (filter?.values && filter.values[f]) ||
+        (!filter?.values && array.length === 1),
     }),
     {} as FilterMap
   )
