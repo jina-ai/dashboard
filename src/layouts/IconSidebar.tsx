@@ -187,7 +187,7 @@ const IconSidebarLayout = (props: IconSideBarLayoutProps) => {
       )}
       {modal === "multiModalExample" && (
         <MultiModalExample
-          open={modal === "multiModalExampe"}
+          open={modal === "multiModalExample"}
           closeModal={_closeModal}
           modalParams={modalParams}
         />

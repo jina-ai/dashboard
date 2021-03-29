@@ -102,7 +102,7 @@ export type Modal =
   | "flowSettings"
   | "CRUD"
   | "configFileUpload"
-  | "indexFileUpload"
+  | "multiModalExample"
 
 export type ModalParams = {
   imageId?: string
