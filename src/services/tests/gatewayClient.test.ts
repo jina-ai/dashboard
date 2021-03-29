@@ -32,8 +32,6 @@ describe("when connecting to gateway", () => {
 
   it("should trigger a success log when searched successfully", async () => {
     mockGatewayClient.onPost("api/search").reply(200, search_success_response)
-    const test = await gatewayInstance.post("api/search")
-    console.log(test)
     const loggerSpy = jest.spyOn(logger, "log")
     await gatewayClient.search("Josef Stalin")
     expect(loggerSpy).toHaveBeenNthCalledWith(1, "search - successful")
