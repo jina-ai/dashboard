@@ -3,7 +3,8 @@ import { useDispatch, useSelector } from "react-redux"
 import { selectConnectionStatus } from "../redux/global/global.selectors"
 import { showError } from "../redux/global/global.actions"
 import React from "react"
-
+import jinad from "../services/jinad"
+import indexFlow from "../data/multi-modal-index-flow"
 type Props = {
   open: boolean
   closeModal: () => void
@@ -13,7 +14,11 @@ function MultiModalExample({ open, closeModal }: Props) {
   const dispatch = useDispatch()
   const connected = useSelector(selectConnectionStatus)
 
-  async function startIndexFlow() {}
+  async function startIndexFlow() {
+    const workspaces = (await jinad.getWorkspaces()).workspaces
+    const workspaceId = Object.keys(workspaces.items)[0]
+    await jinad.startFlow(indexFlow, workspaceId)
+  }
 
   async function indexData() {}
 
