@@ -39,6 +39,7 @@ type Pod = typeof PodNecessaryObject & Partial<typeof PodOptionalObject>
 
 export const CustomDataObjectReq = {
   label: "string",
+  name: "string",
 }
 
 export const CustomDataObjectOpt = {
@@ -74,10 +75,10 @@ export type NodeConnection = {
 export type DeleteLinkProps = LinkId | NodeConnection
 
 export type With = {
-  logserver: string
-  compress_hwm: number
-  rest_api: boolean
-  port_expose: number
+  logserver?: string
+  compress_hwm?: number
+  rest_api?: boolean
+  port_expose: string
   board: {
     canvas: {
       [pod: string]: {
@@ -86,6 +87,7 @@ export type With = {
       }
     }
   }
+  read_only: boolean
 }
 export interface FlowChart {
   elements: FlowElement[]
