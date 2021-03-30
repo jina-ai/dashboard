@@ -1,6 +1,6 @@
 import { SettingsState } from "./settings.types"
 
-export const defaultJinaDPort = "8000"
+export const defaultJinaDPort = "5000"
 export const defaultJinaDHost = "http://localhost"
 export const defaultGatewayPort = "5555"
 export const defaultGatewayHost = "http://localhost"

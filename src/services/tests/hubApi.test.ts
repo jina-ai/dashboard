@@ -53,7 +53,7 @@ describe("getDocumentationHTML", () => {
     getDocumentationHTML(
       "https://github.com/jina-ai/jina-hub/blob/master/encoders/image/BigTransferEncoder/README.md"
     ).then((response) => {
-      expect(response).toEqual("<h2> Documentation in HTML </h2>")
+      expect(response).toEqual({ data: "<h2> Documentation in HTML </h2>" })
     })
   })
 })
@@ -61,7 +61,7 @@ describe("getDocumentationHTML", () => {
 describe("getHubImage", () => {
   it("gets hub images", () => {
     mockAxios
-      .onPost("https://hubapi.jina.ai/images")
+      .onGet("https://hubapi.jina.ai/images")
       .reply(200, ["Sunflowers", "Boy with an apple"])
 
     getHubImages({ kind: ["encoder"], keywords: ["script"] }).then(
