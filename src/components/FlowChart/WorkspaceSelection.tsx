@@ -43,9 +43,10 @@ function TitleConnectionIndicator({
 
 type DeleteWorkspaceProps = {
   onClick: () => void
+  idx: number
 }
 
-function DeleteButton({ onClick }: DeleteWorkspaceProps) {
+function DeleteButton({ onClick, idx }: DeleteWorkspaceProps) {
   const Delete = styled.div`
     cursor: pointer;
     font-size: 1.15rem;
@@ -54,7 +55,7 @@ function DeleteButton({ onClick }: DeleteWorkspaceProps) {
     right: 0;
   `
   return (
-    <Delete>
+    <Delete data-name={`deleteWorkspaceButton-${idx}`}>
       <i onClick={onClick} className="material-icons">
         delete
       </i>
@@ -162,39 +163,6 @@ export default function WorkspaceSelection() {
     opacity: 0.5;
     margin-right: 0.25em;
   `
-  //
-  // function FlowSettingsButton() {
-  //   const Settings = styled.div`
-  //     cursor: pointer;
-  //     position: absolute;
-  //     top: 0;
-  //     right: 0;
-  //     background: linear-gradient(
-  //       to right,
-  //       transparent 0%,
-  //       ${palette.bodyBackground} 40%
-  //     );
-  //     padding-left: 1rem;
-  //     color: ${palette.mutedText};
-  //   `
-  //   return (
-  //     <Settings
-  //       data-name={"settingsButton"}
-  //       onClick={() => {
-  //         dispatch(showModal("flowSettings"))
-  //       }}
-  //     >
-  //       <i
-  //         className="material-icons"
-  //         onClick={() => {
-  //           dispatch(showModal("flowSettings"))
-  //         }}
-  //       >
-  //         settings
-  //       </i>
-  //     </Settings>
-  //   )
-  // }
 
   const userWorkspaces = Object.entries(workspaces).filter(
     ([id, workspace]) => workspace.type !== "example"
@@ -254,7 +222,10 @@ export default function WorkspaceSelection() {
 
       <WorkspaceHeader>
         My Workspaces
-        <AddButton onClick={() => dispatch(createNewWorkspace())}>
+        <AddButton
+          data-name={"newWorkspaceButton"}
+          onClick={() => dispatch(createNewWorkspace())}
+        >
           <i className="material-icons">add</i>
         </AddButton>
       </WorkspaceHeader>
@@ -274,6 +245,7 @@ export default function WorkspaceSelection() {
           />
           <WorkspaceTapOverflowHider />
           <DeleteButton
+            idx={idx}
             onClick={() => dispatch(deleteWorkspace(workspaceId))}
           />
         </WorkspaceTap>
@@ -281,6 +253,7 @@ export default function WorkspaceSelection() {
       <WorkspaceHeader>Example Workspaces</WorkspaceHeader>
       {exampleWorkspaces.map(([workspaceId, workspace], idx) => (
         <WorkspaceTap
+          data-name={`exampleWorkspaceButton-${idx}`}
           selected={selectedWorkspaceId === workspaceId}
           onClick={() => dispatch(loadWorkspace(workspaceId))}
           key={idx}

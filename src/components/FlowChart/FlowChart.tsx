@@ -82,7 +82,7 @@ export default function FlowChart(props: Props) {
     >
       <ReactFlow
         defaultPosition={[0, 50]}
-        defaultZoom={1}
+        defaultZoom={0.5}
         elements={props.elements}
         onConnect={onConnect as ReactFlowProps["onConnect"]}
         onElementsRemove={onElementsRemove}
