@@ -20,6 +20,6 @@ test("ImageCard", () => {
       </Router>
     </ThemeProvider>
   );
-  let tree = component.toJSON()
-  expect(tree).toMatchSnapshot()
+  let tree = component.toJSON();
+  expect(tree).toMatchSnapshot();
 });
