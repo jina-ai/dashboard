@@ -39,7 +39,7 @@ describe("The Flow Page", () => {
             "contain",
             workspace.name
           )
-          cy.dataName(`exampleWorkspaceButton-${idx}`).click()
+          cy.dataName(`exampleWorkspaceButton-${idx}`).click({ force: true })
           let edgeCount = 0
 
           flowState.flows[workspace.selectedFlowId].flowChart.elements.forEach(
