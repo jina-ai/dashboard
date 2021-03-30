@@ -12,7 +12,10 @@ const gatewayClient = {
     logger.log("api - connect - settings", settings)
     const baseURL = `${settings.gatewayHost}:${settings.gatewayPort}`
 
-    gatewayInstance = axios.create({ baseURL, timeout: TIMEOUT })
+    if (gatewayInstance) {
+      gatewayInstance.defaults.baseURL = baseURL
+      gatewayInstance.defaults.timeout = TIMEOUT
+    } else gatewayInstance = axios.create({ baseURL, timeout: TIMEOUT })
 
     try {
       const result = await gatewayInstance.get("/status")

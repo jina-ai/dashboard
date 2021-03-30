@@ -30,6 +30,16 @@ describe("when connecting to gateway", () => {
     mockGatewayClient.reset()
   })
 
+  it("should trigger a success messsage when connceted successfully", async () => {
+    mockGatewayClient.onGet("/status").reply(200, status_success_response)
+
+    await gatewayClient.connect(settings, mockConnectionCallback)
+    expect(mockConnectionCallback.mock.calls[0][0]).toEqual({
+      connected: true,
+      message: `Successfully connected to Jina at ${settings.gatewayHost}:${settings.gatewayPort}`,
+    })
+  })
+
   it("should trigger a success log when searched successfully", async () => {
     mockGatewayClient.onPost("api/search").reply(200, search_success_response)
     const loggerSpy = jest.spyOn(logger, "log")
@@ -58,16 +68,5 @@ describe("when connecting to gateway", () => {
     const loggerSpy = jest.spyOn(logger, "log")
     await gatewayClient.index("Josef Stalin")
     expect(loggerSpy).toHaveBeenNthCalledWith(1, "index - error", error)
-  })
-
-  //since this sets the gateway instance, this always needs to be the last test
-  it("should trigger a success messsage when connceted successfully", async () => {
-    mockGatewayClient.onGet("/status").reply(200, status_success_response)
-
-    await gatewayClient.connect(settings, mockConnectionCallback)
-    expect(mockConnectionCallback.mock.calls[0][0]).toEqual({
-      connected: true,
-      message: `Successfully connected to Jina at ${settings.gatewayHost}:${settings.gatewayPort}`,
-    })
   })
 })
