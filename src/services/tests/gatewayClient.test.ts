@@ -62,7 +62,7 @@ describe("when connecting to gateway", () => {
 
   //since this sets the gateway instance, this always needs to be the last test
   it("should trigger a success messsage when connceted successfully", async () => {
-    mockGatewayClient.onGet("api/status").reply(200, status_success_response)
+    mockGatewayClient.onGet("/status").reply(200, status_success_response)
 
     await gatewayClient.connect(settings, mockConnectionCallback)
     expect(mockConnectionCallback.mock.calls[0][0]).toEqual({
