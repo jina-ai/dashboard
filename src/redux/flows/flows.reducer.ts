@@ -23,6 +23,10 @@ import {
   defaultFlow,
   defaultJinaVersion,
   defaultFlowArguments,
+  defaultSelectedWorkspaceId,
+  defaultSelectedFlowId,
+  defaultWorkspaces,
+  defaultFlows,
 } from "./flows.constants"
 import {
   Flow,
@@ -168,7 +172,7 @@ const flowReducer = produce((draft: FlowState, action: FlowActionTypes) => {
         console.log("firstFlowId:", firstFlowId)
       } else if (!workspaceFlows.length) {
         const newFlowId = nanoid()
-        _createNewFlow(draft, undefined, newFlowId, workspaceId)
+        _createNewFlow(draft, undefined, newFlowId)
         draft.workspaces[workspaceId].selectedFlowId = newFlowId
       }
       console.log("new draft: ", JSON.parse(JSON.stringify(draft)))

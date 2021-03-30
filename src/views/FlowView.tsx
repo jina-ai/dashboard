@@ -36,9 +36,6 @@ export default function FlowView() {
   const flow = useSelector(selectSelectedFlow)
   let flowChart = flow?.flowChart
   let flowType = flow?.type
-  const flow = useSelector(selectSelectedFlow)
-  let flowChart = flow?.flowChart
-  let flowType = flow?.type
 
   const copyChartAsYAML = useCallback(() => {
     logger.log("copyChartAsYAML | chart:", flowChart)

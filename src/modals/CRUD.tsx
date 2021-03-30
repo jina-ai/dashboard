@@ -2,13 +2,9 @@ import ReactModal, { Styles } from "react-modal"
 import { ModalParams } from "../redux/global/global.types"
 import React, { useState } from "react"
 import gatewayClient from "../services/tests/gatewayClient"
-import store from "../redux"
 import { useDispatch } from "react-redux"
 import { handleGatewayConnectionStatus } from "../redux/global/global.actions"
-import { handleGatewayConnectionStatus } from "../redux/global/global.actions"
 import store from "../redux"
-import { useDispatch } from "react-redux"
-import { handleConnectionStatus } from "../redux/global/global.actions"
 
 const style: Styles = {
   overlay: {
@@ -62,31 +58,6 @@ function CRUD({ open, closeModal, modalParams }: Props) {
     if (indexResult) {
       setResult(JSON.stringify(indexResult.data))
     }
-  function index() {
-    gatewayClient.index(indexText)
-  const dispatch = useDispatch()
-  const [result, setResult] = useState("rsult")
-
-  function connect() {
-    gatewayClient.connect(
-      store.getState().settingsState.settings,
-      ({ connected, message }) =>
-        dispatch(handleGatewayConnectionStatus(connected, message))
-    )
-  }
-
-  async function search() {
-    const searchResult = await gatewayClient.search(searchText)
-    if (searchResult) {
-      setResult(JSON.stringify(searchResult.data))
-    }
-  }
-
-  async function index() {
-    const indexResult = await gatewayClient.index(indexText)
-    if (indexResult) {
-      setResult(JSON.stringify(indexResult.data))
-    }
   }
 
   return (
@@ -101,16 +72,12 @@ function CRUD({ open, closeModal, modalParams }: Props) {
       style={style}
     >
       <button onClick={connect}>connect</button>
-      <textarea
-        onChange={(event) => setSearchText(event.target.value)}
-      ></textarea>
+      <textarea onChange={(event) => setSearchText(event.target.value)} />
       <button onClick={search}>Search</button>
-      <textarea
-        onChange={(event) => setIndexText(event.target.value)}
-      ></textarea>
+      <textarea onChange={(event) => setIndexText(event.target.value)} />
       <button onClick={index}>Index</button>
 
-      <textarea value={result}></textarea>
+      <textarea value={result} />
     </ReactModal>
   )
 }

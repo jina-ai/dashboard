@@ -1,6 +1,4 @@
 import { FlowChart, Flows, Workspaces } from "./flows.types"
-import { FlowChart, Flows } from "./flows.types"
-import { FlowChart, Flows, Workspaces } from "./flows.types"
 
 export const LOAD_FLOW = "LOAD_FLOW"
 export const CREATE_NEW_FLOW = "CREATE_NEW_FLOW"
@@ -17,11 +15,6 @@ export const START_FLOW = "START_FLOW"
 export const STOP_FLOW = "STOP_FLOW"
 export const IMPORT_FLOW = "IMPORT_FLOW"
 export const SET_FLOW_ARGUMENTS = "SET_FLOW_ARGUMENTS"
-export const LOAD_WORKSPACE = "LOAD_WORKSPACE"
-export const CREATE_NEW_WORKSPACE = "CREATE_NEW_WORKSPACE"
-export const UPDATE_SELECTED_WORKSPACE = "UPDATE_SELECTED_WORKSPACE"
-export const ADD_FILES_TO_WORKSPACE = "ADD_FILES_TO_WORKSPACE"
-export const DELETE_WORKSPACE = "DELETE_WORKSPACE"
 export const LOAD_WORKSPACE = "LOAD_WORKSPACE"
 export const CREATE_NEW_WORKSPACE = "CREATE_NEW_WORKSPACE"
 export const UPDATE_SELECTED_WORKSPACE = "UPDATE_SELECTED_WORKSPACE"
@@ -78,19 +71,6 @@ export const initialWorkspace: Workspaces = {
     selectedFlowId: defaultSelectedFlowId,
     flowArguments: defaultFlowArguments,
   },
-}
-
-export const defaultSelectedWorkspaceId = "_userWorkspace"
-
-export const defaultSelectedFlowId = "_userFlow"
-
-export const defaultJinaVersion = "1"
-
-export const defaultFlowArguments = {
-  version: "0.0",
-  flow: [],
-  pea: [],
-  pod: [],
 }
 
 export const defaultFlows: Flows = {
