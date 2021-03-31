@@ -178,7 +178,7 @@ function PodEditComponent({ open, closeModal, modalParams }: Props) {
                       )
                     }
                   >
-                    Enabled?
+                    {node?.data[name] === "true" ? "ON" : "OFF"}
                   </FormCheckbox>
                 ) : (
                   <Input
