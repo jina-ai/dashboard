@@ -23,7 +23,6 @@ import {
   defaultFlow,
   defaultJinaVersion,
   defaultFlowArguments,
-  defaultSelectedWorkspaceId,
   defaultSelectedFlowId,
   defaultWorkspaces,
   defaultFlows,
@@ -103,7 +102,7 @@ function getExampleFlows() {
       const formatted = formatForFlowchart(parsed.data)
       flows[id] = {
         ...flow,
-        workspaceId: defaultSelectedWorkspaceId,
+        workspaceId: flow.workspaceId,
         type: "user-generated",
         isConnected: false,
         flowChart: formatted,
