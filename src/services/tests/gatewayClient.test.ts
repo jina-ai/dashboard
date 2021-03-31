@@ -4,16 +4,7 @@ import {
   search_success_response,
   index_success_response,
 } from "./gatewayClient.testData"
-import {
-  status_success_response,
-  settings,
-  search_success_response,
-  index_success_response,
-} from "./gatewayClient.testData"
-import AxiosMockAdapter from "axios-mock-adapter"
-import gatewayClient, { gatewayInstance } from "./gatewayClient"
-import logger from "../../logger"
-import { status_success_response, settings } from "./gatewayClient.testData"
+
 import AxiosMockAdapter from "axios-mock-adapter"
 import gatewayClient, { gatewayInstance } from "./gatewayClient"
 import logger from "../../logger"

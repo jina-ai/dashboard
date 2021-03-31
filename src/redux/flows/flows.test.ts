@@ -14,7 +14,6 @@ import {
   updateNodeData,
   createNewWorkspace,
   deleteWorkspace,
-  loadWorkspace,
   updateSelectedWorkspace,
 } from "./flows.actions"
 import { initialFlowChart } from "./flows.constants"
@@ -23,7 +22,7 @@ import {
   Flow,
   FlowNode,
   FlowEdge,
-  NodeDataUpdate,  
+  NodeDataUpdate,
   Workspace,
   WorkspaceUpdate,
 } from "./flows.types"
@@ -432,7 +431,7 @@ describe("flows reducer", () => {
     const newWorkspaceIdAndWorkspace = Object.entries(
       flowStateWithNewWorkspace.workspaces
     ).find(([workspaceId, workspace]) => workspace.name === "Workspace 3")
-    
+
     expect(newNumberOfWorkspace - oldNumberOfWorkspaces).toBe(1)
     expect(newWorkspaceIdAndWorkspace).toBeDefined()
   })
@@ -467,7 +466,6 @@ describe("flows reducer", () => {
       flowStateWithoutNewWorkspace.workspaces[newWorkSpaceId]
     ).toBeUndefined()
   })
-
 
   it("should delete a workspace from redux and storage", () => {
     expect(getWorkspaceFromStorage("testWorkspace2")).toBeDefined()
