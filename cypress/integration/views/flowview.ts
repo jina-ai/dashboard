@@ -21,9 +21,9 @@ describe("The Flow Page", () => {
   //todo test that the play button doesn't crash anything when pressed
 
   it("should create a workspace and delete it", () => {
-    cy.dataName("newWorkspaceButton").click()
+    cy.dataName("newWorkspaceButton").click({ force: true })
     cy.dataName("Workspace2").should("exist")
-    cy.dataName("deleteWorkspaceButton-1").click()
+    cy.dataName("deleteWorkspaceButton-1").click({ force: true })
     cy.dataName("Workspace2").should("not.exist")
   })
 
