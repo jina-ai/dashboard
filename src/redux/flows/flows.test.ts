@@ -83,7 +83,7 @@ describe("flows reducer", () => {
       ).length
       const duplicatedIdAndFlow = Object.entries(
         flowStateWithDuplicatedFlowerFlow.flows
-      ).find(([flowId, flow]) => flow.name === "Custom Flow 3")
+      ).find(([flowId, flow]) => flow.name === "Custom Flow 5")
 
       expect(newNumberOfFlows - oldNumberOfFlows).toBe(1)
       expect(duplicatedIdAndFlow).toBeDefined()
@@ -112,7 +112,7 @@ describe("flows reducer", () => {
       ).length
       const importedFlowerFlowIdAndFlow = Object.entries(
         flowStateWithImportedFlowerFlow.flows
-      ).find(([flowId, flow]) => flow.name === "Custom Flow 3")
+      ).find(([flowId, flow]) => flow.name === "Custom Flow 5")
 
       expect(newNumberOfFlows - oldNumberOfFlows).toBe(1)
       expect(importedFlowerFlowIdAndFlow).toBeDefined()
@@ -129,7 +129,7 @@ describe("flows reducer", () => {
     const flowStateWithNewFlow = reducer(testFlowState, createNewFlow())
     const newNumberOfFlows = Object.keys(flowStateWithNewFlow.flows).length
     const newFlowIdAndFlow = Object.entries(flowStateWithNewFlow.flows).find(
-      ([flowId, flow]) => flow.name === "Custom Flow 3"
+      ([flowId, flow]) => flow.name === "Custom Flow 5"
     )
 
     expect(newNumberOfFlows - oldNumberOfFlows).toBe(1)
