@@ -231,12 +231,11 @@ export default function WorkspaceSelection() {
       </WorkspaceHeader>
 
       {userWorkspaces.map(([workspaceId, workspace], idx) => (
-        <WorkspaceTap
-          data-name={`${workspace.name.replaceAll(" ", "")}`}
-          selected={selectedWorkspaceId === workspaceId}
-          key={idx}
-        >
-          <span onClick={() => dispatch(loadWorkspace(workspaceId))}>
+        <WorkspaceTap selected={selectedWorkspaceId === workspaceId} key={idx}>
+          <span
+            data-name={`${workspace.name.replaceAll(" ", "")}`}
+            onClick={() => dispatch(loadWorkspace(workspaceId))}
+          >
             {workspace.name || FALLBACK_WORKSPACE_NAME}
           </span>
           <ConnectionIndicator
