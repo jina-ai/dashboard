@@ -492,12 +492,29 @@ describe("flows reducer", () => {
     expect(getWorkspaceFromStorage("testWorkspace2")).toBeUndefined()
   })
 
+  it("should delete all flows in a workspace when deleting the workspace", () => {
+    const flowCountWorkspace2 = Object.entries(testFlowState.flows).filter(
+      ([flowId, flow]) => flow.workspaceId === "testWorkspace2"
+    ).length
+    expect(flowCountWorkspace2).toBeGreaterThan(0)
+
+    const flowStateWithoutWorkspace2 = reducer(
+      testFlowState,
+      deleteWorkspace("testWorkspace2")
+    )
+
+    Object.entries(flowStateWithoutWorkspace2.flows).forEach(
+      ([flowId, flow]) => {
+        expect(flow.workspaceId).not.toBe("testWorkspace2")
+      }
+    )
+  })
+
   it("should update selected workspace", () => {
     const update: WorkspaceUpdate = {
       name: "newName",
       type: "user-generated",
       daemon_endpoint: "newDaemonEndpoint",
-      workspace_id: "newWorkspaceId",
       isConnected: true,
       files: ["newFile1", "newFile2"],
     }

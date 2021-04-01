@@ -2,7 +2,7 @@ import React from "react"
 import styled from "@emotion/styled"
 import { useDispatch, useSelector } from "react-redux"
 import {
-  selectFlows,
+  selectFlowsOfSelectedWorkspace,
   selectSelectedFlowId,
 } from "../../redux/flows/flows.selectors"
 import {
@@ -12,7 +12,7 @@ import {
 } from "../../redux/flows/flows.actions"
 
 export default function FlowSelection() {
-  const flows = useSelector(selectFlows)
+  const flows = useSelector(selectFlowsOfSelectedWorkspace)
   const selectedFlowId = useSelector(selectSelectedFlowId)
 
   const dispatch = useDispatch()

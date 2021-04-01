@@ -11,7 +11,7 @@ export const selectSelectedFlow = (state: State) => {
 export const selectSelectedWorkspace = (state: State) =>
   state.flowState.workspaces[state.flowState.selectedWorkspaceId]
 
-export const selectFlows = (state: State) => {
+export const selectFlowsOfSelectedWorkspace = (state: State) => {
   const { selectedWorkspaceId } = state.flowState
   return _.pickBy(
     state.flowState.flows,
