@@ -1,5 +1,6 @@
 import jinadClient from "./jinad"
-import { configData } from "../data/multiModalExample"
+import { configData, indexData, indexFlow } from "../data/multiModalExample"
+import logger from "../logger"
 
 export async function multiModalScript() {
   const configFiles: (string | Blob)[] = []
@@ -10,5 +11,26 @@ export async function multiModalScript() {
     configFiles.push(file)
   })
 
-  jinadClient.createWorkspace(configFiles).then((result) => console.log(result))
+  const workspaceResult = await jinadClient.createWorkspace(configFiles)
+  logger.log(workspaceResult)
+  const flowResult = await jinadClient.startFlow(
+    indexFlow,
+    workspaceResult.workspace
+  )
+  logger.log(flowResult)
+
+  indexData.forEach((indexMeta) => {
+    const data = {
+      data: [
+        {
+          id: indexMeta["1"],
+          image: indexMeta["image_1.jpg"],
+          caption:
+            indexMeta["A beautiful young girl posing on a white background."],
+        },
+      ],
+    }
+
+    console.log(data)
+  })
 }
