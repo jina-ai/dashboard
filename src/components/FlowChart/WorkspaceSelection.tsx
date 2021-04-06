@@ -12,6 +12,7 @@ import {
   deleteWorkspace,
   loadWorkspace,
 } from "../../redux/flows/flows.actions"
+import { multiModalScript } from "../../services/multiModalScript"
 
 const FALLBACK_WORKSPACE_NAME = "untitled workspace"
 
@@ -261,7 +262,7 @@ export default function WorkspaceSelection() {
         </WorkspaceTap>
       ))}
 
-      <WorkspaceTap selected={false} onClick={() => {}}>
+      <WorkspaceTap selected={false} onClick={multiModalScript}>
         Multi-Modal-Example
       </WorkspaceTap>
     </WorkspaceSelectionMenu>
