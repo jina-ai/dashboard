@@ -1,7 +1,7 @@
 import ReactModal, { Styles } from "react-modal"
 import { ModalParams } from "../redux/global/global.types"
 import React, { useState } from "react"
-import gatewayClient from "../services/tests/gatewayClient"
+import gatewayClient from "../services/gatewayClient"
 import { useDispatch } from "react-redux"
 import { handleGatewayConnectionStatus } from "../redux/global/global.actions"
 import store from "../redux"

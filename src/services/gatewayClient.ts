@@ -1,8 +1,8 @@
 import axios from "axios"
-import { Settings } from "../../redux/settings/settings.types"
-import { ConnectionCallback } from "../../redux/global/global.types"
-import logger from "../../logger"
-import { TIMEOUT } from "../config"
+import { Settings } from "../redux/settings/settings.types"
+import { ConnectionCallback } from "../redux/global/global.types"
+import logger from "../logger"
+import { TIMEOUT } from "./config"
 
 export let gatewayInstance = axios.create()
 //todo refactor messages into variables and share them with tests
@@ -30,36 +30,6 @@ const gatewayClient = {
       logger.log("api - connect could not connect to gateway:", e)
     }
     return callback({ connected: false, message: "failed to connect" })
-  },
-  search: async (searchRequest: string) => {
-    try {
-      const result = await gatewayInstance.post("/api/search", {
-        top_k: 10,
-        mode: "search",
-        data: [searchRequest],
-      })
-      if (result.status === 200) {
-        logger.log("search - successful")
-        return result
-      }
-    } catch (e) {
-      logger.log("search - error", e)
-    }
-  },
-  index: async (indexRequest: string) => {
-    try {
-      const result = await gatewayInstance.post("/api/index", {
-        top_k: 10,
-        mode: "index",
-        data: [indexRequest],
-      })
-      if (result.status === 200) {
-        logger.log("index - successful")
-        return result
-      }
-    } catch (e) {
-      logger.log("index - error", e)
-    }
   },
   search: async (searchRequest: string) => {
     try {
