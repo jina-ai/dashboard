@@ -1,4 +1,4 @@
-describe("Logs page", () => {
+describe('Logs page', () => {
   before(() => {
     cy.visit("/");
   });
@@ -17,14 +17,6 @@ describe("Logs page", () => {
       cy.dataName("logOccurencesChartLegend").should("contain.text", "SUCCESS");
     });
 
-    context("on changing log duration", () => {
-      it("changes duration from the dropdown menu", () => {
-        cy.dataName("logOccurenceDurationSelectedOption").should("contain.text", "60 Seconds");
-        cy.dataName("logOccurenceDurationSelectedOption").click();
-        cy.dataName("logOccurenceDurationSelect").contains("15 Minutes").click();
-        cy.dataName("logOccurenceDurationSelectedOption").should("contain.text", "15 Minutes");
-      });
-    });
 
     context("when starting a flow", () => {
       it("should display the correct logging",
@@ -40,6 +32,34 @@ describe("Logs page", () => {
             });
           });
         });
+
+      context('on changing table view', () => {
+
+        it('should click on All Sources', () => {
+          cy.dataName('logStreamSourceSelectedOption').should('contain.text', 'All Sources')
+          cy.dataName('logStreamSourceSelectedOption').click()
+        })
+
+        it('should initially display Table View option', () => {
+          cy.dataName('logStreamViewSelectedOption').click()
+          cy.dataName('logStreamFilters').contains('Group by Pod').click()
+          cy.dataName('groupedLogsContainer').should("contain.text", "encode1")
+          cy.dataName('groupedLogsContainer').should("contain.text", "encode2")
+          cy.dataName('logStreamViewSelectedOption').click()
+          cy.dataName('logStreamFilters').contains('Group by Level').click()
+          cy.dataName('groupedLogsContainer').should("contain.text", "INFO")
+        })
+
+        it('should click on All Levels', () => {
+          cy.dataName('logStreamLevelSelectedOption').should('contain.text', 'All Levels')
+          cy.dataName('logStreamLevelSelectedOption').click()
+        })
+
+        it('should click on Download Logs', () => {
+          cy.dataName('logStreamActionsSelect').should('contain.text', 'Download Logs')
+          cy.dataName('logStreamActionsSelect').click()
+        })
+      })
     });
   });
 });
