@@ -107,6 +107,7 @@ export function _hideBanner(): HideBannerAction {
   }
 }
 
+//todo change theme to something more specific
 export function showBanner(message: string, theme: string): AppThunk {
   return function (dispatch) {
     dispatch(_showBanner(message, theme))
