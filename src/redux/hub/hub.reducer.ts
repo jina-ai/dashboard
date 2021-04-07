@@ -15,8 +15,10 @@ const hubReducer = produce((draft: HubState, action: HubActionTypes) => {
     case FETCH_HUB_IMAGES_SUCCESS:
       draft.loading = false
       draft.images = action.payload.images
+      draft.error = null
       break
     case FETCH_HUB_IMAGES_FAILURE:
+      draft.images = []
       draft.loading = false
       draft.error = action.payload.error
       break

@@ -4,6 +4,7 @@ import { Row, Col } from "react-bootstrap"
 import { fetchHubImages } from "../../redux/hub/hub.actions"
 import {
   selectHubImages,
+  selectHubImagesFetchError,
   selectIsHubImagesLoading,
 } from "../../redux/hub/hub.selectors"
 import { HubImage } from "../../redux/hub/hub.types"
@@ -26,7 +27,9 @@ export const convertArrayToFilterObject = (
   array.reduce(
     (acc, f) => ({
       ...acc,
-      [f]: (filter?.values && filter.values[f]) || false,
+      [f]:
+        (filter?.values && filter.values[f]) ||
+        (!filter?.values && array.length === 1),
     }),
     {} as FilterMap
   )
@@ -34,6 +37,11 @@ export const convertArrayToFilterObject = (
 const SearchContainer = styled(Row)`
   flex-direction: row-reverse;
   padding: 1rem;
+`
+
+const EmptyResultMessage = styled.h3`
+  margin-top: 25px;
+  text-align: center;
 `
 
 export const getImageFilters = (images: HubImage[], filters: Filter[]) => {
@@ -66,9 +74,10 @@ const HubImagesList = () => {
   const dispatch = useDispatch()
   const hubImages = useSelector(selectHubImages)
   const isHubImagesLoading = useSelector(selectIsHubImagesLoading)
+  const hubImagesFetchError = useSelector(selectHubImagesFetchError)
   let [filters, setFilters] = useState([] as Filter[])
   let [searchString, setSearchString] = useState("")
-  if (hubImages.length === 0 && !isHubImagesLoading) {
+  if (hubImages.length === 0 && !isHubImagesLoading && !hubImagesFetchError) {
     dispatch(fetchHubImages())
   }
 
@@ -109,17 +118,23 @@ const HubImagesList = () => {
                 onSearch={onSearch}
               />
             </SearchContainer>
-            <Row data-name="hubImagesList">
-              {hubImages.map((image, index) => (
-                <Col
-                  key={`${image.name}.${image.version}.${image["jina-version"]}`}
-                  md="4"
-                  className="mb-4"
-                >
-                  <ImageCard image={image} index={index} />
-                </Col>
-              ))}
-            </Row>
+            {hubImages.length ? (
+              <Row data-name="hubImagesList">
+                {hubImages.map((image, index) => (
+                  <Col
+                    key={`${image.name}.${image.version}.${image["jina-version"]}`}
+                    md="4"
+                    className="mb-4"
+                  >
+                    <ImageCard image={image} index={index} />
+                  </Col>
+                ))}
+              </Row>
+            ) : (
+              <EmptyResultMessage>
+                No images matching your search were found
+              </EmptyResultMessage>
+            )}
           </Col>
         </Row>
       )}

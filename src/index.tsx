@@ -11,16 +11,12 @@ import "bootstrap/dist/css/bootstrap.min.css"
 import "./styles/shards-dashboards.scss"
 import "./App.css"
 import store from "./redux"
+import { newVersionLocalStorageReset } from "./helpers/utils"
 let App
-
 const version = require("../package.json").version
 const localVersion = localStorage.getItem("version")
 
-if (localVersion === null || localVersion < version) {
-  localStorage.clear()
-  window.location.reload()
-  localStorage.setItem("version", version)
-}
+newVersionLocalStorageReset(version, localVersion)
 
 if (process.env.REACT_APP_TARGET === "hub") {
   const { Hub } = require("./apps/Hub")

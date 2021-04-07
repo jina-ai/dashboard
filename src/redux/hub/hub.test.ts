@@ -7,7 +7,7 @@ import {
 } from "./hub.constants";
 import { HubState, HubActionTypes, HubImage } from "./hub.types";
 import hubReducer from "./hub.reducer";
-import { selectHubImages, selectIsHubImagesLoading } from "./hub.selectors";
+import { selectHubImages, selectIsHubImagesLoading, selectHubImagesFetchError } from "./hub.selectors";
 import configureMockStore from "redux-mock-store";
 import thunk, { ThunkDispatch } from "redux-thunk";
 import { AnyAction } from "redux";
@@ -86,6 +86,26 @@ describe("hub reducer", () => {
       ).images
     ).toEqual(["Starry night", "Water lillies"]);
   });
+  it("sets state error to null if fetching images succeeds", () => {
+    expect(
+      hubReducer(
+        {
+          images: [],
+          loading: true,
+          error: { name: "error name", message: "error message" },
+        },
+        {
+          type: FETCH_HUB_IMAGES_SUCCESS,
+          payload: {
+            images: ([
+              "Starry night",
+              "Water lillies",
+            ] as unknown) as HubImage[],
+          },
+        }
+      ).error
+    ).toEqual(null);
+  });
   it("sets state to loading on fetching images", () => {
     expect(
       hubReducer(
@@ -116,6 +136,26 @@ describe("hub reducer", () => {
       ).error?.name
     ).toEqual("unfortunate error");
   });
+  it("sets state images to [] if fetching images fails", () => {
+    expect(
+      hubReducer(
+        {
+          images: (["Starry night", "Water lillies"] as unknown) as HubImage[],
+          loading: true,
+          error: null,
+        },
+        {
+          type: FETCH_HUB_IMAGES_FAILURE,
+          payload: {
+            error: {
+              name: "unfortunate error",
+              message: "it went south so quick",
+            },
+          },
+        }
+      ).images
+    ).toEqual([]);
+  })
 });
 
 describe("hub selectors", () => {
@@ -146,4 +186,19 @@ describe("hub selectors", () => {
       ).toEqual(expectedImages);
     });
   });
+
+  describe("selectHubImagesFetchError", () => {
+    it("returns hubState error property", () => {
+      const error = {
+        name: "error name",
+        message: "error message",
+      }
+      expect(selectHubImagesFetchError({ hubState: { error } } as State)).toBe(
+        error
+      )
+      expect(
+        selectHubImagesFetchError({ hubState: { error: null } } as State)
+      ).toBe(null)
+    })
+  })
 });
