@@ -40,9 +40,6 @@ const jinadClient = {
     return callback({ connected: false, message: "failed to connect" })
   },
   getJinaFlowArguments: async (): Promise<FlowArguments> => {
-    const statusResult = await jinadInstance.get("/status")
-    const jina_version = statusResult.data.jina.jina
-
     const flowResult = await jinadInstance.get("/flows/arguments")
     const flow = parseDaemonFlowMethodOptions(flowResult.data)
 
@@ -52,7 +49,7 @@ const jinadClient = {
     const peaResult = await jinadInstance.get("/peas/arguments")
     const pea = parseDaemonFlowMethodOptions(peaResult.data)
 
-    return { jina_version, flow, pod, pea }
+    return { flow, pod, pea }
   },
   getDaemonStatus: async () => {
     try {
@@ -75,7 +72,6 @@ const jinadClient = {
     }
   },
   getWorkspace: async (workspace_id: string) => {
-    console.log("getting workspace: ", workspace_id)
     try {
       const result = await jinadInstance.get(`/workspaces/${workspace_id}`)
       if (result.status === 200)
@@ -86,6 +82,9 @@ const jinadClient = {
     }
   },
   createWorkspace: async (files?: string[] | Blob[]) => {
+    const successMsg = "Successfully created workspace"
+    const errorMsg = "Failed to create a workspace"
+
     const formData = new FormData()
     if (files)
       files.forEach((file: string | Blob) => {
@@ -100,10 +99,14 @@ const jinadClient = {
     try {
       const result = await jinadInstance.post("/workspaces", formData, options)
       if (result.status === 201)
-        return { status: "success", workspace_id: result.data }
-      return { status: "error", message: result.data }
+        return {
+          status: "success",
+          workspace_id: result.data,
+          message: successMsg,
+        }
+      return { status: "error", message: errorMsg }
     } catch (e) {
-      return { status: "error", message: e }
+      return { status: "error", message: errorMsg }
     }
   },
   uploadFilesToWorkspace: async (
@@ -177,6 +180,9 @@ const jinadClient = {
     }
   },
   startFlow: async (yaml: string, workspace_id?: string) => {
+    const successMsg = "Successfully started flow"
+    const errorMsg = "Failed to start flow"
+
     logger.log("yamlString:", yaml)
     const formData = new FormData()
     formData.append("flow", new Blob([yaml]))
@@ -190,27 +196,27 @@ const jinadClient = {
       const result = await jinadInstance.post(`/flows`, formData, options)
       if (result.status === 201) {
         const flow_id = result.data
-        const message = `Successfuly started flow\nid: ${flow_id}`
-        return { status: "success", message, flow_id }
+        return { status: "success", message: successMsg, flow_id }
       }
-      return { status: "error", message: result.data }
+      return { status: "error", message: errorMsg }
     } catch (e) {
       logger.log("api - startFlow error: ", e)
-      return { status: "error", message: e.message }
+      return { status: "error", message: errorMsg }
     }
   },
   terminateFlow: async (flow_id: string) => {
+    const successMsg = "Successfully terminated flow"
+    const errorMsg = "Failed to terminate flow"
     try {
       const result = await jinadInstance.delete(`/flows/${flow_id}`)
       logger.log("terminate result", result)
       if (result.status === 200) {
-        const message = `Successfuly terminated flow ${flow_id}`
-        return { status: "success", message, flow: result.data }
+        return { status: "success", message: successMsg, flow: result.data }
       }
-      return { status: "error", message: result.data }
+      return { status: "error", message: errorMsg }
     } catch (e) {
       logger.log("api - terminateFlow error: ", e)
-      return { status: "error", message: e.message }
+      return { status: "error", message: errorMsg }
     }
   },
   terminateAllFlows: async () => {

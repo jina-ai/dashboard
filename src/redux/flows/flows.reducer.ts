@@ -118,7 +118,6 @@ const initialState: FlowState = {
 }
 
 const flowReducer = produce((draft: FlowState, action: FlowActionTypes) => {
-  console.log("REDUCER ACTION: ", action)
   switch (action.type) {
     case CREATE_NEW_FLOW: {
       draft = _createNewFlow(draft)
@@ -134,15 +133,9 @@ const flowReducer = produce((draft: FlowState, action: FlowActionTypes) => {
     }
     case DELETE_FLOW: {
       const flowId = action.payload
-      console.log("delete flowId: ", flowId)
-
-      console.log("flows before: ", JSON.parse(JSON.stringify(draft.flows)))
       draft.flows = _.omit(draft.flows, flowId)
-      console.log("flows after: ", JSON.parse(JSON.stringify(draft.flows)))
 
       const workspaceId = draft.selectedWorkspaceId
-
-      console.log("workspace: ", workspaceId)
 
       const { selectedFlowId } = draft.workspaces[workspaceId]
 
@@ -152,18 +145,14 @@ const flowReducer = produce((draft: FlowState, action: FlowActionTypes) => {
         }
       )
 
-      console.log("workspaceFlows:", JSON.parse(JSON.stringify(workspaceFlows)))
-
       if (selectedFlowId === flowId && workspaceFlows.length) {
         const firstFlowId = workspaceFlows[0][0]
         draft.workspaces[workspaceId].selectedFlowId = firstFlowId
-        console.log("firstFlowId:", firstFlowId)
       } else if (!workspaceFlows.length) {
         const newFlowId = nanoid()
         _createNewFlow(draft, undefined, newFlowId, workspaceId)
         draft.workspaces[workspaceId].selectedFlowId = newFlowId
       }
-      console.log("new draft: ", JSON.parse(JSON.stringify(draft)))
       break
     }
     case UPDATE_SELECTED_FLOW: {

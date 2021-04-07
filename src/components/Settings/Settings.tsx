@@ -26,10 +26,7 @@ function SettingsCard() {
   const dispatch = useDispatch()
 
   function changeSetting(setting: SettingName, value: string) {
-    console.log(setting)
-    console.log(value)
     const newUpdates: SettingUpdate = { ...updates }
-    console.log(newUpdates)
 
     newUpdates[setting] = value
     setUpdates(newUpdates)

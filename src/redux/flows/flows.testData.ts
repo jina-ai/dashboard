@@ -338,3 +338,11 @@ export const testFlowArguments: FlowArguments = {
     },
   ],
 }
+
+export const testFlowYAML = `!Flow
+pods:
+  empty_pod:
+    uses: pods/craft.yml
+`
+
+export const testFiles = [new Blob(), new Blob()]
