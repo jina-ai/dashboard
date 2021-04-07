@@ -1,17 +1,22 @@
 import React from "react"
 import GoogleAnalytics from "react-ga"
 
-GoogleAnalytics.initialize(process.env.REACT_APP_GAID || "UA-164627626-1")
+GoogleAnalytics.initialize(process.env.REACT_APP_GAID || "UA-164627626-1", {
+  testMode: process.env.NODE_ENV === "test",
+  debug: process.env.NODE_ENV === "test",
+})
 
 const withTracker = (
   WrappedComponent: (props: any) => JSX.Element,
   options = {}
 ): typeof React.Component => {
   const trackPage = (page: string) => {
-    if (process.env.NODE_ENV !== "production") {
+    if (
+      process.env.NODE_ENV !== "production" &&
+      process.env.NODE_ENV !== "test"
+    ) {
       return
     }
-
     GoogleAnalytics.set({
       page,
       ...options,
