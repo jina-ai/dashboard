@@ -8,6 +8,7 @@ import {
 import logger from "../logger"
 import gatewayClient from "./gatewayClient"
 import store from "../redux"
+import { timeout } from "../helpers/utils"
 
 export async function multiModalScript() {
   const configFiles: (string | Blob)[] = []
@@ -64,7 +65,7 @@ export async function multiModalScript() {
   // const gatewayClientResult3 = await gatewayClient.index(JSON.stringify(data3))
   // console.log(gatewayClientResult3, "gatewayClientResult")
 
-  for (let i = 6; i < 11; i++) {
+  for (let i = 0; i < 100; i++) {
     console.log(i)
     const data = {
       id: indexData[i]["1"].toString(),
@@ -72,12 +73,16 @@ export async function multiModalScript() {
       caption:
         indexData[i]["A beautiful young girl posing on a white background."],
     }
-    console.log(data)
+
     await gatewayClient.index(JSON.stringify(data))
   }
 
   console.log("terminateFlow")
   jinadClient.terminateFlow(flowResult.flow_id)
-  // console.log(workspaceResult.workspace)
-  jinadClient.startFlow(queryFlow, workspaceResult.workspace)
+  await timeout(1)
+  const terminateResult2 = await jinadClient.terminateFlow(flowResult.flow_id)
+  console.log(terminateResult2, "terminateResult2")
+  console.log(workspaceResult.workspace)
+  console.log("startFlow")
+  await jinadClient.startFlow(queryFlow, workspaceResult.workspace)
 }
