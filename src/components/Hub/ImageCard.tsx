@@ -7,6 +7,7 @@ type HubImagePreview = {
   name: string
   author: string
   description: string
+  kind: string
   keywords: string[]
 }
 
@@ -43,10 +44,10 @@ const ImageLink = styled(Link)`
 `
 
 export default function ImageCard({ image, index }: Props) {
-  let { name, author, keywords, description } = image
+  let { name, author, keywords, kind, description } = image
 
   return (
-    <ImageLink to={`/package/${index}`}>
+    <ImageLink to={`/package/${kind}/${index}`}>
       <Card className="clickable mb-4 h-100 image-card" data-name="hubImage">
         <Card.Body className="pb-0 mb-0 pt-3">
           <Row>
