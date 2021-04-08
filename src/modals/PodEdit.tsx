@@ -142,7 +142,7 @@ function PodEditComponent({ open, closeModal, modalParams }: Props) {
       closeTimeoutMS={100}
       style={style}
     >
-      <PodEditContainer>
+      <PodEditContainer data-name="pod-edit-container">
         <Header1>pods name</Header1>
 
         <Input
@@ -171,6 +171,7 @@ function PodEditComponent({ open, closeModal, modalParams }: Props) {
                     toggle
                     checked={node?.data[name] === "true" ? true : false}
                     className="property-value-input"
+                    data-name={`pod_${name}_property`}
                     onChange={() =>
                       _updateNodeProp(
                         name,
