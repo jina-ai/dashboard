@@ -223,7 +223,7 @@ export const flowArguments: FlowArguments = {
       type: "string",
     },
     {
-      name: "hide_exc_info",
+      name: "show_exc_info",
       description:
         "If set, then exception stack information to be added to the logging message, useful in debugging",
       defaultValue: false,
