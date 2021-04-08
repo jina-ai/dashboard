@@ -2,7 +2,7 @@ import reducer from "./global.reducer"
 import {
   HIDE_BANNER_TIMEOUT,
   initialGlobalState,
-  LOGIN,
+  GITHUBLOGIN,
   SHOW_ERROR,
 } from "./global.constants"
 import { handleNewLog } from "../logStream/logStream.actions"
@@ -247,7 +247,7 @@ describe("global actions", () => {
       }
       const expectedActions = [
         {
-          type: LOGIN,
+          type: GITHUBLOGIN,
           payload: { user: githubUser },
         },
       ]

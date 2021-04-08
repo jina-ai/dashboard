@@ -10,8 +10,9 @@ export const CLOSE_MODAL = "CLOSE_MODAL"
 export const CONNECT_JINAD = "CONNECT_JINAD"
 export const FETCH_ARGUMENTS_FROM_API = "FETCH_ARGUMENTS_FROM_API"
 export const FETCH_ARGUMENTS_FROM_DAEMON = "FETCH_ARGUMENTS_FROM_DAEMON"
-export const LOGIN = "LOGIN"
+export const GITHUBLOGIN = "GITHUBLOGIN"
 export const LOGOUT = "LOGOUT"
+export const SETUSER = "SETUSER"
 
 export const HIDE_BANNER_TIMEOUT = 5000
 
@@ -56,6 +57,7 @@ const navItems: TNavItem[] = [
 
 export const initialGlobalState: GlobalState = {
   user: null,
+  loginData: null,
   banner: null,
   connected: false,
   currentTab: "logStream",

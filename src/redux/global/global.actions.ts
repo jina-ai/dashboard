@@ -5,12 +5,13 @@ import {
   HANDLE_CONNECTION_STATUS,
   HIDE_BANNER,
   HIDE_BANNER_TIMEOUT,
-  LOGIN,
+  GITHUBLOGIN,
   LOGOUT,
   SHOW_BANNER,
   SHOW_ERROR,
   SHOW_MODAL,
   TOGGLE_SIDE_BAR,
+  SETUSER,
 } from "./global.constants"
 import {
   CloseModalAction,
@@ -18,13 +19,15 @@ import {
   HandleConnectionStatusAction,
   HideBannerAction,
   Modal,
-  LoginAction,
+  GitHubLoginAction,
   ShowBannerAction,
   ShowErrorAction,
   ShowModalAction,
   ToggleSidebarAction,
   User,
   LogoutAction,
+  GithubLoginData,
+  SetUserAction,
 } from "./global.types"
 import { AppThunk } from "../index"
 import store from ".."
@@ -32,7 +35,7 @@ import jinadClient from "../../services/jinad"
 import { getJinaFlowArguments } from "../../services/jinaApi"
 import { setFlowArguments } from "../flows/flows.actions"
 import logger from "../../logger"
-import axios, { AxiosRequestConfig } from "axios"
+import axios from "axios"
 
 export function handleConnectionStatus(
   connected: boolean,
@@ -164,28 +167,29 @@ export function loginGithub(githubCode: GithubCode): AppThunk {
       })
     }
   return (dispatch) => {
-    const config: AxiosRequestConfig = {
-      headers: {
-        authorizationToken: githubCode,
-      },
-    }
-    return axios
-      .get(`${lambdaUrl}`, config)
-      .then((res) => dispatch(_login(res.data)))
-      .catch((ex: Error) => dispatch(showError(ex.message)))
+    axios
+      .get(`${lambdaUrl}?ghcode=${githubCode}`)
+      .then((response) => dispatch(_login(response.data)))
+      .catch((e) => logger.log(e))
   }
 }
 
-function _login(user: User): LoginAction {
-  alert(user)
+function _login(githubLoginData: GithubLoginData): GitHubLoginAction {
   return {
-    type: LOGIN,
-    payload: { user },
+    type: GITHUBLOGIN,
+    payload: { githubLoginData },
   }
 }
 
 export function logout(): LogoutAction {
   return {
     type: LOGOUT,
+  }
+}
+
+export function setUser(user: User): SetUserAction {
+  return {
+    type: SETUSER,
+    payload: { user },
   }
 }

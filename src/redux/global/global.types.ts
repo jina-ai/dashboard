@@ -7,8 +7,9 @@ import {
   SHOW_MODAL,
   TOGGLE_SIDE_BAR,
   CONNECT_JINAD,
-  LOGIN,
+  GITHUBLOGIN,
   LOGOUT,
+  SETUSER,
 } from "./global.constants"
 import { handleNewLogAction } from "../logStream/logStream.types"
 
@@ -73,6 +74,15 @@ export type Banner = {
   theme: string
 } | null
 
+type Scope = "user"
+type TokenType = "bearer"
+
+export type GithubLoginData = {
+  access_token: string
+  scope: Scope
+  token_type: TokenType
+} | null
+
 export type User = {
   username: string
   displayName: string
@@ -107,6 +117,7 @@ export type ModalParams = {
 
 export type GlobalState = {
   user: User
+  loginData: GithubLoginData
   connected: boolean
   banner: Banner
   loading: boolean
@@ -165,13 +176,18 @@ export type ConnectJinaDAction = {
   type: typeof CONNECT_JINAD
 }
 
-export type LoginAction = {
-  type: typeof LOGIN
-  payload: { user: User }
+export type GitHubLoginAction = {
+  type: typeof GITHUBLOGIN
+  payload: { githubLoginData: GithubLoginData }
 }
 
 export type LogoutAction = {
   type: typeof LOGOUT
+}
+
+export type SetUserAction = {
+  type: typeof SETUSER
+  payload: { user: User }
 }
 
 export type GlobalActionTypes =
@@ -184,5 +200,6 @@ export type GlobalActionTypes =
   | CloseModalAction
   | handleNewLogAction
   | ConnectJinaDAction
-  | LoginAction
+  | GitHubLoginAction
   | LogoutAction
+  | SetUserAction
