@@ -18,7 +18,7 @@ describe("The Flow Page", () => {
   })
 
   it("should create a flow and delete it", () => {
-    cy.dataName("newFlowButton").click()
+    cy.dataName("newFlowButton").click({ force: true })
     cy.dataName("createEmptyFLowButton").click()
     cy.dataName("CustomFlow2").should("exist")
     cy.dataName("deleteFlowButton-1").click()
@@ -37,7 +37,7 @@ describe("The Flow Page", () => {
 
         exampleFlows.forEach((flow, idx) => {
           cy.dataName(`exampleFlowButton-${idx}`).should("contain", flow.name)
-          cy.dataName(`exampleFlowButton-${idx}`).click()
+          cy.dataName(`exampleFlowButton-${idx}`).click({ force: true })
           let edgeCount = 0
 
           flow.flowChart.elements.forEach((element) => {
