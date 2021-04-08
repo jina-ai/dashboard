@@ -14,6 +14,7 @@ import {
   updateNodeData,
   createNewWorkspace,
   deleteWorkspace,
+  loadWorkspace,
   updateSelectedWorkspace,
 } from "./flows.actions"
 import { initialFlowChart } from "./flows.constants"
@@ -46,7 +47,7 @@ function getWorkspaceFromStorage(id: string): Workspace | undefined {
 
 describe("flows reducer", () => {
   beforeEach(() => {
-    saveFlowsToStorage(testFlowState)
+    saveFlowsToStorage(testFlowState.flows)
   })
 
   it("should delete a flow from redux and storage", () => {
@@ -83,7 +84,7 @@ describe("flows reducer", () => {
       ).length
       const duplicatedIdAndFlow = Object.entries(
         flowStateWithDuplicatedFlowerFlow.flows
-      ).find(([flowId, flow]) => flow.name === "Custom Flow 5")
+      ).find(([flowId, flow]) => flow.name === "Custom Flow 3")
 
       expect(newNumberOfFlows - oldNumberOfFlows).toBe(1)
       expect(duplicatedIdAndFlow).toBeDefined()
@@ -112,7 +113,7 @@ describe("flows reducer", () => {
       ).length
       const importedFlowerFlowIdAndFlow = Object.entries(
         flowStateWithImportedFlowerFlow.flows
-      ).find(([flowId, flow]) => flow.name === "Custom Flow 5")
+      ).find(([flowId, flow]) => flow.name === "Custom Flow 3")
 
       expect(newNumberOfFlows - oldNumberOfFlows).toBe(1)
       expect(importedFlowerFlowIdAndFlow).toBeDefined()
@@ -129,7 +130,7 @@ describe("flows reducer", () => {
     const flowStateWithNewFlow = reducer(testFlowState, createNewFlow())
     const newNumberOfFlows = Object.keys(flowStateWithNewFlow.flows).length
     const newFlowIdAndFlow = Object.entries(flowStateWithNewFlow.flows).find(
-      ([flowId, flow]) => flow.name === "Custom Flow 5"
+      ([flowId, flow]) => flow.name === "Custom Flow 3"
     )
 
     expect(newNumberOfFlows - oldNumberOfFlows).toBe(1)
@@ -425,15 +426,25 @@ describe("flows reducer", () => {
       testFlowState,
       createNewWorkspace()
     )
-    const newNumberOfWorkspace = Object.keys(
+    const newNumberOfWorkspaces = Object.keys(
       flowStateWithNewWorkspace.workspaces
     ).length
     const newWorkspaceIdAndWorkspace = Object.entries(
       flowStateWithNewWorkspace.workspaces
     ).find(([workspaceId, workspace]) => workspace.name === "Workspace 3")
 
-    expect(newNumberOfWorkspace - oldNumberOfWorkspaces).toBe(1)
+    expect(newNumberOfWorkspaces - oldNumberOfWorkspaces).toBe(1)
     expect(newWorkspaceIdAndWorkspace).toBeDefined()
+  })
+
+  it("should load a workspace", () => {
+    const flowStateWithLoadedWorkspace = reducer(
+      testFlowState,
+      loadWorkspace("testWorkspace2")
+    )
+    expect(flowStateWithLoadedWorkspace.selectedWorkspaceId).toEqual(
+      "testWorkspace2"
+    )
   })
 
   it("should delete a workspace", () => {
@@ -492,29 +503,12 @@ describe("flows reducer", () => {
     expect(getWorkspaceFromStorage("testWorkspace2")).toBeUndefined()
   })
 
-  it("should delete all flows in a workspace when deleting the workspace", () => {
-    const flowCountWorkspace2 = Object.entries(testFlowState.flows).filter(
-      ([flowId, flow]) => flow.workspaceId === "testWorkspace2"
-    ).length
-    expect(flowCountWorkspace2).toBeGreaterThan(0)
-
-    const flowStateWithoutWorkspace2 = reducer(
-      testFlowState,
-      deleteWorkspace("testWorkspace2")
-    )
-
-    Object.entries(flowStateWithoutWorkspace2.flows).forEach(
-      ([flowId, flow]) => {
-        expect(flow.workspaceId).not.toBe("testWorkspace2")
-      }
-    )
-  })
-
   it("should update selected workspace", () => {
     const update: WorkspaceUpdate = {
       name: "newName",
       type: "user-generated",
       daemon_endpoint: "newDaemonEndpoint",
+      daemon_id: "newWorkspaceId",
       isConnected: true,
       files: ["newFile1", "newFile2"],
     }

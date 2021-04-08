@@ -2,7 +2,7 @@ import React from "react"
 import styled from "@emotion/styled"
 import { useDispatch, useSelector } from "react-redux"
 import {
-  selectFlowsOfSelectedWorkspace,
+  selectFlows,
   selectSelectedFlowId,
 } from "../../redux/flows/flows.selectors"
 import {
@@ -12,7 +12,7 @@ import {
 } from "../../redux/flows/flows.actions"
 
 export default function FlowSelection() {
-  const flows = useSelector(selectFlowsOfSelectedWorkspace)
+  const flows = useSelector(selectFlows)
   const selectedFlowId = useSelector(selectSelectedFlowId)
 
   const dispatch = useDispatch()
@@ -71,11 +71,7 @@ export default function FlowSelection() {
   return (
     <TabsContainer>
       {Object.entries(flows).map(([id, flow]) => (
-        <Tab
-          data-name={`flowTab-${id}`}
-          className={selectedFlowId === id ? "selected" : ""}
-          key={id}
-        >
+        <Tab className={selectedFlowId === id ? "selected" : ""} key={id}>
           <div className="d-flex flex-row">
             <span
               className="d-inline-block flex-fill pr-4"
@@ -84,7 +80,6 @@ export default function FlowSelection() {
               {flow.name}
             </span>
             <span
-              data-name={`delete-${id}`}
               className="d-inline-block"
               onClick={() => dispatch(deleteFlow(id))}
             >
@@ -93,10 +88,7 @@ export default function FlowSelection() {
           </div>
         </Tab>
       ))}
-      <AddButton
-        data-name={"createNewFlowButton"}
-        onClick={() => dispatch(createNewFlow())}
-      >
+      <AddButton onClick={() => dispatch(createNewFlow())}>
         <i className="material-icons">add</i>
       </AddButton>
     </TabsContainer>

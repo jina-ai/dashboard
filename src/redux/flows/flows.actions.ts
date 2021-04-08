@@ -2,20 +2,20 @@ import {
   ADD_LINK,
   ADD_NODE,
   CREATE_NEW_FLOW,
+  CREATE_NEW_WORKSPACE,
   DELETE_FLOW,
-  DELETE_WORKSPACE,
   DELETE_LINK,
   DELETE_NODE,
+  DELETE_WORKSPACE,
   DUPLICATE_FLOW,
+  IMPORT_FLOW,
+  LOAD_FLOW,
+  LOAD_WORKSPACE,
   SET_FLOW_ARGUMENTS,
   UPDATE_NODE,
   UPDATE_NODE_DATA,
-  UPDATE_SELECTED_WORKSPACE,
-  LOAD_FLOW,
   UPDATE_SELECTED_FLOW,
-  CREATE_NEW_WORKSPACE,
-  IMPORT_FLOW,
-  LOAD_WORKSPACE,
+  UPDATE_SELECTED_WORKSPACE,
 } from "./flows.constants"
 import {
   AddLinkAction,
@@ -26,43 +26,31 @@ import {
   DeleteLinkAction,
   DeleteLinkProps,
   DeleteNodeAction,
+  DeleteWorkspaceAction,
   DuplicateFlowAction,
-  Flow,
-  FlowState,
+  FlowArguments,
   FlowUpdate,
+  ImportFlowAction,
   LoadFlowAction,
   NodeData,
   NodeDataUpdate,
   NodeId,
   NodeUpdate,
-  ImportFlowAction,
-  FlowArguments,
   SetFlowArgumentsAction,
   UpdateNodeAction,
   UpdateNodeDataAction,
   UpdateSelectedFlowAction,
-  DeleteWorkspaceAction,
+  LoadWorkspaceAction,
   WorkspaceUpdate,
   UpdateSelectedWorkspaceAction,
-  LoadWorkspaceAction,
 } from "./flows.types"
 
-import { ThunkAction } from "redux-thunk"
-import { Action } from "redux"
 import { showBanner } from "../global/global.actions"
 import { initLogStream } from "../logStream/logStream.actions"
-import store from ".."
-import { formatAsYAML } from "../../helpers"
+import { AppThunk } from ".."
 import logger from "../../logger"
 import jinadClient from "../../services/jinad"
 import { XYPosition } from "react-flow-renderer/dist/types"
-
-export function deleteWorkspace(workspaceId: string): DeleteWorkspaceAction {
-  return {
-    type: DELETE_WORKSPACE,
-    payload: workspaceId,
-  }
-}
 
 export function loadFlow(flowId: string): LoadFlowAction {
   return {
@@ -188,6 +176,13 @@ export function createNewWorkspace(): CreateNewWorkspaceAction {
   }
 }
 
+export function deleteWorkspace(workspaceId: string): DeleteWorkspaceAction {
+  return {
+    type: DELETE_WORKSPACE,
+    payload: workspaceId,
+  }
+}
+
 export function updateSelectedWorkspace(
   workspaceUpdate: WorkspaceUpdate
 ): UpdateSelectedWorkspaceAction {
@@ -198,91 +193,114 @@ export function updateSelectedWorkspace(
 }
 
 export function startFlow(
-  flowId: string
-): ThunkAction<void, FlowState, unknown, Action<string>> {
+  flowYAML: string,
+  workspaceDaemonId?: string
+): AppThunk<Promise<void>> {
   return async function (dispatch) {
-    const flow = store.getState().flowState.flows[flowId]
-    const flowArguments = store.getState().flowState.workspaces[
-      flow.workspaceId
-    ]?.flowArguments
+    if (!workspaceDaemonId) {
+      const creationResult = await jinadClient.createWorkspace(["empty_blob"]) //Creating a workspace in daemon requires files
+      const {
+        status: creationStatus,
+        message: creationMessage,
+        workspace_id,
+      } = creationResult
+      if (creationStatus === "error")
+        return dispatch(showBanner(creationMessage, "error"))
+      workspaceDaemonId = workspace_id as string
+      dispatch(updateSelectedWorkspace({ daemon_id: workspaceDaemonId }))
+    }
 
-    if (typeof flow === undefined)
-      return dispatch(showBanner("Could not start flow", "error") as any)
-
-    const { flowChart } = flow as Flow
-    const yaml = formatAsYAML(flowChart, flowArguments as FlowArguments)
-    logger.log(
-      "startFlow",
-      "\n\tworkspaceId:",
-      flow.workspaceId,
-      "\n\tflowId: ",
-      flowId,
-      "\n\tchart:",
-      flowChart,
-      "\n\tyaml:",
-      yaml
-    )
-
-    const result = await jinadClient.startFlow(yaml)
+    const result = await jinadClient.startFlow(flowYAML, workspaceDaemonId)
     const { status, message, flow_id } = result
 
     logger.log("startFlow result", result)
 
-    if (status === "error") return dispatch(showBanner(message, "error") as any)
+    if (status === "error") return dispatch(showBanner(message, "error"))
 
     dispatch(updateSelectedFlow({ daemon_id: flow_id }))
-    dispatch(showBanner(message, "success") as any)
-    dispatch(initNetworkFlow(flowId))
+    dispatch(showBanner("Successfully started flow", "success"))
+    dispatch(initNetworkFlow(flow_id))
   }
 }
 
-export function stopFlow(
-  flowId: string
-): ThunkAction<void, FlowState, unknown, Action<string>> {
+export function createWorkspaceInDaemon(): AppThunk<Promise<void>> {
   return async function (dispatch) {
-    const flow = store.getState().flowState.flows[flowId]
-    logger.log("stopFlow: ", flowId)
+    const result = await jinadClient.createWorkspace()
+    const { status, message, workspace_id } = result
 
-    if (typeof flow === undefined)
-      return dispatch(showBanner("Could not stop flow", "error") as any)
+    logger.log("createWorkspaceInDaemon result", result)
 
-    const { daemon_id } = flow
-    logger.log("flow:", flow)
-    logger.log("daemon_id:", daemon_id)
-    if (!daemon_id)
-      return dispatch(showBanner("Flow is not deployed", "error") as any)
+    if (status === "error") return dispatch(showBanner(message, "error"))
 
-    const result = await jinadClient.terminateFlow(daemon_id)
+    dispatch(updateSelectedWorkspace({ daemon_id: workspace_id }))
+    dispatch(showBanner(message, "success"))
+  }
+}
+
+export function uploadFilesToWorkspace(
+  files: Blob[],
+  workspaceDaemonId?: string
+): AppThunk<Promise<void>> {
+  return async function (dispatch) {
+    if (!workspaceDaemonId) {
+      const creationResult = await jinadClient.createWorkspace(files)
+      const {
+        status: creationStatus,
+        message: creationMessage,
+        workspace_id,
+      } = creationResult
+      if (creationStatus === "error")
+        return dispatch(showBanner(creationMessage, "error"))
+      workspaceDaemonId = workspace_id as string
+    } else {
+      const result = await jinadClient.uploadFilesToWorkspace(
+        workspaceDaemonId,
+        files
+      )
+      const { status, message } = result
+
+      logger.log("uploadFilesToWorkspace result", result)
+
+      if (status === "error") return dispatch(showBanner(message, "error"))
+    }
+
+    const workspaceStatus = await jinadClient.getWorkspace(workspaceDaemonId)
+
+    if (workspaceStatus.status === "error")
+      return dispatch(showBanner(workspaceStatus.message, "error"))
+
+    dispatch(
+      updateSelectedWorkspace({
+        files: workspaceStatus.workspace.arguments,
+        daemon_id: workspaceDaemonId,
+      })
+    )
+    dispatch(showBanner(`Successfully uploaded files to workspace`, "success"))
+  }
+}
+
+export function stopFlow(flowDaemonId: string): AppThunk<Promise<void>> {
+  return async function (dispatch) {
+    const result = await jinadClient.terminateFlow(flowDaemonId)
     const { status, message } = result
 
     logger.log("stopFlow result: ", result)
-    if (status === "error") return dispatch(showBanner(message, "error") as any)
+    if (status === "error") return dispatch(showBanner(message, "error"))
 
-    dispatch(showBanner(message, "success") as any)
+    dispatch(showBanner(message, "success"))
+    dispatch(updateSelectedFlow({ daemon_id: null }))
   }
 }
 
-export function initNetworkFlow(
-  flowId: string
-): ThunkAction<void, FlowState, unknown, Action<string>> {
+export function initNetworkFlow(flowDaemonId: string): AppThunk<Promise<void>> {
   return async function (dispatch) {
-    const flow = store.getState().flowState.flows[flowId]
-    const { daemon_id } = flow
-    if (!daemon_id)
-      return dispatch(showBanner("Could not initialize flow", "error") as any)
+    const { status, message, flow } = await jinadClient.getFlow(flowDaemonId)
+    logger.log("got network flow:", flow)
 
-    const flowResult = await jinadClient.getFlow(daemon_id)
-    logger.log("got network flow:", flowResult)
-    if (flowResult.status === "error") {
-      if (flowResult.message)
-        dispatch(showBanner(flowResult.message, "error") as any)
-      return
-    }
-    const { workspace_id } = flowResult.flow
+    if (status === "error") return dispatch(showBanner(message, "error"))
 
-    dispatch(updateSelectedWorkspace({ daemon_id: workspace_id }))
+    const { workspace_id } = flow
 
-    //See: https://github.com/jina-ai/jina/issues/1812
-    setTimeout(() => dispatch(initLogStream(workspace_id, daemon_id)), 5000)
+    dispatch(initLogStream(workspace_id, flowDaemonId))
   }
 }

@@ -9,9 +9,10 @@ import logger from "../logger"
 import gatewayClient from "./gatewayClient"
 import store from "../redux"
 import { timeout } from "../helpers/utils"
+import { showBanner } from "../redux/global/global.actions"
 
 export async function multiModalScript() {
-  const configFiles: (string | Blob)[] = []
+  const configFiles: Blob[] = []
 
   Object.entries(configData).forEach(([fileName, fileData]) => {
     const blob = new Blob([fileData], { type: "text/plain" })
@@ -21,9 +22,10 @@ export async function multiModalScript() {
 
   const workspaceResult = await jinadClient.createWorkspace(configFiles)
   logger.log(workspaceResult, "workspaceResult")
+  store.dispatch(showBanner("workspace created", "success"))
   const flowResult = await jinadClient.startFlow(
     indexFlow,
-    workspaceResult.workspace
+    workspaceResult.workspace_id
   )
   logger.log(flowResult, "flowResult")
 
@@ -51,7 +53,7 @@ export async function multiModalScript() {
   await timeout(1)
   const terminateResult2 = await jinadClient.terminateFlow(flowResult.flow_id)
   console.log(terminateResult2, "terminateResult2")
-  console.log(workspaceResult.workspace)
+  console.log(workspaceResult.workspace_id)
   console.log("startFlow")
-  await jinadClient.startFlow(queryFlow, workspaceResult.workspace)
+  await jinadClient.startFlow(queryFlow, workspaceResult.workspace_id)
 }

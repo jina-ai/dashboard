@@ -11,6 +11,7 @@ import {
   createNewWorkspace,
   deleteWorkspace,
   loadWorkspace,
+  uploadFilesToWorkspace,
 } from "../../redux/flows/flows.actions"
 import { multiModalScript } from "../../services/multiModalScript"
 
@@ -72,6 +73,13 @@ export default function WorkspaceSelection() {
 
   const dispatch = useDispatch()
 
+  const uploadSelectedFiles = (selectorFiles: FileList | null) => {
+    if (selectorFiles) {
+      const filesArray = Array.from(selectorFiles) as Blob[]
+      return dispatch(uploadFilesToWorkspace(filesArray))
+    }
+  }
+
   const WorkspaceSelectionMenu = styled.div`
     font-family: "Montserrat", serif;
     width: 12rem;
@@ -108,6 +116,30 @@ export default function WorkspaceSelection() {
     padding-top: 0.15rem;
     padding-bottom: 0.15rem;
   `
+
+  const FileSelector = () => {
+    const FileLabel = styled.label`
+      float: right;
+      cursor: pointer;
+    `
+    const FileInput = styled.input`
+      display: none;
+    `
+
+    return (
+      <>
+        <FileLabel htmlFor="workspace-file-select">
+          <i className="material-icons">attach_file</i>
+        </FileLabel>
+        <FileInput
+          id="workspace-file-select"
+          type="file"
+          multiple
+          onChange={(e) => uploadSelectedFiles(e.target.files)}
+        />
+      </>
+    )
+  }
 
   const WorkspaceTapOverflowHider = styled.div`
     position: absolute;
@@ -158,6 +190,7 @@ export default function WorkspaceSelection() {
     margin-top: 0.15rem;
     margin-bottom: 0.15rem;
     position: relative;
+    white-space: nowrap;
   `
 
   const FileIcon = styled.span`
@@ -184,43 +217,26 @@ export default function WorkspaceSelection() {
           connected={connected}
         />
       </SelectedWorkspaceHeader>
-
       <SubHeader>
-        Files{" "}
-        <AddButton onClick={() => {}}>
-          <i className="material-icons">add</i>
-        </AddButton>
+        Files <FileSelector />
       </SubHeader>
       <FilesList>
-        {/* TODO: map over actual files, delete actual files */}
-        <FileItem>
-          <FileIcon>
-            <i className="material-icons">file_present</i>
-          </FileIcon>
-          <span>py_modules.py</span>
-          <WorkspaceTapOverflowHider />
-          <DeleteButton onClick={console.log} />
-        </FileItem>
-
-        <FileItem>
-          <FileIcon>
-            <i className="material-icons">file_present</i>
-          </FileIcon>
-          <span>py_modules.py</span>
-          <WorkspaceTapOverflowHider />
-          <DeleteButton onClick={console.log} />
-        </FileItem>
-
-        <FileItem>
-          <FileIcon>
-            <i className="material-icons">file_present</i>
-          </FileIcon>
-          <span>py_modules.py</span>
-          <WorkspaceTapOverflowHider />
-          <DeleteButton onClick={console.log} />
-        </FileItem>
+        {currentWorkspace.files.length ? (
+          currentWorkspace.files.map((filename, idx) => (
+            <FileItem key={idx}>
+              <FileIcon>
+                <i className="material-icons">file_present</i>
+              </FileIcon>
+              <span>{filename}</span>
+              <WorkspaceTapOverflowHider />
+            </FileItem>
+          ))
+        ) : (
+          <span>
+            <i>none</i>
+          </span>
+        )}
       </FilesList>
-
       <WorkspaceHeader>
         My Workspaces
         <AddButton
@@ -232,11 +248,12 @@ export default function WorkspaceSelection() {
       </WorkspaceHeader>
 
       {userWorkspaces.map(([workspaceId, workspace], idx) => (
-        <WorkspaceTap selected={selectedWorkspaceId === workspaceId} key={idx}>
-          <span
-            data-name={`${workspace.name.replaceAll(" ", "")}`}
-            onClick={() => dispatch(loadWorkspace(workspaceId))}
-          >
+        <WorkspaceTap
+          data-name={`${workspace.name.replaceAll(" ", "")}`}
+          selected={selectedWorkspaceId === workspaceId}
+          key={idx}
+        >
+          <span onClick={() => dispatch(loadWorkspace(workspaceId))}>
             {workspace.name || FALLBACK_WORKSPACE_NAME}
           </span>
           <ConnectionIndicator

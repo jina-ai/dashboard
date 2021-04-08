@@ -15,6 +15,7 @@ import { handleJinadConnectionStatus } from "./global/global.actions"
 import taskReducer from "./task/task.reducer"
 import { TaskState } from "./task/task.types"
 import jinadClient from "../services/jinad"
+
 export type State = {
   flowState: FlowState
   hubState: HubState

@@ -79,6 +79,7 @@ export default function ChartNode(props: ChartNodeProps) {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     border-radius: 0.25em;
     transition: 0.2s;
+    background: #eaeaea;
     border: 1px solid ${theme.palette.primary};
   `
 
