@@ -48,6 +48,13 @@ describe('Hub page', () => {
       cy.dataName('hubImagesFilter').contains('nlp').click()
     })
 
+    it('keeps filter on back button', () => {
+      cy.dataName('hubImagesFilter').contains('encoder').click()
+      cy.go("back")
+      cy.dataName('hubOverviewActionButtonLabel').contains('Read more').click()
+      cy.dataName('hubImagesFilter').contains('encoder').should('have.css', 'border', '1px solid rgb(0, 122, 255)')
+    })
+
   })
 
   describe('hub image overview', () => {

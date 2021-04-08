@@ -35,17 +35,6 @@ export const exampleWorkspaces: Workspaces = {
     daemon_id: null,
     files: [],
   },
-  example_workspace_multimodal: {
-    jina_version: "latest",
-    type: "example",
-    name: "Multimodal Workspace",
-    selectedFlowId: "multiModalIndex",
-    flowArguments: defaultFlowArguments,
-    isConnected: false,
-    daemon_endpoint: null,
-    daemon_id: null,
-    files: [],
-  },
   example_workspace_test: {
     jina_version: "latest",
     type: "example",
@@ -238,36 +227,6 @@ pods:
   blankFlow: {
     name: "Test Flow",
     workspaceId: "example_workspace_test",
-    yaml: `!Flow
-    with:
-      rest_api: true
-      port_expose: 5555
-    pods:
-      pod1:
-        read_only: true
-      pod2:
-        read_only: true
-      pod3:
-        read_only: true`,
-  },
-  multiModalIndex: {
-    name: "Index Flow",
-    workspaceId: "example_workspace_multimodal",
-    yaml: `!Flow
-    with:
-      rest_api: true
-      port_expose: 5555
-    pods:
-      pod1:
-        read_only: true
-      pod2:
-        read_only: true
-      pod3:
-        read_only: true`,
-  },
-  multiModalQuery: {
-    name: "Query Flow",
-    workspaceId: "example_workspace_multimodal",
     yaml: `!Flow
     with:
       rest_api: true

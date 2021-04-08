@@ -4,8 +4,9 @@ import {
   search_success_response,
   index_success_response,
 } from "./gatewayClient.testData"
+
 import AxiosMockAdapter from "axios-mock-adapter"
-import gatewayClient, { gatewayInstance } from "./gatewayClient"
+import gatewayClient, { gatewayInstance } from "../gatewayClient"
 import logger from "../../logger"
 
 let mockGatewayClient: AxiosMockAdapter

@@ -1,5 +1,6 @@
 import * as React from "react"
 import ChartNode from "./ChartNode"
+import { nanoid } from "nanoid"
 
 type Props = {
   label: string
@@ -8,7 +9,8 @@ type Props = {
 
 export default function SidebarItem({ label, idx }: Props) {
   const onDragStart = (event: React.DragEvent<HTMLDivElement>) => {
-    const dataString = JSON.stringify({ label })
+    const id = nanoid()
+    const dataString = JSON.stringify({ id, label })
     event.dataTransfer.setData("application/reactflow", dataString)
     event.dataTransfer.effectAllowed = "move"
   }

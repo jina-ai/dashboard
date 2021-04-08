@@ -1,10 +1,10 @@
 import ReactModal, { Styles } from "react-modal"
 import { ModalParams } from "../redux/global/global.types"
 import React, { useState } from "react"
-import gatewayClient from "../services/tests/gatewayClient"
-import store from "../redux"
+import gatewayClient from "../services/gatewayClient"
 import { useDispatch } from "react-redux"
 import { handleGatewayConnectionStatus } from "../redux/global/global.actions"
+import store from "../redux"
 
 const style: Styles = {
   overlay: {
@@ -72,16 +72,12 @@ function CRUD({ open, closeModal, modalParams }: Props) {
       style={style}
     >
       <button onClick={connect}>connect</button>
-      <textarea
-        onChange={(event) => setSearchText(event.target.value)}
-      ></textarea>
+      <textarea onChange={(event) => setSearchText(event.target.value)} />
       <button onClick={search}>Search</button>
-      <textarea
-        onChange={(event) => setIndexText(event.target.value)}
-      ></textarea>
+      <textarea onChange={(event) => setIndexText(event.target.value)} />
       <button onClick={index}>Index</button>
 
-      <textarea value={result}></textarea>
+      <textarea value={result} />
     </ReactModal>
   )
 }
