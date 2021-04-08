@@ -314,6 +314,48 @@ export const indexFlow =
   "  - needs: [docIndexer, imageModIndexer, textModIndexer]\n" +
   "    name: joiner"
 
+export const queryFlow =
+  "jtype: Flow\n" +
+  "version: '1'\n" +
+  "read_only: true\n" +
+  "with:\n" +
+  "  restful: true\n" +
+  "  port_expose: 45678\n" +
+  "pods:\n" +
+  "  # first pathway\n" +
+  "  - name: filter_text\n" +
+  "    uses: filter.yml\n" +
+  "    env:\n" +
+  "      filter_mime: text/plain\n" +
+  "  - name: textEncoder\n" +
+  "    uses: encode-text.yml\n" +
+  "  - name: textModIndexer\n" +
+  "    uses: index-comp.yml\n" +
+  "    env:\n" +
+  "      indexer_name: text\n" +
+  "  # second pathway, in parallel\n" +
+  "  - name: filter_image\n" +
+  "    uses: filter.yml\n" +
+  "    env:\n" +
+  "      filter_mime: image/jpeg\n" +
+  "    needs: gateway\n" +
+  "  - name: imageCrafter\n" +
+  "    uses: crafter-image.yml\n" +
+  "  - name: imageEncoder\n" +
+  "    uses: encode-image.yml\n" +
+  "  - name: imageModIndexer\n" +
+  "    uses: index-comp.yml\n" +
+  "    env:\n" +
+  "      indexer_name: image\n" +
+  "  # join\n" +
+  "  - needs: [imageModIndexer, textModIndexer]\n" +
+  "    name: joiner\n" +
+  "    uses: _merge_chunks\n" +
+  "  - uses: ranker.yml\n" +
+  "    name: ranker\n" +
+  "  - name: docIndexer\n" +
+  "    uses: index-doc.yml\n"
+
 export const indexData = [
   {
     "1": 4,

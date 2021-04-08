@@ -1,5 +1,10 @@
 import jinadClient from "./jinad"
-import { configData, indexData, indexFlow } from "../data/multiModalExample"
+import {
+  configData,
+  indexData,
+  indexFlow,
+  queryFlow,
+} from "../data/multiModalExample"
 import logger from "../logger"
 import gatewayClient from "./gatewayClient"
 import store from "../redux"
@@ -59,16 +64,20 @@ export async function multiModalScript() {
   // const gatewayClientResult3 = await gatewayClient.index(JSON.stringify(data3))
   // console.log(gatewayClientResult3, "gatewayClientResult")
 
-  for (const indexMeta of indexData) {
+  for (let i = 6; i < 11; i++) {
+    console.log(i)
     const data = {
-      id: indexMeta["1"].toString(),
-      image: indexMeta["image_1.jpg"],
+      id: indexData[i]["1"].toString(),
+      image: indexData[i]["image_1.jpg"],
       caption:
-        indexMeta["A beautiful young girl posing on a white background."],
+        indexData[i]["A beautiful young girl posing on a white background."],
     }
-
-    console.log(data, "loop")
-    gatewayClient.index(JSON.stringify(data))
+    console.log(data)
+    await gatewayClient.index(JSON.stringify(data))
   }
-  jinadClient.terminateAllFlows()
+
+  console.log("terminateFlow")
+  jinadClient.terminateFlow(flowResult.flow_id)
+  // console.log(workspaceResult.workspace)
+  jinadClient.startFlow(queryFlow, workspaceResult.workspace)
 }
