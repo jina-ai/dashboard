@@ -190,6 +190,7 @@ function _login(githubLoginData: GithubLoginData): AppThunk {
             _json,
           }
           dispatch(setUser(user))
+          localStorage.setItem("user", JSON.stringify(user))
         })
         .catch((e) => console.log(e))
     }
