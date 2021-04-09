@@ -1,8 +1,9 @@
 import React from "react"
-import { useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { selectUser } from "../../../redux/global/global.selectors"
 import Menu from "@material-ui/core/Menu"
 import MenuItem from "@material-ui/core/MenuItem"
+import { Button } from "@material-ui/core"
 
 type Props = {
   userActionsVisible: boolean
@@ -12,7 +13,7 @@ type Props = {
 
 function UserActions({ logOut, userActionsVisible, toggleUserActions }: Props) {
   const user = useSelector(selectUser)
-
+  const dispatch = useDispatch()
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -20,18 +21,28 @@ function UserActions({ logOut, userActionsVisible, toggleUserActions }: Props) {
   }
   const handleClose = () => {
     setAnchorEl(null)
+    dispatch(logOut)
   }
 
   return (
     <div>
-      {user._json?.avatar_url && (
+      {user ? (
         <img
           className="user-avatar rounded-circle mr-2"
           src={user._json.avatar_url}
           alt="User Avatar"
           onClick={handleClick}
         />
+      ) : (
+        <Button
+          aria-controls="simple-menu"
+          aria-haspopup="true"
+          onClick={() => (window.location.href = "/#login")}
+        >
+          Login
+        </Button>
       )}
+
       <Menu
         id="simple-menu"
         anchorEl={anchorEl}

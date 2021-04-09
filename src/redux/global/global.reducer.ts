@@ -68,6 +68,9 @@ const globalReducer = produce(
         break
       case LOGOUT:
         draft.user = null
+        draft.loginData = null
+        localStorage.removeItem("user")
+        localStorage.removeItem("gitHubLoginData")
         break
     }
   },
