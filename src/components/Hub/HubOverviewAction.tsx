@@ -18,13 +18,21 @@ const ActionItemTitle = styled.span`
 `
 
 const ActionButton = styled(Button)`
-  background: ${(props) => props.theme.palette.primary};
-  border-radius: 10px;
-  border: none;
-  padding: 1rem 1rem;
-  font-size: 1rem;
-  font-weight: 600;
-  color: ${(props) => props.theme.palette.background};
+  ${({theme}) => `
+    background: ${theme.palette.primary};
+    border-radius: 10px;
+    border: none;
+    padding: 1rem 1rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: ${theme.palette.background};
+    &:hover {
+      background: ${theme.palette.primary};
+    }
+    &:focus {
+      outline: none;
+    }
+  `}
 `
 
 type overviewActionType = {
