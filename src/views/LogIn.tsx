@@ -16,6 +16,7 @@ function Login() {
     const code = parsed["?code"] as GithubCode
     if (code) {
       dispatch(loginGithub(code))
+      window.location.href = "/"
     }
   })
 
