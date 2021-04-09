@@ -9,6 +9,7 @@ import {
   SHOW_ERROR,
   SHOW_MODAL,
   TOGGLE_SIDE_BAR,
+  SETUSER,
 } from "./global.constants"
 import logger from "../../logger"
 import { HANDLE_NEW_LOG } from "../logStream/logStream.constants"
@@ -61,6 +62,9 @@ const globalReducer = produce(
         break
       case GITHUBLOGIN:
         draft.loginData = action.payload.githubLoginData
+        break
+      case SETUSER:
+        draft.user = action.payload.user
         break
       case LOGOUT:
         draft.user = null

@@ -19,7 +19,6 @@ import {
   HandleConnectionStatusAction,
   HideBannerAction,
   Modal,
-  GitHubLoginAction,
   ShowBannerAction,
   ShowErrorAction,
   ShowModalAction,
@@ -174,7 +173,34 @@ export function loginGithub(githubCode: GithubCode): AppThunk {
   }
 }
 
-function _login(githubLoginData: GithubLoginData): GitHubLoginAction {
+function _login(githubLoginData: GithubLoginData): AppThunk {
+  return (dispatch) => {
+    dispatch(_storeGithubLoginData(githubLoginData))
+    const gitHubApi = process.env.REACT_APP_GITHUB_API
+    if (gitHubApi && githubLoginData) {
+      const config = {
+        headers: { Authorization: "bearer " + githubLoginData.access_token },
+      }
+
+      axios
+        .get(gitHubApi, config)
+        .then((response) => {
+          const _json = response.data
+          const user: User = {
+            username: _json.login,
+            displayName: _json.name,
+            emails: [_json.email],
+            id: _json.id,
+            _json,
+          }
+          dispatch(setUser(user))
+        })
+        .catch((e) => console.log(e))
+    }
+  }
+}
+
+function _storeGithubLoginData(githubLoginData: GithubLoginData) {
   return {
     type: GITHUBLOGIN,
     payload: { githubLoginData },
