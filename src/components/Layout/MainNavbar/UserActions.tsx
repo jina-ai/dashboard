@@ -11,44 +11,28 @@ import {
   Button,
   // @ts-ignore
 } from "shards-react"
-
-type User = {
-  displayName: string
-  emails: [{ value: string }]
-  id: string
-  nodeId: string
-  photos: [{ value: string }]
-  profileUrl: string
-  provider: string
-  username: string
-  _json: {
-    avatar_url: string
-  }
-  _raw: string
-}
+import { useSelector } from "react-redux"
+import { selectUser } from "../../../redux/global/global.selectors"
 
 type Props = {
   userActionsVisible: boolean
-  user: User | null
   logOut: () => void
   toggleUserActions: () => void
 }
 
-function UserActions({
-  user,
-  logOut,
-  userActionsVisible,
-  toggleUserActions,
-}: Props) {
+function UserActions({ logOut, userActionsVisible, toggleUserActions }: Props) {
+  const user = useSelector(selectUser)
   return (
     <NavItem tag={Dropdown} caret toggle={toggleUserActions}>
       {user ? (
         <DropdownToggle caret tag={NavLink} className="text-nowrap px-3">
-          <img
-            className="user-avatar rounded-circle mr-2"
-            src={user._json.avatar_url}
-            alt="User Avatar"
-          />{" "}
+          {user._json?.avatar_url && (
+            <img
+              className="user-avatar rounded-circle mr-2"
+              src={user._json.avatar_url}
+              alt="User Avatar"
+            />
+          )}
           <span className="d-none d-md-inline-block">{user.username}</span>
         </DropdownToggle>
       ) : (

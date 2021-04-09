@@ -15,7 +15,7 @@ type Props = {
   logOut: () => void
   toggleSidebar?: () => void
   reconnect?: () => void
-  user: User | null
+  user: User
   hideSidebarToggle?: boolean
   showLogo?: boolean
   navigateButton?: () => React.ReactNode
@@ -23,7 +23,6 @@ type Props = {
 
 function MainNavbar({
   usesConnection,
-  toggleSidebar,
   reconnect,
   connected,
   showLogo,
@@ -50,7 +49,6 @@ function MainNavbar({
             )}
             <UserActions
               userActionsVisible={false}
-              user={null}
               logOut={() => dispatch(logout())}
               toggleUserActions={() => {}}
             />

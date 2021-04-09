@@ -91,7 +91,7 @@ export type User = {
   nodeId?: string
   profileUrl?: string
   provider?: string
-  _json?: string
+  _json?: { avatar_url: string }
   _raw?: string
   photos?: [{ value: string }]
   githubCode?: string
