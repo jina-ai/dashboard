@@ -3,19 +3,10 @@ import { Container, Navbar, Nav } from "shards-react"
 import { NavbarSpacer } from "./NavbarSpacer"
 import { ConnectionIndicator } from "./ConnectionIndicator"
 import { NavLogo } from "./NavLogo"
-
-export type User = {
-  displayName: string
-  emails: [{ value: string }]
-  id: string
-  nodeId: string
-  photos: [{ value: string }]
-  profileUrl: string
-  provider: string
-  username: string
-  _json: string
-  _raw: string
-}
+import { UserActions } from "./UserActions"
+import { useDispatch } from "react-redux"
+import { logout } from "../../../redux/global/global.actions"
+import { User } from "../../../redux/global/global.types"
 
 type Props = {
   usesAuth: boolean
@@ -38,6 +29,7 @@ function MainNavbar({
   showLogo,
   navigateButton,
 }: Props) {
+  const dispatch = useDispatch()
   return (
     <div className="main-navbar">
       <Container fluid className="p-0">
@@ -47,6 +39,7 @@ function MainNavbar({
         >
           {showLogo && <NavLogo />}
           {navigateButton && navigateButton()}
+
           <NavbarSpacer />
           <Nav navbar className="flex-row">
             {usesConnection && (
@@ -55,6 +48,12 @@ function MainNavbar({
                 connected={connected}
               />
             )}
+            <UserActions
+              userActionsVisible={false}
+              user={null}
+              logOut={() => dispatch(logout())}
+              toggleUserActions={() => {}}
+            />
           </Nav>
         </Navbar>
       </Container>
