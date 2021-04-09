@@ -2,7 +2,6 @@ import {
   CLOSE_MODAL,
   HANDLE_CONNECTION_STATUS,
   HIDE_BANNER,
-  initialGlobalState,
   GITHUBLOGIN,
   LOGOUT,
   SHOW_BANNER,
@@ -10,6 +9,7 @@ import {
   SHOW_MODAL,
   TOGGLE_SIDE_BAR,
   SETUSER,
+  getInitialGlobalState,
 } from "./global.constants"
 import logger from "../../logger"
 import { HANDLE_NEW_LOG } from "../logStream/logStream.constants"
@@ -71,7 +71,7 @@ const globalReducer = produce(
         break
     }
   },
-  initialGlobalState
+  getInitialGlobalState()
 )
 
 export default globalReducer

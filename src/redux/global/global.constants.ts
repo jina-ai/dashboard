@@ -1,4 +1,4 @@
-import { GlobalState, TNavItem } from "./global.types"
+import { TNavItem } from "./global.types"
 
 export const HANDLE_CONNECTION_STATUS = "HANDLE_CONNECTION_STATUS"
 export const TOGGLE_SIDE_BAR = "TOGGLE_SIDE_BAR"
@@ -56,21 +56,29 @@ const navItems: TNavItem[] = [
 ]
 
 export function getInitialGlobalState() {
+  let loginData = null
   const githubLoginDataString = localStorage.getItem("githubLoginData")
   if (githubLoginDataString) {
+    loginData = JSON.parse(githubLoginDataString)
   }
-}
 
-export const initialGlobalState: GlobalState = {
-  user: null,
-  loginData: null,
-  banner: null,
-  connected: false,
-  currentTab: "logStream",
-  loading: true,
-  menuVisible: false,
-  modal: null,
-  modalParams: null,
-  navItems,
-  processes: {},
+  let user = null
+  const userString = localStorage.getItem("user")
+  if (userString) {
+    user = JSON.parse(userString)
+  }
+
+  return {
+    user,
+    loginData,
+    banner: null,
+    connected: false,
+    currentTab: "logStream",
+    loading: true,
+    menuVisible: false,
+    modal: null,
+    modalParams: null,
+    navItems,
+    processes: {},
+  }
 }
