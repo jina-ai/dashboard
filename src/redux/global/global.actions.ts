@@ -35,6 +35,7 @@ import { getJinaFlowArguments } from "../../services/jinaApi"
 import { setFlowArguments } from "../flows/flows.actions"
 import logger from "../../logger"
 import axios from "axios"
+import { getUserInfo } from "../../services/githubApi"
 
 export function handleConnectionStatus(
   connected: boolean,
@@ -176,14 +177,9 @@ export function loginGithub(githubCode: GithubCode): AppThunk {
 function _login(githubLoginData: GithubLoginData): AppThunk {
   return (dispatch) => {
     dispatch(_storeGithubLoginData(githubLoginData))
-    const gitHubApi = process.env.REACT_APP_GITHUB_API
-    if (gitHubApi && githubLoginData) {
-      const config = {
-        headers: { Authorization: "bearer " + githubLoginData.access_token },
-      }
-
-      axios
-        .get(gitHubApi, config)
+    localStorage.setItem("githubLoginData", JSON.stringify(githubLoginData))
+    if (githubLoginData) {
+      getUserInfo(githubLoginData.access_token)
         .then((response) => {
           const _json = response.data
           const user: User = {

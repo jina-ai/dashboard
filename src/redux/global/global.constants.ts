@@ -55,6 +55,12 @@ const navItems: TNavItem[] = [
   },
 ]
 
+export function getInitialGlobalState() {
+  const githubLoginDataString = localStorage.getItem("githubLoginData")
+  if (githubLoginDataString) {
+  }
+}
+
 export const initialGlobalState: GlobalState = {
   user: null,
   loginData: null,
