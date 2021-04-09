@@ -87,7 +87,7 @@ export const dashboardRoutes = [
     },
   },
   {
-    path: "/package/:packageId",
+    path: "/package/:kind/:packageId",
     layout: IconSidebar,
     component: PackageView,
     props: {
