@@ -10,6 +10,7 @@ test("ImageCard", () => {
     name: "Enel",
     author: "Oda",
     keywords: ["encoder"],
+    kind: "encoder",
     description: "whatever",
   };
   const component = renderer.create(
