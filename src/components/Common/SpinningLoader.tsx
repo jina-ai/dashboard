@@ -1,3 +1,4 @@
+/** @jsxRuntime classic */
 /** @jsx jsx */
 import styled from "@emotion/styled";
 import { jsx, keyframes } from "@emotion/react";
