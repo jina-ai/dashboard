@@ -1,7 +1,7 @@
 import reducer from "./global.reducer"
 import {
   HIDE_BANNER_TIMEOUT,
-  initialGlobalState,
+  getInitialGlobalState,
   GITHUBLOGIN,
   SHOW_ERROR,
 } from "./global.constants"
@@ -52,6 +52,7 @@ const mockGlobalStore = configureMockStore<GlobalState, DispatchExts>(
   middlewares
 )
 const mockStore = configureMockStore<State, DispatchExts>(middlewares)
+const initialGlobalState = getInitialGlobalState()
 
 describe("global reducer", () => {
   describe("when a new log is submitted", () => {
@@ -256,9 +257,8 @@ describe("global actions", () => {
         .onGet(`/${lambdaUrl}?githubCode=${githubCode}`)
         .reply(200, { user: githubUser })
 
-      return store.dispatch(loginGithub(githubCode)).then(() => {
-        expect(store.getActions()).toEqual(expectedActions)
-      })
+      store.dispatch(loginGithub(githubCode))
+      expect(store.getActions()).toEqual(expectedActions)
     })
 
     it("dispatches showError when a network error gets thrown", () => {
@@ -272,9 +272,8 @@ describe("global actions", () => {
       const store = mockStore()
       mockAxios.onGet(`/${lambdaUrl}?githubCode=${githubCode}`).networkError()
 
-      return store.dispatch(loginGithub(githubCode)).then(() => {
-        expect(store.getActions()).toEqual(expectedActions)
-      })
+      store.dispatch(loginGithub(githubCode))
+      expect(store.getActions()).toEqual(expectedActions)
     })
 
     it("dispatches showError when no lambda is set", () => {
@@ -295,9 +294,8 @@ describe("global actions", () => {
         .onGet(`/${lambdaUrl}?githubCode=${githubCode}`)
         .reply(200, { user: githubUser })
 
-      return store.dispatch(loginGithub(githubCode)).then(() => {
-        expect(store.getActions()).toEqual(expectedActions)
-      })
+      store.dispatch(loginGithub(githubCode))
+      expect(store.getActions()).toEqual(expectedActions)
     })
   })
 })

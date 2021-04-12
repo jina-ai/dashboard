@@ -1,4 +1,4 @@
-import { TNavItem } from "./global.types"
+import { GlobalState, TNavItem } from "./global.types"
 
 export const HANDLE_CONNECTION_STATUS = "HANDLE_CONNECTION_STATUS"
 export const TOGGLE_SIDE_BAR = "TOGGLE_SIDE_BAR"
@@ -55,7 +55,7 @@ const navItems: TNavItem[] = [
   },
 ]
 
-export function getInitialGlobalState() {
+export function getInitialGlobalState(): GlobalState {
   let loginData = null
   const githubLoginDataString = localStorage.getItem("githubLoginData")
   if (githubLoginDataString) {
