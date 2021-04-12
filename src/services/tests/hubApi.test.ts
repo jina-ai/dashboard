@@ -53,7 +53,7 @@ describe("getDocumentationHTML", () => {
     getDocumentationHTML(
       "https://github.com/jina-ai/jina-hub/blob/master/encoders/image/BigTransferEncoder/README.md"
     ).then((response) => {
-      expect(response).toEqual("<h2> Documentation in HTML </h2>")
+      expect(response).toEqual({ data: "<h2> Documentation in HTML </h2>" })
     })
   })
 })
