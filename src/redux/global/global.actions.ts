@@ -191,8 +191,9 @@ function _login(githubLoginData: GithubLoginData): AppThunk {
           }
           dispatch(setUser(user))
           localStorage.setItem("user", JSON.stringify(user))
+          window.location.href = "/"
         })
-        .catch((e) => console.log(e))
+        .catch((e) => console.log(e, "fetchUserInfoError"))
     }
   }
 }

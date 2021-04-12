@@ -14,10 +14,7 @@ function Login() {
   useEffect(() => {
     const parsed = queryString.parse(window.location.search)
     const code = parsed["?code"] as GithubCode
-    if (code) {
-      dispatch(loginGithub(code))
-      window.location.href = "/"
-    }
+    if (code) dispatch(loginGithub(code))
   })
 
   return (
