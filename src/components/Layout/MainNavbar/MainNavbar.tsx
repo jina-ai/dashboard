@@ -1,12 +1,12 @@
 import React from "react"
-import { Container, Navbar, Nav } from "shards-react"
-import { NavbarSpacer } from "./NavbarSpacer"
-import { ConnectionIndicator } from "./ConnectionIndicator"
-import { NavLogo } from "./NavLogo"
 import { UserActions } from "./UserActions"
 import { useDispatch } from "react-redux"
 import { logout } from "../../../redux/global/global.actions"
 import { User } from "../../../redux/global/global.types"
+import { AppBar, Toolbar } from "@material-ui/core"
+import LanguageIcon from "@material-ui/icons/Language"
+import { green, red } from "@material-ui/core/colors"
+import styled from "styled-components"
 
 type Props = {
   usesAuth: boolean
@@ -21,41 +21,33 @@ type Props = {
   navigateButton?: () => React.ReactNode
 }
 
-function MainNavbar({
-  usesConnection,
-  reconnect,
-  connected,
-  showLogo,
-  navigateButton,
-}: Props) {
-  const dispatch = useDispatch()
-  return (
-    <div className="main-navbar">
-      <Container fluid className="p-0">
-        <Navbar
-          type="light"
-          className="align-items-stretch flex-md-nowrap p-0 px-2"
-        >
-          {showLogo && <NavLogo />}
-          {navigateButton && navigateButton()}
+const NavigationItems = styled.div`
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+`
 
-          <NavbarSpacer />
-          <Nav navbar className="flex-row">
-            {usesConnection && (
-              <ConnectionIndicator
-                reconnect={reconnect}
-                connected={connected}
-              />
-            )}
-            <UserActions
-              userActionsVisible={false}
-              logOut={() => dispatch(logout())}
-              toggleUserActions={() => {}}
+function MainNavbar({ usesConnection, reconnect, connected }: Props) {
+  const dispatch = useDispatch()
+
+  return (
+    <AppBar position="static" elevation={0} color={"transparent"}>
+      <Toolbar>
+        <NavigationItems>
+          {usesConnection && (
+            <LanguageIcon
+              onClick={reconnect}
+              style={connected ? { color: green[500] } : { color: red[500] }}
             />
-          </Nav>
-        </Navbar>
-      </Container>
-    </div>
+          )}
+          <UserActions
+            userActionsVisible={false}
+            logOut={() => dispatch(logout())}
+            toggleUserActions={() => {}}
+          />
+        </NavigationItems>
+      </Toolbar>
+    </AppBar>
   )
 }
 

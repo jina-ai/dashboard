@@ -3,7 +3,8 @@ import { useDispatch, useSelector } from "react-redux"
 import { selectUser } from "../../../redux/global/global.selectors"
 import Menu from "@material-ui/core/Menu"
 import MenuItem from "@material-ui/core/MenuItem"
-import { Button } from "@material-ui/core"
+import { Avatar, IconButton } from "@material-ui/core"
+import { AccountCircle } from "@material-ui/icons"
 
 type Props = {
   userActionsVisible: boolean
@@ -19,40 +20,36 @@ function UserActions({ logOut, userActionsVisible, toggleUserActions }: Props) {
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget)
   }
-  const handleClose = () => {
+  const handleMenu = () => {
     setAnchorEl(null)
-    dispatch(logOut)
+    if (user) dispatch(logOut)
+    else window.location.href = "/#login"
   }
 
   return (
-    <div>
-      {user ? (
-        <img
-          className="user-avatar rounded-circle mr-2"
-          src={user._json.avatar_url}
-          alt="User Avatar"
-          onClick={handleClick}
-        />
-      ) : (
-        <Button
-          aria-controls="simple-menu"
-          aria-haspopup="true"
-          onClick={() => (window.location.href = "/#login")}
-        >
-          Login
-        </Button>
-      )}
+    <>
+      <IconButton
+        aria-controls="simple-menu"
+        aria-haspopup="true"
+        onClick={handleClick}
+      >
+        {user ? (
+          <Avatar src={user._json.avatar_url} alt="User Avatar" />
+        ) : (
+          <AccountCircle />
+        )}
+      </IconButton>
 
       <Menu
         id="simple-menu"
         anchorEl={anchorEl}
         keepMounted
         open={Boolean(anchorEl)}
-        onClose={handleClose}
+        onClose={handleMenu}
       >
-        <MenuItem onClick={handleClose}>Logout</MenuItem>
+        <MenuItem onClick={handleMenu}>{user ? "Logout" : "Login"}</MenuItem>
       </Menu>
-    </div>
+    </>
   )
 }
 
