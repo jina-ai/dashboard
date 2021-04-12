@@ -8,7 +8,7 @@ export function loginGithub(code: string) {
   _getAccessToken(code)
 }
 
-async function _getAccessToken(code: string) {
+function _getAccessToken(code: string) {
   const lambdaUrl = process.env.REACT_APP_GITHUB_LAMBDA
   if (lambdaUrl === "undefined") {
     store.dispatch(showError("No lambda found"))

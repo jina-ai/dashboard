@@ -1,10 +1,5 @@
 import reducer from "./global.reducer"
-import {
-  HIDE_BANNER_TIMEOUT,
-  getInitialGlobalState,
-  GITHUBLOGIN,
-  SHOW_ERROR,
-} from "./global.constants"
+import { HIDE_BANNER_TIMEOUT, getInitialGlobalState } from "./global.constants"
 import { handleNewLog } from "../logStream/logStream.actions"
 import { testMessage } from "../logStream/logStream.testData"
 import logger from "../../logger"
@@ -18,8 +13,8 @@ import {
   toggleSidebar,
   showBanner,
   handleConnectionStatus,
-  loginGithub,
   logout,
+  setUser,
 } from "./global.actions"
 import {
   apiArgumentsURL,
@@ -224,9 +219,7 @@ describe("global actions", () => {
     })
   })
 
-  describe("when using login", () => {
-    const lambdaUrl = process.env.REACT_APP_GITHUB_LAMBDA
-
+  describe("login", () => {
     const user = {
       displayName: "dummy",
       username: "dummyUser",
@@ -234,68 +227,17 @@ describe("global actions", () => {
       id: "1234sadf4234",
       nodeId: "dsfs234asdf",
     }
-    it("erases user data when logging out", () => {
+    it("sets a user to null when logged out", () => {
       const loggedInState: GlobalState = { ...initialGlobalState, user }
       expect(loggedInState.user).toBeDefined()
       const loggedOutState = reducer(loggedInState, logout())
       expect(loggedOutState.user).toBeNull()
     })
-    it("dispatches _login when fetching github user data", () => {
-      const githubCode = "abcd1234"
-      const githubUser = {
-        ...user,
-        githubCode,
-      }
-      const expectedActions = [
-        {
-          type: GITHUBLOGIN,
-          payload: { user: githubUser },
-        },
-      ]
-      const store = mockStore()
-      mockAxios
-        .onGet(`/${lambdaUrl}?githubCode=${githubCode}`)
-        .reply(200, { user: githubUser })
 
-      store.dispatch(loginGithub(githubCode))
-      expect(store.getActions()).toEqual(expectedActions)
-    })
-
-    it("dispatches showError when a network error gets thrown", () => {
-      const githubCode = "abcd1234"
-      const expectedActions = [
-        {
-          type: SHOW_ERROR,
-          payload: { message: new Error("Network Error") },
-        },
-      ]
-      const store = mockStore()
-      mockAxios.onGet(`/${lambdaUrl}?githubCode=${githubCode}`).networkError()
-
-      store.dispatch(loginGithub(githubCode))
-      expect(store.getActions()).toEqual(expectedActions)
-    })
-
-    it("dispatches showError when no lambda is set", () => {
-      const githubCode = "abcd1234"
-      const githubUser = {
-        ...user,
-        githubCode,
-      }
-      process.env.REACT_APP_GITHUB_LAMBDA = undefined
-      const expectedActions = [
-        {
-          type: SHOW_ERROR,
-          payload: { message: "No lambda found" },
-        },
-      ]
-      const store = mockStore()
-      mockAxios
-        .onGet(`/${lambdaUrl}?githubCode=${githubCode}`)
-        .reply(200, { user: githubUser })
-
-      store.dispatch(loginGithub(githubCode))
-      expect(store.getActions()).toEqual(expectedActions)
+    it("sets a user", () => {
+      expect(initialGlobalState.user).toBeNull()
+      const loggedInState = reducer(initialGlobalState, setUser(user))
+      expect(loggedInState.user).toEqual(user)
     })
   })
 })
