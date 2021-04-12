@@ -32,6 +32,7 @@ exports[`ImageCard 1`] = `
           </div>
           <div
             className="mb-2 css-k133o5"
+            data-name="hubImageAuthor"
           >
             Oda
           </div>
