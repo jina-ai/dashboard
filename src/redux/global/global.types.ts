@@ -7,7 +7,6 @@ import {
   SHOW_MODAL,
   TOGGLE_SIDE_BAR,
   CONNECT_JINAD,
-  GITHUBLOGIN,
   LOGOUT,
   SETUSER,
 } from "./global.constants"
@@ -74,15 +73,6 @@ export type Banner = {
   theme: string
 } | null
 
-type Scope = "user"
-type TokenType = "bearer"
-
-export type GithubLoginData = {
-  access_token: string
-  scope: Scope
-  token_type: TokenType
-} | null
-
 export type User = {
   username: string
   displayName: string
@@ -117,7 +107,6 @@ export type ModalParams = {
 
 export type GlobalState = {
   user: User
-  loginData: GithubLoginData
   connected: boolean
   banner: Banner
   loading: boolean
@@ -176,11 +165,6 @@ export type ConnectJinaDAction = {
   type: typeof CONNECT_JINAD
 }
 
-export type GitHubLoginAction = {
-  type: typeof GITHUBLOGIN
-  payload: { githubLoginData: GithubLoginData }
-}
-
 export type LogoutAction = {
   type: typeof LOGOUT
 }
@@ -200,6 +184,5 @@ export type GlobalActionTypes =
   | CloseModalAction
   | handleNewLogAction
   | ConnectJinaDAction
-  | GitHubLoginAction
   | LogoutAction
   | SetUserAction

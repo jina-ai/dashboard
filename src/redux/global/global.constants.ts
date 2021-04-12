@@ -10,7 +10,6 @@ export const CLOSE_MODAL = "CLOSE_MODAL"
 export const CONNECT_JINAD = "CONNECT_JINAD"
 export const FETCH_ARGUMENTS_FROM_API = "FETCH_ARGUMENTS_FROM_API"
 export const FETCH_ARGUMENTS_FROM_DAEMON = "FETCH_ARGUMENTS_FROM_DAEMON"
-export const GITHUBLOGIN = "GITHUBLOGIN"
 export const LOGOUT = "LOGOUT"
 export const SETUSER = "SETUSER"
 
@@ -56,12 +55,6 @@ const navItems: TNavItem[] = [
 ]
 
 export function getInitialGlobalState(): GlobalState {
-  let loginData = null
-  const githubLoginDataString = localStorage.getItem("githubLoginData")
-  if (githubLoginDataString) {
-    loginData = JSON.parse(githubLoginDataString)
-  }
-
   let user = null
   const userString = localStorage.getItem("user")
   if (userString) {
@@ -70,7 +63,6 @@ export function getInitialGlobalState(): GlobalState {
 
   return {
     user,
-    loginData,
     banner: null,
     connected: false,
     currentTab: "logStream",

@@ -5,7 +5,6 @@ import {
   HANDLE_CONNECTION_STATUS,
   HIDE_BANNER,
   HIDE_BANNER_TIMEOUT,
-  GITHUBLOGIN,
   LOGOUT,
   SHOW_BANNER,
   SHOW_ERROR,
@@ -15,7 +14,6 @@ import {
 } from "./global.constants"
 import {
   CloseModalAction,
-  GithubCode,
   HandleConnectionStatusAction,
   HideBannerAction,
   Modal,
@@ -25,7 +23,6 @@ import {
   ToggleSidebarAction,
   User,
   LogoutAction,
-  GithubLoginData,
   SetUserAction,
 } from "./global.types"
 import { AppThunk } from "../index"
@@ -34,8 +31,6 @@ import jinadClient from "../../services/jinad"
 import { getJinaFlowArguments } from "../../services/jinaApi"
 import { setFlowArguments } from "../flows/flows.actions"
 import logger from "../../logger"
-import axios from "axios"
-import { getUserInfo } from "../../services/githubApi"
 
 export function handleConnectionStatus(
   connected: boolean,
@@ -157,54 +152,6 @@ export function connectJinaD(): AppThunk {
   }
 }
 
-export function loginGithub(githubCode: GithubCode): AppThunk {
-  const lambdaUrl = process.env.REACT_APP_GITHUB_LAMBDA
-
-  if (lambdaUrl === "undefined")
-    return (dispatch) => {
-      return new Promise((resolve) => {
-        resolve(dispatch(showError("No lambda found")))
-      })
-    }
-  return (dispatch) => {
-    axios
-      .get(`${lambdaUrl}?ghcode=${githubCode}`)
-      .then((response) => dispatch(_login(response.data)))
-      .catch((e) => logger.log(e))
-  }
-}
-
-function _login(githubLoginData: GithubLoginData): AppThunk {
-  return (dispatch) => {
-    dispatch(_storeGithubLoginData(githubLoginData))
-    localStorage.setItem("githubLoginData", JSON.stringify(githubLoginData))
-    if (githubLoginData) {
-      getUserInfo(githubLoginData.access_token)
-        .then((response) => {
-          const _json = response.data
-          const user: User = {
-            username: _json.login,
-            displayName: _json.name,
-            emails: [_json.email],
-            id: _json.id,
-            _json,
-          }
-          dispatch(setUser(user))
-          localStorage.setItem("user", JSON.stringify(user))
-          window.location.href = "/"
-        })
-        .catch((e) => console.log(e, "fetchUserInfoError"))
-    }
-  }
-}
-
-function _storeGithubLoginData(githubLoginData: GithubLoginData) {
-  return {
-    type: GITHUBLOGIN,
-    payload: { githubLoginData },
-  }
-}
-
 export function logout(): LogoutAction {
   return {
     type: LOGOUT,
@@ -212,6 +159,7 @@ export function logout(): LogoutAction {
 }
 
 export function setUser(user: User): SetUserAction {
+  localStorage.setItem("user", JSON.stringify(user))
   return {
     type: SETUSER,
     payload: { user },

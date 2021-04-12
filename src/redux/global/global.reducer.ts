@@ -2,7 +2,6 @@ import {
   CLOSE_MODAL,
   HANDLE_CONNECTION_STATUS,
   HIDE_BANNER,
-  GITHUBLOGIN,
   LOGOUT,
   SHOW_BANNER,
   SHOW_ERROR,
@@ -60,17 +59,12 @@ const globalReducer = produce(
       case HANDLE_NEW_LOG:
         draft.processes[action.payload.process] = action.payload.name
         break
-      case GITHUBLOGIN:
-        draft.loginData = action.payload.githubLoginData
-        break
       case SETUSER:
         draft.user = action.payload.user
         break
       case LOGOUT:
         draft.user = null
-        draft.loginData = null
         localStorage.removeItem("user")
-        localStorage.removeItem("gitHubLoginData")
         break
     }
   },

@@ -2,19 +2,17 @@
 
 import React, { useEffect } from "react"
 import { Container, Row, Col, Card, CardBody } from "shards-react"
-import { useDispatch } from "react-redux"
 import queryString from "querystring"
 import { GithubCode } from "../redux/global/global.types"
-import { loginGithub } from "../redux/global/global.actions"
+import { loginGithub } from "../services/github"
 
 function Login() {
   const client_id = process.env.REACT_APP_CLIENT_ID
 
-  const dispatch = useDispatch()
   useEffect(() => {
     const parsed = queryString.parse(window.location.search)
     const code = parsed["?code"] as GithubCode
-    if (code) dispatch(loginGithub(code))
+    if (code) loginGithub(code)
   })
 
   return (
