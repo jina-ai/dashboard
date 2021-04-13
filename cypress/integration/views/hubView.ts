@@ -34,6 +34,7 @@ describe('Hub page', () => {
     it('shows a list of hub images', () => {
       cy.fixture('hubImages').then(hubImages => {
         cy.dataName('hubImagesList').dataName('hubImage').its('length').should('eq', hubImages.length)
+        cy.dataName('hubImagesList').dataName('hubImageAuthor').its('length').should('eq', hubImages.length)
       })
     })
   })

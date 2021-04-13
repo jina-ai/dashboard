@@ -58,7 +58,9 @@ export default function ImageCard({ image, index }: Props) {
                   {keyword}
                 </Tag>
               ))}
-              <SubTitle className="mb-2">{author}</SubTitle>
+              <SubTitle data-name="hubImageAuthor" className="mb-2">
+                {author}
+              </SubTitle>
             </Col>
             <Col sm="12" className="px-0 pb-0">
               <div className="description-container">
