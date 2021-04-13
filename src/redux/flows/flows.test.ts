@@ -17,9 +17,10 @@ import { initialFlowChart } from "./flows.constants"
 import { testFlowArguments, testFlowState } from "./flows.testData"
 import { Flow, FlowNode, FlowEdge, NodeDataUpdate } from "./flows.types"
 import { isFlowNode, isFlowEdge } from "../../helpers/flow-chart"
+import { USER_FLOWS } from "../../services/localStorageKeys"
 
 function getFlowFromStorage(id: string): Flow | undefined {
-  const userFlowsString = localStorage.getItem("userFlows")
+  const userFlowsString = localStorage.getItem(USER_FLOWS)
   if (userFlowsString) {
     const parsed = JSON.parse(userFlowsString)
     return parsed[id]

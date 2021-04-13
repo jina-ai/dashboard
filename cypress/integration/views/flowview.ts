@@ -5,6 +5,7 @@ import {
 } from "../../../src/redux/settings/settings.constants"
 import { Flow, FlowState } from "../../../src/redux/flows/flows.types"
 import { isFlowEdge, isFlowNode } from "../../../src/helpers/flow-chart"
+import { PREFERENCES_HOST, PREFERENCES_PORT } from "../../../src/services/localStorageKeys";
 
 describe("The Flow Page", () => {
   beforeEach(() => {
@@ -60,8 +61,8 @@ describe("The Flow Page", () => {
     })
 
     it("should display the connected message", () => {
-      const host = localStorage.getItem("preferences-host") || defaultHost
-      const port = localStorage.getItem("preferences-port") || defaultPort
+      const host = localStorage.getItem(PREFERENCES_HOST) || defaultHost;
+      const port = localStorage.getItem(PREFERENCES_PORT) || defaultPort;
       cy.dataName("connection-notification-online").should(
         "contain",
         `Successfully connected to Jina at ${host}:${port}`

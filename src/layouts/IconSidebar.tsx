@@ -36,6 +36,7 @@ import {
 } from "../redux/global/global.actions"
 import { importFlow } from "../redux/flows/flows.actions"
 import FlowSettings from "../modals/FlowSettings"
+import { ACCEPTED_COOKIES } from "../services/localStorageKeys"
 
 type IconSideBarLayoutProps = {
   children: React.ReactNode
@@ -55,12 +56,12 @@ const IconSidebarLayout = (props: IconSideBarLayoutProps) => {
   const sidebarNavItems = useSelector(selectSidebarItems)
   const user = useSelector(selectUser)
   const [acceptedCookies, setAcceptedCookies] = useState<boolean>(
-    localStorage.getItem("accepted-cookies") === "true"
+    localStorage.getItem(ACCEPTED_COOKIES) === "true"
   )
 
   const dispatch = useDispatch()
   const acceptCookies = () => {
-    localStorage.setItem("accepted-cookies", String(true))
+    localStorage.setItem(ACCEPTED_COOKIES, String(true))
     setAcceptedCookies(true)
   }
 

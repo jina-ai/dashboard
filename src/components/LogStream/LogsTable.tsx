@@ -23,10 +23,10 @@ import {
   serializeLogsToTextBlob,
 } from "../../helpers"
 import { TimePreference } from "../../views/LogsView"
+import { VIEW_PREFERENCE_NAME } from "../../services/localStorageKeys"
 
 const ROW_SIZE = 30
 const DEFAULT_VIEW = "table"
-const VIEW_PREFERENCE_NAME = "logs-view-preference"
 const POD_NAME_SPLIT_CHAR = "-"
 
 const SEARCH_FIELDS = [

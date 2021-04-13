@@ -1,3 +1,5 @@
+import { VERSION } from "../services/localStorageKeys"
+
 export const copyToClipboard = (str: string) => {
   const temp = document.createElement("textarea")
   temp.value = str
@@ -16,7 +18,7 @@ export const newVersionLocalStorageReset = (
   version: string,
   localVersion: string | null
 ) => {
-  if (localVersion === null) localStorage.setItem("version", version)
+  if (localVersion === null) localStorage.setItem(VERSION, version)
   else {
     const versionList = version.split(".")
     const localVersionList = localVersion.split(".")

@@ -7,6 +7,7 @@ import {
 } from "./settings.types"
 import logger from "../../logger"
 import produce from "immer"
+import { PREFERENCES_PREFIX } from "../../services/localStorageKeys"
 
 const settingsReducer = produce(
   (draft: SettingsState, action: SettingsActionTypes) => {
@@ -26,7 +27,7 @@ const settingsReducer = produce(
 function _saveSettingsInStore(settings: Settings) {
   Object.keys(settings).forEach((key) => {
     localStorage.setItem(
-      `preferences-${key}`,
+      `${PREFERENCES_PREFIX}-${key}`,
       settings[key as SettingName] as string
     )
   })

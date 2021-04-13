@@ -15,14 +15,13 @@ import {
 import { getLogLevelCharts } from "../helpers/format"
 import { showModal } from "../redux/global/global.actions"
 import { RawLog } from "../redux/logStream/logStream.types"
+import { TIME_PREFERENCE_NAME } from "../services/localStorageKeys"
 
 export type TimePreference = "60second" | "15minute" | "1hour"
 
 const DEFAULT_TIME_SELECTION: TimePreference = "60second"
 
 const MAX_CHART_TICKS = 60
-
-const TIME_PREFERENCE_NAME = "logs-time-preference"
 
 const timeOptions: {
   [key: string]: { value: string; label: string; chartLabels: string[] }

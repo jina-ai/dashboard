@@ -5,6 +5,7 @@ import { Provider } from "react-redux"
 import { theme } from "./theme"
 import * as Sentry from "@sentry/react"
 import { Integrations } from "@sentry/tracing"
+import { VERSION } from "./services/localStorageKeys"
 
 import "bootstrap/dist/css/bootstrap.min.css"
 // Todo: Remove shards and associated styles when we stop using it
@@ -14,7 +15,7 @@ import store from "./redux"
 import { newVersionLocalStorageReset } from "./helpers/utils"
 let App
 const version = require("../package.json").version
-const localVersion = localStorage.getItem("version")
+const localVersion = localStorage.getItem(VERSION)
 
 newVersionLocalStorageReset(version, localVersion)
 

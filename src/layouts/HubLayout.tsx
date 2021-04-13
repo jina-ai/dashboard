@@ -14,6 +14,7 @@ import { useDispatch, useSelector } from "react-redux"
 import store from "../redux"
 import { showBanner } from "../redux/global/global.actions"
 import { selectBanner, selectModal } from "../redux/global/global.selectors"
+import { ACCEPTED_COOKIES } from "../services/localStorageKeys"
 
 export type HubLayoutProps = {
   children: React.ReactNode
@@ -39,12 +40,12 @@ const HubLayout = (props: HubLayoutProps) => {
     _raw: "dummyRaw",
   }
   const [acceptedCookies, setAcceptedCookies] = useState<boolean>(
-    localStorage.getItem("accepted-cookies") === "true"
+    localStorage.getItem(ACCEPTED_COOKIES) === "true"
   )
 
   const dispatch = useDispatch()
   const acceptCookies = () => {
-    localStorage.setItem("accepted-cookies", String(true))
+    localStorage.setItem(ACCEPTED_COOKIES, String(true))
     setAcceptedCookies(true)
   }
 

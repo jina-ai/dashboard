@@ -34,6 +34,7 @@ import {
   isFlowEdge,
 } from "../../helpers/flow-chart"
 import { Connection } from "react-flow-renderer/dist/types"
+import { USER_FLOWS } from "../../services/localStorageKeys"
 
 export const saveFlowsToStorage = (state: FlowState) => {
   let toSave: { [id: string]: Flow } = {}
@@ -41,11 +42,11 @@ export const saveFlowsToStorage = (state: FlowState) => {
   Object.entries(flows).forEach(([id, flow]: [string, Flow]) => {
     if (flow.type === "user-generated") toSave[id] = flow
   })
-  localStorage.setItem("userFlows", JSON.stringify(toSave))
+  localStorage.setItem(USER_FLOWS, JSON.stringify(toSave))
 }
 
 function getUserFlows(): Flows {
-  const storedFlows = localStorage.getItem("userFlows")
+  const storedFlows = localStorage.getItem(USER_FLOWS)
   const userFlows = storedFlows ? JSON.parse(storedFlows) : null
   return _.isEmpty(userFlows)
     ? {
