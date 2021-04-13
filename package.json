@@ -152,6 +152,7 @@
     "@types/react-window": "^1.8.2",
     "axios-mock-adapter": "^1.19.0",
     "cypress": "^6.3.0",
+    "dotenv": "^8.2.0",
     "eslint-plugin-flowtype": "^5.2.0",
     "husky": "^4.2.5",
     "lint-staged": "^10.2.11",

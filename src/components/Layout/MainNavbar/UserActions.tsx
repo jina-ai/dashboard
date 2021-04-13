@@ -29,6 +29,7 @@ function UserActions({ logOut, userActionsVisible, toggleUserActions }: Props) {
   return (
     <>
       <IconButton
+        data-name={"menuButton"}
         aria-controls="simple-menu"
         aria-haspopup="true"
         onClick={handleClick}
@@ -47,7 +48,9 @@ function UserActions({ logOut, userActionsVisible, toggleUserActions }: Props) {
         open={Boolean(anchorEl)}
         onClose={handleMenu}
       >
-        <MenuItem onClick={handleMenu}>{user ? "Logout" : "Login"}</MenuItem>
+        <MenuItem data-name={"loginLogout"} onClick={handleMenu}>
+          {user ? "Logout" : "Login"}
+        </MenuItem>
       </Menu>
     </>
   )
