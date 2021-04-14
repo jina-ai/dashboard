@@ -34,9 +34,21 @@ import axios from "axios"
 import { jinadInstance } from "../../services/jinad"
 import AxiosMockAdapter from "axios-mock-adapter"
 import thunk, { ThunkDispatch } from "redux-thunk"
-import { GlobalState } from "./global.types"
+import { GlobalState, User } from "./global.types"
 import { AnyAction } from "redux"
 import { State } from "../index"
+import {
+  selectProcesses,
+  selectMenuState,
+  selectSidebarItems,
+  selectCurrentTab,
+  selectUser,
+  selectBanner,
+  selectModal,
+  selectModalParams,
+  selectConnectionStatus,
+  selectLoading,
+} from "./global.selectors"
 
 const mockAxios = new AxiosMockAdapter(axios)
 const mockJinadClient = new AxiosMockAdapter(jinadInstance)
@@ -47,6 +59,7 @@ const mockGlobalStore = configureMockStore<GlobalState, DispatchExts>(
   middlewares
 )
 const mockStore = configureMockStore<State, DispatchExts>(middlewares)
+
 const initialGlobalState = getInitialGlobalState()
 
 describe("global reducer", () => {
@@ -239,5 +252,66 @@ describe("global actions", () => {
       const loggedInState = reducer(initialGlobalState, setUser(user))
       expect(loggedInState.user).toEqual(user)
     })
+  })
+})
+
+describe("global selectors", () => {
+  const state = {
+    globalState: initialGlobalState,
+  }
+  it("should select processes", () => {
+    expect(selectProcesses(state)).toEqual(initialGlobalState.processes)
+  })
+
+  it("should select menu state", () => {
+    expect(selectMenuState(state)).toEqual(initialGlobalState.menuVisible)
+  })
+
+  it("should select sidebar items", () => {
+    expect(selectSidebarItems(state)).toEqual(initialGlobalState.navItems)
+  })
+
+  it("should select current tab", () => {
+    expect(selectCurrentTab(state)).toEqual(initialGlobalState.currentTab)
+  })
+
+  it("should select user", () => {
+    expect(selectUser(state)).toEqual(initialGlobalState.user)
+  })
+
+  it("should select banner", () => {
+    expect(selectBanner(state)).toEqual(initialGlobalState.banner)
+  })
+
+  it("should select modal", () => {
+    expect(selectModal(state)).toEqual(initialGlobalState.modal)
+  })
+
+  it("should select modal params", () => {
+    expect(selectModalParams(state)).toEqual(initialGlobalState.modalParams)
+  })
+
+  it("should select connection status", () => {
+    expect(selectConnectionStatus(state)).toEqual(initialGlobalState.connected)
+  })
+
+  it("should select loading status", () => {
+    expect(selectLoading(state)).toEqual(initialGlobalState.loading)
+  })
+})
+
+describe("global constants", () => {
+  it("should return a user, that got saved to storage", () => {
+    const testUser: User = {
+      displayName: "dummy",
+      username: "dummyUser",
+      emails: ["dummy@dummy.com"],
+      id: "1234sadf4234",
+      nodeId: "dsfs234asdf",
+    }
+    localStorage.setItem("user", JSON.stringify(testUser))
+
+    const intialGlobalStateWithUser = getInitialGlobalState()
+    expect(intialGlobalStateWithUser.user).toEqual(testUser)
   })
 })
