@@ -13,7 +13,7 @@ import {
   loadWorkspace,
 } from "../../redux/flows/flows.actions"
 
-const FALLBACK_WORKSPACE_NAME = "untitled workspace"
+const FALLBACK_WORKSPACE_NAME = "Untitled workspace"
 
 type ConnectionIndicatorProps = {
   connected: boolean
@@ -91,13 +91,13 @@ export default function WorkspaceSelection() {
     overflow: hidden;
   `
 
-  type WorkspaceTapProps = {
+  type WorkspaceTabProps = {
     selected: boolean
   }
 
-  const WorkspaceTap = styled.div`
+  const WorkspaceTab = styled.div`
     cursor: pointer;
-    font-weight: ${(props: WorkspaceTapProps) =>
+    font-weight: ${(props: WorkspaceTabProps) =>
       props.selected ? "bold" : 500};
     font-size: 14px;
     display: flex;
@@ -112,7 +112,7 @@ export default function WorkspaceSelection() {
     padding-bottom: 0.15rem;
   `
 
-  const WorkspaceTapOverflowHider = styled.div`
+  const WorkspaceTabOverflowHider = styled.div`
     position: absolute;
     height: 1.75rem;
     width: 2rem;
@@ -201,8 +201,7 @@ export default function WorkspaceSelection() {
             <i className="material-icons">file_present</i>
           </FileIcon>
           <span>py_modules.py</span>
-          <WorkspaceTapOverflowHider />
-          <DeleteButton onClick={console.log} />
+          <WorkspaceTabOverflowHider />
         </FileItem>
 
         <FileItem>
@@ -210,8 +209,7 @@ export default function WorkspaceSelection() {
             <i className="material-icons">file_present</i>
           </FileIcon>
           <span>py_modules.py</span>
-          <WorkspaceTapOverflowHider />
-          <DeleteButton onClick={console.log} />
+          <WorkspaceTabOverflowHider />
         </FileItem>
 
         <FileItem>
@@ -219,8 +217,7 @@ export default function WorkspaceSelection() {
             <i className="material-icons">file_present</i>
           </FileIcon>
           <span>py_modules.py</span>
-          <WorkspaceTapOverflowHider />
-          <DeleteButton onClick={console.log} />
+          <WorkspaceTabOverflowHider />
         </FileItem>
       </FilesList>
 
@@ -235,7 +232,7 @@ export default function WorkspaceSelection() {
       </WorkspaceHeader>
 
       {userWorkspaces.map(([workspaceId, workspace], idx) => (
-        <WorkspaceTap selected={selectedWorkspaceId === workspaceId} key={idx}>
+        <WorkspaceTab selected={selectedWorkspaceId === workspaceId} key={idx}>
           <span
             data-name={`${workspace.name.replaceAll(" ", "")}`}
             onClick={() => dispatch(loadWorkspace(workspaceId))}
@@ -246,23 +243,23 @@ export default function WorkspaceSelection() {
             show={workspace.type === "remote"}
             connected={connected}
           />
-          <WorkspaceTapOverflowHider />
+          <WorkspaceTabOverflowHider />
           <DeleteButton
             idx={idx}
             onClick={() => dispatch(deleteWorkspace(workspaceId))}
           />
-        </WorkspaceTap>
+        </WorkspaceTab>
       ))}
       <WorkspaceHeader>Example Workspaces</WorkspaceHeader>
       {exampleWorkspaces.map(([workspaceId, workspace], idx) => (
-        <WorkspaceTap
+        <WorkspaceTab
           data-name={`exampleWorkspaceButton-${idx}`}
           selected={selectedWorkspaceId === workspaceId}
           onClick={() => dispatch(loadWorkspace(workspaceId))}
           key={idx}
         >
           {workspace.name}
-        </WorkspaceTap>
+        </WorkspaceTab>
       ))}
     </WorkspaceSelectionMenu>
   )

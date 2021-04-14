@@ -84,7 +84,7 @@ export default function FlowView() {
     dispatch(duplicateFlow(flowYAML))
   }
 
-  if (!flowChart) return <>no flow</>
+  if (!flowChart) return <>No Flow</>
 
   return (
     <Container fluid className="main-content-container px-0">
