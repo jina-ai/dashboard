@@ -1,4 +1,4 @@
-import React from "react"
+import React, { ChangeEvent } from "react"
 import { Col, FormInput } from "shards-react"
 import { SettingName } from "../../redux/settings/settings.types"
 
@@ -7,7 +7,7 @@ type Props = {
   label: string
   value: SettingName
   placeholder: string
-  onChange: (e: Event) => void
+  onChange: (e: ChangeEvent<HTMLInputElement>) => void
 }
 
 export default function FormItem({

@@ -22,6 +22,7 @@ import {
   serializeLogsToJSONBlob,
   serializeLogsToTextBlob,
 } from "../../helpers"
+import { TimePreference } from "../../views/LogsView"
 
 const ROW_SIZE = 30
 const DEFAULT_VIEW = "table"
@@ -48,7 +49,7 @@ type GroupedData = {
 
 export type FilterSelection = {
   label: string
-  value: string
+  value: TimePreference
 }
 
 const saveOptions = [
@@ -219,7 +220,10 @@ function GroupedLogs({
   showLogDetails,
 }: GroupedLogProps) {
   return (
-    <Card.Body className="log-stream-container p-0 border-top">
+    <Card.Body
+      className="log-stream-container p-0 border-top"
+      data-name="groupedLogsContainer"
+    >
       {Object.keys(groupedData).length && (
         <div className="log-group-container">
           {Object.entries(groupedData).map(([key, data], idx: number) => (
@@ -322,7 +326,7 @@ function LogsTable({ data, showLogDetails }: Props) {
     <Card className="mb-4">
       <Card.Header className="p-0">
         <Row className="p-3">
-          <Col md="8">
+          <Col md="8" data-name="logStreamFilters">
             <MultiFilterSelect
               clearAfter
               options={Object.values(viewOptions)}
@@ -330,11 +334,11 @@ function LogsTable({ data, showLogDetails }: Props) {
               className="logstream-select mb-2 mr-0 mb-md-0 mr-md-2"
               placeholder={
                 currentView === "table" ? (
-                  <span>
+                  <span data-name="logStreamViewSelectedOption">
                     <i className="material-icons mr-2">table_rows</i>Table View
                   </span>
                 ) : (
-                  <span>
+                  <span data-name="logStreamViewSelectedOption">
                     <i className="material-icons mr-2">view_list</i>
                     {viewOptions[currentView].label}
                   </span>
@@ -349,7 +353,7 @@ function LogsTable({ data, showLogDetails }: Props) {
                 onFilterChange={setSelectedSources}
                 className="logstream-select mb-2 mr-0 mb-md-0 mr-md-2"
                 placeholder={
-                  <span>
+                  <span data-name="logStreamSourceSelectedOption">
                     <i className="material-icons mr-2">mediation</i>All Sources
                   </span>
                 }
@@ -361,7 +365,7 @@ function LogsTable({ data, showLogDetails }: Props) {
               onFilterChange={setSelectedLevels}
               className="logstream-select mb-2 mr-0 mb-md-0 mr-md-2"
               placeholder={
-                <span>
+                <span data-name="logStreamLevelSelectedOption">
                   <i className="material-icons mr-2">bar_chart</i>All Levels
                 </span>
               }
@@ -374,7 +378,7 @@ function LogsTable({ data, showLogDetails }: Props) {
               }}
               className="logstream-select mb-2 mr-0 mb-md-0 mr-md-2"
               placeholder={
-                <span>
+                <span data-name="logStreamActionsSelect">
                   <i className="material-icons mr-2">download</i>Download Logs
                 </span>
               }

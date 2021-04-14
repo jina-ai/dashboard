@@ -34,6 +34,7 @@ describe('Hub page', () => {
     it('shows a list of hub images', () => {
       cy.fixture('hubImages').then(hubImages => {
         cy.dataName('hubImagesList').dataName('hubImage').its('length').should('eq', hubImages.length)
+        cy.dataName('hubImagesList').dataName('hubImageAuthor').its('length').should('eq', hubImages.length)
       })
     })
   })
@@ -46,6 +47,13 @@ describe('Hub page', () => {
     it('fetches images matching current filters', () => {
       cy.dataName('hubImagesFilter').contains('encoder').click()
       cy.dataName('hubImagesFilter').contains('nlp').click()
+    })
+
+    it('keeps filter on back button', () => {
+      cy.dataName('hubImagesFilter').contains('encoder').click()
+      cy.go("back")
+      cy.dataName('hubOverviewActionButtonLabel').contains('Read more').click()
+      cy.dataName('hubImagesFilter').contains('encoder').should('have.css', 'border', '1px solid rgb(0, 122, 255)')
     })
 
   })
