@@ -18,12 +18,17 @@ describe("The Flow Page", () => {
     cy.visit("/#/flow")
   })
 
+  it("should not crash when disconnected and clicking the play and stop button", () => {
+    cy.dataName("playButton").click()
+    cy.dataName("stopButton").click()
+  })
+
   //todo test that the play button doesn't crash anything when pressed
 
   it("should create a workspace and delete it", () => {
     cy.dataName("newWorkspaceButton").click({ force: true })
     cy.dataName("Workspace2").should("exist")
-    cy.dataName("deleteWorkspaceButton-1").click()
+    cy.dataName("deleteWorkspaceButton-1").click({ force: true })
     cy.dataName("Workspace2").should("not.exist")
   })
 

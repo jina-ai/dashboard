@@ -55,8 +55,12 @@ function DeleteButton({ onClick, idx }: DeleteWorkspaceProps) {
     right: 0;
   `
   return (
-    <Delete data-name={`deleteWorkspaceButton-${idx}`}>
-      <i onClick={onClick} className="material-icons">
+    <Delete>
+      <i
+        data-name={`deleteWorkspaceButton-${idx}`}
+        onClick={onClick}
+        className="material-icons"
+      >
         delete
       </i>
     </Delete>
