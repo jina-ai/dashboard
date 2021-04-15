@@ -10,7 +10,7 @@ function Login() {
   const client_id = process.env.REACT_APP_CLIENT_ID
 
   useEffect(() => {
-    const parsed = queryString.parse(window.location.search)
+    const queryParams = queryString.parse(window.location.search)
     const code = parsed["?code"] as GithubCode
     if (code) loginGithub(code)
   })
