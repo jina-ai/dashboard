@@ -3,8 +3,8 @@ type StringMap = { [key: string]: any };
 export const getFeatureFlags = (environmentVariables: StringMap) => {
     return Object.fromEntries(
         Object.entries(environmentVariables)
-        .filter(variableEntry => variableEntry[0].startsWith("REACT_APP_FEATURE"))
-        .map(variableEntry => [variableEntry[0].replace('REACT_APP_FEATURE_', ""), (variableEntry[1] === "enabled")])
+        .filter(([envVariableName, envVariableValue]) => envVariableName.startsWith("REACT_APP_FEATURE"))
+        .map(([envVariableName, envVariableValue]) => ([envVariableName.replace('REACT_APP_FEATURE_', ""), (envVariableValue === "enabled")]))
         )
 }
 
