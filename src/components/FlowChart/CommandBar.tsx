@@ -7,6 +7,7 @@ import Upload from "../../assets/icons/Upload.svg"
 import Yaml from "../../assets/icons/Yaml.svg"
 import { useDispatch } from "react-redux"
 import { showModal } from "../../redux/global/global.actions"
+import { isFeatureEnabled } from "../../helpers/featureSwitch"
 
 type Props = {
   importChart: () => void
@@ -43,12 +44,11 @@ export default function CommandBar({
   stopFlow,
   importChart,
   copyChart,
-  exportImage,
 }: Props) {
   const dispatch = useDispatch()
 
-  function handleCRUD() {
-    dispatch(showModal("CRUD"))
+  function handleQuerySearch() {
+    dispatch(showModal("QuerySearch"))
   }
 
   return (
@@ -61,9 +61,11 @@ export default function CommandBar({
           <Button data-name={"stopButton"} onClick={stopFlow}>
             <img alt="Stop" src={Stop} />
           </Button>
-          <Button onClick={handleCRUD}>
-            <img alt="Save" src={Save} />
-          </Button>
+          {isFeatureEnabled("QUERY_SEARCH") && (
+            <Button onClick={handleQuerySearch}>
+              <img alt="Save" src={Save} />
+            </Button>
+          )}
           <Button onClick={importChart}>
             <img alt="Upload" src={Upload} />
           </Button>

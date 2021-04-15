@@ -176,9 +176,9 @@ const IconSidebarLayout = (props: IconSideBarLayoutProps) => {
           modalParams={modalParams}
         />
       )}
-      {modal === "CRUD" && (
+      {modal === "QuerySearch" && (
         <QuerySearchModal
-          open={modal === "CRUD"}
+          open={modal === "QuerySearch"}
           closeModal={_closeModal}
           modalParams={modalParams}
         />

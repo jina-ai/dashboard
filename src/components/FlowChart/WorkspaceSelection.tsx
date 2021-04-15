@@ -12,6 +12,7 @@ import {
   deleteWorkspace,
   loadWorkspace,
 } from "../../redux/flows/flows.actions"
+import { isFeatureEnabled } from "../../helpers/featureSwitch"
 
 const FALLBACK_WORKSPACE_NAME = "Untitled workspace"
 
@@ -178,6 +179,35 @@ export default function WorkspaceSelection() {
 
   const currentWorkspace = workspaces[selectedWorkspaceId]
 
+  const FilesListComponent = () => (
+    <FilesList>
+      {/* TODO: map over actual files, delete actual files */}
+      <FileItem>
+        <FileIcon>
+          <i className="material-icons">file_present</i>
+        </FileIcon>
+        <span>py_modules.py</span>
+        <WorkspaceTabOverflowHider />
+      </FileItem>
+
+      <FileItem>
+        <FileIcon>
+          <i className="material-icons">file_present</i>
+        </FileIcon>
+        <span>py_modules.py</span>
+        <WorkspaceTabOverflowHider />
+      </FileItem>
+
+      <FileItem>
+        <FileIcon>
+          <i className="material-icons">file_present</i>
+        </FileIcon>
+        <span>py_modules.py</span>
+        <WorkspaceTabOverflowHider />
+      </FileItem>
+    </FilesList>
+  )
+
   return (
     <WorkspaceSelectionMenu>
       <SelectedWorkspaceHeader>
@@ -194,33 +224,7 @@ export default function WorkspaceSelection() {
           <i className="material-icons">add</i>
         </AddButton>
       </SubHeader>
-      <FilesList>
-        {/* TODO: map over actual files, delete actual files */}
-        <FileItem>
-          <FileIcon>
-            <i className="material-icons">file_present</i>
-          </FileIcon>
-          <span>py_modules.py</span>
-          <WorkspaceTabOverflowHider />
-        </FileItem>
-
-        <FileItem>
-          <FileIcon>
-            <i className="material-icons">file_present</i>
-          </FileIcon>
-          <span>py_modules.py</span>
-          <WorkspaceTabOverflowHider />
-        </FileItem>
-
-        <FileItem>
-          <FileIcon>
-            <i className="material-icons">file_present</i>
-          </FileIcon>
-          <span>py_modules.py</span>
-          <WorkspaceTabOverflowHider />
-        </FileItem>
-      </FilesList>
-
+      {isFeatureEnabled("FILES") && <FilesListComponent />}
       <WorkspaceHeader>
         My Workspaces
         <AddButton
