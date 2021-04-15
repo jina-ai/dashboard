@@ -11,7 +11,7 @@ function Login() {
 
   useEffect(() => {
     const queryParams = queryString.parse(window.location.search)
-    const code = parsed["?code"] as GithubCode
+    const code = queryParams["?code"] as GithubCode
     if (code) loginGithub(code)
   })
 
