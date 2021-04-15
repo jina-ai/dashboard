@@ -2,11 +2,7 @@ import {
   defaultJinaDHost,
   defaultJinaDPort,
 } from "../../../src/redux/settings/settings.constants"
-import {
-  Flow,
-  FlowState,
-  Workspace,
-} from "../../../src/redux/flows/flows.types"
+import { FlowState, Workspace } from "../../../src/redux/flows/flows.types"
 import { isFlowEdge, isFlowNode } from "../../../src/helpers/flow-chart"
 import {
   selectSelectedFlow,
@@ -70,7 +66,7 @@ describe("The Flow Page", () => {
           .filter(([id, flow]) => flow.type === "example")
           .map(([id, flow]) => flow) as Workspace[]
 
-        exampleWorkspace.forEach((workspace, idx) => {
+        exampleWorkspaces.forEach((workspace, idx) => {
           cy.dataName(`exampleWorkspaceButton-${idx}`).should(
             "contain",
             workspace.name
