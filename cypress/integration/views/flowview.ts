@@ -66,7 +66,7 @@ describe("The Flow Page", () => {
       .then((store) => {
         const flowState = store.getState().flowState as FlowState
 
-        const exampleWorkspace = Object.entries(flowState.workspaces)
+        const exampleWorkspaces = Object.entries(flowState.workspaces)
           .filter(([id, flow]) => flow.type === "example")
           .map(([id, flow]) => flow) as Workspace[]
 
