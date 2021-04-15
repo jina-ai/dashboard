@@ -13,8 +13,10 @@ import PackageView from "../views/PackageView"
 import LogIn from "../views/LogIn"
 
 import NotFound from "../views/NotFound"
+import HomeView from "../views/HomeView"
 import NavigateButton from "../components/Common/NavigateButton"
 import FlowView from "../views/FlowView"
+import { isFeatureEnabled } from "../helpers/featureSwitch"
 
 export const dashboardRoutes = [
   {
@@ -71,7 +73,8 @@ export const dashboardRoutes = [
   {
     path: "/home",
     layout: IconSidebar,
-    component: NotFound,
+    // Todo: remove feature flag and corresponding conditions after releasing HomeView in all instances
+    component: isFeatureEnabled("HOMEPAGE") ? HomeView : NotFound,
     props: {
       usesConnection: false,
       usesAuth: false,
@@ -87,7 +90,7 @@ export const dashboardRoutes = [
     },
   },
   {
-    path: "/package/:packageId",
+    path: "/package/:kind/:packageId",
     layout: IconSidebar,
     component: PackageView,
     props: {
