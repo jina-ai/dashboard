@@ -4,45 +4,46 @@ import { setUser, showError } from "../redux/global/global.actions"
 import logger from "../logger"
 import { User } from "../redux/global/global.types"
 
-export function loginGithub(code: string) {
-  _getAccessToken(code)
+export async function loginGithub(code: string) {
+  await _getAccessToken(code)
 }
 
-function _getAccessToken(code: string) {
+async function _getAccessToken(code: string) {
   const lambdaUrl = process.env.REACT_APP_GITHUB_LAMBDA
   if (lambdaUrl === "undefined") {
     store.dispatch(showError("No lambda found"))
   } else {
-    axios
-      .get(`${lambdaUrl}?ghcode=${code}`)
-      .then((response) => {
-        _getUserInfo(response.data.access_token)
-      })
-      .catch((e) => logger.log(e))
+    try {
+      const response = await axios.get(`${lambdaUrl}?ghcode=${code}`)
+      await _getUserInfo(response.data.access_token)
+    } catch (e) {
+      logger.log(e)
+    }
   }
 }
 
-function _getUserInfo(accessToken: string) {
+async function _getUserInfo(accessToken: string) {
   const config = {
     headers: { Authorization: "bearer " + accessToken },
   }
   const gitHubApi = process.env.REACT_APP_GITHUB_API
 
-  if (gitHubApi)
-    axios
-      .get(gitHubApi, config)
-      .then((response) => {
-        const _json = response.data
-        const user: User = {
-          username: _json.login,
-          displayName: _json.name,
-          emails: [_json.email],
-          id: _json.id,
-          _json,
-        }
-        store.dispatch(setUser(user))
-        window.location.href = "/"
-      })
-      .catch((e) => logger.log(e, "fetchUserInfoError"))
-  else store.dispatch(showError("No GithubApi Token found"))
+  if (gitHubApi) {
+    try {
+      const response = await axios.get(gitHubApi, config)
+
+      const _json = response.data
+      const user: User = {
+        username: _json.login,
+        displayName: _json.name,
+        emails: [_json.email],
+        id: _json.id,
+        _json,
+      }
+      store.dispatch(setUser(user))
+      window.location.href = "/"
+    } catch (e) {
+      logger.log(e)
+    }
+  } else store.dispatch(showError("No GithubApi Token found"))
 }
