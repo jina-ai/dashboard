@@ -52,6 +52,7 @@ export const formattedFlow = {
       type: "gateway",
       position: { y: 150, x: 250 },
       data: {
+        name: "gateway",
         label: "gateway",
         depth: 0,
       },
@@ -61,6 +62,7 @@ export const formattedFlow = {
       type: "pod",
       position: { y: 300, x: 250 },
       data: {
+        name: "segmenter",
         label: "segmenter",
         needs: ["gateway"],
         uses: "pods/segment.yml",
@@ -73,6 +75,7 @@ export const formattedFlow = {
       type: "pod",
       position: { y: 450, x: 250 },
       data: {
+        name: "encoder",
         label: "encoder",
         needs: ["segmenter"],
         uses: "pods/encode.yml",
@@ -87,6 +90,7 @@ export const formattedFlow = {
       type: "pod",
       position: { y: 600, x: 250 },
       data: {
+        name: "chunk_idx",
         label: "chunk_idx",
         needs: ["encoder"],
         polling: "any",
@@ -99,6 +103,7 @@ export const formattedFlow = {
       type: "pod",
       position: { y: 300, x: 500 },
       data: {
+        name: "doc_idx",
         label: "doc_idx",
         needs: ["gateway"],
         polling: "any",
@@ -111,6 +116,7 @@ export const formattedFlow = {
       type: "pod",
       position: { y: 750, x: 250 },
       data: {
+        name: "join_all",
         label: "join_all",
         needs: ["doc_idx", "chunk_idx"],
         uses: "_merge",

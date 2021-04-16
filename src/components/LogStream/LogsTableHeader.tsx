@@ -1,12 +1,12 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
-import { jsx } from "@emotion/react";
-import { Row, Col } from "react-bootstrap";
+import { jsx } from "@emotion/react"
+import { Row, Col } from "react-bootstrap"
 
 type Props = {
-  columns: { firstCol: number; secondCol: number };
-  border?: boolean;
-};
+  columns: { firstCol: number; secondCol: number }
+  border?: boolean
+}
 
 const LogsTableHeader = ({
   columns: { firstCol, secondCol },
@@ -50,7 +50,7 @@ const LogsTableHeader = ({
         </Col>
       </Row>
     </div>
-  );
-};
+  )
+}
 
-export { LogsTableHeader };
+export { LogsTableHeader }

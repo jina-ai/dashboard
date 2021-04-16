@@ -1,7 +1,10 @@
 import React from "react"
 import ReactDOM from "react-dom"
 import { ThemeProvider } from "@emotion/react"
-import { createMuiTheme, ThemeProvider as MuiThemeProvider } from '@material-ui/core/styles';
+import {
+  createMuiTheme,
+  ThemeProvider as MuiThemeProvider,
+} from "@material-ui/core/styles"
 import { Provider } from "react-redux"
 import { theme } from "./theme"
 import * as Sentry from "@sentry/react"
@@ -43,7 +46,7 @@ const muiTheme = createMuiTheme()
 
 ReactDOM.render(
   // HOC to make theme available as a prop in all components
-  <MuiThemeProvider theme={muiTheme} >
+  <MuiThemeProvider theme={muiTheme}>
     <ThemeProvider theme={theme}>
       <Provider store={store}>
         <App />

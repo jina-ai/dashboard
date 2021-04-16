@@ -74,7 +74,7 @@ export const dashboardRoutes = [
     path: "/home",
     layout: IconSidebar,
     // Todo: remove feature flag and corresponding conditions after releasing HomeView in all instances
-    component: ( isFeatureEnabled('HOMEPAGE') ? HomeView : NotFound),
+    component: isFeatureEnabled("HOMEPAGE") ? HomeView : NotFound,
     props: {
       usesConnection: false,
       usesAuth: false,

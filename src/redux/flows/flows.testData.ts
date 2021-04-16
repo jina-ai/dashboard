@@ -1,22 +1,41 @@
 import { FlowArguments, FlowState } from "./flows.types"
 
 export const testFlowState: FlowState = {
-  flowArguments: {
-    pod: [],
-    pea: [],
-    flow: [],
-    version: "",
-  },
-  tooltipConfig: {
-    tooltipsGlobal: {
-      showTooltip: true,
-      toogleOffWhenClicked: "global",
-      text: "Hold Shift and click to select multiple nodes",
+  workspaces: {
+    testWorkspace1: {
+      jina_version: "test_version",
+      daemon_id: "test_daemon_id",
+      name: "Workspace 1",
+      type: "user-generated",
+      daemon_endpoint: "",
+      isConnected: false,
+      selectedFlowId: "testFlow1",
+      files: [],
+      flowArguments: {
+        pod: [],
+        pea: [],
+        flow: [],
+      },
+    },
+    testWorkspace2: {
+      jina_version: "test_version",
+      daemon_id: "test_daemon_id",
+      name: "Workspace 2",
+      type: "user-generated",
+      daemon_endpoint: "",
+      isConnected: false,
+      selectedFlowId: "",
+      files: [],
+      flowArguments: {
+        pod: [],
+        pea: [],
+        flow: [],
+      },
     },
   },
-  selectedFlowId: "testFlow1",
   flows: {
     testFlow1: {
+      workspaceId: "testWorkspace1",
       name: "Custom Flow 1",
       type: "user-generated",
       isConnected: false,
@@ -51,6 +70,7 @@ export const testFlowState: FlowState = {
       },
     },
     testFlow2: {
+      workspaceId: "testWorkspace2",
       name: "Custom Flow 2",
       type: "user-generated",
       isConnected: false,
@@ -61,6 +81,45 @@ export const testFlowState: FlowState = {
             position: { x: 333, y: 312 },
             type: "pod",
             data: {
+              name: "gateway",
+              label: "gateway",
+            },
+          },
+        ],
+      },
+    },
+    testFlow3: {
+      workspaceId: "testWorkspace2",
+      name: "Custom Flow 3",
+      type: "user-generated",
+      isConnected: false,
+      flowChart: {
+        elements: [
+          {
+            id: "gateway",
+            position: { x: 333, y: 312 },
+            type: "pod",
+            data: {
+              name: "gateway",
+              label: "gateway",
+            },
+          },
+        ],
+      },
+    },
+    testFlow4: {
+      workspaceId: "testWorkspace2",
+      name: "Custom Flow 4",
+      type: "user-generated",
+      isConnected: false,
+      flowChart: {
+        elements: [
+          {
+            id: "gateway",
+            position: { x: 333, y: 312 },
+            type: "pod",
+            data: {
+              name: "gateway",
               label: "gateway",
             },
           },
@@ -68,6 +127,7 @@ export const testFlowState: FlowState = {
       },
     },
     flower: {
+      workspaceId: "testWorkspace2",
       name: "Flower Search Query",
       type: "example",
       isConnected: false,
@@ -83,6 +143,7 @@ export const testFlowState: FlowState = {
             },
             type: "gateway",
             data: {
+              name: "gateway",
               label: "gateway",
               depth: 0,
             },
@@ -95,6 +156,7 @@ export const testFlowState: FlowState = {
             },
             type: "pod",
             data: {
+              name: "loader",
               label: "loader",
               needs: ["gateway"],
               uses: "yaml/craft-load.yml",
@@ -110,6 +172,7 @@ export const testFlowState: FlowState = {
             },
             type: "pod",
             data: {
+              name: "flipper",
               label: "flipper",
               needs: ["loader"],
               uses: "yaml/craft-flip.yml",
@@ -125,6 +188,7 @@ export const testFlowState: FlowState = {
             },
             type: "pod",
             data: {
+              name: "normalizer",
               label: "normalizer",
               needs: ["flipper"],
               uses: "yaml/craft-normalize.yml",
@@ -140,6 +204,7 @@ export const testFlowState: FlowState = {
             },
             type: "pod",
             data: {
+              name: "encoder",
               label: "encoder",
               needs: ["normalizer"],
               uses: "$ENCODER",
@@ -156,6 +221,7 @@ export const testFlowState: FlowState = {
             },
             type: "pod",
             data: {
+              name: "chunk_indexer",
               label: "chunk_indexer",
               needs: ["encoder"],
               uses: "yaml/index-chunk.yml",
@@ -173,6 +239,7 @@ export const testFlowState: FlowState = {
             },
             type: "pod",
             data: {
+              name: "ranker",
               label: "ranker",
               needs: ["chunk_indexer"],
               uses: "MinRanker",
@@ -187,6 +254,7 @@ export const testFlowState: FlowState = {
             },
             type: "pod",
             data: {
+              name: "doc_indexer",
               label: "doc_indexer",
               needs: ["ranker"],
               uses: "yaml/index-doc.yml",
@@ -279,10 +347,10 @@ export const testFlowState: FlowState = {
       },
     },
   },
+  selectedWorkspaceId: "testWorkspace1",
 }
 
 export const testFlowArguments: FlowArguments = {
-  version: "1",
   pod: [
     {
       defaultValue: "any",

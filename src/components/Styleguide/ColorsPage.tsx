@@ -1,10 +1,10 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
-import { css, jsx, useTheme } from "@emotion/react";
-import { PageTitle } from "../Common/PageTitle";
+import { css, jsx, useTheme } from "@emotion/react"
+import { PageTitle } from "../Common/PageTitle"
 
 const ColorsPage = () => {
-  const { palette } = useTheme();
+  const { palette } = useTheme()
   return (
     <div>
       <PageTitle title={"Colors"} className={""} />
@@ -29,7 +29,7 @@ const ColorsPage = () => {
         </div>
       ))}
     </div>
-  );
-};
+  )
+}
 
-export default ColorsPage;
+export default ColorsPage

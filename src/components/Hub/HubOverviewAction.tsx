@@ -1,6 +1,6 @@
 import React from "react"
 import styled from "@emotion/styled"
-import { Button } from '@material-ui/core'
+import { Button } from "@material-ui/core"
 
 const ActionItemContainer = styled.div`
   display: flex;
@@ -18,7 +18,7 @@ const ActionItemTitle = styled.span`
 `
 
 const ActionButton = styled(Button)`
-  ${({theme}) => `
+  ${({ theme }) => `
     background: ${theme.palette.primary};
     border-radius: 10px;
     border: none;

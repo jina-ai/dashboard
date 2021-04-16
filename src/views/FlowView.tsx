@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from "react"
 import { Card, Container, Row } from "shards-react"
 import { PageTitle } from "../components/Common/PageTitle"
-import FlowSelection from "../components/FlowChart/FlowSelection"
+import WorkspaceSelection from "../components/FlowChart/WorkspaceSelection"
 import {
   duplicateFlow,
   startFlow,
@@ -22,7 +22,7 @@ import logger from "../logger"
 import { copyToClipboard, formatAsYAML } from "../helpers"
 import html2canvas from "html2canvas"
 import FlowChart from "../components/FlowChart/FlowChart"
-import { Flow } from "../redux/flows/flows.types"
+import FlowSelection from "../components/FlowChart/FlowSelection"
 
 const FlowViewContainer = styled.div`
   display: flex;
@@ -33,8 +33,9 @@ export default function FlowView() {
   const dispatch = useDispatch()
   const selectedFlowId = useSelector(selectSelectedFlowId)
   const flowArguments = useSelector(selectFlowArguments)
-  const flow = useSelector(selectSelectedFlow) as Flow
-  const { flowChart, type: flowType } = flow
+  const flow = useSelector(selectSelectedFlow)
+  let flowChart = flow?.flowChart
+  let flowType = flow?.type
 
   const copyChartAsYAML = useCallback(() => {
     logger.log("copyChartAsYAML | chart:", flowChart)
@@ -44,7 +45,7 @@ export default function FlowView() {
 
   const [showOverlay, setShowOverlay] = useState<boolean>(false)
   //todo fix overlay
-  console.log(showOverlay)
+  logger.log("showOverlay", showOverlay)
   const showCaptureOverlay = (showOverlay = true) => {
     setShowOverlay(showOverlay)
   }
@@ -83,6 +84,8 @@ export default function FlowView() {
     dispatch(duplicateFlow(flowYAML))
   }
 
+  if (!flowChart) return <>No Flow</>
+
   return (
     <Container fluid className="main-content-container px-0">
       <div className="px-4">
@@ -94,9 +97,9 @@ export default function FlowView() {
         </Row>
 
         <FlowViewContainer>
-          <FlowSelection />
-
+          <WorkspaceSelection />
           <Card className="chart-section-container mr-md-4 mb-4">
+            <FlowSelection />
             <CommandBar
               startFlow={() => dispatch(startFlow(selectedFlowId))}
               stopFlow={() => dispatch(stopFlow(selectedFlowId))}
@@ -104,7 +107,6 @@ export default function FlowView() {
               importChart={() => dispatch(showModal("import"))}
               exportImage={exportImage}
             />
-
             <FlowChart elements={flowChart.elements} />
           </Card>
 

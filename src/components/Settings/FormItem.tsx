@@ -20,7 +20,12 @@ export default function FormItem({
   return (
     <Col md={colSpan} className="form-group">
       <label>{label}</label>
-      <FormInput placeholder={placeholder} value={value} onChange={onChange} />
+      <FormInput
+        data-name={label.replaceAll(" ", "")}
+        placeholder={placeholder}
+        value={value}
+        onChange={onChange}
+      />
     </Col>
   )
 }
