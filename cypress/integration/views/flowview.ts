@@ -8,6 +8,7 @@ import {
   selectSelectedFlow,
   selectSelectedFlowId,
 } from "../../../src/redux/flows/flows.selectors"
+import path from "path"
 
 describe("The Flow Page", () => {
   beforeEach(() => {
@@ -112,6 +113,7 @@ describe("The Flow Page", () => {
   it("should download a specified png file when clicking saveButton", () => {
     const downloadsFolder = Cypress.config("downloadsFolder")
     cy.dataName("saveButton").click()
-    cy.readFile(`${downloadsFolder}/jina-flow-visual.png`, "base64")
+    const filePath = path.join(downloadsFolder, "jina-flow-visual.png")
+    cy.readFile(filePath)
   })
 })
