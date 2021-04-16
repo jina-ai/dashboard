@@ -44,6 +44,7 @@ export default function CommandBar({
   stopFlow,
   importChart,
   copyChart,
+  exportImage,
 }: Props) {
   const dispatch = useDispatch()
 
@@ -51,6 +52,13 @@ export default function CommandBar({
     dispatch(showModal("QuerySearch"))
   }
 
+  function handleExportImage() {
+    exportImage("png")
+  }
+
+  const saveButtonFunction = isFeatureEnabled("QUERY_SEARCH")
+    ? handleQuerySearch
+    : handleExportImage
   return (
     <div className="command-bar-container">
       <div className="command-bar">
@@ -61,11 +69,9 @@ export default function CommandBar({
           <Button data-name={"stopButton"} onClick={stopFlow}>
             <img alt="Stop" src={Stop} />
           </Button>
-          {isFeatureEnabled("QUERY_SEARCH") && (
-            <Button onClick={handleQuerySearch}>
-              <img alt="Save" src={Save} />
-            </Button>
-          )}
+          <Button data-name={"saveButton"} onClick={saveButtonFunction}>
+            <img alt="Save" src={Save} />
+          </Button>
           <Button onClick={importChart}>
             <img alt="Upload" src={Upload} />
           </Button>

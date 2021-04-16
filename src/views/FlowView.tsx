@@ -51,7 +51,7 @@ export default function FlowView() {
   }
 
   const exportImage = (extension = "png") => {
-    const chartContainer = document.querySelector(".chart-container")
+    const chartContainer = document.querySelector(".reactflow-wrapper")
     const captureOverlay = document.querySelector(".capture-overlay")
     if (!chartContainer) return
     if (captureOverlay) captureOverlay.classList.add("fade-out")
