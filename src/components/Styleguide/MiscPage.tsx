@@ -1,3 +1,4 @@
+/** @jsxRuntime classic */
 /** @jsx jsx */
 import { css, jsx, useTheme } from "@emotion/react";
 import { PageTitle } from "../Common/PageTitle";
