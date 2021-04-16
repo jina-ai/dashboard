@@ -30,12 +30,14 @@ if (process.env.REACT_APP_TARGET === "hub") {
   App = Dashboard
 }
 
-Sentry.init({
-  dsn:
-    "https://085edd94ec3e479cb20f2c65f7b8cb82@o525420.ingest.sentry.io/5639443",
-  integrations: [new Integrations.BrowserTracing()],
-  tracesSampleRate: 1.0,
-})
+if (process.env.NODE_ENV === "production") {
+  Sentry.init({
+    dsn:
+      "https://085edd94ec3e479cb20f2c65f7b8cb82@o525420.ingest.sentry.io/5639443",
+    integrations: [new Integrations.BrowserTracing()],
+    tracesSampleRate: 1.0,
+  })
+}
 
 const muiTheme = createMuiTheme()
 

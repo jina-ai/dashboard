@@ -1,6 +1,6 @@
 {
   "name": "dashboard-v1",
-  "version": "1.1.2",
+  "version": "1.1.5",
   "private": true,
   "homepage": "https://dashboard.jina.ai",
   "scripts": {
@@ -72,6 +72,7 @@
     "@types/node": "^14.6.4",
     "@types/react": "^16.9.49",
     "@types/react-dom": "^16.9.8",
+    "@types/react-grid-layout": "^1.1.1",
     "@types/react-modal": "^3.10.6",
     "@types/react-redux": "^7.1.15",
     "@types/react-router-dom": "^5.1.6",
@@ -118,6 +119,7 @@
     "react-error-boundary": "^3.0.2",
     "react-flow-renderer": "^8.8.0",
     "react-ga": "^2.7.0",
+    "react-grid-layout": "^1.2.4",
     "react-minisearch": "^2.6.3",
     "react-modal": "^3.11.2",
     "react-redux": "^7.2.2",
@@ -150,6 +152,7 @@
     "@types/react-virtualized-auto-sizer": "^1.0.0",
     "@types/react-window": "^1.8.2",
     "axios-mock-adapter": "^1.19.0",
+    "chokidar": "^3.5.1",
     "cypress": "^6.8.0",
     "eslint-plugin-flowtype": "^5.2.0",
     "husky": "^4.2.5",

@@ -68,4 +68,10 @@ describe("The Flow Page", () => {
       )
     })
   })
+
+  it("should download a specified png file when clicking saveButton", () => {
+    const downloadsFolder = Cypress.config("downloadsFolder")
+    cy.dataName("saveButton").click()
+    cy.readFile(`${downloadsFolder}/jina-flow-visual.png`, "base64")
+  })
 })

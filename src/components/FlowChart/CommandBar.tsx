@@ -52,7 +52,7 @@ export default function CommandBar({
           <Button data-name={"stopButton"} onClick={stopFlow}>
             <img alt="Stop" src={Stop} />
           </Button>
-          <Button onClick={() => exportImage("png")}>
+          <Button data-name={"saveButton"} onClick={() => exportImage("png")}>
             <img alt="Save" src={Save} />
           </Button>
           <Button onClick={importChart}>
