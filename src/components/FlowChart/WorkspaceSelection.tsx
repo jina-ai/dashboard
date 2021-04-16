@@ -15,7 +15,7 @@ import {
 } from "../../redux/flows/flows.actions"
 import { showModal } from "../../redux/global/global.actions"
 
-const FALLBACK_WORKSPACE_NAME = "untitled workspace"
+const FALLBACK_WORKSPACE_NAME = "Untitled workspace"
 
 type ConnectionIndicatorProps = {
   connected: boolean
@@ -57,8 +57,12 @@ function DeleteButton({ onClick, idx }: DeleteWorkspaceProps) {
     right: 0;
   `
   return (
-    <Delete data-name={`deleteWorkspaceButton-${idx}`}>
-      <i onClick={onClick} className="material-icons">
+    <Delete>
+      <i
+        data-name={`deleteWorkspaceButton-${idx}`}
+        onClick={onClick}
+        className="material-icons"
+      >
         delete
       </i>
     </Delete>
@@ -96,13 +100,13 @@ export default function WorkspaceSelection() {
     overflow: hidden;
   `
 
-  type WorkspaceTapProps = {
+  type WorkspaceTabProps = {
     selected: boolean
   }
 
-  const WorkspaceTap = styled.div`
+  const WorkspaceTab = styled.div`
     cursor: pointer;
-    font-weight: ${(props: WorkspaceTapProps) =>
+    font-weight: ${(props: WorkspaceTabProps) =>
       props.selected ? "bold" : 500};
     font-size: 14px;
     display: flex;
@@ -117,31 +121,7 @@ export default function WorkspaceSelection() {
     padding-bottom: 0.15rem;
   `
 
-  const FileSelector = () => {
-    const FileLabel = styled.label`
-      float: right;
-      cursor: pointer;
-    `
-    const FileInput = styled.input`
-      display: none;
-    `
-
-    return (
-      <>
-        <FileLabel htmlFor="workspace-file-select">
-          <i className="material-icons">attach_file</i>
-        </FileLabel>
-        <FileInput
-          id="workspace-file-select"
-          type="file"
-          multiple
-          onChange={(e) => uploadSelectedFiles(e.target.files)}
-        />
-      </>
-    )
-  }
-
-  const WorkspaceTapOverflowHider = styled.div`
+  const WorkspaceTabOverflowHider = styled.div`
     position: absolute;
     height: 1.75rem;
     width: 2rem;
@@ -206,6 +186,30 @@ export default function WorkspaceSelection() {
     ([id, workspace]) => workspace.type === "example"
   )
 
+  const FileSelector = () => {
+    const FileLabel = styled.label`
+      float: right;
+      cursor: pointer;
+    `
+    const FileInput = styled.input`
+      display: none;
+    `
+
+    return (
+      <>
+        <FileLabel htmlFor="workspace-file-select">
+          <i className="material-icons">attach_file</i>
+        </FileLabel>
+        <FileInput
+          id="workspace-file-select"
+          type="file"
+          multiple
+          onChange={(e) => uploadSelectedFiles(e.target.files)}
+        />
+      </>
+    )
+  }
+
   const currentWorkspace = workspaces[selectedWorkspaceId]
 
   return (
@@ -217,26 +221,44 @@ export default function WorkspaceSelection() {
           connected={connected}
         />
       </SelectedWorkspaceHeader>
+
       <SubHeader>
-        Files <FileSelector />
+        Files{" "}
+        <AddButton onClick={() => {}}>
+          <i className="material-icons">add</i>
+        </AddButton>
       </SubHeader>
       <FilesList>
-        {currentWorkspace.files.length ? (
-          currentWorkspace.files.map((filename, idx) => (
-            <FileItem key={idx}>
-              <FileIcon>
-                <i className="material-icons">file_present</i>
-              </FileIcon>
-              <span>{filename}</span>
-              <WorkspaceTapOverflowHider />
-            </FileItem>
-          ))
-        ) : (
-          <span>
-            <i>none</i>
-          </span>
-        )}
+        {/* TODO: map over actual files, delete actual files */}
+        <FileItem>
+          <FileIcon>
+            <i className="material-icons">file_present</i>
+          </FileIcon>
+          <span>py_modules.py</span>
+          <WorkspaceTabOverflowHider />
+          <FileSelector />
+          <DeleteButton onClick={console.log} />
+        </FileItem>
+
+        <FileItem>
+          <FileIcon>
+            <i className="material-icons">file_present</i>
+          </FileIcon>
+          <span>py_modules.py</span>
+          <WorkspaceTabOverflowHider />
+          <DeleteButton onClick={console.log} />
+        </FileItem>
+
+        <FileItem>
+          <FileIcon>
+            <i className="material-icons">file_present</i>
+          </FileIcon>
+          <span>py_modules.py</span>
+          <WorkspaceTabOverflowHider />
+          <DeleteButton onClick={console.log} />
+        </FileItem>
       </FilesList>
+
       <WorkspaceHeader>
         My Workspaces
         <AddButton
@@ -248,7 +270,7 @@ export default function WorkspaceSelection() {
       </WorkspaceHeader>
 
       {userWorkspaces.map(([workspaceId, workspace], idx) => (
-        <WorkspaceTap
+        <WorkspaceTab
           data-name={`${workspace.name.replaceAll(" ", "")}`}
           selected={selectedWorkspaceId === workspaceId}
           key={idx}
@@ -260,32 +282,32 @@ export default function WorkspaceSelection() {
             show={workspace.type === "remote"}
             connected={connected}
           />
-          <WorkspaceTapOverflowHider />
+          <WorkspaceTabOverflowHider />
           <DeleteButton
             idx={idx}
             onClick={() => dispatch(deleteWorkspace(workspaceId))}
           />
-        </WorkspaceTap>
+        </WorkspaceTab>
       ))}
       <WorkspaceHeader>Example Workspaces</WorkspaceHeader>
       {exampleWorkspaces.map(([workspaceId, workspace], idx) => (
-        <WorkspaceTap
+        <WorkspaceTab
           data-name={`exampleWorkspaceButton-${idx}`}
           selected={selectedWorkspaceId === workspaceId}
           onClick={() => dispatch(loadWorkspace(workspaceId))}
           key={idx}
         >
           {workspace.name}
-        </WorkspaceTap>
+        </WorkspaceTab>
       ))}
-      <WorkspaceTap
+      <WorkspaceTab
         selected={false}
         onClick={() => {
           dispatch(showModal("multiModalExample"))
         }}
       >
         Multi-Modal-Example
-      </WorkspaceTap>
+      </WorkspaceTab>
     </WorkspaceSelectionMenu>
   )
 }

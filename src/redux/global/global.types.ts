@@ -100,9 +100,9 @@ export type Modal =
   | "review"
   | "podEdit"
   | "flowSettings"
-  | "CRUD"
   | "configFileUpload"
   | "multiModalExample"
+  | "QuerySearch"
 
 export type ModalParams = {
   imageId?: string

@@ -15,11 +15,30 @@ Array [
       Find out what you can do in Jina hub and how you platform works.
     </p>
     <button
-      className="css-y3x934"
+      className="MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeMedium MuiButton-textSizeMedium MuiButtonBase-root css-1hb5non-MuiButtonBase-root-MuiButton-root"
       data-name="hubOverviewActionButtonLabel"
+      disabled={false}
+      onBlur={[Function]}
       onClick={[Function]}
+      onContextMenu={[Function]}
+      onDragLeave={[Function]}
+      onFocus={[Function]}
+      onKeyDown={[Function]}
+      onKeyUp={[Function]}
+      onMouseDown={[Function]}
+      onMouseLeave={[Function]}
+      onMouseUp={[Function]}
+      onTouchEnd={[Function]}
+      onTouchMove={[Function]}
+      onTouchStart={[Function]}
+      tabIndex={0}
+      type="button"
     >
-      Read more
+      <span
+        className="MuiButton-label css-8xplcm-MuiButton-label"
+      >
+        Read more
+      </span>
     </button>
   </div>,
   <div
@@ -35,11 +54,30 @@ Array [
       Create flow
     </p>
     <button
-      className="css-y3x934"
+      className="MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeMedium MuiButton-textSizeMedium MuiButtonBase-root css-1hb5non-MuiButtonBase-root-MuiButton-root"
       data-name="hubOverviewActionButtonLabel"
+      disabled={false}
+      onBlur={[Function]}
       onClick={[Function]}
+      onContextMenu={[Function]}
+      onDragLeave={[Function]}
+      onFocus={[Function]}
+      onKeyDown={[Function]}
+      onKeyUp={[Function]}
+      onMouseDown={[Function]}
+      onMouseLeave={[Function]}
+      onMouseUp={[Function]}
+      onTouchEnd={[Function]}
+      onTouchMove={[Function]}
+      onTouchStart={[Function]}
+      tabIndex={0}
+      type="button"
     >
-      Let's Go
+      <span
+        className="MuiButton-label css-8xplcm-MuiButton-label"
+      >
+        Let's Go
+      </span>
     </button>
   </div>,
 ]

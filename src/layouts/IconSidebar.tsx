@@ -36,7 +36,7 @@ import {
 } from "../redux/global/global.actions"
 import { importFlow } from "../redux/flows/flows.actions"
 import FlowSettings from "../modals/FlowSettings"
-import CRUD from "../modals/CRUD"
+import QuerySearchModal from "../modals/QuerySearchModal"
 
 type IconSideBarLayoutProps = {
   children: React.ReactNode
@@ -176,9 +176,9 @@ const IconSidebarLayout = (props: IconSideBarLayoutProps) => {
           modalParams={modalParams}
         />
       )}
-      {modal === "CRUD" && (
-        <CRUD
-          open={modal === "CRUD"}
+      {modal === "QuerySearch" && (
+        <QuerySearchModal
+          open={modal === "QuerySearch"}
           closeModal={_closeModal}
           modalParams={modalParams}
         />
