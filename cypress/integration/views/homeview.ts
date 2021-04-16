@@ -28,7 +28,7 @@ describe.skip("Hub page", () => {
     )
   })
 
-  it.skip("should have Jina hello world link", () => {
+  it("should have Jina hello world link", () => {
     cy.dataName("jina-hello-world-card").should(
       "have.attr",
       "href",
@@ -36,7 +36,7 @@ describe.skip("Hub page", () => {
     )
   })
 
-  it.skip("should have Jina github url link", () => {
+  it("should have Jina github url link", () => {
     cy.dataName("jina-github-card").should(
       "have.attr",
       "href",
