@@ -9,10 +9,10 @@ describe("The Pod View", () => {
     cy.dataName("chart-node-gateway").should("exist")
   })
 
-  it("should show 'pod-edit-container' when clicking 'gateway' pod label, and hide it when pressing {esc}", () => {
-    cy.dataName("pod-edit-container").should("not.exist")
+  it("should show 'podEditContainer' when clicking 'gateway' pod label, and hide it when pressing {esc}", () => {
+    cy.dataName("podEditContainer").should("not.exist")
     cy.dataName("chart-node-gateway").dblclick()
-    cy.dataName("pod-edit-container")
+    cy.dataName("podEditContainer")
       .should("exist")
       .type("{esc}")
       .should("not.exist")

@@ -142,7 +142,7 @@ function PodEditComponent({ open, closeModal, modalParams }: Props) {
       closeTimeoutMS={100}
       style={style}
     >
-      <PodEditContainer data-name="pod-edit-container">
+      <PodEditContainer data-name="podEditCcontainer">
         <Header1>pods name</Header1>
 
         <Input
