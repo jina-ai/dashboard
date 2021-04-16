@@ -1,10 +1,10 @@
-describe("Hub page", () => {
+describe.skip("Hub page", () => {
   before(() => {
     cy.intercept("images", { fixture: "hubImages" })
     cy.visit("/#/home")
   })
 
-  it.skip("should display the resources", () => {
+  it("should display the resources", () => {
     cy.contains("Resources")
     cy.contains("Jina 101")
     cy.contains("Jina Docs")
@@ -12,7 +12,7 @@ describe("Hub page", () => {
     cy.contains("Visit us on Github!")
   })
 
-  it.skip("should have Jina 101 link", () => {
+  it("should have Jina 101 link", () => {
     cy.dataName("jina-101-card").should(
       "have.attr",
       "href",
@@ -20,7 +20,7 @@ describe("Hub page", () => {
     )
   })
 
-  it.skip("should have Jina docs link", () => {
+  it("should have Jina docs link", () => {
     cy.dataName("jina-docs-card").should(
       "have.attr",
       "href",
