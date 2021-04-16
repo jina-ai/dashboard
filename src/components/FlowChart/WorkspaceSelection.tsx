@@ -215,31 +215,21 @@ export default function WorkspaceSelection() {
 
   const FilesListComponent = () => (
     <FilesList>
-      {/* TODO: map over actual files, delete actual files */}
-      <FileItem>
-        <FileSelector />
-        <FileIcon>
-          <i className="material-icons">file_present</i>
-        </FileIcon>
-        <span>py_modules.py</span>
-        <WorkspaceTabOverflowHider />
-      </FileItem>
-
-      <FileItem>
-        <FileIcon>
-          <i className="material-icons">file_present</i>
-        </FileIcon>
-        <span>py_modules.py</span>
-        <WorkspaceTabOverflowHider />
-      </FileItem>
-
-      <FileItem>
-        <FileIcon>
-          <i className="material-icons">file_present</i>
-        </FileIcon>
-        <span>py_modules.py</span>
-        <WorkspaceTabOverflowHider />
-      </FileItem>
+      {currentWorkspace.files.length ? (
+        currentWorkspace.files.map((filename, idx) => (
+          <FileItem key={idx}>
+            <FileIcon>
+              <i className="material-icons">file_present</i>
+            </FileIcon>
+            <span>{filename}</span>
+            <WorkspaceTabOverflowHider />
+          </FileItem>
+        ))
+      ) : (
+        <span>
+          <i>none</i>
+        </span>
+      )}
     </FilesList>
   )
 
@@ -254,10 +244,7 @@ export default function WorkspaceSelection() {
       </SelectedWorkspaceHeader>
 
       <SubHeader>
-        Files{" "}
-        <AddButton onClick={() => {}}>
-          <i className="material-icons">add</i>
-        </AddButton>
+        Files <FileSelector />
       </SubHeader>
       {isFeatureEnabled("FILES") && <FilesListComponent />}
       <WorkspaceHeader>
