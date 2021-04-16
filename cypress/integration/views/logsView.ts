@@ -52,38 +52,39 @@ describe("Logs page", () => {
     })
   })
 })
-              cy.dataName(`logItem-${index}`).should("contain", log.message);
-            });
-          });
-        });
 
-      context('on changing table view', () => {
+context("on changing table view", () => {
+  it("should click on All Sources", () => {
+    cy.dataName("logStreamSourceSelectedOption").should(
+      "contain.text",
+      "All Sources"
+    )
+    cy.dataName("logStreamSourceSelectedOption").click()
+  })
 
-        it('should click on All Sources', () => {
-          cy.dataName('logStreamSourceSelectedOption').should('contain.text', 'All Sources')
-          cy.dataName('logStreamSourceSelectedOption').click()
-        })
+  it("should initially display Table View option", () => {
+    cy.dataName("logStreamViewSelectedOption").click()
+    cy.dataName("logStreamFilters").contains("Group by Pod").click()
+    cy.dataName("groupedLogsContainer").should("contain.text", "encode1")
+    cy.dataName("groupedLogsContainer").should("contain.text", "encode2")
+    cy.dataName("logStreamViewSelectedOption").click()
+    cy.dataName("logStreamFilters").contains("Group by Level").click()
+    cy.dataName("groupedLogsContainer").should("contain.text", "INFO")
+  })
 
-        it('should initially display Table View option', () => {
-          cy.dataName('logStreamViewSelectedOption').click()
-          cy.dataName('logStreamFilters').contains('Group by Pod').click()
-          cy.dataName('groupedLogsContainer').should("contain.text", "encode1")
-          cy.dataName('groupedLogsContainer').should("contain.text", "encode2")
-          cy.dataName('logStreamViewSelectedOption').click()
-          cy.dataName('logStreamFilters').contains('Group by Level').click()
-          cy.dataName('groupedLogsContainer').should("contain.text", "INFO")
-        })
+  it("should click on All Levels", () => {
+    cy.dataName("logStreamLevelSelectedOption").should(
+      "contain.text",
+      "All Levels"
+    )
+    cy.dataName("logStreamLevelSelectedOption").click()
+  })
 
-        it('should click on All Levels', () => {
-          cy.dataName('logStreamLevelSelectedOption').should('contain.text', 'All Levels')
-          cy.dataName('logStreamLevelSelectedOption').click()
-        })
-
-        it('should click on Download Logs', () => {
-          cy.dataName('logStreamActionsSelect').should('contain.text', 'Download Logs')
-          cy.dataName('logStreamActionsSelect').click()
-        })
-      })
-    });
-  });
-});
+  it("should click on Download Logs", () => {
+    cy.dataName("logStreamActionsSelect").should(
+      "contain.text",
+      "Download Logs"
+    )
+    cy.dataName("logStreamActionsSelect").click()
+  })
+})
