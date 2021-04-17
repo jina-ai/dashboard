@@ -62,19 +62,15 @@ describe("Banners on the Flow design page", () => {
   })
 
   it("successfully shows single banner", () => {
-    cy.get('.notifications-container').should('not.exist')
-
     cy.window().its('store').invoke("dispatch", {
       type: SHOW_BANNER,
       payload: { message: "message", theme: "success" }
     })
 
-    cy.get('.notifications-container').should('have.length', 1)
+    cy.get('.notifications-container').its('length').should('be.gte', 1)
   })
 
   it("successfully shows multiple banners", () => {
-    cy.get('.notifications-container').should('not.exist')
-
     cy.window().its('store').invoke("dispatch", {
       type: SHOW_BANNER,
       payload: { message: "message1", theme: "success" }
@@ -88,6 +84,6 @@ describe("Banners on the Flow design page", () => {
       payload: { message: "message3", theme: "success" }
     })
 
-    cy.get('.notifications-container').should('have.length', 3)
+    cy.get('.notifications-container').its('length').should('be.gte', 3)
   })
 })
