@@ -34,7 +34,7 @@ describe("when connecting to gateway", () => {
   it("should trigger a success log when searched successfully", async () => {
     mockGatewayClient.onPost("api/search").reply(200, search_success_response)
     const loggerSpy = jest.spyOn(logger, "log")
-    await gatewayClient.search("Josef Stalin")
+    await gatewayClient.search("smiling unicorn")
     expect(loggerSpy).toHaveBeenNthCalledWith(1, "search - successful")
   })
 
@@ -42,14 +42,14 @@ describe("when connecting to gateway", () => {
     mockGatewayClient.onPost("api/search").reply(500)
     const error = new Error("Request failed with status code 500")
     const loggerSpy = jest.spyOn(logger, "log")
-    await gatewayClient.search("Josef Stalin")
+    await gatewayClient.search("smiling unicorn")
     expect(loggerSpy).toHaveBeenNthCalledWith(1, "search - error", error)
   })
 
   it("should trigger a success log when indexed successfully", async () => {
     mockGatewayClient.onPost("api/index").reply(200, index_success_response)
     const loggerSpy = jest.spyOn(logger, "log")
-    await gatewayClient.index("Josef Stalin")
+    await gatewayClient.index("smiling unicorn")
     expect(loggerSpy).toHaveBeenNthCalledWith(1, "index - successful")
   })
 
@@ -57,7 +57,7 @@ describe("when connecting to gateway", () => {
     mockGatewayClient.onPost("api/index").reply(500)
     const error = new Error("Request failed with status code 500")
     const loggerSpy = jest.spyOn(logger, "log")
-    await gatewayClient.index("Josef Stalin")
+    await gatewayClient.index("smiling unicorn")
     expect(loggerSpy).toHaveBeenNthCalledWith(1, "index - error", error)
   })
 })

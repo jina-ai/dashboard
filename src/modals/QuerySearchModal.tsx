@@ -32,7 +32,7 @@ type Props = {
   modalParams: ModalParams
 }
 
-function CRUD({ open, closeModal, modalParams }: Props) {
+function QuerySearchModal({ open, closeModal, modalParams }: Props) {
   const [searchText, setSearchText] = useState("")
   const [indexText, setIndexText] = useState("")
   const dispatch = useDispatch()
@@ -82,4 +82,4 @@ function CRUD({ open, closeModal, modalParams }: Props) {
   )
 }
 
-export default CRUD
+export default QuerySearchModal

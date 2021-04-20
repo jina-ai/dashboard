@@ -100,7 +100,7 @@ export type Modal =
   | "review"
   | "podEdit"
   | "flowSettings"
-  | "CRUD"
+  | "QuerySearch"
   | "configFileUpload"
   | "multiModalExample"
 

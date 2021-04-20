@@ -5,8 +5,7 @@ import logger from "../logger"
 import { TIMEOUT } from "./config"
 
 export let gatewayInstance = axios.create()
-//todo refactor messages into variables and share them with tests
-
+const top_k = 10
 const gatewayClient = {
   connect: async (settings: Settings, callback: ConnectionCallback) => {
     logger.log("api - connect - settings", settings)
@@ -34,7 +33,7 @@ const gatewayClient = {
   search: async (searchRequest: string) => {
     try {
       const result = await gatewayInstance.post("/api/search", {
-        top_k: 10,
+        top_k,
         mode: "search",
         data: [searchRequest],
       })
@@ -49,7 +48,7 @@ const gatewayClient = {
   index: async (indexRequest: string) => {
     try {
       const result = await gatewayInstance.post("/api/index", {
-        top_k: 10,
+        top_k,
         mode: "index",
         data: [indexRequest],
       })

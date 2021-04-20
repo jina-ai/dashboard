@@ -15,7 +15,7 @@ const Dashboard = () => {
         {routes.map((route, idx: number) => {
           return (
             <Route
-              key={`route-${idx}`}
+              key={`${route.path}-${idx}`}
               path={route.path}
               exact={route.exact}
               component={withTracker((props: any) => {

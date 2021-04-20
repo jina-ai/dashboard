@@ -2,20 +2,29 @@ import {
   defaultJinaDHost,
   defaultJinaDPort,
 } from "../../../src/redux/settings/settings.constants"
-import {
-  Flow,
-  FlowState,
-  Workspace,
-} from "../../../src/redux/flows/flows.types"
+import { FlowState, Workspace } from "../../../src/redux/flows/flows.types"
 import { isFlowEdge, isFlowNode } from "../../../src/helpers/flow-chart"
 import {
   selectSelectedFlow,
   selectSelectedFlowId,
 } from "../../../src/redux/flows/flows.selectors"
+const path = require("path")
 
 describe("The Flow Page", () => {
   beforeEach(() => {
+    Cypress.on("uncaught:exception", (err, runnable) => {
+      const resizeObserverLoopErrRe = /^[^(ResizeObserver loop limit exceeded)]/
+      /* returning false here prevents Cypress from failing the test */
+      if (resizeObserverLoopErrRe.test(err.message)) {
+        return false
+      }
+    })
     cy.visit("/#/flow")
+  })
+
+  it("should not crash when disconnected and clicking the play and stop button", () => {
+    cy.dataName("playButton").click()
+    cy.dataName("stopButton").click()
   })
 
   //todo test that the play button doesn't crash anything when pressed
@@ -23,7 +32,7 @@ describe("The Flow Page", () => {
   it("should create a workspace and delete it", () => {
     cy.dataName("newWorkspaceButton").click({ force: true })
     cy.dataName("Workspace2").should("exist")
-    cy.dataName("deleteWorkspaceButton-1").click()
+    cy.dataName("deleteWorkspaceButton-1").click({ force: true })
     cy.dataName("Workspace2").should("not.exist")
   })
 
@@ -61,11 +70,11 @@ describe("The Flow Page", () => {
       .then((store) => {
         const flowState = store.getState().flowState as FlowState
 
-        const exampleWorkspace = Object.entries(flowState.workspaces)
+        const exampleWorkspaces = Object.entries(flowState.workspaces)
           .filter(([id, flow]) => flow.type === "example")
           .map(([id, flow]) => flow) as Workspace[]
 
-        exampleWorkspace.forEach((workspace, idx) => {
+        exampleWorkspaces.forEach((workspace, idx) => {
           cy.dataName(`exampleWorkspaceButton-${idx}`).should(
             "contain",
             workspace.name
@@ -106,5 +115,12 @@ describe("The Flow Page", () => {
         `Successfully connected to Jina at ${host}:${port}`
       )
     })
+  })
+
+  it.skip("should download a specified png file when clicking saveButton", () => {
+    const downloadsFolder = Cypress.config("downloadsFolder")
+    cy.dataName("saveButton").click()
+    const filePath = path.join(downloadsFolder, "jina-flow-visual.png")
+    cy.readFile(filePath)
   })
 })

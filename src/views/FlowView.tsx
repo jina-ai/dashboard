@@ -51,7 +51,7 @@ export default function FlowView() {
   }
 
   const exportImage = (extension = "png") => {
-    const chartContainer = document.querySelector(".chart-container")
+    const chartContainer = document.querySelector(".reactflow-wrapper")
     const captureOverlay = document.querySelector(".capture-overlay")
     if (!chartContainer) return
     if (captureOverlay) captureOverlay.classList.add("fade-out")
@@ -99,7 +99,7 @@ export default function FlowView() {
     dispatch(duplicateFlow(flowYAML))
   }
 
-  if (!flowChart) return <>no flow</>
+  if (!flowChart) return <>No Flow</>
 
   return (
     <Container fluid className="main-content-container px-0">
