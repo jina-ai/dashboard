@@ -12,6 +12,11 @@ import {
   ADD_LINK,
   DELETE_LINK,
   UPDATE_NODE_DATA,
+  LOAD_WORKSPACE,
+  CREATE_NEW_WORKSPACE,
+  UPDATE_SELECTED_WORKSPACE,
+  ADD_FILES_TO_WORKSPACE,
+  DELETE_WORKSPACE,
 } from "./flows.constants"
 
 import { Edge, Node, XYPosition } from "react-flow-renderer"
@@ -34,6 +39,7 @@ type Pod = typeof PodNecessaryObject & Partial<typeof PodOptionalObject>
 
 export const CustomDataObjectReq = {
   label: "string",
+  name: "string",
 }
 
 export const CustomDataObjectOpt = {
@@ -69,10 +75,10 @@ export type NodeConnection = {
 export type DeleteLinkProps = LinkId | NodeConnection
 
 export type With = {
-  logserver: string
-  compress_hwm: number
-  rest_api: boolean
-  port_expose: number
+  logserver?: string
+  compress_hwm?: number
+  rest_api?: boolean
+  port_expose: string
   board: {
     canvas: {
       [pod: string]: {
@@ -81,6 +87,7 @@ export type With = {
       }
     }
   }
+  read_only: boolean
 }
 export interface FlowChart {
   elements: FlowElement[]
@@ -89,19 +96,41 @@ export interface FlowChart {
 
 type FlowType = "user-generated" | "remote" | "example"
 
+type WorkspaceType = "user-generated" | "remote" | "example"
+
+type DaemonData = string | null
+
 export type Flow = {
   name: string
   type: FlowType
   isConnected: boolean
-  workspace_id?: string
-  flow_id?: string
+  workspaceId: string
+  daemon_id?: DaemonData
   flowChart: FlowChart
   yaml?: string
 }
+
+export type Workspace = {
+  jina_version: string
+  flowArguments: FlowArguments
+  selectedFlowId: string
+  name: string
+  type: WorkspaceType
+  daemon_endpoint: DaemonData
+  daemon_id: DaemonData
+  isConnected: boolean
+  files: string[]
+}
+
 export type FlowUpdate = Partial<Flow>
+export type WorkspaceUpdate = Partial<Workspace>
 
 export type Flows = {
   [flowId: string]: Flow
+}
+
+export type Workspaces = {
+  [workspaceId: string]: Workspace
 }
 
 export type LoadFlowAction = {
@@ -111,6 +140,29 @@ export type LoadFlowAction = {
 
 export type CreateNewFlowAction = {
   type: typeof CREATE_NEW_FLOW
+}
+
+export type LoadWorkspaceAction = {
+  type: typeof LOAD_WORKSPACE
+  payload: string
+}
+
+export type CreateNewWorkspaceAction = {
+  type: typeof CREATE_NEW_WORKSPACE
+}
+
+export type UpdateSelectedWorkspaceAction = {
+  type: typeof UPDATE_SELECTED_WORKSPACE
+  payload: WorkspaceUpdate
+}
+
+export type AddFilesToWorkspaceAction = {
+  type: typeof ADD_FILES_TO_WORKSPACE
+}
+
+export type DeleteWorkspaceAction = {
+  type: typeof DELETE_WORKSPACE
+  payload: string
 }
 
 export type FlowArgumentType = "string" | "boolean" | "integer"
@@ -123,32 +175,33 @@ export type FlowArgument = {
 }
 
 export type FlowArguments = {
-  version: string
   flow: FlowArgument[]
   pea: FlowArgument[]
   pod: FlowArgument[]
 }
 
 export type FlowState = {
-  selectedFlowId: string
+  selectedWorkspaceId: string
+  workspaces: Workspaces
   flows: Flows
-  flowArguments: FlowArguments
-  tooltipConfig: {
-    tooltipsGlobal: {
-      showTooltip: boolean
-      toogleOffWhenClicked: string
-      text: string
-    }
-  }
 }
 
 export type ExampleFlows = {
-  [name: string]: {
+  [id: string]: {
     name: string
-    type: FlowType
     yaml: string
+    workspaceId: string
   }
 }
+
+export type ExampleWorkspaces = {
+  [id: string]: {
+    jina_version: string
+    type: WorkspaceType
+    name: string
+  }
+}
+
 export type SetFlowArgumentsAction = {
   type: typeof SET_FLOW_ARGUMENTS
   payload: FlowArguments
@@ -219,3 +272,8 @@ export type FlowActionTypes =
   | AddLinkAction
   | DeleteLinkAction
   | UpdateNodeDataAction
+  | LoadWorkspaceAction
+  | CreateNewWorkspaceAction
+  | UpdateSelectedWorkspaceAction
+  | AddFilesToWorkspaceAction
+  | DeleteWorkspaceAction

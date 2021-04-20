@@ -12,10 +12,11 @@ import {
   showModal,
   toggleSidebar,
   showBanner,
-  handleConnectionStatus,
+  handleJinadConnectionStatus,
   logout,
   setUser,
 } from "./global.actions"
+
 import {
   apiArgumentsURL,
   testDaemonResponseFlowsArguments,
@@ -203,7 +204,7 @@ describe("global actions", () => {
 
       const expectedAction = { type: "FETCH_ARGUMENTS_FROM_API" }
 
-      store.dispatch(handleConnectionStatus(false, "test_message"))
+      store.dispatch(handleJinadConnectionStatus(false, "test_message"))
       expect(
         store.getActions().find((action) => action.type === expectedAction.type)
       ).toEqual(expectedAction)
@@ -225,7 +226,7 @@ describe("global actions", () => {
         .onGet("/peas/arguments")
         .reply(200, testDaemonResponsePeasArguments)
 
-      store.dispatch(handleConnectionStatus(true, "test_message"))
+      store.dispatch(handleJinadConnectionStatus(true, "test_message"))
       expect(
         store.getActions().find((action) => action.type === expectedAction.type)
       ).toEqual(expectedAction)

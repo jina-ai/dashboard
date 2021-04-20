@@ -12,10 +12,20 @@ import {
   addLink,
   deleteLink,
   updateNodeData,
+  createNewWorkspace,
+  deleteWorkspace,
+  updateSelectedWorkspace,
 } from "./flows.actions"
 import { initialFlowChart } from "./flows.constants"
 import { testFlowArguments, testFlowState } from "./flows.testData"
-import { Flow, FlowNode, FlowEdge, NodeDataUpdate } from "./flows.types"
+import {
+  Flow,
+  FlowNode,
+  FlowEdge,
+  NodeDataUpdate,
+  Workspace,
+  WorkspaceUpdate,
+} from "./flows.types"
 import { isFlowNode, isFlowEdge } from "../../helpers/flow-chart"
 import {
   selectExampleFlowsKeyEntryPairs,
@@ -28,6 +38,14 @@ function getFlowFromStorage(id: string): Flow | undefined {
   const userFlowsString = localStorage.getItem("userFlows")
   if (userFlowsString) {
     const parsed = JSON.parse(userFlowsString)
+    return parsed[id]
+  } else return undefined
+}
+
+function getWorkspaceFromStorage(id: string): Workspace | undefined {
+  const userWorkspacesString = localStorage.getItem("userWorkspaces")
+  if (userWorkspacesString) {
+    const parsed = JSON.parse(userWorkspacesString)
     return parsed[id]
   } else return undefined
 }
@@ -71,12 +89,13 @@ describe("flows reducer", () => {
       ).length
       const duplicatedIdAndFlow = Object.entries(
         flowStateWithDuplicatedFlowerFlow.flows
-      ).find(([flowId, flow]) => flow.name === "Custom Flow 3")
+      ).find(([flowId, flow]) => flow.name === "Custom Flow 5")
 
       expect(newNumberOfFlows - oldNumberOfFlows).toBe(1)
       expect(duplicatedIdAndFlow).toBeDefined()
       if (duplicatedIdAndFlow) {
         const [dupId, dupFlow] = duplicatedIdAndFlow
+
         expect(dupFlow.flowChart).toEqual(testFlowState.flows.flower.flowChart)
 
         expect(getFlowFromStorage(dupId)?.flowChart).toEqual(
@@ -99,7 +118,7 @@ describe("flows reducer", () => {
       ).length
       const importedFlowerFlowIdAndFlow = Object.entries(
         flowStateWithImportedFlowerFlow.flows
-      ).find(([flowId, flow]) => flow.name === "Custom Flow 3")
+      ).find(([flowId, flow]) => flow.name === "Custom Flow 5")
 
       expect(newNumberOfFlows - oldNumberOfFlows).toBe(1)
       expect(importedFlowerFlowIdAndFlow).toBeDefined()
@@ -116,7 +135,7 @@ describe("flows reducer", () => {
     const flowStateWithNewFlow = reducer(testFlowState, createNewFlow())
     const newNumberOfFlows = Object.keys(flowStateWithNewFlow.flows).length
     const newFlowIdAndFlow = Object.entries(flowStateWithNewFlow.flows).find(
-      ([flowId, flow]) => flow.name === "Custom Flow 3"
+      ([flowId, flow]) => flow.name === "Custom Flow 5"
     )
 
     expect(newNumberOfFlows - oldNumberOfFlows).toBe(1)
@@ -133,7 +152,11 @@ describe("flows reducer", () => {
       testFlowState,
       loadFlow("testFlow2")
     )
-    expect(flowStateWithLoadedFlow.selectedFlowId).toEqual("testFlow2")
+    expect(
+      flowStateWithLoadedFlow.workspaces[
+        flowStateWithLoadedFlow.selectedWorkspaceId
+      ].selectedFlowId
+    ).toEqual("testFlow2")
   })
 
   it("should create a node and save it to storage", () => {
@@ -149,9 +172,12 @@ describe("flows reducer", () => {
       testFlowState,
       addNode(newNodeId, newPosition, newData)
     )
-    const oldFlowChart =
-      testFlowState.flows[testFlowState.selectedFlowId].flowChart
-    const newFlowChart = newState.flows[newState.selectedFlowId].flowChart
+    const selectedFlowIdOldState =
+      testFlowState.workspaces[testFlowState.selectedWorkspaceId].selectedFlowId
+    const selectedFlowIdNewState =
+      newState.workspaces[newState.selectedWorkspaceId].selectedFlowId
+    const oldFlowChart = testFlowState.flows[selectedFlowIdOldState].flowChart
+    const newFlowChart = newState.flows[selectedFlowIdNewState].flowChart
     const oldNodeCount = oldFlowChart.elements.filter((element) =>
       isFlowNode(element)
     ).length
@@ -166,9 +192,8 @@ describe("flows reducer", () => {
     expect(newNode.position).toEqual(newPosition)
     expect(newNode.data).toEqual(newData)
 
-    const flowChartFromStorage = getFlowFromStorage(
-      testFlowState.selectedFlowId
-    )?.flowChart
+    const flowChartFromStorage = getFlowFromStorage(selectedFlowIdOldState)
+      ?.flowChart
     const newNodeFromStorage = flowChartFromStorage?.elements.find(
       (element) => element.id === newNodeId
     ) as FlowNode
@@ -256,9 +281,13 @@ describe("flows reducer", () => {
     const target = "node1"
 
     const newState = reducer(testFlowState, addLink(source, target))
-    const oldFlowChart =
-      testFlowState.flows[testFlowState.selectedFlowId].flowChart
-    const newFlowChart = newState.flows[newState.selectedFlowId].flowChart
+    const selectedFlowIdOldState =
+      testFlowState.workspaces[testFlowState.selectedWorkspaceId].selectedFlowId
+    const selectedFlowIdNewState =
+      newState.workspaces[newState.selectedWorkspaceId].selectedFlowId
+
+    const oldFlowChart = testFlowState.flows[selectedFlowIdOldState].flowChart
+    const newFlowChart = newState.flows[selectedFlowIdNewState].flowChart
     const oldLinkCount = oldFlowChart.elements.filter((element) =>
       isFlowEdge(element)
     ).length
@@ -274,7 +303,7 @@ describe("flows reducer", () => {
     expect(newLink.target).toBe(target)
 
     const linkFromStorage = getFlowFromStorage(
-      testFlowState.selectedFlowId
+      selectedFlowIdOldState
     )?.flowChart.elements.find(
       (element) => element.id === `e-${source}-to-${target}`
     ) as FlowEdge
@@ -286,16 +315,22 @@ describe("flows reducer", () => {
   it("should delete a link from id and save that to storage", () => {
     const deletedLinkId = "e-gateway-to-node0"
 
+    const selectedFlowIdOldstate =
+      testFlowState.workspaces[testFlowState.selectedWorkspaceId].selectedFlowId
+
     const oldLinkFromStorage = getFlowFromStorage(
-      testFlowState.selectedFlowId
+      selectedFlowIdOldstate
     )?.flowChart.elements.find(
       (element) => element.id === deletedLinkId
     ) as FlowEdge
 
     const newState = reducer(testFlowState, deleteLink(deletedLinkId))
-    const oldFlowChart =
-      testFlowState.flows[testFlowState.selectedFlowId].flowChart
-    const newFlowChart = newState.flows[newState.selectedFlowId].flowChart
+
+    const selectedFlowIdNewstate =
+      newState.workspaces[newState.selectedWorkspaceId].selectedFlowId
+
+    const oldFlowChart = testFlowState.flows[selectedFlowIdOldstate].flowChart
+    const newFlowChart = newState.flows[selectedFlowIdNewstate].flowChart
     const oldLinkCount = oldFlowChart.elements.filter((element) =>
       isFlowEdge(element)
     ).length
@@ -303,7 +338,7 @@ describe("flows reducer", () => {
       isFlowEdge(element)
     ).length
     const newLinkFromStorage = getFlowFromStorage(
-      testFlowState.selectedFlowId
+      selectedFlowIdOldstate
     )?.flowChart.elements.find(
       (element) => element.id === deletedLinkId
     ) as FlowEdge
@@ -323,17 +358,23 @@ describe("flows reducer", () => {
     const source = "gateway"
     const target = "node0"
 
+    const selectedFlowIdOldState =
+      testFlowState.workspaces[testFlowState.selectedWorkspaceId].selectedFlowId
+
     const deletedLinkId = `e-${source}-to-${target}`
     const oldLinkFromStorage = getFlowFromStorage(
-      testFlowState.selectedFlowId
+      selectedFlowIdOldState
     )?.flowChart.elements.find(
       (element) => element.id === deletedLinkId
     ) as FlowEdge
 
     const newState = reducer(testFlowState, deleteLink({ source, target }))
-    const oldFlowChart =
-      testFlowState.flows[testFlowState.selectedFlowId].flowChart
-    const newFlowChart = newState.flows[newState.selectedFlowId].flowChart
+
+    const selectedFlowIdNewState =
+      newState.workspaces[newState.selectedWorkspaceId].selectedFlowId
+
+    const oldFlowChart = testFlowState.flows[selectedFlowIdOldState].flowChart
+    const newFlowChart = newState.flows[selectedFlowIdNewState].flowChart
     const oldLinkCount = oldFlowChart.elements.filter((element) =>
       isFlowEdge(element)
     ).length
@@ -341,7 +382,7 @@ describe("flows reducer", () => {
       isFlowEdge(element)
     ).length
     const newLinkFromStorage = getFlowFromStorage(
-      testFlowState.selectedFlowId
+      selectedFlowIdOldState
     )?.flowChart.elements.find(
       (element) => element.id === deletedLinkId
     ) as FlowEdge
@@ -361,7 +402,10 @@ describe("flows reducer", () => {
       testFlowState,
       setFlowArguments(testFlowArguments)
     )
-    expect(flowStateWithSetArguments.flowArguments).toEqual(testFlowArguments)
+    expect(
+      flowStateWithSetArguments.workspaces[testFlowState.selectedWorkspaceId]
+        .flowArguments
+    ).toEqual(testFlowArguments)
   })
 
   it("should update selected flow", () => {
@@ -379,6 +423,125 @@ describe("flows reducer", () => {
     expect(updatedFlow.flows.testFlow1.type).toEqual("user-generated")
     expect(updatedFlow.flows.testFlow1.isConnected).toEqual(true)
     expect(updatedFlow.flows.testFlow1.flowChart).toEqual(flowChart)
+  })
+
+  it("should create a new workspace and save it to storage", () => {
+    const oldNumberOfWorkspaces = Object.keys(testFlowState.workspaces).length
+    const flowStateWithNewWorkspace = reducer(
+      testFlowState,
+      createNewWorkspace()
+    )
+    const newNumberOfWorkspace = Object.keys(
+      flowStateWithNewWorkspace.workspaces
+    ).length
+    const newWorkspaceIdAndWorkspace = Object.entries(
+      flowStateWithNewWorkspace.workspaces
+    ).find(([workspaceId, workspace]) => workspace.name === "Workspace 3")
+
+    expect(newNumberOfWorkspace - oldNumberOfWorkspaces).toBe(1)
+    expect(newWorkspaceIdAndWorkspace).toBeDefined()
+  })
+
+  it("should delete a workspace", () => {
+    const oldNumberOfWorkspaces = Object.keys(testFlowState.workspaces).length
+    const flowStateWithNewWorkspace = reducer(
+      testFlowState,
+      createNewWorkspace()
+    )
+    const newNumberOfWorkspaces = Object.keys(
+      flowStateWithNewWorkspace.workspaces
+    ).length
+
+    expect(newNumberOfWorkspaces - oldNumberOfWorkspaces).toBe(1)
+
+    const newWorkSpaceId = Object.keys(flowStateWithNewWorkspace.workspaces)[
+      newNumberOfWorkspaces - 1
+    ]
+    const flowStateWithoutNewWorkspace = reducer(
+      testFlowState,
+      deleteWorkspace(newWorkSpaceId)
+    )
+
+    const newerNumberOfWorkspaces = Object.keys(
+      flowStateWithoutNewWorkspace.workspaces
+    ).length
+
+    expect(newNumberOfWorkspaces - newerNumberOfWorkspaces).toBe(1)
+    expect(flowStateWithNewWorkspace.workspaces[newWorkSpaceId]).toBeDefined()
+    expect(
+      flowStateWithoutNewWorkspace.workspaces[newWorkSpaceId]
+    ).toBeUndefined()
+  })
+
+  it("should delete a workspace from redux and storage", () => {
+    expect(getWorkspaceFromStorage("testWorkspace2")).toBeDefined()
+    const oldNumberOfWorkspaces = Object.keys(testFlowState.workspaces).length
+
+    const flowStateWithoutWorkspace2 = reducer(
+      testFlowState,
+      deleteWorkspace("testWorkspace2")
+    )
+    const newNumberOfWorkspaces = Object.keys(
+      flowStateWithoutWorkspace2.workspaces
+    ).length
+    expect(oldNumberOfWorkspaces - newNumberOfWorkspaces).toEqual(1)
+    expect(
+      Object.keys(testFlowState.workspaces).find(
+        (workspaceId) => workspaceId === "testWorkspace2"
+      )
+    ).toEqual("testWorkspace2")
+    expect(
+      Object.keys(flowStateWithoutWorkspace2.workspaces).find(
+        (workspaceId) => workspaceId === "testWorkspace2"
+      )
+    ).toBeUndefined()
+    expect(getWorkspaceFromStorage("testWorkspace2")).toBeUndefined()
+  })
+
+  it("should delete all flows in a workspace when deleting the workspace", () => {
+    const flowCountWorkspace2 = Object.entries(testFlowState.flows).filter(
+      ([flowId, flow]) => flow.workspaceId === "testWorkspace2"
+    ).length
+    expect(flowCountWorkspace2).toBeGreaterThan(0)
+
+    const flowStateWithoutWorkspace2 = reducer(
+      testFlowState,
+      deleteWorkspace("testWorkspace2")
+    )
+
+    Object.entries(flowStateWithoutWorkspace2.flows).forEach(
+      ([flowId, flow]) => {
+        expect(flow.workspaceId).not.toBe("testWorkspace2")
+      }
+    )
+  })
+
+  it("should update selected workspace", () => {
+    const update: WorkspaceUpdate = {
+      name: "newName",
+      type: "user-generated",
+      daemon_endpoint: "newDaemonEndpoint",
+      isConnected: true,
+      files: ["newFile1", "newFile2"],
+    }
+
+    const updatedFlowState = reducer(
+      testFlowState,
+      updateSelectedWorkspace(update)
+    )
+
+    const selectedWorkspaceOldState =
+      testFlowState.workspaces[testFlowState.selectedWorkspaceId]
+    const selectedWorkspaceNewState =
+      updatedFlowState.workspaces[updatedFlowState.selectedWorkspaceId]
+
+    expect(selectedWorkspaceOldState).not.toEqual(selectedWorkspaceNewState)
+
+    Object.entries(update).forEach((entry) => {
+      const key = entry[0] as keyof Workspace
+      const value = entry[1]
+      expect(selectedWorkspaceNewState[key]).toEqual(value)
+    })
   })
 })
 
