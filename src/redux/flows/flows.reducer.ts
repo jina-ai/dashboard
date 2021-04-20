@@ -360,7 +360,8 @@ const flowReducer = produce((draft: FlowState, action: FlowActionTypes) => {
 function _createNewFlow(
   draft: FlowState,
   customYAML?: string,
-  id = nanoid()
+  id = nanoid(),
+  workspaceId?: string
 ): FlowState {
   const prefixString = "Custom Flow"
 
@@ -388,7 +389,7 @@ function _createNewFlow(
     isConnected: false,
     name: `${prefixString} ${largestNumber + 1}`,
     type: "user-generated",
-    workspaceId: draft.selectedWorkspaceId,
+    workspaceId: workspaceId ? workspaceId : draft.selectedWorkspaceId,
     flowChart,
   }
   draft.workspaces[draft.selectedWorkspaceId].selectedFlowId = id
@@ -426,7 +427,7 @@ function _createNewWorkspace(draft: FlowState): FlowState {
     daemon_id: null,
     files: [],
   }
-  draft = _createNewFlow(draft, undefined, flowId)
+  draft = _createNewFlow(draft, undefined, flowId, workspaceId)
   draft.workspaces[draft.selectedWorkspaceId].selectedFlowId = flowId
   return draft
 }
