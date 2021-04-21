@@ -29,10 +29,10 @@ import {
 import { isFlowNode, isFlowEdge } from "../../helpers/flow-chart"
 import {
   selectExampleFlowsKeyEntryPairs,
-  selectFlows,
   selectSelectedFlow,
   selectSelectedFlowId,
 } from "./flows.selectors"
+import _ from "lodash"
 
 function getFlowFromStorage(id: string): Flow | undefined {
   const userFlowsString = localStorage.getItem("userFlows")
@@ -551,24 +551,33 @@ describe("flow selectors", () => {
   }
 
   it("should select selected flow", () => {
+    const { selectedFlowId } = testFlowState.workspaces[
+      state.flowState.selectedWorkspaceId
+    ]
+
     expect(selectSelectedFlow(state)).toEqual(
-      testFlowState.flows[testFlowState.selectedFlowId]
+      testFlowState.flows[selectedFlowId]
     )
   })
 
-  it("should select flows", () => {
-    expect(selectFlows(state)).toEqual(testFlowState.flows)
-  })
-
   it("should select example flows key entry pairs", () => {
+    const { selectedWorkspaceId } = testFlowState
+
+    const workspaceFlows = _.pickBy(
+      testFlowState.flows,
+      (flow) => flow.workspaceId === selectedWorkspaceId
+    )
+
     expect(selectExampleFlowsKeyEntryPairs(state)).toEqual(
-      Object.entries(testFlowState.flows).filter(
+      Object.entries(workspaceFlows).filter(
         (flowKeyEntryPair) => flowKeyEntryPair[1].type === "example"
       )
     )
   })
 
   it("should select selected flowId", () => {
-    expect(selectSelectedFlowId(state)).toBe(testFlowState.selectedFlowId)
+    expect(selectSelectedFlowId(state)).toBe(
+      testFlowState.workspaces[testFlowState.selectedWorkspaceId].selectedFlowId
+    )
   })
 })
