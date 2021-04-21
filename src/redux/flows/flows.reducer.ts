@@ -426,6 +426,7 @@ function _createNewWorkspace(draft: FlowState): FlowState {
     daemon_id: null,
     files: [],
   }
+  draft.selectedWorkspaceId = workspaceId
   draft = _createNewFlow(draft, undefined, flowId)
   draft.workspaces[draft.selectedWorkspaceId].selectedFlowId = flowId
   return draft
