@@ -36,6 +36,26 @@ describe("The Flow Page", () => {
     cy.dataName("Workspace2").should("not.exist")
   })
 
+  it("should create a workspace and delete the first workspace", () => {
+    cy.dataName("newWorkspaceButton").click({ force: true })
+    cy.dataName("Workspace2").should("exist")
+    cy.dataName("deleteWorkspaceButton-0").click({ force: true })
+    cy.dataName("Workspace2").should("exist")
+    cy.dataName("Workspace1").should("not.exist")
+  })
+
+  it("should create two workspace and delete the second and third workspace", () => {
+    cy.dataName("newWorkspaceButton").click({ force: true })
+    cy.dataName("newWorkspaceButton").click({ force: true })
+    cy.dataName("Workspace2").should("exist")
+    cy.dataName("Workspace3").should("exist")
+    cy.dataName("deleteWorkspaceButton-1").click({ force: true })
+    cy.dataName("deleteWorkspaceButton-1").click({ force: true })
+    cy.dataName("Workspace2").should("not.exist")
+    cy.dataName("Workspace3").should("not.exist")
+    cy.dataName("Workspace1").should("exist")
+  })
+
   it("should create a new flow, select and delete it", () => {
     cy.window()
       .its("store")
