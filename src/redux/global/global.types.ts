@@ -110,7 +110,7 @@ export type ModalParams = {
 export type GlobalState = {
   user: User
   connected: boolean
-  banner: Banner
+  banners: Banner[]
   loading: boolean
   modal: Modal
   modalParams: ModalParams
