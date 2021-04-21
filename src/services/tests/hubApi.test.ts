@@ -40,7 +40,7 @@ describe("getRawMarkdownURL", () => {
 })
 
 describe("getDocumentationHTML", () => {
-  it("gets documentation in HTML format", () => {
+  it("gets documentation in HTML format", async () => {
     mockAxios
       .onGet(
         "https://raw.githubusercontent.com/jina-ai/jina-hub/master/encoders/image/BigTransferEncoder/README.md"
@@ -50,24 +50,23 @@ describe("getDocumentationHTML", () => {
       .onPost("https://api.github.com/markdown")
       .reply(200, { data: "<h2> Documentation in HTML </h2>" })
 
-    getDocumentationHTML(
+    const response = await getDocumentationHTML(
       "https://github.com/jina-ai/jina-hub/blob/master/encoders/image/BigTransferEncoder/README.md"
-    ).then((response) => {
-      expect(response).toEqual("<h2> Documentation in HTML </h2>")
-    })
+    )
+    expect(response).toEqual({ data: "<h2> Documentation in HTML </h2>" })
   })
 })
 
 describe("getHubImage", () => {
-  it("gets hub images", () => {
+  it("gets hub images", async () => {
     mockAxios
-      .onPost("https://hubapi.jina.ai/images")
+      .onGet("https://hubapi.jina.ai/images")
       .reply(200, ["Sunflowers", "Boy with an apple"])
 
-    getHubImages({ kind: ["encoder"], keywords: ["script"] }).then(
-      (response) => {
-        expect(response).toEqual(["Sunflowers", "Boy with an apple"])
-      }
-    )
+    const response = await getHubImages({
+      kind: ["encoder"],
+      keywords: ["script"],
+    })
+    expect(response).toEqual(["Sunflowers", "Boy with an apple"])
   })
 })

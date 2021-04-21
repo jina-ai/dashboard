@@ -33,5 +33,7 @@ yarn-error.log*
 cypress/videos/
 # With percy, we're not handling snapshots ourselves but letting percy take care of it
 cypress/screenshots/
+# Cypress' default downloadsFolder
+cypress/downloads/
 
 .nyc_output/out.json
