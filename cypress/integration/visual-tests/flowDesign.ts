@@ -1,5 +1,7 @@
 import defaultPods from "../../../src/data/defaultPods"
 
+import { SHOW_BANNER } from "../../../src/redux/global/global.constants"
+
 describe("Flow design workflow", () => {
   beforeEach(() => {
     cy.visit("/#/flow")
@@ -51,5 +53,37 @@ describe("Flow design workflow", () => {
 
           cy.percySnapshot("flow-design")
       })
+  })
+})
+
+describe("Banners on the Flow design page", () => {
+  beforeEach(() => {
+    cy.visit("/#/flow")
+  })
+
+  it("successfully shows single banner", () => {
+    cy.window().its('store').invoke("dispatch", {
+      type: SHOW_BANNER,
+      payload: { message: "message", theme: "success" }
+    })
+
+    cy.get('.notifications-container').its('length').should('be.gte', 1)
+  })
+
+  it("successfully shows multiple banners", () => {
+    cy.window().its('store').invoke("dispatch", {
+      type: SHOW_BANNER,
+      payload: { message: "message1", theme: "success" }
+    })
+    cy.window().its('store').invoke("dispatch", {
+      type: SHOW_BANNER,
+      payload: { message: "message2", theme: "error" }
+    })
+    cy.window().its('store').invoke("dispatch", {
+      type: SHOW_BANNER,
+      payload: { message: "message3", theme: "success" }
+    })
+
+    cy.get('.notifications-container').its('length').should('be.gte', 3)
   })
 })

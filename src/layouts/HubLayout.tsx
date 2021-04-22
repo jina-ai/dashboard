@@ -13,7 +13,7 @@ import logger from "../logger"
 import { useDispatch, useSelector } from "react-redux"
 import store from "../redux"
 import { showBanner } from "../redux/global/global.actions"
-import { selectBanner, selectModal } from "../redux/global/global.selectors"
+import { selectBanners, selectModal } from "../redux/global/global.selectors"
 
 export type HubLayoutProps = {
   children: React.ReactNode
@@ -24,7 +24,7 @@ export type HubLayoutProps = {
 
 const HubLayout = (props: HubLayoutProps) => {
   const modal = useSelector(selectModal)
-  const banner = useSelector(selectBanner)
+  const banners = useSelector(selectBanners)
   const loggerEnabled = logger.isEnabled()
   const user: User = {
     displayName: "dummyUser",
@@ -89,7 +89,9 @@ const HubLayout = (props: HubLayoutProps) => {
             user={user}
             navigateButton={navigateButton}
           />
-          <InfoToast data={banner} />
+          {banners.map((banner, index) => (
+            <InfoToast data={banner} index={index} />
+          ))}
           {children}
           {!acceptedCookies && <CookiesBanner acceptCookies={acceptCookies} />}
           <MainFooter

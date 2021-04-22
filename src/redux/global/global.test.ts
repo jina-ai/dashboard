@@ -118,10 +118,12 @@ describe("global reducer", () => {
       _showBanner(testMessage_0, testTheme)
     )
     it("should set the banner", () => {
-      expect(newGlobalState.banner).toEqual({
-        message: testMessage_0,
-        theme: testTheme,
-      })
+      expect(newGlobalState.banners).toEqual([
+        {
+          message: testMessage_0,
+          theme: testTheme,
+        },
+      ])
     })
   })
 
@@ -129,17 +131,19 @@ describe("global reducer", () => {
     const newGlobalState = reducer(initialGlobalState, _hideBanner())
 
     it("should set the banner to empty", () => {
-      expect(newGlobalState.banner).toEqual(null)
+      expect(newGlobalState.banners).toEqual([])
     })
   })
 
   describe("when showing an error", () => {
     const newGlobalState = reducer(initialGlobalState, showError(testError))
     it("should set the banner to error object", () => {
-      expect(newGlobalState.banner).toEqual({
-        message: testError,
-        theme: "error",
-      })
+      expect(newGlobalState.banners).toEqual([
+        {
+          message: testError,
+          theme: "error",
+        },
+      ])
     })
   })
 
