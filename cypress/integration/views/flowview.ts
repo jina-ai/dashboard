@@ -36,6 +36,21 @@ describe("The Flow Page", () => {
     cy.dataName("Workspace2").should("not.exist")
   })
 
+  it.only("should create a new flow and select it when creating a new workspace", () => {
+    cy.dataName("newWorkspaceButton").click({ force: true })
+    cy.window()
+      .its("store")
+      .invoke("getState")
+      .then((store) => {
+        const selectedFlowIdNew = selectSelectedFlowId(store)
+        const selectedFlowNew = selectSelectedFlow(store)
+        cy.dataName(`flowTab-${selectedFlowIdNew}`).should(
+          "contain",
+          selectedFlowNew.name
+        )
+      })
+  })
+
   it("should create a new flow, select and delete it", () => {
     cy.window()
       .its("store")
