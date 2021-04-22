@@ -20,7 +20,6 @@ import {
   CREATE_NEW_WORKSPACE,
   UPDATE_SELECTED_WORKSPACE,
   DELETE_WORKSPACE,
-  defaultFlow,
   defaultJinaVersion,
   defaultFlowArguments,
   defaultSelectedFlowId,
@@ -68,7 +67,7 @@ export const saveWorkspacesToStorage = (state: FlowState) => {
 function getUserFlows(): Flows {
   const storedFlows = localStorage.getItem("userFlows")
   const userFlows = storedFlows ? JSON.parse(storedFlows) : null
-  return _.isEmpty(userFlows) ? defaultFlow : userFlows
+  return _.isEmpty(userFlows) ? defaultFlows : userFlows
 }
 
 function getUserWorkspaces(): Workspaces {

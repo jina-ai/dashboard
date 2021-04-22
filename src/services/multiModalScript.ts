@@ -1,6 +1,7 @@
 import jinadClient from "./jinad"
 import {
-  configData,
+  configDataList,
+  configUrl,
   indexData,
   indexFlow,
   queryFlow,
@@ -9,18 +10,24 @@ import logger from "../logger"
 import gatewayClient from "./gatewayClient"
 import store from "../redux"
 import { timeout } from "../helpers/utils"
+import axios from "axios"
 
 export async function multiModalScript() {
   const configFiles: Blob[] = []
 
-  Object.entries(configData).forEach(([fileName, fileData]) => {
-    const blob = new Blob([fileData], { type: "text/plain" })
-    const file = new File([blob], fileName, { type: "text/plain" })
+  for (const fileName of configDataList) {
+    logger.log(fileName)
+    const response = await axios.get(configUrl + "/" + fileName, {
+      responseType: "blob",
+    })
+    const file = new File([response.data], fileName, { type: "text/plain" })
     configFiles.push(file)
-  })
+  }
 
+  logger.log("start Create Workspace")
   const workspaceResult = await jinadClient.createWorkspace(configFiles)
   logger.log(workspaceResult, "workspaceResult")
+  logger.log(indexFlow, "indexFlow")
   const flowResult = await jinadClient.startFlow(
     indexFlow,
     workspaceResult.workspace_id
@@ -35,7 +42,7 @@ export async function multiModalScript() {
   logger.log(gatewayResult, "gatewayResult")
 
   for (let i = 0; i < 10; i++) {
-    console.log(i)
+    logger.log(i)
     const data = {
       id: indexData[i]["1"].toString(),
       image: indexData[i]["image_1.jpg"],
@@ -43,16 +50,19 @@ export async function multiModalScript() {
         indexData[i]["A beautiful young girl posing on a white background."],
     }
 
+    logger.log(data)
+
     await gatewayClient.index(JSON.stringify(data))
   }
 
-  console.log("terminateFlow")
-  jinadClient.terminateFlow(flowResult.flow_id)
+  logger.log(flowResult.flow_id, "terminateFlow")
+
+  await jinadClient.terminateFlow(flowResult.flow_id)
   await timeout(1)
   const terminateResult2 = await jinadClient.terminateFlow(flowResult.flow_id)
-  console.log(terminateResult2, "terminateResult2")
-  console.log(workspaceResult.workspace_id)
-  console.log("startFlow")
+  logger.log(terminateResult2, "terminateResult2")
+  logger.log(workspaceResult.workspace_id)
+  logger.log("startFlow")
   await jinadClient.startFlow(queryFlow, workspaceResult.workspace_id)
   window.open("https://static.jina.ai/multimodal/", "_blank")
 }
