@@ -88,7 +88,6 @@ export type User = {
   provider?: string
   _json?: { [userAttribute: string]: string }
   _raw?: string
-  photos?: [{ value: string }]
   githubCode?: string
 } | null
 
