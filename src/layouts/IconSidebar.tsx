@@ -16,7 +16,7 @@ import logger from "../logger"
 
 import { useDispatch, useSelector } from "react-redux"
 import {
-  selectBanner,
+  selectBanners,
   selectConnectionStatus,
   selectLoading,
   selectMenuState,
@@ -49,7 +49,7 @@ const IconSidebarLayout = (props: IconSideBarLayoutProps) => {
   const modal = useSelector(selectModal)
   const modalParams = useSelector(selectModalParams)
   const loading = useSelector(selectLoading)
-  const banner = useSelector(selectBanner)
+  const banners = useSelector(selectBanners)
   const connected = useSelector(selectConnectionStatus)
   const loggerEnabled = logger.isEnabled()
   const menuVisible = useSelector(selectMenuState)
@@ -132,7 +132,9 @@ const IconSidebarLayout = (props: IconSideBarLayoutProps) => {
             connected={connected}
             navigateButton={navigateButton}
           />
-          <InfoToast data={banner} />
+          {banners.map((banner, index) => (
+            <InfoToast data={banner} index={index} />
+          ))}
           {usesConnection && !loading && !connected && (
             <ConnectionToast reconnect={reconnect} />
           )}

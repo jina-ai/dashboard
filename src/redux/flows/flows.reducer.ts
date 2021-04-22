@@ -362,7 +362,6 @@ function _createNewFlow(
     const parsed = parseYAML(customYAML)
     if (parsed?.data) flowChart = formatForFlowchart(parsed.data)
   }
-
   draft.flows[id] = {
     isConnected: false,
     name: `${prefixString} ${largestNumber + 1}`,
@@ -370,7 +369,6 @@ function _createNewFlow(
     workspaceId: workspaceId || draft.selectedWorkspaceId,
     flowChart,
   }
-  draft.workspaces[workspaceId || draft.selectedWorkspaceId].selectedFlowId = id
   return draft
 }
 
@@ -406,7 +404,6 @@ function _createNewWorkspace(draft: FlowState): FlowState {
     files: [],
   }
   draft = _createNewFlow(draft, undefined, flowId, workspaceId)
-  draft.workspaces[workspaceId].selectedFlowId = flowId
   return draft
 }
 
