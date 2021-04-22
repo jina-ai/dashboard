@@ -71,7 +71,11 @@ export default function FlowSelection() {
   return (
     <TabsContainer>
       {Object.entries(flows).map(([id, flow]) => (
-        <Tab className={selectedFlowId === id ? "selected" : ""} key={id}>
+        <Tab
+          data-name={`flowTab-${id}`}
+          className={selectedFlowId === id ? "selected" : ""}
+          key={id}
+        >
           <div className="d-flex flex-row">
             <span
               className="d-inline-block flex-fill pr-4"
@@ -80,6 +84,7 @@ export default function FlowSelection() {
               {flow.name}
             </span>
             <span
+              data-name={`delete-${id}`}
               className="d-inline-block"
               onClick={() => dispatch(deleteFlow(id))}
             >
@@ -88,7 +93,10 @@ export default function FlowSelection() {
           </div>
         </Tab>
       ))}
-      <AddButton onClick={() => dispatch(createNewFlow())}>
+      <AddButton
+        data-name={"createNewFlowButton"}
+        onClick={() => dispatch(createNewFlow())}
+      >
         <i className="material-icons">add</i>
       </AddButton>
     </TabsContainer>
