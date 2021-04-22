@@ -6,7 +6,6 @@ import {
   indexFlow,
   queryFlow,
 } from "../data/multiModalExample"
-import logger from "../logger"
 import gatewayClient from "./gatewayClient"
 import store from "../redux"
 import { timeout } from "../helpers/utils"
@@ -17,7 +16,6 @@ export async function multiModalScript() {
   const configFiles: Blob[] = []
 
   for (const fileName of configDataList) {
-    logger.log(fileName)
     const response = await axios.get(configUrl + "/" + fileName, {
       responseType: "blob",
     })
@@ -33,15 +31,11 @@ export async function multiModalScript() {
     indexFlow,
     workspaceResult.workspace_id
   )
-  logger.log(flowResult, "flowResult")
-
   const settings = store.getState().settingsState.settings
   store.dispatch(showBanner("Connecting to gateway", "success"))
-  const gatewayResult = await gatewayClient.connect(settings, (result) =>
-    logger.log(result)
+  await gatewayClient.connect(settings, (result) =>
+    store.dispatch(showBanner("Connceted to gateway", "success"))
   )
-
-  logger.log(gatewayResult, "gatewayResult")
 
   store.dispatch(showBanner("Start indexing", "success"))
   for (let i = 0; i < 10; i++) {
@@ -54,14 +48,11 @@ export async function multiModalScript() {
     await gatewayClient.index(JSON.stringify(data))
   }
 
-  logger.log(flowResult.flow_id, "terminateFlow")
   store.dispatch(showBanner("Terminating Flow", "success"))
   jinadClient.terminateFlow(flowResult.flow_id)
   await timeout(1)
-  const terminateResult2 = await jinadClient.terminateFlow(flowResult.flow_id)
-  logger.log(terminateResult2, "terminateResult2")
-  logger.log(workspaceResult.workspace_id)
-  logger.log("startFlow")
+  jinadClient.terminateFlow(flowResult.flow_id)
+
   store.dispatch(showBanner("Starting Query Flow", "success"))
   jinadClient.startFlow(queryFlow, workspaceResult.workspace_id)
   window.open("https://static.jina.ai/multimodal/", "_blank")
