@@ -63,7 +63,7 @@ export function getInitialGlobalState(): GlobalState {
 
   return {
     user,
-    banner: null,
+    banners: [],
     connected: false,
     currentTab: "logStream",
     loading: true,
