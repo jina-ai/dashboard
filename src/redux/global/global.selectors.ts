@@ -10,7 +10,7 @@ export const selectCurrentTab = (state: State) => state.globalState.currentTab
 
 export const selectUser = (state: State) => state.globalState.user
 
-export const selectBanner = (state: State) => state.globalState.banner
+export const selectBanners = (state: State) => state.globalState.banners
 
 export const selectModal = (state: State) => state.globalState.modal
 

@@ -44,7 +44,7 @@ import {
   selectSidebarItems,
   selectCurrentTab,
   selectUser,
-  selectBanner,
+  selectBanners,
   selectModal,
   selectModalParams,
   selectConnectionStatus,
@@ -285,7 +285,7 @@ describe("global selectors", () => {
   })
 
   it("should select banner", () => {
-    expect(selectBanner(state)).toEqual(initialGlobalState.banner)
+    expect(selectBanners(state)).toEqual(initialGlobalState.banner)
   })
 
   it("should select modal", () => {
