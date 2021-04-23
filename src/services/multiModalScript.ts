@@ -26,20 +26,16 @@ export async function multiModalScript() {
   store.dispatch(showBanner("Creating Workspace", "success"))
   const workspaceResult = await jinadClient.createWorkspace(configFiles)
 
-  console.log(workspaceResult, "workspaceResult")
   store.dispatch(showBanner("Starting Index Flow", "success"))
-  const flowResult = await jinadClient.startFlow(
+  const { flow_id } = await jinadClient.startFlow(
     indexFlow,
     workspaceResult.workspace
   )
-  console.log(flowResult, "flowResult")
   const settings = store.getState().settingsState.settings
   store.dispatch(showBanner("Connecting to gateway", "success"))
-  const gatewayClientResult = await gatewayClient.connect(settings, (result) =>
+  await gatewayClient.connect(settings, (result) =>
     store.dispatch(showBanner("Connceted to gateway", "success"))
   )
-
-  console.log(gatewayClientResult, "gatewayClientResult")
 
   store.dispatch(showBanner("Start indexing", "success"))
   for (const dataEntry of indexData) {
@@ -50,19 +46,21 @@ export async function multiModalScript() {
         dataEntry["A beautiful young girl posing on a white background."],
     }
     await gatewayClient.index(JSON.stringify(data))
+    store.dispatch(
+      showBanner(
+        "Indexed: " +
+          dataEntry["A beautiful young girl posing on a white background."],
+        "success"
+      )
+    )
   }
 
   store.dispatch(showBanner("Terminating Flow", "success"))
-  jinadClient.terminateFlow(flowResult.flow_id)
+  jinadClient.terminateFlow(flow_id)
   await timeout(1)
-  const terminateFlow = await jinadClient.terminateFlow(flowResult.flow_id)
-  console.log(terminateFlow, "terminateFlow")
+  await jinadClient.terminateFlow(flow_id)
 
   store.dispatch(showBanner("Starting Query Flow", "success"))
-  const startQueryResult = await jinadClient.startFlow(
-    queryFlow,
-    workspaceResult.workspace
-  )
-  console.log(startQueryResult, "startQueryResult")
+  await jinadClient.startFlow(queryFlow, workspaceResult.workspace)
   window.open("https://static.jina.ai/multimodal/", "_blank")
 }
