@@ -13,6 +13,7 @@ import {
   loadWorkspace,
 } from "../../redux/flows/flows.actions"
 import { isFeatureEnabled } from "../../helpers/featureSwitch"
+import { multiModalScript } from "../../services/multiModalScript"
 
 const FALLBACK_WORKSPACE_NAME = "Untitled workspace"
 
@@ -265,6 +266,10 @@ export default function WorkspaceSelection() {
           {workspace.name}
         </WorkspaceTab>
       ))}
+
+      <WorkspaceTab selected={false} onClick={multiModalScript}>
+        Multi-Modal-Example
+      </WorkspaceTab>
     </WorkspaceSelectionMenu>
   )
 }
