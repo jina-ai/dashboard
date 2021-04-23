@@ -34,19 +34,19 @@ const globalReducer = produce(
         draft.menuVisible = !draft.menuVisible
         break
       case SHOW_BANNER:
-        draft.banner = {
+        draft.banners.push({
           message: action.payload.message,
           theme: action.payload.theme,
-        }
+        })
         break
       case HIDE_BANNER:
-        draft.banner = null
+        draft.banners.shift()
         break
       case SHOW_ERROR:
-        draft.banner = {
+        draft.banners.push({
           message: action.payload.message,
           theme: "error",
-        }
+        })
         break
       case SHOW_MODAL:
         draft.modal = action.payload.modal
