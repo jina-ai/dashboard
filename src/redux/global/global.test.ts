@@ -285,7 +285,7 @@ describe("global selectors", () => {
   })
 
   it("should select banner", () => {
-    expect(selectBanners(state)).toEqual(initialGlobalState.banner)
+    expect(selectBanners(state)).toEqual(initialGlobalState.banners)
   })
 
   it("should select modal", () => {
