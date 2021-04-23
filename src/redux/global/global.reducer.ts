@@ -2,11 +2,13 @@ import {
   CLOSE_MODAL,
   HANDLE_CONNECTION_STATUS,
   HIDE_BANNER,
-  initialGlobalState,
+  LOGOUT,
   SHOW_BANNER,
   SHOW_ERROR,
   SHOW_MODAL,
   TOGGLE_SIDE_BAR,
+  SETUSER,
+  getInitialGlobalState,
 } from "./global.constants"
 import logger from "../../logger"
 import { HANDLE_NEW_LOG } from "../logStream/logStream.constants"
@@ -57,9 +59,16 @@ const globalReducer = produce(
       case HANDLE_NEW_LOG:
         draft.processes[action.payload.process] = action.payload.name
         break
+      case SETUSER:
+        draft.user = action.payload.user
+        break
+      case LOGOUT:
+        draft.user = null
+        localStorage.removeItem("user")
+        break
     }
   },
-  initialGlobalState
+  getInitialGlobalState()
 )
 
 export default globalReducer

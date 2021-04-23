@@ -8,6 +8,7 @@ import {
   selectSelectedFlow,
   selectSelectedFlowId,
 } from "../../../src/redux/flows/flows.selectors"
+
 const path = require("path")
 
 describe("The Flow Page", () => {
@@ -68,7 +69,7 @@ describe("The Flow Page", () => {
             selectedFlowOld.name
           )
 
-          cy.dataName("createNewFlowButton").click()
+          cy.dataName("createNewFlowButton").click({ force: true })
 
           const selectedFlowIdNew = selectSelectedFlowId(store.getState())
           const selectedFlowNew = selectSelectedFlow(store.getState())
@@ -77,7 +78,7 @@ describe("The Flow Page", () => {
             selectedFlowNew.name
           )
 
-          cy.dataName(`delete-${selectedFlowIdNew}`).click()
+          cy.dataName(`delete-${selectedFlowIdNew}`).click({ force: true })
 
           cy.dataName(`flowTab-${selectedFlowIdNew}`).should("not.exist")
         }

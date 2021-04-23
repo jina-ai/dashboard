@@ -1,21 +1,12 @@
 import React from "react"
-import { Container, Navbar, Nav } from "shards-react"
-import { NavbarSpacer } from "./NavbarSpacer"
-import { ConnectionIndicator } from "./ConnectionIndicator"
-import { NavLogo } from "./NavLogo"
-
-export type User = {
-  displayName: string
-  emails: [{ value: string }]
-  id: string
-  nodeId: string
-  photos: [{ value: string }]
-  profileUrl: string
-  provider: string
-  username: string
-  _json: string
-  _raw: string
-}
+import { UserActions } from "./UserActions"
+import { useDispatch } from "react-redux"
+import { logout } from "../../../redux/global/global.actions"
+import { User } from "../../../redux/global/global.types"
+import { AppBar, Toolbar } from "@material-ui/core"
+import LanguageIcon from "@material-ui/icons/Language"
+import { green, red } from "@material-ui/core/colors"
+import styled from "styled-components"
 
 type Props = {
   usesAuth: boolean
@@ -24,41 +15,39 @@ type Props = {
   logOut: () => void
   toggleSidebar?: () => void
   reconnect?: () => void
-  user: User | null
+  user: User
   hideSidebarToggle?: boolean
   showLogo?: boolean
   navigateButton?: () => React.ReactNode
 }
 
-function MainNavbar({
-  usesConnection,
-  toggleSidebar,
-  reconnect,
-  connected,
-  showLogo,
-  navigateButton,
-}: Props) {
+const NavigationItems = styled.div`
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+`
+
+function MainNavbar({ usesConnection, reconnect, connected }: Props) {
+  const dispatch = useDispatch()
+
   return (
-    <div className="main-navbar">
-      <Container fluid className="p-0">
-        <Navbar
-          type="light"
-          className="align-items-stretch flex-md-nowrap p-0 px-2"
-        >
-          {showLogo && <NavLogo />}
-          {navigateButton && navigateButton()}
-          <NavbarSpacer />
-          <Nav navbar className="flex-row">
-            {usesConnection && (
-              <ConnectionIndicator
-                reconnect={reconnect}
-                connected={connected}
-              />
-            )}
-          </Nav>
-        </Navbar>
-      </Container>
-    </div>
+    <AppBar position="static" elevation={0} color={"transparent"}>
+      <Toolbar>
+        <NavigationItems>
+          {usesConnection && (
+            <LanguageIcon
+              onClick={reconnect}
+              style={connected ? { color: green[500] } : { color: red[500] }}
+            />
+          )}
+          <UserActions
+            userActionsVisible={false}
+            logOut={() => dispatch(logout())}
+            toggleUserActions={() => {}}
+          />
+        </NavigationItems>
+      </Toolbar>
+    </AppBar>
   )
 }
 

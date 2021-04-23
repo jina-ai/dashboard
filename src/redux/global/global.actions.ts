@@ -5,10 +5,12 @@ import {
   HANDLE_CONNECTION_STATUS,
   HIDE_BANNER,
   HIDE_BANNER_TIMEOUT,
+  LOGOUT,
   SHOW_BANNER,
   SHOW_ERROR,
   SHOW_MODAL,
   TOGGLE_SIDE_BAR,
+  SETUSER,
 } from "./global.constants"
 import {
   CloseModalAction,
@@ -19,6 +21,9 @@ import {
   ShowErrorAction,
   ShowModalAction,
   ToggleSidebarAction,
+  User,
+  LogoutAction,
+  SetUserAction,
 } from "./global.types"
 import { AppThunk } from "../index"
 import store from ".."
@@ -144,6 +149,7 @@ export function closeModal(): CloseModalAction {
 export function connectJinaD(): AppThunk {
   return function (dispatch) {
     const settings = store.getState().settingsState.settings
+
     function onConnectionStatus({
       connected,
       message,
@@ -153,6 +159,21 @@ export function connectJinaD(): AppThunk {
     }) {
       dispatch(handleJinadConnectionStatus(connected, message))
     }
+
     jinadClient.connect(settings, onConnectionStatus)
+  }
+}
+
+export function logout(): LogoutAction {
+  return {
+    type: LOGOUT,
+  }
+}
+
+export function setUser(user: User): SetUserAction {
+  localStorage.setItem("user", JSON.stringify(user))
+  return {
+    type: SETUSER,
+    payload: { user },
   }
 }

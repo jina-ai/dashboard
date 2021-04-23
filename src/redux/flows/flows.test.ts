@@ -27,6 +27,12 @@ import {
   WorkspaceUpdate,
 } from "./flows.types"
 import { isFlowNode, isFlowEdge } from "../../helpers/flow-chart"
+import {
+  selectExampleFlowsKeyEntryPairs,
+  selectSelectedFlow,
+  selectSelectedFlowId,
+} from "./flows.selectors"
+import _ from "lodash"
 
 function getFlowFromStorage(id: string): Flow | undefined {
   const userFlowsString = localStorage.getItem("userFlows")
@@ -536,5 +542,42 @@ describe("flows reducer", () => {
       const value = entry[1]
       expect(selectedWorkspaceNewState[key]).toEqual(value)
     })
+  })
+})
+
+describe("flow selectors", () => {
+  const state = {
+    flowState: testFlowState,
+  }
+
+  it("should select selected flow", () => {
+    const { selectedFlowId } = testFlowState.workspaces[
+      state.flowState.selectedWorkspaceId
+    ]
+
+    expect(selectSelectedFlow(state)).toEqual(
+      testFlowState.flows[selectedFlowId]
+    )
+  })
+
+  it("should select example flows key entry pairs", () => {
+    const { selectedWorkspaceId } = testFlowState
+
+    const workspaceFlows = _.pickBy(
+      testFlowState.flows,
+      (flow) => flow.workspaceId === selectedWorkspaceId
+    )
+
+    expect(selectExampleFlowsKeyEntryPairs(state)).toEqual(
+      Object.entries(workspaceFlows).filter(
+        (flowKeyEntryPair) => flowKeyEntryPair[1].type === "example"
+      )
+    )
+  })
+
+  it("should select selected flowId", () => {
+    expect(selectSelectedFlowId(state)).toBe(
+      testFlowState.workspaces[testFlowState.selectedWorkspaceId].selectedFlowId
+    )
   })
 })

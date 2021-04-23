@@ -10,6 +10,8 @@ export const CLOSE_MODAL = "CLOSE_MODAL"
 export const CONNECT_JINAD = "CONNECT_JINAD"
 export const FETCH_ARGUMENTS_FROM_API = "FETCH_ARGUMENTS_FROM_API"
 export const FETCH_ARGUMENTS_FROM_DAEMON = "FETCH_ARGUMENTS_FROM_DAEMON"
+export const LOGOUT = "LOGOUT"
+export const SETUSER = "SETUSER"
 
 export const HIDE_BANNER_TIMEOUT = 5000
 
@@ -52,15 +54,23 @@ const navItems: TNavItem[] = [
   },
 ]
 
-export const initialGlobalState: GlobalState = {
-  user: null,
-  banners: [],
-  connected: false,
-  currentTab: "logStream",
-  loading: true,
-  menuVisible: false,
-  modal: null,
-  modalParams: null,
-  navItems,
-  processes: {},
+export function getInitialGlobalState(): GlobalState {
+  let user = null
+  const userString = localStorage.getItem("user")
+  if (userString) {
+    user = JSON.parse(userString)
+  }
+
+  return {
+    user,
+    banners: [],
+    connected: false,
+    currentTab: "logStream",
+    loading: true,
+    menuVisible: false,
+    modal: null,
+    modalParams: null,
+    navItems,
+    processes: {},
+  }
 }
