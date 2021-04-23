@@ -42,12 +42,12 @@ export async function multiModalScript() {
   console.log(gatewayClientResult, "gatewayClientResult")
 
   store.dispatch(showBanner("Start indexing", "success"))
-  for (let i = 0; i < 10; i++) {
+  for (const dataEntry of indexData) {
     const data = {
-      id: indexData[i]["1"].toString(),
-      image: indexData[i]["image_1.jpg"],
+      id: dataEntry["1"].toString(),
+      image: dataEntry["image_1.jpg"],
       caption:
-        indexData[i]["A beautiful young girl posing on a white background."],
+        dataEntry["A beautiful young girl posing on a white background."],
     }
     await gatewayClient.index(JSON.stringify(data))
   }
