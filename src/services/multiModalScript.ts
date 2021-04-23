@@ -30,8 +30,9 @@ export async function multiModalScript() {
   store.dispatch(showBanner("Starting Index Flow", "success"))
   const flowResult = await jinadClient.startFlow(
     indexFlow,
-    workspaceResult.workspace_id
+    workspaceResult.workspace
   )
+  console.log(flowResult, "flowResult")
   const settings = store.getState().settingsState.settings
   store.dispatch(showBanner("Connecting to gateway", "success"))
   const gatewayClientResult = await gatewayClient.connect(settings, (result) =>
@@ -57,6 +58,6 @@ export async function multiModalScript() {
   jinadClient.terminateFlow(flowResult.flow_id)
 
   store.dispatch(showBanner("Starting Query Flow", "success"))
-  jinadClient.startFlow(queryFlow, workspaceResult.workspace_id)
+  await jinadClient.startFlow(queryFlow, workspaceResult.workspace)
   window.open("https://static.jina.ai/multimodal/", "_blank")
 }
