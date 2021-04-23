@@ -55,9 +55,14 @@ export async function multiModalScript() {
   store.dispatch(showBanner("Terminating Flow", "success"))
   jinadClient.terminateFlow(flowResult.flow_id)
   await timeout(1)
-  jinadClient.terminateFlow(flowResult.flow_id)
+  const terminateFlow = await jinadClient.terminateFlow(flowResult.flow_id)
+  console.log(terminateFlow, "terminateFlow")
 
   store.dispatch(showBanner("Starting Query Flow", "success"))
-  await jinadClient.startFlow(queryFlow, workspaceResult.workspace)
+  const startQueryResult = await jinadClient.startFlow(
+    queryFlow,
+    workspaceResult.workspace
+  )
+  console.log(startQueryResult, "startQueryResult")
   window.open("https://static.jina.ai/multimodal/", "_blank")
 }
