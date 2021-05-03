@@ -62,5 +62,10 @@ export async function multiModalScript() {
 
   store.dispatch(showBanner("Starting Query Flow", "success"))
   await jinadClient.startFlow(queryFlow, workspaceResult.workspace)
-  window.open("https://static.jina.ai/multimodal/", "_blank")
+  window.open(
+    `https://static.jina.ai/multimodal?port=${
+      store.getState().settingsState.settings.gatewayPort
+    }`,
+    "_blank"
+  )
 }
