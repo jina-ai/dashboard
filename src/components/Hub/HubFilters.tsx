@@ -1,8 +1,12 @@
-import React, { useState } from "react"
+import React from "react"
 import styled from "@emotion/styled"
-import { useTheme } from "@emotion/react"
+import FilterButton from "./FilterButton"
 
-export type FilterMap = { [key: string]: boolean }
+export type FilterMap = {
+  name: string
+  selected: boolean
+  count: number
+}
 export type FilterParams = {
   kind: string[]
   keywords: string[]
@@ -10,7 +14,7 @@ export type FilterParams = {
 }
 export type Filter = {
   filterLabel: string
-  values: FilterMap
+  values: FilterMap[]
 }
 type HubFilterProps = {
   filters: Filter[]
@@ -39,24 +43,8 @@ const FiltersTitle = styled.div`
 
 const FiltersContainer = styled.div`
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
 `
-// Hide checkbox but keep it in the DOM for accessibility
-const Checkbox = styled.input`
-  margin-right: -1rem;
-  opacity: 0;
-`
-type CheckboxLabelProps = {
-  checked: boolean
-  highlightColor: string
-}
-const CheckboxLabel = styled.label`
-  border: ${(props: CheckboxLabelProps) =>
-    props.checked ? `1px solid ${props.highlightColor}` : "none"};
-  border-radius: 0.25rem;
-  padding: 0.25rem 0.5rem;
-`
-
 const HubFilters = ({ filters, setFilters, getHubImages }: HubFilterProps) => {
   const handleFilterChange = (
     filterCategoryIndex: number,
@@ -74,12 +62,12 @@ const HubFilters = ({ filters, setFilters, getHubImages }: HubFilterProps) => {
           <div key={filterCategoryIndex}>
             <FiltersTitle>{filter.filterLabel}</FiltersTitle>
             <FiltersContainer>
-              {Object.keys(filter.values).map((key) => (
-                <FilterCheckbox
+              {filter.values.map(({name, selected, count}) => (
+                <FilterButton
                   filter={filter}
-                  value={filter.values[key]}
-                  key={key}
-                  label={key}
+                  value={selected}
+                  key={name}
+                  label={name}
                   filterCategoryIndex={filterCategoryIndex}
                   handleFilterChange={handleFilterChange}
                 />
@@ -88,44 +76,6 @@ const HubFilters = ({ filters, setFilters, getHubImages }: HubFilterProps) => {
           </div>
         ))}
     </div>
-  )
-}
-
-type FilterCheckboxProps = {
-  filter: Filter
-  value: boolean
-  label: string
-  filterCategoryIndex: number
-  handleFilterChange: (
-    filterCategoryIndex: number,
-    key: string,
-    value: boolean
-  ) => void
-}
-
-const FilterCheckbox = ({
-  filter,
-  value,
-  label,
-  filterCategoryIndex,
-  handleFilterChange,
-}: FilterCheckboxProps) => {
-  const [checked, setChecked] = useState(value)
-  const theme = useTheme()
-  const { highlight } = theme.palette
-  const handleFilterSelect = () => {
-    setChecked(!checked)
-    handleFilterChange(filterCategoryIndex, label, !checked)
-  }
-  return (
-    <CheckboxLabel checked={checked} highlightColor={highlight || "cyan"}>
-      <Checkbox
-        type="checkbox"
-        checked={checked}
-        onChange={() => handleFilterSelect()}
-      />
-      {label}
-    </CheckboxLabel>
   )
 }
 

@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux"
 import { Row, Col } from "react-bootstrap"
 import { fetchHubImages } from "../../redux/hub/hub.actions"
 import {
+  selectHubFilters,
   selectHubImages,
   selectHubImagesFetchError,
   selectIsHubImagesLoading,
@@ -47,7 +48,7 @@ const EmptyResultMessage = styled.h3`
 export const getImageFilters = (images: HubImage[], filters: Filter[]) => {
   return [
     {
-      filterLabel: "Type of image",
+      filterLabel: "Executor type",
       values: convertArrayToFilterObject(
         removeDuplicates(
           images.reduce((acc, image) => [...acc, image.kind], [] as string[])
@@ -73,6 +74,7 @@ export const getImageFilters = (images: HubImage[], filters: Filter[]) => {
 const HubImagesList = () => {
   const dispatch = useDispatch()
   const hubImages = useSelector(selectHubImages)
+  const imageFilters = useSelector(selectHubFilters)
   const isHubImagesLoading = useSelector(selectIsHubImagesLoading)
   const hubImagesFetchError = useSelector(selectHubImagesFetchError)
   let [filters, setFilters] = useState([] as Filter[])
@@ -82,7 +84,7 @@ const HubImagesList = () => {
   }
 
   useEffect(() => {
-    hubImages && setFilters(getImageFilters(hubImages, filters))
+    hubImages && setFilters(imageFilters)
   }, [hubImages]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const getHubImages = useCallback(
@@ -102,14 +104,14 @@ const HubImagesList = () => {
         <SpinningLoader />
       ) : (
         <Row>
-          <Col md="2">
+          <Col md="3">
             <HubFilters
               filters={filters}
               setFilters={setFilters}
               getHubImages={getHubImages}
             />
           </Col>
-          <Col md="10">
+          <Col md="9">
             <SearchContainer>
               <ExpandingSearchbar
                 placeholder="search hub images..."
