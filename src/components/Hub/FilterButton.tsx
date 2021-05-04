@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import styled from "@emotion/styled"
 import { Button } from "@material-ui/core"
-import { Filter } from "./HubFilters"
+import { Filter } from "../../redux/hub/hub.types"
 
 const ToggleButton = styled(Button)`
     display: flex;
@@ -13,9 +13,10 @@ type FilterButtonProps = {
   value: boolean
   label: string
   filterCategoryIndex: number
+  index: number
   handleFilterChange: (
     filterCategoryIndex: number,
-    key: string,
+    index: number,
     value: boolean
   ) => void
 }
@@ -23,13 +24,14 @@ type FilterButtonProps = {
 const FilterButton = ({
   value,
   label,
+  index,
   filterCategoryIndex,
   handleFilterChange,
 }: FilterButtonProps) => {
   const [selected, setSelected] = useState(value)
   const handleFilterSelect = () => {
     setSelected(!selected)
-    handleFilterChange(filterCategoryIndex, label, !selected)
+    handleFilterChange(filterCategoryIndex, index, !selected)
   }
   return (
     <ToggleButton

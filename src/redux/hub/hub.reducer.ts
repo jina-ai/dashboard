@@ -4,6 +4,7 @@ import {
   FETCH_HUB_IMAGES_SUCCESS,
   FETCH_HUB_IMAGES_FAILURE,
   initialHubState,
+  SELECT_FILTER,
 } from "./hub.constants"
 import produce from "immer"
 
@@ -22,6 +23,8 @@ const hubReducer = produce((draft: HubState, action: HubActionTypes) => {
       draft.loading = false
       draft.error = action.payload.error
       break
+    case SELECT_FILTER:
+      draft.selectedFilters.push(action.payload.filter)
   }
 }, initialHubState)
 

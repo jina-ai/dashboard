@@ -1,4 +1,4 @@
-import { fetchHubImages } from "./hub.actions";
+import { fetchHubImages, selectFilter } from "./hub.actions";
 import {
   initialHubState,
   FETCH_HUB_IMAGES,
@@ -7,7 +7,7 @@ import {
 } from "./hub.constants";
 import { HubState, HubActionTypes, HubImage } from "./hub.types";
 import hubReducer from "./hub.reducer";
-import { selectHubImages, selectIsHubImagesLoading, selectHubImagesFetchError, selectHubFilters } from "./hub.selectors";
+import { selectHubImages, selectIsHubImagesLoading, selectHubImagesFetchError, selectHubFilters, getImagesCountForFilter } from "./hub.selectors";
 import configureMockStore from "redux-mock-store";
 import thunk, { ThunkDispatch } from "redux-thunk";
 import { AnyAction } from "redux";
@@ -43,6 +43,18 @@ describe("hub actions", () => {
       });
     });
   });
+
+  describe("on selecting filters", () => {
+    it("dispatches SELECT_FILTER action", () => {
+      const expectedActions = [
+        { type: "SELECT_FILTER", payload: { filter: "multi-modal" } }
+      ]
+
+      const store = mockStore(initialHubState);
+      store.dispatch(selectFilter("multi-modal"))
+      expect(store.getActions()).toEqual(expectedActions)
+    })
+  })
 });
 
 describe("hub reducer", () => {
@@ -59,7 +71,7 @@ describe("hub reducer", () => {
   it("sets state to loading on fetching images", () => {
     expect(
       hubReducer(
-        { images: [], loading: true, error: null },
+        { images: [], loading: true, error: null, selectedFilters: [] },
         {
           type: FETCH_HUB_IMAGES_SUCCESS,
           payload: {
@@ -73,7 +85,7 @@ describe("hub reducer", () => {
     ).toBe(false);
     expect(
       hubReducer(
-        { images: [], loading: true, error: null },
+        { images: [], loading: true, error: null, selectedFilters: [] },
         {
           type: FETCH_HUB_IMAGES_SUCCESS,
           payload: {
@@ -93,6 +105,7 @@ describe("hub reducer", () => {
           images: [],
           loading: true,
           error: { name: "error name", message: "error message" },
+          selectedFilters: []
         },
         {
           type: FETCH_HUB_IMAGES_SUCCESS,
@@ -109,7 +122,7 @@ describe("hub reducer", () => {
   it("sets state to loading on fetching images", () => {
     expect(
       hubReducer(
-        { images: [], loading: true, error: null },
+        { images: [], loading: true, error: null, selectedFilters: [] },
         {
           type: FETCH_HUB_IMAGES_FAILURE,
           payload: {
@@ -123,7 +136,7 @@ describe("hub reducer", () => {
     ).toBe(false);
     expect(
       hubReducer(
-        { images: [], loading: true, error: null },
+        { images: [], loading: true, error: null, selectedFilters: [] },
         {
           type: FETCH_HUB_IMAGES_FAILURE,
           payload: {
@@ -143,6 +156,7 @@ describe("hub reducer", () => {
           images: (["Starry night", "Water lillies"] as unknown) as HubImage[],
           loading: true,
           error: null,
+          selectedFilters: []
         },
         {
           type: FETCH_HUB_IMAGES_FAILURE,
@@ -194,11 +208,27 @@ describe("hub selectors", () => {
       { keywords: ["Audio", "Onnx"], kind: "Encoder" },
     ]
 
+    it("gets applied filter count", () => {
+      expect(getImagesCountForFilter("Indexer", ["Indexer", "Encoder", "Indexer"])).toEqual(2)
+    })
+
     const expectedFilters = [
       {
-        fitlerLables: "Domain space",
+        filterLabel: "Executor type",
         values: [
-          { name: "Text", selected: false, count: 2 },
+          { name: "Classifier", selected: false, count: 0 },
+          { name: "Evaluator", selected: false, count: 0 },
+          { name: "Crafter", selected: false, count: 0 },
+          { name: "Segementer", selected: false, count: 0 },
+          { name: "Ranker", selected: false, count: 0 },
+          { name: "Indexer", selected: false, count: 2 },
+          { name: "Encoder", selected: true, count: 1 },
+        ]
+      },
+      {
+        filterLabel: "Domain space",
+        values: [
+          { name: "Text", selected: true, count: 2 },
           { name: "Audio", selected: false, count: 2 },
           { name: "Video", selected: false, count: 0 },
           { name: "Image", selected: false, count: 0 },
@@ -208,45 +238,33 @@ describe("hub selectors", () => {
         ]
       },
       {
-        fitlerLables: "Executor type",
+        filterLabel: "Libraries",
         values: [
-          { name: "Classifier", selected: false, count: 0},
-          { name: "Evaluator", selected: false, count: 0},
-          { name: "Crafter", selected: false, count: 0},
-          { name: "Segementer", selected: false, count: 0},
-          { name: "Ranker", selected: false, count: 0},
-          { name: "Indexer", selected: false, count: 2},
-          { name: "Encoder", selected: false, count: 1},
+          { name: "Tensorflow", selected: false, count: 0 },
+          { name: "Keras", selected: false, count: 0 },
+          { name: "Numpy", selected: false, count: 0 },
+          { name: "Pytorch", selected: false, count: 0 },
+          { name: "Onnx", selected: false, count: 1 },
+          { name: "Transformers", selected: false, count: 0 },
+          { name: "sklearn", selected: false, count: 0 },
+          { name: "PaddlePaddle", selected: false, count: 0 },
+          { name: "librosa", selected: false, count: 0 },
+          { name: "nltk", selected: false, count: 0 },
         ]
       },
       {
-        fitlerLables: "Libraries",
+        filterLabel: "Language",
         values: [
-          { name: "Tensorflow", selected: false, count: 0},
-          { name: "Keras", selected: false, count: 0},
-          { name: "Numpy", selected: false, count: 0},
-          { name: "Pytorch", selected: false, count: 0},
-          { name: "Onnx", selected: false, count: 1},
-          { name: "Transformers", selected: false, count: 0},
-          { name: "sklearn", selected: false, count: 0},
-          { name: "PaddlePaddle", selected: false, count: 0},
-          { name: "librosa", selected: false, count: 0},
-          { name: "nltk", selected: false, count: 0},
-        ]
-      },
-      {
-        fitlerLables: "Language",
-        values: [
-          { name: "English", selected: false, count: 0},
-          { name: "Chinese", selected: false, count: 0},
-          { name: "Multilingual", selected: false, count: 0},
+          { name: "English", selected: false, count: 0 },
+          { name: "Chinese", selected: false, count: 0 },
+          { name: "Multilingual", selected: false, count: 0 },
         ]
       }
     ]
 
     it("gets filters from images", () => {
       expect(
-        selectHubFilters({ hubState: { images: inputImages } } as State))
+        selectHubFilters({ hubState: { images: inputImages, selectedFilters: ["Text", "Encoder"] } } as State))
         .toEqual(expectedFilters)
     })
   })

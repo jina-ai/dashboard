@@ -1,5 +1,5 @@
 import { State } from "../index";
-import { Filter, FilterMap } from "../../components/Hub/HubFilters"
+import { Filter, HubImage } from "./hub.types";
 
 // Todo: Ideally, we shouldn't remove keywords. This should be fixed with providing correct data
 const tagsToHide = [
@@ -19,14 +19,26 @@ type FilterKeyType = keyof typeof filters
 
 export const selectHubFilters = (state: State): Filter[] => {
   const currentFilters = Object.keys(filters).map(filterKey => {
-    return ( {
+    const applicableFilters = [
+      ...state.hubState.images.map(image => image.kind),
+      ...state.hubState.images.reduce((acc, image) => ([...acc, ...image.keywords]), [] as string[] )
+    ]
+    return ({
       filterLabel: filterKey,
       values: filters[filterKey as FilterKeyType].map(filterValue => (
-       { name: filterValue, selected: false, count: 2 }
+        {
+          name: filterValue,
+          selected: state.hubState.selectedFilters.includes(filterValue),
+          count: getImagesCountForFilter(filterValue, applicableFilters)
+        }
       ))
     })
   })
   return currentFilters
+}
+
+export const getImagesCountForFilter = (filter: string, applicableFilters: string[]): number => {
+  return applicableFilters.filter(f => f === filter).length
 }
 
 export const selectHubImages = (state: State) =>

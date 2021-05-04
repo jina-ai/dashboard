@@ -2,16 +2,18 @@ import {
   FETCH_HUB_IMAGES,
   FETCH_HUB_IMAGES_SUCCESS,
   FETCH_HUB_IMAGES_FAILURE,
+  SELECT_FILTER
 } from "./hub.constants";
 import {
   HubActionTypes,
   HubImage,
   FetchHubImagesSuccessAction,
   FetchHubImagesFailureAction,
+  SelectFilterAction,
 } from "./hub.types";
 import { Dispatch } from "redux";
 import { getHubImages } from "../../services/hubApi";
-import { FilterParams } from "../../components/Hub/HubFilters";
+import { FilterParams } from "../hub/hub.types";
 import { AppThunk } from "..";
 
 const defaultParams = { kind: [], keywords: [] };
@@ -47,3 +49,12 @@ const fetchHubImagesFailure = (error: Error): FetchHubImagesFailureAction => {
     payload: { error },
   };
 };
+
+export const selectFilter = (
+  filter: string
+): SelectFilterAction => {
+  return {
+    type: SELECT_FILTER,
+    payload: {filter}
+  }
+}

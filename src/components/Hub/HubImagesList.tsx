@@ -10,30 +10,11 @@ import {
 } from "../../redux/hub/hub.selectors"
 import { HubImage } from "../../redux/hub/hub.types"
 import ImageCard from "./ImageCard"
-import HubFilters, { FilterParams, getSelectedFilters } from "./HubFilters"
+import HubFilters, { getSelectedFilters } from "./HubFilters"
 import SpinningLoader from "../Common/SpinningLoader"
 import { ExpandingSearchbar } from "../Common/ExpandingSearchbar"
-import { Filter, FilterMap } from "./HubFilters"
+import { Filter, FilterMap, FilterParams } from "../../redux/hub/hub.types"
 import styled from "@emotion/styled"
-
-export const removeDuplicates = (arrayWithDuplicates: string[]): string[] =>
-  arrayWithDuplicates.filter((e, i) => {
-    return arrayWithDuplicates.indexOf(e) === i
-  })
-
-export const convertArrayToFilterObject = (
-  array: string[],
-  filter: Filter
-): FilterMap =>
-  array.reduce(
-    (acc, f) => ({
-      ...acc,
-      [f]:
-        (filter?.values && filter.values[f]) ||
-        (!filter?.values && array.length === 1),
-    }),
-    {} as FilterMap
-  )
 
 const SearchContainer = styled(Row)`
   flex-direction: row-reverse;
@@ -44,32 +25,6 @@ const EmptyResultMessage = styled.h3`
   margin-top: 25px;
   text-align: center;
 `
-
-export const getImageFilters = (images: HubImage[], filters: Filter[]) => {
-  return [
-    {
-      filterLabel: "Executor type",
-      values: convertArrayToFilterObject(
-        removeDuplicates(
-          images.reduce((acc, image) => [...acc, image.kind], [] as string[])
-        ),
-        filters[0]
-      ),
-    },
-    {
-      filterLabel: "Key domain of the image",
-      values: convertArrayToFilterObject(
-        removeDuplicates(
-          images.reduce(
-            (acc, image) => [...acc, ...image.keywords],
-            [] as string[]
-          )
-        ),
-        filters[1]
-      ),
-    },
-  ]
-}
 
 const HubImagesList = () => {
   const dispatch = useDispatch()

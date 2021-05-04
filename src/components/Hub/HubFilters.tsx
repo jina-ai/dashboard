@@ -1,21 +1,10 @@
 import React from "react"
 import styled from "@emotion/styled"
+import { useSelector, useDispatch } from "react-redux"
 import FilterButton from "./FilterButton"
+import { Filter, FilterParams} from "../../redux/hub/hub.types"
+import { selectFilter } from "../../redux/hub/hub.actions"
 
-export type FilterMap = {
-  name: string
-  selected: boolean
-  count: number
-}
-export type FilterParams = {
-  kind: string[]
-  keywords: string[]
-  name?: string | null
-}
-export type Filter = {
-  filterLabel: string
-  values: FilterMap[]
-}
 type HubFilterProps = {
   filters: Filter[]
   setFilters: (filters: Filter[]) => void
@@ -30,15 +19,15 @@ export const getSelectedFilters = (filters: Filter[]): FilterParams => {
 }
 
 export const getCheckedFilterValues = (filter: Filter) => {
-  return Object.keys(filter.values).reduce((acc, key) => {
-    let filterValue = filter.values
-    return filterValue[key] ? [...acc, key] : acc
+  return filter.values.reduce((acc, {name, selected}) => {
+    return selected ? [...acc, name] : acc
   }, [] as string[])
 }
 
 const FiltersTitle = styled.div`
   font-weight: 500;
   font-size: 1.25rem;
+  color: ${(props) => props.theme.palette.headerTextColor};
 `
 
 const FiltersContainer = styled.div`
@@ -46,12 +35,14 @@ const FiltersContainer = styled.div`
   flex-wrap: wrap;
 `
 const HubFilters = ({ filters, setFilters, getHubImages }: HubFilterProps) => {
+  const dispatch = useDispatch()
   const handleFilterChange = (
     filterCategoryIndex: number,
-    key: string,
+    index: number,
     value: boolean
   ) => {
-    filters[filterCategoryIndex].values[key] = value
+    filters[filterCategoryIndex].values[index].selected = value
+    dispatch(selectFilter(filters[filterCategoryIndex].values[index].name))
     setFilters(filters)
     getHubImages(getSelectedFilters(filters))
   }
@@ -62,11 +53,12 @@ const HubFilters = ({ filters, setFilters, getHubImages }: HubFilterProps) => {
           <div key={filterCategoryIndex}>
             <FiltersTitle>{filter.filterLabel}</FiltersTitle>
             <FiltersContainer>
-              {filter.values.map(({name, selected, count}) => (
+              {filter.values.map(({name, selected, count}, index) => (
                 <FilterButton
                   filter={filter}
                   value={selected}
-                  key={name}
+                  index={index}
+                  key={index}
                   label={name}
                   filterCategoryIndex={filterCategoryIndex}
                   handleFilterChange={handleFilterChange}
