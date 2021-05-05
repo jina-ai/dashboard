@@ -49,7 +49,9 @@ exports[`ImageDetails 1`] = `
       >
         Docker Pull Command
       </div>
-      <div>
+      <div
+        className="css-1o6tsqj"
+      >
         whatever
       </div>
     </div>

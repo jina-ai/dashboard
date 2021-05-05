@@ -3,6 +3,7 @@ import { Card, CardBody } from "shards-react";
 import { HubImage } from "../../redux/hub/hub.types";
 import styled from "@emotion/styled";
 import { Tag } from "./ImageCard";
+import CodeSnippetWithCopy from "./CodeSnippetWithCopy"
 
 type Props = {
   image: HubImage;
@@ -49,7 +50,7 @@ export default function ImageDetails({ image }: Props) {
         </DetailsSection>
         <DetailsSection>
           <SectionHeading>Docker Pull Command</SectionHeading>
-          <div>{dockerCommand}</div>
+          <CodeSnippetWithCopy codeSnippet={dockerCommand} />
         </DetailsSection>
         <DetailsSection>
           <SectionHeading>Owner</SectionHeading>
