@@ -4,6 +4,7 @@ import {
   FETCH_HUB_IMAGES,
   FETCH_HUB_IMAGES_SUCCESS,
   FETCH_HUB_IMAGES_FAILURE,
+  SELECT_FILTER,
 } from "./hub.constants";
 import { HubState, HubActionTypes, HubImage } from "./hub.types";
 import hubReducer from "./hub.reducer";
@@ -169,6 +170,60 @@ describe("hub reducer", () => {
         }
       ).images
     ).toEqual([]);
+  })
+  it("updates selected filters", () => {
+    expect(
+      hubReducer(
+        {
+          images: (["Starry night", "Water lillies"] as unknown) as HubImage[],
+          loading: true,
+          error: null,
+          selectedFilters: []
+        },
+        {
+          type: SELECT_FILTER,
+          payload: {
+            filter: "Multimodal"
+          }
+        }
+      ).selectedFilters
+    ).toEqual(["Multimodal"])
+  })
+  it("updates selected filters", () => {
+    expect(
+      hubReducer(
+        {
+          images: (["Starry night", "Water lillies"] as unknown) as HubImage[],
+          loading: true,
+          error: null,
+          selectedFilters: ["Multimodal"]
+        },
+        {
+          type: SELECT_FILTER,
+          payload: {
+            filter: "Multimodal"
+          }
+        }
+      ).selectedFilters
+    ).toEqual([])
+  })
+  it("updates selected filters", () => {
+    expect(
+      hubReducer(
+        {
+          images: (["Starry night", "Water lillies"] as unknown) as HubImage[],
+          loading: true,
+          error: null,
+          selectedFilters: ["Multimodal", "onnx", "Tensorflow"]
+        },
+        {
+          type: SELECT_FILTER,
+          payload: {
+            filter: "Multimodal"
+          }
+        }
+      ).selectedFilters
+    ).toEqual(["onnx", "Tensorflow"])
   })
 });
 
