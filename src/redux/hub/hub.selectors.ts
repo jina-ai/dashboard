@@ -38,7 +38,7 @@ export const selectHubFilters = (state: State): Filter[] => {
 }
 
 export const getImagesCountForFilter = (filter: string, applicableFilters: string[]): number => {
-  return applicableFilters.filter(f => f === filter).length
+  return applicableFilters.filter(f => f.toLowerCase() === filter.toLowerCase()).length
 }
 
 export const selectHubImages = (state: State) =>

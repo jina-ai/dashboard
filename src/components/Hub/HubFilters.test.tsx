@@ -37,11 +37,27 @@ describe("getSelectedFilters", () => {
           { name: "d", selected: false, count: 0},
         ]
     },
+    {
+        values: [
+          { name: "a", selected: false, count: 0},
+          { name: "onnx", selected: true, count: 0},
+          { name: "c", selected: false, count: 0},
+          { name: "d", selected: false, count: 0},
+        ]
+    },
+    {
+        values: [
+          { name: "a", selected: false, count: 0},
+          { name: "English", selected: true, count: 0},
+          { name: "c", selected: false, count: 0},
+          { name: "d", selected: false, count: 0},
+        ]
+    },
   ];
   it("gets kind and keyword filters", () => {
     expect(getSelectedFilters((filters as unknown) as Filter[])).toEqual({
       kind: ["a", "b"],
-      keywords: ["audio"],
+      keywords: ["audio", "onnx", "English"],
     });
   });
 });

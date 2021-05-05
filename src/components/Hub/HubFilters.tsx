@@ -1,6 +1,6 @@
 import React from "react"
 import styled from "@emotion/styled"
-import { useSelector, useDispatch } from "react-redux"
+import {  useDispatch } from "react-redux"
 import FilterButton from "./FilterButton"
 import { Filter, FilterParams} from "../../redux/hub/hub.types"
 import { selectFilter } from "../../redux/hub/hub.actions"
@@ -14,7 +14,7 @@ type HubFilterProps = {
 export const getSelectedFilters = (filters: Filter[]): FilterParams => {
   return {
     kind: getCheckedFilterValues(filters[0]),
-    keywords: getCheckedFilterValues(filters[1]),
+    keywords: [...getCheckedFilterValues(filters[1]), ...getCheckedFilterValues(filters[2]), ...getCheckedFilterValues(filters[3]),],
   }
 }
 
@@ -60,6 +60,7 @@ const HubFilters = ({ filters, setFilters, getHubImages }: HubFilterProps) => {
                   index={index}
                   key={index}
                   label={name}
+                  count={count}
                   filterCategoryIndex={filterCategoryIndex}
                   handleFilterChange={handleFilterChange}
                 />

@@ -8,12 +8,11 @@ import {
   selectHubImagesFetchError,
   selectIsHubImagesLoading,
 } from "../../redux/hub/hub.selectors"
-import { HubImage } from "../../redux/hub/hub.types"
 import ImageCard from "./ImageCard"
 import HubFilters, { getSelectedFilters } from "./HubFilters"
 import SpinningLoader from "../Common/SpinningLoader"
 import { ExpandingSearchbar } from "../Common/ExpandingSearchbar"
-import { Filter, FilterMap, FilterParams } from "../../redux/hub/hub.types"
+import { Filter,  FilterParams } from "../../redux/hub/hub.types"
 import styled from "@emotion/styled"
 
 const SearchContainer = styled(Row)`
