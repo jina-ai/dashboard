@@ -1,10 +1,11 @@
-import { fetchHubImages, selectFilter } from "./hub.actions";
+import { clearFilters, fetchHubImages, selectFilter } from "./hub.actions";
 import {
   initialHubState,
   FETCH_HUB_IMAGES,
   FETCH_HUB_IMAGES_SUCCESS,
   FETCH_HUB_IMAGES_FAILURE,
   SELECT_FILTER,
+  CLEAR_FILTERS,
 } from "./hub.constants";
 import { HubState, HubActionTypes, HubImage } from "./hub.types";
 import hubReducer from "./hub.reducer";
@@ -53,6 +54,17 @@ describe("hub actions", () => {
 
       const store = mockStore(initialHubState);
       store.dispatch(selectFilter("multi-modal"))
+      expect(store.getActions()).toEqual(expectedActions)
+    })
+  })
+  describe("on clearing filters", () => {
+    it("dispatches CLEAR_FILTER action", () => {
+      const expectedActions = [
+        { type: "CLEAR_FILTERS", payload: { filters: ["multi-modal", "audio"] } }
+      ]
+
+      const store = mockStore(initialHubState);
+      store.dispatch(clearFilters(["multi-modal", "audio"]))
       expect(store.getActions()).toEqual(expectedActions)
     })
   })
@@ -224,6 +236,24 @@ describe("hub reducer", () => {
         }
       ).selectedFilters
     ).toEqual(["onnx", "Tensorflow"])
+  })
+  it("clears filters", () => {
+    expect(
+      hubReducer(
+        {
+          images: (["Starry night", "Water lillies"] as unknown) as HubImage[],
+          loading: true,
+          error: null,
+          selectedFilters: ["Multimodal", "onnx", "Tensorflow"]
+        },
+        {
+          type: CLEAR_FILTERS,
+          payload: {
+            filters: ["Multimodal", "onnx"]
+          }
+        }
+      ).selectedFilters
+    ).toEqual(["Tensorflow"])
   })
 });
 
