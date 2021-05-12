@@ -5,9 +5,11 @@ import {
   FETCH_HUB_IMAGES_FAILURE,
   initialHubState,
   SELECT_FILTER,
+  CLEAR_FILTERS,
 } from "./hub.constants"
 import produce from "immer"
 import _ from "lodash"
+import { selectFilter } from "./hub.actions"
 
 const hubReducer = produce((draft: HubState, action: HubActionTypes) => {
   switch (action.type) {
@@ -26,6 +28,10 @@ const hubReducer = produce((draft: HubState, action: HubActionTypes) => {
       break
     case SELECT_FILTER:
       draft.selectedFilters = _.xor(draft.selectedFilters, [action.payload.filter])
+      break
+    case CLEAR_FILTERS:
+      draft.selectedFilters = draft.selectedFilters
+      .filter(selectedFilter => !action.payload.filters.includes(selectedFilter))
   }
 }, initialHubState)
 

@@ -3,6 +3,7 @@ import {
   FETCH_HUB_IMAGES_SUCCESS,
   FETCH_HUB_IMAGES_FAILURE,
   SELECT_FILTER,
+  CLEAR_FILTERS,
 } from "./hub.constants";
 
 export type HubImage = {
@@ -69,8 +70,15 @@ export type SelectFilterAction = {
     filter: string
   }
 }
+export type ClearFiltersAction = {
+  type: typeof CLEAR_FILTERS
+  payload: {
+    filters: string[]
+  }
+}
 export type HubActionTypes =
   | FetchHubImagesAction
   | FetchHubImagesSuccessAction
   | FetchHubImagesFailureAction
-  | SelectFilterAction;
+  | SelectFilterAction
+  | ClearFiltersAction;

@@ -16,6 +16,11 @@ const ToggleButton = styled(Button)`
   box-shadow: none;
   display: flex;
   margin: .5rem;
+  text-transform: none;
+  &:hover {
+    background-color: #21A6A6;
+    color: white;
+  }
 `
 
 type FilterButtonProps = {

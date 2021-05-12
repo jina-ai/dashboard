@@ -1,9 +1,10 @@
 import React from "react"
 import styled from "@emotion/styled"
+import Button from "@material-ui/core/Button"
 import {  useDispatch } from "react-redux"
 import FilterButton from "./FilterButton"
 import { Filter, FilterParams} from "../../redux/hub/hub.types"
-import { selectFilter } from "../../redux/hub/hub.actions"
+import { selectFilter, clearFilters } from "../../redux/hub/hub.actions"
 
 type HubFilterProps = {
   filters: Filter[]
@@ -29,7 +30,13 @@ const FiltersTitle = styled.div`
   font-size: 1.25rem;
   color: ${(props) => props.theme.palette.headerTextColor};
 `
-
+const FilterTitleContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+`
+const ClearButton = styled(Button)`
+  color: ${props => props.theme.palette.mutedText};
+`
 const FiltersContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
@@ -46,12 +53,22 @@ const HubFilters = ({ filters, setFilters, getHubImages }: HubFilterProps) => {
     setFilters(filters)
     getHubImages(getSelectedFilters(filters))
   }
+  const handleClearFilters = (filterCategoryIndex: number) => {
+    filters[filterCategoryIndex] = {...filters[filterCategoryIndex],
+      values: filters[filterCategoryIndex].values.map(v => ({...v, selected: false}))}
+    dispatch(clearFilters(filters[filterCategoryIndex].values.map(filter => filter.name)))
+    setFilters(filters)
+    getHubImages(getSelectedFilters(filters))
+  }
   return (
     <div data-name="hubImagesFilter">
       {filters &&
         filters.map((filter: Filter, filterCategoryIndex: number) => (
           <div key={filterCategoryIndex}>
-            <FiltersTitle>{filter.filterLabel}</FiltersTitle>
+            <FilterTitleContainer>
+              <FiltersTitle>{filter.filterLabel}</FiltersTitle>
+              <ClearButton onClick={() => handleClearFilters(filterCategoryIndex)}>Clear All</ClearButton>
+            </FilterTitleContainer>
             <FiltersContainer>
               {filter.values.map(({name, selected, count}, index) => (
                 <FilterButton
