@@ -7,7 +7,9 @@ declare module "@emotion/react" {
     palette: {
       bodyBackground: string
       background: string
+      codeBackground: string
       headerTextColor: string
+      disabledGrey: string
       primary: string
       secondary: string
       warning: string
