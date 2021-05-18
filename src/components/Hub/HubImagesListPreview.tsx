@@ -1,6 +1,7 @@
 import React from "react";
 import ImageCard from "./ImageCard";
 import styled from "@emotion/styled";
+import Card from "@material-ui/core/Card"
 import { useSelector } from "react-redux";
 import { Row, Col } from "react-bootstrap";
 import {
@@ -19,7 +20,7 @@ const HubImagesListPreview = () => {
   const isHubImagesLoading = useSelector(selectIsHubImagesLoading);
 
   return (
-    <>
+    <Card>
       {isHubImagesLoading ? (
         <SpinningLoader />
       ) : (
@@ -38,7 +39,7 @@ const HubImagesListPreview = () => {
           </Row>
         </>
       )}
-    </>
+    </Card>
   );
 };
 
