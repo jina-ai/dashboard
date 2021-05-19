@@ -1,6 +1,6 @@
 import axios from "axios"
 import * as queryString from "query-string"
-import { FilterParams } from "../components/Hub/HubFilters"
+import { FilterParams } from "../redux/hub/hub.types"
 
 const HUB_API_ENDPOINT = process.env.REACT_APP_HUB_API!
 
