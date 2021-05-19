@@ -1,4 +1,4 @@
-import { newVersionLocalStorageReset, timeout } from "../utils"
+import { newVersionLocalStorageReset, timeout, copyToClipboard } from "../utils"
 
 describe("timeout", () => {
   it("should return a promise after supplied ms have elapsed", async () => {
@@ -19,5 +19,13 @@ describe("newVersionLocalStorageReset", () => {
     expect(localStorage.getItem("testItemKey")).toBe("testItemValue")
     newVersionLocalStorageReset("1.1.1", "1.0.12")
     expect(localStorage.key(0)).toBe(null)
+  })
+})
+
+describe("copyToClipboard", () => {
+  it("copies a string to clipboard", () => {
+    document.execCommand = jest.fn();
+    copyToClipboard('string')
+    expect(document.execCommand).toHaveBeenCalledWith("copy")
   })
 })
