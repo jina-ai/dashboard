@@ -38,6 +38,28 @@ exports[`Colors page 1`] = `
     </span>
   </div>
   <div
+    className="css-ldtx1k"
+  >
+    <span
+      className="css-13fxtl5"
+    >
+      codeBackground
+       
+      #E8E8E8
+    </span>
+  </div>
+  <div
+    className="css-hzqiug"
+  >
+    <span
+      className="css-13fxtl5"
+    >
+      disabledGrey
+       
+      #9E9E9E
+    </span>
+  </div>
+  <div
     className="css-1yov7ua"
   >
     <span
@@ -148,14 +170,14 @@ exports[`Colors page 1`] = `
     </span>
   </div>
   <div
-    className="css-rf90rn"
+    className="css-7yb3wh"
   >
     <span
       className="css-13fxtl5"
     >
       tagPlatformBackground
        
-      #FFCC66
+      #FFFAE2
     </span>
   </div>
   <div

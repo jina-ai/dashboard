@@ -8,7 +8,8 @@ import {
 } from "../redux/hub/hub.selectors";
 import { fetchHubImages } from "../redux/hub/hub.actions";
 import { Row, Col } from "react-bootstrap";
-import { Card } from "shards-react";
+import  Card from "@material-ui/core/Card"
+import  CardContent from "@material-ui/core/CardContent"
 import ImageDetails from "../components/Hub/ImageDetails";
 import Readme from "../components/Hub/Readme";
 import SpinningLoader from "../components/Common/SpinningLoader";
@@ -36,12 +37,14 @@ const PackageView = () => {
           <Row>
             <Col md="8">
               <Card>
+              <CardContent>
                 <Title data-name="imageOverviewTitle">{image.name}</Title>
                 <Paragraph data-name="imageOverviewDescription">
                   {image.description}
                 </Paragraph>
+                <Readme documentation={image.documentation} />
+              </CardContent>
               </Card>
-              <Readme documentation={image.documentation} />
             </Col>
             <Col md="4">
               <ImageDetails image={image} />

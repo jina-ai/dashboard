@@ -25,6 +25,7 @@ export const dashboardRoutes = [
     layout: IconSidebar,
     component: () => <Redirect to="/logs" />,
   },
+
   {
     path: "/logs",
     layout: IconSidebar,

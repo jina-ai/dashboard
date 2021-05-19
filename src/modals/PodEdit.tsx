@@ -9,6 +9,7 @@ import { ModalParams } from "../redux/global/global.types"
 import ReactModal, { Styles } from "react-modal"
 import { deleteNode, updateNodeData } from "../redux/flows/flows.actions"
 import { Button } from "react-bootstrap"
+import { FormCheckbox } from "shards-react"
 import { NodeDataUpdate } from "../redux/flows/flows.types"
 import logger from "../logger"
 
@@ -143,7 +144,7 @@ function PodEditComponent({ open, closeModal, modalParams }: Props) {
       closeTimeoutMS={100}
       style={style}
     >
-      <PodEditContainer>
+      <PodEditContainer data-name="podEditContainer">
         <Header1>pods name</Header1>
 
         <Input
@@ -167,13 +168,30 @@ function PodEditComponent({ open, closeModal, modalParams }: Props) {
             return (
               <>
                 <Header2>{name}</Header2>
-                <Input
-                  placeholder={type}
-                  type={type === "integer" ? "number" : "text"}
-                  value={node?.data ? node?.data[name] : ""}
-                  onChange={(e) => _updateNodeProp(name, e.target.value)}
-                  className="property-value-input"
-                />
+                {type === "boolean" ? (
+                  <FormCheckbox
+                    toggle
+                    checked={node?.data[name] === "true" ? true : false}
+                    className="property-value-input"
+                    data-name={`pod_${name}_property`}
+                    onChange={() =>
+                      _updateNodeProp(
+                        name,
+                        node?.data[name] === "true" ? "false" : "true"
+                      )
+                    }
+                  >
+                    {node?.data[name] === "true" ? "ON" : "OFF"}
+                  </FormCheckbox>
+                ) : (
+                  <Input
+                    placeholder={type}
+                    type={type === "integer" ? "number" : "text"}
+                    value={node?.data ? node?.data[name] : ""}
+                    onChange={(e) => _updateNodeProp(name, e.target.value)}
+                    className="property-value-input"
+                  />
+                )}
               </>
             )
           })}

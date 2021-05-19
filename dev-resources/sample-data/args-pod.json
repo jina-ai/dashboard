@@ -10,8 +10,8 @@
 			"default": "/usr/local/lib/python3.7/site-packages/jina/resources/logging.default.yml",
 			"type": "string"
 	},
-	"show_exc_info": {
-			"title": "Show Exc Info",
+	"hide_exc_info": {
+			"title": "Hide Exc Info",
 			"description": "If set, then exception stack information to be added to the logging message, useful in debugging",
 			"default": false,
 			"type": "boolean"

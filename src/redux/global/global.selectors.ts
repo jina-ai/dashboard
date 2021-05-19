@@ -1,6 +1,6 @@
 import { State } from "../index"
 
-export const selectProcess = (state: State) => state.globalState.processes
+export const selectProcesses = (state: State) => state.globalState.processes
 
 export const selectMenuState = (state: State) => state.globalState.menuVisible
 
