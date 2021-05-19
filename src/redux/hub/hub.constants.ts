@@ -3,7 +3,7 @@ import { HubState} from "./hub.types";
 export const FETCH_HUB_IMAGES = "FETCH_HUB_IMAGES";
 export const FETCH_HUB_IMAGES_SUCCESS = "FETCH_HUB_IMAGES_SUCCESS";
 export const FETCH_HUB_IMAGES_FAILURE= "FETCH_HUB_IMAGES_FAILURE";
-export const SELECT_FILTER = "SELECT_FILTER"
+export const PICK_FILTER = "PICK_FILTER"
 export const CLEAR_FILTERS = "CLEAR_FILTERS"
 
 export const HIDE_BANNER_TIMEOUT = 5000;

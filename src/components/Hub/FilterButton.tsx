@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import styled from "@emotion/styled"
 import { Button } from "@material-ui/core"
-import { Filter } from "../../redux/hub/hub.types"
+import { FilterCategory } from "../../redux/hub/hub.types"
 
 type CheckboxLabelProps = {
   selected: boolean
@@ -24,7 +24,7 @@ const ToggleButton = styled(Button)`
 `
 
 type FilterButtonProps = {
-  filter: Filter
+  filter: FilterCategory
   value: boolean
   label: string
   filterCategoryIndex: number

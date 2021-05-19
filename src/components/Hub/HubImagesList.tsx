@@ -12,7 +12,7 @@ import ImageCard from "./ImageCard"
 import HubFilters, { getSelectedFilters } from "./HubFilters"
 import SpinningLoader from "../Common/SpinningLoader"
 import { ExpandingSearchbar } from "../Common/ExpandingSearchbar"
-import { Filter,  FilterParams } from "../../redux/hub/hub.types"
+import { FilterCategory,  FilterParams } from "../../redux/hub/hub.types"
 import styled from "@emotion/styled"
 
 const SearchContainer = styled(Row)`
@@ -31,7 +31,7 @@ const HubImagesList = () => {
   const imageFilters = useSelector(selectHubFilters)
   const isHubImagesLoading = useSelector(selectIsHubImagesLoading)
   const hubImagesFetchError = useSelector(selectHubImagesFetchError)
-  let [filters, setFilters] = useState([] as Filter[])
+  let [filters, setFilters] = useState([] as FilterCategory[])
   let [searchString, setSearchString] = useState("")
   if (hubImages.length === 0 && !isHubImagesLoading && !hubImagesFetchError) {
     dispatch(fetchHubImages())

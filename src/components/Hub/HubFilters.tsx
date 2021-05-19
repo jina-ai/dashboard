@@ -3,23 +3,23 @@ import styled from "@emotion/styled"
 import Button from "@material-ui/core/Button"
 import {  useDispatch } from "react-redux"
 import FilterButton from "./FilterButton"
-import { Filter, FilterParams} from "../../redux/hub/hub.types"
-import { selectFilter, clearFilters } from "../../redux/hub/hub.actions"
+import { FilterCategory, FilterParams} from "../../redux/hub/hub.types"
+import { pickFilter, clearFilters } from "../../redux/hub/hub.actions"
 
 type HubFilterProps = {
-  filters: Filter[]
-  setFilters: (filters: Filter[]) => void
+  filters: FilterCategory[]
+  setFilters: (filters: FilterCategory[]) => void
   getHubImages: (filters: FilterParams) => void
 }
 
-export const getSelectedFilters = (filters: Filter[]): FilterParams => {
+export const getSelectedFilters = (filters: FilterCategory[]): FilterParams => {
   return {
     kind: getCheckedFilterValues(filters[0]),
     keywords: [...getCheckedFilterValues(filters[1]), ...getCheckedFilterValues(filters[2]), ...getCheckedFilterValues(filters[3]),],
   }
 }
 
-export const getCheckedFilterValues = (filter: Filter) => {
+export const getCheckedFilterValues = (filter: FilterCategory) => {
   return filter.values.reduce((acc, {name, selected}) => {
     return selected ? [...acc, name] : acc
   }, [] as string[])
@@ -49,7 +49,7 @@ const HubFilters = ({ filters, setFilters, getHubImages }: HubFilterProps) => {
     value: boolean
   ) => {
     filters[filterCategoryIndex].values[index].selected = value
-    dispatch(selectFilter(filters[filterCategoryIndex].values[index].name))
+    dispatch(pickFilter(filters[filterCategoryIndex].values[index].name))
     setFilters(filters)
     getHubImages(getSelectedFilters(filters))
   }
@@ -63,7 +63,7 @@ const HubFilters = ({ filters, setFilters, getHubImages }: HubFilterProps) => {
   return (
     <div data-name="hubImagesFilter">
       {filters &&
-        filters.map((filter: Filter, filterCategoryIndex: number) => (
+        filters.map((filter: FilterCategory, filterCategoryIndex: number) => (
           <div key={filterCategoryIndex}>
             <FilterTitleContainer>
               <FiltersTitle>{filter.filterLabel}</FiltersTitle>

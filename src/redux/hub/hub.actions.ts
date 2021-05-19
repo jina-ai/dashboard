@@ -2,7 +2,7 @@ import {
   FETCH_HUB_IMAGES,
   FETCH_HUB_IMAGES_SUCCESS,
   FETCH_HUB_IMAGES_FAILURE,
-  SELECT_FILTER,
+  PICK_FILTER,
   CLEAR_FILTERS
 } from "./hub.constants";
 import {
@@ -10,7 +10,7 @@ import {
   HubImage,
   FetchHubImagesSuccessAction,
   FetchHubImagesFailureAction,
-  SelectFilterAction,
+  PickFilterAction,
   ClearFiltersAction,
 } from "./hub.types";
 import { Dispatch } from "redux";
@@ -52,11 +52,11 @@ const fetchHubImagesFailure = (error: Error): FetchHubImagesFailureAction => {
   };
 };
 
-export const selectFilter = (
+export const pickFilter = (
   filter: string
-): SelectFilterAction => {
+): PickFilterAction => {
   return {
-    type: SELECT_FILTER,
+    type: PICK_FILTER,
     payload: {filter}
   }
 }

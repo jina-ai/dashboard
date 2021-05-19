@@ -1,10 +1,10 @@
-import { clearFilters, fetchHubImages, selectFilter } from "./hub.actions";
+import { clearFilters, fetchHubImages, pickFilter } from "./hub.actions";
 import {
   initialHubState,
   FETCH_HUB_IMAGES,
   FETCH_HUB_IMAGES_SUCCESS,
   FETCH_HUB_IMAGES_FAILURE,
-  SELECT_FILTER,
+  PICK_FILTER,
   CLEAR_FILTERS,
 } from "./hub.constants";
 import { HubState, HubActionTypes, HubImage } from "./hub.types";
@@ -49,11 +49,11 @@ describe("hub actions", () => {
   describe("on selecting filters", () => {
     it("dispatches SELECT_FILTER action", () => {
       const expectedActions = [
-        { type: "SELECT_FILTER", payload: { filter: "multi-modal" } }
+        { type: "PICK_FILTER", payload: { filter: "multi-modal" } }
       ]
 
       const store = mockStore(initialHubState);
-      store.dispatch(selectFilter("multi-modal"))
+      store.dispatch(pickFilter("multi-modal"))
       expect(store.getActions()).toEqual(expectedActions)
     })
   })
@@ -193,7 +193,7 @@ describe("hub reducer", () => {
           selectedFilters: []
         },
         {
-          type: SELECT_FILTER,
+          type: PICK_FILTER,
           payload: {
             filter: "Multimodal"
           }
@@ -211,7 +211,7 @@ describe("hub reducer", () => {
           selectedFilters: ["Multimodal"]
         },
         {
-          type: SELECT_FILTER,
+          type: PICK_FILTER,
           payload: {
             filter: "Multimodal"
           }
@@ -229,7 +229,7 @@ describe("hub reducer", () => {
           selectedFilters: ["Multimodal", "onnx", "Tensorflow"]
         },
         {
-          type: SELECT_FILTER,
+          type: PICK_FILTER,
           payload: {
             filter: "Multimodal"
           }

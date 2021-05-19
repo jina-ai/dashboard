@@ -2,7 +2,7 @@ import {
   FETCH_HUB_IMAGES,
   FETCH_HUB_IMAGES_SUCCESS,
   FETCH_HUB_IMAGES_FAILURE,
-  SELECT_FILTER,
+  PICK_FILTER,
   CLEAR_FILTERS,
 } from "./hub.constants";
 
@@ -24,14 +24,14 @@ export type HubImage = {
   avatar: string | null;
 };
 
-export type FilterMap = {
+export type Filter = {
   name: string;
   selected: boolean;
   count: number;
 };
-export type Filter = {
+export type FilterCategory = {
   filterLabel: string;
-  values: FilterMap[];
+  values: Filter[];
 };
 
 export type FilterParams = {
@@ -64,8 +64,8 @@ export type FetchHubImagesFailureAction = {
     error: Error;
   };
 };
-export type SelectFilterAction = {
-  type: typeof SELECT_FILTER
+export type PickFilterAction = {
+  type: typeof PICK_FILTER
   payload: {
     filter: string
   }
@@ -80,5 +80,5 @@ export type HubActionTypes =
   | FetchHubImagesAction
   | FetchHubImagesSuccessAction
   | FetchHubImagesFailureAction
-  | SelectFilterAction
+  | PickFilterAction
   | ClearFiltersAction;

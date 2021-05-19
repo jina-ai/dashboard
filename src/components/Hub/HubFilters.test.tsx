@@ -2,7 +2,7 @@ import {
   getSelectedFilters,
   getCheckedFilterValues,
 } from "./HubFilters";
-import { Filter } from "../../redux/hub/hub.types";
+import { FilterCategory } from "../../redux/hub/hub.types";
 
 describe("getCheckedFilterValues", () => {
   it("filters out keys with false value", () => {
@@ -14,7 +14,7 @@ describe("getCheckedFilterValues", () => {
           { name: "c", selected: false, count: 0},
           { name: "d", selected: true, count: 0},
         ]
-      } as unknown) as Filter)
+      } as unknown) as FilterCategory)
     ).toEqual(["b", "d"]);
   });
 });
@@ -55,7 +55,7 @@ describe("getSelectedFilters", () => {
     },
   ];
   it("gets kind and keyword filters", () => {
-    expect(getSelectedFilters((filters as unknown) as Filter[])).toEqual({
+    expect(getSelectedFilters((filters as unknown) as FilterCategory[])).toEqual({
       kind: ["a", "b"],
       keywords: ["audio", "onnx", "English"],
     });

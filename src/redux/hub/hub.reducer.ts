@@ -4,12 +4,11 @@ import {
   FETCH_HUB_IMAGES_SUCCESS,
   FETCH_HUB_IMAGES_FAILURE,
   initialHubState,
-  SELECT_FILTER,
+  PICK_FILTER,
   CLEAR_FILTERS,
 } from "./hub.constants"
 import produce from "immer"
 import _ from "lodash"
-import { selectFilter } from "./hub.actions"
 
 const hubReducer = produce((draft: HubState, action: HubActionTypes) => {
   switch (action.type) {
@@ -26,7 +25,7 @@ const hubReducer = produce((draft: HubState, action: HubActionTypes) => {
       draft.loading = false
       draft.error = action.payload.error
       break
-    case SELECT_FILTER:
+    case PICK_FILTER:
       draft.selectedFilters = _.xor(draft.selectedFilters, [action.payload.filter])
       break
     case CLEAR_FILTERS:
