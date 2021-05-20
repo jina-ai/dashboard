@@ -103,7 +103,7 @@
     "lodash": "^4.17.15",
     "log-symbols": "^4.0.0",
     "lunr": "^2.3.8",
-    "mathjs": "^6.6.1",
+    "mathjs": "^7.5.1",
     "minisearch": "^2.6.2",
     "mockdate": "^3.0.2",
     "mongodb": "^3.5.6",
