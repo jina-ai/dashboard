@@ -1,3 +1,5 @@
+import { createTheme } from "@material-ui/core"
+
 const PERSIAN_GREEN = "#009999"
 const GOLDEN_TANOI = "#FFCC66"
 const BITTER_SWEET = "#ff6666"
@@ -34,4 +36,14 @@ const theme = {
   },
 }
 
-export { theme }
+const muiTheme = createTheme({
+  palette: {
+    primary: {
+      main: WHITE,
+    },
+    secondary: {
+      main: PERSIAN_GREEN,
+    },
+  },
+})
+export { theme, muiTheme }

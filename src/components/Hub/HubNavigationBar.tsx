@@ -1,5 +1,6 @@
 import React from "react"
-import { AppBar, Tab, Tabs } from "@material-ui/core"
+import { AppBar, InputBase, Tab, Tabs, Toolbar } from "@material-ui/core"
+import styled from "@emotion/styled"
 
 function a11yProps(index: any) {
   return {
@@ -17,17 +18,27 @@ export default function HubNavigationBar() {
     setValue(newValue)
   }
 
+  const SearchBar = styled.div`
+    background-color: ${(props) => "red"};
+  `
   return (
     <AppBar position={"static"}>
-      <Tabs
-        value={value}
-        onChange={handleChange}
-        aria-label="simple tabs example"
-      >
-        {NavItems.map((NavItem, idx) => (
-          <Tab label={NavItem} {...a11yProps(idx)} />
-        ))}
-      </Tabs>
+      <Toolbar>
+        <Tabs
+          value={value}
+          onChange={handleChange}
+          aria-label="simple tabs example"
+          textColor="secondary"
+          indicatorColor="primary"
+        >
+          {NavItems.map((NavItem, idx) => (
+            <Tab label={NavItem} {...a11yProps(idx)} />
+          ))}
+        </Tabs>
+        <SearchBar>
+          <InputBase placeholder="Search" />
+        </SearchBar>
+      </Toolbar>
     </AppBar>
   )
 }
