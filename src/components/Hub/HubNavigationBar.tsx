@@ -11,6 +11,8 @@ function a11yProps(index: any) {
 export default function HubNavigationBar() {
   const [value, setValue] = React.useState(0)
 
+  const NavItems = ["Hub Explore", "Hub List", "My Images", "My Favourites"]
+
   const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
     setValue(newValue)
   }
@@ -22,9 +24,9 @@ export default function HubNavigationBar() {
         onChange={handleChange}
         aria-label="simple tabs example"
       >
-        <Tab label="Item One" {...a11yProps(0)} />
-        <Tab label="Item Two" {...a11yProps(1)} />
-        <Tab label="Item Three" {...a11yProps(2)} />
+        {NavItems.map((NavItem, idx) => (
+          <Tab label={NavItem} {...a11yProps(idx)} />
+        ))}
       </Tabs>
     </AppBar>
   )
