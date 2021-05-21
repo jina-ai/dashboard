@@ -1,26 +1,31 @@
-import React from "react";
-import ImageCard from "./ImageCard";
-import styled from "@emotion/styled";
+import React from "react"
+import ImageCard from "./ImageCard"
+import styled from "@emotion/styled"
 import Card from "@material-ui/core/Card"
-import { useSelector } from "react-redux";
-import { Row, Col } from "react-bootstrap";
+import { useSelector } from "react-redux"
+import { Row, Col } from "react-bootstrap"
 import {
   selectHubImages,
   selectIsHubImagesLoading,
-} from "../../redux/hub/hub.selectors";
-import SpinningLoader from "../Common/SpinningLoader";
+} from "../../redux/hub/hub.selectors"
+import SpinningLoader from "../Common/SpinningLoader"
 
-const SubTitle = styled.span`
+export const SubTitle = styled.span`
   font-weight: 500;
-  font-size: 1.5rem;
-`;
+  font-size: 1.25rem;
+  color: ${(props) => props.theme.palette.headerTextColor};
+`
+const ImageListContainer = styled(Card)`
+  margin-top: 2rem;
+  padding: 2rem;
+`
 
 const HubImagesListPreview = () => {
-  const hubImages = useSelector(selectHubImages).slice(0, 6);
-  const isHubImagesLoading = useSelector(selectIsHubImagesLoading);
+  const hubImages = useSelector(selectHubImages).slice(0, 6)
+  const isHubImagesLoading = useSelector(selectIsHubImagesLoading)
 
   return (
-    <Card>
+    <ImageListContainer>
       {isHubImagesLoading ? (
         <SpinningLoader />
       ) : (
@@ -39,8 +44,8 @@ const HubImagesListPreview = () => {
           </Row>
         </>
       )}
-    </Card>
-  );
-};
+    </ImageListContainer>
+  )
+}
 
-export default HubImagesListPreview;
+export default HubImagesListPreview

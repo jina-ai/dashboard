@@ -2,7 +2,7 @@ import React from "react"
 import ReactDOM from "react-dom"
 import { ThemeProvider } from "@emotion/react"
 import {
-  createMuiTheme,
+  createTheme,
   ThemeProvider as MuiThemeProvider,
 } from "@material-ui/core/styles"
 import { Provider } from "react-redux"
@@ -42,7 +42,13 @@ if (process.env.NODE_ENV === "production") {
   })
 }
 
-const muiTheme = createMuiTheme()
+const muiTheme = createTheme({
+  palette: {
+    primary: {
+      main: theme.palette.primary,
+    },
+  },
+})
 
 ReactDOM.render(
   // HOC to make theme available as a prop in all components
