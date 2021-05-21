@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState } from "react"
 import { AppBar, InputBase, Tab, Tabs, Toolbar } from "@material-ui/core"
 import styled from "@emotion/styled"
 import SearchIcon from "@material-ui/icons/Search"
@@ -11,16 +11,17 @@ function a11yProps(index: any) {
 }
 
 export default function HubNavigationBar() {
-  const [value, setValue] = React.useState(0)
+  const [tabNumber, setTabNumber] = useState(0)
+  let [searchString, setSearchString] = useState("")
 
   const NavItems = ["Hub Explore", "Hub List", "My Images", "My Favourites"]
 
   const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
-    setValue(newValue)
+    setTabNumber(newValue)
   }
 
   const SearchBar = styled.div`
-    background-color: ${(props) => "#F9F9F9"};
+    background-color: ${(props) => props.theme.palette.searchBarBackground};
     border-radius: 2px;
   `
 
@@ -30,7 +31,7 @@ export default function HubNavigationBar() {
     <AppBar position={"static"}>
       <Toolbar>
         <Tabs
-          value={value}
+          value={tabNumber}
           onChange={handleChange}
           aria-label="simple tabs example"
           textColor="secondary"
@@ -42,7 +43,12 @@ export default function HubNavigationBar() {
         </Tabs>
         <SearchBar>
           <HubSearchIcon />
-          <InputBase placeholder="Search" />
+          <InputBase
+            autoFocus={true} //todo this is a hack. It looses focus after setSearchString gets triggered
+            value={searchString}
+            onChange={(e) => setSearchString(e.target.value)}
+            placeholder="Search"
+          />
         </SearchBar>
       </Toolbar>
     </AppBar>

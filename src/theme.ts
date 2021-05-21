@@ -13,6 +13,7 @@ const BLACK = "#000000"
 const BODY_BACKGROUND = "#f5f6f8"
 const CODE_BACKGROUND = "#E8E8E8"
 const DISABLED_GREY = "#9E9E9E"
+const IVORY_EGG = "#F9F9F9"
 
 const theme = {
   palette: {
@@ -33,6 +34,7 @@ const theme = {
     tagPlatformBackground: HONEYBEE,
     mutedText: QUICK_SILVER,
     highlight: SKY_DIVING_IN_THE_BLUE,
+    searchBarBackground: IVORY_EGG,
   },
 }
 
