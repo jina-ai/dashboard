@@ -1,4 +1,4 @@
-import React, { useEffect } from "react"
+import React, { useEffect, useState } from "react"
 import { Switch, Route, useRouteMatch } from "react-router-dom"
 import { Container, Row } from "react-bootstrap"
 import { useDispatch } from "react-redux"
@@ -16,9 +16,22 @@ const HubView = () => {
     dispatch(fetchHubImages())
   }, [dispatch])
 
+  const [tabNumber, setTabNumber] = useState(0)
+
+  const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
+    setTabNumber(newValue)
+  }
+
+  const handleSearch = (searchString: string) => {
+    alert(searchString)
+  }
   return (
     <Container fluid className="main-content-container px-0">
-      <HubNavigationBar />
+      <HubNavigationBar
+        handleSearch={handleSearch}
+        handleChange={handleChange}
+        tabNumber={tabNumber}
+      />
       <div className="px-4">
         <Row className="page-header">
           <PageTitle title="Jina Hub" className="text-sm-left mb-3" />

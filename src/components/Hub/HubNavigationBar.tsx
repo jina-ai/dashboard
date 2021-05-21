@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { ChangeEvent, useState } from "react"
 import { AppBar, InputBase, Tab, Tabs, Toolbar } from "@material-ui/core"
 import styled from "@emotion/styled"
 import SearchIcon from "@material-ui/icons/Search"
@@ -10,23 +10,32 @@ function a11yProps(index: any) {
   }
 }
 
-export default function HubNavigationBar() {
-  const [tabNumber, setTabNumber] = useState(0)
+type Props = {
+  handleChange: (event: React.ChangeEvent<{}>, newValue: number) => void
+  handleSearch: (searchString: string) => void
+  tabNumber: number
+}
+
+export default function HubNavigationBar({
+  handleChange,
+  handleSearch,
+  tabNumber,
+}: Props) {
   let [searchString, setSearchString] = useState("")
 
   const NavItems = ["Hub Explore", "Hub List", "My Images", "My Favourites"]
 
-  const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
-    setTabNumber(newValue)
-  }
-
   const SearchBar = styled.div`
     background-color: ${(props) => props.theme.palette.searchBarBackground};
     border-radius: 2px;
+    cursor: pointer;
   `
 
   const HubSearchIcon = styled(SearchIcon)``
 
+  const handleKeyPress = (event: KeyboardEvent<HTMLDivElement>) => {
+    if (event.key === "Enter") handleSearch(searchString)
+  }
   return (
     <AppBar position={"static"}>
       <Toolbar>
@@ -42,8 +51,9 @@ export default function HubNavigationBar() {
           ))}
         </Tabs>
         <SearchBar>
-          <HubSearchIcon />
+          <HubSearchIcon onClick={(e) => handleSearch(searchString)} />
           <InputBase
+            onKeyPress={handleKeyPress}
             autoFocus={true} //todo this is a hack. It looses focus after setSearchString gets triggered
             value={searchString}
             onChange={(e) => setSearchString(e.target.value)}
