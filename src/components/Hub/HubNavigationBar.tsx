@@ -1,6 +1,7 @@
 import React from "react"
 import { AppBar, InputBase, Tab, Tabs, Toolbar } from "@material-ui/core"
 import styled from "@emotion/styled"
+import SearchIcon from "@material-ui/icons/Search"
 
 function a11yProps(index: any) {
   return {
@@ -19,8 +20,12 @@ export default function HubNavigationBar() {
   }
 
   const SearchBar = styled.div`
-    background-color: ${(props) => "red"};
+    background-color: ${(props) => "#F9F9F9"};
+    border-radius: 2px;
   `
+
+  const HubSearchIcon = styled(SearchIcon)``
+
   return (
     <AppBar position={"static"}>
       <Toolbar>
@@ -36,6 +41,7 @@ export default function HubNavigationBar() {
           ))}
         </Tabs>
         <SearchBar>
+          <HubSearchIcon />
           <InputBase placeholder="Search" />
         </SearchBar>
       </Toolbar>
