@@ -1,8 +1,8 @@
-import React from "react";
+import React from "react"
 import Card from "@material-ui/core/Card"
 import styled from "@emotion/styled"
-import { useHistory } from "react-router-dom";
-import { Button } from "@material-ui/core";
+import { useHistory } from "react-router-dom"
+import { Button } from "@material-ui/core"
 import hubIconSource from "../../assets/icons/hub-icon.svg"
 
 const HubOverviewActionCard = styled(Card)`
@@ -10,7 +10,7 @@ const HubOverviewActionCard = styled(Card)`
   justify-content: space-between;
   width: 100%;
   padding: 1.5rem;
-  background: linear-gradient(269.3deg, #009999 16.55%, #4DB6AC 89.83%);
+  background: linear-gradient(269.3deg, #009999 16.55%, #4db6ac 89.83%);
 `
 const HubOverviewActionCardContent = styled.div`
   flex-direction: column;
@@ -52,27 +52,37 @@ const SecondaryActionButton = styled(Button)`
 `
 
 const HubOverviewActionsContainer = () => {
-  const history = useHistory();
+  const history = useHistory()
 
   return (
     <HubOverviewActionCard>
-      <HubOverviewActionCardContent >
-        <HubOverviewTitle>Jina Hub</HubOverviewTitle>
+      <HubOverviewActionCardContent>
+        <HubOverviewTitle data-name="title">Jina Hub</HubOverviewTitle>
         <HubOverviewDescription>
-          Discover images created by the community in a centralized registry or create your own images
-      </HubOverviewDescription>
+          Discover images created by the community in a centralized registry or
+          create your own images
+        </HubOverviewDescription>
         <HubOverviewButtonsContainer>
-          <PrimaryActionButton variant="contained" disableElevation onClick={() => history.push("/hub/explore")}>
+          <PrimaryActionButton
+            data-name="primaryActionButton"
+            variant="contained"
+            disableElevation
+            onClick={() => history.push("/hub/explore")}
+          >
             Browse
-        </PrimaryActionButton>
-          <SecondaryActionButton variant="outlined" onClick={() => history.push("/flow")}>
+          </PrimaryActionButton>
+          <SecondaryActionButton
+            data-name="secondaryActionButton"
+            variant="outlined"
+            onClick={() => history.push("/flow")}
+          >
             Create
-        </SecondaryActionButton>
+          </SecondaryActionButton>
         </HubOverviewButtonsContainer>
       </HubOverviewActionCardContent>
       <HubIcon src={hubIconSource} alt="Hub Icon" />
     </HubOverviewActionCard>
-  );
-};
+  )
+}
 
-export default HubOverviewActionsContainer;
+export default HubOverviewActionsContainer

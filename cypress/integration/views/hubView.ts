@@ -10,8 +10,8 @@ describe('Hub page', () => {
 
   describe('hub actions overview', () => {
     it('shows actions user can take to explore, create images', () => {
-      cy.dataName('hubOverviewActionTitle').should('contain.text', 'Explore')
-      cy.dataName('hubOverviewActionButtonLabel').should('contain.text', 'Let\'s Go')
+      cy.dataName('primaryActionButton').should('contain.text', 'Browse')
+      cy.dataName('secondaryActionButton').should('contain.text', 'Create')
     })
   })
 

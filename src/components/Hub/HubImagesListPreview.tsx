@@ -3,7 +3,6 @@ import ImageCard from "./ImageCard"
 import styled from "@emotion/styled"
 import Card from "@material-ui/core/Card"
 import { useSelector } from "react-redux"
-import { Row, Col } from "react-bootstrap"
 import {
   selectHubImages,
   selectIsHubImagesLoading,
@@ -15,9 +14,15 @@ export const SubTitle = styled.span`
   font-size: 1.25rem;
   color: ${(props) => props.theme.palette.headerTextColor};
 `
-const ImageListContainer = styled(Card)`
+const ImageListPreviewContainer = styled(Card)`
   margin-top: 2rem;
   padding: 2rem;
+`
+const ImageListContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-items: space-around;
 `
 
 const HubImagesListPreview = () => {
@@ -25,26 +30,24 @@ const HubImagesListPreview = () => {
   const isHubImagesLoading = useSelector(selectIsHubImagesLoading)
 
   return (
-    <ImageListContainer>
+    <ImageListPreviewContainer>
       {isHubImagesLoading ? (
         <SpinningLoader />
       ) : (
         <>
           <SubTitle data-name="hubImagesPreviewSubtitle">Latest</SubTitle>
-          <Row>
+          <ImageListContainer>
             {hubImages.map((image, index) => (
-              <Col
+              <ImageCard
+                image={image}
+                index={index}
                 key={`${image.name}.${image.version}.${image["jina-version"]}`}
-                md="4"
-                className="mb-4"
-              >
-                <ImageCard image={image} index={index} />
-              </Col>
+              />
             ))}
-          </Row>
+          </ImageListContainer>
         </>
       )}
-    </ImageListContainer>
+    </ImageListPreviewContainer>
   )
 }
 

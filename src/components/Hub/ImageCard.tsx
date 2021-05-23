@@ -1,5 +1,5 @@
 import React from "react"
-import { Row, Col, Card } from "react-bootstrap"
+import Card from "@material-ui/core/Card"
 import styled from "@emotion/styled"
 import { Link } from "react-router-dom"
 
@@ -16,6 +16,11 @@ type Props = {
   index: number
 }
 
+const ImageCardContainer = styled(Card)`
+  padding: 1rem;
+  box-shadow: none;
+  border: 1px solid ${(props) => props.theme.palette.tagBackground};
+`
 export const Tag = styled.div`
   background: ${(props) => props.theme.palette.tagBackground};
   border-radius: 6px;
@@ -25,22 +30,26 @@ export const Tag = styled.div`
   margin-bottom: 1rem;
   white-space: nowrap;
 `
-const Title = styled.div`
-  font-size: 1.25em;
-  font-weight: 700;
-  line-height: normal;
+const ImageTitle = styled.div`
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.5rem;
 `
-
 const SubTitle = styled.div`
   font-weight: 600;
   opacity: 0.5;
 `
-
 const ImageLink = styled(Link)`
+  display: flex;
   color: unset;
+  width: 30%;
+  margin-top: 1rem;
   &:hover {
     text-decoration: none;
   }
+`
+const ImageDescription = styled.p`
+  font-weight: 400;
 `
 
 export default function ImageCard({ image, index }: Props) {
@@ -48,29 +57,18 @@ export default function ImageCard({ image, index }: Props) {
 
   return (
     <ImageLink to={`/package/${kind}/${index}`}>
-      <Card className="clickable mb-4 h-100 image-card" data-name="hubImage">
-        <Card.Body className="pb-0 mb-0 pt-3">
-          <Row>
-            <Col xs="12" className="px-0">
-              <Title className="mb-2">{name}</Title>
-              {keywords.map((keyword, index) => (
-                <Tag data-name="hubImageTags" key={index}>
-                  {keyword}
-                </Tag>
-              ))}
-              <SubTitle data-name="hubImageAuthor" className="mb-2">
-                {author}
-              </SubTitle>
-            </Col>
-            <Col sm="12" className="px-0 pb-0">
-              <div className="description-container">
-                <div className="description-overlay" />
-                <div className="app-description">{description}</div>
-              </div>
-            </Col>
-          </Row>
-        </Card.Body>
-      </Card>
+      <ImageCardContainer data-name="hubImage">
+        <ImageTitle>{name}</ImageTitle>
+        {keywords.map((keyword, index) => (
+          <Tag data-name="hubImageTags" key={index}>
+            {keyword}
+          </Tag>
+        ))}
+        <ImageDescription>{description}</ImageDescription>
+        <SubTitle data-name="hubImageAuthor" className="mb-2">
+          {author}
+        </SubTitle>
+      </ImageCardContainer>
     </ImageLink>
   )
 }

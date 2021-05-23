@@ -18,6 +18,7 @@ const recommendedCategories = [
 const CardWithOutline = styled.div`
   border-radius: 0.25rem;
   border: 1px solid ${(props) => props.theme.palette.tagBackground};
+  background: ${(props) => props.theme.palette.background};
   margin-top: 2rem;
   padding: 1rem;
   display: flex;

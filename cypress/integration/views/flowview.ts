@@ -13,6 +13,7 @@ const path = require("path")
 
 describe("The Flow Page", () => {
   beforeEach(() => {
+    cy.viewport(2000, 2000)
     Cypress.on("uncaught:exception", (err, runnable) => {
       const resizeObserverLoopErrRe = /^[^(ResizeObserver loop limit exceeded)]/
       /* returning false here prevents Cypress from failing the test */
