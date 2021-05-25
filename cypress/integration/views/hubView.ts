@@ -25,7 +25,7 @@ describe('Hub page', () => {
   describe('explore button ', () => {
     it('takes users to hub list page', () => {
       cy.intercept('images', { fixture: 'hubImages'})
-      cy.dataName('hubOverviewActionButtonLabel').contains('Read more').click()
+      cy.dataName('primaryActionButton').should('contain.text', 'Browse').click()
       cy.dataName('hubImagesList')
     })
   })

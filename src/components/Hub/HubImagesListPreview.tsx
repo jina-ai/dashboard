@@ -24,6 +24,10 @@ const ImageListContainer = styled.div`
   justify-content: space-around;
   align-items: space-around;
 `
+const Col = styled.div`
+  width: 30%;
+  margin-bottom: 1.5rem;
+`
 
 const HubImagesListPreview = () => {
   const hubImages = useSelector(selectHubImages).slice(0, 6)
@@ -38,11 +42,13 @@ const HubImagesListPreview = () => {
           <SubTitle data-name="hubImagesPreviewSubtitle">Latest</SubTitle>
           <ImageListContainer>
             {hubImages.map((image, index) => (
-              <ImageCard
-                image={image}
-                index={index}
-                key={`${image.name}.${image.version}.${image["jina-version"]}`}
-              />
+              <Col>
+                <ImageCard
+                  image={image}
+                  index={index}
+                  key={`${image.name}.${image.version}.${image["jina-version"]}`}
+                />
+              </Col>
             ))}
           </ImageListContainer>
         </>

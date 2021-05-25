@@ -17,6 +17,7 @@ type Props = {
 }
 
 const ImageCardContainer = styled(Card)`
+  height: 100%;
   padding: 1rem;
   box-shadow: none;
   border: 1px solid ${(props) => props.theme.palette.tagBackground};
@@ -40,9 +41,7 @@ const SubTitle = styled.div`
   opacity: 0.5;
 `
 const ImageLink = styled(Link)`
-  display: flex;
   color: unset;
-  width: 30%;
   margin-top: 1rem;
   &:hover {
     text-decoration: none;
