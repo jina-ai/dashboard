@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useCallback } from "react"
 import { useSelector, useDispatch } from "react-redux"
-import { Row, Col } from "react-bootstrap"
 import { fetchHubImages } from "../../redux/hub/hub.actions"
 import {
   selectHubFilters,
@@ -14,11 +13,7 @@ import SpinningLoader from "../Common/SpinningLoader"
 import { ExpandingSearchbar } from "../Common/ExpandingSearchbar"
 import { FilterCategory, FilterParams } from "../../redux/hub/hub.types"
 import styled from "@emotion/styled"
-
-const SearchContainer = styled(Row)`
-  flex-direction: row-reverse;
-  padding: 1rem;
-`
+import { Grid } from "@material-ui/core"
 
 const EmptyResultMessage = styled.h3`
   margin-top: 25px;
@@ -57,42 +52,46 @@ const HubImagesList = () => {
       {isHubImagesLoading ? (
         <SpinningLoader />
       ) : (
-        <Row>
-          <Col md="3">
+        <Grid container>
+          <Grid item xs={12}>
+            Hub/Library
+          </Grid>
+
+          <Grid item xs={3}>
             <HubFilters
               filters={filters}
               setFilters={setFilters}
               getHubImages={getHubImages}
             />
-          </Col>
-          <Col md="9">
-            <SearchContainer>
+          </Grid>
+          <Grid direction="row-reverse" container item xs={9}>
+            <Grid item>
               <ExpandingSearchbar
                 placeholder="search hub images..."
                 value={searchString}
                 onChange={setSearchString}
                 onSearch={onSearch}
               />
-            </SearchContainer>
+            </Grid>
             {hubImages.length ? (
-              <Row data-name="hubImagesList">
+              <Grid item container data-name="hubImagesList">
                 {hubImages.map((image, index) => (
-                  <Col
+                  <Grid
+                    item
                     key={`${image.name}.${image.version}.${image["jina-version"]}`}
-                    md="4"
-                    className="mb-4"
+                    xs={4}
                   >
                     <ImageCard image={image} index={index} />
-                  </Col>
+                  </Grid>
                 ))}
-              </Row>
+              </Grid>
             ) : (
               <EmptyResultMessage>
                 No images matching your search were found
               </EmptyResultMessage>
             )}
-          </Col>
-        </Row>
+          </Grid>
+        </Grid>
       )}
     </>
   )
