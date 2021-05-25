@@ -29,27 +29,36 @@ export default function HubNavigationBar({
     background-color: ${(props) => props.theme.palette.searchBarBackground};
     border-radius: 2px;
     cursor: pointer;
+    min-width: 350px;
+    display: flex;
   `
 
-  const HubSearchIcon = styled(SearchIcon)``
+  const HubTabs = styled(Tabs)`
+    flex-grow: 1;
+  `
+
+  const HubSearchIcon = styled(SearchIcon)`
+    margin: 11px;
+    margin-left: 20px;
+  `
 
   const handleKeyPress = (event: KeyboardEvent<HTMLDivElement>) => {
     if (event.key === "Enter") handleSearch(searchString)
   }
   return (
-    <AppBar position={"static"}>
+    <AppBar elevation={0} position={"static"}>
       <Toolbar>
-        <Tabs
+        <HubTabs
           value={tabNumber}
           onChange={handleChange}
           aria-label="simple tabs example"
           textColor="secondary"
-          indicatorColor="primary"
+          indicatorColor="secondary"
         >
           {NavItems.map((NavItem, idx) => (
             <Tab label={NavItem} {...a11yProps(idx)} />
           ))}
-        </Tabs>
+        </HubTabs>
         <SearchBar>
           <HubSearchIcon onClick={(e) => handleSearch(searchString)} />
           <InputBase
@@ -58,6 +67,7 @@ export default function HubNavigationBar({
             value={searchString}
             onChange={(e) => setSearchString(e.target.value)}
             placeholder="Search"
+            fullWidth={true}
           />
         </SearchBar>
       </Toolbar>

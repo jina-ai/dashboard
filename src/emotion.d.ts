@@ -23,6 +23,7 @@ declare module "@emotion/react" {
       mutedText: string
       highlight: string
       searchBarBackground: string
+      searchBarBorder: string
     }
   }
 }
