@@ -22,6 +22,8 @@ declare module "@emotion/react" {
       tagPlatformBackground: string
       mutedText: string
       highlight: string
+      searchBarBackground: string
+      searchBarBorder: string
     }
   }
 }

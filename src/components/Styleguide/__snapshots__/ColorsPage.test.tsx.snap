@@ -202,5 +202,27 @@ exports[`Colors page 1`] = `
       #007AFF
     </span>
   </div>
+  <div
+    className="css-1rb9ksm"
+  >
+    <span
+      className="css-13fxtl5"
+    >
+      searchBarBackground
+       
+      #F9F9F9
+    </span>
+  </div>
+  <div
+    className="css-1kohrlp"
+  >
+    <span
+      className="css-13fxtl5"
+    >
+      searchBarBorder
+       
+      #E5E5E5
+    </span>
+  </div>
 </div>
 `;
