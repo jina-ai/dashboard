@@ -3,7 +3,7 @@ import { AppBar, InputBase, Tab, Tabs, Toolbar } from "@material-ui/core"
 import styled from "@emotion/styled"
 import SearchIcon from "@material-ui/icons/Search"
 
-function a11yProps(index: any) {
+function a11yProps(index: number) {
   return {
     id: `simple-tab-${index}`,
     "aria-controls": `simple-tabpanel-${index}`,
