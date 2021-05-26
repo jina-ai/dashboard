@@ -33,12 +33,9 @@ export const Tag = styled.div`
 `
 const ImageTitle = styled.div`
   font-size: 1rem;
-  font-weight: 500;
-  line-height: 1.5rem;
-`
-const SubTitle = styled.div`
   font-weight: 600;
-  opacity: 0.5;
+  line-height: 1.5rem;
+  font-family: "Roboto";
 `
 const ImageLink = styled(Link)`
   color: unset;
@@ -49,10 +46,11 @@ const ImageLink = styled(Link)`
 `
 const ImageDescription = styled.p`
   font-weight: 400;
+  word-break: break-word;
 `
 
 export default function ImageCard({ image, index }: Props) {
-  let { name, author, keywords, kind, description } = image
+  let { name, keywords, kind, description } = image
 
   return (
     <ImageLink to={`/package/${kind}/${index}`}>
@@ -64,9 +62,6 @@ export default function ImageCard({ image, index }: Props) {
           </Tag>
         ))}
         <ImageDescription>{description}</ImageDescription>
-        <SubTitle data-name="hubImageAuthor" className="mb-2">
-          {author}
-        </SubTitle>
       </ImageCardContainer>
     </ImageLink>
   )
