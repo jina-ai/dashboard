@@ -41,19 +41,18 @@ describe('Hub page', () => {
 
   describe('hub images filters', () => {
     it('shows a list of filters generated from hub images', () => {
-      cy.dataName('hubImagesFilter').should('contain.text', 'Type of image')
+      cy.dataName('hubImagesFilter').should('contain.text', 'Executor type')
     })
 
     it('fetches images matching current filters', () => {
-      cy.dataName('hubImagesFilter').contains('encoder').click()
-      cy.dataName('hubImagesFilter').contains('nlp').click()
+      cy.dataName('hubImagesFilter').contains('Encoder').click()
     })
 
     it('keeps filter on back button', () => {
-      cy.dataName('hubImagesFilter').contains('encoder').click()
+      cy.dataName('hubImagesFilter').contains('Encoder').click()
       cy.go("back")
       cy.dataName('hubOverviewActionButtonLabel').contains('Read more').click()
-      cy.dataName('hubImagesFilter').contains('encoder').should('have.css', 'border', '1px solid rgb(0, 122, 255)')
+      cy.dataName('hubImagesFilter').contains('Encoder')
     })
 
   })

@@ -1,85 +1,100 @@
-import React, { useState } from "react"
+import React from "react"
 import styled from "@emotion/styled"
-import { useTheme } from "@emotion/react"
+import Button from "@material-ui/core/Button"
+import { useDispatch } from "react-redux"
+import FilterButton from "./FilterButton"
+import { FilterCategory, FilterParams } from "../../redux/hub/hub.types"
+import { pickFilter, clearFilters } from "../../redux/hub/hub.actions"
 
-export type FilterMap = { [key: string]: boolean }
-export type FilterParams = {
-  kind: string[]
-  keywords: string[]
-  name?: string | null
-}
-export type Filter = {
-  filterLabel: string
-  values: FilterMap
-}
 type HubFilterProps = {
-  filters: Filter[]
-  setFilters: (filters: Filter[]) => void
+  filters: FilterCategory[]
+  setFilters: (filters: FilterCategory[]) => void
   getHubImages: (filters: FilterParams) => void
 }
 
-export const getSelectedFilters = (filters: Filter[]): FilterParams => {
+export const getSelectedFilters = (filters: FilterCategory[]): FilterParams => {
   return {
     kind: getCheckedFilterValues(filters[0]),
-    keywords: getCheckedFilterValues(filters[1]),
+    keywords: [
+      ...getCheckedFilterValues(filters[1]),
+      ...getCheckedFilterValues(filters[2]),
+      ...getCheckedFilterValues(filters[3]),
+    ],
   }
 }
 
-export const getCheckedFilterValues = (filter: Filter) => {
-  return Object.keys(filter.values).reduce((acc, key) => {
-    let filterValue = filter.values
-    return filterValue[key] ? [...acc, key] : acc
+export const getCheckedFilterValues = (filter: FilterCategory) => {
+  return filter.values.reduce((acc, { name, selected }) => {
+    return selected ? [...acc, name] : acc
   }, [] as string[])
 }
 
 const FiltersTitle = styled.div`
   font-weight: 500;
   font-size: 1.25rem;
+  color: ${(props) => props.theme.palette.headerTextColor};
 `
-
+const FilterTitleContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+`
+const ClearButton = styled(Button)`
+  color: ${(props) => props.theme.palette.mutedText};
+`
 const FiltersContainer = styled.div`
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
 `
-// Hide checkbox but keep it in the DOM for accessibility
-const Checkbox = styled.input`
-  margin-right: -1rem;
-  opacity: 0;
-`
-type CheckboxLabelProps = {
-  checked: boolean
-  highlightColor: string
-}
-const CheckboxLabel = styled.label`
-  border: ${(props: CheckboxLabelProps) =>
-    props.checked ? `1px solid ${props.highlightColor}` : "none"};
-  border-radius: 0.25rem;
-  padding: 0.25rem 0.5rem;
-`
-
 const HubFilters = ({ filters, setFilters, getHubImages }: HubFilterProps) => {
+  const dispatch = useDispatch()
   const handleFilterChange = (
     filterCategoryIndex: number,
-    key: string,
+    index: number,
     value: boolean
   ) => {
-    filters[filterCategoryIndex].values[key] = value
+    filters[filterCategoryIndex].values[index].selected = value
+    dispatch(pickFilter(filters[filterCategoryIndex].values[index].name))
+    setFilters(filters)
+    getHubImages(getSelectedFilters(filters))
+  }
+  const handleClearFilters = (filterCategoryIndex: number) => {
+    filters[filterCategoryIndex] = {
+      ...filters[filterCategoryIndex],
+      values: filters[filterCategoryIndex].values.map((v) => ({
+        ...v,
+        selected: false,
+      })),
+    }
+    dispatch(
+      clearFilters(
+        filters[filterCategoryIndex].values.map((filter) => filter.name)
+      )
+    )
     setFilters(filters)
     getHubImages(getSelectedFilters(filters))
   }
   return (
     <div data-name="hubImagesFilter">
       {filters &&
-        filters.map((filter: Filter, filterCategoryIndex: number) => (
+        filters.map((filter: FilterCategory, filterCategoryIndex: number) => (
           <div key={filterCategoryIndex}>
-            <FiltersTitle>{filter.filterLabel}</FiltersTitle>
+            <FilterTitleContainer>
+              <FiltersTitle>{filter.filterLabel}</FiltersTitle>
+              <ClearButton
+                onClick={() => handleClearFilters(filterCategoryIndex)}
+              >
+                Clear All
+              </ClearButton>
+            </FilterTitleContainer>
             <FiltersContainer>
-              {Object.keys(filter.values).map((key) => (
-                <FilterCheckbox
+              {filter.values.map(({ name, selected, count }, index) => (
+                <FilterButton
                   filter={filter}
-                  value={filter.values[key]}
-                  key={key}
-                  label={key}
+                  value={selected}
+                  index={index}
+                  key={index}
+                  label={name}
+                  count={count}
                   filterCategoryIndex={filterCategoryIndex}
                   handleFilterChange={handleFilterChange}
                 />
@@ -88,44 +103,6 @@ const HubFilters = ({ filters, setFilters, getHubImages }: HubFilterProps) => {
           </div>
         ))}
     </div>
-  )
-}
-
-type FilterCheckboxProps = {
-  filter: Filter
-  value: boolean
-  label: string
-  filterCategoryIndex: number
-  handleFilterChange: (
-    filterCategoryIndex: number,
-    key: string,
-    value: boolean
-  ) => void
-}
-
-const FilterCheckbox = ({
-  filter,
-  value,
-  label,
-  filterCategoryIndex,
-  handleFilterChange,
-}: FilterCheckboxProps) => {
-  const [checked, setChecked] = useState(value)
-  const theme = useTheme()
-  const { highlight } = theme.palette
-  const handleFilterSelect = () => {
-    setChecked(!checked)
-    handleFilterChange(filterCategoryIndex, label, !checked)
-  }
-  return (
-    <CheckboxLabel checked={checked} highlightColor={highlight || "cyan"}>
-      <Checkbox
-        type="checkbox"
-        checked={checked}
-        onChange={() => handleFilterSelect()}
-      />
-      {label}
-    </CheckboxLabel>
   )
 }
 

@@ -17,6 +17,7 @@ import "./App.css"
 import store from "./redux"
 import GlobalStyles from "./styles/GlobalStyles"
 import { newVersionLocalStorageReset } from "./helpers/utils"
+
 let App
 const version = require("../package.json").version
 const localVersion = localStorage.getItem("version")

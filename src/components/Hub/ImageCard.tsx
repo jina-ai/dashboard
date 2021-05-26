@@ -24,9 +24,9 @@ const ImageCardContainer = styled(Card)`
 `
 export const Tag = styled.div`
   background: ${(props) => props.theme.palette.tagBackground};
-  border-radius: 6px;
+  border-radius: 0.25rem;
   display: inline-block;
-  padding: 0.25rem;
+  padding: 0.5rem 1rem;
   margin-right: 1rem;
   margin-bottom: 1rem;
   white-space: nowrap;
