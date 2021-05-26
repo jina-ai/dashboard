@@ -19,13 +19,13 @@ type Props = {
 
 const ButtonGroup = styled.div`
   height: 3.125rem;
-  background: ${(props) => props.theme.palette.primary};
+  background: ${(props) => props.theme.palette.primary.main};
   border-radius: 8px;
   display: flex;
 `
 
 const Button = styled.button`
-  background: ${(props) => props.theme.palette.primary};
+  background: ${(props) => props.theme.palette.primary.main};
   border: 0;
   margin-right: 1rem;
   cursor: pointer;

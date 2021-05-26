@@ -15,8 +15,8 @@ const BLACK = "#000000"
 const WHITE = "#FFFFFF"
 
 const IVORY_EGG = "#F9F9F9"
-const NOT_SNOW_WHITE_GRAY = "#E5E5E5"
 const CODE_BACKGROUND = "#E8E8E8"
+const NOT_SNOW_WHITE_GRAY = "#E5E5E5"
 const DADGREY = "#DAD7FE"
 const QUICK_SILVER = "#A6A6A6"
 const DEBUG_GREY = "#7E7278"
@@ -24,30 +24,6 @@ const DEBUG_GREY = "#7E7278"
 const PAPER_BACKGROUND = "#f5f6f8"
 
 const DISABLED_GREY = "#9E9E9E"
-//
-// const oldTheme = {
-//   palette: {
-//     bodyBackground: PAPER_BACKGROUND,
-//     background: WHITE,
-//     codeBackground: CODE_BACKGROUND,
-//     disabledGrey: DISABLED_GREY,
-//     headerTextColor: BLACK,
-//     primary: PERSIAN_GREEN,
-//     secondary: GOLDEN_TANOI,
-//     warning: GOLDEN_TANOI,
-//     error: BITTER_SWEET,
-//     success: SCOOTER_GREEN,
-//     info: PERSIAN_GREEN,
-//     critical: SUDOBANGBANG,
-//     debug: DEBUG_GREY,
-//     tagBackground: DADGREY,
-//     tagPlatformBackground: HONEYBEE,
-//     mutedText: QUICK_SILVER,
-//     highlight: SKY_DIVING_IN_THE_BLUE,
-//     searchBarBackground: IVORY_EGG,
-//     searchBarBorder: NOT_SNOW_WHITE_GRAY,
-//   },
-// }
 
 const theme = createTheme({
   palette: {
@@ -84,8 +60,8 @@ const theme = createTheme({
     },
     grey: {
       100: IVORY_EGG,
-      200: NOT_SNOW_WHITE_GRAY,
-      300: CODE_BACKGROUND,
+      200: CODE_BACKGROUND,
+      300: NOT_SNOW_WHITE_GRAY,
       400: DADGREY,
       600: QUICK_SILVER,
       700: DEBUG_GREY,
