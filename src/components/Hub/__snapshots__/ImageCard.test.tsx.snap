@@ -2,59 +2,30 @@
 
 exports[`ImageCard 1`] = `
 <a
-  className="css-sirbk0"
+  className="css-1quvid7"
   href="#/package/encoder/7"
   onClick={[Function]}
 >
   <div
-    className="clickable mb-4 h-100 image-card card"
+    className="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation1 MuiCard-root css-fdivrx-MuiPaper-root-MuiCard-root"
     data-name="hubImage"
   >
     <div
-      className="pb-0 mb-0 pt-3 card-body"
+      className="css-t1ogz5"
     >
-      <div
-        className="row"
-      >
-        <div
-          className="px-0 col-12"
-        >
-          <div
-            className="mb-2 css-14i9fhd"
-          >
-            Enel
-          </div>
-          <div
-            className="css-1p9368m"
-            data-name="hubImageTags"
-          >
-            encoder
-          </div>
-          <div
-            className="mb-2 css-k133o5"
-            data-name="hubImageAuthor"
-          >
-            Oda
-          </div>
-        </div>
-        <div
-          className="px-0 pb-0 col-sm-12"
-        >
-          <div
-            className="description-container"
-          >
-            <div
-              className="description-overlay"
-            />
-            <div
-              className="app-description"
-            >
-              whatever
-            </div>
-          </div>
-        </div>
-      </div>
+      Enel
     </div>
+    <div
+      className="css-o9a62l"
+      data-name="hubImageTags"
+    >
+      encoder
+    </div>
+    <p
+      className="css-2u8p29"
+    >
+      whatever
+    </p>
   </div>
 </a>
 `;
