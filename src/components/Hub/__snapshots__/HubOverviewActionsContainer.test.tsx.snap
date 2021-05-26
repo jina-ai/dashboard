@@ -15,7 +15,7 @@ Array [
       Find out what you can do in Jina hub and how you platform works.
     </p>
     <button
-      className="MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeMedium MuiButton-textSizeMedium MuiButtonBase-root css-mh8nxs-MuiButtonBase-root-MuiButton-root"
+      className="MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeMedium MuiButton-textSizeMedium MuiButtonBase-root css-1hb5non-MuiButtonBase-root-MuiButton-root"
       data-name="hubOverviewActionButtonLabel"
       disabled={false}
       onBlur={[Function]}
@@ -54,7 +54,7 @@ Array [
       Create flow
     </p>
     <button
-      className="MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeMedium MuiButton-textSizeMedium MuiButtonBase-root css-mh8nxs-MuiButtonBase-root-MuiButton-root"
+      className="MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeMedium MuiButton-textSizeMedium MuiButtonBase-root css-1hb5non-MuiButtonBase-root-MuiButton-root"
       data-name="hubOverviewActionButtonLabel"
       disabled={false}
       onBlur={[Function]}
