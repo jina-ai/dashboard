@@ -3,7 +3,7 @@ import ReactDOM from "react-dom"
 import { ThemeProvider } from "@emotion/react"
 import { ThemeProvider as MuiThemeProvider } from "@material-ui/core/styles"
 import { Provider } from "react-redux"
-import { muiTheme, theme } from "./theme"
+import { theme } from "./theme"
 import * as Sentry from "@sentry/react"
 import { Integrations } from "@sentry/tracing"
 
@@ -42,7 +42,7 @@ if (process.env.NODE_ENV === "production") {
 
 ReactDOM.render(
   // HOC to make theme available as a prop in all components
-  <MuiThemeProvider theme={muiTheme}>
+  <MuiThemeProvider theme={theme}>
     <ThemeProvider theme={theme}>
       <Provider store={store}>
         <App />
