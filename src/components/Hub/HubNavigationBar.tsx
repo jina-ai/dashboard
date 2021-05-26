@@ -26,7 +26,7 @@ export default function HubNavigationBar({
   const NavItems = ["Hub Explore", "Hub List", "My Images", "My Favourites"]
 
   const SearchBar = styled.div`
-    background-color: ${(props) => props.theme.palette.searchBarBackground};
+    background-color: ${(props) => props.theme.palette.grey[100]};
     border-radius: 2px;
     cursor: pointer;
     min-width: 350px;

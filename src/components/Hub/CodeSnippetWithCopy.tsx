@@ -1,9 +1,9 @@
 import React, { useState } from "react"
-import Snackbar from '@material-ui/core/Snackbar';
-import IconButton from '@material-ui/core/IconButton';
-import CloseIcon from '@material-ui/icons/Close';
-import CopyIcon from '@material-ui/icons/FileCopyRounded'
-import styled from "@emotion/styled";
+import Snackbar from "@material-ui/core/Snackbar"
+import IconButton from "@material-ui/core/IconButton"
+import CloseIcon from "@material-ui/icons/Close"
+import CopyIcon from "@material-ui/icons/FileCopyRounded"
+import styled from "@emotion/styled"
 import { copyToClipboard } from "../../helpers/utils"
 
 type Props = {
@@ -12,9 +12,9 @@ type Props = {
 
 const CodeContainer = styled.div`
   display: flex;
-  background: ${(props) => props.theme.palette.codeBackground};
+  background: ${(props) => props.theme.palette.grey[200]};
   padding: 0.5rem 1rem;
-  border-radius: .125rem;
+  border-radius: 0.125rem;
 `
 
 const CodeSnippetContainer = styled.div`
@@ -30,7 +30,7 @@ export default function CodeSnippetWithCopy({ codeSnippet }: Props) {
     setOpenFeedback(true)
   }
   const handleClose = () => {
-    setOpenFeedback(false);
+    setOpenFeedback(false)
   }
   const action = (
     <>
@@ -46,10 +46,8 @@ export default function CodeSnippetWithCopy({ codeSnippet }: Props) {
   )
   return (
     <div>
-      <CodeContainer onClick={() => handleCopyClick()} >
-        <CodeSnippetContainer >
-          {codeSnippet}
-        </CodeSnippetContainer>
+      <CodeContainer onClick={() => handleCopyClick()}>
+        <CodeSnippetContainer>{codeSnippet}</CodeSnippetContainer>
         <CopyIcon fontSize="small" />
         <Snackbar
           anchorOrigin={{ vertical: "top", horizontal: "right" }}
