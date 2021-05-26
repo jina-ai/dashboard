@@ -34,7 +34,6 @@ describe('Hub page', () => {
     it('shows a list of hub images', () => {
       cy.fixture('hubImages').then(hubImages => {
         cy.dataName('hubImagesList').dataName('hubImage').its('length').should('eq', hubImages.length)
-        cy.dataName('hubImagesList').dataName('hubImageAuthor').its('length').should('eq', hubImages.length)
       })
     })
   })
@@ -51,7 +50,7 @@ describe('Hub page', () => {
     it('keeps filter on back button', () => {
       cy.dataName('hubImagesFilter').contains('Encoder').click()
       cy.go("back")
-      cy.dataName('hubOverviewActionButtonLabel').contains('Read more').click()
+      cy.dataName('primaryActionButton').should('contain.text', 'Browse').click()
       cy.dataName('hubImagesFilter').contains('Encoder')
     })
 

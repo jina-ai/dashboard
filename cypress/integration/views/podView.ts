@@ -2,6 +2,7 @@ import { flowArguments } from "../../../src/helpers/tests/flow-chart.testData"
 
 describe("The Pod View", () => {
   beforeEach(() => {
+    cy.viewport(2000, 2000)
     cy.visit("/#/flow")
   })
 
