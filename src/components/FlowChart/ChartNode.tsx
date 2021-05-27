@@ -20,7 +20,7 @@ function NodePort({ type, portDataLabel }: NodePortProps) {
     width: 1rem;
     height: 1rem;
     border-radius: 0.5rem;
-    border: 1px solid ${theme.palette.primary};
+    border: 1px solid ${theme.palette.primary.main};
     display: flex;
     align-items: center;
     justify-content: center;
@@ -79,7 +79,7 @@ export default function ChartNode(props: ChartNodeProps) {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     border-radius: 0.25em;
     transition: 0.2s;
-    border: 1px solid ${theme.palette.primary};
+    border: 1px solid ${theme.palette.primary.main};
   `
 
   function _isFlowNode(prop: ChartNodeProps): prop is FlowNode {
