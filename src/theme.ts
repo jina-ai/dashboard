@@ -11,11 +11,12 @@ const BITTER_SWEET = "#ff6666"
 const SUDOBANGBANG = "#ff4540"
 
 const BLACK = "#000000"
+const BLACK_WITH_TRANSPARENCY = "#00000099"
 
 const WHITE = "#FFFFFF"
 
 const IVORY_EGG = "#F9F9F9"
-const CODE_BACKGROUND = "#E8E8E8"
+const CODE_BACKGROUND = "#E8E8E855"
 const NOT_SNOW_WHITE_GRAY = "#E5E5E5"
 const DADGREY = "#DAD7FE"
 const QUICK_SILVER = "#A6A6A6"
@@ -43,6 +44,7 @@ const theme = createTheme({
     },
     text: {
       primary: BLACK,
+      secondary: BLACK_WITH_TRANSPARENCY,
     },
     error: {
       main: BITTER_SWEET,

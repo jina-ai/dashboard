@@ -10,9 +10,13 @@ type Props = {
   image: HubImage
 }
 
-const DetailCard = styled(Card)`
+export const DetailCard = styled(Card)`
   margin-bottom: 0.75rem;
-  box-shadow: 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%);
+  border: 1px solid ${(props) => props.theme.palette.grey[300]};
+  font-family: "Roboto";
+  font-size: 0.9rem;
+  box-shadow: unset;
+  background-color: ${(props) => props.theme.palette.background.default};
 `
 
 const SectionHeading = styled.div`

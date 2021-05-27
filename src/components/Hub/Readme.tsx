@@ -10,10 +10,29 @@ type Props = {
 const ReadmeContainer = styled.div`
   h1 {
     font-size: 1rem;
+    font-family: "Roboto";
+    font-weight: 600;
+    line-height: 1.5rem;
+    letter-spacing: 0.01rem;
+    color: ${(props) => props.theme.palette.text.primary};
   }
   h2 {
-    font-size: 1rem;
+    font-size: 0.8rem;
+    font-weight: 500;
     color: ${(props) => props.theme.palette.primary.main};
+  }
+  p {
+    font-size: 0.8rem;
+    color: ${(props) => props.theme.palette.text.secondary};
+    font-family: Roboto;
+  }
+  a {
+    text-decoration: underline;
+  }
+  .code {
+    font-family: "Monaco";
+    background: ${(props) => props.theme.palette.grey[200]};
+    padding: 0.5rem;
   }
   pre {
     background: ${(props) => props.theme.palette.grey[200]};
