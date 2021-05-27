@@ -13,7 +13,13 @@ import SpinningLoader from "../Common/SpinningLoader"
 import { ExpandingSearchbar } from "../Common/ExpandingSearchbar"
 import { FilterCategory, FilterParams } from "../../redux/hub/hub.types"
 import styled from "@emotion/styled"
-import { Grid } from "@material-ui/core"
+import {
+  Grid,
+  FormControl,
+  Select,
+  InputLabel,
+  MenuItem,
+} from "@material-ui/core"
 
 const EmptyResultMessage = styled.h3`
   margin-top: 25px;
@@ -64,15 +70,34 @@ const HubImagesList = () => {
               getHubImages={getHubImages}
             />
           </Grid>
-          <Grid direction="row-reverse" container item xs={9}>
-            <Grid item>
-              <ExpandingSearchbar
-                placeholder="search hub images..."
-                value={searchString}
-                onChange={setSearchString}
-                onSearch={onSearch}
-              />
+          <Grid container item xs={9}>
+            <Grid item container xs={12}>
+              <Grid item xs={10}>
+                <FormControl>
+                  <InputLabel
+                    shrink
+                    id="demo-simple-select-placeholder-label-label"
+                  >
+                    Sort
+                  </InputLabel>
+                  <Select>
+                    <MenuItem value="">Alphabetically</MenuItem>
+                    <MenuItem value={10}>Alphabetically</MenuItem>
+                    <MenuItem value={20}>Alphabetically</MenuItem>
+                    <MenuItem value={30}>Alphabetically</MenuItem>
+                  </Select>
+                </FormControl>
+              </Grid>
+              <Grid item xs={2}>
+                <ExpandingSearchbar
+                  placeholder="search hub images..."
+                  value={searchString}
+                  onChange={setSearchString}
+                  onSearch={onSearch}
+                />
+              </Grid>
             </Grid>
+
             {hubImages.length ? (
               <Grid item container data-name="hubImagesList">
                 {hubImages.map((image, index) => (
