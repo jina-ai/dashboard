@@ -2,7 +2,10 @@
 
 import "@emotion/react"
 import { Theme as MuiThemeType } from "@material-ui/core"
+import { Palette } from "./createPalette"
 
 declare module "@emotion/react" {
-  export interface Theme extends MuiThemeType {}
+  export interface Theme extends MuiThemeType {
+    palette: Palette
+  }
 }

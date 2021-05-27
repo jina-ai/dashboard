@@ -1,6 +1,7 @@
 import React from "react"
 import { Row, Col, Card } from "react-bootstrap"
 import styled from "@emotion/styled"
+import { Theme, useTheme } from "@emotion/react"
 import { Link } from "react-router-dom"
 
 type HubImagePreview = {
@@ -15,9 +16,22 @@ type Props = {
   image: HubImagePreview
   index: number
 }
-
+type TagProps = {
+  filterColorIndex: number
+  theme: Theme
+}
 export const Tag = styled.div`
-  background: ${(props) => props.theme.palette.grey[400]};
+  ${({ theme, filterColorIndex }: TagProps) => {
+    const filterPalette = theme.palette.filters
+
+    return `background: ${
+      filterPalette[filterColorIndex % filterPalette.length].main
+    };
+            color: ${
+              filterPalette[filterColorIndex % filterPalette.length]
+                .contrastText
+            };`
+  }}
   border-radius: 0.25rem;
   display: inline-block;
   padding: 0.5rem 1rem;
@@ -45,6 +59,7 @@ const ImageLink = styled(Link)`
 
 export default function ImageCard({ image, index }: Props) {
   let { name, author, keywords, kind, description } = image
+  const theme = useTheme()
 
   return (
     <ImageLink to={`/package/${kind}/${index}`}>
@@ -54,7 +69,12 @@ export default function ImageCard({ image, index }: Props) {
             <Col xs="12" className="px-0">
               <Title className="mb-2">{name}</Title>
               {keywords.map((keyword, index) => (
-                <Tag data-name="hubImageTags" key={index}>
+                <Tag
+                  data-name="hubImageTags"
+                  key={index}
+                  filterColorIndex={index}
+                  theme={theme}
+                >
                   {keyword}
                 </Tag>
               ))}
