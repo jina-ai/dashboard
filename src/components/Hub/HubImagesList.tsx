@@ -131,10 +131,9 @@ const HubImagesList = () => {
                     value={sortOption}
                     onChange={handleSortOption}
                   >
-                    <MenuItem value={0}>{sortOptions[0]}</MenuItem>
-                    <MenuItem value={1}>{sortOptions[1]}</MenuItem>
-                    <MenuItem value={2}>{sortOptions[2]}</MenuItem>
-                    <MenuItem value={3}>{sortOptions[3]}</MenuItem>
+                    {sortOptions.map((sortOption, idx) => (
+                      <MenuItem value={idx}>{sortOptions[idx]}</MenuItem>
+                    ))}
                   </Select>
                 </FormControl>
               </Grid>
