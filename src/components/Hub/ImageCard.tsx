@@ -20,10 +20,10 @@ const ImageCardContainer = styled(Card)`
   height: 100%;
   padding: 1rem;
   box-shadow: none;
-  border: 1px solid ${(props) => props.theme.palette.tagBackground};
+  border: 1px solid ${(props) => props.theme.palette.grey[400]};
 `
 export const Tag = styled.div`
-  background: ${(props) => props.theme.palette.tagBackground};
+  background: ${(props) => props.theme.palette.grey[400]};
   border-radius: 0.25rem;
   display: inline-block;
   padding: 0.5rem 1rem;

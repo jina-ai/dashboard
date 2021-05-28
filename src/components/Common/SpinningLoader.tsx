@@ -12,7 +12,8 @@ const Spinner = styled.div`
   border-radius: 50%;
   border: 8px solid white;
   border-color: ${(props) => {
-    let { primary, background } = props.theme.palette
+    let primary = props.theme.palette.primary.main
+    let background = props.theme.palette.background.default
     return `${primary} ${background} ${primary} ${background}`
   }};
 `

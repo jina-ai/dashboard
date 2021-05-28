@@ -32,14 +32,14 @@ export const getCheckedFilterValues = (filter: FilterCategory) => {
 const FiltersTitle = styled.div`
   font-weight: 500;
   font-size: 1.25rem;
-  color: ${(props) => props.theme.palette.headerTextColor};
+  color: ${(props) => props.theme.palette.text.primary};
 `
 const FilterTitleContainer = styled.div`
   display: flex;
   justify-content: space-between;
 `
 const ClearButton = styled(Button)`
-  color: ${(props) => props.theme.palette.mutedText};
+  color: ${(props) => props.theme.palette.grey[600]};
 `
 const FiltersContainer = styled.div`
   display: flex;

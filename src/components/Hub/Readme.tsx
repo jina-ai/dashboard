@@ -13,10 +13,10 @@ const ReadmeContainer = styled.div`
   }
   h2 {
     font-size: 1rem;
-    color: ${(props) => props.theme.palette.primary};
+    color: ${(props) => props.theme.palette.primary.main};
   }
   pre {
-    background: ${(props) => props.theme.palette.codeBackground};
+    background: ${(props) => props.theme.palette.grey[200]};
     padding: 0.5rem;
   }
 `

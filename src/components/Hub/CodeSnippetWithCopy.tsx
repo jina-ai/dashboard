@@ -12,7 +12,7 @@ type Props = {
 
 const CodeContainer = styled.div`
   display: flex;
-  background: ${(props) => props.theme.palette.codeBackground};
+  background: ${(props) => props.theme.palette.grey[200]};
   padding: 0.5rem 1rem;
   border-radius: 0.125rem;
 `

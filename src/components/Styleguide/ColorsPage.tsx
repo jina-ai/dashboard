@@ -1,33 +1,58 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
-import { css, jsx, useTheme } from "@emotion/react"
+import { css, jsx } from "@emotion/react"
 import { PageTitle } from "../Common/PageTitle"
+import { theme } from "../../theme"
 
 const ColorsPage = () => {
-  const { palette } = useTheme()
+  const { palette } = theme
+  const colorCategories = [
+    "primary",
+    "secondary",
+    "background",
+    "action",
+    "text",
+    "error",
+    "warning",
+    "success",
+    "info",
+    "grey",
+  ]
+
+  const paletteColorFiltered = Object.entries(
+    palette
+  ).filter(([category, gradiations]) => colorCategories.includes(category))
+
   return (
     <div>
       <PageTitle title={"Colors"} className={""} />
-      {Object.keys(palette).map((color) => (
-        <div
-          key={color}
-          css={css`
-            padding: 32px;
-            background-color: ${palette[color as keyof typeof palette]};
-          `}
-        >
-          <span
-            css={css`
-              background-color: ${palette.tagBackground};
-              color: ${palette.headerTextColor};
-              padding: 8px;
-              border-radius: 8px;
-            `}
-          >
-            {color} {palette[color as keyof typeof palette]}
-          </span>
-        </div>
-      ))}
+      {paletteColorFiltered.map(([category, gradiations]) => {
+        return (
+          <div>
+            <h3>{category}</h3>
+            {Object.entries(gradiations).map(([gradiation, color]) => (
+              <div
+                key={color as string}
+                css={css`
+                  padding: 32px;
+                  background-color: ${color as string};
+                `}
+              >
+                <span
+                  css={css`
+                    background-color: ${palette.grey[400]};
+                    color: ${palette.text.primary};
+                    padding: 8px;
+                    border-radius: 8px;
+                  `}
+                >
+                  {gradiation}
+                </span>
+              </div>
+            ))}
+          </div>
+        )
+      })}
     </div>
   )
 }

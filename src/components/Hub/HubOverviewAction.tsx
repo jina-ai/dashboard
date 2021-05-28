@@ -19,15 +19,15 @@ const ActionItemTitle = styled.span`
 
 const ActionButton = styled(Button)`
   ${({ theme }) => `
-    background: ${theme.palette.primary};
+    background: ${theme.palette.primary.main};
     border-radius: 10px;
     border: none;
     padding: 1rem 1rem;
     font-size: 1rem;
     font-weight: 600;
-    color: ${theme.palette.background};
+    color: ${theme.palette.background.default};
     &:hover {
-      background: ${theme.palette.primary};
+      background: ${theme.palette.primary.main};
     }
     &:focus {
       outline: none;

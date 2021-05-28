@@ -18,7 +18,7 @@ const DetailCard = styled(Card)`
 const SectionHeading = styled.div`
   font-size: 1rem;
   font-weight: 700;
-  color: ${(props) => props.theme.palette.disabledGrey};
+  color: ${(props) => props.theme.palette.action.disabled};
   margin: 0.5rem 0;
 `
 const DetailsSection = styled.div`
@@ -26,7 +26,7 @@ const DetailsSection = styled.div`
   flex-direction: column;
 `
 const Platform = styled(Tag)`
-  background-color: ${(props) => props.theme.palette.tagPlatformBackground};
+  background-color: ${(props) => props.theme.palette.secondary.light};
 `
 
 const getUsageInFlow = (dockerName: string, version: string) =>
