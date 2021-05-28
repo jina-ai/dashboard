@@ -11,7 +11,11 @@ import ImageCard from "./ImageCard"
 import HubFilters, { getSelectedFilters } from "./HubFilters"
 import SpinningLoader from "../Common/SpinningLoader"
 import { ExpandingSearchbar } from "../Common/ExpandingSearchbar"
-import { FilterCategory, FilterParams } from "../../redux/hub/hub.types"
+import {
+  FilterCategory,
+  FilterParams,
+  HubImage,
+} from "../../redux/hub/hub.types"
 import styled from "@emotion/styled"
 import {
   Grid,
@@ -25,9 +29,36 @@ const sortOptions = [
   "none",
   "name increasing",
   "name decreasing",
-  "creator increasing",
-  "creator decreasing",
+  "author increasing",
+  "author decreasing",
 ]
+
+const sortHubImages = (images: HubImage[], sortOption: number) => {
+  switch (sortOptions[sortOption]) {
+    case "none":
+      return images
+    case "name increasing":
+      return images.sort((imageA, imageB) =>
+        imageA.name < imageB.name ? -1 : imageA.name > imageB.name ? 1 : 0
+      )
+    case "name decreasing":
+      return images.sort((imageA, imageB) =>
+        imageA.name > imageB.name ? -1 : imageA.name < imageB.name ? 1 : 0
+      )
+    case "author increasing":
+      return images.sort((imageA, imageB) =>
+        imageA.author < imageB.author
+          ? -1
+          : imageA.author > imageB.author
+          ? 1
+          : 0
+      )
+    case "author decreasing":
+      return images.sort((imageA, imageB) =>
+        imageA.author > imageB.v ? -1 : imageA.author < imageB.author ? 1 : 0
+      )
+  }
+}
 
 const EmptyResultMessage = styled.h3`
   margin-top: 25px;
@@ -36,13 +67,14 @@ const EmptyResultMessage = styled.h3`
 
 const HubImagesList = () => {
   const dispatch = useDispatch()
-  const hubImages = useSelector(selectHubImages)
   const imageFilters = useSelector(selectHubFilters)
   const isHubImagesLoading = useSelector(selectIsHubImagesLoading)
   const hubImagesFetchError = useSelector(selectHubImagesFetchError)
   const [filters, setFilters] = useState([] as FilterCategory[])
   const [searchString, setSearchString] = useState("")
   const [sortOption, setSortOption] = useState(0)
+  const hubImages = sortHubImages(useSelector(selectHubImages), sortOption)
+
   if (hubImages.length === 0 && !isHubImagesLoading && !hubImagesFetchError) {
     dispatch(fetchHubImages())
   }
