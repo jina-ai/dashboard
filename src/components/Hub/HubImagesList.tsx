@@ -21,6 +21,14 @@ import {
   MenuItem,
 } from "@material-ui/core"
 
+const sortOptions = [
+  "none",
+  "name increasing",
+  "name decreasing",
+  "creator increasing",
+  "creator decreasing",
+]
+
 const EmptyResultMessage = styled.h3`
   margin-top: 25px;
   text-align: center;
@@ -32,8 +40,9 @@ const HubImagesList = () => {
   const imageFilters = useSelector(selectHubFilters)
   const isHubImagesLoading = useSelector(selectIsHubImagesLoading)
   const hubImagesFetchError = useSelector(selectHubImagesFetchError)
-  let [filters, setFilters] = useState([] as FilterCategory[])
-  let [searchString, setSearchString] = useState("")
+  const [filters, setFilters] = useState([] as FilterCategory[])
+  const [searchString, setSearchString] = useState("")
+  const [sortOption, setSortOption] = useState(0)
   if (hubImages.length === 0 && !isHubImagesLoading && !hubImagesFetchError) {
     dispatch(fetchHubImages())
   }
@@ -51,6 +60,10 @@ const HubImagesList = () => {
 
   const onSearch = (searchQuery: string | number) => {
     getHubImages(getSelectedFilters(filters), searchQuery)
+  }
+
+  const handleSortOption = (event: React.ChangeEvent<{ value: number }>) => {
+    setSortOption(event.target.value)
   }
 
   return (
@@ -80,11 +93,16 @@ const HubImagesList = () => {
                   >
                     Sort
                   </InputLabel>
-                  <Select>
-                    <MenuItem value="">Alphabetically</MenuItem>
-                    <MenuItem value={10}>Alphabetically</MenuItem>
-                    <MenuItem value={20}>Alphabetically</MenuItem>
-                    <MenuItem value={30}>Alphabetically</MenuItem>
+                  <Select
+                    labelId="demo-customized-select-label"
+                    id="demo-customized-select"
+                    value={sortOption}
+                    onChange={handleSortOption}
+                  >
+                    <MenuItem value={0}>{sortOptions[0]}</MenuItem>
+                    <MenuItem value={1}>{sortOptions[1]}</MenuItem>
+                    <MenuItem value={2}>{sortOptions[2]}</MenuItem>
+                    <MenuItem value={3}>{sortOptions[3]}</MenuItem>
                   </Select>
                 </FormControl>
               </Grid>
@@ -99,12 +117,12 @@ const HubImagesList = () => {
             </Grid>
 
             {hubImages.length ? (
-              <Grid item container data-name="hubImagesList">
+              <Grid spacing={2} item container data-name="hubImagesList">
                 {hubImages.map((image, index) => (
                   <Grid
                     item
                     key={`${image.name}.${image.version}.${image["jina-version"]}`}
-                    xs={4}
+                    xs={6}
                   >
                     <ImageCard image={image} index={index} />
                   </Grid>
