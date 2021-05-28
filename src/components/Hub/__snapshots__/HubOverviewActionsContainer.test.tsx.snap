@@ -8,13 +8,13 @@ exports[`actions on hub homepage 1`] = `
     className="css-jvj7uf"
   >
     <h6
-      className="css-850ctl"
+      className="css-1r2wxy"
       data-name="title"
     >
       Jina Hub
     </h6>
     <div
-      className="css-g66o97"
+      className="css-2djy65"
     >
       Discover images created by the community in a centralized registry or create your own images
     </div>
@@ -22,7 +22,7 @@ exports[`actions on hub homepage 1`] = `
       className="css-zpu9mn"
     >
       <button
-        className="MuiButton-root MuiButton-contained MuiButton-containedPrimary MuiButton-sizeMedium MuiButton-containedSizeMedium MuiButton-disableElevation MuiButtonBase-root css-cg0zw5-MuiButtonBase-root-MuiButton-root"
+        className="MuiButton-root MuiButton-contained MuiButton-containedPrimary MuiButton-sizeMedium MuiButton-containedSizeMedium MuiButton-disableElevation MuiButtonBase-root css-1fjidp5-MuiButtonBase-root-MuiButton-root"
         data-name="primaryActionButton"
         disabled={false}
         onBlur={[Function]}
@@ -48,7 +48,7 @@ exports[`actions on hub homepage 1`] = `
         </span>
       </button>
       <button
-        className="MuiButton-root MuiButton-outlined MuiButton-outlinedPrimary MuiButton-sizeMedium MuiButton-outlinedSizeMedium MuiButtonBase-root css-1mrpdf0-MuiButtonBase-root-MuiButton-root"
+        className="MuiButton-root MuiButton-outlined MuiButton-outlinedPrimary MuiButton-sizeMedium MuiButton-outlinedSizeMedium MuiButtonBase-root css-9hx89p-MuiButtonBase-root-MuiButton-root"
         data-name="secondaryActionButton"
         disabled={false}
         onBlur={[Function]}
