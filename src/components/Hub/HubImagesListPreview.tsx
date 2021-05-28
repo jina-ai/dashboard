@@ -9,19 +9,23 @@ import {
 } from "../../redux/hub/hub.selectors"
 import SpinningLoader from "../Common/SpinningLoader"
 
-export const SubTitle = styled.span`
+export const SubTitle = styled.div`
+  font-family: "Roboto";
   font-weight: 500;
   font-size: 1.25rem;
-  color: ${(props) => props.theme.palette.headerTextColor};
+  line-height: 1.75rem;
+  padding-bottom: 1.25rem;
+  color: ${(props) => props.theme.palette.text.primary};
 `
 const ImageListPreviewContainer = styled(Card)`
   margin-top: 2rem;
-  padding: 2rem;
+  padding: 1.5rem;
+  background-color: ${(props) => props.theme.palette.background.default};
 `
 const ImageListContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: space-around;
 `
 const Col = styled.div`
@@ -42,12 +46,10 @@ const HubImagesListPreview = () => {
           <SubTitle data-name="hubImagesPreviewSubtitle">Latest</SubTitle>
           <ImageListContainer>
             {hubImages.map((image, index) => (
-              <Col>
-                <ImageCard
-                  image={image}
-                  index={index}
-                  key={`${image.name}.${image.version}.${image["jina-version"]}`}
-                />
+              <Col
+                key={`${image.name}.${image.version}.${image["jina-version"]}`}
+              >
+                <ImageCard image={image} index={index} />
               </Col>
             ))}
           </ImageListContainer>

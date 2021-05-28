@@ -16,38 +16,38 @@ const HubOverviewActionCardContent = styled.div`
   flex-direction: column;
 `
 const HubOverviewTitle = styled.h6`
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   font-weight: 500;
-  color: ${(props) => props.theme.palette.background};
+  color: ${(props) => props.theme.palette.background.default};
 `
 const HubIcon = styled.img`
   width: 8rem;
 `
 const HubOverviewDescription = styled.div`
   font-weight: 400;
-  color: ${(props) => props.theme.palette.background};
+  color: ${(props) => props.theme.palette.background.default};
 `
 const HubOverviewButtonsContainer = styled.div`
   margin-top: 2rem;
 `
 const PrimaryActionButton = styled(Button)`
-  background-color: ${(props) => props.theme.palette.background};
-  color: ${(props) => props.theme.palette.primary};
+  background-color: ${(props) => props.theme.palette.background.default};
+  color: ${(props) => props.theme.palette.primary.main};
   margin-right: 1.5rem;
   &:hover {
-    border-color: ${(props) => props.theme.palette.background};
-    background-color: ${(props) => props.theme.palette.primary};
-    color: ${(props) => props.theme.palette.background};
+    border-color: ${(props) => props.theme.palette.background.default};
+    background-color: ${(props) => props.theme.palette.primary.main};
+    color: ${(props) => props.theme.palette.background.default};
   }
 `
 const SecondaryActionButton = styled(Button)`
-  color: ${(props) => props.theme.palette.background};
-  border-color: ${(props) => props.theme.palette.background};
+  color: ${(props) => props.theme.palette.background.default};
+  border-color: ${(props) => props.theme.palette.background.default};
   margin-right: 1.5rem;
   &:hover {
-    border-color: ${(props) => props.theme.palette.background};
-    background-color: ${(props) => props.theme.palette.background};
-    color: ${(props) => props.theme.palette.primary};
+    border-color: ${(props) => props.theme.palette.background.default};
+    background-color: ${(props) => props.theme.palette.background.default};
+    color: ${(props) => props.theme.palette.primary.main};
   }
 `
 

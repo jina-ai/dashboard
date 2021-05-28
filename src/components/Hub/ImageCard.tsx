@@ -20,22 +20,24 @@ const ImageCardContainer = styled(Card)`
   height: 100%;
   padding: 1rem;
   box-shadow: none;
-  border: 1px solid ${(props) => props.theme.palette.grey[400]};
+  border: 1px solid ${(props) => props.theme.palette.grey[300]};
+  background-color: ${(props) => props.theme.palette.background.default};
 `
 export const Tag = styled.div`
   background: ${(props) => props.theme.palette.grey[400]};
   border-radius: 0.25rem;
   display: inline-block;
-  padding: 0.5rem 1rem;
+  padding: 0.35rem 0.75rem;
   margin-right: 1rem;
   margin-bottom: 1rem;
   white-space: nowrap;
 `
 const ImageTitle = styled.div`
   font-size: 1rem;
-  font-weight: 600;
+  font-weight: 500;
   line-height: 1.5rem;
   font-family: "Roboto";
+  margin-bottom: 0.75rem;
 `
 const ImageLink = styled(Link)`
   color: unset;
@@ -44,8 +46,11 @@ const ImageLink = styled(Link)`
     text-decoration: none;
   }
 `
-const ImageDescription = styled.p`
+const ImageDescription = styled.p`\
+  font-family: "Roboto";
+  font-size: .875rem;
   font-weight: 400;
+  color: ${(props) => props.theme.palette.grey[700]};
   word-break: break-word;
 `
 

@@ -12,7 +12,6 @@ import "bootstrap/dist/css/bootstrap.min.css"
 import "./styles/shards-dashboards.scss"
 import "./App.css"
 import store from "./redux"
-import GlobalStyles from "./styles/GlobalStyles"
 import { newVersionLocalStorageReset } from "./helpers/utils"
 
 let App
@@ -46,7 +45,6 @@ ReactDOM.render(
   <MuiThemeProvider theme={theme}>
     <ThemeProvider theme={theme}>
       <Provider store={store}>
-        <GlobalStyles />
         <App />
       </Provider>
     </ThemeProvider>

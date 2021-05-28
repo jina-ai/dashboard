@@ -122,7 +122,7 @@ f = Flow().add(uses='undefined:undefined')
         </div>
         <div>
           <div
-            className="css-o9a62l"
+            className="css-1vb0jut"
             data-name="hubImageTag-0"
           >
             encoder
@@ -139,7 +139,7 @@ f = Flow().add(uses='undefined:undefined')
         </div>
         <div>
           <div
-            className="css-fv990v"
+            className="css-19efl1r"
             data-name="hubImagePlatform-0"
           >
             Enel

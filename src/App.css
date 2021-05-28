@@ -3,6 +3,35 @@
   src: local("Montserrat"),
     url(./styles/fonts/Montserrat/Montserrat-Regular.ttf) format("truetype");
 }
+@font-face {
+  font-family: "Roboto";
+  src: local("Roboto"),
+    url(./styles/fonts/Roboto/Roboto-Regular.ttf) format("truetype");
+}
+@font-face {
+  font-family: "Roboto";
+  font-weight: 500;
+  src: local("Roboto"),
+    url(./styles/fonts/Roboto/Roboto-Medium.ttf) format("truetype");
+}
+@font-face {
+  font-family: "Roboto";
+  font-weight: 700;
+  src: local("Roboto"),
+    url(./styles/fonts/Roboto/Roboto-Bold.ttf) format("truetype");
+}
+@font-face {
+  font-family: "Roboto";
+  font-weight: 800;
+  src: local("Roboto"),
+    url(./styles/fonts/Roboto/Roboto-Black.ttf) format("truetype");
+}
+@font-face {
+  font-family: "Roboto";
+  font-weight: 300;
+  src: local("Roboto"),
+    url(./styles/fonts/Roboto/Roboto-Light.ttf) format("truetype");
+}
 
 body {
   margin: 0;
