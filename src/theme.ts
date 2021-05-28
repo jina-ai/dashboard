@@ -30,7 +30,7 @@ const CANCRO = "#E6F5F5"
 const ARIEL_SCALE = "#1EA5A5"
 const SKY_CLOUD = "#EFF2FE"
 const SEAWATER_POPSICLE = "#8A8AE9"
-const BANANA_YOGURT_SWIRL = "#FFFEA2"
+const BANANA_YOGURT_SWIRL = "#FFFAE2"
 const HOODIE_MASCOT = "#EE9518"
 
 const theme = createTheme({

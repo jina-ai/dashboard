@@ -34,7 +34,7 @@ export const Tag = styled.div`
   }}
   border-radius: 0.25rem;
   display: inline-block;
-  padding: 0.5rem 1rem;
+  padding: 0.35rem 0.75rem;
   margin-right: 1rem;
   margin-bottom: 1rem;
   white-space: nowrap;

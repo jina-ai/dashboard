@@ -11,30 +11,29 @@ const ReadmeContainer = styled.div`
   h1 {
     font-size: 1rem;
     font-family: "Roboto";
-    font-weight: 600;
+    font-weight: 500;
     line-height: 1.5rem;
     letter-spacing: 0.01rem;
     color: ${(props) => props.theme.palette.text.primary};
   }
   h2 {
-    font-size: 0.8rem;
+    font-size: 0.85rem;
     font-weight: 500;
+    letter-spacing: 0.01rem;
     color: ${(props) => props.theme.palette.primary.main};
   }
   p {
-    font-size: 0.8rem;
+    font-size: 0.85rem;
+    line-height: 1.5rem;
     color: ${(props) => props.theme.palette.text.secondary};
     font-family: Roboto;
   }
   a {
     text-decoration: underline;
   }
-  .code {
-    font-family: "Monaco";
-    background: ${(props) => props.theme.palette.grey[200]};
-    padding: 0.5rem;
-  }
+  .code,
   pre {
+    font-family: "Monaco";
     background: ${(props) => props.theme.palette.grey[200]};
     padding: 0.5rem;
   }
