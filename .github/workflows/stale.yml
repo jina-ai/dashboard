@@ -13,5 +13,5 @@ jobs:
           repo-token: ${{ secrets.JINA_DEV_BOT }}
           stale-issue-message: 'This issue is stale because it has been open 20 days with no activity. Remove stale label or comment or this will be closed in 4 days'
           exempt-issue-labels: 'good first issue'
-          days-before-stale: 20
-          days-before-close: 4
+          days-before-stale: 28
+          days-before-close: 7
