@@ -55,9 +55,60 @@ const sortHubImages = (images: HubImage[], sortOption: number) => {
       )
     case "author decreasing":
       return images.sort((imageA, imageB) =>
-        imageA.author > imageB.v ? -1 : imageA.author < imageB.author ? 1 : 0
+        imageA.author > imageB.author
+          ? -1
+          : imageA.author < imageB.author
+          ? 1
+          : 0
       )
   }
+}
+
+const HubLibraryContainer: React.FC = ({ children }) => {
+  const HubLibraryContainerStyled = styled(Grid)`
+    background-color: ${(props) => props.theme.palette.background.default};
+    border: 1px solid ${(props) => props.theme.palette.grey[300]};
+  `
+  return (
+    <HubLibraryContainerStyled container>{children}</HubLibraryContainerStyled>
+  )
+}
+
+const HubLibraryHeader: React.FC = () => {
+  const HubLibraryHeaderStyled = styled(Grid)`
+    padding: 16px;
+    border-bottom: 1px solid ${(props) => props.theme.palette.grey[300]};
+  `
+  return (
+    <HubLibraryHeaderStyled item xs={12}>
+      <h3>
+        Hub / <span style={{ fontWeight: 700 }}>Library</span>
+      </h3>
+    </HubLibraryHeaderStyled>
+  )
+}
+
+const FilterContainer: React.FC = ({ children }) => {
+  const FilterContainerStyled = styled(Grid)`
+    padding: 24px 16px;
+    border-right: 1px solid ${(props) => props.theme.palette.grey[300]};
+  `
+  return (
+    <FilterContainerStyled container item xs={3}>
+      {children}
+    </FilterContainerStyled>
+  )
+}
+
+const ImagesContainer: React.FC = ({ children }) => {
+  const ImagesContainerStyled = styled(Grid)`
+    padding: 24px 16px;
+  `
+  return (
+    <ImagesContainerStyled container item xs={9}>
+      {children}
+    </ImagesContainerStyled>
+  )
 }
 
 const EmptyResultMessage = styled.h3`
@@ -103,19 +154,16 @@ const HubImagesList = () => {
       {isHubImagesLoading ? (
         <SpinningLoader />
       ) : (
-        <Grid container>
-          <Grid item xs={12}>
-            Hub/Library
-          </Grid>
-
-          <Grid item xs={3}>
+        <HubLibraryContainer>
+          <HubLibraryHeader>Hub/Library</HubLibraryHeader>
+          <FilterContainer>
             <HubFilters
               filters={filters}
               setFilters={setFilters}
               getHubImages={getHubImages}
             />
-          </Grid>
-          <Grid container item xs={9}>
+          </FilterContainer>
+          <ImagesContainer>
             <Grid item container xs={12}>
               <Grid item xs={10}>
                 <FormControl>
@@ -164,8 +212,8 @@ const HubImagesList = () => {
                 No images matching your search were found
               </EmptyResultMessage>
             )}
-          </Grid>
-        </Grid>
+          </ImagesContainer>
+        </HubLibraryContainer>
       )}
     </>
   )
