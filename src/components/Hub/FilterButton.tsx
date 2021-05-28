@@ -1,22 +1,52 @@
 import React, { useState } from "react"
 import styled from "@emotion/styled"
 import { Button } from "@material-ui/core"
-import { FilterCategory } from "../../redux/hub/hub.types"
+import { FilterCategory, FilterCategoryName } from "../../redux/hub/hub.types"
+
+type FilterButtonColors = {
+  [category in FilterCategoryName]: {
+    backgroundColor: string
+    color: string
+  }
+}
+
+const filterButtonColors: FilterButtonColors = {
+  "Executor type": {
+    backgroundColor: "#E6F5F5",
+    color: "#1EA5A5",
+  },
+  "Domain space": {
+    backgroundColor: "#EFF2FE",
+    color: "#8A8AE9",
+  },
+  Libraries: {
+    backgroundColor: "#E6F5F5",
+    color: "#009999",
+  },
+  Language: {
+    backgroundColor: "#FFFAE2",
+    color: "#EE9518",
+  },
+}
 
 type CheckboxLabelProps = {
   selected: boolean
   highlightColor?: string
+  filterCategory: FilterCategoryName
 }
 
 const ToggleButton = styled(Button)`
   background-color: ${(props: CheckboxLabelProps) =>
-    props.selected ? "#21A6A6" : "#E6F5F5"};
+    props.selected
+      ? "#21A6A6"
+      : filterButtonColors[props.filterCategory].backgroundColor};
   color: ${(props: CheckboxLabelProps) =>
-    props.selected ? "white" : "#1EA5A5"};
+    props.selected ? "white" : filterButtonColors[props.filterCategory].color};
   box-shadow: none;
   display: flex;
-  margin: 0.5rem;
+  margin: 0.5rem 1rem 0.5rem 0;
   text-transform: none;
+
   &:hover {
     background-color: #21a6a6;
     color: white;
@@ -38,6 +68,7 @@ type FilterButtonProps = {
 }
 
 const FilterButton = ({
+  filter,
   value,
   label,
   index,
@@ -50,8 +81,10 @@ const FilterButton = ({
     setSelected(!selected)
     handleFilterChange(filterCategoryIndex, index, !selected)
   }
+  console.log(filter)
   return (
     <ToggleButton
+      filterCategory={filter.filterLabel}
       variant="contained"
       selected={value}
       disabled={count === 0}

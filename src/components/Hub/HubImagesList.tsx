@@ -81,7 +81,7 @@ const HubLibraryHeader: React.FC = () => {
   `
   return (
     <HubLibraryHeaderStyled item xs={12}>
-      <h3>
+      <h3 style={{ margin: 0 }}>
         Hub / <span style={{ fontWeight: 700 }}>Library</span>
       </h3>
     </HubLibraryHeaderStyled>
