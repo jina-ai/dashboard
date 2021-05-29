@@ -26,17 +26,14 @@ import {
 } from "@material-ui/core"
 
 const sortOptions = [
-  "none",
   "name increasing",
   "name decreasing",
   "author increasing",
   "author decreasing",
 ]
 
-const sortHubImages = (images: HubImage[], sortOption: number) => {
-  switch (sortOptions[sortOption]) {
-    case "none":
-      return images
+const sortHubImages = (images: HubImage[], sortOption: string) => {
+  switch (sortOption) {
     case "name increasing":
       return images.sort((imageA, imageB) =>
         imageA.name < imageB.name ? -1 : imageA.name > imageB.name ? 1 : 0
@@ -123,8 +120,9 @@ const HubImagesList = () => {
   const hubImagesFetchError = useSelector(selectHubImagesFetchError)
   const [filters, setFilters] = useState([] as FilterCategory[])
   const [searchString, setSearchString] = useState("")
-  const [sortOption, setSortOption] = useState(0)
-  const hubImages = sortHubImages(useSelector(selectHubImages), sortOption)
+  const [sortOption, setSortOption] = useState(sortOptions[0])
+  const hubImagesUnsorted = useSelector(selectHubImages)
+  const hubImages = sortHubImages(hubImagesUnsorted, sortOption)
 
   if (hubImages.length === 0 && !isHubImagesLoading && !hubImagesFetchError) {
     dispatch(fetchHubImages())
@@ -179,8 +177,8 @@ const HubImagesList = () => {
                     value={sortOption}
                     onChange={handleSortOption}
                   >
-                    {sortOptions.map((sortOption, idx) => (
-                      <MenuItem value={idx}>{sortOptions[idx]}</MenuItem>
+                    {sortOptions.map((sortOption) => (
+                      <MenuItem value={sortOption}>{sortOption}</MenuItem>
                     ))}
                   </Select>
                 </FormControl>

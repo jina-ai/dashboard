@@ -81,7 +81,6 @@ const FilterButton = ({
     setSelected(!selected)
     handleFilterChange(filterCategoryIndex, index, !selected)
   }
-  console.log(filter)
   return (
     <ToggleButton
       filterCategory={filter.filterLabel}
