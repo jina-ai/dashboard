@@ -1,74 +1,48 @@
 import React from "react"
-import { Form, InputGroup } from "react-bootstrap"
 import styled from "@emotion/styled"
+import { IconButton, InputBase } from "@material-ui/core"
+import SearchIcon from "@material-ui/icons/Search"
+import CancelIcon from "@material-ui/icons/Cancel"
 
 type Props = {
   value: string | number
-  placeholder?: string
-  variant?: string
   onChange: (newValue: string) => void
   onSearch?: (value: string | number) => void
 }
 
-const InputPrepend = styled(InputGroup.Prepend)`
-  cursor: pointer;
-`
-
-function ExpandingSearchbar({
-  value,
-  onChange,
-  onSearch,
-  placeholder,
-  variant,
-}: Props) {
+function ExpandingSearchbar({ onSearch, value, onChange }: Props) {
   const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Enter") {
       onSearch && onSearch(value)
     }
   }
   const clearSearch = () => {
-    onChange("")
     onSearch && onSearch("")
   }
+
+  const SearchBar = styled.div`
+    display: flex;
+    background-color: ${(props) => props.theme.palette.grey[100]};
+    border-radius: 2px;
+  `
+
   return (
-    <div
-      className={`expanding-searchbar expanding-searchbar-${
-        variant || "default"
-      }`}
-    >
-      <InputGroup>
-        <InputPrepend
-          className="ml-auto"
-          onClick={(event: React.MouseEvent<HTMLDivElement>) =>
-            onSearch && onSearch(value)
-          }
-        >
-          <InputGroup.Text>
-            <i className="material-icons">search</i>
-          </InputGroup.Text>
-        </InputPrepend>
-        <Form.Control
-          type="text"
-          role="input"
-          placeholder={placeholder}
-          value={value}
-          onChange={(e: any) => onChange(e.target.value)}
-          onKeyPress={handleKeyPress}
-        />
-        <InputGroup.Append>
-          <InputGroup.Text>
-            <i
-              className={`cursor-pointer text-muted material-icons mr-3 ${
-                !value ? "d-invisible" : ""
-              }`}
-              onClick={clearSearch}
-            >
-              cancel
-            </i>
-          </InputGroup.Text>
-        </InputGroup.Append>
-      </InputGroup>
-    </div>
+    <SearchBar>
+      <IconButton type="submit" onClick={() => onSearch && onSearch(value)}>
+        <SearchIcon />
+      </IconButton>
+      <InputBase
+        onChange={(e) => onChange(e.target.value)}
+        defaultValue={value}
+        placeholder="Search"
+        onKeyPress={handleKeyPress}
+      />
+      {value && (
+        <IconButton onClick={clearSearch}>
+          <CancelIcon />
+        </IconButton>
+      )}
+    </SearchBar>
   )
 }
 

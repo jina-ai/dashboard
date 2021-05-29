@@ -102,7 +102,16 @@ const ImagesContainer: React.FC = ({ children }) => {
     </ImagesContainerStyled>
   )
 }
-
+const ImagesBar: React.FC = ({ children }) => {
+  const ImagesBarStyled = styled(Grid)`
+    margin-bottom: 24px;
+  `
+  return (
+    <ImagesBarStyled container item xs={12}>
+      {children}
+    </ImagesBarStyled>
+  )
+}
 const EmptyResultMessage = styled.h3`
   margin-top: 25px;
   text-align: center;
@@ -157,23 +166,22 @@ const HubImagesList = () => {
             />
           </FilterContainer>
           <ImagesContainer>
-            <Grid item container xs={12}>
-              <Grid item xs={10}>
+            <ImagesBar>
+              <Grid item xs={9}>
                 <HubSortDropdown
                   selectedSortOption={selectedSortOption}
                   sortOptions={sortOptions}
                   handleSortOption={handleSortOption}
                 />
               </Grid>
-              <Grid item xs={2}>
+              <Grid item xs={3}>
                 <ExpandingSearchbar
-                  placeholder="search hub images..."
                   value={searchString}
                   onChange={setSearchString}
                   onSearch={onSearch}
                 />
               </Grid>
-            </Grid>
+            </ImagesBar>
 
             {hubImages?.length ? (
               <Grid spacing={2} item container data-name="hubImagesList">
