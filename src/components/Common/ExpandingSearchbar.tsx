@@ -25,13 +25,13 @@ function ExpandingSearchbar({ onSearch, value, onChange }: Props) {
     background-color: ${(props) => props.theme.palette.grey[100]};
     border-radius: 2px;
   `
-
   return (
     <SearchBar>
       <IconButton type="submit" onClick={() => onSearch && onSearch(value)}>
         <SearchIcon />
       </IconButton>
       <InputBase
+        autoFocus={true}
         onChange={(e) => onChange(e.target.value)}
         defaultValue={value}
         placeholder="Search"
