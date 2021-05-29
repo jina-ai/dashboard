@@ -6,10 +6,6 @@ import { Provider } from "react-redux"
 import { theme } from "./theme"
 import * as Sentry from "@sentry/react"
 import { Integrations } from "@sentry/tracing"
-
-import "bootstrap/dist/css/bootstrap.min.css"
-// Todo: Remove shards and associated styles when we stop using it
-import "./styles/shards-dashboards.scss"
 import "./App.css"
 import store from "./redux"
 import { newVersionLocalStorageReset } from "./helpers/utils"

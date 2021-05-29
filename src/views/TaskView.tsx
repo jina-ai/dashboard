@@ -1,5 +1,6 @@
 import React from "react";
-import { Container, Row, Col } from "react-bootstrap";
+import Container from "@material-ui/core/Container"
+import Grid from "@material-ui/core/Grid"
 import { PageTitle } from "../components/Common/PageTitle";
 import ElapsedCard from "../components/Task/ElapsedCard";
 import ProgressCard from "../components/Task/ProgressCard";
@@ -13,25 +14,25 @@ function TaskView() {
   const taskData = useSelector(selectTaskData);
 
   return (
-    <Container fluid className="main-content-container px-0">
+    <Container className="main-content-container px-0">
       <div className="px-4">
-        <Row noGutters className="page-header mb-4">
+        <Grid container className="page-header mb-4">
           <PageTitle title="Task" className="text-sm-left mb-3" />
-        </Row>
-        <Row>
-          <Col md="6" lg="6" xl="3" className="mb-4">
+        </Grid>
+        <Grid container>
+          <Grid item md={6} lg={6} xl={3} className="mb-4">
             <ElapsedCard elapsed={taskData.elapsed} />
-          </Col>
-          <Col md="6" lg="6" xl="3" className="mb-4">
+          </Grid>
+          <Grid item md={6} lg={6} xl={3} className="mb-4">
             <ProgressCard progress={taskData.progress} />
-          </Col>
-          <Col md="6" lg="6" xl="3" className="mb-4">
+          </Grid>
+          <Grid item md={6} lg={6} xl={3} className="mb-4">
             <QueriesPerSecond qps={taskData.qps} />
-          </Col>
-          <Col md="6" lg="6" xl="3" className="mb-4">
+          </Grid>
+          <Grid item md={6} lg={6} xl={3} className="mb-4">
             <SpeedCard speed={taskData.speed} />
-          </Col>
-        </Row>
+          </Grid>
+        </Grid>
         <BarChartCard
           messages={taskData.messages}
           bytes={taskData.bytes}

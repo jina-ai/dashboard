@@ -1,5 +1,7 @@
 import React, { useCallback, useState } from "react"
-import { Card, Container, Row } from "shards-react"
+import   Container  from "@material-ui/core/Container";
+import Grid from "@material-ui/core/Grid"
+import Card from "@material-ui/core/Card"
 import { PageTitle } from "../components/Common/PageTitle"
 import WorkspaceSelection from "../components/FlowChart/WorkspaceSelection"
 import {
@@ -87,14 +89,14 @@ export default function FlowView() {
   if (!flowChart) return <>No Flow</>
 
   return (
-    <Container fluid className="main-content-container px-0">
+    <Container className="main-content-container px-0">
       <div className="px-4">
         <a href="/#" id="download-link" style={{ display: "none" }}>
           download
         </a>
-        <Row noGutters className="page-header mb-4">
+        <Grid container className="page-header mb-4">
           <PageTitle title="Flow Design" className="text-sm-left mb-3" />
-        </Row>
+        </Grid>
 
         <FlowViewContainer>
           <WorkspaceSelection />

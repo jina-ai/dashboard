@@ -1,6 +1,4 @@
 import React from "react";
-import { Nav } from "shards-react";
-
 import SidebarNavItem from "./SidebarNavItem";
 import { TNavItem } from "../../../redux/global/global.types";
 
@@ -13,7 +11,7 @@ const SidebarNavItems = ({ navItems: items, toggleSidebar }: Props) => {
   return (
     <div className="nav-wrapper">
       {typeof items !== "undefined" && items.length && (
-        <Nav className="nav--no-borders flex-column">
+        <div className="nav--no-borders flex-column">
           {items.map((item, idx) => (
             <SidebarNavItem
               key={idx}
@@ -21,7 +19,7 @@ const SidebarNavItems = ({ navItems: items, toggleSidebar }: Props) => {
               toggleSidebar={toggleSidebar}
             />
           ))}
-        </Nav>
+        </div>
       )}
     </div>
   );

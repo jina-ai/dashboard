@@ -1,5 +1,5 @@
 import React, { useRef, useState, useCallback, useEffect } from "react"
-import { Card } from "shards-react"
+import Card from "@material-ui/core/Card"
 
 import ChartElement, { ChartOptions } from "chart.js"
 

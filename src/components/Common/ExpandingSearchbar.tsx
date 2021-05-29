@@ -1,6 +1,6 @@
 import React from "react"
-import { Form, InputGroup } from "react-bootstrap"
 import styled from "@emotion/styled"
+import { TextField } from "@material-ui/core"
 
 type Props = {
   value: string | number
@@ -10,7 +10,7 @@ type Props = {
   onSearch?: (value: string | number) => void
 }
 
-const InputPrepend = styled(InputGroup.Prepend)`
+const InputPrepend = styled.div`
   cursor: pointer;
 `
 
@@ -36,18 +36,16 @@ function ExpandingSearchbar({
         variant || "default"
       }`}
     >
-      <InputGroup>
+      <div>
         <InputPrepend
           className="ml-auto"
           onClick={(event: React.MouseEvent<HTMLDivElement>) =>
             onSearch && onSearch(value)
           }
         >
-          <InputGroup.Text>
             <i className="material-icons">search</i>
-          </InputGroup.Text>
         </InputPrepend>
-        <Form.Control
+        <TextField
           type="text"
           role="input"
           placeholder={placeholder}
@@ -55,8 +53,8 @@ function ExpandingSearchbar({
           onChange={(e: any) => onChange(e.target.value)}
           onKeyPress={handleKeyPress}
         />
-        <InputGroup.Append>
-          <InputGroup.Text>
+        <div>
+          <div>
             <i
               className={`cursor-pointer text-muted material-icons mr-3 ${
                 !value ? "d-invisible" : ""
@@ -65,9 +63,9 @@ function ExpandingSearchbar({
             >
               cancel
             </i>
-          </InputGroup.Text>
-        </InputGroup.Append>
-      </InputGroup>
+          </div>
+        </div>
+      </div>
     </div>
   )
 }

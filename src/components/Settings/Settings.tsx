@@ -1,14 +1,13 @@
 import React, { useState } from "react"
 import {
+  Accordion,
   Button,
   Card,
-  CardBody,
+  CardContent,
   CardHeader,
-  Col,
-  Form,
-  Row,
-} from "shards-react"
-import { Collapse } from "react-bootstrap"
+  Grid,
+  TextField,
+} from "@material-ui/core"
 
 import { advancedOptions, baseOptions } from "./options"
 import FormItem from "./FormItem"
@@ -40,15 +39,14 @@ function SettingsCard() {
   }
 
   return (
-    <Card small className="mb-4">
+    <Card className="mb-4">
       <CardHeader className="border-bottom">
         <h6 className="m-0">Connection Preferences</h6>
       </CardHeader>
-      <CardBody>
-        <Form>
-          <Row form>
+      <CardContent>
+          <Grid container>
             {baseOptions.map(({ label, placeholder, value }) => (
-              <FormItem
+              <TextField
                 key={value as string}
                 label={label}
                 placeholder={placeholder}
@@ -60,9 +58,9 @@ function SettingsCard() {
                 onChange={(e) => changeSetting(value, e.target.value)}
               />
             ))}
-          </Row>
-          <Row>
-            <Col xs="6">
+          </Grid>
+          <Grid container>
+            <Grid item xs={6}>
               <strong
                 aria-controls="collapsed-form"
                 aria-expanded={expanded}
@@ -74,15 +72,14 @@ function SettingsCard() {
                   {expanded ? "arrow_drop_up" : "arrow_drop_down"}
                 </i>
               </strong>
-            </Col>
-            <Col xs="6" className="text-right">
+            </Grid>
+            <Grid xs={6} className="text-right">
               <Button onClick={saveChanges}>Save Changes</Button>
-            </Col>
-          </Row>
-          <Collapse in={expanded}>
+            </Grid>
+          </Grid>
             <div id="collapsed-form">
               <strong className="text-muted d-block mb-3">Endpoints</strong>
-              <Row form>
+              <Grid item>
                 {advancedOptions.map(({ label, placeholder, value }) => (
                   <FormItem
                     key={value}
@@ -98,11 +95,9 @@ function SettingsCard() {
                     }
                   />
                 ))}
-              </Row>
+              </Grid>
             </div>
-          </Collapse>
-        </Form>
-      </CardBody>
+      </CardContent>
     </Card>
   )
 }

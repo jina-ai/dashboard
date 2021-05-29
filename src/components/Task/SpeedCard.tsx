@@ -1,5 +1,5 @@
 import React, { useRef, useState, useCallback, useEffect } from "react"
-import { Card } from "shards-react"
+import Card from "@material-ui/core/Card"
 import { useTheme } from "@emotion/react"
 import ChartElement, { ChartOptions } from "chart.js"
 //todo type this when taskView is back

@@ -1,6 +1,5 @@
 import React from "react";
-import classNames from "classnames";
-import { Col } from "shards-react";
+import Grid from "@material-ui/core/Grid"
 
 import SidebarMainNavbar from "./SidebarMainNavbar";
 import SidebarNavItems from "./SidebarNavItems";
@@ -12,22 +11,16 @@ type Props = {
   toggleSidebar: () => void;
 };
 
-function MainSidebar({ menuVisible, sidebarNavItems, toggleSidebar }: Props) {
-  const classes = classNames(
-    "main-sidebar",
-    "px-0",
-    "col-12",
-    menuVisible && "open"
-  );
+function MainSidebar({ sidebarNavItems, toggleSidebar }: Props) {
 
   return (
-    <Col tag="aside" className={classes} lg={{ size: 2 }} md={{ size: 3 }}>
+    <Grid item lg={2} md={3}>
       <SidebarMainNavbar toggleSidebar={toggleSidebar} />
       <SidebarNavItems
         navItems={sidebarNavItems}
         toggleSidebar={toggleSidebar}
       />
-    </Col>
+    </Grid>
   );
 }
 

@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback } from "react"
 import { useSelector, useDispatch } from "react-redux"
-import { Row, Col } from "react-bootstrap"
+import Grid from "@material-ui/core/Grid"
 import { fetchHubImages } from "../../redux/hub/hub.actions"
 import {
   selectHubFilters,
@@ -15,7 +15,7 @@ import { ExpandingSearchbar } from "../Common/ExpandingSearchbar"
 import { FilterCategory,  FilterParams } from "../../redux/hub/hub.types"
 import styled from "@emotion/styled"
 
-const SearchContainer = styled(Row)`
+const SearchContainer = styled(Grid)`
   flex-direction: row-reverse;
   padding: 1rem;
 `
@@ -57,15 +57,15 @@ const HubImagesList = () => {
       {isHubImagesLoading ? (
         <SpinningLoader />
       ) : (
-        <Row>
-          <Col md="3">
+        <Grid container>
+          <Grid item md={3}>
             <HubFilters
               filters={filters}
               setFilters={setFilters}
               getHubImages={getHubImages}
             />
-          </Col>
-          <Col md="9">
+          </Grid>
+          <Grid md={9}>
             <SearchContainer>
               <ExpandingSearchbar
                 placeholder="search hub images..."
@@ -75,24 +75,24 @@ const HubImagesList = () => {
               />
             </SearchContainer>
             {hubImages.length ? (
-              <Row data-name="hubImagesList">
+              <Grid container data-name="hubImagesList">
                 {hubImages.map((image, index) => (
-                  <Col
+                  <Grid item
                     key={`${image.name}.${image.version}.${image["jina-version"]}`}
-                    md="4"
+                    md={4}
                     className="mb-4"
                   >
                     <ImageCard image={image} index={index} />
-                  </Col>
+                  </Grid>
                 ))}
-              </Row>
+              </Grid>
             ) : (
               <EmptyResultMessage>
                 No images matching your search were found
               </EmptyResultMessage>
             )}
-          </Col>
-        </Row>
+          </Grid>
+        </Grid>
       )}
     </>
   )

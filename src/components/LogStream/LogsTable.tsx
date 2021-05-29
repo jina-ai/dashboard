@@ -1,7 +1,10 @@
 import React, { useState, useCallback, useEffect, useRef } from "react"
 import _ from "lodash"
 import { FixedSizeList as List } from "react-window"
-import { Card, Row, Col } from "react-bootstrap"
+import  Card from "@material-ui/core/Card"
+import  CardHeader from "@material-ui/core/CardHeader"
+import  CardContent from "@material-ui/core/CardContent"
+import Grid from "@material-ui/core/Grid"
 import AutoSizer from "react-virtualized-auto-sizer"
 import FlexSearch from "flexsearch"
 import { saveAs } from "file-saver"
@@ -221,7 +224,7 @@ function GroupedLogs({
   showLogDetails,
 }: GroupedLogProps) {
   return (
-    <Card.Body
+    <CardContent
       className="log-stream-container p-0 border-top"
       data-name="groupedLogsContainer"
     >
@@ -247,7 +250,7 @@ function GroupedLogs({
           ))}
         </div>
       )}
-    </Card.Body>
+    </CardContent>
   )
 }
 
@@ -325,9 +328,9 @@ function LogsTable({ data, showLogDetails }: Props) {
 
   return (
     <Card className="mb-4">
-      <Card.Header className="p-0">
-        <Row className="p-3">
-          <Col md="8" data-name="logStreamFilters">
+      <CardHeader className="p-0">
+        <Grid container className="p-3">
+          <Grid item md={8} data-name="logStreamFilters">
             <MultiFilterSelect
               clearAfter
               options={Object.values(viewOptions)}
@@ -385,16 +388,16 @@ function LogsTable({ data, showLogDetails }: Props) {
               }
               isSearchable={false}
             />
-          </Col>
-          <Col md="4">
+          </Grid>
+          <Grid item md={4}>
             <ExpandingSearchbar
               placeholder="search logs..."
               value={searchString}
               onChange={setSearchString}
             />
-          </Col>
-        </Row>
-      </Card.Header>
+          </Grid>
+        </Grid>
+      </CardHeader>
       {currentView === "table" ? (
         <LogsList
           firstCol={firstCol}

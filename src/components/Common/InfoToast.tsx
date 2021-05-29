@@ -1,5 +1,5 @@
 import React from "react"
-import { Toast } from "react-bootstrap"
+import SnackBar from "@material-ui/core/Snackbar"
 import { Banner } from "../../redux/global/global.types"
 
 type Props = {
@@ -30,15 +30,15 @@ function InfoToast({ data, index }: Props) {
       className="notifications-container"
       style={cssProperties}
     >
-      <Toast className={`toast-${data.theme} text-white`}>
-        <Toast.Header className="text-white" closeButton={false}>
+      <SnackBar className={`toast-${data.theme} text-white`}>
+        <>
           <strong className="mr-auto">
             {icon}
             <span className="text-uppercase">{data.theme}</span>
           </strong>
-        </Toast.Header>
-        <Toast.Body className="text-white">{data.message}</Toast.Body>
-      </Toast>
+        <div className="text-white">{data.message}</div>
+        </>
+      </SnackBar>
     </div>
   )
 }

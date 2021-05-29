@@ -1,5 +1,7 @@
 import React from "react"
-import { Row, Col, Card } from "react-bootstrap"
+import  Card from "@material-ui/core/Card"
+import  CardContent from "@material-ui/core/CardContent"
+import Grid from "@material-ui/core/Grid"
 import styled from "@emotion/styled"
 import { Link } from "react-router-dom"
 
@@ -49,9 +51,9 @@ export default function ImageCard({ image, index }: Props) {
   return (
     <ImageLink to={`/package/${kind}/${index}`}>
       <Card className="clickable mb-4 h-100 image-card" data-name="hubImage">
-        <Card.Body className="pb-0 mb-0 pt-3">
-          <Row>
-            <Col xs="12" className="px-0">
+        <CardContent className="pb-0 mb-0 pt-3">
+          <Grid container>
+            <Grid item xs={12} className="px-0">
               <Title className="mb-2">{name}</Title>
               {keywords.map((keyword, index) => (
                 <Tag data-name="hubImageTags" key={index}>
@@ -61,15 +63,15 @@ export default function ImageCard({ image, index }: Props) {
               <SubTitle data-name="hubImageAuthor" className="mb-2">
                 {author}
               </SubTitle>
-            </Col>
-            <Col sm="12" className="px-0 pb-0">
+            </Grid>
+            <Grid sm={12} className="px-0 pb-0">
               <div className="description-container">
                 <div className="description-overlay" />
                 <div className="app-description">{description}</div>
               </div>
-            </Col>
-          </Row>
-        </Card.Body>
+            </Grid>
+          </Grid>
+        </CardContent>
       </Card>
     </ImageLink>
   )

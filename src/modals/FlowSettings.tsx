@@ -8,7 +8,7 @@ import React from "react"
 import { ModalParams } from "../redux/global/global.types"
 import ReactModal, { Styles } from "react-modal"
 import { deleteFlow, updateSelectedFlow } from "../redux/flows/flows.actions"
-import { Button } from "react-bootstrap"
+import Button from "@material-ui/core/Button"
 import { globalArguments } from "../data/globalArguments"
 import { FlowUpdate, With } from "../redux/flows/flows.types"
 

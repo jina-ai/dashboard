@@ -1,6 +1,7 @@
 import React, { useEffect } from "react"
 import { Switch, Route, useRouteMatch } from "react-router-dom"
-import { Container, Row } from "react-bootstrap"
+import Container from "@material-ui/core/Container"
+import Grid from "@material-ui/core/Grid"
 import { useDispatch } from "react-redux"
 import { fetchHubImages } from "../redux/hub/hub.actions"
 import { PageTitle } from "../components/Common/PageTitle"
@@ -16,16 +17,16 @@ const HubView = () => {
   }, [dispatch])
 
   return (
-    <Container fluid className="main-content-container px-0">
+    <Container className="main-content-container px-0">
       <div className="px-4">
-        <Row className="page-header">
+        <Grid container className="page-header">
           <PageTitle title="Jina Hub" className="text-sm-left mb-3" />
-        </Row>
+        </Grid>
         <Switch>
           <Route exact path={path}>
-            <Row>
+            <Grid container>
               <HubOverviewActionsContainer />
-            </Row>
+            </Grid>
             <HubImagesListPreview />
           </Route>
           <Route path={`${path}/explore`}>

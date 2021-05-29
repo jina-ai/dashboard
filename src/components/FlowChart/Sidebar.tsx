@@ -1,7 +1,8 @@
 import React from "react"
 import SidebarItem from "./SidebarItem"
 import defaultPods from "../../data/defaultPods"
-import { Button, Card } from "react-bootstrap"
+import Button from "@material-ui/core/Button"
+import  Card from "@material-ui/core/Card"
 import { FlowArgument } from "../../redux/flows/flows.types"
 import { Elements } from "react-flow-renderer"
 

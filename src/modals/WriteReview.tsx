@@ -1,5 +1,6 @@
 import React from "react"
-import { Button, Form } from "react-bootstrap"
+import Button from "@material-ui/core/Button"
+import TextField from "@material-ui/core/TextField"
 import ReactModal, { Styles } from "react-modal"
 
 //todo type this properly when we have reviews again
@@ -56,14 +57,12 @@ const WriteReviewModal = ({ open, closeModal, submitReview }: Props) => {
         </h4>
       </div>
       <div className="modal-body px-0 pb-0">
-        <Form.Group>
-          <Form.Control
+          <TextField
+            multiline
             placeholder="Tell the world about your experience"
             ref={(ref: any) => (inputRef = ref)}
-            as="textarea"
             rows={10}
           />
-        </Form.Group>
       </div>
       <Button
         className="btn-primary"

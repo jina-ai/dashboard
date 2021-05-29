@@ -1,5 +1,8 @@
 import React from "react"
-import { Card, Row, Col } from "react-bootstrap"
+import  Card from "@material-ui/core/Card"
+import  CardHeader from "@material-ui/core/CardHeader"
+import  CardContent from "@material-ui/core/CardContent"
+import Grid from "@material-ui/core/Grid"
 import BarChart from "./BarChartBase"
 import { MultiFilterSelect } from "../Common/MultiFilterSelect"
 import { LogLevelSummaryChartData } from "./types"
@@ -35,10 +38,10 @@ function LogLevelSummaryChart({
 }: Props) {
   return (
     <Card className="h-100">
-      <Card.Header className="p-2 px-3">
-        <Row>
-          <Col data-name="logOccurenceTitle">Log Occurences by Level</Col>
-          <Col className="text-right" data-name="logOccurenceDurationSelect">
+      <CardHeader className="p-2 px-3">
+        <Grid container>
+          <Grid data-name="logOccurenceTitle">Log Occurences by Level</Grid>
+          <Grid className="text-right" data-name="logOccurenceDurationSelect">
             <MultiFilterSelect
               clearAfter
               options={Object.values(timeOptions)}
@@ -52,10 +55,10 @@ function LogLevelSummaryChart({
               }
               isSearchable={false}
             />
-          </Col>
-        </Row>
-      </Card.Header>
-      <Card.Body className="d-none d-md-block p-0 pb-2 px-3">
+          </Grid>
+        </Grid>
+      </CardHeader>
+      <CardContent className="d-none d-md-block p-0 pb-2 px-3">
         <BarChart
           timeLabels={timeLabels}
           data={data}
@@ -64,8 +67,8 @@ function LogLevelSummaryChart({
           width={DEFAULT_WIDTH}
           onClick={showLog}
         />
-      </Card.Body>
-      <Card.Body className="d-md-none pb-2">
+      </CardContent>
+      <CardContent className="d-md-none pb-2">
         <BarChart
           timeLabels={timeLabels}
           data={data}
@@ -74,7 +77,7 @@ function LogLevelSummaryChart({
           width={DEFAULT_WIDTH_SMALL}
           onClick={showLog}
         />
-      </Card.Body>
+      </CardContent>
     </Card>
   )
 }

@@ -1,5 +1,6 @@
 import React, { useState } from "react"
-import { Container, Row, Col } from "shards-react"
+import   Container  from "@material-ui/core/Container";
+import Grid from "@material-ui/core/Grid"
 
 import { MainNavbar, User } from "../components/Layout/MainNavbar/MainNavbar"
 import MainFooter from "../components/Layout/MainFooter"
@@ -78,8 +79,8 @@ const HubLayout = (props: HubLayoutProps) => {
   const { children, usesAuth, usesConnection, navigateButton } = props
   return (
     <Container>
-      <Row>
-        <Col className="main-content col" tag="main">
+      <Grid container>
+        <Grid item className="main-content col">
           <MainNavbar
             usesAuth={usesAuth}
             usesConnection={usesConnection}
@@ -100,8 +101,8 @@ const HubLayout = (props: HubLayoutProps) => {
             disableLogger={disableLogger}
             exportLogs={exportLogs}
           />
-        </Col>
-      </Row>
+        </Grid>
+      </Grid>
       <WriteReview
         open={modal === "review"}
         closeModal={closeModal}

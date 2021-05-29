@@ -7,7 +7,7 @@ import {
   selectIsHubImagesLoading,
 } from "../redux/hub/hub.selectors";
 import { fetchHubImages } from "../redux/hub/hub.actions";
-import { Row, Col } from "react-bootstrap";
+import Grid from "@material-ui/core/Grid"
 import  Card from "@material-ui/core/Card"
 import  CardContent from "@material-ui/core/CardContent"
 import ImageDetails from "../components/Hub/ImageDetails";
@@ -34,8 +34,8 @@ const PackageView = () => {
         <SpinningLoader />
       ) : (
         <ImageContainer>
-          <Row>
-            <Col md="8">
+          <Grid container>
+            <Grid item md={8}>
               <Card>
               <CardContent>
                 <Title data-name="imageOverviewTitle">{image.name}</Title>
@@ -45,11 +45,11 @@ const PackageView = () => {
                 <Readme documentation={image.documentation} />
               </CardContent>
               </Card>
-            </Col>
-            <Col md="4">
+            </Grid>
+            <Grid item md={4}>
               <ImageDetails image={image} />
-            </Col>
-          </Row>
+            </Grid>
+          </Grid>
         </ImageContainer>
       )}
     </>

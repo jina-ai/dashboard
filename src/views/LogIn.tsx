@@ -1,7 +1,10 @@
 /* eslint jsx-a11y/anchor-is-valid: 0 */
 
 import React, { useEffect } from "react"
-import { Container, Row, Col, Card, CardBody } from "shards-react"
+import   Container  from "@material-ui/core/Container";
+import Grid from "@material-ui/core/Grid"
+import Card from "@material-ui/core/Card"
+import CardContent from "@material-ui/core/CardContent"
 import queryString from "querystring"
 import { GithubCode } from "../redux/global/global.types"
 import { loginGithub } from "../services/github"
@@ -16,11 +19,11 @@ function Login() {
   })
 
   return (
-    <Container fluid className="main-content-container px-0">
-      <Row noGutters className="h-100">
-        <Col lg="3" md="5" className="auth-form mx-auto">
+    <Container className="main-content-container px-0">
+      <Grid container className="h-100">
+        <Grid item lg={3} md={5} className="auth-form mx-auto">
           <Card>
-            <CardBody>
+            <CardContent>
               <img
                 className="auth-form__logo d-table mx-auto mb-3"
                 src="/jina-light.svg"
@@ -35,10 +38,10 @@ function Login() {
               >
                 <i className="fab fa-github"></i> Sign in with GitHub
               </a>
-            </CardBody>
+            </CardContent>
           </Card>
-        </Col>
-      </Row>
+        </Grid>
+      </Grid>
     </Container>
   )
 }

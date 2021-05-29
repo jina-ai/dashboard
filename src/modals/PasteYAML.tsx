@@ -1,6 +1,7 @@
 import React from "react"
-import { Button, Form } from "react-bootstrap"
+import Button from "@material-ui/core/Button"
 import ReactModal, { Styles } from "react-modal"
+import { TextField } from "@material-ui/core"
 const style: Styles = {
   overlay: {
     backgroundColor: "rgba(38, 50, 56, 0.5)",
@@ -53,15 +54,13 @@ const PasteYAML = ({ open, closeModal, importYAML }: Props) => {
         </h4>
       </div>
       <div className="modal-body px-0 pb-0">
-        <Form.Group>
-          <Form.Label>Custom YAML:</Form.Label>
-          <Form.Control
+        <div>
+          <span>Custom YAML:</span>
+          <TextField
             placeholder="Paste Here"
-            ref={(ref: HTMLTextAreaElement) => (inputRef = ref)}
-            as="textarea"
             rows={10}
           />
-        </Form.Group>
+        </div>
       </div>
       <Button
         className="btn-primary"

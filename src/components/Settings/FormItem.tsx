@@ -1,9 +1,10 @@
 import React, { ChangeEvent } from "react"
-import { Col, FormInput } from "shards-react"
+import Grid from "@material-ui/core/Grid"
+import TextField from "@material-ui/core/TextField"
 import { SettingName } from "../../redux/settings/settings.types"
 
 type Props = {
-  colSpan?: number
+  colSpan?:  1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | "auto" 
   label: string
   value: SettingName
   placeholder: string
@@ -18,14 +19,14 @@ export default function FormItem({
   onChange,
 }: Props) {
   return (
-    <Col md={colSpan} className="form-group">
+    <Grid item md={colSpan} className="form-group">
       <label>{label}</label>
-      <FormInput
+      <TextField
         data-name={label.replaceAll(" ", "")}
         placeholder={placeholder}
         value={value}
         onChange={onChange}
       />
-    </Col>
+    </Grid>
   )
 }

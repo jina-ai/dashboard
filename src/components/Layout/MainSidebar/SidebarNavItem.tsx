@@ -1,6 +1,5 @@
 import React from "react";
-import { NavLink as RouteNavLink, useLocation } from "react-router-dom";
-import { NavItem, NavLink } from "shards-react";
+import { NavLink, useLocation } from "react-router-dom";
 import { TNavItem } from "../../../redux/global/global.types";
 
 type Props = {
@@ -16,11 +15,8 @@ const SidebarNavItem = ({ item, toggleSidebar }: Props) => {
   });
 
   return (
-    <NavItem style={{ position: "relative" }}>
       <NavLink
-        tag={RouteNavLink}
         to={item.to}
-        active={active}
         onClick={toggleSidebar}
       >
         {item.iconName && (
@@ -30,7 +26,6 @@ const SidebarNavItem = ({ item, toggleSidebar }: Props) => {
         )}
         {item.title && <span>{item.title}</span>}
       </NavLink>
-    </NavItem>
   );
 };
 

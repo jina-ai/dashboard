@@ -1,10 +1,8 @@
 import React from "react";
-// @ts-ignore
-import { NavbarBrand } from "shards-react";
 
 function NavLogo() {
   return (
-    <NavbarBrand href="#" style={{ lineHeight: "25px" }}>
+    <a href="#" style={{ lineHeight: "25px" }}>
       <div className="d-table m-auto">
         <img
           id="main-logo"
@@ -14,7 +12,7 @@ function NavLogo() {
           alt="Jina"
         />
       </div>
-    </NavbarBrand>
+    </a>
   );
 }
 

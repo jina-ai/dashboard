@@ -1,5 +1,6 @@
 import React, { useState } from "react"
-import { Container, Row, Col } from "shards-react"
+import   Container  from "@material-ui/core/Container";
+import Grid from "@material-ui/core/Grid"
 
 import { MainNavbar } from "../components/Layout/MainNavbar/MainNavbar"
 import MainSidebar from "../components/Layout/MainSidebar/MainSidebar"
@@ -114,14 +115,14 @@ const IconSidebarLayout = (props: IconSideBarLayoutProps) => {
 
   const { children, usesAuth, usesConnection, navigateButton } = props
   return (
-    <Container fluid className="icon-sidebar-nav">
-      <Row>
+    <Container className="icon-sidebar-nav">
+      <Grid container>
         <MainSidebar
           sidebarNavItems={sidebarNavItems}
           menuVisible={menuVisible}
           toggleSidebar={_toggleSidebar}
         />
-        <Col className="main-content col" tag="main">
+        <Grid className="main-content col">
           <MainNavbar
             user={user}
             usesAuth={usesAuth}
@@ -146,8 +147,8 @@ const IconSidebarLayout = (props: IconSideBarLayoutProps) => {
             disableLogger={disableLogger}
             exportLogs={exportLogs}
           />
-        </Col>
-      </Row>
+        </Grid>
+      </Grid>
       <LogDetails
         open={modal === "logDetails"}
         closeModal={_closeModal}

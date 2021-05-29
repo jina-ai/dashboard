@@ -7,12 +7,11 @@ import ChartElement, {
 import {
   Card,
   CardHeader,
-  CardBody,
-  Row,
-  Col,
+  CardContent,
+  Grid,
   ButtonGroup,
   Button,
-} from "shards-react"
+} from "@material-ui/core"
 import { formatBytes } from "../../helpers"
 import { useTheme } from "@emotion/react"
 
@@ -86,20 +85,20 @@ function BarChartCard(props: Props) {
               label: "msg sent",
               fill: "start",
               data: chartData.map((d: any) => d.sent),
-              backgroundColor: palette.primary,
-              borderColor: palette.primary,
-              pointBackgroundColor: palette.background,
-              pointHoverBackgroundColor: palette.primary,
+              backgroundColor: palette.primary.main,
+              borderColor: palette.primary.main,
+              pointBackgroundColor: palette.background.default,
+              pointHoverBackgroundColor: palette.primary.main,
               borderWidth: 1.5,
             },
             {
               label: "msg received",
               fill: "start",
               data: chartData.map((d: any) => d.received),
-              backgroundColor: palette.success,
-              borderColor: palette.success,
-              pointBackgroundColor: palette.background,
-              pointHoverBackgroundColor: palette.success,
+              backgroundColor: palette.success.main,
+              borderColor: palette.success.main,
+              pointBackgroundColor: palette.background.default,
+              pointHoverBackgroundColor: palette.success.main,
               borderWidth: 1.5,
             },
           ],
@@ -161,36 +160,32 @@ function BarChartCard(props: Props) {
   }, [chartData, chartInstance, currentTab, getChartData, getChartOptions])
 
   return (
-    <Card small className="h-100 mb-4">
+    <Card className="h-100 mb-4">
       <CardHeader className="border-bottom">
         <h6 className="m-0">Network Load</h6>
       </CardHeader>
 
-      <CardBody className="pt-0">
-        <Row className="border-bottom py-2 bg-light">
-          <Col sm="6" className="col d-flex mb-2 mb-sm-0">
+      <CardContent className="pt-0">
+        <Grid container className="border-bottom py-2 bg-light">
+          <Grid item sm={6} className="col d-flex mb-2 mb-sm-0">
             <ButtonGroup>
               <Button
-                theme="white"
-                active={currentTab === "messages"}
                 onClick={() => setCurrentTab("messages")}
               >
                 Messages
               </Button>
               <Button
-                theme="white"
-                active={currentTab === "bytes"}
                 onClick={() => setCurrentTab("bytes")}
               >
                 Bytes
               </Button>
             </ButtonGroup>
-          </Col>
-        </Row>
+          </Grid>
+        </Grid>
         <div style={{ position: "relative", height: 300 }}>
           <canvas ref={canvasRef} />
         </div>
-      </CardBody>
+      </CardContent>
     </Card>
   )
 }

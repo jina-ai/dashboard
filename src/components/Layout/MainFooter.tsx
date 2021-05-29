@@ -1,5 +1,7 @@
 import React from "react";
-import { Container, Row, Nav } from "shards-react";
+import Container from "@material-ui/core/Container";
+import BottomNavigation from "@material-ui/core/BottomNavigation";
+import Grid from "@material-ui/core/Grid"
 
 type MenuItems = {
   title: string;
@@ -24,9 +26,9 @@ const MainFooter = ({
   exportLogs,
 }: Props) => (
   <footer className="main-footer d-flex p-2 px-3">
-    <Container fluid>
-      <Row>
-        <Nav>
+    <Container>
+      <Grid>
+        <BottomNavigation>
           {menuItems.map((item, idx) => (
             <a key={idx} href={item.to} className="nav-link">
               {item.title}
@@ -55,9 +57,9 @@ const MainFooter = ({
               Debug Mode
             </span>
           )}
-        </Nav>
+        </BottomNavigation>
         <span className="copyright ml-auto my-auto mr-2">{copyright}</span>
-      </Row>
+      </Grid>
     </Container>
   </footer>
 );

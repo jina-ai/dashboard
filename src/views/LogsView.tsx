@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react"
-import { Container, Row, Col } from "react-bootstrap"
+import Container from "@material-ui/core/Container"
+import Grid from "@material-ui/core/Grid"
 import { LogLevelSummaryChart } from "../components/LogStream/LogLevelSummaryChart"
 import { LogLevelPieChart } from "../components/LogStream/LogLevelPieChart"
 import { PageTitle } from "../components/Common/PageTitle"
@@ -115,13 +116,13 @@ function LogsView() {
   const timeSelection = timeOptions[selectedTime]
 
   return (
-    <Container fluid className="main-content-container px-0">
+    <Container className="main-content-container px-0">
       <div className="px-4">
-        <Row noGutters className="page-header mb-4">
+        <Grid container className="page-header mb-4">
           <PageTitle title="Log Stream" className="text-sm-left mb-3" />
-        </Row>
-        <Row>
-          <Col md="10" className="mb-4">
+        </Grid>
+        <Grid container>
+          <Grid item md={10} className="mb-4">
             <LogLevelSummaryChart
               data={logLevelCharts}
               showLog={showLog}
@@ -130,11 +131,11 @@ function LogsView() {
               selectedTime={selectedTime}
               timeLabels={timeSelection.chartLabels}
             />
-          </Col>
-          <Col md="2" className="mb-4">
+          </Grid>
+          <Grid item md={2} className="mb-4">
             <LogLevelPieChart data={logLevels} />
-          </Col>
-        </Row>
+          </Grid>
+        </Grid>
         <LogsTable data={logs} showLogDetails={showLogDetails} />
       </div>
     </Container>

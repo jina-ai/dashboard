@@ -2,7 +2,7 @@ import React from "react";
 import ImageCard from "./ImageCard";
 import styled from "@emotion/styled";
 import { useSelector } from "react-redux";
-import { Row, Col } from "react-bootstrap";
+import Grid from "@material-ui/core/Grid"
 import {
   selectHubImages,
   selectIsHubImagesLoading,
@@ -25,17 +25,17 @@ const HubImagesListPreview = () => {
       ) : (
         <>
           <SubTitle data-name="hubImagesPreviewSubtitle">Latest</SubTitle>
-          <Row>
+          <Grid container>
             {hubImages.map((image, index) => (
-              <Col
+              <Grid item
                 key={`${image.name}.${image.version}.${image["jina-version"]}`}
-                md="4"
+                md={4}
                 className="mb-4"
               >
                 <ImageCard image={image} index={index} />
-              </Col>
+              </Grid>
             ))}
-          </Row>
+          </Grid>
         </>
       )}
     </>

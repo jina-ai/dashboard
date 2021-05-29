@@ -1,5 +1,7 @@
 import React, { ReactNode } from "react";
-import { Card, Row, Col } from "react-bootstrap";
+import Card from "@material-ui/core/Card";
+import CardContent from "@material-ui/core/CardContent";
+import Grid from "@material-ui/core/Grid";
 
 type Props = {
   title: ReactNode;
@@ -20,21 +22,23 @@ function HelpCard({ title, content, icon, theme, link, dataName }: Props) {
       data-name={dataName}
     >
       <Card className="h-100">
-        <Card.Body className="pt-3">
-          <Row className="align-items-center">
-            <Col xs="8">
-              <h4>{title}</h4>
-            </Col>
-            <Col xs="4">
-              <h1 className="float-right">
-                <span className={`${icon} log-${theme}`} />
-              </h1>
-            </Col>
-          </Row>
-          <Row>
-            <Col>{content}</Col>
-          </Row>
-        </Card.Body>
+        <CardContent className="pt-3">
+          <Grid container>
+            <Grid container item className="align-items-center">
+              <Grid xs={8}>
+                <h4>{title}</h4>
+              </Grid>
+              <Grid xs={4}>
+                <h1 className="float-right">
+                  <span className={`${icon} log-${theme}`} />
+                </h1>
+              </Grid>
+            </Grid>
+            <Grid container item>
+              <Grid item>{content}</Grid>
+            </Grid>
+          </Grid>
+        </CardContent>
       </Card>
     </a>
   );

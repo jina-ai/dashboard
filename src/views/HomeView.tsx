@@ -1,7 +1,7 @@
 import React from "react"
 import GridLayout from "react-grid-layout"
 import styled from "@emotion/styled"
-import { Card } from "react-bootstrap"
+import  Card from "@material-ui/core/Card"
 import { HelpCard } from "../components/Common/HelpCard"
 import HubImagesList from "../components/Hub/HubImagesList"
 import SettingsCard from "../components/Settings/Settings"

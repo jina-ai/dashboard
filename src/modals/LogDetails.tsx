@@ -1,6 +1,6 @@
 import React from "react"
 import ReactModal, { Styles } from "react-modal"
-import { Row, Col } from "react-bootstrap"
+import Grid from "@material-ui/core/Grid"
 import { RawLog } from "../redux/logStream/logStream.types"
 
 const style: Styles = {
@@ -57,28 +57,28 @@ const LogDetails = ({ open, closeModal, modalParams }: Props) => {
         </h4>
       </div>
       <div className="modal-body px-0 pb-0 pt-1">
-        <Row className="px-3">
-          <Col xs="3" className="border-bottom pb-1 px-0">
+        <Grid container className="px-3">
+          <Grid item xs={3} className="border-bottom pb-1 px-0">
             <span className="text-bold">msg</span>
-          </Col>
-          <Col xs="9" className="border-bottom pb-1 px-0">
+          </Grid>
+          <Grid item xs={9} className="border-bottom pb-1 px-0">
             {log.message}
-          </Col>
-        </Row>
+          </Grid>
+        </Grid>
         {Object.entries(log)
           .filter(([key, value]) => !hiddenKeys.includes(key))
           .map(([key, value]) =>
             key === "message" ? (
               ""
             ) : (
-              <Row className="px-3" key={key}>
-                <Col xs="3" className="border-bottom pb-1 px-0">
+              <Grid container className="px-3" key={key}>
+                <Grid item xs={3} className="border-bottom pb-1 px-0">
                   <span className="text-bold">{key}</span>
-                </Col>
-                <Col xs="9" className="border-bottom pb-1 px-0">
+                </Grid>
+                <Grid item xs={9} className="border-bottom pb-1 px-0">
                   {JSON.stringify(value)}
-                </Col>
-              </Row>
+                </Grid>
+              </Grid>
             )
           )}
       </div>

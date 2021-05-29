@@ -1,5 +1,4 @@
 import React, { useState } from "react"
-import { Collapse } from "react-bootstrap"
 import logger from "../../logger"
 import { Levels } from "../../redux/logStream/logStream.types"
 import { ReactJSXElement } from "@emotion/react/types/jsx-namespace"
@@ -110,11 +109,9 @@ function LogGroup({ title, body, levels, numItems, group }: Props) {
           <CountSummary levels={levels} numItems={numItems} title={title} />
         )}
       </div>
-      <Collapse in={expanded} timeout={100}>
         <div className="log-group-body p-3">
           <div className="bg-white border">{body}</div>
         </div>
-      </Collapse>
     </div>
   )
 }

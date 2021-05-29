@@ -1,7 +1,7 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 import { jsx } from "@emotion/react"
-import { Row, Col } from "react-bootstrap"
+import Grid from "@material-ui/core/Grid"
 import { CSSProperties, memo } from "react"
 import { areEqual } from "react-window"
 import { ProcessedLog } from "../../redux/logStream/logStream.types"
@@ -34,21 +34,21 @@ const LogItem = memo(
         style={style}
         onClick={() => showLogDetails(logData)}
       >
-        <Row>
-          <Col
+        <Grid container>
+          <Grid item
             className="log-prefix text-muted px-0 d-flex flex-row"
             css={{ maxWidth: firstCol }}
           >
             <div className="text-bold mr-2">{idx}</div>
             <div className="ml-auto">{formattedTimestamp}</div>
-          </Col>
-          <Col
+          </Grid>
+          <Grid item
             className="log-prefix px-0 text-left text-md-right text-bold cursor-pointer"
             css={{ maxWidth: secondCol }}
           >
             {logName}@{process}[{levelInitial}]:
-          </Col>
-          <Col
+          </Grid>
+          <Grid item
             className="px-0"
             css={{
               maxHeight: 84,
@@ -62,8 +62,8 @@ const LogItem = memo(
             }}
           >
             {message}
-          </Col>
-        </Row>
+          </Grid>
+        </Grid>
       </div>
     )
   },
