@@ -1,16 +1,16 @@
-import React, { ReactNode } from "react";
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
-import Grid from "@material-ui/core/Grid";
+import React, { ReactNode } from "react"
+import Card from "@material-ui/core/Card"
+import CardContent from "@material-ui/core/CardContent"
+import Grid from "@material-ui/core/Grid"
 
 type Props = {
-  title: ReactNode;
-  content: string;
-  icon: string;
-  theme: string;
-  link: string;
-  dataName: string;
-};
+  title: ReactNode
+  content: string
+  icon: string
+  theme: string
+  link: string
+  dataName: string
+}
 
 function HelpCard({ title, content, icon, theme, link, dataName }: Props) {
   return (
@@ -25,10 +25,10 @@ function HelpCard({ title, content, icon, theme, link, dataName }: Props) {
         <CardContent className="pt-3">
           <Grid container>
             <Grid container item className="align-items-center">
-              <Grid xs={8}>
+              <Grid item xs={8}>
                 <h4>{title}</h4>
               </Grid>
-              <Grid xs={4}>
+              <Grid item xs={4}>
                 <h1 className="float-right">
                   <span className={`${icon} log-${theme}`} />
                 </h1>
@@ -41,7 +41,7 @@ function HelpCard({ title, content, icon, theme, link, dataName }: Props) {
         </CardContent>
       </Card>
     </a>
-  );
+  )
 }
 
-export { HelpCard };
+export { HelpCard }

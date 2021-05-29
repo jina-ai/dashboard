@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import   Container  from "@material-ui/core/Container";
+import Container from "@material-ui/core/Container"
 import Grid from "@material-ui/core/Grid"
 
 import { MainNavbar } from "../components/Layout/MainNavbar/MainNavbar"
@@ -134,7 +134,7 @@ const IconSidebarLayout = (props: IconSideBarLayoutProps) => {
             navigateButton={navigateButton}
           />
           {banners.map((banner, index) => (
-            <InfoToast data={banner} index={index} />
+            <InfoToast data={banner} index={index} key={index} />
           ))}
           {usesConnection && !loading && !connected && (
             <ConnectionToast reconnect={reconnect} />

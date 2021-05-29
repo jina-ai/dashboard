@@ -4,7 +4,6 @@ import { HashRouter as Router, Route } from "react-router-dom"
 import { hubRoutes as routes } from "../routes"
 import withTracker from "../withTracker"
 
-import "bootstrap/dist/css/bootstrap.min.css"
 import "../App.css"
 import { ErrorBoundary } from "react-error-boundary"
 import { FallbackPage } from "../views/FallbackPage"

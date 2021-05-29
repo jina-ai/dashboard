@@ -1,6 +1,6 @@
 import React from "react"
-import  Card from "@material-ui/core/Card"
-import  CardContent from "@material-ui/core/CardContent"
+import Card from "@material-ui/core/Card"
+import CardContent from "@material-ui/core/CardContent"
 import Grid from "@material-ui/core/Grid"
 import styled from "@emotion/styled"
 import { Link } from "react-router-dom"
@@ -64,7 +64,7 @@ export default function ImageCard({ image, index }: Props) {
                 {author}
               </SubTitle>
             </Grid>
-            <Grid sm={12} className="px-0 pb-0">
+            <Grid item sm={12} className="px-0 pb-0">
               <div className="description-container">
                 <div className="description-overlay" />
                 <div className="app-description">{description}</div>
