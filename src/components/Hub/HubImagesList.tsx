@@ -17,13 +17,8 @@ import {
   HubImage,
 } from "../../redux/hub/hub.types"
 import styled from "@emotion/styled"
-import {
-  Grid,
-  FormControl,
-  Select,
-  InputLabel,
-  MenuItem,
-} from "@material-ui/core"
+import { Grid } from "@material-ui/core"
+import HubSortDropdown from "./HubSortDropdown"
 
 const sortOptions = [
   "name increasing",
@@ -32,8 +27,8 @@ const sortOptions = [
   "author decreasing",
 ]
 
-const sortHubImages = (images: HubImage[], sortOption: string) => {
-  switch (sortOption) {
+const sortHubImages = (images: HubImage[], selectedSortOption: string) => {
+  switch (selectedSortOption) {
     case "name increasing":
       return images.sort((imageA, imageB) =>
         imageA.name < imageB.name ? -1 : imageA.name > imageB.name ? 1 : 0
@@ -120,11 +115,11 @@ const HubImagesList = () => {
   const hubImagesFetchError = useSelector(selectHubImagesFetchError)
   const [filters, setFilters] = useState([] as FilterCategory[])
   const [searchString, setSearchString] = useState("")
-  const [sortOption, setSortOption] = useState(sortOptions[0])
+  const [selectedSortOption, setSelectedSortOption] = useState(sortOptions[0])
   const hubImagesUnsorted = useSelector(selectHubImages)
-  const hubImages = sortHubImages(hubImagesUnsorted, sortOption)
+  const hubImages = sortHubImages(hubImagesUnsorted, selectedSortOption)
 
-  if (hubImages.length === 0 && !isHubImagesLoading && !hubImagesFetchError) {
+  if (hubImages?.length === 0 && !isHubImagesLoading && !hubImagesFetchError) {
     dispatch(fetchHubImages())
   }
 
@@ -143,8 +138,8 @@ const HubImagesList = () => {
     getHubImages(getSelectedFilters(filters), searchQuery)
   }
 
-  const handleSortOption = (event: React.ChangeEvent<{ value: number }>) => {
-    setSortOption(event.target.value)
+  const handleSortOption = (event: React.ChangeEvent<{ value: string }>) => {
+    setSelectedSortOption(event.target.value)
   }
 
   return (
@@ -164,24 +159,11 @@ const HubImagesList = () => {
           <ImagesContainer>
             <Grid item container xs={12}>
               <Grid item xs={10}>
-                <FormControl>
-                  <InputLabel
-                    shrink
-                    id="demo-simple-select-placeholder-label-label"
-                  >
-                    Sort
-                  </InputLabel>
-                  <Select
-                    labelId="demo-customized-select-label"
-                    id="demo-customized-select"
-                    value={sortOption}
-                    onChange={handleSortOption}
-                  >
-                    {sortOptions.map((sortOption) => (
-                      <MenuItem value={sortOption}>{sortOption}</MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
+                <HubSortDropdown
+                  selectedSortOption={selectedSortOption}
+                  sortOptions={sortOptions}
+                  handleSortOption={handleSortOption}
+                />
               </Grid>
               <Grid item xs={2}>
                 <ExpandingSearchbar
@@ -193,7 +175,7 @@ const HubImagesList = () => {
               </Grid>
             </Grid>
 
-            {hubImages.length ? (
+            {hubImages?.length ? (
               <Grid spacing={2} item container data-name="hubImagesList">
                 {hubImages.map((image, index) => (
                   <Grid
