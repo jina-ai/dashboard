@@ -14,3 +14,10 @@ export const initialHubState: HubState = {
   error: null,
   selectedFilters: [],
 }
+
+export const sortOptions = [
+  "name increasing",
+  "name decreasing",
+  "author increasing",
+  "author decreasing",
+]

@@ -37,19 +37,28 @@ const HubSortDropdown = ({
       <InputLabel
         style={{ backgroundColor: "white", padding: 4, marginTop: -2 }}
         shrink
-        id="demo-simple-select-placeholder-label-label"
       >
         Sort
       </InputLabel>
       <Select
-        labelId="demo-customized-select-label"
-        id="demo-customized-select"
         value={selectedSortOption}
         onChange={handleSortOption}
         input={<BootstrapInput />}
+        data-name={`selectedHubSortDropdown-${selectedSortOption.replaceAll(
+          " ",
+          "_"
+        )}`}
       >
         {sortOptions.map((sortOption) => (
-          <MenuItem value={sortOption}>{sortOption}</MenuItem>
+          <MenuItem
+            data-name={`sortOptionHubSortDropdown-${sortOption.replaceAll(
+              " ",
+              "_"
+            )}`}
+            value={sortOption}
+          >
+            {sortOption}
+          </MenuItem>
         ))}
       </Select>
     </FormControl>

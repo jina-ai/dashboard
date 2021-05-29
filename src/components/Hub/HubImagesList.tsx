@@ -19,13 +19,7 @@ import {
 import styled from "@emotion/styled"
 import { Grid } from "@material-ui/core"
 import HubSortDropdown from "./HubSortDropdown"
-
-const sortOptions = [
-  "name increasing",
-  "name decreasing",
-  "author increasing",
-  "author decreasing",
-]
+import { sortOptions } from "../../redux/hub/hub.constants"
 
 const sortHubImages = (images: HubImage[], selectedSortOption: string) => {
   switch (selectedSortOption) {
