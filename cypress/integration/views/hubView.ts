@@ -116,7 +116,11 @@ describe("Hub page", () => {
       cy.dataName("hubImagesFilter").contains("Encoder")
     })
   })
-
+  describe("hub image overview", () => {
+    it("opens overview of hub image", () => {
+      cy.dataName("hubImage").contains("LaserEncoder").click()
+    })
+  })
 
   describe('hub image overview', () => {
     it('opens overview of hub image', () => {
