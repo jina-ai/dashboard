@@ -1,10 +1,15 @@
+import { isFeatureEnabled } from "../../helpers/featureSwitch"
 import { State } from "../index"
 
 export const selectProcesses = (state: State) => state.globalState.processes
 
 export const selectMenuState = (state: State) => state.globalState.menuVisible
 
-export const selectSidebarItems = (state: State) => state.globalState.navItems
+// Todo: remove feature switch condition after releasing to all instance
+export const selectSidebarItems = (state: State) =>
+  isFeatureEnabled("DEBUGGING_TOOL")
+    ? state.globalState.navItems
+    : state.globalState.navItems.filter((navItem) => navItem.title !== "Debug")
 
 export const selectCurrentTab = (state: State) => state.globalState.currentTab
 

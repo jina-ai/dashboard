@@ -41,6 +41,12 @@ const navItems: TNavItem[] = [
     matches: ["hub", "package"],
   },
   {
+    title: "Debug",
+    to: "/debug",
+    iconName: "pest_control",
+    matches: ["debug"],
+  },
+  {
     title: "Settings",
     to: "/settings",
     iconName: "settings",

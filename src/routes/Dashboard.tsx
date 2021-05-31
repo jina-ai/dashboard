@@ -17,6 +17,7 @@ import HomeView from "../views/HomeView"
 import NavigateButton from "../components/Common/NavigateButton"
 import FlowView from "../views/FlowView"
 import { isFeatureEnabled } from "../helpers/featureSwitch"
+import DebuggingTool from "../views/DebuggingTool"
 
 export const dashboardRoutes = [
   {
@@ -106,6 +107,15 @@ export const dashboardRoutes = [
     component: LogIn,
     props: {
       usesConnection: false,
+      usesAuth: true,
+    },
+  },
+  {
+    path: "/debug",
+    layout: IconSidebar,
+    component: DebuggingTool,
+    props: {
+      usesConnection: true,
       usesAuth: true,
     },
   },

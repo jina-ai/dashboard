@@ -28,6 +28,7 @@ type Title =
   | "Colors"
   | "Typography"
   | "Misc"
+  | "Debug"
 
 type To =
   | "/home"
@@ -40,6 +41,7 @@ type To =
   | "/colors"
   | "/typography"
   | "/misc"
+  | "/debug"
 
 type IconName =
   | "home"
@@ -49,6 +51,7 @@ type IconName =
   | "store"
   | "settings"
   | "help"
+  | "pest_control"
 
 type Match =
   | "home"
@@ -62,6 +65,7 @@ type Match =
   | "colors"
   | "typography"
   | "misc"
+  | "debug"
 
 export type TNavItem = {
   title: Title
