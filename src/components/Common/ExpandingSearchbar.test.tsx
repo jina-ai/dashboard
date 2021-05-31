@@ -1,17 +1,21 @@
 import React from "react"
 import { render, fireEvent } from "@testing-library/react"
 import { ExpandingSearchbar } from "./ExpandingSearchbar"
+import { theme } from "../../theme"
+import { ThemeProvider as MuiThemeProvider } from "@material-ui/core/styles"
 
 let searchQuery = ""
 const mockChangeCallback = jest.fn((newValue) => (searchQuery = newValue))
 const mockSearchCallback = jest.fn()
 
 const expandingSearchbar = render(
-  <ExpandingSearchbar
-    onChange={mockChangeCallback}
-    onSearch={mockSearchCallback}
-    value={searchQuery}
-  />
+  <MuiThemeProvider theme={theme}>
+    <ExpandingSearchbar
+      onChange={mockChangeCallback}
+      onSearch={mockSearchCallback}
+      value={searchQuery}
+    />
+  </MuiThemeProvider>
 )
 const input = expandingSearchbar.getByRole("textbox")
 
