@@ -16,7 +16,7 @@ type Props = {
   handleSortOption: (event: React.ChangeEvent<{ value: string }>) => void
 }
 
-const BootstrapInput = withStyles((theme: Theme) =>
+const HubSortInput = withStyles((theme: Theme) =>
   createStyles({
     input: {
       position: "relative",
@@ -43,7 +43,7 @@ const HubSortDropdown = ({
       <Select
         value={selectedSortOption}
         onChange={handleSortOption}
-        input={<BootstrapInput />}
+        input={<HubSortInput />}
         data-name={`selectedHubSortDropdown-${selectedSortOption.replaceAll(
           " ",
           "_"
