@@ -1,47 +1,25 @@
 import React, { useState } from "react"
 import styled from "@emotion/styled"
 import { Button } from "@material-ui/core"
-import { FilterCategory, FilterCategoryName } from "../../redux/hub/hub.types"
-
-type FilterButtonColors = {
-  [category in FilterCategoryName]: {
-    backgroundColor: string
-    color: string
-  }
-}
-
-const filterButtonColors: FilterButtonColors = {
-  "Executor type": {
-    backgroundColor: "#E6F5F5",
-    color: "#1EA5A5",
-  },
-  "Domain space": {
-    backgroundColor: "#EFF2FE",
-    color: "#8A8AE9",
-  },
-  Libraries: {
-    backgroundColor: "#E6F5F5",
-    color: "#009999",
-  },
-  Language: {
-    backgroundColor: "#FFFAE2",
-    color: "#EE9518",
-  },
-}
+import { FilterCategory } from "../../redux/hub/hub.types"
+import { Theme, useTheme } from "@emotion/react"
 
 type CheckboxLabelProps = {
   selected: boolean
   highlightColor?: string
-  filterCategory: FilterCategoryName
+  filterCategoryIndex: number
+  theme: Theme
 }
 
 const ToggleButton = styled(Button)`
   background-color: ${(props: CheckboxLabelProps) =>
     props.selected
       ? "#21A6A6"
-      : filterButtonColors[props.filterCategory].backgroundColor};
+      : props.theme.palette.filters[props.filterCategoryIndex].main};
   color: ${(props: CheckboxLabelProps) =>
-    props.selected ? "white" : filterButtonColors[props.filterCategory].color};
+    props.selected
+      ? "white"
+      : props.theme.palette.filters[props.filterCategoryIndex].contrastText};
   box-shadow: none;
   display: flex;
   margin: 0.5rem 1rem 0.5rem 0;
@@ -66,9 +44,7 @@ type FilterButtonProps = {
     value: boolean
   ) => void
 }
-
 const FilterButton = ({
-  filter,
   value,
   label,
   index,
@@ -81,9 +57,12 @@ const FilterButton = ({
     setSelected(!selected)
     handleFilterChange(filterCategoryIndex, index, !selected)
   }
+  const theme = useTheme()
+
   return (
     <ToggleButton
-      filterCategory={filter.filterLabel}
+      theme={theme}
+      filterCategoryIndex={filterCategoryIndex}
       variant="contained"
       selected={value}
       disabled={count === 0}
