@@ -22,7 +22,7 @@ function ExpandingSearchbar({ onSearch, value, onChange }: Props) {
 
   const SearchBar = styled.div`
     display: flex;
-    background-color: ${(props) => props.theme.palette.grey[100]};
+    background-color: #f9f9f9; //todo look why passing props doesn't work here
     border-radius: 2px;
   `
   return (
