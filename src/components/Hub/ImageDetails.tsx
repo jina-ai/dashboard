@@ -3,6 +3,7 @@ import Card from "@material-ui/core/Card"
 import CardContent from "@material-ui/core/CardContent"
 import { HubImage } from "../../redux/hub/hub.types"
 import styled from "@emotion/styled"
+import { useTheme } from "@emotion/react"
 import { Tag } from "./ImageCard"
 import CodeSnippetWithCopy from "./CodeSnippetWithCopy"
 
@@ -10,11 +11,14 @@ type Props = {
   image: HubImage
 }
 
-const DetailCard = styled(Card)`
+export const DetailCard = styled(Card)`
   margin-bottom: 0.75rem;
-  box-shadow: 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%);
+  border: 1px solid ${(props) => props.theme.palette.grey[300]};
+  font-family: "Roboto";
+  font-size: 0.9rem;
+  box-shadow: unset;
+  background-color: ${(props) => props.theme.palette.background.default};
 `
-
 const SectionHeading = styled.div`
   font-size: 1rem;
   font-weight: 700;
@@ -25,10 +29,6 @@ const DetailsSection = styled.div`
   display: flex;
   flex-direction: column;
 `
-const Platform = styled(Tag)`
-  background-color: ${(props) => props.theme.palette.secondary.light};
-`
-
 const getUsageInFlow = (dockerName: string, version: string) =>
   `
 from jina.flow import Flow
@@ -43,6 +43,7 @@ pods:
 `
 
 export default function ImageDetails({ image }: Props) {
+  const theme = useTheme()
   let { keywords, platform, author, version } = image
   let dockerCommand = image["docker-command"]
   let dockerName = image["docker-name"]
@@ -70,7 +71,12 @@ export default function ImageDetails({ image }: Props) {
             <SectionHeading>Tags</SectionHeading>
             <div>
               {keywords.map((keyword, index) => (
-                <Tag data-name={`hubImageTag-${index}`} key={keyword}>
+                <Tag
+                  data-name="hubImageTags"
+                  key={index}
+                  filterColorIndex={index}
+                  theme={theme}
+                >
                   {keyword}
                 </Tag>
               ))}
@@ -80,9 +86,14 @@ export default function ImageDetails({ image }: Props) {
             <SectionHeading>Platform</SectionHeading>
             <div>
               {platform.map((p, index) => (
-                <Platform data-name={`hubImagePlatform-${index}`} key={p}>
+                <Tag
+                  data-name="hubImageTags"
+                  key={index}
+                  filterColorIndex={3}
+                  theme={theme}
+                >
                   {p}
-                </Platform>
+                </Tag>
               ))}
             </div>
             <DetailsSection>

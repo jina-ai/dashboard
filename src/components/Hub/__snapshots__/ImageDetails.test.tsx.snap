@@ -3,7 +3,7 @@
 exports[`ImageDetails 1`] = `
 Array [
   <div
-    className="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation1 MuiCard-root css-1py98oj-MuiPaper-root-MuiCard-root"
+    className="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation1 MuiCard-root css-vvo1ez-MuiPaper-root-MuiCard-root"
   >
     <div
       className="MuiCardContent-root css-46bh2p-MuiCardContent-root"
@@ -18,7 +18,7 @@ Array [
         </div>
         <div>
           <div
-            className="css-11b7q3d"
+            className="css-8cakqg"
             onClick={[Function]}
           >
             <div
@@ -29,12 +29,12 @@ Array [
             <svg
               aria-hidden={true}
               className="MuiSvgIcon-root MuiSvgIcon-fontSizeSmall css-ptiqhd-MuiSvgIcon-root"
-              data-testid="FileCopyRoundedIcon"
+              data-testid="FileCopyOutlinedIcon"
               focusable="false"
               viewBox="0 0 24 24"
             >
               <path
-                d="M15 1H4c-1.1 0-2 .9-2 2v13c0 .55.45 1 1 1s1-.45 1-1V4c0-.55.45-1 1-1h10c.55 0 1-.45 1-1s-.45-1-1-1zm.59 4.59l4.83 4.83c.37.37.58.88.58 1.41V21c0 1.1-.9 2-2 2H7.99C6.89 23 6 22.1 6 21l.01-14c0-1.1.89-2 1.99-2h6.17c.53 0 1.04.21 1.42.59zM15 12h4.5L14 6.5V11c0 .55.45 1 1 1z"
+                d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm-1 4H8c-1.1 0-1.99.9-1.99 2L6 21c0 1.1.89 2 1.99 2H19c1.1 0 2-.9 2-2V11l-6-6zM8 21V7h6v5h5v9H8z"
               />
             </svg>
           </div>
@@ -46,7 +46,7 @@ Array [
         </div>
         <div>
           <div
-            className="css-11b7q3d"
+            className="css-8cakqg"
             onClick={[Function]}
           >
             <div
@@ -62,12 +62,12 @@ pods:
             <svg
               aria-hidden={true}
               className="MuiSvgIcon-root MuiSvgIcon-fontSizeSmall css-ptiqhd-MuiSvgIcon-root"
-              data-testid="FileCopyRoundedIcon"
+              data-testid="FileCopyOutlinedIcon"
               focusable="false"
               viewBox="0 0 24 24"
             >
               <path
-                d="M15 1H4c-1.1 0-2 .9-2 2v13c0 .55.45 1 1 1s1-.45 1-1V4c0-.55.45-1 1-1h10c.55 0 1-.45 1-1s-.45-1-1-1zm.59 4.59l4.83 4.83c.37.37.58.88.58 1.41V21c0 1.1-.9 2-2 2H7.99C6.89 23 6 22.1 6 21l.01-14c0-1.1.89-2 1.99-2h6.17c.53 0 1.04.21 1.42.59zM15 12h4.5L14 6.5V11c0 .55.45 1 1 1z"
+                d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm-1 4H8c-1.1 0-1.99.9-1.99 2L6 21c0 1.1.89 2 1.99 2H19c1.1 0 2-.9 2-2V11l-6-6zM8 21V7h6v5h5v9H8z"
               />
             </svg>
           </div>
@@ -79,7 +79,7 @@ pods:
         </div>
         <div>
           <div
-            className="css-11b7q3d"
+            className="css-8cakqg"
             onClick={[Function]}
           >
             <div
@@ -93,12 +93,12 @@ f = Flow().add(uses='undefined:undefined')
             <svg
               aria-hidden={true}
               className="MuiSvgIcon-root MuiSvgIcon-fontSizeSmall css-ptiqhd-MuiSvgIcon-root"
-              data-testid="FileCopyRoundedIcon"
+              data-testid="FileCopyOutlinedIcon"
               focusable="false"
               viewBox="0 0 24 24"
             >
               <path
-                d="M15 1H4c-1.1 0-2 .9-2 2v13c0 .55.45 1 1 1s1-.45 1-1V4c0-.55.45-1 1-1h10c.55 0 1-.45 1-1s-.45-1-1-1zm.59 4.59l4.83 4.83c.37.37.58.88.58 1.41V21c0 1.1-.9 2-2 2H7.99C6.89 23 6 22.1 6 21l.01-14c0-1.1.89-2 1.99-2h6.17c.53 0 1.04.21 1.42.59zM15 12h4.5L14 6.5V11c0 .55.45 1 1 1z"
+                d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm-1 4H8c-1.1 0-1.99.9-1.99 2L6 21c0 1.1.89 2 1.99 2H19c1.1 0 2-.9 2-2V11l-6-6zM8 21V7h6v5h5v9H8z"
               />
             </svg>
           </div>
@@ -107,7 +107,7 @@ f = Flow().add(uses='undefined:undefined')
     </div>
   </div>,
   <div
-    className="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation1 MuiCard-root css-1py98oj-MuiPaper-root-MuiCard-root"
+    className="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation1 MuiCard-root css-vvo1ez-MuiPaper-root-MuiCard-root"
   >
     <div
       className="MuiCardContent-root css-46bh2p-MuiCardContent-root"
@@ -122,8 +122,8 @@ f = Flow().add(uses='undefined:undefined')
         </div>
         <div>
           <div
-            className="css-1vb0jut"
-            data-name="hubImageTag-0"
+            className="css-13180s2"
+            data-name="hubImageTags"
           >
             encoder
           </div>
@@ -139,8 +139,8 @@ f = Flow().add(uses='undefined:undefined')
         </div>
         <div>
           <div
-            className="css-19efl1r"
-            data-name="hubImagePlatform-0"
+            className="css-5vvtwl"
+            data-name="hubImageTags"
           >
             Enel
           </div>

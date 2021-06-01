@@ -32,6 +32,10 @@
   src: local("Roboto"),
     url(./styles/fonts/Roboto/Roboto-Light.ttf) format("truetype");
 }
+@font-face {
+  font-family: "Monaco";
+  src: local("Monaco"), url(./styles/fonts/Monaco/Monaco.ttf) format("truetype");
+}
 
 body {
   margin: 0;

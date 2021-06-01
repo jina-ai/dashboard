@@ -23,8 +23,21 @@ const ImageCardContainer = styled(Card)`
   border: 1px solid ${(props) => props.theme.palette.grey[300]};
   background-color: ${(props) => props.theme.palette.background.default};
 `
-export const Tag = styled.div`
-  background: ${(props) => props.theme.palette.grey[400]};
+type TagProps = {
+  filterColorIndex: number
+}
+export const Tag = styled.div<TagProps>`
+  ${({ filterColorIndex, theme }) => {
+    const filterPalette = theme.palette.filters
+
+    return `background: ${
+      filterPalette[filterColorIndex % filterPalette.length].main
+    };
+            color: ${
+              filterPalette[filterColorIndex % filterPalette.length]
+                .contrastText
+            };`
+  }}
   border-radius: 0.25rem;
   display: inline-block;
   padding: 0.35rem 0.75rem;
@@ -46,9 +59,9 @@ const ImageLink = styled(Link)`
     text-decoration: none;
   }
 `
-const ImageDescription = styled.p`\
+const ImageDescription = styled.p`
   font-family: "Roboto";
-  font-size: .875rem;
+  font-size: 0.875rem;
   font-weight: 400;
   color: ${(props) => props.theme.palette.grey[700]};
   word-break: break-word;
@@ -62,7 +75,7 @@ export default function ImageCard({ image, index }: Props) {
       <ImageCardContainer data-name="hubImage">
         <ImageTitle>{name}</ImageTitle>
         {keywords.map((keyword, index) => (
-          <Tag data-name="hubImageTags" key={index}>
+          <Tag data-name="hubImageTags" key={index} filterColorIndex={index}>
             {keyword}
           </Tag>
         ))}
