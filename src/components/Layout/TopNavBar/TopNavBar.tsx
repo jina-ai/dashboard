@@ -7,7 +7,6 @@ import AppBar from "@material-ui/core/AppBar"
 import LanguageIcon from "@material-ui/icons/Language"
 import { green, red } from "@material-ui/core/colors"
 import styled from "@emotion/styled"
-import NavLogo from "./NavLogo"
 
 type Props = {
   usesAuth: boolean
@@ -40,7 +39,6 @@ function TopNavBar({ usesConnection, reconnect, connected }: Props) {
 
   return (
     <NavBar>
-      <NavLogo />
       <NavigationItems>
         {usesConnection && (
           <LanguageIcon

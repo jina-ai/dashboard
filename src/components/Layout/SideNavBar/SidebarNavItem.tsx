@@ -14,7 +14,7 @@ type NavLinkWithIconProps = {
 }
 const NavLinkWithIcon = styled(NavLink)<NavLinkWithIconProps>`
   display: flex;
-  padding: .9rem 0;
+  padding: 1rem 0;
   text-decoration: none;
   border-radius: .25rem;
   ${props => {
@@ -22,11 +22,13 @@ const NavLinkWithIcon = styled(NavLink)<NavLinkWithIconProps>`
     return props.active ?
       `color: ${palette.primary.main};
       background-color: ${palette.primary.light};`
-    : `color: ${palette.text.primary};`}
+    : `color: ${palette.text.secondary};`}
   }
 `
 const NavLinkIconContainer = styled.div`
-  padding: 0 1rem;
+  padding: 0 1.5rem;
+  width: 1.25rem;
+  opacity: .75;
 `
 
 const SidebarNavItem = ({ item, toggleSidebar }: Props) => {

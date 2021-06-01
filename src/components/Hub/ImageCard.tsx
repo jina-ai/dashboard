@@ -3,6 +3,7 @@ import Card from "@material-ui/core/Card"
 import CardContent from "@material-ui/core/CardContent"
 import Grid from "@material-ui/core/Grid"
 import styled from "@emotion/styled"
+import { Theme, useTheme } from "@emotion/react"
 import { Link } from "react-router-dom"
 
 type HubImagePreview = {
@@ -17,12 +18,25 @@ type Props = {
   image: HubImagePreview
   index: number
 }
-
+type TagProps = {
+  filterColorIndex: number
+  theme: Theme
+}
 export const Tag = styled.div`
-  background: ${(props) => props.theme.palette.grey[400]};
+  ${({ theme, filterColorIndex }: TagProps) => {
+    const filterPalette = theme.palette.filters
+
+    return `background: ${
+      filterPalette[filterColorIndex % filterPalette.length].main
+    };
+            color: ${
+              filterPalette[filterColorIndex % filterPalette.length]
+                .contrastText
+            };`
+  }}
   border-radius: 0.25rem;
   display: inline-block;
-  padding: 0.5rem 1rem;
+  padding: 0.35rem 0.75rem;
   margin-right: 1rem;
   margin-bottom: 1rem;
   white-space: nowrap;
@@ -47,6 +61,7 @@ const ImageLink = styled(Link)`
 
 export default function ImageCard({ image, index }: Props) {
   let { name, author, keywords, kind, description } = image
+  const theme = useTheme()
 
   return (
     <ImageLink to={`/package/${kind}/${index}`}>
@@ -56,7 +71,12 @@ export default function ImageCard({ image, index }: Props) {
             <Grid item xs={12} className="px-0">
               <Title className="mb-2">{name}</Title>
               {keywords.map((keyword, index) => (
-                <Tag data-name="hubImageTags" key={index}>
+                <Tag
+                  data-name="hubImageTags"
+                  key={index}
+                  filterColorIndex={index}
+                  theme={theme}
+                >
                   {keyword}
                 </Tag>
               ))}
@@ -66,7 +86,6 @@ export default function ImageCard({ image, index }: Props) {
             </Grid>
             <Grid item sm={12} className="px-0 pb-0">
               <div className="description-container">
-                <div className="description-overlay" />
                 <div className="app-description">{description}</div>
               </div>
             </Grid>

@@ -12,11 +12,12 @@ const BITTER_SWEET = "#ff6666"
 const SUDOBANGBANG = "#ff4540"
 
 const BLACK = "#000000"
+const DEFAULTIAN_GREY = "#212121"
 
 const WHITE = "#FFFFFF"
 
 const IVORY_EGG = "#F9F9F9"
-const CODE_BACKGROUND = "#E8E8E8"
+const CODE_BACKGROUND = "#E8E8E855"
 const NOT_SNOW_WHITE_GRAY = "#E5E5E5"
 const DADGREY = "#DAD7FE"
 const QUICK_SILVER = "#A6A6A6"
@@ -25,6 +26,13 @@ const DEBUG_GREY = "#7E7278"
 const PAPER_BACKGROUND = "#f5f6f8"
 
 const DISABLED_GREY = "#9E9E9E"
+
+const CANCRO = "#E6F5F5"
+const ARIEL_SCALE = "#1EA5A5"
+const SKY_CLOUD = "#EFF2FE"
+const SEAWATER_POPSICLE = "#8A8AE9"
+const BANANA_YOGURT_SWIRL = "#FFFAE2"
+const HOODIE_MASCOT = "#EE9518"
 
 const theme = createTheme({
   palette: {
@@ -45,6 +53,7 @@ const theme = createTheme({
     },
     text: {
       primary: BLACK,
+      secondary: DEFAULTIAN_GREY,
     },
     error: {
       main: BITTER_SWEET,
@@ -68,6 +77,24 @@ const theme = createTheme({
       600: QUICK_SILVER,
       700: DEBUG_GREY,
     },
+    filters: [
+      {
+        main: CANCRO,
+        contrastText: ARIEL_SCALE,
+      },
+      {
+        main: SKY_CLOUD,
+        contrastText: SEAWATER_POPSICLE,
+      },
+      {
+        main: CANCRO,
+        contrastText: ARIEL_SCALE,
+      },
+      {
+        main: BANANA_YOGURT_SWIRL,
+        contrastText: HOODIE_MASCOT,
+      },
+    ],
   },
 })
 export { theme }

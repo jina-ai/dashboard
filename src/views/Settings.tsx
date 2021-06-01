@@ -9,10 +9,7 @@ class SettingsView extends React.Component {
     return (
       <Container className="main-content-container px-4">
         <Grid container className="page-header mb-4">
-          <PageTitle
-            title="Settings"
-            className="text-sm-left mb-3"
-          />
+          <PageTitle title="Settings" />
         </Grid>
         <SettingsCard />
       </Container>

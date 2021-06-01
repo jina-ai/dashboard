@@ -81,7 +81,7 @@ const DashboardLayout = (props: IconSideBarLayoutProps) => {
     dispatch(connectJinaD())
   }
 
-  const logOut = () => {}
+  const logOut = () => { }
 
   const _toggleSidebar = () => {
     dispatch(toggleSidebar())
@@ -113,16 +113,6 @@ const DashboardLayout = (props: IconSideBarLayoutProps) => {
   const { children, usesAuth, usesConnection, navigateButton } = props
   return (
     <>
-      <TopNavBar
-        user={user}
-        usesAuth={usesAuth}
-        usesConnection={usesConnection}
-        logOut={logOut}
-        toggleSidebar={_toggleSidebar}
-        reconnect={reconnect}
-        connected={connected}
-        navigateButton={navigateButton}
-      />
       <Grid container>
         <Grid item xs={2}>
           <SideNavBar
@@ -131,6 +121,16 @@ const DashboardLayout = (props: IconSideBarLayoutProps) => {
           />
         </Grid>
         <Grid item xs={10}>
+          <TopNavBar
+            user={user}
+            usesAuth={usesAuth}
+            usesConnection={usesConnection}
+            logOut={logOut}
+            toggleSidebar={_toggleSidebar}
+            reconnect={reconnect}
+            connected={connected}
+            navigateButton={navigateButton}
+          />
           {banners.map((banner, index) => (
             <InfoToast data={banner} index={index} key={index} />
           ))}

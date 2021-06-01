@@ -2,10 +2,10 @@ import React from "react";
 import styled from "@emotion/styled"
 
 const LogoContainer = styled.div`
-  padding: .5rem 1rem;
+  padding: .5rem 1.5rem;
 `
 const Logo = styled.img`
-  width: 4rem;
+  width: 4.5rem;
 `
 
 const NavLogo = () => {

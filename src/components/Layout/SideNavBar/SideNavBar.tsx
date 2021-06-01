@@ -1,6 +1,7 @@
 import React from "react"
 import styled from "@emotion/styled"
 import SidebarNavItem from "./SidebarNavItem"
+import NavLogo from "../SideNavBar/NavLogo"
 import { NavItem } from "../../../redux/global/global.types"
 
 type Props = {
@@ -16,6 +17,7 @@ const SideNavBarContainer = styled.div`
 
 const SideNavBar = ({ sidebarNavItems: items, toggleSidebar }: Props) => (
   <SideNavBarContainer>
+    <NavLogo />
     {typeof items !== "undefined" && items.length && (
       <div>
         {items.map((item, idx) => (
