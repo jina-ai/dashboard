@@ -22,7 +22,7 @@ function ExpandingSearchbar({ onSearch, value, onChange }: Props) {
 
   const SearchBar = styled.div`
     display: flex;
-    background-color: ${(props) => props.theme.palette.grey[400]};
+    background-color: ${(props) => props.theme.palette.grey[100]};
     border-radius: 2px;
   `
   return (
