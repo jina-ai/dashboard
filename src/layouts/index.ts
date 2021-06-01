@@ -1,4 +1,4 @@
-import IconSidebar from "./IconSidebar";
+import IconSidebar from "./DashboardLayout";
 import HubLayout from "./HubLayout";
 
 export { IconSidebar,HubLayout };

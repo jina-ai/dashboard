@@ -6,8 +6,8 @@ import {
   Redirect,
 } from "react-router-dom";
 import styled from "@emotion/styled";
-import MainSidebar from "../components/Layout/MainSidebar/MainSidebar";
-import { TNavItem } from "../redux/global/global.types";
+import MainSidebar from "../components/Layout/SideNavBar/SideNavBar";
+import { NavItem } from "../redux/global/global.types";
 import { styleGuideRoutes } from "../routes/Styleguide";
 import { mediaQuery } from "../styles/mediaQuery";
 
@@ -31,7 +31,7 @@ const Styleguide = () => {
         <Container>
           <Aside>
             <MainSidebar
-              sidebarNavItems={styleGuideRoutes as TNavItem[]}
+              sidebarNavItems={styleGuideRoutes as NavItem[]}
               menuVisible={true}
               toggleSidebar={() => undefined}
             />

@@ -1,9 +1,8 @@
 import React, { useState } from "react"
-import Container from "@material-ui/core/Container"
 import Grid from "@material-ui/core/Grid"
 
-import { MainNavbar } from "../components/Layout/MainNavbar/MainNavbar"
-import MainSidebar from "../components/Layout/MainSidebar/MainSidebar"
+import TopNavBar from "../components/Layout/TopNavBar/TopNavBar"
+import MainSidebar from "../components/Layout/SideNavBar/SideNavBar"
 import MainFooter from "../components/Layout/MainFooter"
 import { CookiesBanner } from "../components/Common/CookiesBanner"
 import { InfoToast } from "../components/Common/InfoToast"
@@ -20,7 +19,6 @@ import {
   selectBanners,
   selectConnectionStatus,
   selectLoading,
-  selectMenuState,
   selectModal,
   selectModalParams,
   selectSidebarItems,
@@ -46,14 +44,13 @@ type IconSideBarLayoutProps = {
   navigateButton?: () => React.ReactNode
 }
 
-const IconSidebarLayout = (props: IconSideBarLayoutProps) => {
+const DashboardLayout = (props: IconSideBarLayoutProps) => {
   const modal = useSelector(selectModal)
   const modalParams = useSelector(selectModalParams)
   const loading = useSelector(selectLoading)
   const banners = useSelector(selectBanners)
   const connected = useSelector(selectConnectionStatus)
   const loggerEnabled = logger.isEnabled()
-  const menuVisible = useSelector(selectMenuState)
   const sidebarNavItems = useSelector(selectSidebarItems)
   const user = useSelector(selectUser)
   const [acceptedCookies, setAcceptedCookies] = useState<boolean>(
@@ -115,24 +112,25 @@ const IconSidebarLayout = (props: IconSideBarLayoutProps) => {
 
   const { children, usesAuth, usesConnection, navigateButton } = props
   return (
-    <Container className="icon-sidebar-nav">
+    <>
+      <TopNavBar
+        user={user}
+        usesAuth={usesAuth}
+        usesConnection={usesConnection}
+        logOut={logOut}
+        toggleSidebar={_toggleSidebar}
+        reconnect={reconnect}
+        connected={connected}
+        navigateButton={navigateButton}
+      />
       <Grid container>
+        <Grid item xs={2}>
         <MainSidebar
           sidebarNavItems={sidebarNavItems}
-          menuVisible={menuVisible}
           toggleSidebar={_toggleSidebar}
         />
-        <Grid className="main-content col">
-          <MainNavbar
-            user={user}
-            usesAuth={usesAuth}
-            usesConnection={usesConnection}
-            logOut={logOut}
-            toggleSidebar={_toggleSidebar}
-            reconnect={reconnect}
-            connected={connected}
-            navigateButton={navigateButton}
-          />
+        </Grid>
+        <Grid item xs={10}>
           {banners.map((banner, index) => (
             <InfoToast data={banner} index={index} key={index} />
           ))}
@@ -141,14 +139,14 @@ const IconSidebarLayout = (props: IconSideBarLayoutProps) => {
           )}
           {children}
           {!acceptedCookies && <CookiesBanner acceptCookies={acceptCookies} />}
-          <MainFooter
-            loggerEnabled={loggerEnabled}
-            enableLogger={enableLogger}
-            disableLogger={disableLogger}
-            exportLogs={exportLogs}
-          />
         </Grid>
       </Grid>
+        <MainFooter
+          loggerEnabled={loggerEnabled}
+          enableLogger={enableLogger}
+          disableLogger={disableLogger}
+          exportLogs={exportLogs}
+        />
       <LogDetails
         open={modal === "logDetails"}
         closeModal={_closeModal}
@@ -186,8 +184,8 @@ const IconSidebarLayout = (props: IconSideBarLayoutProps) => {
           modalParams={modalParams}
         />
       )}
-    </Container>
+    </>
   )
 }
 
-export default IconSidebarLayout
+export default DashboardLayout

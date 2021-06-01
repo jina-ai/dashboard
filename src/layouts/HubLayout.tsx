@@ -2,7 +2,7 @@ import React, { useState } from "react"
 import   Container  from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid"
 
-import { MainNavbar, User } from "../components/Layout/MainNavbar/MainNavbar"
+import TopNavBar from "../components/Layout/TopNavBar/TopNavBar"
 import MainFooter from "../components/Layout/MainFooter"
 import { CookiesBanner } from "../components/Common/CookiesBanner"
 import { InfoToast } from "../components/Common/InfoToast"
@@ -15,6 +15,7 @@ import { useDispatch, useSelector } from "react-redux"
 import store from "../redux"
 import { showBanner } from "../redux/global/global.actions"
 import { selectBanners, selectModal } from "../redux/global/global.selectors"
+import { User } from "../redux/global/global.types";
 
 export type HubLayoutProps = {
   children: React.ReactNode
@@ -29,14 +30,12 @@ const HubLayout = (props: HubLayoutProps) => {
   const loggerEnabled = logger.isEnabled()
   const user: User = {
     displayName: "dummyUser",
-    emails: [{ value: "dummyUser@dummy.com" }],
+    emails: ["dummyUser@dummy.com"],
     id: "idDummy",
     nodeId: "idDummy_node",
-    photos: [{ value: "dummyPhoto" }],
     profileUrl: "dummyUrl",
     provider: "dummyProvider",
     username: "dummyUsername",
-    _json: "dummyJSON",
     _raw: "dummyRaw",
   }
   const [acceptedCookies, setAcceptedCookies] = useState<boolean>(
@@ -81,7 +80,7 @@ const HubLayout = (props: HubLayoutProps) => {
     <Container>
       <Grid container>
         <Grid item className="main-content col">
-          <MainNavbar
+          <TopNavBar
             usesAuth={usesAuth}
             usesConnection={usesConnection}
             logOut={logOut}

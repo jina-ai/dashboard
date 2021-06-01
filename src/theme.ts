@@ -2,6 +2,7 @@ import { createTheme } from "@material-ui/core"
 
 const SCOOTER_GREEN = "#32C8CD"
 const PERSIAN_GREEN = "#009999"
+const PERSIAN_GREEN_TRANSPARENT = "#0099991A"
 const SKY_DIVING_IN_THE_BLUE = "#007AFF"
 
 const HONEYBEE = "#FFFAE2"
@@ -29,6 +30,7 @@ const theme = createTheme({
   palette: {
     primary: {
       main: PERSIAN_GREEN,
+      light: PERSIAN_GREEN_TRANSPARENT,
     },
     secondary: {
       light: HONEYBEE,

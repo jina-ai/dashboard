@@ -1,4 +1,9 @@
-import { GlobalState, TNavItem } from "./global.types"
+import { GlobalState, NavItem } from "./global.types"
+import Home from "@material-ui/icons/Home"
+import Chart from "@material-ui/icons/InsertChart"
+import Layers from "@material-ui/icons/Layers"
+import Settings from "@material-ui/icons/Settings"
+import Help from "@material-ui/icons/Help"
 
 export const HANDLE_CONNECTION_STATUS = "HANDLE_CONNECTION_STATUS"
 export const TOGGLE_SIDE_BAR = "TOGGLE_SIDE_BAR"
@@ -15,41 +20,41 @@ export const SETUSER = "SETUSER"
 
 export const HIDE_BANNER_TIMEOUT = 5000
 
-const navItems: TNavItem[] = [
+const navItems: NavItem[] = [
   {
     title: "Home",
     to: "/home",
-    iconName: "home",
+    icon: Home,
     matches: ["home"],
   },
   {
     title: "Log Stream",
     to: "/logs",
-    iconName: "insert_comment",
+    icon: Chart,
     matches: ["logs"],
   },
   {
     title: "Flow Design",
     to: "/flow",
-    iconName: "device_hub",
+    icon: Home,
     matches: ["flow"],
   },
   {
     title: "Hub",
     to: "/hub",
-    iconName: "store",
+    icon: Layers,
     matches: ["hub", "package"],
   },
   {
     title: "Settings",
     to: "/settings",
-    iconName: "settings",
+    icon: Settings,
     matches: ["settings"],
   },
   {
     title: "Help",
     to: "/help",
-    iconName: "help",
+    icon: Help,
     matches: ["help"],
   },
 ]

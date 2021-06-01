@@ -3,10 +3,11 @@ import { UserActions } from "./UserActions"
 import { useDispatch } from "react-redux"
 import { logout } from "../../../redux/global/global.actions"
 import { User } from "../../../redux/global/global.types"
-import { AppBar, Toolbar } from "@material-ui/core"
+import  AppBar from "@material-ui/core/AppBar"
 import LanguageIcon from "@material-ui/icons/Language"
 import { green, red } from "@material-ui/core/colors"
 import styled from "@emotion/styled"
+import NavLogo from "./NavLogo"
 
 type Props = {
   usesAuth: boolean
@@ -20,35 +21,40 @@ type Props = {
   showLogo?: boolean
   navigateButton?: () => React.ReactNode
 }
-
+const NavBar = styled(AppBar)`
+  background: ${props => props.theme.palette.background.default};
+  box-shadow: none;
+  display: flex;
+  flex-direction: row;
+  position: unset;
+ `
 const NavigationItems = styled.div`
   margin-left: auto;
   display: flex;
   align-items: center;
 `
 
-function MainNavbar({ usesConnection, reconnect, connected }: Props) {
+function TopNavBar({ usesConnection, reconnect, connected }: Props) {
   const dispatch = useDispatch()
 
   return (
-    <AppBar position="static" elevation={0} color={"transparent"}>
-      <Toolbar>
-        <NavigationItems>
-          {usesConnection && (
-            <LanguageIcon
-              onClick={reconnect}
-              style={connected ? { color: green[500] } : { color: red[500] }}
-            />
-          )}
-          <UserActions
-            userActionsVisible={false}
-            logOut={() => dispatch(logout())}
-            toggleUserActions={() => {}}
+    <NavBar>
+      <NavLogo />
+      <NavigationItems>
+        {usesConnection && (
+          <LanguageIcon
+            onClick={reconnect}
+            style={connected ? { color: green[500] } : { color: red[500] }}
           />
-        </NavigationItems>
-      </Toolbar>
-    </AppBar>
+        )}
+        <UserActions
+          userActionsVisible={false}
+          logOut={() => dispatch(logout())}
+          toggleUserActions={() => { }}
+        />
+      </NavigationItems>
+    </NavBar>
   )
 }
 
-export { MainNavbar }
+export default TopNavBar

@@ -11,6 +11,7 @@ import {
   SETUSER,
 } from "./global.constants"
 import { handleNewLogAction } from "../logStream/logStream.types"
+import { SvgIconComponent } from "@material-ui/icons"
 
 export type ConnectionCallback = (data: {
   connected: boolean
@@ -41,15 +42,6 @@ type To =
   | "/typography"
   | "/misc"
 
-type IconName =
-  | "home"
-  | "insert_comment"
-  | "assessment"
-  | "device_hub"
-  | "store"
-  | "settings"
-  | "help"
-
 type Match =
   | "home"
   | "logs"
@@ -63,10 +55,10 @@ type Match =
   | "typography"
   | "misc"
 
-export type TNavItem = {
+export type NavItem = {
   title: Title
   to: To
-  iconName?: IconName
+  icon?: SvgIconComponent
   matches: Match[]
 }
 
@@ -118,7 +110,7 @@ export type GlobalState = {
   modal: Modal
   modalParams: ModalParams
   menuVisible: boolean
-  navItems: TNavItem[]
+  navItems: NavItem[]
   processes: Processes
   currentTab: Tap
 }
