@@ -2,6 +2,7 @@ import React from "react"
 import ImageCard from "./ImageCard"
 import styled from "@emotion/styled"
 import Card from "@material-ui/core/Card"
+import Grid from "@material-ui/core/Grid"
 import { useSelector } from "react-redux"
 import {
   selectHubImages,
@@ -22,17 +23,6 @@ const ImageListPreviewContainer = styled(Card)`
   padding: 1.5rem;
   background-color: ${(props) => props.theme.palette.background.default};
 `
-const ImageListContainer = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  align-items: space-around;
-`
-const Col = styled.div`
-  width: 30%;
-  margin-bottom: 1.5rem;
-`
-
 const HubImagesListPreview = () => {
   const hubImages = useSelector(selectHubImages).slice(0, 6)
   const isHubImagesLoading = useSelector(selectIsHubImagesLoading)
@@ -44,15 +34,17 @@ const HubImagesListPreview = () => {
       ) : (
         <>
           <SubTitle data-name="hubImagesPreviewSubtitle">Latest</SubTitle>
-          <ImageListContainer>
+          <Grid container spacing={2}>
             {hubImages.map((image, index) => (
-              <Col
+              <Grid
+                item
+                xs={4}
                 key={`${image.name}.${image.version}.${image["jina-version"]}`}
               >
                 <ImageCard image={image} index={index} />
-              </Col>
+              </Grid>
             ))}
-          </ImageListContainer>
+          </Grid>
         </>
       )}
     </ImageListPreviewContainer>

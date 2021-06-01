@@ -6,6 +6,7 @@ import {
   Videocam as VideoIcon,
   Audiotrack as AudioIcon,
 } from "@material-ui/icons"
+import Grid from "@material-ui/core/Grid"
 import { SubTitle } from "./HubImagesListPreview"
 
 const recommendedCategories = [
@@ -33,7 +34,6 @@ const RecommendedCategoryItem = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  flex-grow: 1;
   svg {
     width: 3rem;
     height: 3rem;
@@ -44,22 +44,20 @@ const CategoryLabel = styled.span`
   font-size: 1.5rem;
   color: ${(props) => props.theme.palette.action.disabled};
 `
-const FlexContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-`
 
 const HubRecommendedCategories = () => (
   <CardWithOutline>
     <SubTitle>Recommended Categories</SubTitle>
-    <FlexContainer>
+    <Grid container>
       {recommendedCategories.map((category, index) => (
-        <RecommendedCategoryItem key={index}>
-          <category.icon color="primary" />
-          <CategoryLabel>{category.label}</CategoryLabel>
-        </RecommendedCategoryItem>
+        <Grid item xs={3} key={index}>
+          <RecommendedCategoryItem>
+            <category.icon color="primary" />
+            <CategoryLabel>{category.label}</CategoryLabel>
+          </RecommendedCategoryItem>
+        </Grid>
       ))}
-    </FlexContainer>
+    </Grid>
   </CardWithOutline>
 )
 

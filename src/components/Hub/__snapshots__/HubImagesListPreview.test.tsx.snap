@@ -11,7 +11,7 @@ exports[`HubImagesListPreview 1`] = `
     Latest
   </div>
   <div
-    className="css-mzbcm8"
+    className="MuiGrid-root MuiGrid-container MuiGrid-spacing-xs-2 css-f1hklk-MuiGrid-root"
   />
 </div>
 `;

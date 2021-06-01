@@ -10,7 +10,8 @@ const HubOverviewActionCard = styled(Card)`
   justify-content: space-between;
   width: 100%;
   padding: 1.5rem;
-  background: linear-gradient(269.3deg, #009999 16.55%, #4db6ac 89.83%);
+  background: ${(props) =>
+    `linear-gradient(269.3deg, ${props.theme.palette.primary.main} 16.55%, ${props.theme.palette.primary.light} 89.83%)`};
 `
 const HubOverviewActionCardContent = styled.div`
   flex-direction: column;
