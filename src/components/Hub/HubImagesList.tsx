@@ -20,33 +20,23 @@ import styled from "@emotion/styled"
 import { Grid } from "@material-ui/core"
 import HubSortDropdown from "./HubSortDropdown"
 import { sortOptions } from "../../redux/hub/hub.constants"
+import {
+  sortHubImagesAuthorsDecreasing,
+  sortHubImagesAuthorsIncreasing,
+  sortHubImagesNamesDecreasing,
+  sortHubImagesNamesIncreasing,
+} from "../../helpers/hubHelpers"
 
 const sortHubImages = (images: HubImage[], selectedSortOption: string) => {
   switch (selectedSortOption) {
     case "name increasing":
-      return images.sort((imageA, imageB) =>
-        imageA.name < imageB.name ? -1 : imageA.name > imageB.name ? 1 : 0
-      )
+      return sortHubImagesNamesIncreasing(images)
     case "name decreasing":
-      return images.sort((imageA, imageB) =>
-        imageA.name > imageB.name ? -1 : imageA.name < imageB.name ? 1 : 0
-      )
+      return sortHubImagesNamesDecreasing(images)
     case "author increasing":
-      return images.sort((imageA, imageB) =>
-        imageA.author < imageB.author
-          ? -1
-          : imageA.author > imageB.author
-          ? 1
-          : 0
-      )
+      return sortHubImagesAuthorsIncreasing(images)
     case "author decreasing":
-      return images.sort((imageA, imageB) =>
-        imageA.author > imageB.author
-          ? -1
-          : imageA.author < imageB.author
-          ? 1
-          : 0
-      )
+      return sortHubImagesAuthorsDecreasing(images)
   }
 }
 
@@ -88,6 +78,8 @@ const HubImagesList = () => {
   const [selectedSortOption, setSelectedSortOption] = useState(sortOptions[0])
   const hubImagesUnsorted = useSelector(selectHubImages)
   const hubImages = sortHubImages(hubImagesUnsorted, selectedSortOption)
+
+  console.log(hubImages)
 
   if (hubImages?.length === 0 && !isHubImagesLoading && !hubImagesFetchError) {
     dispatch(fetchHubImages())
