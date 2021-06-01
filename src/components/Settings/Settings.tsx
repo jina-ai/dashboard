@@ -73,7 +73,7 @@ function SettingsCard() {
                 </i>
               </strong>
             </Grid>
-            <Grid xs={6} className="text-right">
+            <Grid item xs={6} className="text-right">
               <Button onClick={saveChanges}>Save Changes</Button>
             </Grid>
           </Grid>

@@ -1,6 +1,7 @@
 import { createTheme } from "@material-ui/core"
 
 const SCOOTER_GREEN = "#32C8CD"
+const BOOTSTRAP_BLUE = "#007BFF"
 const PERSIAN_GREEN = "#009999"
 const PERSIAN_GREEN_TRANSPARENT = "#0099991A"
 const SKY_DIVING_IN_THE_BLUE = "#007AFF"
@@ -64,6 +65,7 @@ const theme = createTheme({
     },
     success: {
       main: SCOOTER_GREEN,
+      dark: BOOTSTRAP_BLUE,
     },
     info: {
       main: PERSIAN_GREEN,

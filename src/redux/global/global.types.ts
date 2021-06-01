@@ -42,7 +42,7 @@ type To =
   | "/typography"
   | "/misc"
 
-type Match =
+export type Match =
   | "home"
   | "logs"
   | "task"

@@ -1,7 +1,5 @@
 import React from "react";
-import Container from "@material-ui/core/Container";
-import BottomNavigation from "@material-ui/core/BottomNavigation";
-import Grid from "@material-ui/core/Grid"
+import styled from "@emotion/styled"
 
 type MenuItems = {
   title: string;
@@ -16,6 +14,15 @@ type Props = {
   disableLogger: () => void;
   exportLogs: () => void;
 };
+const Footer = styled.footer`
+  display: flex;
+  justify-content: space-around;
+`
+const Link = styled.a`
+  text-decoration: none;
+  padding: .625rem;
+  color: ${props => props.theme.palette.success.dark};
+`
 
 const MainFooter = ({
   menuItems,
@@ -25,43 +32,16 @@ const MainFooter = ({
   disableLogger,
   exportLogs,
 }: Props) => (
-  <footer className="main-footer d-flex p-2 px-3">
-    <Container>
-      <Grid>
-        <BottomNavigation>
-          {menuItems.map((item, idx) => (
-            <a key={idx} href={item.to} className="nav-link">
-              {item.title}
-            </a>
-          ))}
-          {loggerEnabled ? (
-            <>
-              <span
-                className="nav-link text-warning cursor-pointer"
-                onClick={disableLogger}
-              >
-                Exit Debug Mode
-              </span>
-              <span
-                className="nav-link text-warning cursor-pointer"
-                onClick={exportLogs}
-              >
-                Export Debug Data
-              </span>
-            </>
-          ) : (
-            <span
-              className="nav-link text-warning cursor-pointer"
-              onClick={enableLogger}
-            >
-              Debug Mode
-            </span>
-          )}
-        </BottomNavigation>
-        <span className="copyright ml-auto my-auto mr-2">{copyright}</span>
-      </Grid>
-    </Container>
-  </footer>
+  <Footer>
+    <div>
+      {menuItems.map((item, idx) => (
+        <Link key={idx} href={item.to}>
+          {item.title}
+        </Link>
+      ))}
+    </div>
+    <span>{copyright}</span>
+  </Footer>
 );
 
 MainFooter.defaultProps = {

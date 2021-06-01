@@ -9,7 +9,7 @@ type Props = {
   toggleSidebar: () => void
 }
 const SideNavBarContainer = styled.div`
-  height: 100%;
+  height: 100vh;
   background-color: ${(props) => props.theme.palette.background.default};
   border: 1px solid ${(props) => props.theme.palette.grey[300]};
   border-top: 0;

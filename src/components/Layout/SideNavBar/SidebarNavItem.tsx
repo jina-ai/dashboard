@@ -2,7 +2,7 @@
 import React from "react";
 import styled from "@emotion/styled"
 import { NavLink, useLocation } from "react-router-dom";
-import { NavItem } from "../../../redux/global/global.types";
+import { Match, NavItem } from "../../../redux/global/global.types";
 
 type Props = {
   item: NavItem;
@@ -10,7 +10,7 @@ type Props = {
 };
 
 type NavLinkWithIconProps = {
-  active?: boolean;
+  selected?: boolean;
 }
 const NavLinkWithIcon = styled(NavLink)<NavLinkWithIconProps>`
   display: flex;
@@ -19,7 +19,7 @@ const NavLinkWithIcon = styled(NavLink)<NavLinkWithIconProps>`
   border-radius: .25rem;
   ${props => {
     const {palette} = props.theme
-    return props.active ?
+    return props.selected ?
       `color: ${palette.primary.main};
       background-color: ${palette.primary.light};`
     : `color: ${palette.text.secondary};`}
@@ -33,15 +33,12 @@ const NavLinkIconContainer = styled.div`
 
 const SidebarNavItem = ({ item, toggleSidebar }: Props) => {
   const path = useLocation()?.pathname?.substring(1);
-  let active = false;
-  item.matches.forEach((match) => {
-    if (path === match) active = true;
-  });
+  const selected = item.matches.includes(path as Match)
 
   return (
       <NavLinkWithIcon
         to={item.to}
-        active={active}
+        selected={selected}
         onClick={toggleSidebar}
       >
         <NavLinkIconContainer>{item.icon && ( <item.icon />)}</NavLinkIconContainer>
