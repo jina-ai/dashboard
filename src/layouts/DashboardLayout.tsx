@@ -2,7 +2,7 @@ import React, { useState } from "react"
 import Grid from "@material-ui/core/Grid"
 
 import TopNavBar from "../components/Layout/TopNavBar/TopNavBar"
-import MainSidebar from "../components/Layout/SideNavBar/SideNavBar"
+import SideNavBar from "../components/Layout/SideNavBar/SideNavBar"
 import MainFooter from "../components/Layout/MainFooter"
 import { CookiesBanner } from "../components/Common/CookiesBanner"
 import { InfoToast } from "../components/Common/InfoToast"
@@ -125,10 +125,10 @@ const DashboardLayout = (props: IconSideBarLayoutProps) => {
       />
       <Grid container>
         <Grid item xs={2}>
-        <MainSidebar
-          sidebarNavItems={sidebarNavItems}
-          toggleSidebar={_toggleSidebar}
-        />
+          <SideNavBar
+            sidebarNavItems={sidebarNavItems}
+            toggleSidebar={_toggleSidebar}
+          />
         </Grid>
         <Grid item xs={10}>
           {banners.map((banner, index) => (
@@ -141,12 +141,12 @@ const DashboardLayout = (props: IconSideBarLayoutProps) => {
           {!acceptedCookies && <CookiesBanner acceptCookies={acceptCookies} />}
         </Grid>
       </Grid>
-        <MainFooter
-          loggerEnabled={loggerEnabled}
-          enableLogger={enableLogger}
-          disableLogger={disableLogger}
-          exportLogs={exportLogs}
-        />
+      <MainFooter
+        loggerEnabled={loggerEnabled}
+        enableLogger={enableLogger}
+        disableLogger={disableLogger}
+        exportLogs={exportLogs}
+      />
       <LogDetails
         open={modal === "logDetails"}
         closeModal={_closeModal}
