@@ -50,62 +50,29 @@ const sortHubImages = (images: HubImage[], selectedSortOption: string) => {
   }
 }
 
-const HubLibraryContainer: React.FC = ({ children }) => {
-  const HubLibraryContainerStyled = styled(Grid)`
-    background-color: ${(props) => props.theme.palette.background.default};
-    border: 1px solid ${(props) => props.theme.palette.grey[300]};
-  `
-  return (
-    <HubLibraryContainerStyled container>{children}</HubLibraryContainerStyled>
-  )
-}
+const HubLibraryGrid = styled(Grid)`
+  background-color: ${(props) => props.theme.palette.background.default};
+  border: 1px solid ${(props) => props.theme.palette.grey[300]};
+`
 
-const HubLibraryHeader: React.FC = () => {
-  const HubLibraryHeaderStyled = styled(Grid)`
-    padding: 16px;
-    border-bottom: 1px solid ${(props) => props.theme.palette.grey[300]};
-  `
-  return (
-    <HubLibraryHeaderStyled item xs={12}>
-      <h3 style={{ margin: 0 }}>
-        Hub / <span style={{ fontWeight: 700 }}>Library</span>
-      </h3>
-    </HubLibraryHeaderStyled>
-  )
-}
+const HubLibraryHeaderGrid = styled(Grid)`
+  padding: 16px;
+  border-bottom: 1px solid ${(props) => props.theme.palette.grey[300]};
+`
 
-const FilterContainer: React.FC = ({ children }) => {
-  const FilterContainerStyled = styled(Grid)`
-    padding: 24px 16px;
-    border-right: 1px solid ${(props) => props.theme.palette.grey[300]};
-  `
-  return (
-    <FilterContainerStyled container item xs={3}>
-      {children}
-    </FilterContainerStyled>
-  )
-}
+const FilterContainerGrid = styled(Grid)`
+  padding: 24px 16px;
+  border-right: 1px solid ${(props) => props.theme.palette.grey[300]};
+`
 
-const ImagesContainer: React.FC = ({ children }) => {
-  const ImagesContainerStyled = styled(Grid)`
-    padding: 24px 16px;
-  `
-  return (
-    <ImagesContainerStyled container item xs={9}>
-      {children}
-    </ImagesContainerStyled>
-  )
-}
-const ImagesBar: React.FC = ({ children }) => {
-  const ImagesBarStyled = styled(Grid)`
-    margin-bottom: 24px;
-  `
-  return (
-    <ImagesBarStyled container item xs={12}>
-      {children}
-    </ImagesBarStyled>
-  )
-}
+const ImagesContainerGrid = styled(Grid)`
+  padding: 24px 16px;
+`
+
+const ImagesBarGrid = styled(Grid)`
+  margin-bottom: 24px;
+`
+
 const EmptyResultMessage = styled.h3`
   margin-top: 25px;
   text-align: center;
@@ -150,17 +117,21 @@ const HubImagesList = () => {
       {isHubImagesLoading ? (
         <SpinningLoader />
       ) : (
-        <HubLibraryContainer>
-          <HubLibraryHeader>Hub/Library</HubLibraryHeader>
-          <FilterContainer>
+        <HubLibraryGrid container>
+          <HubLibraryHeaderGrid item xs={12}>
+            <h3 style={{ margin: 0 }}>
+              Hub / <span style={{ fontWeight: 700 }}>Library</span>
+            </h3>
+          </HubLibraryHeaderGrid>
+          <FilterContainerGrid container item xs={3}>
             <HubFilters
               filters={filters}
               setFilters={setFilters}
               getHubImages={getHubImages}
             />
-          </FilterContainer>
-          <ImagesContainer>
-            <ImagesBar>
+          </FilterContainerGrid>
+          <ImagesContainerGrid container item xs={9}>
+            <ImagesBarGrid container item xs={12}>
               <Grid item xs={9}>
                 <HubSortDropdown
                   selectedSortOption={selectedSortOption}
@@ -175,7 +146,7 @@ const HubImagesList = () => {
                   onSearch={onSearch}
                 />
               </Grid>
-            </ImagesBar>
+            </ImagesBarGrid>
 
             {hubImages?.length ? (
               <Grid spacing={2} item container data-name="hubImagesList">
@@ -194,8 +165,8 @@ const HubImagesList = () => {
                 No images matching your search were found
               </EmptyResultMessage>
             )}
-          </ImagesContainer>
-        </HubLibraryContainer>
+          </ImagesContainerGrid>
+        </HubLibraryGrid>
       )}
     </>
   )
