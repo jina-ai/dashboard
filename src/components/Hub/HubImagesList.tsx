@@ -46,7 +46,7 @@ const HubLibraryGrid = styled(Grid)`
 `
 
 const HubLibraryHeaderGrid = styled(Grid)`
-  padding: 16px;
+  padding: 1rem;
   border-bottom: 1px solid ${(props) => props.theme.palette.grey[300]};
 `
 
@@ -78,8 +78,6 @@ const HubImagesList = () => {
   const [selectedSortOption, setSelectedSortOption] = useState(sortOptions[0])
   const hubImagesUnsorted = useSelector(selectHubImages)
   const hubImages = sortHubImages(hubImagesUnsorted, selectedSortOption)
-
-  console.log(hubImages)
 
   if (hubImages?.length === 0 && !isHubImagesLoading && !hubImagesFetchError) {
     dispatch(fetchHubImages())

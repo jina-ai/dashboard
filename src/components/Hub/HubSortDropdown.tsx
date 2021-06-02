@@ -1,14 +1,12 @@
 import React from "react"
 import {
-  createStyles,
   FormControl,
   InputBase,
   InputLabel,
   MenuItem,
   Select,
-  Theme,
-  withStyles,
 } from "@material-ui/core"
+import styled from "@emotion/styled/macro"
 
 type Props = {
   selectedSortOption: string
@@ -16,16 +14,20 @@ type Props = {
   handleSortOption: (event: React.ChangeEvent<{ value: string }>) => void
 }
 
-const HubSortInput = withStyles((theme: Theme) =>
-  createStyles({
-    input: {
-      position: "relative",
-      borderRadius: 4,
-      border: "1px solid #E5E5E5",
-      padding: "8px 16px",
-    },
-  })
-)(InputBase)
+const HubSortInput = styled(InputBase)`
+  input {
+    position: relative;
+    borderradius: 4px;
+    border: 1px solid #e5e5e5;
+    padding: 8px 16px;
+  }
+`
+
+const SortLabel = styled(InputLabel)`
+  backgroundcolor: "white";
+  padding: 0.25rem;
+  margintop: -0.125rem;
+`
 
 const HubSortDropdown = ({
   selectedSortOption,
@@ -34,12 +36,7 @@ const HubSortDropdown = ({
 }: Props) => {
   return (
     <FormControl>
-      <InputLabel
-        style={{ backgroundColor: "white", padding: 4, marginTop: -2 }}
-        shrink
-      >
-        Sort
-      </InputLabel>
+      <SortLabel shrink>Sort</SortLabel>
       <Select
         value={selectedSortOption}
         onChange={handleSortOption}
