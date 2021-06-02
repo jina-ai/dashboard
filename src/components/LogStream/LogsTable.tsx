@@ -1,15 +1,14 @@
 import React, { useState, useCallback, useEffect, useRef } from "react"
 import _ from "lodash"
 import { FixedSizeList as List } from "react-window"
-import  Card from "@material-ui/core/Card"
-import  CardHeader from "@material-ui/core/CardHeader"
-import  CardContent from "@material-ui/core/CardContent"
+import CardContent from "@material-ui/core/CardContent"
 import Grid from "@material-ui/core/Grid"
 import AutoSizer from "react-virtualized-auto-sizer"
 import FlexSearch from "flexsearch"
 import { saveAs } from "file-saver"
 
 import { MultiFilterSelect } from "../Common/MultiFilterSelect"
+import { CardWithOutline } from "../Common/Card"
 import { LogItem } from "./LogItem"
 import { LogsTableHeader } from "./LogsTableHeader"
 import {
@@ -327,8 +326,8 @@ function LogsTable({ data, showLogDetails }: Props) {
   const secondCol = 300
 
   return (
-    <Card className="mb-4">
-      <CardHeader className="p-0">
+    <CardWithOutline>
+      <div>
         <Grid container className="p-3">
           <Grid item md={8} data-name="logStreamFilters">
             <MultiFilterSelect
@@ -397,7 +396,7 @@ function LogsTable({ data, showLogDetails }: Props) {
             />
           </Grid>
         </Grid>
-      </CardHeader>
+      </div>
       {currentView === "table" ? (
         <LogsList
           firstCol={firstCol}
@@ -415,7 +414,7 @@ function LogsTable({ data, showLogDetails }: Props) {
           showLogDetails={showLogDetails}
         />
       )}
-    </Card>
+    </CardWithOutline>
   )
 }
 

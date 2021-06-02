@@ -1,4 +1,5 @@
 import React, { useRef, useEffect, useState, useCallback } from "react"
+import styled from "@emotion/styled"
 import ChartElement, {
   ChartConfiguration,
   ChartOptions,
@@ -81,7 +82,20 @@ function ChartBase({
       return value
     }
   }
-
+  const ChartLegendItem = styled.div`
+    display: inline-block;
+    padding: 0 0.5rem;
+  `
+  type ChartLegendIndicatorProps = { color: string }
+  const ChartLegendIndicator = styled.div<ChartLegendIndicatorProps>`
+    width: 0.7rem;
+    height: 0.7rem;
+    display: inline-block;
+    border-radius: 50%;
+    margin: 0.2rem;
+    vertical-align: middle;
+    background-color: ${(props) => props.color};
+  `
   function ChartLegend() {
     return (
       <div
@@ -90,13 +104,10 @@ function ChartBase({
       >
         {Object.entries(getLevelPalette(theme)).map(
           ([level, style]: [string, LevelColor]) => (
-            <div className="chart-legend-item" key={level}>
-              <div
-                className={`chart-legend-indicator mr-1 ${level.toLowerCase()}`}
-                style={{ backgroundColor: style.borderColor }}
-              />
+            <ChartLegendItem key={level}>
+              <ChartLegendIndicator color={style.borderColor} />
               <span className="chart-legend-caption mr-2">{level}</span>
-            </div>
+            </ChartLegendItem>
           )
         )}
       </div>

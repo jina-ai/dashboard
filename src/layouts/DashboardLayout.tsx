@@ -81,7 +81,7 @@ const DashboardLayout = (props: IconSideBarLayoutProps) => {
     dispatch(connectJinaD())
   }
 
-  const logOut = () => { }
+  const logOut = () => {}
 
   const _toggleSidebar = () => {
     dispatch(toggleSidebar())
@@ -114,13 +114,13 @@ const DashboardLayout = (props: IconSideBarLayoutProps) => {
   return (
     <>
       <Grid container>
-        <Grid item xs={2}>
+        <Grid item xs={2} xl={1}>
           <SideNavBar
             sidebarNavItems={sidebarNavItems}
             toggleSidebar={_toggleSidebar}
           />
         </Grid>
-        <Grid item xs={10}>
+        <Grid item xs={10} xl={11}>
           <TopNavBar
             user={user}
             usesAuth={usesAuth}

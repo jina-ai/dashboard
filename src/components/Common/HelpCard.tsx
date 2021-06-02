@@ -1,6 +1,5 @@
 import React, { ReactNode } from "react"
-import Card from "@material-ui/core/Card"
-import CardContent from "@material-ui/core/CardContent"
+import { CardWithOutline } from "./Card"
 import Grid from "@material-ui/core/Grid"
 
 type Props = {
@@ -21,25 +20,23 @@ function HelpCard({ title, content, icon, theme, link, dataName }: Props) {
       rel="noopener noreferrer"
       data-name={dataName}
     >
-      <Card className="h-100">
-        <CardContent className="pt-3">
-          <Grid container>
-            <Grid container item className="align-items-center">
-              <Grid item xs={8}>
-                <h4>{title}</h4>
-              </Grid>
-              <Grid item xs={4}>
-                <h1 className="float-right">
-                  <span className={`${icon} log-${theme}`} />
-                </h1>
-              </Grid>
+      <CardWithOutline>
+        <Grid container>
+          <Grid container item className="align-items-center">
+            <Grid item xs={8}>
+              <h4>{title}</h4>
             </Grid>
-            <Grid container item>
-              <Grid item>{content}</Grid>
+            <Grid item xs={4}>
+              <h1 className="float-right">
+                <span className={`${icon} log-${theme}`} />
+              </h1>
             </Grid>
           </Grid>
-        </CardContent>
-      </Card>
+          <Grid container item>
+            <Grid item>{content}</Grid>
+          </Grid>
+        </Grid>
+      </CardWithOutline>
     </a>
   )
 }

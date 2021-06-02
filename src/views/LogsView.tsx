@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react"
-import Container from "@material-ui/core/Container"
+import styled from "@emotion/styled"
 import Grid from "@material-ui/core/Grid"
 import { LogLevelSummaryChart } from "../components/LogStream/LogLevelSummaryChart"
 import { LogLevelPieChart } from "../components/LogStream/LogLevelPieChart"
@@ -114,31 +114,32 @@ function LogsView() {
   }
 
   const timeSelection = timeOptions[selectedTime]
+  const LogsViewContainer = styled.div`
+    padding: 1rem;
+  `
 
   return (
-    <Container className="main-content-container px-0">
-      <div className="px-4">
-        <Grid container className="page-header mb-4">
-          <PageTitle title="Log Stream" className="text-sm-left mb-3" />
+    <LogsViewContainer>
+      <PageTitle title="Log Stream" className="text-sm-left mb-3" />
+      <Grid container spacing={2}>
+        <Grid item md={10}>
+          <LogLevelSummaryChart
+            data={logLevelCharts}
+            showLog={showLog}
+            setTimeSelection={setTimeSelection}
+            timeOptions={timeOptions}
+            selectedTime={selectedTime}
+            timeLabels={timeSelection.chartLabels}
+          />
         </Grid>
-        <Grid container>
-          <Grid item md={10} className="mb-4">
-            <LogLevelSummaryChart
-              data={logLevelCharts}
-              showLog={showLog}
-              setTimeSelection={setTimeSelection}
-              timeOptions={timeOptions}
-              selectedTime={selectedTime}
-              timeLabels={timeSelection.chartLabels}
-            />
-          </Grid>
-          <Grid item md={2} className="mb-4">
-            <LogLevelPieChart data={logLevels} />
-          </Grid>
+        <Grid item md={2}>
+          <LogLevelPieChart data={logLevels} />
         </Grid>
-        <LogsTable data={logs} showLogDetails={showLogDetails} />
-      </div>
-    </Container>
+        <Grid item md={12}>
+          <LogsTable data={logs} showLogDetails={showLogDetails} />
+        </Grid>
+      </Grid>
+    </LogsViewContainer>
   )
 }
 

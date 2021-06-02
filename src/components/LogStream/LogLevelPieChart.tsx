@@ -1,23 +1,30 @@
-import React from "react";
-import Card from "@material-ui/core/Card";
-import CardHeader from "@material-ui/core/CardHeader";
-import CardContent from "@material-ui/core/CardContent";
-import PieChart from "./PieChartBase";
-import { LogLevels } from "../../redux/logStream/logStream.types";
+import React from "react"
+import styled from "@emotion/styled"
+import { CardWithOutline } from "../Common/Card"
+import CardContent from "@material-ui/core/CardContent"
+import PieChart from "./PieChartBase"
+import { LogLevels } from "../../redux/logStream/logStream.types"
 
 type Props = {
-  data: LogLevels;
-};
+  data: LogLevels
+}
+const PieChartContainer = styled(CardWithOutline)`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  height: 100%;
+  box-sizing: border-box;
+`
 
 function LogLevelPieChart({ data }: Props) {
   return (
-    <Card className="h-100">
-      <CardHeader className="text-center p-2">Log Levels</CardHeader>
-      <CardContent className="px-3 pt-0 pb-3">
+    <PieChartContainer>
+      <span>Log Levels</span>
+      <CardContent>
         <PieChart data={data} />
       </CardContent>
-    </Card>
-  );
+    </PieChartContainer>
+  )
 }
 
-export { LogLevelPieChart };
+export { LogLevelPieChart }

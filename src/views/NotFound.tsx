@@ -1,15 +1,15 @@
-import React from "react";
-import   Container  from "@material-ui/core/Container";
+import React from "react"
+import Container from "@material-ui/core/Container"
 import Grid from "@material-ui/core/Grid"
-import { HelpCard } from "../components/Common/HelpCard";
-import { PageTitle } from "../components/Common/PageTitle";
+import { HelpCard } from "../components/Common/HelpCard"
+import { PageTitle } from "../components/Common/PageTitle"
 
 const NotFound = () => (
   <Container className="main-content-container px-4" data-name="helpPage">
     <Grid container className="page-header mb-4">
       <PageTitle title="Resources" className="text-sm-left mb-3" />
     </Grid>
-    <Grid container>
+    <Grid container spacing={2}>
       <Grid item md={4} lg={3} className="mb-4">
         <HelpCard
           title="Jina 101"
@@ -66,6 +66,6 @@ const NotFound = () => (
       </Grid>
     </Grid>
   </Container>
-);
+)
 
-export default NotFound;
+export default NotFound
