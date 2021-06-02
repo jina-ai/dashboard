@@ -36,7 +36,7 @@ describe("Logs page", () => {
       it.only(
         "should display the correct logging",
         {
-          defaultCommandTimeout: 10000,
+          defaultCommandTimeout: 20000,
         },
         () => {
           cy.visit("#/flow")
