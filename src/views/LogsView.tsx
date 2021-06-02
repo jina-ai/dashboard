@@ -25,6 +25,9 @@ const MAX_CHART_TICKS = 60
 
 const TIME_PREFERENCE_NAME = "logs-time-preference"
 
+export const ViewContainer = styled.div`
+  padding: 1rem;
+`
 const timeOptions: {
   [key: string]: { value: string; label: string; chartLabels: string[] }
 } = {
@@ -114,12 +117,9 @@ function LogsView() {
   }
 
   const timeSelection = timeOptions[selectedTime]
-  const LogsViewContainer = styled.div`
-    padding: 1rem;
-  `
 
   return (
-    <LogsViewContainer>
+    <ViewContainer>
       <PageTitle title="Log Stream" className="text-sm-left mb-3" />
       <Grid container spacing={2}>
         <Grid item md={10}>
@@ -139,7 +139,7 @@ function LogsView() {
           <LogsTable data={logs} showLogDetails={showLogDetails} />
         </Grid>
       </Grid>
-    </LogsViewContainer>
+    </ViewContainer>
   )
 }
 

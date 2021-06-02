@@ -81,6 +81,15 @@ export default function ChartNode(props: ChartNodeProps) {
     transition: 0.2s;
     border: 1px solid ${theme.palette.primary.main};
   `
+  const NodeHeader = styled.div`
+    padding: 0.5rem;
+    font-size: 14px;
+    font-family: Montserrat, sans-serif;
+    color: black;
+    font-weight: 500;
+    background: #eaeaea;
+    border-radius: 0.25rem;
+  `
 
   function _isFlowNode(prop: ChartNodeProps): prop is FlowNode {
     return (prop as FlowNode).id !== undefined
@@ -103,17 +112,13 @@ export default function ChartNode(props: ChartNodeProps) {
           />
         )}
         <div id={`chart-node-${node?.data?.label}`}>
-          <div className="node-header">
-            <div className={`p-1`}>
-              <p className="m-1">
-                <span className="text-bold">
-                  {node?.data?.label || (
-                    <span className="text-warning">Empty Pod</span>
-                  )}
-                </span>
-              </p>
-            </div>
-          </div>
+          <NodeHeader>
+            <span className="text-bold">
+              {node?.data?.label || (
+                <span className="text-warning">Empty Pod</span>
+              )}
+            </span>
+          </NodeHeader>
         </div>{" "}
         <NodePort type="source" portDataLabel={node?.data?.label || node.id} />
       </ChartNodeElement>
@@ -121,15 +126,11 @@ export default function ChartNode(props: ChartNodeProps) {
   } else
     return (
       <ChartNodeElement id={`chart-node-${props.label}`}>
-        <div className="node-header">
-          <div className={`p-1`}>
-            <p className="m-1">
-              <span className="text-bold">
-                {props.label || <span className="text-warning">Empty Pod</span>}
-              </span>
-            </p>
-          </div>
-        </div>
+        <NodeHeader>
+          <span className="text-bold">
+            {props.label || <span className="text-warning">Empty Pod</span>}
+          </span>
+        </NodeHeader>
       </ChartNodeElement>
     )
 }

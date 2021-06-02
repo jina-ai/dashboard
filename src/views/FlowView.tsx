@@ -1,7 +1,5 @@
 import React, { useCallback, useState } from "react"
-import   Container  from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid"
-import Card from "@material-ui/core/Card"
 import { PageTitle } from "../components/Common/PageTitle"
 import WorkspaceSelection from "../components/FlowChart/WorkspaceSelection"
 import {
@@ -25,6 +23,7 @@ import { copyToClipboard, formatAsYAML } from "../helpers"
 import html2canvas from "html2canvas"
 import FlowChart from "../components/FlowChart/FlowChart"
 import FlowSelection from "../components/FlowChart/FlowSelection"
+import { ViewContainer } from "./LogsView"
 
 const FlowViewContainer = styled.div`
   display: flex;
@@ -85,11 +84,19 @@ export default function FlowView() {
     const flowYAML = formatAsYAML(flowChart, flowArguments)
     dispatch(duplicateFlow(flowYAML))
   }
+  const DesignSectionContainer = styled.div`
+    max-height: 80vh;
+    width: 100%;
+    overflow: hidden;
+    display: flex;
+    position: relative;
+    flex-direction: column;
+  `
 
   if (!flowChart) return <>No Flow</>
 
   return (
-    <Container className="main-content-container px-0">
+    <ViewContainer>
       <div className="px-4">
         <a href="/#" id="download-link" style={{ display: "none" }}>
           download
@@ -100,7 +107,7 @@ export default function FlowView() {
 
         <FlowViewContainer>
           <WorkspaceSelection />
-          <Card className="chart-section-container mr-md-4 mb-4">
+          <DesignSectionContainer>
             <FlowSelection />
             <CommandBar
               startFlow={() => dispatch(startFlow(selectedFlowId))}
@@ -110,7 +117,7 @@ export default function FlowView() {
               exportImage={exportImage}
             />
             <FlowChart elements={flowChart.elements} />
-          </Card>
+          </DesignSectionContainer>
 
           <Sidebar
             arguments={flowArguments.pod}
@@ -121,6 +128,6 @@ export default function FlowView() {
           />
         </FlowViewContainer>
       </div>
-    </Container>
+    </ViewContainer>
   )
 }
