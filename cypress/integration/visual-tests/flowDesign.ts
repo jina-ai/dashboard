@@ -4,6 +4,7 @@ import { SHOW_BANNER } from "../../../src/redux/global/global.constants"
 
 describe("Flow design workflow", () => {
   beforeEach(() => {
+    cy.viewport(2000, 2000)
     cy.visit("/#/flow")
   })
 

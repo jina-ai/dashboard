@@ -37,6 +37,7 @@ const theme = createTheme({
   palette: {
     primary: {
       main: PERSIAN_GREEN,
+      light: "#4db6ac",
     },
     secondary: {
       light: HONEYBEE,
