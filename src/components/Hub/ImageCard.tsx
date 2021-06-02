@@ -1,9 +1,6 @@
 import React from "react"
 import Card from "@material-ui/core/Card"
-import CardContent from "@material-ui/core/CardContent"
-import Grid from "@material-ui/core/Grid"
 import styled from "@emotion/styled"
-import { Theme, useTheme } from "@emotion/react"
 import { Link } from "react-router-dom"
 
 type HubImagePreview = {
@@ -18,12 +15,19 @@ type Props = {
   image: HubImagePreview
   index: number
 }
+
+const ImageCardContainer = styled(Card)`
+  height: 100%;
+  padding: 1rem;
+  box-shadow: none;
+  border: 1px solid ${(props) => props.theme.palette.grey[300]};
+  background-color: ${(props) => props.theme.palette.background.default};
+`
 type TagProps = {
   filterColorIndex: number
-  theme: Theme
 }
-export const Tag = styled.div`
-  ${({ theme, filterColorIndex }: TagProps) => {
+export const Tag = styled.div<TagProps>`
+  ${({ filterColorIndex, theme }) => {
     const filterPalette = theme.palette.filters
 
     return `background: ${
@@ -41,57 +45,42 @@ export const Tag = styled.div`
   margin-bottom: 1rem;
   white-space: nowrap;
 `
-const Title = styled.div`
-  font-size: 1.25em;
-  font-weight: 700;
-  line-height: normal;
+const ImageTitle = styled.div`
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.5rem;
+  font-family: "Roboto";
+  margin-bottom: 0.75rem;
 `
-
-const SubTitle = styled.div`
-  font-weight: 600;
-  opacity: 0.5;
-`
-
 const ImageLink = styled(Link)`
   color: unset;
+  margin-top: 1rem;
   &:hover {
     text-decoration: none;
   }
 `
+const ImageDescription = styled.p`
+  font-family: "Roboto";
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: ${(props) => props.theme.palette.grey[700]};
+  word-break: break-word;
+`
 
 export default function ImageCard({ image, index }: Props) {
-  let { name, author, keywords, kind, description } = image
-  const theme = useTheme()
+  let { name, keywords, kind, description } = image
 
   return (
     <ImageLink to={`/package/${kind}/${index}`}>
-      <Card className="clickable mb-4 h-100 image-card" data-name="hubImage">
-        <CardContent className="pb-0 mb-0 pt-3">
-          <Grid container>
-            <Grid item xs={12} className="px-0">
-              <Title className="mb-2">{name}</Title>
-              {keywords.map((keyword, index) => (
-                <Tag
-                  data-name="hubImageTags"
-                  key={index}
-                  filterColorIndex={index}
-                  theme={theme}
-                >
-                  {keyword}
-                </Tag>
-              ))}
-              <SubTitle data-name="hubImageAuthor" className="mb-2">
-                {author}
-              </SubTitle>
-            </Grid>
-            <Grid item sm={12} className="px-0 pb-0">
-              <div className="description-container">
-                <div className="app-description">{description}</div>
-              </div>
-            </Grid>
-          </Grid>
-        </CardContent>
-      </Card>
+      <ImageCardContainer data-name="hubImage">
+        <ImageTitle>{name}</ImageTitle>
+        {keywords.map((keyword, index) => (
+          <Tag data-name="hubImageTags" key={index} filterColorIndex={index}>
+            {keyword}
+          </Tag>
+        ))}
+        <ImageDescription>{description}</ImageDescription>
+      </ImageCardContainer>
     </ImageLink>
   )
 }

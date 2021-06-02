@@ -12,7 +12,7 @@ import ImageCard from "./ImageCard"
 import HubFilters, { getSelectedFilters } from "./HubFilters"
 import SpinningLoader from "../Common/SpinningLoader"
 import { ExpandingSearchbar } from "../Common/ExpandingSearchbar"
-import { FilterCategory,  FilterParams } from "../../redux/hub/hub.types"
+import { FilterCategory, FilterParams } from "../../redux/hub/hub.types"
 import styled from "@emotion/styled"
 
 const SearchContainer = styled(Grid)`
@@ -77,7 +77,8 @@ const HubImagesList = () => {
             {hubImages.length ? (
               <Grid container data-name="hubImagesList">
                 {hubImages.map((image, index) => (
-                  <Grid item
+                  <Grid
+                    item
                     key={`${image.name}.${image.version}.${image["jina-version"]}`}
                     md={4}
                     className="mb-4"

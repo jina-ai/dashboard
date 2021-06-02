@@ -27,7 +27,7 @@ export default function CodeSnippetWithCopy({ codeSnippet }: Props) {
   const [openFeedback, setOpenFeedback] = useState(false)
   const handleCopyClick = () => {
     copyToClipboard(codeSnippet)
-    setOpenFeedback(true)
+    if (!openFeedback) setOpenFeedback(true)
   }
   const handleClose = () => {
     setOpenFeedback(false)
