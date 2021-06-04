@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactFlow, {Background, BackgroundVariant} from 'react-flow-renderer';
+import ReactFlow, {Background, BackgroundVariant, Controls, MiniMap} from 'react-flow-renderer';
 import {useTheme} from '@emotion/react'
 import {InputNode, ChunkNode, MatchNode} from './FlowChartNodes'
 
@@ -22,6 +22,7 @@ const Matches = ({ matches }: MatchesProps) => {
             data: { id: matches.id, text: matches.text },
             position: { x: 50, y: 25 },
         },
+        // Nodes
         ...(
             matches.chunks.map((chunk: any, index: number) => ({
                 id: chunk.id,
@@ -43,11 +44,12 @@ const Matches = ({ matches }: MatchesProps) => {
                 position: { x: (450 * index ), y: 550 }
             }))
         ),
+        // Edges
         ...(
             matches.chunks.map((chunk: any, index: number) => ({
                 id: `e1-${chunk.id}`,
-                source: '1',
-                target: chunk.id,
+                source: chunk.id,
+                target: '1',
                 label: 'chunk',
                 labelBgPadding: [8, 4],
                 labelBgBorderRadius: 4,
@@ -57,8 +59,8 @@ const Matches = ({ matches }: MatchesProps) => {
         ...(
             matches.matches.map((chunk: any, index: number) => ({
                 id: `e1-${chunk.id}`,
-                source: '1',
-                target: chunk.id ,
+                source: chunk.id,
+                target: '1',
                 animated: true,
                 label: 'match',
                 labelBgPadding: [8, 4],
@@ -73,6 +75,8 @@ const Matches = ({ matches }: MatchesProps) => {
         <div style={{ height: 800 }}>
             <ReactFlow elements={elements} nodeTypes={nodeTypes} >
                 <Background variant={BackgroundVariant.Dots} gap={20} size={0.8} />
+                <MiniMap />
+                <Controls />
                 </ReactFlow>
         </div>
     )
