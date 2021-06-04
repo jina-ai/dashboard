@@ -7,6 +7,8 @@ import Grid from "@material-ui/core/Grid"
 import Box from "@material-ui/core/Box"
 import axios from "axios"
 import RoutesTable from "../components/DebuggingTool/RouteTable"
+import Matches from "../components/DebuggingTool/Matches"
+import Scores from "../components/DebuggingTool/Scores"
 
 const TextInput = styled(TextField)`
   width: 100%;
@@ -32,7 +34,6 @@ const DebuggingTool = () => {
   const [port, setPort] = useState("45678")
   const [requestBody, setRequestBody] = useState("")
   const handleRequest = async () => {
-    console.log(`http://${host}:${port}/search`)
     const searchResult = await axios({
       method: 'post',
       url: `http://${host}:${port}/search`,
@@ -96,8 +97,18 @@ const DebuggingTool = () => {
         <Grid item xs={12}>
           <Box>
             <ResponseContainer>
-              <ResponseTitle>Documents and matches</ResponseTitle>
-              {response && response.length > 0 ? <>{ }</> : <></>}
+              <Grid container>
+                <Grid item xs={8}>
+
+
+                  <ResponseTitle>Documents and matches</ResponseTitle>
+                  {response && response?.data?.docs[0] ? <Matches matches={response?.data?.docs[0]} /> : <></>}
+                </Grid>
+                <Grid item xs={4}>
+                  <ResponseTitle>Scores</ResponseTitle>
+                  {response && response?.data?.docs?.length > 0 ? <Scores /> : <></>}
+                </Grid>
+              </Grid>
             </ResponseContainer>
           </Box>
         </Grid>
