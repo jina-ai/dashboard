@@ -12,7 +12,7 @@ import ImageCard from "./ImageCard"
 import HubFilters, { getSelectedFilters } from "./HubFilters"
 import SpinningLoader from "../Common/SpinningLoader"
 import { ExpandingSearchbar } from "../Common/ExpandingSearchbar"
-import { FilterCategory,  FilterParams } from "../../redux/hub/hub.types"
+import { FilterCategory, FilterParams } from "../../redux/hub/hub.types"
 import styled from "@emotion/styled"
 
 const SearchContainer = styled(Row)`

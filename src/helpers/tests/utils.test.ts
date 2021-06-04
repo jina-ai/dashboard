@@ -24,8 +24,8 @@ describe("newVersionLocalStorageReset", () => {
 
 describe("copyToClipboard", () => {
   it("copies a string to clipboard", () => {
-    document.execCommand = jest.fn();
-    copyToClipboard('string')
+    document.execCommand = jest.fn()
+    copyToClipboard("string")
     expect(document.execCommand).toHaveBeenCalledWith("copy")
   })
 })

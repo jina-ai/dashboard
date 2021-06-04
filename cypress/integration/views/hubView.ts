@@ -10,8 +10,8 @@ describe('Hub page', () => {
 
   describe('hub actions overview', () => {
     it('shows actions user can take to explore, create images', () => {
-      cy.dataName('hubOverviewActionTitle').should('contain.text', 'Explore')
-      cy.dataName('hubOverviewActionButtonLabel').should('contain.text', 'Let\'s Go')
+      cy.dataName('primaryActionButton').should('contain.text', 'Browse')
+      cy.dataName('secondaryActionButton').should('contain.text', 'Create')
     })
   })
 
@@ -25,7 +25,7 @@ describe('Hub page', () => {
   describe('explore button ', () => {
     it('takes users to hub list page', () => {
       cy.intercept('images', { fixture: 'hubImages'})
-      cy.dataName('hubOverviewActionButtonLabel').contains('Read more').click()
+      cy.dataName('primaryActionButton').should('contain.text', 'Browse').click()
       cy.dataName('hubImagesList')
     })
   })
@@ -34,7 +34,6 @@ describe('Hub page', () => {
     it('shows a list of hub images', () => {
       cy.fixture('hubImages').then(hubImages => {
         cy.dataName('hubImagesList').dataName('hubImage').its('length').should('eq', hubImages.length)
-        cy.dataName('hubImagesList').dataName('hubImageAuthor').its('length').should('eq', hubImages.length)
       })
     })
   })
@@ -51,7 +50,7 @@ describe('Hub page', () => {
     it('keeps filter on back button', () => {
       cy.dataName('hubImagesFilter').contains('Encoder').click()
       cy.go("back")
-      cy.dataName('hubOverviewActionButtonLabel').contains('Read more').click()
+      cy.dataName('primaryActionButton').should('contain.text', 'Browse').click()
       cy.dataName('hubImagesFilter').contains('Encoder')
     })
 
@@ -60,8 +59,6 @@ describe('Hub page', () => {
   describe('hub image overview', () => {
     it('opens overview of hub image', () => {
       cy.dataName('hubImage').contains('LaserEncoder').click()
-      cy.dataName('imageOverviewTitle').should('contain.text', 'LaserEncoder')
-      cy.dataName('imageOverviewDescription').should('contain.text', 'B x D')
     })
   })
 })

@@ -6,7 +6,7 @@ import { User } from "../../../redux/global/global.types"
 import { AppBar, Toolbar } from "@material-ui/core"
 import LanguageIcon from "@material-ui/icons/Language"
 import { green, red } from "@material-ui/core/colors"
-import styled from "styled-components"
+import styled from "@emotion/styled"
 
 type Props = {
   usesAuth: boolean

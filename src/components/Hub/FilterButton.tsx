@@ -10,15 +10,15 @@ type CheckboxLabelProps = {
 
 const ToggleButton = styled(Button)`
   background-color: ${(props: CheckboxLabelProps) =>
-    props.selected ? '#21A6A6' : '#E6F5F5'};
+    props.selected ? "#21A6A6" : "#E6F5F5"};
   color: ${(props: CheckboxLabelProps) =>
-    props.selected ? 'white' : '#1EA5A5'};
+    props.selected ? "white" : "#1EA5A5"};
   box-shadow: none;
   display: flex;
-  margin: .5rem;
+  margin: 0.5rem;
   text-transform: none;
   &:hover {
-    background-color: #21A6A6;
+    background-color: #21a6a6;
     color: white;
   }
 `
