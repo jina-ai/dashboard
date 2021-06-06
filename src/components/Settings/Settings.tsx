@@ -1,24 +1,42 @@
 import React, { useState } from "react"
 import {
   Accordion,
+  AccordionDetails,
+  AccordionSummary,
   Button,
-  Card,
   CardContent,
   CardHeader,
   Grid,
   TextField,
 } from "@material-ui/core"
+import styled from "@emotion/styled"
 
 import { advancedOptions, baseOptions } from "./options"
-import FormItem from "./FormItem"
 import { SettingName, SettingUpdate } from "../../redux/settings/settings.types"
 import { useDispatch, useSelector } from "react-redux"
 import { updateSettings } from "../../redux/settings/settings.actions"
 import { selectSettings } from "../../redux/settings/settings.selectors"
+import { CardWithOutline } from "../Common/Card"
+
+const AlignedGrid = styled(Grid)`
+  align-items: center;
+`
+const Collapse = styled(Accordion)`
+  background: transparent;
+  box-shadow: none;
+  &:before {
+    display: none;
+  }
+`
+const CollapseHeader = styled(AccordionSummary)`
+  padding: 0;
+`
+const CollapseBody = styled(AccordionDetails)`
+  padding: 0;
+`
 
 function SettingsCard() {
   const [updates, setUpdates] = useState<SettingUpdate>({})
-  const [expanded, setExpanded] = useState(false)
 
   const settings = useSelector(selectSettings)
 
@@ -34,20 +52,14 @@ function SettingsCard() {
     dispatch(updateSettings(updates))
   }
 
-  function toggleExpand() {
-    setExpanded(!expanded)
-  }
-
   return (
-    <Card className="mb-4">
-      <CardHeader className="border-bottom">
-        <h6 className="m-0">Connection Preferences</h6>
-      </CardHeader>
+    <CardWithOutline>
+      <CardHeader title="Connection Preferences" />
       <CardContent>
-          <Grid container>
-            {baseOptions.map(({ label, placeholder, value }) => (
+        <AlignedGrid container spacing={2}>
+          {baseOptions.map(({ label, placeholder, value }) => (
+            <Grid item key={label}>
               <TextField
-                key={value as string}
                 label={label}
                 placeholder={placeholder}
                 value={
@@ -57,32 +69,31 @@ function SettingsCard() {
                 }
                 onChange={(e) => changeSetting(value, e.target.value)}
               />
-            ))}
-          </Grid>
-          <Grid container>
-            <Grid item xs={6}>
-              <strong
-                aria-controls="collapsed-form"
-                aria-expanded={expanded}
-                onClick={toggleExpand}
-                className="text-primary d-inline-block mb-3 cursor-pointer"
-              >
-                Advanced{" "}
-                <i className="material-icons">
-                  {expanded ? "arrow_drop_up" : "arrow_drop_down"}
-                </i>
-              </strong>
             </Grid>
-            <Grid item xs={6} className="text-right">
-              <Button onClick={saveChanges}>Save Changes</Button>
-            </Grid>
+          ))}
+          <Grid item>
+            <Button onClick={saveChanges} variant="contained">
+              Save Changes
+            </Button>
           </Grid>
-            <div id="collapsed-form">
+        </AlignedGrid>
+        <Collapse>
+          <CollapseHeader>
+            <strong
+              aria-controls="collapsed-form"
+              className="text-primary d-inline-block mb-3 cursor-pointer"
+            >
+              Advanced{" "}
+            </strong>
+          </CollapseHeader>
+          <CollapseBody>
+            <p>
               <strong className="text-muted d-block mb-3">Endpoints</strong>
-              <Grid item>
-                {advancedOptions.map(({ label, placeholder, value }) => (
-                  <FormItem
-                    key={value}
+            </p>
+            <Grid container spacing={2}>
+              {advancedOptions.map(({ label, placeholder, value }) => (
+                <Grid item key={label}>
+                  <TextField
                     label={label}
                     placeholder={placeholder}
                     value={
@@ -94,11 +105,13 @@ function SettingsCard() {
                       changeSetting(value as SettingName, e.target.value)
                     }
                   />
-                ))}
-              </Grid>
-            </div>
+                </Grid>
+              ))}
+            </Grid>
+          </CollapseBody>
+        </Collapse>
       </CardContent>
-    </Card>
+    </CardWithOutline>
   )
 }
 
