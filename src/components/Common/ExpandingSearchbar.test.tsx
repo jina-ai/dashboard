@@ -13,7 +13,7 @@ const expandingSearchbar = render(
     value={searchQuery}
   />
 )
-const input = expandingSearchbar.getByRole("input")
+const input = expandingSearchbar.getByRole("textbox")
 
 describe("ExpandingSearchbar", () => {
   it("renders the value in input box", () => {

@@ -3,17 +3,21 @@
 exports[`Colors page 1`] = `
 <div>
   <div
-    className="text-center text-md-left mb-sm-0 col-sm-3 col-12"
+    className="MuiGrid-root MuiGrid-container css-15fev7r-MuiGrid-root"
   >
-    <h3
-      className="page-title"
-      data-name="title"
+    <div
+      className="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12 MuiGrid-grid-sm-3 css-enqytu-MuiGrid-root"
     >
-      Colors
-    </h3>
-    <p
-      className="page-subtitle mt-2 mb-0"
-    />
+      <h3
+        className="page-title"
+        data-name="title"
+      >
+        Colors
+      </h3>
+      <p
+        className="page-subtitle mt-2 mb-0"
+      />
+    </div>
   </div>
   <div>
     <h3>
@@ -29,7 +33,16 @@ exports[`Colors page 1`] = `
       </span>
     </div>
     <div
-      className="css-11yk3wo"
+      className="css-qqx350"
+    >
+      <span
+        className="css-1igrnc7"
+      >
+        contrastText
+      </span>
+    </div>
+    <div
+      className="css-1h69n7y"
     >
       <span
         className="css-1igrnc7"
@@ -44,15 +57,6 @@ exports[`Colors page 1`] = `
         className="css-1igrnc7"
       >
         dark
-      </span>
-    </div>
-    <div
-      className="css-1qh8q4c"
-    >
-      <span
-        className="css-1igrnc7"
-      >
-        contrastText
       </span>
     </div>
   </div>
@@ -234,21 +238,21 @@ exports[`Colors page 1`] = `
       </span>
     </div>
     <div
+      className="css-16dgua5"
+    >
+      <span
+        className="css-1igrnc7"
+      >
+        dark
+      </span>
+    </div>
+    <div
       className="css-1xpf40f"
     >
       <span
         className="css-1igrnc7"
       >
         light
-      </span>
-    </div>
-    <div
-      className="css-u2emll"
-    >
-      <span
-        className="css-1igrnc7"
-      >
-        dark
       </span>
     </div>
     <div
@@ -406,7 +410,7 @@ exports[`Colors page 1`] = `
       </span>
     </div>
     <div
-      className="css-1musvrz"
+      className="css-tu854z"
     >
       <span
         className="css-1igrnc7"

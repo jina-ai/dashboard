@@ -2,13 +2,13 @@
 
 exports[`actions on hub homepage 1`] = `
 <div
-  className="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation1 MuiCard-root css-1yt7zhx-MuiPaper-root-MuiCard-root"
+  className="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation1 MuiCard-root css-h0v9rl-MuiPaper-root-MuiCard-root"
 >
   <div
     className="css-jvj7uf"
   >
     <h6
-      className="css-12n1u1j"
+      className="css-1mkqy0j"
       data-name="title"
     >
       Jina Hub

@@ -19,21 +19,26 @@ const LogsTableHeader = ({
       }`}
       css={{ maxHeight: 84 }}
     >
-      <Grid container>
-        <Grid item
+      <Grid container spacing={2}>
+        <Grid
+          item
           className="log-prefix text-muted px-0 d-flex flex-row"
           css={{ maxWidth: firstCol }}
         >
           <div className="text-bold mr-2">#</div>
+        </Grid>
+        <Grid item>
           <div className="ml-auto">timestamp</div>
         </Grid>
-        <Grid item
+        <Grid
+          item
           className="log-prefix px-0 text-left text-md-right text-bold"
           css={{ maxWidth: secondCol }}
         >
           source@process[level]:
         </Grid>
-        <Grid item
+        <Grid
+          item
           className="px-0"
           css={{
             maxHeight: 84,

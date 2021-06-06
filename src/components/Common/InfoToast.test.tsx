@@ -1,7 +1,7 @@
 import React from "react"
 import { render } from "@testing-library/react"
 import { theme } from "../../theme"
-import { ThemeProvider } from "@emotion/react"
+import { ThemeProvider } from "@material-ui/core"
 import { InfoToast } from "./InfoToast"
 
 describe("InfoToast unit tests", () => {

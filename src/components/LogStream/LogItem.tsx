@@ -34,22 +34,26 @@ const LogItem = memo(
         style={style}
         onClick={() => showLogDetails(logData)}
       >
-        <Grid container>
-          <Grid item
-            className="log-prefix text-muted px-0 d-flex flex-row"
+        <Grid container spacing={2}>
+          <Grid
+            item
+            className="log-prefix text-muted "
             css={{ maxWidth: firstCol }}
           >
             <div className="text-bold mr-2">{idx}</div>
+          </Grid>
+          <Grid item>
             <div className="ml-auto">{formattedTimestamp}</div>
           </Grid>
-          <Grid item
+          <Grid
+            item
             className="log-prefix px-0 text-left text-md-right text-bold cursor-pointer"
             css={{ maxWidth: secondCol }}
           >
             {logName}@{process}[{levelInitial}]:
           </Grid>
-          <Grid item
-            className="px-0"
+          <Grid
+            item
             css={{
               maxHeight: 84,
               display: "block",

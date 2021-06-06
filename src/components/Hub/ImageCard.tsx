@@ -20,6 +20,7 @@ const ImageCardContainer = styled(Card)`
   height: 100%;
   padding: 1rem;
   box-shadow: none;
+  box-sizing: border-box;
   border: 1px solid ${(props) => props.theme.palette.grey[300]};
   background-color: ${(props) => props.theme.palette.background.default};
 `
@@ -55,9 +56,7 @@ const ImageTitle = styled.div`
 const ImageLink = styled(Link)`
   color: unset;
   margin-top: 1rem;
-  &:hover {
-    text-decoration: none;
-  }
+  text-decoration: none;
 `
 const ImageDescription = styled.p`
   font-family: "Roboto";

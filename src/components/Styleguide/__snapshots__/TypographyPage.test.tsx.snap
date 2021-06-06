@@ -3,17 +3,21 @@
 exports[`Typograpy page 1`] = `
 <div>
   <div
-    className="text-center text-md-left mb-sm-0 col-sm-3 col-12"
+    className="MuiGrid-root MuiGrid-container css-15fev7r-MuiGrid-root"
   >
-    <h3
-      className="page-title"
-      data-name="title"
+    <div
+      className="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12 MuiGrid-grid-sm-3 css-enqytu-MuiGrid-root"
     >
-      Typography
-    </h3>
-    <p
-      className="page-subtitle mt-2 mb-0"
-    />
+      <h3
+        className="page-title"
+        data-name="title"
+      >
+        Typography
+      </h3>
+      <p
+        className="page-subtitle mt-2 mb-0"
+      />
+    </div>
   </div>
   <h2
     className="css-1u50gfo"

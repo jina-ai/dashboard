@@ -3,17 +3,21 @@
 exports[`Misc page 1`] = `
 <div>
   <div
-    className="text-center text-md-left mb-sm-0 col-sm-3 col-12"
+    className="MuiGrid-root MuiGrid-container css-15fev7r-MuiGrid-root"
   >
-    <h3
-      className="page-title"
-      data-name="title"
+    <div
+      className="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12 MuiGrid-grid-sm-3 css-enqytu-MuiGrid-root"
     >
-      Misc
-    </h3>
-    <p
-      className="page-subtitle mt-2 mb-0"
-    />
+      <h3
+        className="page-title"
+        data-name="title"
+      >
+        Misc
+      </h3>
+      <p
+        className="page-subtitle mt-2 mb-0"
+      />
+    </div>
   </div>
   <span
     className="css-1w4x60d-MiscPage"
