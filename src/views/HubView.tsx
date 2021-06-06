@@ -6,6 +6,7 @@ import HubOverviewActionsContainer from "../components/Hub/HubOverviewActionsCon
 import HubImagesListPreview from "../components/Hub/HubImagesListPreview"
 import HubImagesList from "../components/Hub/HubImagesList"
 import HubRecommendedCategories from "../components/Hub/HubRecommendedCategories"
+import { ViewContainer } from "./LogsView"
 
 const HubView = () => {
   const { path } = useRouteMatch()
@@ -15,7 +16,7 @@ const HubView = () => {
   }, [dispatch])
 
   return (
-    <div className="px-4">
+    <ViewContainer>
       <Switch>
         <Route exact path={path}>
           <HubOverviewActionsContainer />
@@ -26,7 +27,7 @@ const HubView = () => {
           <HubImagesList />
         </Route>
       </Switch>
-    </div>
+    </ViewContainer>
   )
 }
 

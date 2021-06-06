@@ -8,15 +8,15 @@ import hubIconSource from "../../assets/icons/hub-icon.svg"
 const HubOverviewActionCard = styled(Card)`
   display: flex;
   justify-content: space-between;
-  width: 100%;
   padding: 1.5rem;
   background: ${(props) =>
-    `linear-gradient(269.3deg, ${props.theme.palette.primary.main} 16.55%, ${props.theme.palette.primary.light} 89.83%)`};
+    `linear-gradient(269.3deg, ${props.theme.palette.primary.main} 16.55%, ${props.theme.palette.primary.contrastText} 89.83%)`};
 `
 const HubOverviewActionCardContent = styled.div`
   flex-direction: column;
 `
 const HubOverviewTitle = styled.h6`
+  margin: 0 0 1rem 0;
   font-size: 1.25rem;
   font-weight: 500;
   color: ${(props) => props.theme.palette.background.default};
