@@ -7,8 +7,7 @@ import Grid from "@material-ui/core/Grid"
 import Box from "@material-ui/core/Box"
 import axios from "axios"
 import RoutesTable from "../components/DebuggingTool/RouteTable"
-import Matches from "../components/DebuggingTool/Matches"
-import Scores from "../components/DebuggingTool/Scores"
+import Response from "../components/DebuggingTool/Response"
 
 const TextInput = styled(TextField)`
   width: 100%;
@@ -26,21 +25,19 @@ const ResponseTitle = styled.h6`
   font-size: 1rem;
   color: ${(props) => props.theme.palette.grey[700]};
 `
-const reqBody = `{ "data": [ {"text": "hello world"}] }`
-
 const DebuggingTool = () => {
   const [response, setResponse] = useState([])
   const [host, setHost] = useState("127.0.0.1")
   const [port, setPort] = useState("45678")
-  const [requestBody, setRequestBody] = useState("")
+  const [requestBody, setRequestBody] = useState()
   const handleRequest = async () => {
     const searchResult = await axios({
-      method: 'post',
+      method: "post",
       url: `http://${host}:${port}/search`,
-      data: reqBody,
+      data: requestBody,
       headers: {
-        mode: 'no-cors'
-      }
+        mode: "no-cors",
+      },
     })
     if (searchResult) {
       setResponse(searchResult.data)
@@ -53,7 +50,7 @@ const DebuggingTool = () => {
           <TextInput
             label="Host"
             variant="outlined"
-            value="127.0.0.1"
+            value={host}
             onChange={(e) => setHost(e.target.value)}
           />
         </Grid>
@@ -61,7 +58,7 @@ const DebuggingTool = () => {
           <TextInput
             label="Port"
             variant="outlined"
-            value="45678"
+            value={port}
             onChange={(e) => setPort(e.target.value)}
           />
         </Grid>
@@ -78,7 +75,7 @@ const DebuggingTool = () => {
             multiline
             minRows={4}
             variant="outlined"
-            value={reqBody}
+            value={requestBody}
             onChange={(e) => setRequestBody(e.target.value)}
           />
         </Grid>
@@ -89,28 +86,13 @@ const DebuggingTool = () => {
               {response && response?.routes?.length > 0 ? (
                 <RoutesTable routes={response.routes} />
               ) : (
-                  <></>
-                )}
+                <></>
+              )}
             </ResponseContainer>
           </Box>
         </Grid>
         <Grid item xs={12}>
-          <Box>
-            <ResponseContainer>
-              <Grid container>
-                <Grid item xs={8}>
-
-
-                  <ResponseTitle>Documents and matches</ResponseTitle>
-                  {response && response?.data?.docs[0] ? <Matches matches={response?.data?.docs[0]} /> : <></>}
-                </Grid>
-                <Grid item xs={4}>
-                  <ResponseTitle>Scores</ResponseTitle>
-                  {response && response?.data?.docs?.length > 0 ? <Scores /> : <></>}
-                </Grid>
-              </Grid>
-            </ResponseContainer>
-          </Box>
+          <Response response={response} />
         </Grid>
       </Grid>
     </Container>
