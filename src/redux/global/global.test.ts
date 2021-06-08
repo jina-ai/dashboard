@@ -273,7 +273,15 @@ describe("global selectors", () => {
   })
 
   it("should select sidebar items", () => {
+    process.env.REACT_APP_FEATURE_DEBUGGING_TOOL = "enabled"
     expect(selectSidebarItems(state)).toEqual(initialGlobalState.navItems)
+  })
+
+  it("shouldn't show debug icon when the feature is disabled", () => {
+    process.env.REACT_APP_FEATURE_DEBUGGING_TOOL = "disabled"
+    expect(selectSidebarItems(state)).toEqual(
+      initialGlobalState.navItems.filter((navItem) => navItem.title !== "Debug")
+    )
   })
 
   it("should select current tab", () => {
