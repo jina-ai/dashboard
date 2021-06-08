@@ -13,9 +13,13 @@ const NodeTitle = styled.p`
   margin: 0.25rem;
   text-align: center;
 `
+const NodeImagePreview = styled.img`
+  width: 8rem;
+`
 const NodeTextContainer = styled.div`
   display: flex;
   justify-content: space-around;
+  align-items: center;
 `
 const NodeText = styled.span``
 
@@ -30,7 +34,9 @@ export const InputNode = ({ data }: { id: string; data: any }) => {
       <InputNodeContainer>
         <NodeTitle>Id: {data?.id}</NodeTitle>
         <NodeTextContainer>
-          <NodeText>{data?.text}</NodeText>
+          {data.uri ? <NodeImagePreview src={data.uri} /> : <></>}
+          {data.mime_type ? <NodeText>{data.mime_type}</NodeText> : <></>}
+          {data.text ? <NodeText>{data?.text}</NodeText> : <></>}
         </NodeTextContainer>
       </InputNodeContainer>
       <Handle type="target" position={Position.Bottom}></Handle>

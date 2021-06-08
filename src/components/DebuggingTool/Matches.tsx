@@ -24,6 +24,7 @@ export type Match = {
   description?: string
   ref_id?: string
   adjacency: number
+  uri?: string
 }
 export type Chunk = {
   id: string
@@ -33,6 +34,7 @@ export type Chunk = {
   granularity: number
   parent_id: string
   content_hash: string
+  uri?: string
 }
 export type Doc = {
   id: string
@@ -40,6 +42,8 @@ export type Doc = {
   tags: any
   chunks: Chunk[]
   matches: Match[]
+  mime_type?: string
+  uri?: string
 }
 type MatchesProps = {
   doc: Doc
@@ -130,7 +134,12 @@ const Matches = ({ doc, onMatchSelection }: MatchesProps) => {
     {
       id: "1",
       type: "inputDocument",
-      data: { id: doc.id, text: doc.text },
+      data: {
+        id: doc.id,
+        text: doc.text,
+        mime_type: doc.mime_type,
+        uri: doc.uri,
+      },
       position: { x: 50, y: 25 },
     },
     ...getChunkNodes(doc.chunks, palette),

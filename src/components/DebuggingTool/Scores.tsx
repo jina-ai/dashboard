@@ -31,7 +31,12 @@ const Scores = ({ score }: ScoreProps) => {
   return (
     <ScoreCard>
       {op_name ? <span> {op_name} </span> : <></>}
-      {value ? <span>Score value: {value} </span> : <></>}
+      {/* Protobuff removes float values that are 0.0. Hence the default value 0.0 */}
+      {value ? (
+        <span>Score value: {value} </span>
+      ) : (
+        <span>Score value: 0.0</span>
+      )}
       {operands ? (
         operands.map((operand) => <Scores score={operand} key={ref_id} />)
       ) : (
