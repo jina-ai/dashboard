@@ -51,11 +51,12 @@ export const ChunkNode = ({ data }: { id: string; data: any }) => {
       <NodeContainer>
         <NodeTitle>Id: {data?.id}</NodeTitle>
         <NodeTextContainer>
-          <NodeText>{data?.text}</NodeText>
-          <NodeText>{data.mimeType} </NodeText>
+          {data.uri ? <NodeImagePreview src={data.uri} /> : <></>}
+          {data.mime_type ? <NodeText>{data.mime_type}</NodeText> : <></>}
+          {data.text ? <NodeText>{data?.text}</NodeText> : <></>}
           <NodeText>Granularity: {data.granularity} </NodeText>
         </NodeTextContainer>
-        <NodeTitle>ParentId: {data.parentId} </NodeTitle>
+        <NodeTitle>ParentId: {data.parent_id} </NodeTitle>
       </NodeContainer>
       <Handle type="target" position={Position.Bottom}></Handle>
     </>
@@ -74,8 +75,9 @@ export const MatchNode = ({ data }: { id: string; data: any }) => {
       <MatchNodeContainer>
         <NodeTitle>Id: {data?.id}</NodeTitle>
         <NodeTextContainer>
-          <NodeText>{data?.text}</NodeText>
-          <NodeText>{data.mimeType} </NodeText>
+          {data.uri ? <NodeImagePreview src={data.uri} /> : <></>}
+          {data.mime_type ? <NodeText>{data.mime_type}</NodeText> : <></>}
+          {data.text ? <NodeText>{data?.text}</NodeText> : <></>}
           <NodeText>Adjacency: {data.adjacency} </NodeText>
         </NodeTextContainer>
       </MatchNodeContainer>

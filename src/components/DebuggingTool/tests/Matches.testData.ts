@@ -126,10 +126,64 @@ export const inputChunks = [
 export const expectedNodesAndEdges = [
   {
     data: {
+      content_hash: "ac17ad4d1eea81e9",
       granularity: 1,
       id: "db28bb4c-c771-11eb-8047-b025aa3e54c7",
-      mimeType: "text/plain",
-      parentId: "d82c8a86-c771-11eb-867e-b025aa3e54c7",
+      matches: [
+        {
+          adjacency: 1,
+          granularity: 1,
+          id: "dbc23600-c771-11eb-85d7-b025aa3e54c7",
+          mime_type: "text/plain",
+          score: {
+            description: "score for chunk",
+            op_name: "chunk_matcher",
+            ref_id: "db28bb4c-c771-11eb-8047-b025aa3e54c7",
+          },
+          text: "match_0",
+        },
+        {
+          adjacency: 1,
+          granularity: 1,
+          id: "dbc23bdc-c771-11eb-85d7-b025aa3e54c7",
+          mime_type: "text/plain",
+          score: {
+            description: "score for chunk",
+            op_name: "chunk_matcher",
+            ref_id: "db28bb4c-c771-11eb-8047-b025aa3e54c7",
+            value: 0.1,
+          },
+          text: "match_1",
+        },
+        {
+          adjacency: 1,
+          granularity: 1,
+          id: "dbc23f38-c771-11eb-85d7-b025aa3e54c7",
+          mime_type: "text/plain",
+          score: {
+            description: "score for chunk",
+            op_name: "chunk_matcher",
+            ref_id: "db28bb4c-c771-11eb-8047-b025aa3e54c7",
+            value: 0.2,
+          },
+          text: "match_2",
+        },
+        {
+          adjacency: 1,
+          granularity: 1,
+          id: "dbc2423a-c771-11eb-85d7-b025aa3e54c7",
+          mime_type: "text/plain",
+          score: {
+            description: "score for chunk",
+            op_name: "chunk_matcher",
+            ref_id: "db28bb4c-c771-11eb-8047-b025aa3e54c7",
+            value: 0.3,
+          },
+          text: "match_3",
+        },
+      ],
+      mime_type: "text/plain",
+      parent_id: "d82c8a86-c771-11eb-867e-b025aa3e54c7",
       text: "chunk_0",
     },
     id: "db28bb4c-c771-11eb-8047-b025aa3e54c7",
@@ -159,8 +213,9 @@ export const expectedNodesAndEdges = [
   {
     data: {
       adjacency: 1,
+      granularity: 1,
       id: "dbc23600-c771-11eb-85d7-b025aa3e54c7",
-      mimeType: "text/plain",
+      mime_type: "text/plain",
       score: {
         description: "score for chunk",
         op_name: "chunk_matcher",
@@ -196,8 +251,9 @@ export const expectedNodesAndEdges = [
   {
     data: {
       adjacency: 1,
+      granularity: 1,
       id: "dbc23bdc-c771-11eb-85d7-b025aa3e54c7",
-      mimeType: "text/plain",
+      mime_type: "text/plain",
       score: {
         description: "score for chunk",
         op_name: "chunk_matcher",
@@ -234,8 +290,9 @@ export const expectedNodesAndEdges = [
   {
     data: {
       adjacency: 1,
+      granularity: 1,
       id: "dbc23f38-c771-11eb-85d7-b025aa3e54c7",
-      mimeType: "text/plain",
+      mime_type: "text/plain",
       score: {
         description: "score for chunk",
         op_name: "chunk_matcher",
@@ -272,8 +329,9 @@ export const expectedNodesAndEdges = [
   {
     data: {
       adjacency: 1,
+      granularity: 1,
       id: "dbc2423a-c771-11eb-85d7-b025aa3e54c7",
-      mimeType: "text/plain",
+      mime_type: "text/plain",
       score: {
         description: "score for chunk",
         op_name: "chunk_matcher",
@@ -309,10 +367,64 @@ export const expectedNodesAndEdges = [
   },
   {
     data: {
+      content_hash: "adedb4c0da5a123e",
       granularity: 1,
       id: "db28c010-c771-11eb-8047-b025aa3e54c7",
-      mimeType: "text/plain",
-      parentId: "d82c8a86-c771-11eb-867e-b025aa3e54c7",
+      matches: [
+        {
+          adjacency: 1,
+          granularity: 1,
+          id: "dbc25464-c771-11eb-85d7-b025aa3e54c7",
+          mime_type: "text/plain",
+          score: {
+            description: "score for chunk",
+            op_name: "chunk_matcher",
+            ref_id: "db28c010-c771-11eb-8047-b025aa3e54c7",
+          },
+          text: "match_0",
+        },
+        {
+          adjacency: 1,
+          granularity: 1,
+          id: "dbc257ac-c771-11eb-85d7-b025aa3e54c7",
+          mime_type: "text/plain",
+          score: {
+            description: "score for chunk",
+            op_name: "chunk_matcher",
+            ref_id: "db28c010-c771-11eb-8047-b025aa3e54c7",
+            value: 0.1,
+          },
+          text: "match_1",
+        },
+        {
+          adjacency: 1,
+          granularity: 1,
+          id: "dbc25a86-c771-11eb-85d7-b025aa3e54c7",
+          mime_type: "text/plain",
+          score: {
+            description: "score for chunk",
+            op_name: "chunk_matcher",
+            ref_id: "db28c010-c771-11eb-8047-b025aa3e54c7",
+            value: 0.2,
+          },
+          text: "match_2",
+        },
+        {
+          adjacency: 1,
+          granularity: 1,
+          id: "dbc25d60-c771-11eb-85d7-b025aa3e54c7",
+          mime_type: "text/plain",
+          score: {
+            description: "score for chunk",
+            op_name: "chunk_matcher",
+            ref_id: "db28c010-c771-11eb-8047-b025aa3e54c7",
+            value: 0.3,
+          },
+          text: "match_3",
+        },
+      ],
+      mime_type: "text/plain",
+      parent_id: "d82c8a86-c771-11eb-867e-b025aa3e54c7",
       text: "chunk_1",
     },
     id: "db28c010-c771-11eb-8047-b025aa3e54c7",
@@ -342,8 +454,9 @@ export const expectedNodesAndEdges = [
   {
     data: {
       adjacency: 1,
+      granularity: 1,
       id: "dbc25464-c771-11eb-85d7-b025aa3e54c7",
-      mimeType: "text/plain",
+      mime_type: "text/plain",
       score: {
         description: "score for chunk",
         op_name: "chunk_matcher",
@@ -379,8 +492,9 @@ export const expectedNodesAndEdges = [
   {
     data: {
       adjacency: 1,
+      granularity: 1,
       id: "dbc257ac-c771-11eb-85d7-b025aa3e54c7",
-      mimeType: "text/plain",
+      mime_type: "text/plain",
       score: {
         description: "score for chunk",
         op_name: "chunk_matcher",
@@ -417,8 +531,9 @@ export const expectedNodesAndEdges = [
   {
     data: {
       adjacency: 1,
+      granularity: 1,
       id: "dbc25a86-c771-11eb-85d7-b025aa3e54c7",
-      mimeType: "text/plain",
+      mime_type: "text/plain",
       score: {
         description: "score for chunk",
         op_name: "chunk_matcher",
@@ -455,8 +570,9 @@ export const expectedNodesAndEdges = [
   {
     data: {
       adjacency: 1,
+      granularity: 1,
       id: "dbc25d60-c771-11eb-85d7-b025aa3e54c7",
-      mimeType: "text/plain",
+      mime_type: "text/plain",
       score: {
         description: "score for chunk",
         op_name: "chunk_matcher",

@@ -86,13 +86,7 @@ export const getMatchNodes = (
       {
         id: match.id,
         type: "match",
-        data: {
-          id: match.id,
-          mimeType: match.mime_type,
-          text: match.text,
-          adjacency: match.adjacency,
-          score: match.score,
-        },
+        data: match,
         position: { x: 450 * index, y: 200 * (1 + yOffset) + 200 },
       },
       getEdge(match.id, parentId, true, "match", palette),
@@ -107,13 +101,7 @@ export const getChunkNodes = (chunks: Chunk[], palette: any) => {
       {
         id: chunk.id,
         type: "chunk",
-        data: {
-          id: chunk.id,
-          mimeType: chunk.mime_type,
-          text: chunk.text,
-          granularity: chunk.granularity,
-          parentId: chunk.parent_id,
-        },
+        data: chunk,
         position: { x: 450 * index + 50, y: 200 },
       },
       getEdge(chunk.id, "1", false, "chunk", palette),
@@ -134,12 +122,7 @@ const Matches = ({ doc, onMatchSelection }: MatchesProps) => {
     {
       id: "1",
       type: "inputDocument",
-      data: {
-        id: doc.id,
-        text: doc.text,
-        mime_type: doc.mime_type,
-        uri: doc.uri,
-      },
+      data: doc,
       position: { x: 50, y: 25 },
     },
     ...getChunkNodes(doc.chunks, palette),

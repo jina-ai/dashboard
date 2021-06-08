@@ -16,6 +16,7 @@ export type Score = {
 const ScoreCard = styled(Card)`
   margin: 0.5rem;
   padding: 0.25rem;
+  font-size: 0.875rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
