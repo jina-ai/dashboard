@@ -15,6 +15,37 @@ import { isFlowNode, isFlowEdge } from "./flow-chart"
 
 const customData = Object.keys(CustomDataObject)
 
+export const fileToBase64 = (file: File): Promise<string> =>
+  new Promise((resolve, reject) => {
+    const reader = new FileReader()
+    reader.readAsDataURL(file)
+    reader.onload = () => resolve(reader.result)
+    reader.onerror = (error) => reject(error)
+  })
+
+export const formatDemoRequest = async (
+  text: string,
+  files: FileList | null,
+  mode: string
+) => {
+  const request = {
+    data: [],
+    parameters: {
+      mode,
+    },
+  }
+  if (text) {
+    request.data.push({ text })
+  }
+  if (files?.length) {
+    for (let file of Array.from(files)) {
+      const uri = await fileToBase64(file)
+      request.data.push({ uri })
+    }
+  }
+  return JSON.stringify(request)
+}
+
 export const parseYAML = (yamlSTR: string) => {
   let yamlStrWithoutTag = /^!/.test(yamlSTR)
     ? yamlSTR.split("\n").slice(1).join("\n")
