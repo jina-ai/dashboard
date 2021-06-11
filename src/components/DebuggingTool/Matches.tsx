@@ -5,46 +5,16 @@ import ReactFlow, {
   Controls,
   MiniMap,
 } from "react-flow-renderer"
-import { useTheme } from "@emotion/react"
+import { useTheme, Theme } from "@emotion/react"
 import { InputNode, ChunkNode, MatchNode } from "./FlowChartNodes"
-import { Score } from "./Scores"
+import { Doc, Chunk, Match, Score } from "../../views/DebuggingTool"
 
 const nodeTypes = {
   inputDocument: InputNode,
   chunk: ChunkNode,
   match: MatchNode,
 }
-export type Match = {
-  id: string
-  mime_type: string
-  text: string
-  granularity: number
-  score: Score
-  op_name?: string
-  description?: string
-  ref_id?: string
-  adjacency: number
-  uri?: string
-}
-export type Chunk = {
-  id: string
-  matches: Match[]
-  mime_type: string
-  text: string
-  granularity: number
-  parent_id: string
-  content_hash: string
-  uri?: string
-}
-export type Doc = {
-  id: string
-  text: string
-  tags: any
-  chunks: Chunk[]
-  matches: Match[]
-  mime_type?: string
-  uri?: string
-}
+
 type MatchesProps = {
   doc: Doc
   onMatchSelection: (score: Score) => void
@@ -55,7 +25,7 @@ export const getEdge = (
   target: string,
   animated: boolean,
   label: string,
-  palette: any
+  palette: Theme["palette"]
 ) => {
   return {
     id: `edge-${source}-${target}`,
@@ -77,7 +47,7 @@ export const getEdge = (
 export const getMatchNodes = (
   matches: Match[],
   parentId: string,
-  palette: any,
+  palette: Theme["palette"],
   yOffset = 0
 ) => {
   return matches.reduce((acc, match, index) => {
@@ -94,7 +64,7 @@ export const getMatchNodes = (
   }, [] as any)
 }
 
-export const getChunkNodes = (chunks: Chunk[], palette: any) => {
+export const getChunkNodes = (chunks: Chunk[], palette: Theme["palette"]) => {
   const chunkNodesAndEdges = chunks.reduce((acc, chunk, index) => {
     return [
       ...acc,
@@ -125,8 +95,8 @@ const Matches = ({ doc, onMatchSelection }: MatchesProps) => {
       data: doc,
       position: { x: 50, y: 25 },
     },
-    ...getChunkNodes(doc.chunks, palette),
-    ...getMatchNodes(doc.matches, "1", palette),
+    ...getChunkNodes(doc?.chunks || [], palette),
+    ...getMatchNodes(doc?.matches || [], "1", palette),
   ]
 
   return (

@@ -3,6 +3,8 @@ import { Handle, Position } from "react-flow-renderer"
 import Card from "@material-ui/core/Card"
 import styled from "@emotion/styled"
 import { useTheme } from "@emotion/react"
+import { Chunk, Doc } from "../../views/DebuggingTool"
+import { mimeTypeFromDataURI } from "../../helpers/format"
 
 const NodeContainer = styled(Card)`
   padding: 1rem;
@@ -40,20 +42,15 @@ const NodeAudioPreview = ({ src }: { src: string }) => {
   return <audio src={src} controls />
 }
 
-export const NodeMediaPreview = ({
-  uri,
-  mime_type,
-}: {
-  uri: string
-  mime_type: string
-}) => {
+export const NodeMediaPreview = ({ uri }: { uri: string }) => {
+  const mime_type = mimeTypeFromDataURI(uri)
   if (mime_type.startsWith("image")) return <NodeImagePreview src={uri} />
   if (mime_type.startsWith("audio")) return <NodeAudioPreview src={uri} />
   if (mime_type.startsWith("")) return <NodeVideoPreview src={uri} />
   return <>Cannot Preview</>
 }
 
-export const InputNode = ({ data }: { id: string; data: any }) => {
+export const InputNode = ({ data }: { id: string; data: Doc }) => {
   const { palette } = useTheme()
   const InputNodeContainer = styled(NodeContainer)`
     background-color: ${palette.filters[1].main};
@@ -64,9 +61,7 @@ export const InputNode = ({ data }: { id: string; data: any }) => {
       <InputNodeContainer>
         <NodeTitle>Id: {data?.id}</NodeTitle>
         <NodeTextContainer>
-          {data.uri && (
-            <NodeMediaPreview uri={data.uri} mime_type={data.mime_type} />
-          )}
+          {data.uri && <NodeMediaPreview uri={data.uri} />}
           {data.mime_type && <NodeText>{data.mime_type}</NodeText>}
           {data.text && <NodeText>{data?.text}</NodeText>}
         </NodeTextContainer>
@@ -76,16 +71,14 @@ export const InputNode = ({ data }: { id: string; data: any }) => {
   )
 }
 
-export const ChunkNode = ({ data }: { id: string; data: any }) => {
+export const ChunkNode = ({ data }: { id: string; data: Chunk }) => {
   return (
     <>
       <Handle type="source" position={Position.Top}></Handle>
       <NodeContainer>
         <NodeTitle>Id: {data?.id}</NodeTitle>
         <NodeTextContainer>
-          {data.uri && (
-            <NodeMediaPreview uri={data.uri} mime_type={data.mime_type} />
-          )}
+          {data.uri && <NodeMediaPreview uri={data.uri} />}
           {data.mime_type && <NodeText>{data.mime_type}</NodeText>}
           {data.text && <NodeText>{data?.text}</NodeText>}
           <NodeText>Granularity: {data.granularity} </NodeText>
@@ -109,9 +102,7 @@ export const MatchNode = ({ data }: { id: string; data: any }) => {
       <MatchNodeContainer>
         <NodeTitle>Id: {data?.id}</NodeTitle>
         <NodeTextContainer>
-          {data.uri && (
-            <NodeMediaPreview uri={data.uri} mime_type={data.mime_type} />
-          )}
+          {data.uri && <NodeMediaPreview uri={data.uri} />}
           {data.mime_type && <NodeText>{data.mime_type}</NodeText>}
           {data.text && <NodeText>{data?.text}</NodeText>}
           <NodeText>Adjacency: {data.adjacency} </NodeText>

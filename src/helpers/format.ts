@@ -23,6 +23,9 @@ export const fileToBase64 = (file: File): Promise<string> =>
     reader.onerror = (error) => reject(error)
   })
 
+export const mimeTypeFromDataURI = (dataURI: string) =>
+  dataURI.substring(dataURI.indexOf(":") + 1, dataURI.indexOf(";"))
+
 export const formatDemoRequest = async (
   text: string,
   files: FileList | null,

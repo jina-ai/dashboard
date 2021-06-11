@@ -1,16 +1,10 @@
 import React from "react"
 import Card from "@material-ui/core/Card"
 import styled from "@emotion/styled"
+import { Score } from "../../views/DebuggingTool"
 
 type ScoreProps = {
   score: Score
-}
-export type Score = {
-  value?: number
-  op_name?: string
-  description: string
-  operands?: Score[]
-  ref_id?: string
 }
 
 const ScoreCard = styled(Card)`

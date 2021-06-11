@@ -31,8 +31,66 @@ const SectionTitle = styled.h6`
 
 export type ResponseMode = "text" | "image" | "audio" | "video"
 
+export type Route = {
+  end_time: string
+  start_time: string
+  pod: string
+  pod_id: string
+}
+
+export type Score = {
+  description: string
+  op_name: string
+  ref_id: string
+  operands?: Score[]
+  value?: number
+}
+
+export type Match = {
+  id: string
+  score: Score
+  mime_type: string
+  adjacency?: number
+  granularity?: number
+  text?: string
+  uri?: string
+}
+
+export type Chunk = {
+  id: string
+  granularity?: number
+  content_hash: string
+  mime_type: string
+  parent_id: string
+  text?: string
+  uri?: string
+  matches: Match[]
+}
+
+export type Doc = {
+  id: string
+  tags: any
+  text?: string
+  uri?: string
+  mime_type?: string
+  matches?: Match[]
+  chunks?: Chunk[]
+}
+
+export type DebugResponse = {
+  request_id: string
+  parameters: { mode: ResponseMode }
+  routes: Route[]
+  header: {
+    exec_endpoint: string
+  }
+  data: {
+    docs: Doc[]
+  }
+}
+
 const DebuggingTool = () => {
-  const [response, setResponse] = useState([])
+  const [response, setResponse] = useState<DebugResponse | null>(null)
   const [files, setFiles] = useState<FileList | null>(null)
   const [host, setHost] = useState("127.0.0.1")
   const [port, setPort] = useState("45678")
@@ -52,20 +110,26 @@ const DebuggingTool = () => {
       formattedRequest = requestBody
     }
 
-    const searchResult = await axios({
-      method: "post",
-      url: `http://${host}:${port}/search`,
-      data: formattedRequest,
-      headers: {
-        mode: "no-cors",
-      },
-    })
+    try {
+      const searchResult = await axios({
+        method: "post",
+        url: `http://${host}:${port}/search`,
+        data: formattedRequest,
+        headers: {
+          mode: "no-cors",
+        },
+      })
 
-    setLoading(false)
-
-    if (searchResult?.data?.data?.docs) {
       console.log("searchResult:", searchResult)
-      setResponse(searchResult.data)
+
+      setLoading(false)
+
+      if (searchResult.data) {
+        setResponse(searchResult.data)
+      }
+    } catch (e) {
+      setLoading(false)
+      alert("Error: " + e)
     }
   }
 
@@ -117,10 +181,8 @@ const DebuggingTool = () => {
           <Box>
             <SectionContainer>
               <SectionTitle>Routes (List of Pods)</SectionTitle>
-              {response && response?.routes?.length > 0 ? (
+              {response && response.routes?.length && (
                 <RoutesTable routes={response.routes} />
-              ) : (
-                <></>
               )}
             </SectionContainer>
           </Box>

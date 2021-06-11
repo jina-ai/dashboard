@@ -6,6 +6,7 @@ import {
   decodePropValue,
   formatDemoRequest,
   fileToBase64,
+  mimeTypeFromDataURI,
 } from "../format"
 import { getLogLevelChartsData, parsedYamlObject } from "./format.testData"
 import { flowArguments } from "./flow-chart.testData"
@@ -187,5 +188,13 @@ describe(formatDemoRequest, () => {
       sample.parameters.mode
     )
     expect(result).toEqual(JSON.stringify(sample))
+  })
+})
+
+describe(mimeTypeFromDataURI, () => {
+  it("should return image/png for image dataURI", () => {
+    const dataURI = "data:image/png;base64,abcdefghijklm.."
+    const mimeType = mimeTypeFromDataURI(dataURI)
+    expect(mimeType).toEqual("image/png")
   })
 })
