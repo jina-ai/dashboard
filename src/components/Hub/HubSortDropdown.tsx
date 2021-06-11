@@ -14,19 +14,18 @@ type Props = {
   handleSortOption: (event: React.ChangeEvent<{ value: string }>) => void
 }
 
-const HubSortInput = styled(InputBase)`
-  input {
-    position: relative;
-    borderradius: 4px;
-    border: 1px solid #e5e5e5;
-    padding: 8px 16px;
-  }
+const SortSelect = styled(Select)`
+  border-radius: 4px;
+  border: 1px solid #9e9e9e;
+  padding: 0.25rem;
+  padding-left: 1rem;
+  background-color: white;
 `
 
 const SortLabel = styled(InputLabel)`
-  backgroundcolor: "white";
+  margin-top: -0.125rem;
+  background-color: ${(props) => props.theme.palette.background.default};
   padding: 0.25rem;
-  margintop: -0.125rem;
 `
 
 const HubSortDropdown = ({
@@ -37,10 +36,10 @@ const HubSortDropdown = ({
   return (
     <FormControl>
       <SortLabel shrink>Sort</SortLabel>
-      <Select
+      <SortSelect
         value={selectedSortOption}
         onChange={handleSortOption}
-        input={<HubSortInput />}
+        input={<InputBase />}
         data-name={`selectedHubSortDropdown-${selectedSortOption.replaceAll(
           " ",
           "_"
@@ -57,7 +56,7 @@ const HubSortDropdown = ({
             {sortOption}
           </MenuItem>
         ))}
-      </Select>
+      </SortSelect>
     </FormControl>
   )
 }
