@@ -94,6 +94,7 @@ const DebuggingTool = () => {
   const [files, setFiles] = useState<FileList | null>(null)
   const [host, setHost] = useState("127.0.0.1")
   const [port, setPort] = useState("45678")
+  const [endpoint, setEndpoint] = useState("search")
   const [textQuery, setTextQuery] = useState("")
   const [mode, setMode] = useState<ResponseMode>("text")
   const [requestBody, setRequestBody] = useState("")
@@ -113,7 +114,7 @@ const DebuggingTool = () => {
     try {
       const searchResult = await axios({
         method: "post",
-        url: `http://${host}:${port}/search`,
+        url: `http://${host}:${port}/${endpoint}`,
         data: formattedRequest,
         headers: {
           mode: "no-cors",
@@ -136,7 +137,7 @@ const DebuggingTool = () => {
   return (
     <Container data-name="debuggingTool">
       <Grid container spacing={2}>
-        <Grid item xs={5}>
+        <Grid item xs={4}>
           <TextInput
             label="Host"
             variant="outlined"
@@ -144,12 +145,20 @@ const DebuggingTool = () => {
             onChange={(e) => setHost(e.target.value)}
           />
         </Grid>
-        <Grid item xs={5}>
+        <Grid item xs={2}>
           <TextInput
             label="Port"
             variant="outlined"
             value={port}
             onChange={(e) => setPort(e.target.value)}
+          />
+        </Grid>
+        <Grid item xs={4}>
+          <TextInput
+            label="Endpoint"
+            variant="outlined"
+            value={endpoint}
+            onChange={(e) => setEndpoint(e.target.value)}
           />
         </Grid>
         <Grid item xs={2}>
