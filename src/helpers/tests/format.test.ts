@@ -4,9 +4,9 @@ import {
   formatBytes,
   formatSeconds,
   decodePropValue,
-  formatDemoRequest,
   fileToBase64,
   mimeTypeFromDataURI,
+  formatDebugRequest,
 } from "../format"
 import { getLogLevelChartsData, parsedYamlObject } from "./format.testData"
 import { flowArguments } from "./flow-chart.testData"
@@ -136,25 +136,30 @@ describe(fileToBase64, () => {
   })
 })
 
-describe(formatDemoRequest, () => {
+describe(formatDebugRequest, () => {
   it("should create a request with just text", async () => {
     const sample = {
       data: [{ text: "hello world" }],
-      parameters: { mode: "text" },
+      parameters: {},
     }
-    const result = await formatDemoRequest(
+    const expectedResult = JSON.stringify(sample, null, "\t")
+    const result = await formatDebugRequest(
       sample.data[0].text,
       null,
-      sample.parameters.mode
+      [],
+      {},
+      {},
+      {}
     )
-    expect(result).toEqual(JSON.stringify(sample))
+    expect(result).toEqual(expectedResult)
   })
 
   it("should create a request with just a file", async () => {
     const sample = {
       data: [{ uri: "data:image/png;base64,MTIz" }],
-      parameters: { mode: "text" },
+      parameters: {},
     }
+    const expectedResult = JSON.stringify(sample, null, "\t")
     const sampleFiles = createMockFileList([
       {
         body: "123",
@@ -162,19 +167,16 @@ describe(formatDemoRequest, () => {
         name: "test.png",
       },
     ])
-    const result = await formatDemoRequest(
-      "",
-      sampleFiles,
-      sample.parameters.mode
-    )
-    expect(result).toEqual(JSON.stringify(sample))
+    const result = await formatDebugRequest("", sampleFiles, [], {}, {}, {})
+    expect(result).toEqual(expectedResult)
   })
 
   it("should create a request with text and a file", async () => {
     const sample = {
       data: [{ text: "hello world" }, { uri: "data:image/png;base64,MTIz" }],
-      parameters: { mode: "text" },
+      parameters: {},
     }
+    const expectedResult = JSON.stringify(sample, null, "\t")
     const sampleFiles = createMockFileList([
       {
         body: "123",
@@ -182,12 +184,58 @@ describe(formatDemoRequest, () => {
         name: "test.png",
       },
     ])
-    const result = await formatDemoRequest(
+    const result = await formatDebugRequest(
       sample.data[0].text as string,
       sampleFiles,
-      sample.parameters.mode
+      [],
+      {},
+      {},
+      {}
     )
-    expect(result).toEqual(JSON.stringify(sample))
+    expect(result).toEqual(expectedResult)
+  })
+
+  it("should create a request with custom parameters", async () => {
+    const sample = {
+      data: [
+        { text: "hello world", modality: "test_2" },
+        { uri: "data:image/png;base64,MTIz", anotherParam: "test_3" },
+      ],
+      parameters: { mode: "test_4" },
+      rootParam: "hello World",
+    }
+    const expectedResult = JSON.stringify(sample, null, "\t")
+    const sampleFiles = createMockFileList([
+      {
+        body: "123",
+        mimeType: "image/png",
+        name: "test.png",
+      },
+    ])
+    const result = await formatDebugRequest(
+      sample.data[0].text as string,
+      sampleFiles,
+      ["test1", "test2", "test3", "test4"],
+      {
+        test1: "root",
+        test2: "textQuery",
+        test3: "file-test.png",
+        test4: "parameters",
+      },
+      {
+        test1: "rootParam",
+        test2: "modality",
+        test3: "anotherParam",
+        test4: "mode",
+      },
+      {
+        test1: "hello World",
+        test2: "test_2",
+        test3: "test_3",
+        test4: "test_4",
+      }
+    )
+    expect(result).toEqual(expectedResult)
   })
 })
 

@@ -18,7 +18,7 @@ import styled from "@emotion/styled"
 import { Collapse } from "react-bootstrap"
 import { Add, Close } from "@material-ui/icons"
 import { nanoid } from "nanoid"
-import { fileToBase64 } from "../../helpers/format"
+import { formatDebugRequest } from "../../helpers/format"
 import _ from "lodash"
 
 const TextInput = styled(TextField)`
@@ -63,49 +63,15 @@ const Request = ({ requestBody, setRequestBody }: Props) => {
 
   useEffect(() => {
     const handleUpdate = async () => {
-      const request: any = {
-        data: [],
-        parameters: {},
-      }
-      if (textQuery) {
-        request.data.push({ text: textQuery })
-      }
-      if (files?.length) {
-        for (let file of Array.from(files)) {
-          const uri = await fileToBase64(file)
-          request.data.push({ uri })
-        }
-      }
-      rows.forEach((row) => {
-        const location = locations[row]
-        const key = keys[row]
-        const value = values[row]
-
-        if (!key || !value) return
-
-        let formattedValue = ""
-
-        try {
-          formattedValue = JSON.parse(value)
-        } catch (e) {
-          formattedValue = value
-        }
-
-        if (!location || location === "parameters")
-          request.parameters[key] = formattedValue
-        else if (location === "root") request[key] = formattedValue
-        else if (location === "textQuery" && textQuery)
-          request.data[0][key] = formattedValue
-        else if (files) {
-          let dataIndex = _.findIndex(
-            Array.from(files),
-            (file) => `file-${file.name}` === location
-          )
-          if (textQuery) dataIndex += 1
-          if (dataIndex >= 0) request.data[dataIndex][key] = formattedValue
-        }
-      })
-      setRequestBody(JSON.stringify(request, null, "\t"))
+      const formattedBody = await formatDebugRequest(
+        textQuery,
+        files,
+        rows,
+        locations,
+        keys,
+        values
+      )
+      setRequestBody(formattedBody)
     }
     handleUpdate()
   }, [textQuery, files, rows, locations, keys, values, setRequestBody])
@@ -151,11 +117,8 @@ const Request = ({ requestBody, setRequestBody }: Props) => {
     const rowsToRemove = rows.filter(
       (id) => locations[id] && locations[id].startsWith("file")
     )
-    console.log("rowsToRemove:", rowsToRemove)
     rowsToRemove.forEach((row) => removeRow(row))
   }
-
-  console.log("locations:", locations, "values:", values, "keys:", keys)
 
   const numCustomFields = _.reduce(
     rows,
@@ -197,7 +160,7 @@ const Request = ({ requestBody, setRequestBody }: Props) => {
             </Grid>
           </Box>
           <Grid container>
-            <Grid xs={6}>
+            <Grid item xs={6}>
               <FileInput
                 type="file"
                 multiple
@@ -218,7 +181,7 @@ const Request = ({ requestBody, setRequestBody }: Props) => {
                 ""
               )}
             </Grid>
-            <Grid xs={6}>
+            <Grid item xs={6}>
               <Box textAlign="right" onClick={toggleShowCustom}>
                 <Button size="large">
                   {showCustom ? "Hide " : "Show "}Custom Fields

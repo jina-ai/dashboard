@@ -26,19 +26,20 @@ export const fileToBase64 = (file: File): Promise<string> =>
 export const mimeTypeFromDataURI = (dataURI: string) =>
   dataURI.substring(dataURI.indexOf(":") + 1, dataURI.indexOf(";"))
 
-export const formatDemoRequest = async (
-  text: string,
+export const formatDebugRequest = async (
+  textQuery: string,
   files: FileList | null,
-  mode: string
+  rows: string[],
+  locations: { [key: string]: string },
+  keys: { [key: string]: string },
+  values: { [key: string]: string }
 ) => {
-  const request = {
+  const request: any = {
     data: [],
-    parameters: {
-      mode,
-    },
+    parameters: {},
   }
-  if (text) {
-    request.data.push({ text })
+  if (textQuery) {
+    request.data.push({ text: textQuery })
   }
   if (files?.length) {
     for (let file of Array.from(files)) {
@@ -46,7 +47,36 @@ export const formatDemoRequest = async (
       request.data.push({ uri })
     }
   }
-  return JSON.stringify(request)
+  rows.forEach((row) => {
+    const location = locations[row]
+    const key = keys[row]
+    const value = values[row]
+
+    if (!key || !value) return
+
+    let formattedValue = ""
+
+    try {
+      formattedValue = JSON.parse(value)
+    } catch (e) {
+      formattedValue = value
+    }
+
+    if (!location || location === "parameters")
+      request.parameters[key] = formattedValue
+    else if (location === "root") request[key] = formattedValue
+    else if (location === "textQuery" && textQuery)
+      request.data[0][key] = formattedValue
+    else if (files) {
+      let dataIndex = _.findIndex(
+        Array.from(files),
+        (file) => `file-${file.name}` === location
+      )
+      if (textQuery) dataIndex = 1
+      if (dataIndex >= 0) request.data[dataIndex][key] = formattedValue
+    }
+  })
+  return JSON.stringify(request, null, "\t")
 }
 
 export const parseYAML = (yamlSTR: string) => {
