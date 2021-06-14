@@ -24,6 +24,7 @@ const ToggleButton = styled(Button)`
   display: flex;
   margin: 0.5rem 1rem 0.5rem 0;
   text-transform: none;
+  font-weight: normal;
 
   &:hover {
     background-color: #21a6a6;
