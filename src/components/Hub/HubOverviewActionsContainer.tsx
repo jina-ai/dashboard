@@ -6,6 +6,7 @@ import { Button } from "@material-ui/core"
 import hubIconSource from "../../assets/icons/hub-icon.svg"
 
 const HubOverviewActionCard = styled(Card)`
+  max-height: 11rem;
   display: flex;
   justify-content: space-between;
   width: 100%;
