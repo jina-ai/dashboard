@@ -42,4 +42,4 @@ jobs:
           npx nyc report --reporter=text
         env:
           PERCY_TOKEN: ${{ secrets.percy_token }}
-          DEBUG: '@cypress/github-action'
+          DEBUG: 'cypress:*'
