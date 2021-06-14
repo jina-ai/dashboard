@@ -1,6 +1,7 @@
 describe("Logs page", () => {
   before(() => {
     cy.visit("/")
+    cy.viewport(2000, 2000)
   })
 
   it("should redirect to /logs", () => {
