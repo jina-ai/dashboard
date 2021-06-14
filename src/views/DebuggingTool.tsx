@@ -10,7 +10,6 @@ import RoutesTable from "../components/DebuggingTool/RouteTable"
 import Response from "../components/DebuggingTool/Response"
 import Request from "../components/DebuggingTool/Request"
 import { LinearProgress } from "@material-ui/core"
-import { formatDemoRequest } from "../helpers/format"
 
 const TextInput = styled(TextField)`
   width: 100%;
@@ -91,38 +90,26 @@ export type DebugResponse = {
 
 const DebuggingTool = () => {
   const [response, setResponse] = useState<DebugResponse | null>(null)
-  const [files, setFiles] = useState<FileList | null>(null)
   const [host, setHost] = useState("127.0.0.1")
   const [port, setPort] = useState("45678")
   const [endpoint, setEndpoint] = useState("search")
-  const [textQuery, setTextQuery] = useState("")
-  const [mode, setMode] = useState<ResponseMode>("text")
   const [requestBody, setRequestBody] = useState("")
-  const [tab, setTab] = useState(0)
   const [loading, setLoading] = useState(false)
 
   const handleRequest = async () => {
     setLoading(true)
-    let formattedRequest
-    if (tab === 0) {
-      formattedRequest = await formatDemoRequest(textQuery, files, mode)
-      console.log("formattedRequest:", formattedRequest)
-    } else {
-      formattedRequest = requestBody
-    }
 
     try {
       const searchResult = await axios({
         method: "post",
         url: `http://${host}:${port}/${endpoint}`,
-        data: formattedRequest,
+        data: requestBody,
         headers: {
           mode: "no-cors",
         },
       })
 
       console.log("searchResult:", searchResult)
-
       setLoading(false)
 
       if (searchResult.data) {
@@ -173,14 +160,6 @@ const DebuggingTool = () => {
           <SectionContainer>
             <SectionTitle>Request Body</SectionTitle>
             <Request
-              tab={tab}
-              setTab={setTab}
-              textQuery={textQuery}
-              setTextQuery={setTextQuery}
-              mode={mode}
-              setMode={(newMode: string) => setMode(newMode as ResponseMode)}
-              files={files}
-              setFiles={setFiles}
               requestBody={requestBody}
               setRequestBody={setRequestBody}
             />

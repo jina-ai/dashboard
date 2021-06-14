@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react"
 import Table from "@material-ui/core/Table"
 import TableBody from "@material-ui/core/TableBody"
 import TableCell from "@material-ui/core/TableCell"
@@ -16,14 +16,16 @@ type RoutesTableProps = {
   routes: Route[]
 }
 
-const getElapsedTime = (startTime: string, endTime: string | undefined): string => {
+const getElapsedTime = (
+  startTime: string,
+  endTime: string | undefined
+): string => {
+  if (!startTime || !endTime) return "Process is still ongoing"
 
-    if(!startTime || !endTime) return "Process is still ongoing"
+  const startDate = new Date(startTime)
+  const endDate = new Date(endTime)
 
-    const startDate = new Date(startTime)
-    const endDate = new Date(endTime)
-
-    return `${Math.floor((endDate.getTime() - startDate.getTime())/ 1000)} seconds`
+  return `${Math.floor(endDate.getTime() - startDate.getTime())} ms`
 }
 
 const RoutesTable = ({ routes }: RoutesTableProps) => {
@@ -40,16 +42,16 @@ const RoutesTable = ({ routes }: RoutesTableProps) => {
       </TableHead>
       <TableBody>
         {routes.map((route) => {
-            const {pod_id, pod, start_time, end_time} = route
-            return (
-          <TableRow key={pod_id}>
-            <TableCell> {pod} </TableCell>
-            <TableCell>{pod_id}</TableCell>
-            <TableCell>{start_time}</TableCell>
-            <TableCell>{end_time}</TableCell>
-            <TableCell>{getElapsedTime(start_time, end_time)}</TableCell>
-          </TableRow>
-            )
+          const { pod_id, pod, start_time, end_time } = route
+          return (
+            <TableRow key={pod_id}>
+              <TableCell> {pod} </TableCell>
+              <TableCell>{pod_id}</TableCell>
+              <TableCell>{start_time}</TableCell>
+              <TableCell>{end_time}</TableCell>
+              <TableCell>{getElapsedTime(start_time, end_time)}</TableCell>
+            </TableRow>
+          )
         })}
       </TableBody>
     </Table>

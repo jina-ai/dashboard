@@ -3,7 +3,7 @@ import { Handle, Position } from "react-flow-renderer"
 import Card from "@material-ui/core/Card"
 import styled from "@emotion/styled"
 import { useTheme } from "@emotion/react"
-import { Chunk, Doc } from "../../views/DebuggingTool"
+import { Chunk, Doc, Match } from "../../views/DebuggingTool"
 import { mimeTypeFromDataURI } from "../../helpers/format"
 
 const NodeContainer = styled(Card)`
@@ -90,7 +90,7 @@ export const ChunkNode = ({ data }: { id: string; data: Chunk }) => {
   )
 }
 
-export const MatchNode = ({ data }: { id: string; data: any }) => {
+export const MatchNode = ({ data }: { id: string; data: Match }) => {
   const { palette } = useTheme()
   const MatchNodeContainer = styled(NodeContainer)`
     background-color: ${palette.filters[2].main};
@@ -106,6 +106,7 @@ export const MatchNode = ({ data }: { id: string; data: any }) => {
           {data.mime_type && <NodeText>{data.mime_type}</NodeText>}
           {data.text && <NodeText>{data?.text}</NodeText>}
           <NodeText>Adjacency: {data.adjacency} </NodeText>
+          <NodeText>Score: {data.score.value || 0}</NodeText>
         </NodeTextContainer>
       </MatchNodeContainer>
     </>
