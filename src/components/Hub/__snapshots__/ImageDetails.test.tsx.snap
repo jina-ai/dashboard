@@ -12,7 +12,7 @@ Array [
         className="css-1iyoj2o"
       >
         <div
-          className="css-yyyfwv"
+          className="css-3awvhy"
         >
           Docker Command
         </div>
@@ -26,21 +26,14 @@ Array [
             >
               whatever
             </div>
-            <svg
-              aria-hidden={true}
-              className="MuiSvgIcon-root MuiSvgIcon-fontSizeSmall css-ptiqhd-MuiSvgIcon-root"
-              data-testid="FileCopyOutlinedIcon"
-              focusable="false"
-              viewBox="0 0 24 24"
-            >
-              <path
-                d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm-1 4H8c-1.1 0-1.99.9-1.99 2L6 21c0 1.1.89 2 1.99 2H19c1.1 0 2-.9 2-2V11l-6-6zM8 21V7h6v5h5v9H8z"
-              />
-            </svg>
+            <img
+              className="css-10m3qo1"
+              src="Copy.svg"
+            />
           </div>
         </div>
         <div
-          className="css-yyyfwv"
+          className="css-3awvhy"
         >
           Python Usage
         </div>
@@ -59,21 +52,14 @@ pods:
     image: "undefined:undefined"
 
             </div>
-            <svg
-              aria-hidden={true}
-              className="MuiSvgIcon-root MuiSvgIcon-fontSizeSmall css-ptiqhd-MuiSvgIcon-root"
-              data-testid="FileCopyOutlinedIcon"
-              focusable="false"
-              viewBox="0 0 24 24"
-            >
-              <path
-                d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm-1 4H8c-1.1 0-1.99.9-1.99 2L6 21c0 1.1.89 2 1.99 2H19c1.1 0 2-.9 2-2V11l-6-6zM8 21V7h6v5h5v9H8z"
-              />
-            </svg>
+            <img
+              className="css-10m3qo1"
+              src="Copy.svg"
+            />
           </div>
         </div>
         <div
-          className="css-yyyfwv"
+          className="css-3awvhy"
         >
           In a Flow
         </div>
@@ -90,17 +76,10 @@ from jina.flow import Flow
 f = Flow().add(uses='undefined:undefined')
 
             </div>
-            <svg
-              aria-hidden={true}
-              className="MuiSvgIcon-root MuiSvgIcon-fontSizeSmall css-ptiqhd-MuiSvgIcon-root"
-              data-testid="FileCopyOutlinedIcon"
-              focusable="false"
-              viewBox="0 0 24 24"
-            >
-              <path
-                d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm-1 4H8c-1.1 0-1.99.9-1.99 2L6 21c0 1.1.89 2 1.99 2H19c1.1 0 2-.9 2-2V11l-6-6zM8 21V7h6v5h5v9H8z"
-              />
-            </svg>
+            <img
+              className="css-10m3qo1"
+              src="Copy.svg"
+            />
           </div>
         </div>
       </div>
@@ -116,7 +95,7 @@ f = Flow().add(uses='undefined:undefined')
         className="css-1iyoj2o"
       >
         <div
-          className="css-yyyfwv"
+          className="css-3awvhy"
         >
           Tags
         </div>
@@ -133,7 +112,7 @@ f = Flow().add(uses='undefined:undefined')
         className="css-1iyoj2o"
       >
         <div
-          className="css-yyyfwv"
+          className="css-3awvhy"
         >
           Platform
         </div>
@@ -149,7 +128,7 @@ f = Flow().add(uses='undefined:undefined')
           className="css-1iyoj2o"
         >
           <div
-            className="css-yyyfwv"
+            className="css-3awvhy"
           >
             Owner
           </div>
