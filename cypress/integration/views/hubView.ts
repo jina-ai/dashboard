@@ -10,67 +10,38 @@ describe("Hub page", () => {
     cy.dataName("title").should("have.text", "Jina Hub")
   })
 
-  describe('hub actions overview', () => {
-    it('shows actions user can take to explore, create images', () => {
-      cy.dataName('primaryActionButton').should('contain.text', 'Browse')
-      cy.dataName('secondaryActionButton').should('contain.text', 'Create')
-    })
-  })
-
   describe("hub actions overview", () => {
     it("shows actions user can take to explore, create images", () => {
-      cy.dataName("hubOverviewActionTitle").should("contain.text", "Explore")
-      cy.dataName("hubOverviewActionButtonLabel").should(
-        "contain.text",
-        "Let's Go"
-      )
+      cy.dataName("primaryActionButton").should("contain.text", "Browse")
+      cy.dataName("secondaryActionButton").should("contain.text", "Create")
     })
   })
 
   describe("hub images list preview", () => {
     it("shows a subset of hub images", () => {
       cy.dataName("hubImagesPreviewSubtitle").should("contain.text", "Latest")
-      cy.dataName("hubImageTags").should("contain.text", "audio")
-    })
-  })
-
-  describe('explore button ', () => {
-    it('takes users to hub list page', () => {
-      cy.intercept('images', { fixture: 'hubImages'})
-      cy.dataName('primaryActionButton').should('contain.text', 'Browse').click()
-      cy.dataName('hubImagesList')
     })
   })
 
   describe("explore button ", () => {
     it("takes users to hub list page", () => {
       cy.intercept("images", { fixture: "hubImages" })
-      cy.dataName("hubOverviewActionButtonLabel").contains("Read more").click()
+      cy.dataName("primaryActionButton")
+        .should("contain.text", "Browse")
+        .click()
       cy.dataName("hubImagesList")
     })
   })
 
-
-  describe('hub images', () => {
-    it('shows a list of hub images', () => {
-      cy.fixture('hubImages').then(hubImages => {
-        cy.dataName('hubImagesList').dataName('hubImage').its('length').should('eq', hubImages.length)
+  describe("hub images", () => {
+    it("shows a list of hub images", () => {
+      cy.fixture("hubImages").then((hubImages) => {
+        cy.dataName("hubImagesList")
+          .dataName("hubImage")
+          .its("length")
+          .should("eq", hubImages.length)
       })
     })
-
-    describe("hub images", () => {
-      it("shows a list of hub images", () => {
-        cy.fixture("hubImages").then((hubImages) => {
-          cy.dataName("hubImagesList")
-            .dataName("hubImage")
-            .its("length")
-            .should("eq", hubImages.length)
-          cy.dataName("hubImagesList")
-            .dataName("hubImageAuthor")
-            .its("length")
-            .should("eq", hubImages.length)
-        })
-      })
 
     it("renders the dropdown correctly", () => {
       cy.dataName(
@@ -104,27 +75,15 @@ describe("Hub page", () => {
     it("keeps filter on back button", () => {
       cy.dataName("hubImagesFilter").contains("Encoder").click()
       cy.go("back")
-      cy.dataName('primaryActionButton').should('contain.text', 'Browse').click()
-      cy.dataName('hubImagesFilter').contains('Encoder')
-    })
-  })
-
-    it("keeps filter on back button", () => {
-      cy.dataName("hubImagesFilter").contains("Encoder").click()
-      cy.go("back")
-      cy.dataName("hubOverviewActionButtonLabel").contains("Read more").click()
+      cy.dataName("primaryActionButton")
+        .should("contain.text", "Browse")
+        .click()
       cy.dataName("hubImagesFilter").contains("Encoder")
     })
   })
   describe("hub image overview", () => {
     it("opens overview of hub image", () => {
       cy.dataName("hubImage").contains("LaserEncoder").click()
-    })
-  })
-
-  describe('hub image overview', () => {
-    it('opens overview of hub image', () => {
-      cy.dataName('hubImage').contains('LaserEncoder').click()
     })
   })
 
