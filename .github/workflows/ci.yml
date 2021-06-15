@@ -43,5 +43,5 @@ jobs:
           npx nyc report --reporter=text
         env:
           PERCY_TOKEN: ${{ secrets.percy_token }}
-          CYPRESS_RECORD_KEY: ${{ secrets.cypress_record_key }}
+          CYPRESS_RECORD_KEY: 13bc8878-fdf7-4e09-b143-71a35143946b
           GITHUB_TOKEN: ${{ secrets.github_token }}
