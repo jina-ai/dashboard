@@ -3,9 +3,9 @@ import ReactFlow, {
   Background,
   BackgroundVariant,
   Controls,
-  MiniMap,
 } from "react-flow-renderer"
 import { useTheme, Theme } from "@emotion/react"
+import styled from "@emotion/styled"
 import { InputNode, ChunkNode, MatchNode } from "./FlowChartNodes"
 import { Doc, Chunk, Match, Score } from "../../views/DebuggingTool"
 
@@ -19,6 +19,11 @@ type MatchesProps = {
   doc: Doc
   onMatchSelection: (score: Score) => void
 }
+
+const FlowContainer = styled.div`
+  height: 800px;
+  background: white;
+`
 
 export const getEdge = (
   source: string,
@@ -100,17 +105,17 @@ const Matches = ({ doc, onMatchSelection }: MatchesProps) => {
   ]
 
   return (
-    <div style={{ height: 800 }}>
+    <FlowContainer>
       <ReactFlow
         elements={elements}
         nodeTypes={nodeTypes}
         onElementClick={onElementClick}
       >
         <Background variant={BackgroundVariant.Dots} gap={20} size={0.8} />
-        <MiniMap />
+        {/* <MiniMap /> */}
         <Controls />
       </ReactFlow>
-    </div>
+    </FlowContainer>
   )
 }
 

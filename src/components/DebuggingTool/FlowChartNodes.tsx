@@ -56,14 +56,22 @@ export const InputNode = ({ data }: { id: string; data: Doc }) => {
     background-color: ${palette.filters[1].main};
     color: ${palette.filters[1].contrastText};
   `
+
+  const specialKeys = ["uri", "score", "chunks", "matches", "id"]
   return (
     <>
       <InputNodeContainer>
         <NodeTitle>Id: {data?.id}</NodeTitle>
         <NodeTextContainer>
           {data.uri && <NodeMediaPreview uri={data.uri} />}
-          {data.mime_type && <NodeText>{data.mime_type}</NodeText>}
-          {data.text && <NodeText>{data?.text}</NodeText>}
+          {Object.keys(data)
+            .filter((key) => !specialKeys.includes(key))
+            .map((key) => (
+              <NodeText key={key}>
+                {key}: {JSON.stringify(data[key as keyof Doc])}
+              </NodeText>
+            ))}
+          {data.score && <NodeText>score: {data.score.value || 0}</NodeText>}
         </NodeTextContainer>
       </InputNodeContainer>
       <Handle type="target" position={Position.Bottom}></Handle>

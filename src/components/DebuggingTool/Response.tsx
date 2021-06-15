@@ -1,6 +1,5 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import styled from "@emotion/styled"
-import Grid from "@material-ui/core/Grid"
 import Box from "@material-ui/core/Box"
 import Matches from "./Matches"
 import Scores from "./Scores"
@@ -12,6 +11,7 @@ type ResponseProps = {
 
 const ResponseContainer = styled.div`
   padding: 0.5rem;
+  position: relative;
   border: 1px solid ${(props) => props.theme.palette.grey[500]};
   border-radius: 0.25rem;
 `
@@ -22,29 +22,28 @@ const ResponseTitle = styled.h6`
 
 const Response = ({ response }: ResponseProps) => {
   const [score, setScore] = useState<Score | null>(null)
+  const [showScore, setShowScore] = useState(false)
   const onMatchSelection = (score: any) => {
+    setShowScore(true)
     setScore(score)
   }
+  useEffect(() => {
+    setScore(null)
+  }, [response])
+  const hasResponse = response !== null && response?.data?.docs?.length > 0
   return (
     <Box>
       <ResponseContainer>
-        <Grid container>
-          <Grid item xs={8}>
-            <ResponseTitle>Documents and matches</ResponseTitle>
-            {response && response?.data?.docs?.length && (
-              <Matches
-                doc={response.data.docs[0]}
-                onMatchSelection={onMatchSelection}
-              />
-            )}
-          </Grid>
-          <Grid item xs={4}>
-            <ResponseTitle>Scores</ResponseTitle>
-            {response && response?.data?.docs?.length && score && (
-              <Scores score={score} />
-            )}
-          </Grid>
-        </Grid>
+        <ResponseTitle>Documents and matches</ResponseTitle>
+        {hasResponse && (
+          <Matches
+            doc={response.data.docs[0]}
+            onMatchSelection={onMatchSelection}
+          />
+        )}
+        {hasResponse && score && showScore && (
+          <Scores score={score} close={() => setShowScore(false)} />
+        )}
       </ResponseContainer>
     </Box>
   )

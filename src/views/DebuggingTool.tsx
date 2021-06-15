@@ -68,7 +68,10 @@ export type Chunk = {
 
 export type Doc = {
   id: string
-  tags: any
+  tags: { [key: string]: string }
+  adjacency?: number
+  modality?: string
+  score?: { value: number }
   text?: string
   uri?: string
   mime_type?: string
