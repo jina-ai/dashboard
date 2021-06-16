@@ -34,7 +34,7 @@ describe("Logs page", () => {
     })
 
     context("when starting a flow", () => {
-      it.only(
+      it(
         "should display the correct logging",
         {
           defaultCommandTimeout: 20000,
@@ -63,7 +63,7 @@ context("on changing table view", () => {
     cy.dataName("logStreamSourceSelectedOption").click()
   })
 
-  it("should initially display Table View option", () => {
+  it.skip("should initially display Table View option", () => {
     cy.dataName("logStreamViewSelectedOption").click()
     cy.dataName("logStreamFilters").contains("Group by Pod").click()
     cy.dataName("groupedLogsContainer").should("contain.text", "encode1")
