@@ -36,10 +36,6 @@ jobs:
           start: npm run dev
           wait-on: 'http://localhost:3000'
           command-prefix: 'percy exec -- npx'
-          record: true
-        env:
-          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Integration test Coverage
         run: |
           npx nyc report --reporter=text-summary
