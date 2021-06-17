@@ -33,7 +33,7 @@ describe("Logs page", () => {
       })
     })
 
-    context("when starting a flow", () => {
+    context.skip("when starting a flow", () => {
       it(
         "should display the correct logging",
         {
