@@ -2,6 +2,7 @@ import React from "react"
 import Card from "@material-ui/core/Card"
 import styled from "@emotion/styled"
 import { Link } from "react-router-dom"
+import { capitalizeFirstLetter } from "../../helpers/format"
 
 type HubImagePreview = {
   name: string
@@ -76,7 +77,7 @@ export default function ImageCard({ image, index }: Props) {
         <ImageTitle>{name}</ImageTitle>
         {keywords.map((keyword, index) => (
           <Tag data-name="hubImageTags" key={index} filterColorIndex={index}>
-            {keyword}
+            {capitalizeFirstLetter(keyword)}
           </Tag>
         ))}
         <ImageDescription>{description}</ImageDescription>

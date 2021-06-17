@@ -2,7 +2,7 @@ import React, { useState } from "react"
 import Snackbar from "@material-ui/core/Snackbar"
 import IconButton from "@material-ui/core/IconButton"
 import CloseIcon from "@material-ui/icons/Close"
-import CopyIcon from "@material-ui/icons/FileCopyOutlined"
+import Copy from "../../assets/icons/Copy.svg"
 import styled from "@emotion/styled"
 import { copyToClipboard } from "../../helpers/utils"
 
@@ -23,11 +23,16 @@ const CodeSnippetContainer = styled.div`
   text-overflow: ellipsis;
 `
 
+const CopyIcon = styled.img`
+  margin-left: 0.5rem;
+  cursor: pointer;
+`
+
 export default function CodeSnippetWithCopy({ codeSnippet }: Props) {
   const [openFeedback, setOpenFeedback] = useState(false)
   const handleCopyClick = () => {
     copyToClipboard(codeSnippet)
-    if(!openFeedback) setOpenFeedback(true)
+    if (!openFeedback) setOpenFeedback(true)
   }
   const handleClose = () => {
     setOpenFeedback(false)
@@ -48,7 +53,8 @@ export default function CodeSnippetWithCopy({ codeSnippet }: Props) {
     <div>
       <CodeContainer onClick={() => handleCopyClick()}>
         <CodeSnippetContainer>{codeSnippet}</CodeSnippetContainer>
-        <CopyIcon fontSize="small" />
+        <CopyIcon src={Copy} />
+
         <Snackbar
           anchorOrigin={{ vertical: "top", horizontal: "right" }}
           open={openFeedback}

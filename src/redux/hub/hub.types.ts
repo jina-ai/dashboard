@@ -29,8 +29,15 @@ export type Filter = {
   selected: boolean
   count: number
 }
+
+export type FilterCategoryName =
+  | "Executor type"
+  | "Domain space"
+  | "Libraries"
+  | "Language"
+
 export type FilterCategory = {
-  filterLabel: string
+  filterLabel: FilterCategoryName
   values: Filter[]
 }
 

@@ -89,13 +89,13 @@ const HubFilters = ({ filters, setFilters, getHubImages }: HubFilterProps) => {
             <FiltersContainer>
               {filter.values.map(({ name, selected, count }, index) => (
                 <FilterButton
+                  filterCategoryIndex={filterCategoryIndex}
                   filter={filter}
                   value={selected}
                   index={index}
                   key={index}
                   label={name}
                   count={count}
-                  filterCategoryIndex={filterCategoryIndex}
                   handleFilterChange={handleFilterChange}
                 />
               ))}

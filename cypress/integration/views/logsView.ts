@@ -1,6 +1,7 @@
 describe("Logs page", () => {
   before(() => {
     cy.visit("/")
+    cy.viewport(2000, 2000)
   })
 
   it("should redirect to /logs", () => {
@@ -32,11 +33,11 @@ describe("Logs page", () => {
       })
     })
 
-    context("when starting a flow", () => {
-      it.only(
+    context.skip("when starting a flow", () => {
+      it(
         "should display the correct logging",
         {
-          defaultCommandTimeout: 10000,
+          defaultCommandTimeout: 20000,
         },
         () => {
           cy.visit("#/flow")
@@ -62,7 +63,7 @@ context("on changing table view", () => {
     cy.dataName("logStreamSourceSelectedOption").click()
   })
 
-  it("should initially display Table View option", () => {
+  it.skip("should initially display Table View option", () => {
     cy.dataName("logStreamViewSelectedOption").click()
     cy.dataName("logStreamFilters").contains("Group by Pod").click()
     cy.dataName("groupedLogsContainer").should("contain.text", "encode1")

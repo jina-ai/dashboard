@@ -24,7 +24,8 @@ const DEBUG_GREY = "#7E7278"
 
 const PAPER_BACKGROUND = "#f5f6f8"
 
-const DISABLED_GREY = "#9E9E9E"
+const DISABLED_GREY_BACKGROUND = "#F5F5F5"
+const DISABLED_GREY_TEXT = "#BFBFBF"
 
 const CANCRO = "#E6F5F5"
 const ARIEL_SCALE = "#1EA5A5"
@@ -48,7 +49,8 @@ const theme = createTheme({
       paper: PAPER_BACKGROUND,
     },
     action: {
-      disabled: DISABLED_GREY,
+      disabledBackground: DISABLED_GREY_BACKGROUND,
+      disabled: DISABLED_GREY_TEXT,
     },
     text: {
       primary: BLACK,
