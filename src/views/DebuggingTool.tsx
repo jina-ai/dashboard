@@ -102,8 +102,10 @@ const DebuggingTool = () => {
   const handleRequest = async () => {
     setLoading(true)
 
+    console.log("Sending Request Bod;")
+
     try {
-      const searchResult = await axios({
+      const searchResult = await axios.request<DebugResponse>({
         method: "post",
         url: `http://${host}:${port}/${endpoint}`,
         data: requestBody,
@@ -112,7 +114,7 @@ const DebuggingTool = () => {
         },
       })
 
-      console.log("searchResult:", searchResult)
+      console.log("Search Result:", searchResult)
       setLoading(false)
 
       if (searchResult.data) {
