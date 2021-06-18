@@ -35,7 +35,7 @@ const calculateItemHeight = (data: any) => {
 }
 
 const calculateMaxItemHeight = (data: any) => {
-  const heights = Object.values(data).map((v) => calculateItemHeight(v))
+  const heights = Object.values(data || {}).map((v) => calculateItemHeight(v))
   return Math.max(...heights)
 }
 
@@ -103,11 +103,12 @@ export const getChunkNodes = (
   const offsets = [tallestChunk]
   chunks.forEach((chunk, index) =>
     offsets.push(
-      offsets[index] + VERTICAL_SPACE + calculateMaxItemHeight(chunk.matches)
+      offsets[index] ||
+        tallestChunk + VERTICAL_SPACE + calculateMaxItemHeight(chunk.matches)
     )
   )
 
-  const chunkNodesAndEdges = chunks.reduce((acc, chunk, index) => {
+  return chunks.reduce((acc, chunk, index) => {
     return [
       ...acc,
       {
@@ -121,17 +122,18 @@ export const getChunkNodes = (
         position: { x: 600 * index + 50, y: initialOffset },
       },
       getEdge(chunk.id, "1", false, "chunk", palette),
-      ...getMatchNodes(
-        chunk.matches,
-        chunk.id,
-        palette,
-        initialOffset + offsets[index],
-        onScoreClick,
-        "Chunk Match"
-      ),
+      ...(chunk.matches
+        ? getMatchNodes(
+            chunk.matches,
+            chunk.id,
+            palette,
+            initialOffset + offsets[index],
+            onScoreClick,
+            "Chunk Match"
+          )
+        : []),
     ]
   }, [] as any)
-  return chunkNodesAndEdges
 }
 
 const Matches = ({ doc, onScoreClick }: MatchesProps) => {
@@ -157,19 +159,22 @@ const Matches = ({ doc, onScoreClick }: MatchesProps) => {
         name: "Document",
         item: doc,
         onScoreClick,
-        hasTop: false,
       },
       position: { x: 100, y: 25 },
     },
-    ...getChunkNodes(doc?.chunks || [], palette, docHeight, onScoreClick),
-    ...getMatchNodes(
-      doc?.matches || [],
-      "1",
-      palette,
-      matchesOffset,
-      onScoreClick,
-      "Document Match"
-    ),
+    ...(doc.chunks
+      ? getChunkNodes(doc.chunks, palette, docHeight, onScoreClick)
+      : []),
+    ...(doc.matches
+      ? getMatchNodes(
+          doc.matches,
+          "1",
+          palette,
+          matchesOffset,
+          onScoreClick,
+          "Document Match"
+        )
+      : []),
   ]
 
   return (

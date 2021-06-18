@@ -99,7 +99,6 @@ const Scores = ({ score, nested }: ScoreProps) => {
 }
 
 const ScoresSidebar = ({ score, close }: SidebarProps) => {
-  console.log("rendering")
   return (
     <ScoresCard elevation={5}>
       <CardHeader
