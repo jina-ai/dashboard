@@ -147,7 +147,7 @@ export const ChartNode = ({
               <Box textAlign="right"></Box>
             </Grid>
           </Grid>
-          <div style={{ backgroundColor: "white" }}>
+          <div style={{ backgroundColor: "#ffffff80" }}>
             <PropertyList data={item} key="main table" />
           </div>
 
@@ -208,7 +208,7 @@ export const PropertyListItem = ({
         borderLeft: `1px solid ${palette.grey[500]}`,
         backgroundColor: show
           ? isObject
-            ? palette.grey[100]
+            ? `${palette.grey[100]}80`
             : palette.grey[200]
           : "inherit",
       }}
