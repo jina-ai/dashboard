@@ -107,8 +107,6 @@ export const getChunkNodes = (
     )
   )
 
-  console.log("offsets:", offsets)
-
   const chunkNodesAndEdges = chunks.reduce((acc, chunk, index) => {
     return [
       ...acc,

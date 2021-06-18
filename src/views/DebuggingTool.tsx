@@ -102,7 +102,7 @@ const DebuggingTool = () => {
   const handleRequest = async () => {
     setLoading(true)
 
-    console.log("Sending Request Bod;")
+    console.log("Sending Request Body", JSON.parse(requestBody))
 
     try {
       const searchResult = await axios.request<DebugResponse>({
