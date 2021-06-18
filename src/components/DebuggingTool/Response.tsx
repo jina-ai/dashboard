@@ -1,29 +1,18 @@
 import React, { useEffect, useState } from "react"
-import styled from "@emotion/styled"
-import Box from "@material-ui/core/Box"
 import Matches from "./Matches"
 import Scores from "./Scores"
 import { DebugResponse, Score } from "../../views/DebuggingTool"
+import { Card, CardHeader, CardContent, Box } from "@material-ui/core"
 
 type ResponseProps = {
   response: DebugResponse | null
 }
 
-const ResponseContainer = styled.div`
-  padding: 0.5rem;
-  position: relative;
-  border: 1px solid ${(props) => props.theme.palette.grey[500]};
-  border-radius: 0.25rem;
-`
-const ResponseTitle = styled.h6`
-  font-size: 1rem;
-  color: ${(props) => props.theme.palette.grey[700]};
-`
-
 const Response = ({ response }: ResponseProps) => {
   const [score, setScore] = useState<Score | null>(null)
   const [showScore, setShowScore] = useState(false)
   const onScoreClick = (score: any) => {
+    console.log("on score click: ", score)
     setShowScore(true)
     setScore(score)
   }
@@ -32,17 +21,22 @@ const Response = ({ response }: ResponseProps) => {
   }, [response])
   const hasResponse = response !== null && response?.data?.docs?.length > 0
   return (
-    <Box>
-      <ResponseContainer>
-        <ResponseTitle>Documents and matches</ResponseTitle>
-        {hasResponse && (
-          <Matches doc={response.data.docs[0]} onScoreClick={onScoreClick} />
-        )}
-        {hasResponse && score && showScore && (
-          <Scores score={score} close={() => setShowScore(false)} />
-        )}
-      </ResponseContainer>
-    </Box>
+    <Card>
+      <CardHeader
+        title="Documents and matches"
+        titleTypographyProps={{ variant: "subtitle1" }}
+      />
+      <CardContent>
+        <Box position="relative">
+          {hasResponse && (
+            <Matches doc={response.data.docs[0]} onScoreClick={onScoreClick} />
+          )}
+          {hasResponse && score && showScore && (
+            <Scores score={score} close={() => setShowScore(false)} />
+          )}
+        </Box>
+      </CardContent>
+    </Card>
   )
 }
 export default Response

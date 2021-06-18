@@ -29,9 +29,9 @@ type ScoreProps = {
 
 const ScoresCard = styled(Card)`
   position: absolute;
-  top: 3.5em;
+  top: 1em;
   right: 1em;
-  height: calc(800px - 1.5em);
+  height: calc(800px - 2em);
   width: 300px;
   background: white;
   z-index: 10;
@@ -98,21 +98,24 @@ const Scores = ({ score, nested }: ScoreProps) => {
   )
 }
 
-const ScoresSidebar = ({ score, close }: SidebarProps) => (
-  <ScoresCard elevation={5}>
-    <CardHeader
-      action={
-        <IconButton aria-label="close" onClick={close}>
-          <Close />
-        </IconButton>
-      }
-      title="Score"
-    />
-    <ScoresCardContent>
-      <List>
-        <Scores score={score} />
-      </List>
-    </ScoresCardContent>
-  </ScoresCard>
-)
+const ScoresSidebar = ({ score, close }: SidebarProps) => {
+  console.log("rendering")
+  return (
+    <ScoresCard elevation={5}>
+      <CardHeader
+        action={
+          <IconButton aria-label="close" onClick={close}>
+            <Close />
+          </IconButton>
+        }
+        title="Score"
+      />
+      <ScoresCardContent>
+        <List>
+          <Scores score={score} />
+        </List>
+      </ScoresCardContent>
+    </ScoresCard>
+  )
+}
 export default ScoresSidebar

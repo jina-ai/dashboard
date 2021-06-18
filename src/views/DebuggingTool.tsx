@@ -1,15 +1,18 @@
 import React, { useState } from "react"
 import styled from "@emotion/styled"
-import Container from "@material-ui/core/Container"
-import TextField from "@material-ui/core/TextField"
-import Button from "@material-ui/core/Button"
-import Grid from "@material-ui/core/Grid"
-import Box from "@material-ui/core/Box"
+import {
+  Container,
+  TextField,
+  Button,
+  Grid,
+  LinearProgress,
+  Card,
+  CardContent,
+} from "@material-ui/core"
 import axios from "axios"
 import RoutesTable from "../components/DebuggingTool/RouteTable"
 import Response from "../components/DebuggingTool/Response"
 import Request from "../components/DebuggingTool/Request"
-import { LinearProgress } from "@material-ui/core"
 
 const TextInput = styled(TextField)`
   width: 100%;
@@ -17,15 +20,6 @@ const TextInput = styled(TextField)`
 const FullSizeButton = styled(Button)`
   width: 100%;
   height: 100%;
-`
-const SectionContainer = styled.div`
-  padding: 0.5rem;
-  border: 1px solid ${(props) => props.theme.palette.grey[500]};
-  border-radius: 0.25rem;
-`
-const SectionTitle = styled.h6`
-  font-size: 1rem;
-  color: ${(props) => props.theme.palette.grey[700]};
 `
 
 export type ResponseMode = "text" | "image" | "audio" | "video"
@@ -129,60 +123,59 @@ const DebuggingTool = () => {
   return (
     <Container data-name="debuggingTool">
       <Grid container spacing={2}>
-        <Grid item xs={4}>
-          <TextInput
-            label="Host"
-            variant="outlined"
-            value={host}
-            onChange={(e) => setHost(e.target.value)}
-          />
-        </Grid>
-        <Grid item xs={2}>
-          <TextInput
-            label="Port"
-            variant="outlined"
-            value={port}
-            onChange={(e) => setPort(e.target.value)}
-          />
-        </Grid>
-        <Grid item xs={4}>
-          <TextInput
-            label="Endpoint"
-            variant="outlined"
-            value={endpoint}
-            onChange={(e) => setEndpoint(e.target.value)}
-          />
-        </Grid>
-        <Grid item xs={2}>
-          <FullSizeButton onClick={handleRequest} variant="contained">
-            Go
-          </FullSizeButton>
+        <Grid item xs={12}>
+          <Card>
+            <CardContent>
+              <Grid container spacing={2}>
+                <Grid item xs={4}>
+                  <TextInput
+                    label="Host"
+                    variant="outlined"
+                    value={host}
+                    onChange={(e) => setHost(e.target.value)}
+                  />
+                </Grid>
+                <Grid item xs={2}>
+                  <TextInput
+                    label="Port"
+                    variant="outlined"
+                    value={port}
+                    onChange={(e) => setPort(e.target.value)}
+                  />
+                </Grid>
+                <Grid item xs={4}>
+                  <TextInput
+                    label="Endpoint"
+                    variant="outlined"
+                    value={endpoint}
+                    onChange={(e) => setEndpoint(e.target.value)}
+                  />
+                </Grid>
+                <Grid item xs={2}>
+                  <FullSizeButton onClick={handleRequest} variant="contained">
+                    Go
+                  </FullSizeButton>
+                </Grid>
+              </Grid>
+            </CardContent>
+          </Card>
         </Grid>
         <Grid item xs={12}>
           {loading && <LinearProgress />}
         </Grid>
         <Grid item xs={12}>
-          <SectionContainer>
-            <SectionTitle>Request Body</SectionTitle>
-            <Request
-              requestBody={requestBody}
-              setRequestBody={setRequestBody}
-            />
-          </SectionContainer>
+          <Request requestBody={requestBody} setRequestBody={setRequestBody} />
         </Grid>
-        <Grid item xs={12}>
-          <Box>
-            <SectionContainer>
-              <SectionTitle>Routes (List of Pods)</SectionTitle>
-              {response && response.routes?.length && (
-                <RoutesTable routes={response.routes} />
-              )}
-            </SectionContainer>
-          </Box>
-        </Grid>
-        <Grid item xs={12}>
-          <Response response={response} />
-        </Grid>
+        {response && (
+          <>
+            <Grid item xs={12}>
+              <RoutesTable routes={response?.routes} />
+            </Grid>
+            <Grid item xs={12}>
+              <Response response={response} />
+            </Grid>
+          </>
+        )}
       </Grid>
     </Container>
   )
