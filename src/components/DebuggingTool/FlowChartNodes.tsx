@@ -20,8 +20,8 @@ import { ExpandLess, ExpandMore } from "@material-ui/icons"
 
 const NodeImagePreview = styled.img`
   display: block;
-  max-width: 12rem;
-  max-height: 12rem;
+  max-height: 20rem;
+  max-width: 100%;
   margin-bottom: 0.5rem;
   margin-top: 0.5rem;
 `
@@ -30,16 +30,17 @@ const VideoContainer = styled.video`
   display: block;
   margin-bottom: 0.5rem;
   margin-top: 0.5rem;
-`
-
-const SmallVideoContainer = styled(VideoContainer)`
-  max-width: 12rem;
-  max-height: 12rem;
+  max-height: 20rem;
+  max-width: 100%;
 `
 
 const NodeBigText = styled.p`
   font-size: 1.5rem;
   margin-bottom: 0.5rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 `
 
 const ListMarker = styled.span`
@@ -61,16 +62,7 @@ const LightText = styled.i`
 `
 
 const NodeVideoPreview = ({ src }: { src: string }) => {
-  const [expanded, setExpanded] = useState(false)
-  const toggleExpanded = () => {
-    setExpanded((prev) => !prev)
-  }
-
-  return expanded ? (
-    <VideoContainer src={src} controls onClick={toggleExpanded} />
-  ) : (
-    <SmallVideoContainer src={src} onClick={toggleExpanded} />
-  )
+  return <VideoContainer src={src} controls />
 }
 
 const NodeAudioPreview = ({ src }: { src: string }) => {

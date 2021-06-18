@@ -29,7 +29,7 @@ const FlowContainer = styled.div`
 
 const calculateItemHeight = (data: any) => {
   let height = 50
-  if (data.uri) height += 3 * 60
+  if (data.uri) height += 5 * 60
   if (data.text) height += 2 * 40
   return (height += Object.keys(data).length * 50)
 }
