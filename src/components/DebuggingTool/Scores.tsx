@@ -1,6 +1,5 @@
 import React, { useState } from "react"
 import {
-  Avatar,
   Card,
   CardHeader,
   IconButton,
@@ -8,10 +7,11 @@ import {
   Collapse,
   List,
   ListItem,
-  ListItemAvatar,
-  ListItemText,
   ListItemSecondaryAction,
   useTheme,
+  Grid,
+  Typography,
+  Box,
 } from "@material-ui/core"
 import styled from "@emotion/styled"
 import { Score } from "../../views/DebuggingTool"
@@ -42,26 +42,9 @@ const ScoresCardContent = styled(CardContent)`
   overflow-y: auto;
 `
 
-const ScoreValue = ({ value }: { value?: number }) => {
-  const { palette } = useTheme()
-  const displayString = String(value || "0.0")
-  let fontSize
-  let backgroundColor = palette.grey[600]
-  if (displayString.length > 4) {
-    fontSize = "0.85rem"
-  }
-  if (displayString === "0.0") {
-    backgroundColor = palette.grey[300]
-  }
-  return (
-    <Avatar variant="rounded" style={{ backgroundColor, fontSize }}>
-      {displayString}
-    </Avatar>
-  )
-}
-
 const Scores = ({ score, nested }: ScoreProps) => {
   const [show, setShow] = useState(false)
+  const { palette } = useTheme()
 
   let { op_name, operands, value, ref_id, description } = score
   if (!op_name && !operands && !value) {
@@ -77,10 +60,23 @@ const Scores = ({ score, nested }: ScoreProps) => {
   return (
     <div style={{ paddingLeft: nested ? "10px" : "0px" }}>
       <ListItem button={canToggle} onClick={toggleShow}>
-        <ListItemAvatar>
-          <ScoreValue value={score.value} />
-        </ListItemAvatar>
-        <ListItemText primary={op_name} secondary={description} />
+        <Grid container>
+          <Grid item xs={4}>
+            <Box paddingTop="0.75rem">
+              <Typography noWrap fontSize="1.25rem">
+                {score.value || "0.12341234"}
+              </Typography>
+            </Box>
+          </Grid>
+          <Grid item xs={7}>
+            <Box>
+              <Typography noWrap>{op_name}</Typography>
+              <Typography noWrap color={palette.grey[500]}>
+                {description}
+              </Typography>
+            </Box>
+          </Grid>
+        </Grid>
         {canToggle && (
           <ListItemSecondaryAction>
             ({operands?.length}){show ? <ExpandLess /> : <ExpandMore />}

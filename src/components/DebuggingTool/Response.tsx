@@ -23,7 +23,7 @@ const ResponseTitle = styled.h6`
 const Response = ({ response }: ResponseProps) => {
   const [score, setScore] = useState<Score | null>(null)
   const [showScore, setShowScore] = useState(false)
-  const onMatchSelection = (score: any) => {
+  const onScoreClick = (score: any) => {
     setShowScore(true)
     setScore(score)
   }
@@ -36,10 +36,7 @@ const Response = ({ response }: ResponseProps) => {
       <ResponseContainer>
         <ResponseTitle>Documents and matches</ResponseTitle>
         {hasResponse && (
-          <Matches
-            doc={response.data.docs[0]}
-            onMatchSelection={onMatchSelection}
-          />
+          <Matches doc={response.data.docs[0]} onScoreClick={onScoreClick} />
         )}
         {hasResponse && score && showScore && (
           <Scores score={score} close={() => setShowScore(false)} />

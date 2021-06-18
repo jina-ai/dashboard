@@ -29,15 +29,19 @@ const FileInput = styled.input`
   display: none;
 `
 
-function TabPanel(props: any) {
-  const { children, value, index, ...other } = props
+type TabPanelProps = {
+  children: any
+  value: number
+  index: number
+}
+
+function TabPanel({ children, value, index }: TabPanelProps) {
   return (
     <div
       role="tabpanel"
       hidden={value !== index}
-      id={`vertical-tabpanel-${index}`}
+      id={`vertical-tabPanel-${index}`}
       aria-labelledby={`vertical-tab-${index}`}
-      {...other}
     >
       {value === index && <Box p={2}>{children}</Box>}
     </div>
