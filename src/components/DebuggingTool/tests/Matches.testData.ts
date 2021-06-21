@@ -500,7 +500,7 @@ export const expectedNodesAndEdges = [
     id: "dbc25464-c771-11eb-85d7-b025aa3e54c7",
     position: {
       x: 0,
-      y: 1210,
+      y: 680,
     },
     type: "match",
   },
@@ -544,7 +544,7 @@ export const expectedNodesAndEdges = [
     id: "dbc257ac-c771-11eb-85d7-b025aa3e54c7",
     position: {
       x: 600,
-      y: 1210,
+      y: 680,
     },
     type: "match",
   },
@@ -588,7 +588,7 @@ export const expectedNodesAndEdges = [
     id: "dbc25a86-c771-11eb-85d7-b025aa3e54c7",
     position: {
       x: 1200,
-      y: 1210,
+      y: 680,
     },
     type: "match",
   },
@@ -632,7 +632,7 @@ export const expectedNodesAndEdges = [
     id: "dbc25d60-c771-11eb-85d7-b025aa3e54c7",
     position: {
       x: 1800,
-      y: 1210,
+      y: 680,
     },
     type: "match",
   },
