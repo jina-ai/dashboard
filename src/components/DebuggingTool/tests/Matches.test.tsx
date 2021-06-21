@@ -5,7 +5,9 @@ import { inputChunks, expectedNodesAndEdges } from "./Matches.testData"
 describe("getChunkNodes", () => {
   const { palette } = theme
   it("gets node and edge data for chunks", () => {
-    expect(getChunkNodes(inputChunks, palette)).toEqual(expectedNodesAndEdges)
+    expect(getChunkNodes(inputChunks, palette, 0, undefined)).toEqual(
+      expectedNodesAndEdges
+    )
   })
 })
 
