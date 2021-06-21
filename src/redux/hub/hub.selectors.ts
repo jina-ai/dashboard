@@ -1,6 +1,5 @@
-import { State } from "../index";
-import { FilterCategory, HubImage } from "./hub.types";
-
+import { State } from "../index"
+import { FilterCategory } from "./hub.types"
 
 // Todo: Ideally, we shouldn't remove keywords. This should be fixed with providing correct data
 const tagsToHide = [
@@ -9,37 +8,69 @@ const tagsToHide = [
 ]
 
 const filters = {
-  "Executor type": ["Classifier", "Evaluator", "Crafter", "Segementer", "Ranker", "Indexer", "Encoder"],
-  "Domain space": ["Text", "Audio", "Video", "Image", "Cross modal", "Multi modal", "PDF"],
-  "Libraries": ["Tensorflow", "Keras", "Numpy", "Pytorch", "Onnx", "Transformers", "sklearn", "PaddlePaddle", "librosa", "nltk"],
-  "Language": ["English", "Chinese", "Multilingual"]
+  "Executor type": [
+    "Classifier",
+    "Evaluator",
+    "Crafter",
+    "Segementer",
+    "Ranker",
+    "Indexer",
+    "Encoder",
+  ],
+  "Domain space": [
+    "Text",
+    "Audio",
+    "Video",
+    "Image",
+    "Cross modal",
+    "Multi modal",
+    "PDF",
+  ],
+  Libraries: [
+    "Tensorflow",
+    "Keras",
+    "Numpy",
+    "Pytorch",
+    "Onnx",
+    "Transformers",
+    "sklearn",
+    "PaddlePaddle",
+    "librosa",
+    "nltk",
+  ],
+  Language: ["English", "Chinese", "Multilingual"],
 }
 
 type FilterKeyType = keyof typeof filters
 
-
 export const selectHubFilters = (state: State): FilterCategory[] => {
-  const currentFilters = Object.keys(filters).map(filterKey => {
+  const currentFilters = Object.keys(filters).map((filterKey) => {
     const applicableFilters = [
-      ...state.hubState.images.map(image => image.kind),
-      ...state.hubState.images.reduce((acc, image) => ([...acc, ...image.keywords]), [] as string[] )
+      ...state.hubState.images.map((image) => image.kind),
+      ...state.hubState.images.reduce(
+        (acc, image) => [...acc, ...image.keywords],
+        [] as string[]
+      ),
     ]
-    return ({
+    return {
       filterLabel: filterKey,
-      values: filters[filterKey as FilterKeyType].map(filterValue => (
-        {
-          name: filterValue,
-          selected: state.hubState.selectedFilters.includes(filterValue),
-          count: getImagesCountForFilter(filterValue, applicableFilters)
-        }
-      ))
-    })
+      values: filters[filterKey as FilterKeyType].map((filterValue) => ({
+        name: filterValue,
+        selected: state.hubState.selectedFilters.includes(filterValue),
+        count: getImagesCountForFilter(filterValue, applicableFilters),
+      })),
+    }
   })
   return currentFilters
 }
 
-export const getImagesCountForFilter = (filter: string, applicableFilters: string[]): number => {
-  return applicableFilters.filter(f => f.toLowerCase() === filter.toLowerCase()).length
+export const getImagesCountForFilter = (
+  filter: string,
+  applicableFilters: string[]
+): number => {
+  return applicableFilters.filter(
+    (f) => f.toLowerCase() === filter.toLowerCase()
+  ).length
 }
 
 export const selectHubImages = (state: State) =>

@@ -26,11 +26,14 @@ const hubReducer = produce((draft: HubState, action: HubActionTypes) => {
       draft.error = action.payload.error
       break
     case PICK_FILTER:
-      draft.selectedFilters = _.xor(draft.selectedFilters, [action.payload.filter])
+      draft.selectedFilters = _.xor(draft.selectedFilters, [
+        action.payload.filter,
+      ])
       break
     case CLEAR_FILTERS:
-      draft.selectedFilters = draft.selectedFilters
-      .filter(selectedFilter => !action.payload.filters.includes(selectedFilter))
+      draft.selectedFilters = draft.selectedFilters.filter(
+        (selectedFilter) => !action.payload.filters.includes(selectedFilter)
+      )
   }
 }, initialHubState)
 

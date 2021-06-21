@@ -4,66 +4,73 @@ import {
   FETCH_HUB_IMAGES_FAILURE,
   PICK_FILTER,
   CLEAR_FILTERS,
-} from "./hub.constants";
+} from "./hub.constants"
 
 export type HubImage = {
-  "docker-name": string;
-  version: string;
-  "jina-version": string;
-  "docker-command": string;
-  name: string;
-  description: string;
-  type: string;
-  kind: string;
-  keywords: string[];
-  platform: string[];
-  license: string;
-  url: string;
-  documentation: string;
-  author: string;
-  avatar: string | null;
-};
+  "docker-name": string
+  version: string
+  "jina-version": string
+  "docker-command": string
+  name: string
+  description: string
+  type: string
+  kind: string
+  keywords: string[]
+  platform: string[]
+  license: string
+  url: string
+  documentation: string
+  author: string
+  avatar: string | null
+}
 
 export type Filter = {
-  name: string;
-  selected: boolean;
-  count: number;
-};
+  name: string
+  selected: boolean
+  count: number
+}
+
+export type FilterCategoryName =
+  | "Executor type"
+  | "Domain space"
+  | "Libraries"
+  | "Language"
+
 export type FilterCategory = {
-  filterLabel: string;
-  values: Filter[];
-};
+  filterLabel: FilterCategoryName
+  values: Filter[]
+}
 
 export type FilterParams = {
-  kind: string[];
-  keywords: string[];
-  name?: string | null;
-};
+  kind: string[]
+  keywords: string[]
+  name?: string | null
+}
 
 export type HubState = {
-  images: HubImage[];
-  loading: boolean;
-  error: Error | null;
+  images: HubImage[]
+  loading: boolean
+  error: Error | null
   selectedFilters: string[]
-};
+}
 
 export type FetchHubImagesAction = {
-  type: typeof FETCH_HUB_IMAGES;
-};
+  type: typeof FETCH_HUB_IMAGES
+}
 
 export type FetchHubImagesSuccessAction = {
-  type: typeof FETCH_HUB_IMAGES_SUCCESS;
+  type: typeof FETCH_HUB_IMAGES_SUCCESS
   payload: {
-    images: HubImage[];
-  };
-};
+    images: HubImage[]
+  }
+}
 
 export type FetchHubImagesFailureAction = {
-  type: typeof FETCH_HUB_IMAGES_FAILURE;
+  type: typeof FETCH_HUB_IMAGES_FAILURE
   payload: {
-    error: Error;
-  };
-};
+    error: Error
+  }
+}
 export type PickFilterAction = {
   type: typeof PICK_FILTER
   payload: {
@@ -81,4 +88,4 @@ export type HubActionTypes =
   | FetchHubImagesSuccessAction
   | FetchHubImagesFailureAction
   | PickFilterAction
-  | ClearFiltersAction;
+  | ClearFiltersAction

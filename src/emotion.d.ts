@@ -1,27 +1,11 @@
 // Extend emotion types to add type for custom theme
 
 import "@emotion/react"
+import { Theme as MuiThemeType } from "@material-ui/core"
+import { Palette } from "./createPalette"
 
 declare module "@emotion/react" {
-  export interface Theme {
-    palette: {
-      bodyBackground: string
-      background: string
-      codeBackground: string
-      headerTextColor: string
-      disabledGrey: string
-      primary: string
-      secondary: string
-      warning: string
-      error: string
-      success: string
-      info: string
-      critical: string
-      debug: string
-      tagBackground: string
-      tagPlatformBackground: string
-      mutedText: string
-      highlight: string
-    }
+  export interface Theme extends MuiThemeType {
+    palette: Palette
   }
 }

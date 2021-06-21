@@ -161,3 +161,7 @@ export function getLogLevelCharts(
   }
   return { data, numSeconds, numTicks: MAX_CHART_TICKS, lastTimestamp: now }
 }
+
+export function capitalizeFirstLetter(word: string) {
+  return word.charAt(0).toUpperCase() + word.slice(1)
+}

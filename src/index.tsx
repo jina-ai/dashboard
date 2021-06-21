@@ -1,10 +1,7 @@
 import React from "react"
 import ReactDOM from "react-dom"
 import { ThemeProvider } from "@emotion/react"
-import {
-  createMuiTheme,
-  ThemeProvider as MuiThemeProvider,
-} from "@material-ui/core/styles"
+import { ThemeProvider as MuiThemeProvider } from "@material-ui/core/styles"
 import { Provider } from "react-redux"
 import { theme } from "./theme"
 import * as Sentry from "@sentry/react"
@@ -16,6 +13,7 @@ import "./styles/shards-dashboards.scss"
 import "./App.css"
 import store from "./redux"
 import { newVersionLocalStorageReset } from "./helpers/utils"
+
 let App
 const version = require("../package.json").version
 const localVersion = localStorage.getItem("version")
@@ -42,11 +40,9 @@ if (process.env.NODE_ENV === "production") {
   })
 }
 
-const muiTheme = createMuiTheme()
-
 ReactDOM.render(
   // HOC to make theme available as a prop in all components
-  <MuiThemeProvider theme={muiTheme}>
+  <MuiThemeProvider theme={theme}>
     <ThemeProvider theme={theme}>
       <Provider store={store}>
         <App />

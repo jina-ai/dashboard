@@ -2,23 +2,32 @@ import React, { useState } from "react"
 import styled from "@emotion/styled"
 import { Button } from "@material-ui/core"
 import { FilterCategory } from "../../redux/hub/hub.types"
+import { Theme, useTheme } from "@emotion/react"
 
 type CheckboxLabelProps = {
   selected: boolean
   highlightColor?: string
+  filterCategoryIndex: number
+  theme: Theme
 }
 
 const ToggleButton = styled(Button)`
   background-color: ${(props: CheckboxLabelProps) =>
-    props.selected ? '#21A6A6' : '#E6F5F5'};
+    props.selected
+      ? "#21A6A6"
+      : props.theme.palette.filters[props.filterCategoryIndex].main};
   color: ${(props: CheckboxLabelProps) =>
-    props.selected ? 'white' : '#1EA5A5'};
+    props.selected
+      ? "white"
+      : props.theme.palette.filters[props.filterCategoryIndex].contrastText};
   box-shadow: none;
   display: flex;
-  margin: .5rem;
+  margin: 0.5rem 1rem 0.5rem 0;
   text-transform: none;
+  font-weight: normal;
+
   &:hover {
-    background-color: #21A6A6;
+    background-color: #21a6a6;
     color: white;
   }
 `
@@ -36,7 +45,6 @@ type FilterButtonProps = {
     value: boolean
   ) => void
 }
-
 const FilterButton = ({
   value,
   label,
@@ -50,8 +58,12 @@ const FilterButton = ({
     setSelected(!selected)
     handleFilterChange(filterCategoryIndex, index, !selected)
   }
+  const theme = useTheme()
+
   return (
     <ToggleButton
+      theme={theme}
+      filterCategoryIndex={filterCategoryIndex}
       variant="contained"
       selected={value}
       disabled={count === 0}

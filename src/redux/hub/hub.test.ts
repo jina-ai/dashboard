@@ -1,5 +1,4 @@
-
-import { clearFilters, fetchHubImages, pickFilter } from "./hub.actions";
+import { clearFilters, fetchHubImages, pickFilter } from "./hub.actions"
 import {
   initialHubState,
   FETCH_HUB_IMAGES,
@@ -7,16 +6,22 @@ import {
   FETCH_HUB_IMAGES_FAILURE,
   PICK_FILTER,
   CLEAR_FILTERS,
-} from "./hub.constants";
-import { HubState, HubActionTypes, HubImage } from "./hub.types";
-import hubReducer from "./hub.reducer";
-import { selectHubImages, selectIsHubImagesLoading, selectHubImagesFetchError, selectHubFilters, getImagesCountForFilter } from "./hub.selectors";
-import configureMockStore from "redux-mock-store";
-import thunk, { ThunkDispatch } from "redux-thunk";
-import { AnyAction } from "redux";
-import axios from "axios";
-import MockAdapter from "axios-mock-adapter";
-import { State } from "../index";
+} from "./hub.constants"
+import { HubState, HubActionTypes, HubImage } from "./hub.types"
+import hubReducer from "./hub.reducer"
+import {
+  selectHubImages,
+  selectIsHubImagesLoading,
+  selectHubImagesFetchError,
+  selectHubFilters,
+  getImagesCountForFilter,
+} from "./hub.selectors"
+import configureMockStore from "redux-mock-store"
+import thunk, { ThunkDispatch } from "redux-thunk"
+import { AnyAction } from "redux"
+import axios from "axios"
+import MockAdapter from "axios-mock-adapter"
+import { State } from "../index"
 
 const mockAxios = new MockAdapter(axios)
 
@@ -42,18 +47,38 @@ describe("hub actions", () => {
         .reply(200, ["Sunflowers", "Boy with an apple"])
 
       store.dispatch(fetchHubImages()).then(() => {
-        expect(store.getActions()).toEqual(expectedActions);
-      });
-    });
-  });
+        expect(store.getActions()).toEqual(expectedActions)
+      })
+    })
+  })
+
+  describe("on fetching images", () => {
+    it("dispatches FETCH_HUB_IMAGES_FAILURE on failed network request", () => {
+      const expectedActions = [
+        {
+          type: "FETCH_HUB_IMAGES_FAILURE",
+          payload: {
+            error: "Fetch failed",
+          },
+        },
+      ]
+
+      const store = mockStore(initialHubState)
+      mockAxios.onGet("https://hubapi.jina.ai/images").reply(400)
+
+      store.dispatch(fetchHubImages()).then(() => {
+        expect(store.getActions()).toEqual(expectedActions)
+      })
+    })
+  })
 
   describe("on selecting filters", () => {
     it("dispatches SELECT_FILTER action", () => {
       const expectedActions = [
-        { type: "PICK_FILTER", payload: { filter: "multi-modal" } }
+        { type: "PICK_FILTER", payload: { filter: "multi-modal" } },
       ]
 
-      const store = mockStore(initialHubState);
+      const store = mockStore(initialHubState)
       store.dispatch(pickFilter("multi-modal"))
       expect(store.getActions()).toEqual(expectedActions)
     })
@@ -61,15 +86,18 @@ describe("hub actions", () => {
   describe("on clearing filters", () => {
     it("dispatches CLEAR_FILTER action", () => {
       const expectedActions = [
-        { type: "CLEAR_FILTERS", payload: { filters: ["multi-modal", "audio"] } }
+        {
+          type: "CLEAR_FILTERS",
+          payload: { filters: ["multi-modal", "audio"] },
+        },
       ]
 
-      const store = mockStore(initialHubState);
+      const store = mockStore(initialHubState)
       store.dispatch(clearFilters(["multi-modal", "audio"]))
       expect(store.getActions()).toEqual(expectedActions)
     })
   })
-});
+})
 
 describe("hub reducer", () => {
   it("should have an initial state", () => {
@@ -117,7 +145,7 @@ describe("hub reducer", () => {
           images: [],
           loading: true,
           error: { name: "error name", message: "error message" },
-          selectedFilters: []
+          selectedFilters: [],
         },
         {
           type: FETCH_HUB_IMAGES_SUCCESS,
@@ -168,7 +196,7 @@ describe("hub reducer", () => {
           images: (["Starry night", "Water lillies"] as unknown) as HubImage[],
           loading: true,
           error: null,
-          selectedFilters: []
+          selectedFilters: [],
         },
         {
           type: FETCH_HUB_IMAGES_FAILURE,
@@ -189,13 +217,13 @@ describe("hub reducer", () => {
           images: (["Starry night", "Water lillies"] as unknown) as HubImage[],
           loading: true,
           error: null,
-          selectedFilters: []
+          selectedFilters: [],
         },
         {
           type: PICK_FILTER,
           payload: {
-            filter: "Multimodal"
-          }
+            filter: "Multimodal",
+          },
         }
       ).selectedFilters
     ).toEqual(["Multimodal"])
@@ -207,13 +235,13 @@ describe("hub reducer", () => {
           images: (["Starry night", "Water lillies"] as unknown) as HubImage[],
           loading: true,
           error: null,
-          selectedFilters: ["Multimodal"]
+          selectedFilters: ["Multimodal"],
         },
         {
           type: PICK_FILTER,
           payload: {
-            filter: "Multimodal"
-          }
+            filter: "Multimodal",
+          },
         }
       ).selectedFilters
     ).toEqual([])
@@ -225,13 +253,13 @@ describe("hub reducer", () => {
           images: (["Starry night", "Water lillies"] as unknown) as HubImage[],
           loading: true,
           error: null,
-          selectedFilters: ["Multimodal", "onnx", "Tensorflow"]
+          selectedFilters: ["Multimodal", "onnx", "Tensorflow"],
         },
         {
           type: PICK_FILTER,
           payload: {
-            filter: "Multimodal"
-          }
+            filter: "Multimodal",
+          },
         }
       ).selectedFilters
     ).toEqual(["onnx", "Tensorflow"])
@@ -243,18 +271,18 @@ describe("hub reducer", () => {
           images: (["Starry night", "Water lillies"] as unknown) as HubImage[],
           loading: true,
           error: null,
-          selectedFilters: ["Multimodal", "onnx", "Tensorflow"]
+          selectedFilters: ["Multimodal", "onnx", "Tensorflow"],
         },
         {
           type: CLEAR_FILTERS,
           payload: {
-            filters: ["Multimodal", "onnx"]
-          }
+            filters: ["Multimodal", "onnx"],
+          },
         }
       ).selectedFilters
     ).toEqual(["Tensorflow"])
   })
-});
+})
 
 describe("hub selectors", () => {
   describe("selectIsHubImagesLoading", () => {
@@ -293,7 +321,9 @@ describe("hub selectors", () => {
     ]
 
     it("gets applied filter count", () => {
-      expect(getImagesCountForFilter("Indexer", ["Indexer", "Encoder", "Indexer"])).toEqual(2)
+      expect(
+        getImagesCountForFilter("Indexer", ["Indexer", "Encoder", "Indexer"])
+      ).toEqual(2)
     })
 
     const expectedFilters = [
@@ -307,7 +337,7 @@ describe("hub selectors", () => {
           { name: "Ranker", selected: false, count: 0 },
           { name: "Indexer", selected: false, count: 2 },
           { name: "Encoder", selected: true, count: 1 },
-        ]
+        ],
       },
       {
         filterLabel: "Domain space",
@@ -319,7 +349,7 @@ describe("hub selectors", () => {
           { name: "Cross modal", selected: false, count: 0 },
           { name: "Multi modal", selected: false, count: 0 },
           { name: "PDF", selected: false, count: 1 },
-        ]
+        ],
       },
       {
         filterLabel: "Libraries",
@@ -334,7 +364,7 @@ describe("hub selectors", () => {
           { name: "PaddlePaddle", selected: false, count: 0 },
           { name: "librosa", selected: false, count: 0 },
           { name: "nltk", selected: false, count: 0 },
-        ]
+        ],
       },
       {
         filterLabel: "Language",
@@ -342,14 +372,19 @@ describe("hub selectors", () => {
           { name: "English", selected: false, count: 0 },
           { name: "Chinese", selected: false, count: 0 },
           { name: "Multilingual", selected: false, count: 0 },
-        ]
-      }
+        ],
+      },
     ]
 
     it("gets filters from images", () => {
       expect(
-        selectHubFilters({ hubState: { images: inputImages, selectedFilters: ["Text", "Encoder"] } } as State))
-        .toEqual(expectedFilters)
+        selectHubFilters({
+          hubState: {
+            images: inputImages,
+            selectedFilters: ["Text", "Encoder"],
+          },
+        } as State)
+      ).toEqual(expectedFilters)
     })
   })
 
