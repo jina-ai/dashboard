@@ -17,7 +17,7 @@ import HomeView from "../views/HomeView"
 import NavigateButton from "../components/Common/NavigateButton"
 import FlowView from "../views/FlowView"
 import { isFeatureEnabled } from "../helpers/featureSwitch"
-import DebuggingTool from "../views/DebuggingTool"
+import SwaggerUI from "../views/SwaggerView"
 
 export const dashboardRoutes = [
   {
@@ -113,7 +113,7 @@ export const dashboardRoutes = [
   {
     path: "/debug",
     layout: IconSidebar,
-    component: DebuggingTool,
+    component: SwaggerUI,
     props: {
       usesConnection: true,
       usesAuth: true,
