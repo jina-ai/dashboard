@@ -74,7 +74,7 @@ function formatURL(
   else return `${host}/${endpoint}`
 }
 
-const SwaggerUI = () => {
+const SwaggerView = () => {
   const [show, setShow] = useState(false)
   const [host, setHost] = useState(getInitialHostAndPort().host)
   const [port, setPort] = useState(getInitialHostAndPort().port)
@@ -135,4 +135,4 @@ const SwaggerUI = () => {
     </Container>
   )
 }
-export default SwaggerUI
+export default SwaggerView

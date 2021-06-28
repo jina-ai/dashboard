@@ -2,7 +2,7 @@
 import { SwaggerLayout } from "../layouts"
 
 // Route Views
-import SwaggerUI from "../views/SwaggerView"
+import SwaggerView from "../views/SwaggerView"
 
 export type SwaggerRoute = {
   path: string
@@ -21,6 +21,6 @@ export const swaggerRoutes: SwaggerRoute[] = [
     path: "/",
     exact: true,
     layout: SwaggerLayout,
-    component: SwaggerUI,
+    component: SwaggerView,
   },
 ]
