@@ -10,6 +10,7 @@
     "start_dev-server": "node dev-resources/testServer.js",
     "build": "CI=false react-scripts build",
     "build-small": "GENERATE_SOURCEMAP=false npm run build",
+    "build-cdn": "PUBLIC_URL=https://api.jina.ai/swagger npm run build-small",
     "dashboard": "REACT_APP_TARGET=Dashboard npm run",
     "hub": "REACT_APP_TARGET=Hub npm run",
     "swagger": "REACT_APP_TARGET=Swagger npm run",
