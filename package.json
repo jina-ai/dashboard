@@ -2,7 +2,7 @@
   "name": "dashboard-v1",
   "version": "1.3.0",
   "private": true,
-  "homepage": "https://dashboard.jina.ai",
+  "homepage": ".",
   "scripts": {
     "dev": "npm-run-all --parallel start_dev-server start-dashboard",
     "start": "react-scripts -r @cypress/instrument-cra start",
