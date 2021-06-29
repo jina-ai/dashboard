@@ -7,6 +7,7 @@ import { theme } from "./theme"
 import * as Sentry from "@sentry/react"
 import { Integrations } from "@sentry/tracing"
 
+import "swagger-ui-react/swagger-ui.css"
 import "bootstrap/dist/css/bootstrap.min.css"
 // Todo: Remove shards and associated styles when we stop using it
 import "./styles/shards-dashboards.scss"
@@ -20,18 +21,23 @@ const localVersion = localStorage.getItem("version")
 
 newVersionLocalStorageReset(version, localVersion)
 
-if (process.env.REACT_APP_TARGET === "hub") {
+const { REACT_APP_TARGET, NODE_ENV } = process.env
+
+if (REACT_APP_TARGET === "hub") {
   const { Hub } = require("./apps/Hub")
   App = Hub
-} else if (process.env.REACT_APP_TARGET === "styleguide") {
+} else if (REACT_APP_TARGET === "styleguide") {
   const { Styleguide } = require("./apps/Styleguide")
   App = Styleguide
+} else if (REACT_APP_TARGET === "swagger") {
+  const { Swagger } = require("./apps/Swagger")
+  App = Swagger
 } else {
   const { Dashboard } = require("./apps/Dashboard")
   App = Dashboard
 }
 
-if (process.env.NODE_ENV === "production") {
+if (NODE_ENV === "production") {
   Sentry.init({
     dsn:
       "https://085edd94ec3e479cb20f2c65f7b8cb82@o525420.ingest.sentry.io/5639443",
