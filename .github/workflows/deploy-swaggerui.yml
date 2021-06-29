@@ -12,10 +12,6 @@ jobs:
         node-version: [12.x]
     steps:
       - uses: actions/checkout@v2
-        with:
-          repository: jina-ai/dashboard
-          path: .
-          token: ${{ secrets.JINA_DEV_BOT }}
       - uses: actions/checkout@v2
         with:
           repository: jina-ai/api
