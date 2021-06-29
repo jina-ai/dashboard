@@ -1,7 +1,7 @@
 // @ts-nocheck
 import * as YAML from "yaml"
 import { getInitialLogLevel } from "../redux/logStream/logStream.constants"
-import _ from "lodash"
+import { findIndex, cloneDeep } from "lodash"
 import { Level, LogLevelOccurrences } from "../redux/logStream/logStream.types"
 import {
   CustomDataObject,
@@ -68,7 +68,7 @@ export const formatDebugRequest = async (
     else if (location === "textQuery" && textQuery)
       request.data[0][key] = formattedValue
     else if (files) {
-      let dataIndex = _.findIndex(
+      let dataIndex = findIndex(
         Array.from(files),
         (file) => `file-${file.name}` === location
       )
@@ -210,7 +210,7 @@ export function getLogLevelCharts(
   const currentInterval = Math.ceil(currentDate / 1000 / step) * step
   const now = Math.floor(currentDate / 1000)
   for (let i = currentInterval - numSeconds; i < currentInterval; i += step) {
-    let item = _.cloneDeep(emptyItem)
+    let item = cloneDeep(emptyItem)
     for (let j = i; j < i + step; ++j) {
       const occurrence = logLevelOccurrences[j]
       if (!occurrence) continue

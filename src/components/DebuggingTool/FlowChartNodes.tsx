@@ -1,11 +1,11 @@
 import React, { useState } from "react"
 import { Handle, Position } from "react-flow-renderer"
-import Card from "@material-ui/core/Card"
 import styled from "@emotion/styled"
 import { useTheme } from "@emotion/react"
 import { Chunk, Doc, Match, Score } from "../../views/DebuggingTool"
-import { mimeTypeFromDataURI } from "../../helpers/format"
+
 import {
+  Card,
   Collapse,
   List,
   ListItem,
@@ -16,7 +16,9 @@ import {
   Button,
   CardHeader,
 } from "@material-ui/core"
+
 import { ExpandLess, ExpandMore } from "@material-ui/icons"
+import { mimeTypeFromDataURI } from "../../helpers/utils"
 
 const NodeImagePreview = styled.img`
   display: block;

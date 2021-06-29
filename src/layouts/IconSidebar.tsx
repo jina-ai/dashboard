@@ -45,7 +45,7 @@ type IconSideBarLayoutProps = {
   navigateButton?: () => React.ReactNode
 }
 
-const IconSidebarLayout = (props: IconSideBarLayoutProps) => {
+export const IconSidebarLayout = (props: IconSideBarLayoutProps) => {
   const modal = useSelector(selectModal)
   const modalParams = useSelector(selectModalParams)
   const loading = useSelector(selectLoading)
@@ -188,5 +188,3 @@ const IconSidebarLayout = (props: IconSideBarLayoutProps) => {
     </Container>
   )
 }
-
-export default IconSidebarLayout

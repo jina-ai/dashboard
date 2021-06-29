@@ -2,7 +2,7 @@ import React from "react"
 import { Redirect } from "react-router-dom"
 
 // Layout Types
-import { HubLayout } from "../layouts"
+import { HubLayout } from "../layouts/HubLayout"
 
 // Route Views
 import PackageView from "../views/PackageView"

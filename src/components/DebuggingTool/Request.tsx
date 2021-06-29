@@ -1,28 +1,29 @@
+import React, { useEffect, useState } from "react"
+import styled from "@emotion/styled"
+import { nanoid } from "nanoid"
+import { reduce } from "lodash"
+
 import {
-  Box,
-  Grid,
-  Tab,
-  Tabs,
   TextField,
-  FormControl,
-  InputLabel,
-  Button,
-  Select,
-  MenuItem,
-  Divider,
-  ListSubheader,
   Card,
   CardHeader,
   CardContent,
+  Collapse,
+  Grid,
+  Box,
+  Tabs,
+  Tab,
+  Button,
+  Divider,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  ListSubheader,
 } from "@material-ui/core"
 
-import React, { useEffect, useState } from "react"
-import styled from "@emotion/styled"
-import { Collapse } from "react-bootstrap"
-import { Add, Close } from "@material-ui/icons"
-import { nanoid } from "nanoid"
-import { formatDebugRequest } from "../../helpers/format"
-import _ from "lodash"
+import { Close, Add } from "@material-ui/icons"
+import { formatDebugRequest } from "../../helpers/utils"
 
 const TextInput = styled(TextField)`
   width: 100%;
@@ -127,7 +128,7 @@ const Request = ({ requestBody, setRequestBody }: Props) => {
     rowsToRemove.forEach((row) => removeRow(row))
   }
 
-  const numCustomFields = _.reduce(
+  const numCustomFields = reduce(
     rows,
     (acc, rowId) => {
       if (values[rowId] && keys[rowId]) return acc + 1

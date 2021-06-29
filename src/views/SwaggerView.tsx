@@ -7,12 +7,13 @@ import {
   Grid,
   TextField,
 } from "@material-ui/core"
+import { ExpandLess, ExpandMore } from "@material-ui/icons"
+import styled from "@emotion/styled"
+import SwaggerUIReact from "swagger-ui-react"
+
+import LiveResponse from "../components/DebuggingTool/CustomLiveResponse"
 import RoutesTable from "../components/DebuggingTool/RouteTable"
 import Response from "../components/DebuggingTool/Response"
-import SwaggerUIReact from "swagger-ui-react"
-import { ExpandLess, ExpandMore } from "@material-ui/icons"
-import LiveResponse from "../components/DebuggingTool/CustomLiveResponse"
-import styled from "@emotion/styled"
 
 const DEFAULT_ENDPOINT = "openapi.json"
 
@@ -57,8 +58,9 @@ function getHostAndPortFromLocation() {
 }
 
 function getInitialHostAndPort() {
-  const { location } = window
-  const searchParams = new URLSearchParams(location.search)
+  const searchParams = new URLSearchParams(
+    window.location.search || window.location.hash.split("?")[1]
+  )
   const host = searchParams.get("host")
   const port = searchParams.get("port")
   if (host) return { host, port }
