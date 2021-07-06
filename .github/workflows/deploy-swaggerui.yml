@@ -1,0 +1,37 @@
+name: Deploy Swagger Build
+
+on:
+  workflow_dispatch:
+
+
+jobs:
+  push-to-api:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [12.x]
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/checkout@v2
+        with:
+          repository: jina-ai/api
+          path: api
+          token: ${{ secrets.JINA_DEV_BOT }}
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Install Packages
+        run: npm ci
+      - name: Create Build
+        run: |
+          npx browserslist@latest --update-db
+          PUBLIC_URL=https://api.jina.ai/swagger && npm run build-swagger
+      - name: Push to API
+        run: |
+          rm -rf api/swagger
+          cp -R build api/swagger
+          cd api
+          git config --local user.email "dev-bot@jina.ai"
+          git config --local user.name "Jina Dev Bot"
+          git add . && git commit -m "update swagger build" && git push
