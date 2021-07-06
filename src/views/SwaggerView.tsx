@@ -12,7 +12,6 @@ import styled from "@emotion/styled"
 import SwaggerUIReact from "swagger-ui-react"
 
 import LiveResponse from "../components/DebuggingTool/CustomLiveResponse"
-import RoutesTable from "../components/DebuggingTool/RouteTable"
 import Response from "../components/DebuggingTool/Response"
 
 const DEFAULT_ENDPOINT = "openapi.json"
@@ -36,14 +35,7 @@ const WrappedComponents = function () {
       debugResponse: ({ response }: any) => (
         <>
           <h5>Response body</h5>
-          <Grid container spacing={2}>
-            <Grid item xs={12}>
-              <RoutesTable routes={response?.routes} />
-            </Grid>
-            <Grid item xs={12}>
-              <Response response={response} />
-            </Grid>
-          </Grid>
+          <Response response={response} />
         </>
       ),
     },
@@ -133,7 +125,12 @@ const SwaggerView = () => {
           </Grid>
         </Box>
       </Collapse>
-      <SwaggerUIReact url={url} presets={[WrappedComponents]} />
+      <SwaggerUIReact
+        url={url}
+        presets={[WrappedComponents]}
+        requestInterceptor={console.log}
+        responseInterceptor={console.log}
+      />
     </Container>
   )
 }
