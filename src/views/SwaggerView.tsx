@@ -12,6 +12,7 @@ import styled from "@emotion/styled"
 import SwaggerUIReact from "swagger-ui-react"
 
 import LiveResponse from "../components/DebuggingTool/CustomLiveResponse"
+import CustomRequestEditor from "../components/DebuggingTool/CustomRequestBodyEditor"
 import Response from "../components/DebuggingTool/Response"
 
 const DEFAULT_ENDPOINT = "openapi.json"
@@ -30,6 +31,10 @@ const WrappedComponents = function () {
       liveResponse: (Original: any, system: any) => (props: any) => {
         return <LiveResponse {...props} />
       },
+      RequestBodyEditor: (Original: any, system: any) => (props: any) => {
+        return <CustomRequestEditor {...props} />
+      },
+      initializedInput: () => <h1>Hello</h1>,
     },
     components: {
       debugResponse: ({ response }: any) => (
@@ -128,8 +133,8 @@ const SwaggerView = () => {
       <SwaggerUIReact
         url={url}
         presets={[WrappedComponents]}
-        requestInterceptor={console.log}
-        responseInterceptor={console.log}
+        requestInterceptor={(r) => console.log("request:", r)}
+        responseInterceptor={(r) => console.log("response:", r)}
       />
     </Container>
   )

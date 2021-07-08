@@ -5,7 +5,7 @@ import { DebugResponse, Score } from "../../views/DebuggingTool"
 import { Card, CardHeader, CardContent, Box } from "@material-ui/core"
 import { DocumentTabs } from "./DocumentTabs"
 
-const HEIGHT = 800
+const HEIGHT = 600
 
 type ResponseProps = {
   response: DebugResponse | null

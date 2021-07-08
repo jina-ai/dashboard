@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react"
 import styled from "@emotion/styled"
 import { nanoid } from "nanoid"
 import { reduce } from "lodash"
-
 import {
   TextField,
   Card,
@@ -15,15 +14,14 @@ import {
   Tab,
   Button,
   Divider,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
-  ListSubheader,
 } from "@material-ui/core"
 
 import { Close, Add } from "@material-ui/icons"
-import { formatDebugRequest } from "../../helpers/utils"
+import {
+  fileToBase64,
+  formatDocumentRequest,
+  parseDocumentRequest,
+} from "../../helpers/utils"
 
 const TextInput = styled(TextField)`
   width: 100%;
@@ -57,32 +55,45 @@ type Props = {
   setRequestBody: (body: string) => void
 }
 
-const Request = ({ requestBody, setRequestBody }: Props) => {
-  const [tab, setTab] = useState(0)
-  const [textQuery, setTextQuery] = useState("")
-  const [files, setFiles] = useState<FileList | null>(null)
+export const DocumentRequest = ({ requestBody, setRequestBody }: Props) => {
+  const [textDocuments, setTextDocuments] = useState("")
+  const [uris, setURIs] = useState<string[]>([])
   const [showCustom, setShowCustom] = useState(false)
-  const [rows, setRows] = useState<string[]>([nanoid()])
-  const [locations, setLocations] = useState<{ [key: string]: string }>({})
+  const [rows, setRows] = useState<string[]>([])
   const [keys, setKeys] = useState<{ [key: string]: string }>({})
   const [values, setValues] = useState<{ [key: string]: string }>({})
 
   const toggleShowCustom = () => setShowCustom((prev) => !prev)
 
   useEffect(() => {
+    const {
+      rows: initialRows,
+      keys: initialKeys,
+      values: initialValues,
+      text: initialText,
+      uris: initialURIs,
+    } = parseDocumentRequest(requestBody)
+
+    setTextDocuments(initialText)
+    setRows(initialRows.length ? initialRows : [nanoid()])
+    setValues(initialValues)
+    setKeys(initialKeys)
+    setURIs(initialURIs)
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
     const handleUpdate = async () => {
-      const formattedBody = await formatDebugRequest(
-        textQuery,
-        files,
+      const formattedBody = await formatDocumentRequest(
+        textDocuments,
+        uris,
         rows,
-        locations,
         keys,
         values
       )
       setRequestBody(formattedBody)
     }
     handleUpdate()
-  }, [textQuery, files, rows, locations, keys, values, setRequestBody])
+  }, [textDocuments, uris, rows, keys, values, setRequestBody])
 
   const addRow = () => {
     const rowId = nanoid()
@@ -91,18 +102,23 @@ const Request = ({ requestBody, setRequestBody }: Props) => {
     })
   }
 
+  const handleFileSelect = async (files: FileList | null) => {
+    const uris: string[] = []
+    const filesArray = Array.from(files || [])
+
+    for (let file of filesArray) {
+      const uri = await fileToBase64(file)
+      uris.push(uri)
+    }
+
+    setURIs(uris)
+  }
+
   const removeRow = (rowId: string) => {
     const index = rows.indexOf(rowId)
     setRows((prev) => {
       prev.splice(index, 1)
       return prev.length === 0 ? [nanoid()] : [...prev]
-    })
-  }
-
-  const setLocation = (id: string, location: string) => {
-    setLocations((prev) => {
-      prev[id] = location
-      return { ...prev }
     })
   }
 
@@ -121,11 +137,7 @@ const Request = ({ requestBody, setRequestBody }: Props) => {
   }
 
   const removeFiles = () => {
-    setFiles(null)
-    const rowsToRemove = rows.filter(
-      (id) => locations[id] && locations[id].startsWith("file")
-    )
-    rowsToRemove.forEach((row) => removeRow(row))
+    setURIs([])
   }
 
   const numCustomFields = reduce(
@@ -136,6 +148,143 @@ const Request = ({ requestBody, setRequestBody }: Props) => {
     },
     0
   )
+
+  return (
+    <>
+      <Box mb={2}>
+        <Grid container spacing={2}>
+          <Grid item xs={12}>
+            <TextInput
+              label="Text Documents"
+              placeholder="Text Documents"
+              variant="outlined"
+              multiline
+              minRows={3}
+              maxRows={25}
+              type="custom-text"
+              value={textDocuments}
+              onChange={(e) => setTextDocuments(e.target.value)}
+            />
+          </Grid>
+        </Grid>
+      </Box>
+      <Grid container>
+        <Grid item xs={6}>
+          <FileInput
+            type="file"
+            multiple
+            id="attach-files-button"
+            onChange={(e) => handleFileSelect(e.target.files)}
+          />
+          <label htmlFor="attach-files-button">
+            <Button size="large" component="span">
+              Select Files
+            </Button>
+          </label>
+          {uris?.length ? (
+            <Box display="inline" marginLeft={3}>
+              {uris.length} files selected{" "}
+              <Button onClick={removeFiles}>Remove</Button>
+            </Box>
+          ) : (
+            ""
+          )}
+        </Grid>
+        <Grid item xs={6}>
+          <Box textAlign="right" onClick={toggleShowCustom}>
+            <Button size="large">
+              {showCustom ? "Hide " : "Show "}Custom Fields
+              {numCustomFields ? ` (${numCustomFields})` : ""}
+            </Button>
+          </Box>
+        </Grid>
+      </Grid>
+      <Collapse in={showCustom}>
+        <Box width="100%">
+          <Divider />
+          {rows.map((id) => (
+            <Grid key={id} container spacing={2} paddingTop={3}>
+              <Grid item xs={4}>
+                <TextInput
+                  label="Key"
+                  placeholder="Text Query"
+                  variant="outlined"
+                  type="custom-input"
+                  value={keys[id] || ""}
+                  onChange={(e) => setKey(id, e.target.value)}
+                />
+              </Grid>
+              <Grid item xs={7}>
+                <TextInput
+                  label="Value"
+                  placeholder="Text Query"
+                  variant="outlined"
+                  type="custom-input"
+                  value={values[id] || ""}
+                  onChange={(e) => setValue(id, e.target.value)}
+                />
+              </Grid>
+              <Grid item xs={1}>
+                <Button size="large" onClick={() => removeRow(id)}>
+                  <Close />
+                </Button>
+              </Grid>
+            </Grid>
+          ))}
+
+          <Box paddingTop={3}>
+            <Button size="large" onClick={addRow}>
+              <Add /> Add Field
+            </Button>
+          </Box>
+        </Box>
+      </Collapse>
+    </>
+  )
+}
+
+const DocumentCard = styled(Card)`
+  textarea {
+    min-height: auto !important;
+    background: none;
+    border: none;
+    padding: none !important;
+    font-size: 1rem;
+    font-family: inherit !important;
+    font-weight: 400;
+  }
+
+  textarea:focus {
+    border: none;
+  }
+`
+
+export const DocumentRequestCard = ({ requestBody, setRequestBody }: Props) => {
+  let numDocuments = 0
+
+  try {
+    const req = JSON.parse(requestBody)
+    numDocuments = req.data.length
+  } catch (e) {}
+
+  return (
+    <DocumentCard>
+      <CardHeader
+        title={`Documents (${numDocuments})`}
+        titleTypographyProps={{ variant: "subtitle1" }}
+      />
+      <CardContent>
+        <DocumentRequest
+          requestBody={requestBody}
+          setRequestBody={setRequestBody}
+        />
+      </CardContent>
+    </DocumentCard>
+  )
+}
+
+const Request = ({ requestBody, setRequestBody }: Props) => {
+  const [tab, setTab] = useState(0)
 
   return (
     <Card>
@@ -160,123 +309,10 @@ const Request = ({ requestBody, setRequestBody }: Props) => {
           </Grid>
           <Grid item xs={10}>
             <TabPanel value={tab} index={0}>
-              <Box mb={2}>
-                <Grid container spacing={2}>
-                  <Grid item xs={12}>
-                    <TextInput
-                      label="Text Query (optional)"
-                      placeholder="Text Query"
-                      variant="outlined"
-                      value={textQuery}
-                      onChange={(e) => setTextQuery(e.target.value)}
-                    />
-                  </Grid>
-                </Grid>
-              </Box>
-              <Grid container>
-                <Grid item xs={6}>
-                  <FileInput
-                    type="file"
-                    multiple
-                    id="attach-files-button"
-                    onChange={(e) => setFiles(e.target.files)}
-                  />
-                  <label htmlFor="attach-files-button">
-                    <Button size="large" component="span">
-                      Attach Files
-                    </Button>
-                  </label>
-                  {files?.length ? (
-                    <Box display="inline" marginLeft={3}>
-                      {files.length} files selected{" "}
-                      <Button onClick={removeFiles}>Remove</Button>
-                    </Box>
-                  ) : (
-                    ""
-                  )}
-                </Grid>
-                <Grid item xs={6}>
-                  <Box textAlign="right" onClick={toggleShowCustom}>
-                    <Button size="large">
-                      {showCustom ? "Hide " : "Show "}Custom Fields
-                      {numCustomFields ? ` (${numCustomFields})` : ""}
-                    </Button>
-                  </Box>
-                </Grid>
-              </Grid>
-
-              <Collapse in={showCustom}>
-                <Box>
-                  <Divider />
-                  {rows.map((id) => (
-                    <Grid key={id} container spacing={2} paddingTop={3}>
-                      <Grid item xs={2}>
-                        <FormControl variant="outlined" fullWidth>
-                          <InputLabel id="demo-simple-select-outlined-label">
-                            Attach To
-                          </InputLabel>
-                          <Select
-                            labelId="demo-simple-select-outlined-label"
-                            id="demo-simple-select-outlined"
-                            value={locations[id] || "parameters"}
-                            onChange={(e) => setLocation(id, e.target.value)}
-                            label="Response Mode"
-                          >
-                            <MenuItem value="root">root</MenuItem>
-                            <MenuItem value="parameters">parameters</MenuItem>
-                            {(textQuery || files?.length) && (
-                              <ListSubheader>Data</ListSubheader>
-                            )}
-                            {textQuery ? (
-                              <MenuItem value="textQuery">text query</MenuItem>
-                            ) : (
-                              false
-                            )}
-                            {files?.length &&
-                              Array.from(files).map((file) => (
-                                <MenuItem
-                                  value={`file-${file.name}`}
-                                  key={file.name}
-                                >
-                                  {file.name}
-                                </MenuItem>
-                              ))}
-                          </Select>
-                        </FormControl>
-                      </Grid>
-                      <Grid item xs={3}>
-                        <TextInput
-                          label="Key"
-                          placeholder="Text Query"
-                          variant="outlined"
-                          value={keys[id] || ""}
-                          onChange={(e) => setKey(id, e.target.value)}
-                        />
-                      </Grid>
-                      <Grid item xs={6}>
-                        <TextInput
-                          label="Value"
-                          placeholder="Text Query"
-                          variant="outlined"
-                          value={values[id] || ""}
-                          onChange={(e) => setValue(id, e.target.value)}
-                        />
-                      </Grid>
-                      <Grid item xs={1}>
-                        <Button size="large" onClick={() => removeRow(id)}>
-                          <Close />
-                        </Button>
-                      </Grid>
-                    </Grid>
-                  ))}
-
-                  <Box paddingTop={3}>
-                    <Button size="large" onClick={addRow}>
-                      <Add /> Add Field
-                    </Button>
-                  </Box>
-                </Box>
-              </Collapse>
+              <DocumentRequest
+                requestBody={requestBody}
+                setRequestBody={setRequestBody}
+              />
             </TabPanel>
             <TabPanel value={tab} index={1}>
               <TextInput

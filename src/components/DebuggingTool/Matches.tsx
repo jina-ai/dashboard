@@ -1,7 +1,6 @@
-import React from "react"
-import ReactFlow, { Controls, ReactFlowProps } from "react-flow-renderer"
+import React, { useEffect, useState } from "react"
+import ReactFlow, { Controls } from "react-flow-renderer"
 import { useTheme, Theme } from "@emotion/react"
-import styled from "@emotion/styled"
 import { ChartNode } from "./FlowChartNodes"
 import { Doc, Chunk, Match, Score } from "../../views/DebuggingTool"
 
@@ -20,20 +19,6 @@ type MatchesProps = {
   doc: Doc
   height: number
   onScoreClick: (score: Score) => void
-}
-
-const FlowContainer = ({
-  height,
-  children,
-}: {
-  height: number
-  children: any
-}) => {
-  const FlowContainer = styled.div`
-    height: ${height}px;
-    background: white;
-  `
-  return <FlowContainer>{children}</FlowContainer>
 }
 
 const calculateItemHeight = (data: any) => {
@@ -200,32 +185,28 @@ export const getChartElements = (
   return elements
 }
 
-const onLoad: ReactFlowProps["onLoad"] = (reactFlowInstance) => {
-  reactFlowInstance.fitView()
-}
-
 const Matches = ({ doc, onScoreClick, height }: MatchesProps) => {
   const { palette } = useTheme()
+  const [elements, setElements] = useState<any[]>([])
 
-  const elements = getChartElements(doc, palette, onScoreClick)
+  useEffect(() => {
+    const newElements = getChartElements(doc, palette, onScoreClick)
+    setElements(newElements)
+  }, [doc, palette, onScoreClick])
 
   return (
-    <FlowContainer height={height}>
+    <div style={{ height, background: "white" }}>
       <ReactFlow
         elements={elements}
         nodeTypes={nodeTypes}
         minZoom={0.2}
-        onLoad={onLoad}
+        defaultZoom={0}
+        onLoad={(instance) => setTimeout(() => instance.fitView(), 0)}
       >
-        {/* <MiniMap /> */}
         <Controls />
       </ReactFlow>
-    </FlowContainer>
+    </div>
   )
 }
 
 export default Matches
-
-// {
-//   "data": [{"text":"hello, world"}]
-// }

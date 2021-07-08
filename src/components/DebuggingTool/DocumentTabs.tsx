@@ -5,13 +5,6 @@ import { useTheme } from "@emotion/react"
 import { DebugResponse } from "../../views/DebuggingTool"
 import { NodeMediaPreview } from "./FlowChartNodes"
 
-type TabProps = {
-  docs: DebugResponse["data"]["docs"]
-  docIndex: number
-  height: number
-  setDocIndex: (newIndex: number) => void
-}
-
 const TabText = styled.span`
   white-space: nowrap;
   overflow: hidden;
@@ -27,6 +20,38 @@ const MediaOverlay = styled.div`
   top: 0;
   bottom: 0;
 `
+type TabProps = {
+  docs: DebugResponse["data"]["docs"]
+  docIndex: number
+  height: number
+  setDocIndex: (newIndex: number) => void
+}
+
+type DocumentLabelProps = {
+  text?: string
+  uri?: string
+  idx: number
+  selectedIndex: number
+}
+
+const DocumentTabLabel = ({
+  text,
+  uri,
+  idx,
+  selectedIndex,
+}: DocumentLabelProps) => {
+  return (
+    <>
+      {text && <TabText>"{text}"</TabText>}
+      {uri && (
+        <>
+          <NodeMediaPreview uri={uri} />
+          {selectedIndex !== idx && <MediaOverlay />}
+        </>
+      )}
+    </>
+  )
+}
 
 export const DocumentTabs = ({
   docs,
@@ -35,18 +60,9 @@ export const DocumentTabs = ({
   setDocIndex,
 }: TabProps) => {
   const { palette } = useTheme()
-
-  const TabItem = styled(Tab)`
-    border-bottom: 1px solid ${palette.grey[300]};
-  `
-
-  const TabsContainer = styled(Tabs)`
-    height: ${height};
-    width: 12em;
-  `
-
   return (
-    <TabsContainer
+    <Tabs
+      style={{ height, width: "12em" }}
       orientation="vertical"
       variant="scrollable"
       value={docIndex}
@@ -54,20 +70,22 @@ export const DocumentTabs = ({
       scrollButtons="auto"
     >
       {docs.map(({ text, uri }, idx) => {
-        const ele = (
-          <>
-            {text && <TabText>"{text}"</TabText>}
-            {uri && (
-              <>
-                <NodeMediaPreview uri={uri} />
-                {docIndex !== idx && <MediaOverlay />}
-              </>
-            )}
-          </>
+        return (
+          <Tab
+            style={{ borderBottom: `1px solid ${palette.grey[300]}` }}
+            label={
+              <DocumentTabLabel
+                text={text}
+                uri={uri}
+                idx={idx}
+                selectedIndex={docIndex}
+              />
+            }
+            value={idx}
+            key={idx}
+          />
         )
-
-        return <TabItem label={ele} value={idx} key={idx} />
       })}
-    </TabsContainer>
+    </Tabs>
   )
 }
