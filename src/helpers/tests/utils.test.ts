@@ -3,8 +3,10 @@ import {
   timeout,
   copyToClipboard,
   mimeTypeFromDataURI,
-  formatDebugRequest,
+  formatDocumentRequest,
   fileToBase64,
+  parseDocumentRequest,
+  splitByNewline,
 } from "../utils"
 
 interface MockFile {
@@ -18,20 +20,6 @@ const createFileFromMockFile = (file: MockFile): File => {
   blob["lastModifiedDate"] = new Date()
   blob["name"] = file.name
   return blob as File
-}
-
-const createMockFileList = (files: MockFile[]) => {
-  const fileList: FileList = {
-    length: files.length,
-    item(index: number): File {
-      return fileList[index]
-    },
-  }
-  files.forEach(
-    (file, index) => (fileList[index] = createFileFromMockFile(file))
-  )
-
-  return fileList
 }
 
 describe("timeout", () => {
@@ -76,18 +64,16 @@ describe(fileToBase64, () => {
   })
 })
 
-describe(formatDebugRequest, () => {
+describe(formatDocumentRequest, () => {
   it("should create a request with just text", async () => {
     const sample = {
       data: [{ text: "hello world" }],
-      parameters: {},
     }
-    const expectedResult = JSON.stringify(sample, null, "\t")
-    const result = await formatDebugRequest(
+    const expectedResult = JSON.stringify(sample, null, " ")
+    const result = await formatDocumentRequest(
       sample.data[0].text,
       null,
       [],
-      {},
       {},
       {}
     )
@@ -97,38 +83,27 @@ describe(formatDebugRequest, () => {
   it("should create a request with just a file", async () => {
     const sample = {
       data: [{ uri: "data:image/png;base64,MTIz" }],
-      parameters: {},
     }
-    const expectedResult = JSON.stringify(sample, null, "\t")
-    const sampleFiles = createMockFileList([
-      {
-        body: "123",
-        mimeType: "image/png",
-        name: "test.png",
-      },
-    ])
-    const result = await formatDebugRequest("", sampleFiles, [], {}, {}, {})
+    const expectedResult = JSON.stringify(sample, null, " ")
+    const result = await formatDocumentRequest(
+      "",
+      [sample.data[0].uri],
+      [],
+      {},
+      {}
+    )
     expect(result).toEqual(expectedResult)
   })
 
   it("should create a request with text and a file", async () => {
     const sample = {
       data: [{ text: "hello world" }, { uri: "data:image/png;base64,MTIz" }],
-      parameters: {},
     }
-    const expectedResult = JSON.stringify(sample, null, "\t")
-    const sampleFiles = createMockFileList([
-      {
-        body: "123",
-        mimeType: "image/png",
-        name: "test.png",
-      },
-    ])
-    const result = await formatDebugRequest(
+    const expectedResult = JSON.stringify(sample, null, " ")
+    const result = await formatDocumentRequest(
       sample.data[0].text as string,
-      sampleFiles,
+      [sample.data[1].uri as string],
       [],
-      {},
       {},
       {}
     )
@@ -137,42 +112,22 @@ describe(formatDebugRequest, () => {
 
   it("should create a request with custom parameters", async () => {
     const sample = {
-      data: [
-        { text: "hello world", modality: "test_2" },
-        { uri: "data:image/png;base64,MTIz", anotherParam: "test_3" },
-      ],
-      parameters: { mode: "test_4" },
+      data: [{ text: "hello world" }, { uri: "data:image/png;base64,MTIz" }],
       rootParam: "hello World",
+      parameters: { mode: "test_2" },
     }
-    const expectedResult = JSON.stringify(sample, null, "\t")
-    const sampleFiles = createMockFileList([
-      {
-        body: "123",
-        mimeType: "image/png",
-        name: "test.png",
-      },
-    ])
-    const result = await formatDebugRequest(
+    const expectedResult = JSON.stringify(sample, null, " ")
+    const result = await formatDocumentRequest(
       sample.data[0].text as string,
-      sampleFiles,
-      ["test1", "test2", "test3", "test4"],
-      {
-        test1: "root",
-        test2: "textQuery",
-        test3: "file-test.png",
-        test4: "parameters",
-      },
+      [sample.data[1].uri as string],
+      ["test1", "test2"],
       {
         test1: "rootParam",
-        test2: "modality",
-        test3: "anotherParam",
-        test4: "mode",
+        test2: "parameters",
       },
       {
         test1: "hello World",
-        test2: "test_2",
-        test3: "test_3",
-        test4: "test_4",
+        test2: JSON.stringify(sample.parameters),
       }
     )
     expect(result).toEqual(expectedResult)
@@ -184,5 +139,59 @@ describe(mimeTypeFromDataURI, () => {
     const dataURI = "data:image/png;base64,abcdefghijklm.."
     const mimeType = mimeTypeFromDataURI(dataURI)
     expect(mimeType).toEqual("image/png")
+  })
+})
+
+describe(parseDocumentRequest, () => {
+  it("should combine text documents into a single line of text", () => {
+    const input = { data: [{ text: "Hello" }, { text: "World" }] }
+
+    const expected = {
+      text: "Hello\nWorld\n",
+      uris: [],
+      keys: {},
+      values: {},
+      rows: [],
+    }
+
+    const result = parseDocumentRequest(JSON.stringify(input))
+
+    expect(result).toEqual(expected)
+  })
+
+  it("should output uris into an array", () => {
+    const input = { data: [{ uri: "Hello" }, { uri: "World" }] }
+
+    const expected = {
+      text: "",
+      uris: ["Hello", "World"],
+      keys: {},
+      values: {},
+      rows: [],
+    }
+
+    const result = parseDocumentRequest(JSON.stringify(input))
+
+    expect(result).toEqual(expected)
+  })
+
+  it("should extract custom fields", () => {
+    const input = { data: [], custom: "field" }
+
+    const { rows, keys, values } = parseDocumentRequest(JSON.stringify(input))
+
+    expect(rows.length).toEqual(1)
+    const id = rows[0]
+    expect(keys[id]).toEqual("custom")
+    expect(values[id]).toEqual("field")
+  })
+})
+
+describe(splitByNewline, () => {
+  it("should split by newline", () => {
+    const str = "Hello\nWorld\nTest"
+    const expected = ["Hello", "World", "Test"]
+    const result = splitByNewline(str)
+    expect(result).toEqual(expected)
   })
 })
