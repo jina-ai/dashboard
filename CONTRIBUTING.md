@@ -78,15 +78,15 @@ Right now we're working on a list of things we want help with and easy-to-fix bu
 0. `npm run start_dev-server`
 
     testServer will be running on `http://localhost:5000` by default
-1. `npm run start-dashboard`
+1. `npm run dashboard start`
 
     Dashboard will be served on `http://localhost:3000` by default
 
 ### Run in the live mode
 
-0. `npm run build-dashboard`
-1. `node dashboard`
-1. dashboard will be served on `http://localhost:3030` by default
+1. `npm run dashboard build`
+2. `node dashboard`
+3. dashboard will be served on `http://localhost:3030` by default
 
 Note: features like the hub and GitHub login will not work when running locally as they are restricted to the `dashboard.jina.ai` origin. They are not necessary to view logs or interact with flows. If you would like to browse the hub do so from [dashboard.jina.ai](https://dashboard.jina.ai/).
 

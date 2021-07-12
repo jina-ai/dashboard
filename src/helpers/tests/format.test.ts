@@ -4,40 +4,11 @@ import {
   formatBytes,
   formatSeconds,
   decodePropValue,
-  fileToBase64,
-  mimeTypeFromDataURI,
-  formatDebugRequest,
+  capitalizeFirstLetter,
 } from "../format"
 import { getLogLevelChartsData, parsedYamlObject } from "./format.testData"
 import { flowArguments } from "./flow-chart.testData"
 import { v1YAML } from "./flow-chart.testData"
-
-interface MockFile {
-  name: string
-  body: string
-  mimeType: string
-}
-
-const createFileFromMockFile = (file: MockFile): File => {
-  const blob = new Blob([file.body], { type: file.mimeType }) as any
-  blob["lastModifiedDate"] = new Date()
-  blob["name"] = file.name
-  return blob as File
-}
-
-const createMockFileList = (files: MockFile[]) => {
-  const fileList: FileList = {
-    length: files.length,
-    item(index: number): File {
-      return fileList[index]
-    },
-  }
-  files.forEach(
-    (file, index) => (fileList[index] = createFileFromMockFile(file))
-  )
-
-  return fileList
-}
 
 describe("getLogLevelCharts", () => {
   it("should create correct logLevelCharts", () => {
@@ -124,125 +95,10 @@ describe(decodePropValue, () => {
   })
 })
 
-describe(fileToBase64, () => {
-  it("should convert a file to base64", async () => {
-    const file = createFileFromMockFile({
-      body: "123",
-      mimeType: "image/png",
-      name: "test.png",
-    })
-    const result = await fileToBase64(file)
-    expect(result.substring(0, 14)).toEqual("data:image/png")
-  })
-})
-
-describe(formatDebugRequest, () => {
-  it("should create a request with just text", async () => {
-    const sample = {
-      data: [{ text: "hello world" }],
-      parameters: {},
-    }
-    const expectedResult = JSON.stringify(sample, null, "\t")
-    const result = await formatDebugRequest(
-      sample.data[0].text,
-      null,
-      [],
-      {},
-      {},
-      {}
-    )
-    expect(result).toEqual(expectedResult)
-  })
-
-  it("should create a request with just a file", async () => {
-    const sample = {
-      data: [{ uri: "data:image/png;base64,MTIz" }],
-      parameters: {},
-    }
-    const expectedResult = JSON.stringify(sample, null, "\t")
-    const sampleFiles = createMockFileList([
-      {
-        body: "123",
-        mimeType: "image/png",
-        name: "test.png",
-      },
-    ])
-    const result = await formatDebugRequest("", sampleFiles, [], {}, {}, {})
-    expect(result).toEqual(expectedResult)
-  })
-
-  it("should create a request with text and a file", async () => {
-    const sample = {
-      data: [{ text: "hello world" }, { uri: "data:image/png;base64,MTIz" }],
-      parameters: {},
-    }
-    const expectedResult = JSON.stringify(sample, null, "\t")
-    const sampleFiles = createMockFileList([
-      {
-        body: "123",
-        mimeType: "image/png",
-        name: "test.png",
-      },
-    ])
-    const result = await formatDebugRequest(
-      sample.data[0].text as string,
-      sampleFiles,
-      [],
-      {},
-      {},
-      {}
-    )
-    expect(result).toEqual(expectedResult)
-  })
-
-  it("should create a request with custom parameters", async () => {
-    const sample = {
-      data: [
-        { text: "hello world", modality: "test_2" },
-        { uri: "data:image/png;base64,MTIz", anotherParam: "test_3" },
-      ],
-      parameters: { mode: "test_4" },
-      rootParam: "hello World",
-    }
-    const expectedResult = JSON.stringify(sample, null, "\t")
-    const sampleFiles = createMockFileList([
-      {
-        body: "123",
-        mimeType: "image/png",
-        name: "test.png",
-      },
-    ])
-    const result = await formatDebugRequest(
-      sample.data[0].text as string,
-      sampleFiles,
-      ["test1", "test2", "test3", "test4"],
-      {
-        test1: "root",
-        test2: "textQuery",
-        test3: "file-test.png",
-        test4: "parameters",
-      },
-      {
-        test1: "rootParam",
-        test2: "modality",
-        test3: "anotherParam",
-        test4: "mode",
-      },
-      {
-        test1: "hello World",
-        test2: "test_2",
-        test3: "test_3",
-        test4: "test_4",
-      }
-    )
-    expect(result).toEqual(expectedResult)
-  })
-})
-
-describe(mimeTypeFromDataURI, () => {
-  it("should return image/png for image dataURI", () => {
-    const dataURI = "data:image/png;base64,abcdefghijklm.."
-    const mimeType = mimeTypeFromDataURI(dataURI)
-    expect(mimeType).toEqual("image/png")
+describe(capitalizeFirstLetter, () => {
+  it("should capitalize the first letter", () => {
+    const str = "test"
+    const result = capitalizeFirstLetter(str)
+    expect(result).toEqual("Test")
   })
 })

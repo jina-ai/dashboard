@@ -98,11 +98,19 @@ const LiveResponse = (props: Props) => {
         </div>
       )}
       <h4>Server response</h4>
-      <table className="responses-table live-responses-table">
+      <table
+        className="responses-table live-responses-table"
+        style={{ tableLayout: "fixed", width: "100%" }}
+      >
         <thead>
           <tr className="responses-header">
             <td className="col_header response-col_status">Code</td>
-            <td className="col_header response-col_description">Details</td>
+            <td
+              className="col_header response-col_description"
+              style={{ paddingLeft: "75px" }}
+            >
+              Details
+            </td>
           </tr>
         </thead>
         <tbody>
@@ -116,7 +124,10 @@ const LiveResponse = (props: Props) => {
               ) : null}
             </td>
 
-            <td className="response-col_description">
+            <td
+              className="response-col_description"
+              style={{ paddingLeft: "75px" }}
+            >
               <div className="tab-header">
                 <div
                   onClick={() => setCurrentTab("raw")}

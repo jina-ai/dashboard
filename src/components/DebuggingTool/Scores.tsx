@@ -1,4 +1,8 @@
 import React, { useState } from "react"
+import { Score } from "../../views/DebuggingTool"
+import styled from "@emotion/styled"
+import { useTheme } from "@emotion/react"
+
 import {
   Card,
   CardHeader,
@@ -8,13 +12,11 @@ import {
   List,
   ListItem,
   ListItemSecondaryAction,
-  useTheme,
   Grid,
   Typography,
   Box,
 } from "@material-ui/core"
-import styled from "@emotion/styled"
-import { Score } from "../../views/DebuggingTool"
+
 import { Close, ExpandLess, ExpandMore } from "@material-ui/icons"
 
 type SidebarProps = {

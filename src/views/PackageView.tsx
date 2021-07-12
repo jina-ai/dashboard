@@ -8,9 +8,7 @@ import {
 } from "../redux/hub/hub.selectors"
 import { fetchHubImages } from "../redux/hub/hub.actions"
 import ImageDetails, { DetailCard } from "../components/Hub/ImageDetails"
-import Button from "@material-ui/core/Button"
-import Grid from "@material-ui/core/Grid"
-import CardContent from "@material-ui/core/CardContent"
+import { Button, Grid, CardContent } from "@material-ui/core"
 import Readme from "../components/Hub/Readme"
 import SpinningLoader from "../components/Common/SpinningLoader"
 

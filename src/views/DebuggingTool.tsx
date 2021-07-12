@@ -41,7 +41,11 @@ export type Score = {
 
 export type Match = {
   id: string
-  score: Score
+  scores: {
+    values: {
+      [key: string]: Score
+    }
+  }
   mime_type: string
   adjacency?: number
   granularity?: number

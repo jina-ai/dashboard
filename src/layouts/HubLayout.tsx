@@ -22,7 +22,7 @@ export type HubLayoutProps = {
   navigateButton?: () => React.ReactNode
 }
 
-const HubLayout = (props: HubLayoutProps) => {
+export const HubLayout = (props: HubLayoutProps) => {
   const modal = useSelector(selectModal)
   const banners = useSelector(selectBanners)
   const loggerEnabled = logger.isEnabled()
@@ -110,5 +110,3 @@ const HubLayout = (props: HubLayoutProps) => {
     </Container>
   )
 }
-
-export default HubLayout

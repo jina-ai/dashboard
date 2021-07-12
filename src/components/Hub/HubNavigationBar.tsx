@@ -1,7 +1,7 @@
 import React, { ChangeEvent, useState } from "react"
 import { AppBar, InputBase, Tab, Tabs, Toolbar } from "@material-ui/core"
 import styled from "@emotion/styled"
-import SearchIcon from "@material-ui/icons/Search"
+import { Search as SearchIcon } from "@material-ui/icons"
 
 function a11yProps(index: number) {
   return {

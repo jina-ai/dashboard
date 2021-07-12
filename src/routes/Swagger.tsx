@@ -1,5 +1,5 @@
 // Layout Types
-import { SwaggerLayout } from "../layouts"
+import { SwaggerLayout } from "../layouts/SwaggerLayout"
 
 // Route Views
 import SwaggerView from "../views/SwaggerView"

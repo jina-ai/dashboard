@@ -1,4 +1,4 @@
-import _ from "lodash"
+import { cloneDeep, pickBy, isEmpty, omit } from "lodash"
 import { exampleFlows, exampleWorkspaces } from "../../data/exampleData"
 import { formatForFlowchart, parseYAML } from "../../helpers"
 import {
@@ -68,13 +68,13 @@ export const saveWorkspacesToStorage = (state: FlowState) => {
 function getUserFlows(): Flows {
   const storedFlows = localStorage.getItem("userFlows")
   const userFlows = storedFlows ? JSON.parse(storedFlows) : null
-  return _.isEmpty(userFlows) ? defaultFlow : userFlows
+  return isEmpty(userFlows) ? defaultFlow : userFlows
 }
 
 function getUserWorkspaces(): Workspaces {
   const storedWorkspaces = localStorage.getItem("userWorkspaces")
   const userWorkspaces = storedWorkspaces ? JSON.parse(storedWorkspaces) : null
-  return _.isEmpty(userWorkspaces)
+  return isEmpty(userWorkspaces)
     ? {
         _userWorkspace: {
           name: "Workspace 1",
@@ -148,7 +148,7 @@ const flowReducer = produce((draft: FlowState, action: FlowActionTypes) => {
       console.log("delete flowId: ", flowId)
 
       console.log("flows before: ", JSON.parse(JSON.stringify(draft.flows)))
-      draft.flows = _.omit(draft.flows, flowId)
+      draft.flows = omit(draft.flows, flowId)
       console.log("flows after: ", JSON.parse(JSON.stringify(draft.flows)))
 
       const workspaceId = draft.selectedWorkspaceId
@@ -323,8 +323,8 @@ const flowReducer = produce((draft: FlowState, action: FlowActionTypes) => {
     }
     case DELETE_WORKSPACE: {
       const workspaceId = action.payload as string
-      draft.workspaces = _.omit(draft.workspaces, workspaceId)
-      draft.flows = _.pickBy(
+      draft.workspaces = omit(draft.workspaces, workspaceId)
+      draft.flows = pickBy(
         draft.flows,
         (flow) => flow.workspaceId !== workspaceId
       )
@@ -341,11 +341,11 @@ const flowReducer = produce((draft: FlowState, action: FlowActionTypes) => {
         draft.selectedWorkspaceId = idFirstNonExampleWorkspace
       } else if (!nonExampleWorkspaces.length) {
         draft.workspaces = {
-          ..._.cloneDeep(defaultWorkspaces),
+          ...cloneDeep(defaultWorkspaces),
           ...getExampleWorkspaces(),
         }
         draft.flows = {
-          ..._.cloneDeep(defaultFlows),
+          ...cloneDeep(defaultFlows),
           ...getExampleFlows(),
         }
         draft.selectedWorkspaceId = Object.keys(draft.workspaces)[0]

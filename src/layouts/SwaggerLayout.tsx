@@ -1,8 +1,6 @@
 import React from "react"
-import { Container } from "shards-react"
+import { Container } from "@material-ui/core"
 
-const SwaggerLayout = ({ children }) => {
+export const SwaggerLayout = ({ children }) => {
   return <Container>{children}</Container>
 }
-
-export default SwaggerLayout

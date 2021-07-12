@@ -7,12 +7,13 @@ import {
   Grid,
   TextField,
 } from "@material-ui/core"
-import RoutesTable from "../components/DebuggingTool/RouteTable"
-import Response from "../components/DebuggingTool/Response"
-import SwaggerUIReact from "swagger-ui-react"
 import { ExpandLess, ExpandMore } from "@material-ui/icons"
-import LiveResponse from "../components/DebuggingTool/CustomLiveResponse"
 import styled from "@emotion/styled"
+import SwaggerUIReact from "swagger-ui-react"
+
+import LiveResponse from "../components/DebuggingTool/CustomLiveResponse"
+import CustomRequestEditor from "../components/DebuggingTool/CustomRequestBodyEditor"
+import Response from "../components/DebuggingTool/Response"
 
 const DEFAULT_ENDPOINT = "openapi.json"
 
@@ -30,19 +31,16 @@ const WrappedComponents = function () {
       liveResponse: (Original: any, system: any) => (props: any) => {
         return <LiveResponse {...props} />
       },
+      RequestBodyEditor: (Original: any, system: any) => (props: any) => {
+        return <CustomRequestEditor {...props} />
+      },
+      initializedInput: () => <h1>Hello</h1>,
     },
     components: {
       debugResponse: ({ response }: any) => (
         <>
           <h5>Response body</h5>
-          <Grid container spacing={2}>
-            <Grid item xs={12}>
-              <RoutesTable routes={response?.routes} />
-            </Grid>
-            <Grid item xs={12}>
-              <Response response={response} />
-            </Grid>
-          </Grid>
+          <Response response={response} />
         </>
       ),
     },
@@ -57,8 +55,9 @@ function getHostAndPortFromLocation() {
 }
 
 function getInitialHostAndPort() {
-  const { location } = window
-  const searchParams = new URLSearchParams(location.search)
+  const searchParams = new URLSearchParams(
+    window.location.search || window.location.hash.split("?")[1]
+  )
   const host = searchParams.get("host")
   const port = searchParams.get("port")
   if (host) return { host, port }
@@ -131,7 +130,12 @@ const SwaggerView = () => {
           </Grid>
         </Box>
       </Collapse>
-      <SwaggerUIReact url={url} presets={[WrappedComponents]} />
+      <SwaggerUIReact
+        url={url}
+        presets={[WrappedComponents]}
+        requestInterceptor={(r) => console.log("request:", r)}
+        responseInterceptor={(r) => console.log("response:", r)}
+      />
     </Container>
   )
 }

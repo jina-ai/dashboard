@@ -1,11 +1,11 @@
 import React, { useState } from "react"
 import { Handle, Position } from "react-flow-renderer"
-import Card from "@material-ui/core/Card"
 import styled from "@emotion/styled"
 import { useTheme } from "@emotion/react"
 import { Chunk, Doc, Match, Score } from "../../views/DebuggingTool"
-import { mimeTypeFromDataURI } from "../../helpers/format"
+
 import {
+  Card,
   Collapse,
   List,
   ListItem,
@@ -16,11 +16,20 @@ import {
   Button,
   CardHeader,
 } from "@material-ui/core"
+
 import { ExpandLess, ExpandMore } from "@material-ui/icons"
+import { mimeTypeFromDataURI } from "../../helpers/utils"
+import { isEmpty } from "lodash"
 
 const NodeImagePreview = styled.img`
   display: block;
   max-height: 20rem;
+  max-width: 100%;
+  margin-bottom: 0.5rem;
+  margin-top: 0.5rem;
+`
+
+const AudioContainer = styled.audio`
   max-width: 100%;
   margin-bottom: 0.5rem;
   margin-top: 0.5rem;
@@ -34,7 +43,7 @@ const VideoContainer = styled.video`
   max-width: 100%;
 `
 
-const NodeBigText = styled.p`
+export const NodeBigText = styled.p`
   font-size: 1.5rem;
   margin-bottom: 0.5rem;
   display: -webkit-box;
@@ -66,7 +75,7 @@ const NodeVideoPreview = ({ src }: { src: string }) => {
 }
 
 const NodeAudioPreview = ({ src }: { src: string }) => {
-  return <audio src={src} controls />
+  return <AudioContainer src={src} controls />
 }
 
 export const NodeMediaPreview = ({ uri }: { uri: string }) => {
@@ -83,8 +92,8 @@ type ChartNodeProps = {
     name: string
     item: Chunk | Match | Doc
     onScoreClick: (score: Score) => void
-    hasTop: boolean
-    hasBottom: boolean
+    hasInput: boolean
+    hasOutput: boolean
   }
   isDragging: boolean
   selected: boolean
@@ -98,7 +107,7 @@ export const ChartNode = ({
   type,
 }: ChartNodeProps) => {
   const { palette } = useTheme()
-  const { item, onScoreClick, hasTop = true, hasBottom = true, name } = data
+  const { item, onScoreClick, hasInput = true, hasOutput = true, name } = data
   const parentId = "parent_id" in item ? item.parent_id : undefined
   const score = "score" in item ? item.score : undefined
   const { id: itemId, uri, mime_type, text } = item
@@ -117,7 +126,7 @@ export const ChartNode = ({
 
   return (
     <div>
-      {hasTop && <Handle type="source" position={Position.Top}></Handle>}
+      {hasInput && <Handle type="source" position={Position.Left}></Handle>}
       <Card elevation={elevation} color="red" style={style}>
         <CardHeader
           title={name}
@@ -160,7 +169,7 @@ export const ChartNode = ({
           )}
         </Box>
       </Card>
-      {hasBottom && <Handle type="target" position={Position.Bottom}></Handle>}
+      {hasOutput && <Handle type="target" position={Position.Right}></Handle>}
     </div>
   )
 }
@@ -200,6 +209,16 @@ export const PropertyListItem = ({
   if (typeof itemValue === "object" && itemValue !== null) {
     isObject = true
   }
+
+  if (isObject && isEmpty(itemValue)) return null
+  if (
+    itemValue === 0 ||
+    itemValue === "unset" ||
+    itemValue === null ||
+    itemValue === "" ||
+    itemValue === {}
+  )
+    return null
 
   return (
     <div

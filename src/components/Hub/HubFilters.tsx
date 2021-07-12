@@ -1,6 +1,6 @@
 import React from "react"
 import styled from "@emotion/styled"
-import Button from "@material-ui/core/Button"
+import { Button } from "@material-ui/core"
 import { useDispatch } from "react-redux"
 import FilterButton from "./FilterButton"
 import { FilterCategory, FilterParams } from "../../redux/hub/hub.types"

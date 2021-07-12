@@ -2,7 +2,7 @@ import React from "react"
 import { Redirect } from "react-router-dom"
 
 // Layout Types
-import { IconSidebar } from "../layouts"
+import { IconSidebarLayout } from "../layouts/IconSidebar"
 
 // Route Views
 import { LogsView } from "../views/LogsView"
@@ -23,13 +23,13 @@ export const dashboardRoutes = [
   {
     path: "/",
     exact: true,
-    layout: IconSidebar,
+    layout: IconSidebarLayout,
     component: () => <Redirect to="/logs" />,
   },
 
   {
     path: "/logs",
-    layout: IconSidebar,
+    layout: IconSidebarLayout,
     component: LogsView,
     props: {
       usesConnection: true,
@@ -38,7 +38,7 @@ export const dashboardRoutes = [
   },
   {
     path: "/flow",
-    layout: IconSidebar,
+    layout: IconSidebarLayout,
     component: FlowView,
     props: {
       usesConnection: true,
@@ -47,7 +47,7 @@ export const dashboardRoutes = [
   },
   {
     path: "/task",
-    layout: IconSidebar,
+    layout: IconSidebarLayout,
     component: TaskView,
     props: {
       usesConnection: true,
@@ -56,7 +56,7 @@ export const dashboardRoutes = [
   },
   {
     path: "/settings",
-    layout: IconSidebar,
+    layout: IconSidebarLayout,
     component: Settings,
     props: {
       usesConnection: true,
@@ -65,7 +65,7 @@ export const dashboardRoutes = [
   },
   {
     path: "/help",
-    layout: IconSidebar,
+    layout: IconSidebarLayout,
     component: NotFound,
     props: {
       usesConnection: false,
@@ -74,7 +74,7 @@ export const dashboardRoutes = [
   },
   {
     path: "/home",
-    layout: IconSidebar,
+    layout: IconSidebarLayout,
     // Todo: remove feature flag and corresponding conditions after releasing HomeView in all instances
     component: isFeatureEnabled("HOMEPAGE") ? HomeView : NotFound,
     props: {
@@ -84,7 +84,7 @@ export const dashboardRoutes = [
   },
   {
     path: "/hub",
-    layout: IconSidebar,
+    layout: IconSidebarLayout,
     component: HubView,
     props: {
       usesConnection: false,
@@ -93,7 +93,7 @@ export const dashboardRoutes = [
   },
   {
     path: "/package/:kind/:packageId",
-    layout: IconSidebar,
+    layout: IconSidebarLayout,
     component: PackageView,
     props: {
       navigateButton: () => (
@@ -103,7 +103,7 @@ export const dashboardRoutes = [
   },
   {
     path: "/login",
-    layout: IconSidebar,
+    layout: IconSidebarLayout,
     component: LogIn,
     props: {
       usesConnection: false,
@@ -112,7 +112,7 @@ export const dashboardRoutes = [
   },
   {
     path: "/debug",
-    layout: IconSidebar,
+    layout: IconSidebarLayout,
     component: SwaggerView,
     props: {
       usesConnection: true,
