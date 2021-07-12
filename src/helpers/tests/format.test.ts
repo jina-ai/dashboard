@@ -4,6 +4,7 @@ import {
   formatBytes,
   formatSeconds,
   decodePropValue,
+  capitalizeFirstLetter,
 } from "../format"
 import { getLogLevelChartsData, parsedYamlObject } from "./format.testData"
 import { flowArguments } from "./flow-chart.testData"
@@ -91,5 +92,13 @@ describe(decodePropValue, () => {
   it("should return a boolean true", () => {
     const result = decodePropValue("read_only", "true", flowArguments.pod)
     expect(result).toEqual(true)
+  })
+})
+
+describe(capitalizeFirstLetter, () => {
+  it("should capitalize the first letter", () => {
+    const str = "test"
+    const result = capitalizeFirstLetter(str)
+    expect(result).toEqual("Test")
   })
 })
