@@ -148,7 +148,7 @@ npm run start_dev-server
 
 - Start the dashboard
 ```bash
-npm run start-dashboard
+npm run dashboard start
 ```
 
 - Dashboard should now be served on `http://localhost:3000` by default
@@ -157,7 +157,7 @@ npm run start-dashboard
 
 - Build dashboard:
 ```bash
-npm run build-dashboard
+npm run dashboard build
 ```
 - Run dashboard:
 ```bash
