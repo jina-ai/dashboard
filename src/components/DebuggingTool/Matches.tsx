@@ -152,7 +152,7 @@ export const getChartElements = (
 
   let yOffset = 0
 
-  if (doc?.chunks) {
+  if (doc?.chunks?.length) {
     const tallestChunk = calculateMaxItemHeight(doc.chunks)
     const docHeight = calculateItemHeight(doc)
     yOffset = (tallestChunk * doc.chunks.length) / 2 - docHeight / 2
@@ -200,8 +200,8 @@ const Matches = ({ doc, onScoreClick, height }: MatchesProps) => {
         elements={elements}
         nodeTypes={nodeTypes}
         minZoom={0.2}
-        defaultZoom={0}
-        onLoad={(instance) => setTimeout(() => instance.fitView(), 0)}
+        defaultZoom={0.25}
+        defaultPosition={[10, 10]}
       >
         <Controls />
       </ReactFlow>
