@@ -24,6 +24,10 @@ if (process.env.NODE_ENV === "production") {
   })
 }
 
+if (window.Cypress) {
+  window.store = store
+}
+
 const Dashboard = () => {
   document.title = "Jina Dashboard"
   return (

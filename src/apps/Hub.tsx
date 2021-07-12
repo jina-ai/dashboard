@@ -26,6 +26,10 @@ if (process.env.NODE_ENV === "production") {
   })
 }
 
+if (window.Cypress) {
+  window.store = store
+}
+
 const Hub = () => {
   document.title = "Jina Hub"
   return (

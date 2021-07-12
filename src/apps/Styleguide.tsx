@@ -29,6 +29,10 @@ if (process.env.NODE_ENV === "production") {
   })
 }
 
+if (window.Cypress) {
+  window.store = store
+}
+
 const Container = styled.div`
   display: flex;
 `

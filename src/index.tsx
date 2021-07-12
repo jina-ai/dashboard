@@ -28,7 +28,3 @@ function renderApp(imported: any) {
 }
 
 import(`./apps/${REACT_APP_TARGET || DEFAULT_TARGET}`).then(renderApp)
-
-if (window.Cypress) {
-  window.store = store
-}
