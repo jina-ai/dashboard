@@ -5,7 +5,7 @@
   "homepage": "https://dashboard.jina.ai",
   "scripts": {
     "analyze-build": "source-map-explorer 'build/static/js/*.js'",
-    "dev": "npm-run-all --parallel start_dev-server dashboard start",
+    "dev": "npm-run-all --parallel start_dev-server start",
     "start": "react-scripts -r @cypress/instrument-cra start",
     "start_dev-server": "node dev-resources/testServer.js",
     "build": "CI=false react-scripts build",
