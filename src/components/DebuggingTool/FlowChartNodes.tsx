@@ -50,6 +50,7 @@ export const NodeBigText = styled.p`
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
+  word-break: break-word;
 `
 
 const ListMarker = styled.span`
@@ -82,8 +83,8 @@ export const NodeMediaPreview = ({ uri }: { uri: string }) => {
   const mime_type = mimeTypeFromDataURI(uri)
   if (mime_type.startsWith("image")) return <NodeImagePreview src={uri} />
   if (mime_type.startsWith("audio")) return <NodeAudioPreview src={uri} />
-  if (mime_type.startsWith("")) return <NodeVideoPreview src={uri} />
-  return <>Cannot Preview</>
+  if (mime_type.startsWith("video")) return <NodeVideoPreview src={uri} />
+  return <NodeBigText>{uri}</NodeBigText>
 }
 
 type ChartNodeProps = {
