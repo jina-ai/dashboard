@@ -35,7 +35,7 @@ describe("Flow design workflow", () => {
   }
 
   context("When a new flow is created", () => {
-      it("successfully let you pull new pods and connect them", () => {
+      it.skip("successfully let you pull new pods and connect them", () => {
           let firstPortLabel = "gateway"
           let secondPortLabel = defaultPods[1].name
           defaultPods.forEach((pod, idx) => {
