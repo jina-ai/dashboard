@@ -1,11 +1,5 @@
-import * as createPalette from "@material-ui/core/styles/createPalette"
+import { Palette as MuiPalette } from "@material-ui/core/styles"
 
-declare module "@material-ui/core/styles/createPalette" {
-  export interface PaletteOptions {
-    filters?: PaletteColorOptions[]
-  }
-}
-
-interface Palette extends createPalette.Palette {
+interface Palette extends MuiPalette {
   filters: createPalette.SimplePaletteColorOptions[]
 }

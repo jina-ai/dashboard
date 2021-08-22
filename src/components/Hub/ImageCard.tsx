@@ -1,5 +1,5 @@
 import React from "react"
-import Card from "@material-ui/core/Card"
+import { Card } from "@material-ui/core"
 import styled from "@emotion/styled"
 import { Link } from "react-router-dom"
 import { capitalizeFirstLetter } from "../../helpers/format"

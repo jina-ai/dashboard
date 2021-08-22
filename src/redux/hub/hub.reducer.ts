@@ -8,7 +8,7 @@ import {
   CLEAR_FILTERS,
 } from "./hub.constants"
 import produce from "immer"
-import _ from "lodash"
+import { xor } from "lodash"
 
 const hubReducer = produce((draft: HubState, action: HubActionTypes) => {
   switch (action.type) {
@@ -26,7 +26,7 @@ const hubReducer = produce((draft: HubState, action: HubActionTypes) => {
       draft.error = action.payload.error
       break
     case PICK_FILTER:
-      draft.selectedFilters = _.xor(draft.selectedFilters, [
+      draft.selectedFilters = xor(draft.selectedFilters, [
         action.payload.filter,
       ])
       break

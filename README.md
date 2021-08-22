@@ -51,6 +51,11 @@ Browse Hub images uploaded by other users! Search and filter images according to
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
+- [🌟 Features:](#-features)
+    - [**Flow Design GUI**](#flow-design-gui)
+    - [**LogStream and Task Monitoring**](#logstream-and-task-monitoring)
+    - [**Hub Integration**](#hub-integration)
+- [Contents](#contents)
 - [Getting started](#getting-started)
   - [1. Start Jina Daemon](#1-start-jina-daemon)
     - [Using Jina Daemon with Docker (Reccommended)](#using-jina-daemon-with-docker-reccommended)
@@ -148,7 +153,7 @@ npm run start_dev-server
 
 - Start the dashboard
 ```bash
-npm run start-dashboard
+npm run dashboard start
 ```
 
 - Dashboard should now be served on `http://localhost:3000` by default
@@ -157,7 +162,7 @@ npm run start-dashboard
 
 - Build dashboard:
 ```bash
-npm run build-dashboard
+npm run dashboard build
 ```
 - Run dashboard:
 ```bash

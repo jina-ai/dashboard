@@ -1,609 +1,1622 @@
-export const inputChunks = [
-  {
-    id: "db28bb4c-c771-11eb-8047-b025aa3e54c7",
-    matches: [
+export const sampleResponse = {
+  request_id: "35a39f01-9c18-4010-b697-30238a9cd683",
+  data: {
+    docs: [
       {
-        id: "dbc23600-c771-11eb-85d7-b025aa3e54c7",
-        mime_type: "text/plain",
-        text: "match_0",
-        granularity: 1,
-        score: {
-          op_name: "chunk_matcher",
-          description: "score for chunk",
-          ref_id: "db28bb4c-c771-11eb-8047-b025aa3e54c7",
-        },
-        adjacency: 1,
-      },
-      {
-        id: "dbc23bdc-c771-11eb-85d7-b025aa3e54c7",
-        mime_type: "text/plain",
-        text: "match_1",
-        granularity: 1,
-        score: {
-          value: 0.1,
-          op_name: "chunk_matcher",
-          description: "score for chunk",
-          ref_id: "db28bb4c-c771-11eb-8047-b025aa3e54c7",
-        },
-        adjacency: 1,
-      },
-      {
-        id: "dbc23f38-c771-11eb-85d7-b025aa3e54c7",
-        mime_type: "text/plain",
-        text: "match_2",
-        granularity: 1,
-        score: {
-          value: 0.2,
-          op_name: "chunk_matcher",
-          description: "score for chunk",
-          ref_id: "db28bb4c-c771-11eb-8047-b025aa3e54c7",
-        },
-        adjacency: 1,
-      },
-      {
-        id: "dbc2423a-c771-11eb-85d7-b025aa3e54c7",
-        mime_type: "text/plain",
-        text: "match_3",
-        granularity: 1,
-        score: {
-          value: 0.3,
-          op_name: "chunk_matcher",
-          description: "score for chunk",
-          ref_id: "db28bb4c-c771-11eb-8047-b025aa3e54c7",
-        },
-        adjacency: 1,
+        id: "8130a498-de77-11eb-aecf-acde48001122",
+        chunks: [
+          {
+            id: "82fb5980-de77-11eb-aecf-acde48001122",
+            matches: [
+              {
+                id: "83949a46-de77-11eb-aecf-acde48001122",
+                mime_type: "text/plain",
+                text: "match_0",
+                granularity: 1,
+                adjacency: 1,
+                content_hash: "3bc89bbb23ab5f0a",
+                scores: {
+                  values: {
+                    "chunk score": {
+                      op_name: "chunk_matcher",
+                      description: "score for chunk",
+                      ref_id: "82fb5980-de77-11eb-aecf-acde48001122",
+                    },
+                  },
+                },
+              },
+              {
+                id: "8394a8ce-de77-11eb-aecf-acde48001122",
+                mime_type: "text/plain",
+                text: "match_1",
+                granularity: 1,
+                adjacency: 1,
+                content_hash: "d7d975fe87b7c1b3",
+                scores: {
+                  values: {
+                    "chunk score": {
+                      value: 0.1,
+                      op_name: "chunk_matcher",
+                      description: "score for chunk",
+                      ref_id: "82fb5980-de77-11eb-aecf-acde48001122",
+                    },
+                  },
+                },
+              },
+              {
+                id: "8394b5d0-de77-11eb-aecf-acde48001122",
+                mime_type: "text/plain",
+                text: "match_2",
+                granularity: 1,
+                adjacency: 1,
+                content_hash: "a106dacc3fc86164",
+                scores: {
+                  values: {
+                    "chunk score": {
+                      value: 0.2,
+                      op_name: "chunk_matcher",
+                      description: "score for chunk",
+                      ref_id: "82fb5980-de77-11eb-aecf-acde48001122",
+                    },
+                  },
+                },
+              },
+              {
+                id: "8394bd28-de77-11eb-aecf-acde48001122",
+                mime_type: "text/plain",
+                text: "match_3",
+                granularity: 1,
+                adjacency: 1,
+                content_hash: "b465c56848ce1ead",
+                scores: {
+                  values: {
+                    "chunk score": {
+                      value: 0.3,
+                      op_name: "chunk_matcher",
+                      description: "score for chunk",
+                      ref_id: "82fb5980-de77-11eb-aecf-acde48001122",
+                    },
+                  },
+                },
+              },
+            ],
+            mime_type: "text/plain",
+            text: "chunk_0",
+            granularity: 1,
+            parent_id: "8130a498-de77-11eb-aecf-acde48001122",
+            content_hash: "ac17ad4d1eea81e9",
+          },
+          {
+            id: "82fb5ff2-de77-11eb-aecf-acde48001122",
+            matches: [
+              {
+                id: "8394e578-de77-11eb-aecf-acde48001122",
+                mime_type: "text/plain",
+                text: "match_0",
+                granularity: 1,
+                adjacency: 1,
+                content_hash: "3bc89bbb23ab5f0a",
+                scores: {
+                  values: {
+                    "chunk score": {
+                      op_name: "chunk_matcher",
+                      description: "score for chunk",
+                      ref_id: "82fb5ff2-de77-11eb-aecf-acde48001122",
+                    },
+                  },
+                },
+              },
+              {
+                id: "8394ec76-de77-11eb-aecf-acde48001122",
+                mime_type: "text/plain",
+                text: "match_1",
+                granularity: 1,
+                adjacency: 1,
+                content_hash: "d7d975fe87b7c1b3",
+                scores: {
+                  values: {
+                    "chunk score": {
+                      value: 0.1,
+                      op_name: "chunk_matcher",
+                      description: "score for chunk",
+                      ref_id: "82fb5ff2-de77-11eb-aecf-acde48001122",
+                    },
+                  },
+                },
+              },
+              {
+                id: "8394f342-de77-11eb-aecf-acde48001122",
+                mime_type: "text/plain",
+                text: "match_2",
+                granularity: 1,
+                adjacency: 1,
+                content_hash: "a106dacc3fc86164",
+                scores: {
+                  values: {
+                    "chunk score": {
+                      value: 0.2,
+                      op_name: "chunk_matcher",
+                      description: "score for chunk",
+                      ref_id: "82fb5ff2-de77-11eb-aecf-acde48001122",
+                    },
+                  },
+                },
+              },
+              {
+                id: "8394f9fa-de77-11eb-aecf-acde48001122",
+                mime_type: "text/plain",
+                text: "match_3",
+                granularity: 1,
+                adjacency: 1,
+                content_hash: "b465c56848ce1ead",
+                scores: {
+                  values: {
+                    "chunk score": {
+                      value: 0.3,
+                      op_name: "chunk_matcher",
+                      description: "score for chunk",
+                      ref_id: "82fb5ff2-de77-11eb-aecf-acde48001122",
+                    },
+                  },
+                },
+              },
+            ],
+            mime_type: "text/plain",
+            text: "chunk_1",
+            granularity: 1,
+            parent_id: "8130a498-de77-11eb-aecf-acde48001122",
+            content_hash: "adedb4c0da5a123e",
+          },
+        ],
+        matches: [
+          {
+            id: "842e3138-de77-11eb-aecf-acde48001122",
+            mime_type: "text/plain",
+            text: "match_0",
+            adjacency: 1,
+            content_hash: "b5f18137400953f2",
+            scores: {
+              values: {
+                score: {
+                  value: 1.0,
+                  op_name: "doc_matcher",
+                  description: "final score for doc",
+                  ref_id: "8130a498-de77-11eb-aecf-acde48001122",
+                },
+                "doc score": {
+                  op_name: "doc_matcher",
+                  description: "score for doc",
+                  operands: [
+                    {
+                      op_name: "chunk_matcher",
+                      description: "score for chunk",
+                      ref_id: "82fb5980-de77-11eb-aecf-acde48001122",
+                    },
+                    {
+                      value: 0.1,
+                      op_name: "chunk_matcher",
+                      description: "score for chunk",
+                      ref_id: "82fb5980-de77-11eb-aecf-acde48001122",
+                    },
+                    {
+                      value: 0.2,
+                      op_name: "chunk_matcher",
+                      description: "score for chunk",
+                      ref_id: "82fb5980-de77-11eb-aecf-acde48001122",
+                    },
+                    {
+                      value: 0.3,
+                      op_name: "chunk_matcher",
+                      description: "score for chunk",
+                      ref_id: "82fb5980-de77-11eb-aecf-acde48001122",
+                    },
+                    {
+                      op_name: "chunk_matcher",
+                      description: "score for chunk",
+                      ref_id: "82fb5ff2-de77-11eb-aecf-acde48001122",
+                    },
+                    {
+                      value: 0.1,
+                      op_name: "chunk_matcher",
+                      description: "score for chunk",
+                      ref_id: "82fb5ff2-de77-11eb-aecf-acde48001122",
+                    },
+                    {
+                      value: 0.2,
+                      op_name: "chunk_matcher",
+                      description: "score for chunk",
+                      ref_id: "82fb5ff2-de77-11eb-aecf-acde48001122",
+                    },
+                    {
+                      value: 0.3,
+                      op_name: "chunk_matcher",
+                      description: "score for chunk",
+                      ref_id: "82fb5ff2-de77-11eb-aecf-acde48001122",
+                    },
+                  ],
+                  ref_id: "8130a498-de77-11eb-aecf-acde48001122",
+                },
+              },
+            },
+          },
+          {
+            id: "842e51ae-de77-11eb-aecf-acde48001122",
+            mime_type: "text/plain",
+            text: "match_1",
+            adjacency: 1,
+            content_hash: "9051de68fd20ed37",
+            scores: {
+              values: {
+                score: {
+                  value: 1.0,
+                  op_name: "doc_matcher",
+                  description: "final score for doc",
+                  ref_id: "8130a498-de77-11eb-aecf-acde48001122",
+                },
+                "doc score": {
+                  value: 1.0,
+                  op_name: "doc_matcher",
+                  description: "score for doc",
+                  operands: [
+                    {
+                      op_name: "chunk_matcher",
+                      description: "score for chunk",
+                      ref_id: "82fb5980-de77-11eb-aecf-acde48001122",
+                    },
+                    {
+                      value: 0.1,
+                      op_name: "chunk_matcher",
+                      description: "score for chunk",
+                      ref_id: "82fb5980-de77-11eb-aecf-acde48001122",
+                    },
+                    {
+                      value: 0.2,
+                      op_name: "chunk_matcher",
+                      description: "score for chunk",
+                      ref_id: "82fb5980-de77-11eb-aecf-acde48001122",
+                    },
+                    {
+                      value: 0.3,
+                      op_name: "chunk_matcher",
+                      description: "score for chunk",
+                      ref_id: "82fb5980-de77-11eb-aecf-acde48001122",
+                    },
+                    {
+                      op_name: "chunk_matcher",
+                      description: "score for chunk",
+                      ref_id: "82fb5ff2-de77-11eb-aecf-acde48001122",
+                    },
+                    {
+                      value: 0.1,
+                      op_name: "chunk_matcher",
+                      description: "score for chunk",
+                      ref_id: "82fb5ff2-de77-11eb-aecf-acde48001122",
+                    },
+                    {
+                      value: 0.2,
+                      op_name: "chunk_matcher",
+                      description: "score for chunk",
+                      ref_id: "82fb5ff2-de77-11eb-aecf-acde48001122",
+                    },
+                    {
+                      value: 0.3,
+                      op_name: "chunk_matcher",
+                      description: "score for chunk",
+                      ref_id: "82fb5ff2-de77-11eb-aecf-acde48001122",
+                    },
+                  ],
+                  ref_id: "8130a498-de77-11eb-aecf-acde48001122",
+                },
+              },
+            },
+          },
+          {
+            id: "842e8110-de77-11eb-aecf-acde48001122",
+            mime_type: "text/plain",
+            text: "match_2",
+            adjacency: 1,
+            content_hash: "c021b58fe5060bf2",
+            scores: {
+              values: {
+                score: {
+                  value: 1.0,
+                  op_name: "doc_matcher",
+                  description: "final score for doc",
+                  ref_id: "8130a498-de77-11eb-aecf-acde48001122",
+                },
+                "doc score": {
+                  value: 2.0,
+                  op_name: "doc_matcher",
+                  description: "score for doc",
+                  operands: [
+                    {
+                      op_name: "chunk_matcher",
+                      description: "score for chunk",
+                      ref_id: "82fb5980-de77-11eb-aecf-acde48001122",
+                    },
+                    {
+                      value: 0.1,
+                      op_name: "chunk_matcher",
+                      description: "score for chunk",
+                      ref_id: "82fb5980-de77-11eb-aecf-acde48001122",
+                    },
+                    {
+                      value: 0.2,
+                      op_name: "chunk_matcher",
+                      description: "score for chunk",
+                      ref_id: "82fb5980-de77-11eb-aecf-acde48001122",
+                    },
+                    {
+                      value: 0.3,
+                      op_name: "chunk_matcher",
+                      description: "score for chunk",
+                      ref_id: "82fb5980-de77-11eb-aecf-acde48001122",
+                    },
+                    {
+                      op_name: "chunk_matcher",
+                      description: "score for chunk",
+                      ref_id: "82fb5ff2-de77-11eb-aecf-acde48001122",
+                    },
+                    {
+                      value: 0.1,
+                      op_name: "chunk_matcher",
+                      description: "score for chunk",
+                      ref_id: "82fb5ff2-de77-11eb-aecf-acde48001122",
+                    },
+                    {
+                      value: 0.2,
+                      op_name: "chunk_matcher",
+                      description: "score for chunk",
+                      ref_id: "82fb5ff2-de77-11eb-aecf-acde48001122",
+                    },
+                    {
+                      value: 0.3,
+                      op_name: "chunk_matcher",
+                      description: "score for chunk",
+                      ref_id: "82fb5ff2-de77-11eb-aecf-acde48001122",
+                    },
+                  ],
+                  ref_id: "8130a498-de77-11eb-aecf-acde48001122",
+                },
+              },
+            },
+          },
+        ],
+        tags: {},
+        text: "Hello, world",
+        content_hash: "fe4165b2b48c2ca6",
       },
     ],
-    mime_type: "text/plain",
-    text: "chunk_0",
-    granularity: 1,
-    parent_id: "d82c8a86-c771-11eb-867e-b025aa3e54c7",
-    content_hash: "ac17ad4d1eea81e9",
+    groundtruths: null,
   },
-  {
-    id: "db28c010-c771-11eb-8047-b025aa3e54c7",
-    matches: [
-      {
-        id: "dbc25464-c771-11eb-85d7-b025aa3e54c7",
-        mime_type: "text/plain",
-        text: "match_0",
-        granularity: 1,
-        score: {
-          op_name: "chunk_matcher",
-          description: "score for chunk",
-          ref_id: "db28c010-c771-11eb-8047-b025aa3e54c7",
-        },
-        adjacency: 1,
-      },
-      {
-        id: "dbc257ac-c771-11eb-85d7-b025aa3e54c7",
-        mime_type: "text/plain",
-        text: "match_1",
-        granularity: 1,
-        score: {
-          value: 0.1,
-          op_name: "chunk_matcher",
-          description: "score for chunk",
-          ref_id: "db28c010-c771-11eb-8047-b025aa3e54c7",
-        },
-        adjacency: 1,
-      },
-      {
-        id: "dbc25a86-c771-11eb-85d7-b025aa3e54c7",
-        mime_type: "text/plain",
-        text: "match_2",
-        granularity: 1,
-        score: {
-          value: 0.2,
-          op_name: "chunk_matcher",
-          description: "score for chunk",
-          ref_id: "db28c010-c771-11eb-8047-b025aa3e54c7",
-        },
-        adjacency: 1,
-      },
-      {
-        id: "dbc25d60-c771-11eb-85d7-b025aa3e54c7",
-        mime_type: "text/plain",
-        text: "match_3",
-        granularity: 1,
-        score: {
-          value: 0.3,
-          op_name: "chunk_matcher",
-          description: "score for chunk",
-          ref_id: "db28c010-c771-11eb-8047-b025aa3e54c7",
-        },
-        adjacency: 1,
-      },
-    ],
-    mime_type: "text/plain",
-    text: "chunk_1",
-    granularity: 1,
-    parent_id: "d82c8a86-c771-11eb-867e-b025aa3e54c7",
-    content_hash: "adedb4c0da5a123e",
-  },
-]
+}
 
-export const expectedNodesAndEdges = [
+export const expectedElements = [
   {
+    id: "1",
+    type: "doc",
     data: {
-      content_hash: "ac17ad4d1eea81e9",
-      granularity: 1,
-      id: "db28bb4c-c771-11eb-8047-b025aa3e54c7",
-      matches: [
-        {
-          adjacency: 1,
-          granularity: 1,
-          id: "dbc23600-c771-11eb-85d7-b025aa3e54c7",
-          mime_type: "text/plain",
-          score: {
-            description: "score for chunk",
-            op_name: "chunk_matcher",
-            ref_id: "db28bb4c-c771-11eb-8047-b025aa3e54c7",
+      name: "Document",
+      item: {
+        id: "8130a498-de77-11eb-aecf-acde48001122",
+        chunks: [
+          {
+            id: "82fb5980-de77-11eb-aecf-acde48001122",
+            matches: [
+              {
+                id: "83949a46-de77-11eb-aecf-acde48001122",
+                mime_type: "text/plain",
+                text: "match_0",
+                granularity: 1,
+                adjacency: 1,
+                content_hash: "3bc89bbb23ab5f0a",
+                scores: {
+                  values: {
+                    "chunk score": {
+                      op_name: "chunk_matcher",
+                      description: "score for chunk",
+                      ref_id: "82fb5980-de77-11eb-aecf-acde48001122",
+                    },
+                  },
+                },
+              },
+              {
+                id: "8394a8ce-de77-11eb-aecf-acde48001122",
+                mime_type: "text/plain",
+                text: "match_1",
+                granularity: 1,
+                adjacency: 1,
+                content_hash: "d7d975fe87b7c1b3",
+                scores: {
+                  values: {
+                    "chunk score": {
+                      value: 0.1,
+                      op_name: "chunk_matcher",
+                      description: "score for chunk",
+                      ref_id: "82fb5980-de77-11eb-aecf-acde48001122",
+                    },
+                  },
+                },
+              },
+              {
+                id: "8394b5d0-de77-11eb-aecf-acde48001122",
+                mime_type: "text/plain",
+                text: "match_2",
+                granularity: 1,
+                adjacency: 1,
+                content_hash: "a106dacc3fc86164",
+                scores: {
+                  values: {
+                    "chunk score": {
+                      value: 0.2,
+                      op_name: "chunk_matcher",
+                      description: "score for chunk",
+                      ref_id: "82fb5980-de77-11eb-aecf-acde48001122",
+                    },
+                  },
+                },
+              },
+              {
+                id: "8394bd28-de77-11eb-aecf-acde48001122",
+                mime_type: "text/plain",
+                text: "match_3",
+                granularity: 1,
+                adjacency: 1,
+                content_hash: "b465c56848ce1ead",
+                scores: {
+                  values: {
+                    "chunk score": {
+                      value: 0.3,
+                      op_name: "chunk_matcher",
+                      description: "score for chunk",
+                      ref_id: "82fb5980-de77-11eb-aecf-acde48001122",
+                    },
+                  },
+                },
+              },
+            ],
+            mime_type: "text/plain",
+            text: "chunk_0",
+            granularity: 1,
+            parent_id: "8130a498-de77-11eb-aecf-acde48001122",
+            content_hash: "ac17ad4d1eea81e9",
           },
-          text: "match_0",
-        },
-        {
-          adjacency: 1,
-          granularity: 1,
-          id: "dbc23bdc-c771-11eb-85d7-b025aa3e54c7",
-          mime_type: "text/plain",
-          score: {
-            description: "score for chunk",
-            op_name: "chunk_matcher",
-            ref_id: "db28bb4c-c771-11eb-8047-b025aa3e54c7",
-            value: 0.1,
+          {
+            id: "82fb5ff2-de77-11eb-aecf-acde48001122",
+            matches: [
+              {
+                id: "8394e578-de77-11eb-aecf-acde48001122",
+                mime_type: "text/plain",
+                text: "match_0",
+                granularity: 1,
+                adjacency: 1,
+                content_hash: "3bc89bbb23ab5f0a",
+                scores: {
+                  values: {
+                    "chunk score": {
+                      op_name: "chunk_matcher",
+                      description: "score for chunk",
+                      ref_id: "82fb5ff2-de77-11eb-aecf-acde48001122",
+                    },
+                  },
+                },
+              },
+              {
+                id: "8394ec76-de77-11eb-aecf-acde48001122",
+                mime_type: "text/plain",
+                text: "match_1",
+                granularity: 1,
+                adjacency: 1,
+                content_hash: "d7d975fe87b7c1b3",
+                scores: {
+                  values: {
+                    "chunk score": {
+                      value: 0.1,
+                      op_name: "chunk_matcher",
+                      description: "score for chunk",
+                      ref_id: "82fb5ff2-de77-11eb-aecf-acde48001122",
+                    },
+                  },
+                },
+              },
+              {
+                id: "8394f342-de77-11eb-aecf-acde48001122",
+                mime_type: "text/plain",
+                text: "match_2",
+                granularity: 1,
+                adjacency: 1,
+                content_hash: "a106dacc3fc86164",
+                scores: {
+                  values: {
+                    "chunk score": {
+                      value: 0.2,
+                      op_name: "chunk_matcher",
+                      description: "score for chunk",
+                      ref_id: "82fb5ff2-de77-11eb-aecf-acde48001122",
+                    },
+                  },
+                },
+              },
+              {
+                id: "8394f9fa-de77-11eb-aecf-acde48001122",
+                mime_type: "text/plain",
+                text: "match_3",
+                granularity: 1,
+                adjacency: 1,
+                content_hash: "b465c56848ce1ead",
+                scores: {
+                  values: {
+                    "chunk score": {
+                      value: 0.3,
+                      op_name: "chunk_matcher",
+                      description: "score for chunk",
+                      ref_id: "82fb5ff2-de77-11eb-aecf-acde48001122",
+                    },
+                  },
+                },
+              },
+            ],
+            mime_type: "text/plain",
+            text: "chunk_1",
+            granularity: 1,
+            parent_id: "8130a498-de77-11eb-aecf-acde48001122",
+            content_hash: "adedb4c0da5a123e",
           },
-          text: "match_1",
-        },
-        {
-          adjacency: 1,
-          granularity: 1,
-          id: "dbc23f38-c771-11eb-85d7-b025aa3e54c7",
-          mime_type: "text/plain",
-          score: {
-            description: "score for chunk",
-            op_name: "chunk_matcher",
-            ref_id: "db28bb4c-c771-11eb-8047-b025aa3e54c7",
-            value: 0.2,
+        ],
+        matches: [
+          {
+            id: "842e3138-de77-11eb-aecf-acde48001122",
+            mime_type: "text/plain",
+            text: "match_0",
+            adjacency: 1,
+            content_hash: "b5f18137400953f2",
+            scores: {
+              values: {
+                score: {
+                  value: 1,
+                  op_name: "doc_matcher",
+                  description: "final score for doc",
+                  ref_id: "8130a498-de77-11eb-aecf-acde48001122",
+                },
+                "doc score": {
+                  op_name: "doc_matcher",
+                  description: "score for doc",
+                  operands: [
+                    {
+                      op_name: "chunk_matcher",
+                      description: "score for chunk",
+                      ref_id: "82fb5980-de77-11eb-aecf-acde48001122",
+                    },
+                    {
+                      value: 0.1,
+                      op_name: "chunk_matcher",
+                      description: "score for chunk",
+                      ref_id: "82fb5980-de77-11eb-aecf-acde48001122",
+                    },
+                    {
+                      value: 0.2,
+                      op_name: "chunk_matcher",
+                      description: "score for chunk",
+                      ref_id: "82fb5980-de77-11eb-aecf-acde48001122",
+                    },
+                    {
+                      value: 0.3,
+                      op_name: "chunk_matcher",
+                      description: "score for chunk",
+                      ref_id: "82fb5980-de77-11eb-aecf-acde48001122",
+                    },
+                    {
+                      op_name: "chunk_matcher",
+                      description: "score for chunk",
+                      ref_id: "82fb5ff2-de77-11eb-aecf-acde48001122",
+                    },
+                    {
+                      value: 0.1,
+                      op_name: "chunk_matcher",
+                      description: "score for chunk",
+                      ref_id: "82fb5ff2-de77-11eb-aecf-acde48001122",
+                    },
+                    {
+                      value: 0.2,
+                      op_name: "chunk_matcher",
+                      description: "score for chunk",
+                      ref_id: "82fb5ff2-de77-11eb-aecf-acde48001122",
+                    },
+                    {
+                      value: 0.3,
+                      op_name: "chunk_matcher",
+                      description: "score for chunk",
+                      ref_id: "82fb5ff2-de77-11eb-aecf-acde48001122",
+                    },
+                  ],
+                  ref_id: "8130a498-de77-11eb-aecf-acde48001122",
+                },
+              },
+            },
           },
-          text: "match_2",
-        },
-        {
-          adjacency: 1,
-          granularity: 1,
-          id: "dbc2423a-c771-11eb-85d7-b025aa3e54c7",
-          mime_type: "text/plain",
-          score: {
-            description: "score for chunk",
-            op_name: "chunk_matcher",
-            ref_id: "db28bb4c-c771-11eb-8047-b025aa3e54c7",
-            value: 0.3,
+          {
+            id: "842e51ae-de77-11eb-aecf-acde48001122",
+            mime_type: "text/plain",
+            text: "match_1",
+            adjacency: 1,
+            content_hash: "9051de68fd20ed37",
+            scores: {
+              values: {
+                score: {
+                  value: 1,
+                  op_name: "doc_matcher",
+                  description: "final score for doc",
+                  ref_id: "8130a498-de77-11eb-aecf-acde48001122",
+                },
+                "doc score": {
+                  value: 1,
+                  op_name: "doc_matcher",
+                  description: "score for doc",
+                  operands: [
+                    {
+                      op_name: "chunk_matcher",
+                      description: "score for chunk",
+                      ref_id: "82fb5980-de77-11eb-aecf-acde48001122",
+                    },
+                    {
+                      value: 0.1,
+                      op_name: "chunk_matcher",
+                      description: "score for chunk",
+                      ref_id: "82fb5980-de77-11eb-aecf-acde48001122",
+                    },
+                    {
+                      value: 0.2,
+                      op_name: "chunk_matcher",
+                      description: "score for chunk",
+                      ref_id: "82fb5980-de77-11eb-aecf-acde48001122",
+                    },
+                    {
+                      value: 0.3,
+                      op_name: "chunk_matcher",
+                      description: "score for chunk",
+                      ref_id: "82fb5980-de77-11eb-aecf-acde48001122",
+                    },
+                    {
+                      op_name: "chunk_matcher",
+                      description: "score for chunk",
+                      ref_id: "82fb5ff2-de77-11eb-aecf-acde48001122",
+                    },
+                    {
+                      value: 0.1,
+                      op_name: "chunk_matcher",
+                      description: "score for chunk",
+                      ref_id: "82fb5ff2-de77-11eb-aecf-acde48001122",
+                    },
+                    {
+                      value: 0.2,
+                      op_name: "chunk_matcher",
+                      description: "score for chunk",
+                      ref_id: "82fb5ff2-de77-11eb-aecf-acde48001122",
+                    },
+                    {
+                      value: 0.3,
+                      op_name: "chunk_matcher",
+                      description: "score for chunk",
+                      ref_id: "82fb5ff2-de77-11eb-aecf-acde48001122",
+                    },
+                  ],
+                  ref_id: "8130a498-de77-11eb-aecf-acde48001122",
+                },
+              },
+            },
           },
-          text: "match_3",
-        },
-      ],
-      mime_type: "text/plain",
-      parent_id: "d82c8a86-c771-11eb-867e-b025aa3e54c7",
-      text: "chunk_0",
+          {
+            id: "842e8110-de77-11eb-aecf-acde48001122",
+            mime_type: "text/plain",
+            text: "match_2",
+            adjacency: 1,
+            content_hash: "c021b58fe5060bf2",
+            scores: {
+              values: {
+                score: {
+                  value: 1,
+                  op_name: "doc_matcher",
+                  description: "final score for doc",
+                  ref_id: "8130a498-de77-11eb-aecf-acde48001122",
+                },
+                "doc score": {
+                  value: 2,
+                  op_name: "doc_matcher",
+                  description: "score for doc",
+                  operands: [
+                    {
+                      op_name: "chunk_matcher",
+                      description: "score for chunk",
+                      ref_id: "82fb5980-de77-11eb-aecf-acde48001122",
+                    },
+                    {
+                      value: 0.1,
+                      op_name: "chunk_matcher",
+                      description: "score for chunk",
+                      ref_id: "82fb5980-de77-11eb-aecf-acde48001122",
+                    },
+                    {
+                      value: 0.2,
+                      op_name: "chunk_matcher",
+                      description: "score for chunk",
+                      ref_id: "82fb5980-de77-11eb-aecf-acde48001122",
+                    },
+                    {
+                      value: 0.3,
+                      op_name: "chunk_matcher",
+                      description: "score for chunk",
+                      ref_id: "82fb5980-de77-11eb-aecf-acde48001122",
+                    },
+                    {
+                      op_name: "chunk_matcher",
+                      description: "score for chunk",
+                      ref_id: "82fb5ff2-de77-11eb-aecf-acde48001122",
+                    },
+                    {
+                      value: 0.1,
+                      op_name: "chunk_matcher",
+                      description: "score for chunk",
+                      ref_id: "82fb5ff2-de77-11eb-aecf-acde48001122",
+                    },
+                    {
+                      value: 0.2,
+                      op_name: "chunk_matcher",
+                      description: "score for chunk",
+                      ref_id: "82fb5ff2-de77-11eb-aecf-acde48001122",
+                    },
+                    {
+                      value: 0.3,
+                      op_name: "chunk_matcher",
+                      description: "score for chunk",
+                      ref_id: "82fb5ff2-de77-11eb-aecf-acde48001122",
+                    },
+                  ],
+                  ref_id: "8130a498-de77-11eb-aecf-acde48001122",
+                },
+              },
+            },
+          },
+        ],
+        tags: {},
+        text: "Hello, world",
+        content_hash: "fe4165b2b48c2ca6",
+      },
+      hasInput: false,
     },
-    id: "db28bb4c-c771-11eb-8047-b025aa3e54c7",
-    position: {
-      x: 50,
-      y: 200,
-    },
+    position: { x: 0, y: 265 },
+  },
+  {
+    id: "82fb5980-de77-11eb-aecf-acde48001122",
     type: "chunk",
+    data: {
+      name: "Chunk",
+      item: {
+        id: "82fb5980-de77-11eb-aecf-acde48001122",
+        matches: [
+          {
+            id: "83949a46-de77-11eb-aecf-acde48001122",
+            mime_type: "text/plain",
+            text: "match_0",
+            granularity: 1,
+            adjacency: 1,
+            content_hash: "3bc89bbb23ab5f0a",
+            scores: {
+              values: {
+                "chunk score": {
+                  op_name: "chunk_matcher",
+                  description: "score for chunk",
+                  ref_id: "82fb5980-de77-11eb-aecf-acde48001122",
+                },
+              },
+            },
+          },
+          {
+            id: "8394a8ce-de77-11eb-aecf-acde48001122",
+            mime_type: "text/plain",
+            text: "match_1",
+            granularity: 1,
+            adjacency: 1,
+            content_hash: "d7d975fe87b7c1b3",
+            scores: {
+              values: {
+                "chunk score": {
+                  value: 0.1,
+                  op_name: "chunk_matcher",
+                  description: "score for chunk",
+                  ref_id: "82fb5980-de77-11eb-aecf-acde48001122",
+                },
+              },
+            },
+          },
+          {
+            id: "8394b5d0-de77-11eb-aecf-acde48001122",
+            mime_type: "text/plain",
+            text: "match_2",
+            granularity: 1,
+            adjacency: 1,
+            content_hash: "a106dacc3fc86164",
+            scores: {
+              values: {
+                "chunk score": {
+                  value: 0.2,
+                  op_name: "chunk_matcher",
+                  description: "score for chunk",
+                  ref_id: "82fb5980-de77-11eb-aecf-acde48001122",
+                },
+              },
+            },
+          },
+          {
+            id: "8394bd28-de77-11eb-aecf-acde48001122",
+            mime_type: "text/plain",
+            text: "match_3",
+            granularity: 1,
+            adjacency: 1,
+            content_hash: "b465c56848ce1ead",
+            scores: {
+              values: {
+                "chunk score": {
+                  value: 0.3,
+                  op_name: "chunk_matcher",
+                  description: "score for chunk",
+                  ref_id: "82fb5980-de77-11eb-aecf-acde48001122",
+                },
+              },
+            },
+          },
+        ],
+        mime_type: "text/plain",
+        text: "chunk_0",
+        granularity: 1,
+        parent_id: "8130a498-de77-11eb-aecf-acde48001122",
+        content_hash: "ac17ad4d1eea81e9",
+      },
+    },
+    position: { x: 700, y: 0 },
   },
   {
-    animated: false,
-    id: "edge-db28bb4c-c771-11eb-8047-b025aa3e54c7-1",
-    label: "chunk",
-    labelBgBorderRadius: 4,
-    labelBgPadding: [8, 4],
-    labelBgStyle: {
-      color: "#000000",
-      fill: "rgb(51, 173, 173)",
-      fillOpacity: 0.7,
-    },
-    source: "db28bb4c-c771-11eb-8047-b025aa3e54c7",
-    style: {
-      stroke: "#009999",
-    },
+    id: "edge-82fb5980-de77-11eb-aecf-acde48001122-1",
+    source: "82fb5980-de77-11eb-aecf-acde48001122",
     target: "1",
-  },
-  {
-    data: {
-      adjacency: 1,
-      granularity: 1,
-      id: "dbc23600-c771-11eb-85d7-b025aa3e54c7",
-      mime_type: "text/plain",
-      score: {
-        description: "score for chunk",
-        op_name: "chunk_matcher",
-        ref_id: "db28bb4c-c771-11eb-8047-b025aa3e54c7",
-      },
-      text: "match_0",
-    },
-    id: "dbc23600-c771-11eb-85d7-b025aa3e54c7",
-    position: {
-      x: 0,
-      y: 600,
-    },
-    type: "match",
-  },
-  {
-    animated: true,
-    id:
-      "edge-dbc23600-c771-11eb-85d7-b025aa3e54c7-db28bb4c-c771-11eb-8047-b025aa3e54c7",
-    label: "match",
-    labelBgBorderRadius: 4,
+    animated: false,
+    label: "chunk",
     labelBgPadding: [8, 4],
+    labelBgBorderRadius: 4,
     labelBgStyle: {
-      color: "#000000",
       fill: "rgb(51, 173, 173)",
+      color: "#000000",
       fillOpacity: 0.7,
     },
-    source: "dbc23600-c771-11eb-85d7-b025aa3e54c7",
-    style: {
-      stroke: "#009999",
-    },
-    target: "db28bb4c-c771-11eb-8047-b025aa3e54c7",
+    style: { stroke: "#009999" },
   },
   {
-    data: {
-      adjacency: 1,
-      granularity: 1,
-      id: "dbc23bdc-c771-11eb-85d7-b025aa3e54c7",
-      mime_type: "text/plain",
-      score: {
-        description: "score for chunk",
-        op_name: "chunk_matcher",
-        ref_id: "db28bb4c-c771-11eb-8047-b025aa3e54c7",
-        value: 0.1,
-      },
-      text: "match_1",
-    },
-    id: "dbc23bdc-c771-11eb-85d7-b025aa3e54c7",
-    position: {
-      x: 450,
-      y: 600,
-    },
+    id: "83949a46-de77-11eb-aecf-acde48001122",
     type: "match",
+    data: {
+      name: "Chunk Match",
+      item: {
+        id: "83949a46-de77-11eb-aecf-acde48001122",
+        mime_type: "text/plain",
+        text: "match_0",
+        granularity: 1,
+        adjacency: 1,
+        content_hash: "3bc89bbb23ab5f0a",
+        scores: {
+          values: {
+            "chunk score": {
+              op_name: "chunk_matcher",
+              description: "score for chunk",
+              ref_id: "82fb5980-de77-11eb-aecf-acde48001122",
+            },
+          },
+        },
+      },
+      hasOutput: false,
+    },
+    position: { x: 1400, y: 0 },
   },
   {
-    animated: true,
     id:
-      "edge-dbc23bdc-c771-11eb-85d7-b025aa3e54c7-db28bb4c-c771-11eb-8047-b025aa3e54c7",
+      "edge-83949a46-de77-11eb-aecf-acde48001122-82fb5980-de77-11eb-aecf-acde48001122",
+    source: "83949a46-de77-11eb-aecf-acde48001122",
+    target: "82fb5980-de77-11eb-aecf-acde48001122",
+    animated: true,
     label: "match",
-    labelBgBorderRadius: 4,
     labelBgPadding: [8, 4],
+    labelBgBorderRadius: 4,
     labelBgStyle: {
-      color: "#000000",
       fill: "rgb(51, 173, 173)",
+      color: "#000000",
       fillOpacity: 0.7,
     },
-    source: "dbc23bdc-c771-11eb-85d7-b025aa3e54c7",
-    style: {
-      stroke: "#009999",
-    },
-    target: "db28bb4c-c771-11eb-8047-b025aa3e54c7",
+    style: { stroke: "#009999" },
   },
   {
-    data: {
-      adjacency: 1,
-      granularity: 1,
-      id: "dbc23f38-c771-11eb-85d7-b025aa3e54c7",
-      mime_type: "text/plain",
-      score: {
-        description: "score for chunk",
-        op_name: "chunk_matcher",
-        ref_id: "db28bb4c-c771-11eb-8047-b025aa3e54c7",
-        value: 0.2,
-      },
-      text: "match_2",
-    },
-    id: "dbc23f38-c771-11eb-85d7-b025aa3e54c7",
-    position: {
-      x: 900,
-      y: 600,
-    },
+    id: "8394a8ce-de77-11eb-aecf-acde48001122",
     type: "match",
+    data: {
+      name: "Chunk Match",
+      item: {
+        id: "8394a8ce-de77-11eb-aecf-acde48001122",
+        mime_type: "text/plain",
+        text: "match_1",
+        granularity: 1,
+        adjacency: 1,
+        content_hash: "d7d975fe87b7c1b3",
+        scores: {
+          values: {
+            "chunk score": {
+              value: 0.1,
+              op_name: "chunk_matcher",
+              description: "score for chunk",
+              ref_id: "82fb5980-de77-11eb-aecf-acde48001122",
+            },
+          },
+        },
+      },
+      hasOutput: false,
+    },
+    position: { x: 1400, y: 500 },
   },
   {
-    animated: true,
     id:
-      "edge-dbc23f38-c771-11eb-85d7-b025aa3e54c7-db28bb4c-c771-11eb-8047-b025aa3e54c7",
+      "edge-8394a8ce-de77-11eb-aecf-acde48001122-82fb5980-de77-11eb-aecf-acde48001122",
+    source: "8394a8ce-de77-11eb-aecf-acde48001122",
+    target: "82fb5980-de77-11eb-aecf-acde48001122",
+    animated: true,
     label: "match",
-    labelBgBorderRadius: 4,
     labelBgPadding: [8, 4],
+    labelBgBorderRadius: 4,
     labelBgStyle: {
-      color: "#000000",
       fill: "rgb(51, 173, 173)",
+      color: "#000000",
       fillOpacity: 0.7,
     },
-    source: "dbc23f38-c771-11eb-85d7-b025aa3e54c7",
-    style: {
-      stroke: "#009999",
-    },
-    target: "db28bb4c-c771-11eb-8047-b025aa3e54c7",
+    style: { stroke: "#009999" },
   },
   {
-    data: {
-      adjacency: 1,
-      granularity: 1,
-      id: "dbc2423a-c771-11eb-85d7-b025aa3e54c7",
-      mime_type: "text/plain",
-      score: {
-        description: "score for chunk",
-        op_name: "chunk_matcher",
-        ref_id: "db28bb4c-c771-11eb-8047-b025aa3e54c7",
-        value: 0.3,
-      },
-      text: "match_3",
-    },
-    id: "dbc2423a-c771-11eb-85d7-b025aa3e54c7",
-    position: {
-      x: 1350,
-      y: 600,
-    },
+    id: "8394b5d0-de77-11eb-aecf-acde48001122",
     type: "match",
+    data: {
+      name: "Chunk Match",
+      item: {
+        id: "8394b5d0-de77-11eb-aecf-acde48001122",
+        mime_type: "text/plain",
+        text: "match_2",
+        granularity: 1,
+        adjacency: 1,
+        content_hash: "a106dacc3fc86164",
+        scores: {
+          values: {
+            "chunk score": {
+              value: 0.2,
+              op_name: "chunk_matcher",
+              description: "score for chunk",
+              ref_id: "82fb5980-de77-11eb-aecf-acde48001122",
+            },
+          },
+        },
+      },
+      hasOutput: false,
+    },
+    position: { x: 1400, y: 1000 },
   },
   {
-    animated: true,
     id:
-      "edge-dbc2423a-c771-11eb-85d7-b025aa3e54c7-db28bb4c-c771-11eb-8047-b025aa3e54c7",
+      "edge-8394b5d0-de77-11eb-aecf-acde48001122-82fb5980-de77-11eb-aecf-acde48001122",
+    source: "8394b5d0-de77-11eb-aecf-acde48001122",
+    target: "82fb5980-de77-11eb-aecf-acde48001122",
+    animated: true,
     label: "match",
-    labelBgBorderRadius: 4,
     labelBgPadding: [8, 4],
+    labelBgBorderRadius: 4,
     labelBgStyle: {
-      color: "#000000",
       fill: "rgb(51, 173, 173)",
+      color: "#000000",
       fillOpacity: 0.7,
     },
-    source: "dbc2423a-c771-11eb-85d7-b025aa3e54c7",
-    style: {
-      stroke: "#009999",
-    },
-    target: "db28bb4c-c771-11eb-8047-b025aa3e54c7",
+    style: { stroke: "#009999" },
   },
   {
+    id: "8394bd28-de77-11eb-aecf-acde48001122",
+    type: "match",
     data: {
-      content_hash: "adedb4c0da5a123e",
-      granularity: 1,
-      id: "db28c010-c771-11eb-8047-b025aa3e54c7",
-      matches: [
-        {
-          adjacency: 1,
-          granularity: 1,
-          id: "dbc25464-c771-11eb-85d7-b025aa3e54c7",
-          mime_type: "text/plain",
-          score: {
-            description: "score for chunk",
-            op_name: "chunk_matcher",
-            ref_id: "db28c010-c771-11eb-8047-b025aa3e54c7",
+      name: "Chunk Match",
+      item: {
+        id: "8394bd28-de77-11eb-aecf-acde48001122",
+        mime_type: "text/plain",
+        text: "match_3",
+        granularity: 1,
+        adjacency: 1,
+        content_hash: "b465c56848ce1ead",
+        scores: {
+          values: {
+            "chunk score": {
+              value: 0.3,
+              op_name: "chunk_matcher",
+              description: "score for chunk",
+              ref_id: "82fb5980-de77-11eb-aecf-acde48001122",
+            },
           },
-          text: "match_0",
         },
-        {
-          adjacency: 1,
-          granularity: 1,
-          id: "dbc257ac-c771-11eb-85d7-b025aa3e54c7",
-          mime_type: "text/plain",
-          score: {
-            description: "score for chunk",
-            op_name: "chunk_matcher",
-            ref_id: "db28c010-c771-11eb-8047-b025aa3e54c7",
-            value: 0.1,
-          },
-          text: "match_1",
-        },
-        {
-          adjacency: 1,
-          granularity: 1,
-          id: "dbc25a86-c771-11eb-85d7-b025aa3e54c7",
-          mime_type: "text/plain",
-          score: {
-            description: "score for chunk",
-            op_name: "chunk_matcher",
-            ref_id: "db28c010-c771-11eb-8047-b025aa3e54c7",
-            value: 0.2,
-          },
-          text: "match_2",
-        },
-        {
-          adjacency: 1,
-          granularity: 1,
-          id: "dbc25d60-c771-11eb-85d7-b025aa3e54c7",
-          mime_type: "text/plain",
-          score: {
-            description: "score for chunk",
-            op_name: "chunk_matcher",
-            ref_id: "db28c010-c771-11eb-8047-b025aa3e54c7",
-            value: 0.3,
-          },
-          text: "match_3",
-        },
-      ],
-      mime_type: "text/plain",
-      parent_id: "d82c8a86-c771-11eb-867e-b025aa3e54c7",
-      text: "chunk_1",
+      },
+      hasOutput: false,
     },
-    id: "db28c010-c771-11eb-8047-b025aa3e54c7",
-    position: {
-      x: 500,
-      y: 200,
+    position: { x: 1400, y: 1500 },
+  },
+  {
+    id:
+      "edge-8394bd28-de77-11eb-aecf-acde48001122-82fb5980-de77-11eb-aecf-acde48001122",
+    source: "8394bd28-de77-11eb-aecf-acde48001122",
+    target: "82fb5980-de77-11eb-aecf-acde48001122",
+    animated: true,
+    label: "match",
+    labelBgPadding: [8, 4],
+    labelBgBorderRadius: 4,
+    labelBgStyle: {
+      fill: "rgb(51, 173, 173)",
+      color: "#000000",
+      fillOpacity: 0.7,
     },
+    style: { stroke: "#009999" },
+  },
+  {
+    id: "82fb5ff2-de77-11eb-aecf-acde48001122",
     type: "chunk",
+    data: {
+      name: "Chunk",
+      item: {
+        id: "82fb5ff2-de77-11eb-aecf-acde48001122",
+        matches: [
+          {
+            id: "8394e578-de77-11eb-aecf-acde48001122",
+            mime_type: "text/plain",
+            text: "match_0",
+            granularity: 1,
+            adjacency: 1,
+            content_hash: "3bc89bbb23ab5f0a",
+            scores: {
+              values: {
+                "chunk score": {
+                  op_name: "chunk_matcher",
+                  description: "score for chunk",
+                  ref_id: "82fb5ff2-de77-11eb-aecf-acde48001122",
+                },
+              },
+            },
+          },
+          {
+            id: "8394ec76-de77-11eb-aecf-acde48001122",
+            mime_type: "text/plain",
+            text: "match_1",
+            granularity: 1,
+            adjacency: 1,
+            content_hash: "d7d975fe87b7c1b3",
+            scores: {
+              values: {
+                "chunk score": {
+                  value: 0.1,
+                  op_name: "chunk_matcher",
+                  description: "score for chunk",
+                  ref_id: "82fb5ff2-de77-11eb-aecf-acde48001122",
+                },
+              },
+            },
+          },
+          {
+            id: "8394f342-de77-11eb-aecf-acde48001122",
+            mime_type: "text/plain",
+            text: "match_2",
+            granularity: 1,
+            adjacency: 1,
+            content_hash: "a106dacc3fc86164",
+            scores: {
+              values: {
+                "chunk score": {
+                  value: 0.2,
+                  op_name: "chunk_matcher",
+                  description: "score for chunk",
+                  ref_id: "82fb5ff2-de77-11eb-aecf-acde48001122",
+                },
+              },
+            },
+          },
+          {
+            id: "8394f9fa-de77-11eb-aecf-acde48001122",
+            mime_type: "text/plain",
+            text: "match_3",
+            granularity: 1,
+            adjacency: 1,
+            content_hash: "b465c56848ce1ead",
+            scores: {
+              values: {
+                "chunk score": {
+                  value: 0.3,
+                  op_name: "chunk_matcher",
+                  description: "score for chunk",
+                  ref_id: "82fb5ff2-de77-11eb-aecf-acde48001122",
+                },
+              },
+            },
+          },
+        ],
+        mime_type: "text/plain",
+        text: "chunk_1",
+        granularity: 1,
+        parent_id: "8130a498-de77-11eb-aecf-acde48001122",
+        content_hash: "adedb4c0da5a123e",
+      },
+    },
+    position: { x: 700, y: 480 },
   },
   {
-    animated: false,
-    id: "edge-db28c010-c771-11eb-8047-b025aa3e54c7-1",
-    label: "chunk",
-    labelBgBorderRadius: 4,
-    labelBgPadding: [8, 4],
-    labelBgStyle: {
-      color: "#000000",
-      fill: "rgb(51, 173, 173)",
-      fillOpacity: 0.7,
-    },
-    source: "db28c010-c771-11eb-8047-b025aa3e54c7",
-    style: {
-      stroke: "#009999",
-    },
+    id: "edge-82fb5ff2-de77-11eb-aecf-acde48001122-1",
+    source: "82fb5ff2-de77-11eb-aecf-acde48001122",
     target: "1",
-  },
-  {
-    data: {
-      adjacency: 1,
-      granularity: 1,
-      id: "dbc25464-c771-11eb-85d7-b025aa3e54c7",
-      mime_type: "text/plain",
-      score: {
-        description: "score for chunk",
-        op_name: "chunk_matcher",
-        ref_id: "db28c010-c771-11eb-8047-b025aa3e54c7",
-      },
-      text: "match_0",
-    },
-    id: "dbc25464-c771-11eb-85d7-b025aa3e54c7",
-    position: {
-      x: 0,
-      y: 800,
-    },
-    type: "match",
-  },
-  {
-    animated: true,
-    id:
-      "edge-dbc25464-c771-11eb-85d7-b025aa3e54c7-db28c010-c771-11eb-8047-b025aa3e54c7",
-    label: "match",
-    labelBgBorderRadius: 4,
+    animated: false,
+    label: "chunk",
     labelBgPadding: [8, 4],
+    labelBgBorderRadius: 4,
     labelBgStyle: {
-      color: "#000000",
       fill: "rgb(51, 173, 173)",
+      color: "#000000",
       fillOpacity: 0.7,
     },
-    source: "dbc25464-c771-11eb-85d7-b025aa3e54c7",
-    style: {
-      stroke: "#009999",
-    },
-    target: "db28c010-c771-11eb-8047-b025aa3e54c7",
+    style: { stroke: "#009999" },
   },
   {
-    data: {
-      adjacency: 1,
-      granularity: 1,
-      id: "dbc257ac-c771-11eb-85d7-b025aa3e54c7",
-      mime_type: "text/plain",
-      score: {
-        description: "score for chunk",
-        op_name: "chunk_matcher",
-        ref_id: "db28c010-c771-11eb-8047-b025aa3e54c7",
-        value: 0.1,
-      },
-      text: "match_1",
-    },
-    id: "dbc257ac-c771-11eb-85d7-b025aa3e54c7",
-    position: {
-      x: 450,
-      y: 800,
-    },
+    id: "8394e578-de77-11eb-aecf-acde48001122",
     type: "match",
+    data: {
+      name: "Chunk Match",
+      item: {
+        id: "8394e578-de77-11eb-aecf-acde48001122",
+        mime_type: "text/plain",
+        text: "match_0",
+        granularity: 1,
+        adjacency: 1,
+        content_hash: "3bc89bbb23ab5f0a",
+        scores: {
+          values: {
+            "chunk score": {
+              op_name: "chunk_matcher",
+              description: "score for chunk",
+              ref_id: "82fb5ff2-de77-11eb-aecf-acde48001122",
+            },
+          },
+        },
+      },
+      hasOutput: false,
+    },
+    position: { x: 2100, y: 0 },
   },
   {
-    animated: true,
     id:
-      "edge-dbc257ac-c771-11eb-85d7-b025aa3e54c7-db28c010-c771-11eb-8047-b025aa3e54c7",
+      "edge-8394e578-de77-11eb-aecf-acde48001122-82fb5ff2-de77-11eb-aecf-acde48001122",
+    source: "8394e578-de77-11eb-aecf-acde48001122",
+    target: "82fb5ff2-de77-11eb-aecf-acde48001122",
+    animated: true,
     label: "match",
-    labelBgBorderRadius: 4,
     labelBgPadding: [8, 4],
+    labelBgBorderRadius: 4,
     labelBgStyle: {
-      color: "#000000",
       fill: "rgb(51, 173, 173)",
+      color: "#000000",
       fillOpacity: 0.7,
     },
-    source: "dbc257ac-c771-11eb-85d7-b025aa3e54c7",
-    style: {
-      stroke: "#009999",
-    },
-    target: "db28c010-c771-11eb-8047-b025aa3e54c7",
+    style: { stroke: "#009999" },
   },
   {
-    data: {
-      adjacency: 1,
-      granularity: 1,
-      id: "dbc25a86-c771-11eb-85d7-b025aa3e54c7",
-      mime_type: "text/plain",
-      score: {
-        description: "score for chunk",
-        op_name: "chunk_matcher",
-        ref_id: "db28c010-c771-11eb-8047-b025aa3e54c7",
-        value: 0.2,
-      },
-      text: "match_2",
-    },
-    id: "dbc25a86-c771-11eb-85d7-b025aa3e54c7",
-    position: {
-      x: 900,
-      y: 800,
-    },
+    id: "8394ec76-de77-11eb-aecf-acde48001122",
     type: "match",
+    data: {
+      name: "Chunk Match",
+      item: {
+        id: "8394ec76-de77-11eb-aecf-acde48001122",
+        mime_type: "text/plain",
+        text: "match_1",
+        granularity: 1,
+        adjacency: 1,
+        content_hash: "d7d975fe87b7c1b3",
+        scores: {
+          values: {
+            "chunk score": {
+              value: 0.1,
+              op_name: "chunk_matcher",
+              description: "score for chunk",
+              ref_id: "82fb5ff2-de77-11eb-aecf-acde48001122",
+            },
+          },
+        },
+      },
+      hasOutput: false,
+    },
+    position: { x: 2100, y: 500 },
   },
   {
-    animated: true,
     id:
-      "edge-dbc25a86-c771-11eb-85d7-b025aa3e54c7-db28c010-c771-11eb-8047-b025aa3e54c7",
+      "edge-8394ec76-de77-11eb-aecf-acde48001122-82fb5ff2-de77-11eb-aecf-acde48001122",
+    source: "8394ec76-de77-11eb-aecf-acde48001122",
+    target: "82fb5ff2-de77-11eb-aecf-acde48001122",
+    animated: true,
     label: "match",
-    labelBgBorderRadius: 4,
     labelBgPadding: [8, 4],
+    labelBgBorderRadius: 4,
     labelBgStyle: {
-      color: "#000000",
       fill: "rgb(51, 173, 173)",
+      color: "#000000",
       fillOpacity: 0.7,
     },
-    source: "dbc25a86-c771-11eb-85d7-b025aa3e54c7",
-    style: {
-      stroke: "#009999",
-    },
-    target: "db28c010-c771-11eb-8047-b025aa3e54c7",
+    style: { stroke: "#009999" },
   },
   {
-    data: {
-      adjacency: 1,
-      granularity: 1,
-      id: "dbc25d60-c771-11eb-85d7-b025aa3e54c7",
-      mime_type: "text/plain",
-      score: {
-        description: "score for chunk",
-        op_name: "chunk_matcher",
-        ref_id: "db28c010-c771-11eb-8047-b025aa3e54c7",
-        value: 0.3,
-      },
-      text: "match_3",
-    },
-    id: "dbc25d60-c771-11eb-85d7-b025aa3e54c7",
-    position: {
-      x: 1350,
-      y: 800,
-    },
+    id: "8394f342-de77-11eb-aecf-acde48001122",
     type: "match",
+    data: {
+      name: "Chunk Match",
+      item: {
+        id: "8394f342-de77-11eb-aecf-acde48001122",
+        mime_type: "text/plain",
+        text: "match_2",
+        granularity: 1,
+        adjacency: 1,
+        content_hash: "a106dacc3fc86164",
+        scores: {
+          values: {
+            "chunk score": {
+              value: 0.2,
+              op_name: "chunk_matcher",
+              description: "score for chunk",
+              ref_id: "82fb5ff2-de77-11eb-aecf-acde48001122",
+            },
+          },
+        },
+      },
+      hasOutput: false,
+    },
+    position: { x: 2100, y: 1000 },
   },
   {
-    animated: true,
     id:
-      "edge-dbc25d60-c771-11eb-85d7-b025aa3e54c7-db28c010-c771-11eb-8047-b025aa3e54c7",
+      "edge-8394f342-de77-11eb-aecf-acde48001122-82fb5ff2-de77-11eb-aecf-acde48001122",
+    source: "8394f342-de77-11eb-aecf-acde48001122",
+    target: "82fb5ff2-de77-11eb-aecf-acde48001122",
+    animated: true,
     label: "match",
-    labelBgBorderRadius: 4,
     labelBgPadding: [8, 4],
+    labelBgBorderRadius: 4,
     labelBgStyle: {
-      color: "#000000",
       fill: "rgb(51, 173, 173)",
+      color: "#000000",
       fillOpacity: 0.7,
     },
-    source: "dbc25d60-c771-11eb-85d7-b025aa3e54c7",
-    style: {
-      stroke: "#009999",
+    style: { stroke: "#009999" },
+  },
+  {
+    id: "8394f9fa-de77-11eb-aecf-acde48001122",
+    type: "match",
+    data: {
+      name: "Chunk Match",
+      item: {
+        id: "8394f9fa-de77-11eb-aecf-acde48001122",
+        mime_type: "text/plain",
+        text: "match_3",
+        granularity: 1,
+        adjacency: 1,
+        content_hash: "b465c56848ce1ead",
+        scores: {
+          values: {
+            "chunk score": {
+              value: 0.3,
+              op_name: "chunk_matcher",
+              description: "score for chunk",
+              ref_id: "82fb5ff2-de77-11eb-aecf-acde48001122",
+            },
+          },
+        },
+      },
+      hasOutput: false,
     },
-    target: "db28c010-c771-11eb-8047-b025aa3e54c7",
+    position: { x: 2100, y: 1500 },
+  },
+  {
+    id:
+      "edge-8394f9fa-de77-11eb-aecf-acde48001122-82fb5ff2-de77-11eb-aecf-acde48001122",
+    source: "8394f9fa-de77-11eb-aecf-acde48001122",
+    target: "82fb5ff2-de77-11eb-aecf-acde48001122",
+    animated: true,
+    label: "match",
+    labelBgPadding: [8, 4],
+    labelBgBorderRadius: 4,
+    labelBgStyle: {
+      fill: "rgb(51, 173, 173)",
+      color: "#000000",
+      fillOpacity: 0.7,
+    },
+    style: { stroke: "#009999" },
+  },
+  {
+    id: "842e3138-de77-11eb-aecf-acde48001122",
+    type: "match",
+    data: {
+      name: "Document Match",
+      item: {
+        id: "842e3138-de77-11eb-aecf-acde48001122",
+        mime_type: "text/plain",
+        text: "match_0",
+        adjacency: 1,
+        content_hash: "b5f18137400953f2",
+        scores: {
+          values: {
+            score: {
+              value: 1,
+              op_name: "doc_matcher",
+              description: "final score for doc",
+              ref_id: "8130a498-de77-11eb-aecf-acde48001122",
+            },
+            "doc score": {
+              op_name: "doc_matcher",
+              description: "score for doc",
+              operands: [
+                {
+                  op_name: "chunk_matcher",
+                  description: "score for chunk",
+                  ref_id: "82fb5980-de77-11eb-aecf-acde48001122",
+                },
+                {
+                  value: 0.1,
+                  op_name: "chunk_matcher",
+                  description: "score for chunk",
+                  ref_id: "82fb5980-de77-11eb-aecf-acde48001122",
+                },
+                {
+                  value: 0.2,
+                  op_name: "chunk_matcher",
+                  description: "score for chunk",
+                  ref_id: "82fb5980-de77-11eb-aecf-acde48001122",
+                },
+                {
+                  value: 0.3,
+                  op_name: "chunk_matcher",
+                  description: "score for chunk",
+                  ref_id: "82fb5980-de77-11eb-aecf-acde48001122",
+                },
+                {
+                  op_name: "chunk_matcher",
+                  description: "score for chunk",
+                  ref_id: "82fb5ff2-de77-11eb-aecf-acde48001122",
+                },
+                {
+                  value: 0.1,
+                  op_name: "chunk_matcher",
+                  description: "score for chunk",
+                  ref_id: "82fb5ff2-de77-11eb-aecf-acde48001122",
+                },
+                {
+                  value: 0.2,
+                  op_name: "chunk_matcher",
+                  description: "score for chunk",
+                  ref_id: "82fb5ff2-de77-11eb-aecf-acde48001122",
+                },
+                {
+                  value: 0.3,
+                  op_name: "chunk_matcher",
+                  description: "score for chunk",
+                  ref_id: "82fb5ff2-de77-11eb-aecf-acde48001122",
+                },
+              ],
+              ref_id: "8130a498-de77-11eb-aecf-acde48001122",
+            },
+          },
+        },
+      },
+      hasOutput: false,
+    },
+    position: { x: 2800, y: 0 },
+  },
+  {
+    id: "edge-842e3138-de77-11eb-aecf-acde48001122-1",
+    source: "842e3138-de77-11eb-aecf-acde48001122",
+    target: "1",
+    animated: true,
+    label: "match",
+    labelBgPadding: [8, 4],
+    labelBgBorderRadius: 4,
+    labelBgStyle: {
+      fill: "rgb(51, 173, 173)",
+      color: "#000000",
+      fillOpacity: 0.7,
+    },
+    style: { stroke: "#009999" },
+  },
+  {
+    id: "842e51ae-de77-11eb-aecf-acde48001122",
+    type: "match",
+    data: {
+      name: "Document Match",
+      item: {
+        id: "842e51ae-de77-11eb-aecf-acde48001122",
+        mime_type: "text/plain",
+        text: "match_1",
+        adjacency: 1,
+        content_hash: "9051de68fd20ed37",
+        scores: {
+          values: {
+            score: {
+              value: 1,
+              op_name: "doc_matcher",
+              description: "final score for doc",
+              ref_id: "8130a498-de77-11eb-aecf-acde48001122",
+            },
+            "doc score": {
+              value: 1,
+              op_name: "doc_matcher",
+              description: "score for doc",
+              operands: [
+                {
+                  op_name: "chunk_matcher",
+                  description: "score for chunk",
+                  ref_id: "82fb5980-de77-11eb-aecf-acde48001122",
+                },
+                {
+                  value: 0.1,
+                  op_name: "chunk_matcher",
+                  description: "score for chunk",
+                  ref_id: "82fb5980-de77-11eb-aecf-acde48001122",
+                },
+                {
+                  value: 0.2,
+                  op_name: "chunk_matcher",
+                  description: "score for chunk",
+                  ref_id: "82fb5980-de77-11eb-aecf-acde48001122",
+                },
+                {
+                  value: 0.3,
+                  op_name: "chunk_matcher",
+                  description: "score for chunk",
+                  ref_id: "82fb5980-de77-11eb-aecf-acde48001122",
+                },
+                {
+                  op_name: "chunk_matcher",
+                  description: "score for chunk",
+                  ref_id: "82fb5ff2-de77-11eb-aecf-acde48001122",
+                },
+                {
+                  value: 0.1,
+                  op_name: "chunk_matcher",
+                  description: "score for chunk",
+                  ref_id: "82fb5ff2-de77-11eb-aecf-acde48001122",
+                },
+                {
+                  value: 0.2,
+                  op_name: "chunk_matcher",
+                  description: "score for chunk",
+                  ref_id: "82fb5ff2-de77-11eb-aecf-acde48001122",
+                },
+                {
+                  value: 0.3,
+                  op_name: "chunk_matcher",
+                  description: "score for chunk",
+                  ref_id: "82fb5ff2-de77-11eb-aecf-acde48001122",
+                },
+              ],
+              ref_id: "8130a498-de77-11eb-aecf-acde48001122",
+            },
+          },
+        },
+      },
+      hasOutput: false,
+    },
+    position: { x: 2800, y: 500 },
+  },
+  {
+    id: "edge-842e51ae-de77-11eb-aecf-acde48001122-1",
+    source: "842e51ae-de77-11eb-aecf-acde48001122",
+    target: "1",
+    animated: true,
+    label: "match",
+    labelBgPadding: [8, 4],
+    labelBgBorderRadius: 4,
+    labelBgStyle: {
+      fill: "rgb(51, 173, 173)",
+      color: "#000000",
+      fillOpacity: 0.7,
+    },
+    style: { stroke: "#009999" },
+  },
+  {
+    id: "842e8110-de77-11eb-aecf-acde48001122",
+    type: "match",
+    data: {
+      name: "Document Match",
+      item: {
+        id: "842e8110-de77-11eb-aecf-acde48001122",
+        mime_type: "text/plain",
+        text: "match_2",
+        adjacency: 1,
+        content_hash: "c021b58fe5060bf2",
+        scores: {
+          values: {
+            score: {
+              value: 1,
+              op_name: "doc_matcher",
+              description: "final score for doc",
+              ref_id: "8130a498-de77-11eb-aecf-acde48001122",
+            },
+            "doc score": {
+              value: 2,
+              op_name: "doc_matcher",
+              description: "score for doc",
+              operands: [
+                {
+                  op_name: "chunk_matcher",
+                  description: "score for chunk",
+                  ref_id: "82fb5980-de77-11eb-aecf-acde48001122",
+                },
+                {
+                  value: 0.1,
+                  op_name: "chunk_matcher",
+                  description: "score for chunk",
+                  ref_id: "82fb5980-de77-11eb-aecf-acde48001122",
+                },
+                {
+                  value: 0.2,
+                  op_name: "chunk_matcher",
+                  description: "score for chunk",
+                  ref_id: "82fb5980-de77-11eb-aecf-acde48001122",
+                },
+                {
+                  value: 0.3,
+                  op_name: "chunk_matcher",
+                  description: "score for chunk",
+                  ref_id: "82fb5980-de77-11eb-aecf-acde48001122",
+                },
+                {
+                  op_name: "chunk_matcher",
+                  description: "score for chunk",
+                  ref_id: "82fb5ff2-de77-11eb-aecf-acde48001122",
+                },
+                {
+                  value: 0.1,
+                  op_name: "chunk_matcher",
+                  description: "score for chunk",
+                  ref_id: "82fb5ff2-de77-11eb-aecf-acde48001122",
+                },
+                {
+                  value: 0.2,
+                  op_name: "chunk_matcher",
+                  description: "score for chunk",
+                  ref_id: "82fb5ff2-de77-11eb-aecf-acde48001122",
+                },
+                {
+                  value: 0.3,
+                  op_name: "chunk_matcher",
+                  description: "score for chunk",
+                  ref_id: "82fb5ff2-de77-11eb-aecf-acde48001122",
+                },
+              ],
+              ref_id: "8130a498-de77-11eb-aecf-acde48001122",
+            },
+          },
+        },
+      },
+      hasOutput: false,
+    },
+    position: { x: 2800, y: 1000 },
+  },
+  {
+    id: "edge-842e8110-de77-11eb-aecf-acde48001122-1",
+    source: "842e8110-de77-11eb-aecf-acde48001122",
+    target: "1",
+    animated: true,
+    label: "match",
+    labelBgPadding: [8, 4],
+    labelBgBorderRadius: 4,
+    labelBgStyle: {
+      fill: "rgb(51, 173, 173)",
+      color: "#000000",
+      fillOpacity: 0.7,
+    },
+    style: { stroke: "#009999" },
   },
 ]

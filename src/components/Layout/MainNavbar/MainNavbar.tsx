@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux"
 import { logout } from "../../../redux/global/global.actions"
 import { User } from "../../../redux/global/global.types"
 import { AppBar, Toolbar } from "@material-ui/core"
-import LanguageIcon from "@material-ui/icons/Language"
+import { Language as LanguageIcon } from "@material-ui/icons"
 import { green, red } from "@material-ui/core/colors"
 import styled from "@emotion/styled"
 

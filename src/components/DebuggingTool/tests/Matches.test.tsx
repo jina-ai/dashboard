@@ -1,11 +1,16 @@
-import { getChunkNodes, getEdge } from "../Matches"
+import { getChartElements, getEdge } from "../Matches"
 import { theme } from "../../../theme"
-import { inputChunks, expectedNodesAndEdges } from "./Matches.testData"
+import { sampleResponse, expectedElements } from "./Matches.testData"
 
-describe("getChunkNodes", () => {
+describe("getChartElements", () => {
   const { palette } = theme
-  it("gets node and edge data for chunks", () => {
-    expect(getChunkNodes(inputChunks, palette)).toEqual(expectedNodesAndEdges)
+  it("generates a flow chart based on a document", () => {
+    const elements = getChartElements(
+      sampleResponse.data.docs[0],
+      palette,
+      undefined
+    )
+    expect(elements).toEqual(expectedElements)
   })
 })
 

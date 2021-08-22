@@ -1,3 +1,5 @@
+import { nanoid } from "nanoid"
+
 export const copyToClipboard = (str: string) => {
   const temp = document.createElement("textarea")
   temp.value = str
@@ -35,4 +37,92 @@ export const newVersionLocalStorageReset = (
       window.location.reload()
     }
   }
+}
+
+export const mimeTypeFromDataURI = (dataURI: string) =>
+  dataURI.substring(dataURI.indexOf(":") + 1, dataURI.indexOf(";"))
+
+export const fileToBase64 = (file: File): Promise<string> =>
+  new Promise((resolve, reject) => {
+    const reader = new FileReader()
+    reader.readAsDataURL(file)
+    reader.onload = () => resolve(reader.result as string)
+    reader.onerror = (error) => reject(error)
+  })
+
+export const splitByNewline = (text: string) => text.split(/\n/)
+
+export const formatDocumentRequest = async (
+  text: string,
+  uris: Array<string> | null,
+  rows: string[],
+  keys: { [key: string]: string },
+  values: { [key: string]: string }
+) => {
+  const request: any = {
+    data: [],
+  }
+
+  if (text) {
+    const lines = splitByNewline(text)
+    lines.forEach((line) => {
+      if (line) request.data.push({ text: line })
+    })
+  }
+
+  if (uris?.length) {
+    for (let uri of uris) {
+      request.data.push({ uri })
+    }
+  }
+
+  rows.forEach((row) => {
+    const key = keys[row]
+    const value = values[row]
+
+    if (!key || !value) return
+
+    let formattedValue = ""
+
+    try {
+      formattedValue = JSON.parse(value)
+    } catch (e) {
+      formattedValue = value
+    }
+
+    request[key] = formattedValue
+  })
+  return JSON.stringify(request, null, " ")
+}
+
+export const parseDocumentRequest = (request: string) => {
+  let text = ""
+  const uris: string[] = []
+  const rows: string[] = []
+  const keys: { [key: string]: string } = {}
+  const values: { [key: string]: string } = {}
+
+  try {
+    const parsed = JSON.parse(request)
+    parsed.data.forEach((item: any) => {
+      if (item.text) text += item.text + "\n"
+      if (item.uri) uris.push(item.uri)
+    })
+    Object.entries(parsed).forEach(([key, value]) => {
+      if (key === "data") return
+      const id = nanoid()
+
+      rows.push(id)
+      keys[id] = key
+      let formattedValue: any
+
+      if (typeof value === "object" && value !== null) {
+        formattedValue = JSON.stringify(value as any)
+      } else formattedValue = value
+      values[id] = formattedValue
+    })
+  } catch (e) {
+    console.log("ERROR:", e)
+  }
+  return { text, uris, keys, values, rows }
 }

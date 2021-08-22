@@ -24,7 +24,7 @@ describe("The Flow Page", () => {
     cy.visit("/#/flow")
   })
 
-  it("should not crash when disconnected and clicking the play and stop button", () => {
+  it.skip("should not crash when disconnected and clicking the play and stop button", () => {
     cy.dataName("playButton").click()
     cy.dataName("stopButton").click()
   })
