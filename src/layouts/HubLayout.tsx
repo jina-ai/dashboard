@@ -1,7 +1,6 @@
 import React, { useState } from "react"
-import { Container, Row, Col } from "shards-react"
 
-import { MainNavbar, User } from "../components/Layout/MainNavbar/MainNavbar"
+import TopNavBar from "../components/Layout/TopNavBar/TopNavBar"
 import MainFooter from "../components/Layout/MainFooter"
 import { CookiesBanner } from "../components/Common/CookiesBanner"
 import { InfoToast } from "../components/Common/InfoToast"
@@ -14,6 +13,7 @@ import { useDispatch, useSelector } from "react-redux"
 import store from "../redux"
 import { showBanner } from "../redux/global/global.actions"
 import { selectBanners, selectModal } from "../redux/global/global.selectors"
+import {User} from "../redux/global/global.types"
 
 export type HubLayoutProps = {
   children: React.ReactNode
@@ -28,14 +28,12 @@ export const HubLayout = (props: HubLayoutProps) => {
   const loggerEnabled = logger.isEnabled()
   const user: User = {
     displayName: "dummyUser",
-    emails: [{ value: "dummyUser@dummy.com" }],
+    emails: ["dummyUser@dummy.com"],
     id: "idDummy",
     nodeId: "idDummy_node",
-    photos: [{ value: "dummyPhoto" }],
     profileUrl: "dummyUrl",
     provider: "dummyProvider",
     username: "dummyUsername",
-    _json: "dummyJSON",
     _raw: "dummyRaw",
   }
   const [acceptedCookies, setAcceptedCookies] = useState<boolean>(
@@ -77,10 +75,10 @@ export const HubLayout = (props: HubLayoutProps) => {
 
   const { children, usesAuth, usesConnection, navigateButton } = props
   return (
-    <Container>
-      <Row>
-        <Col className="main-content col" tag="main">
-          <MainNavbar
+    <div>
+      <div>
+        <div className="main-content col">
+          <TopNavBar
             usesAuth={usesAuth}
             usesConnection={usesConnection}
             logOut={logOut}
@@ -100,13 +98,13 @@ export const HubLayout = (props: HubLayoutProps) => {
             disableLogger={disableLogger}
             exportLogs={exportLogs}
           />
-        </Col>
-      </Row>
+        </div>
+      </div>
       <WriteReview
         open={modal === "review"}
         closeModal={closeModal}
         submitReview={submitReview}
       />
-    </Container>
+    </div>
   )
 }

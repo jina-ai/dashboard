@@ -4,15 +4,6 @@ import ChartElement, {
   ChartOptions,
   ChartData,
 } from "chart.js"
-import {
-  Card,
-  CardHeader,
-  CardBody,
-  Row,
-  Col,
-  ButtonGroup,
-  Button,
-} from "shards-react"
 import { formatBytes } from "../../helpers"
 import { useTheme } from "@emotion/react"
 
@@ -161,37 +152,37 @@ function BarChartCard(props: Props) {
   }, [chartData, chartInstance, currentTab, getChartData, getChartOptions])
 
   return (
-    <Card small className="h-100 mb-4">
-      <CardHeader className="border-bottom">
+    <div className="h-100 mb-4">
+      <div className="border-bottom">
         <h6 className="m-0">Network Load</h6>
-      </CardHeader>
+      </div>
 
-      <CardBody className="pt-0">
-        <Row className="border-bottom py-2 bg-light">
-          <Col sm="6" className="col d-flex mb-2 mb-sm-0">
-            <ButtonGroup>
-              <Button
+      <div className="pt-0">
+        <div className="border-bottom py-2 bg-light">
+          <div className="col d-flex mb-2 mb-sm-0">
+            <div>
+              <div
                 theme="white"
                 active={currentTab === "messages"}
                 onClick={() => setCurrentTab("messages")}
               >
                 Messages
-              </Button>
-              <Button
+              </div>
+              <div
                 theme="white"
                 active={currentTab === "bytes"}
                 onClick={() => setCurrentTab("bytes")}
               >
                 Bytes
-              </Button>
-            </ButtonGroup>
-          </Col>
-        </Row>
+              </div>
+            </div>
+          </div>
+        </div>
         <div style={{ position: "relative", height: 300 }}>
           <canvas ref={canvasRef} />
         </div>
-      </CardBody>
-    </Card>
+      </div>
+    </div>
   )
 }
 

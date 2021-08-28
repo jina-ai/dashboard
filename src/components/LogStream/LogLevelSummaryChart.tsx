@@ -1,5 +1,4 @@
 import React from "react"
-import { Card, Row, Col } from "react-bootstrap"
 import BarChart from "./BarChartBase"
 import { MultiFilterSelect } from "../Common/MultiFilterSelect"
 import { LogLevelSummaryChartData } from "./types"
@@ -34,11 +33,11 @@ function LogLevelSummaryChart({
   timeLabels,
 }: Props) {
   return (
-    <Card className="h-100">
-      <Card.Header className="p-2 px-3">
-        <Row>
-          <Col data-name="logOccurenceTitle">Log Occurences by Level</Col>
-          <Col className="text-right" data-name="logOccurenceDurationSelect">
+    <div className="h-100">
+      <div className="p-2 px-3">
+        <div>
+          <div data-name="logOccurenceTitle">Log Occurences by Level</div>
+          <div className="text-right" data-name="logOccurenceDurationSelect">
             <MultiFilterSelect
               clearAfter
               options={Object.values(timeOptions)}
@@ -52,10 +51,10 @@ function LogLevelSummaryChart({
               }
               isSearchable={false}
             />
-          </Col>
-        </Row>
-      </Card.Header>
-      <Card.Body className="d-none d-md-block p-0 pb-2 px-3">
+          </div>
+        </div>
+      </div>
+      <div className="d-none d-md-block p-0 pb-2 px-3">
         <BarChart
           timeLabels={timeLabels}
           data={data}
@@ -64,8 +63,8 @@ function LogLevelSummaryChart({
           width={DEFAULT_WIDTH}
           onClick={showLog}
         />
-      </Card.Body>
-      <Card.Body className="d-md-none pb-2">
+      </div>
+      <div className="d-md-none pb-2">
         <BarChart
           timeLabels={timeLabels}
           data={data}
@@ -74,8 +73,8 @@ function LogLevelSummaryChart({
           width={DEFAULT_WIDTH_SMALL}
           onClick={showLog}
         />
-      </Card.Body>
-    </Card>
+      </div>
+    </div>
   )
 }
 

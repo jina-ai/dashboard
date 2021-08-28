@@ -1,15 +1,14 @@
 import React from "react";
-import { Container, Row, Col } from "shards-react";
 import { HelpCard } from "../components/Common/HelpCard";
 import { PageTitle } from "../components/Common/PageTitle";
 
 const NotFound = () => (
-  <Container fluid className="main-content-container px-4" data-name="helpPage">
-    <Row noGutters className="page-header mb-4">
+  <div className="main-content-container px-4" data-name="helpPage">
+    <div className="page-header mb-4">
       <PageTitle title="Resources" className="text-sm-left mb-3" />
-    </Row>
-    <Row>
-      <Col md="4" lg="3" className="mb-4">
+    </div>
+    <div>
+      <div className="mb-4">
         <HelpCard
           title="Jina 101"
           content="Understanding all key concepts of Jina in 3 minutes!"
@@ -18,8 +17,8 @@ const NotFound = () => (
           theme="warning"
           dataName="jina-101-card"
         />
-      </Col>
-      <Col md="4" lg="3" className="mb-4">
+      </div>
+      <div className="mb-4">
         <HelpCard
           title="Jina Docs"
           content="The best way to learn Jina in depth."
@@ -28,8 +27,8 @@ const NotFound = () => (
           theme="primary"
           dataName="jina-docs-card"
         />
-      </Col>
-      <Col md="4" lg="3" className="mb-4">
+      </div>
+      <div className="mb-4">
         <HelpCard
           title='Jina "Hello World"'
           content="A simple demo of image neural search for Fashion-MNIST."
@@ -38,8 +37,8 @@ const NotFound = () => (
           theme="error"
           dataName="jina-hello-world-card"
         />
-      </Col>
-      <Col md="4" lg="3" className="mb-4">
+      </div>
+      <div className="mb-4">
         <HelpCard
           title={
             <span>
@@ -52,8 +51,8 @@ const NotFound = () => (
           theme="info"
           dataName="jina-github-card"
         />
-      </Col>
-      <Col md="4" lg="3" className="mb-4">
+      </div>
+      <div className="mb-4">
         <HelpCard
           title="We are hiring!"
           content="Join us and build the next neural search eco system!"
@@ -62,9 +61,9 @@ const NotFound = () => (
           theme="linkedin"
           dataName="jina-linkedin-card"
         />
-      </Col>
-    </Row>
-  </Container>
+      </div>
+    </div>
+  </div>
 );
 
 export default NotFound;

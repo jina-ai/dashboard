@@ -1,5 +1,4 @@
 import React, { useCallback, useState } from "react"
-import { Card, Container, Row } from "shards-react"
 import { PageTitle } from "../components/Common/PageTitle"
 import WorkspaceSelection from "../components/FlowChart/WorkspaceSelection"
 import {
@@ -87,18 +86,18 @@ export default function FlowView() {
   if (!flowChart) return <>No Flow</>
 
   return (
-    <Container fluid className="main-content-container px-0">
+    <div className="main-content-container px-0">
       <div className="px-4">
         <a href="/#" id="download-link" style={{ display: "none" }}>
           download
         </a>
-        <Row noGutters className="page-header mb-4">
+        <div className="page-header mb-4">
           <PageTitle title="Flow Design" className="text-sm-left mb-3" />
-        </Row>
+        </div>
 
         <FlowViewContainer>
           <WorkspaceSelection />
-          <Card className="chart-section-container mr-md-4 mb-4">
+          <div className="chart-section-container mr-md-4 mb-4">
             <FlowSelection />
             <CommandBar
               startFlow={() => dispatch(startFlow(selectedFlowId))}
@@ -108,7 +107,7 @@ export default function FlowView() {
               exportImage={exportImage}
             />
             <FlowChart elements={flowChart.elements} />
-          </Card>
+          </div>
 
           <Sidebar
             arguments={flowArguments.pod}
@@ -119,6 +118,6 @@ export default function FlowView() {
           />
         </FlowViewContainer>
       </div>
-    </Container>
+    </div>
   )
 }
