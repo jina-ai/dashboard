@@ -16,7 +16,7 @@ const SideNavBarContainer = styled.div`
 `
 
 const SideNavBar = ({ sidebarNavItems: items, toggleSidebar }: Props) => (
-  <SideNavBarContainer>
+  <SideNavBarContainer className="w-2/12">
     <NavLogo />
     {typeof items !== "undefined" && items.length && (
       <div>

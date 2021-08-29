@@ -3,12 +3,10 @@ import BarChart from "./BarChartBase"
 import { MultiFilterSelect } from "../Common/MultiFilterSelect"
 import { LogLevelSummaryChartData } from "./types"
 import { TimePreference } from "../../views/LogsView"
+import Card from "../Common/Card"
 
 const DEFAULT_HEIGHT = 10
 const DEFAULT_WIDTH = 70
-
-const DEFAULT_HEIGHT_SMALL = 20
-const DEFAULT_WIDTH_SMALL = 50
 
 type Props = {
   data: {
@@ -33,7 +31,8 @@ function LogLevelSummaryChart({
   timeLabels,
 }: Props) {
   return (
-    <div className="h-100">
+    <Card className="h-full flex-col mr-4">
+      <>
       <div className="p-2 px-3">
         <div>
           <div data-name="logOccurenceTitle">Log Occurences by Level</div>
@@ -64,17 +63,8 @@ function LogLevelSummaryChart({
           onClick={showLog}
         />
       </div>
-      <div className="d-md-none pb-2">
-        <BarChart
-          timeLabels={timeLabels}
-          data={data}
-          numTicks={numTicks}
-          height={DEFAULT_HEIGHT_SMALL}
-          width={DEFAULT_WIDTH_SMALL}
-          onClick={showLog}
-        />
-      </div>
-    </div>
+      </>
+    </Card>
   )
 }
 

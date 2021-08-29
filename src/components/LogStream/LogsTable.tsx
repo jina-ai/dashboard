@@ -23,6 +23,7 @@ import {
 } from "../../helpers"
 import { TimePreference } from "../../views/LogsView"
 import logger from "../../logger"
+import Card from "../Common/Card"
 
 const ROW_SIZE = 30
 const DEFAULT_VIEW = "table"
@@ -323,9 +324,9 @@ function LogsTable({ data, showLogDetails }: Props) {
   const secondCol = 300
 
   return (
-    <div className="mb-4">
+    <Card className="mb-4 flex-col">
       <div className="p-0">
-        <div className="p-3">
+        <div className="p-3 flex">
           <div data-name="logStreamFilters">
             <MultiFilterSelect
               clearAfter
@@ -411,7 +412,7 @@ function LogsTable({ data, showLogDetails }: Props) {
           showLogDetails={showLogDetails}
         />
       )}
-    </div>
+    </Card>
   )
 }
 

@@ -97,7 +97,7 @@ export default function FlowView() {
 
         <FlowViewContainer>
           <WorkspaceSelection />
-          <div className="chart-section-container mr-md-4 mb-4">
+          <div className="chart-section-container mr-md-4 mb-4 relative">
             <FlowSelection />
             <CommandBar
               startFlow={() => dispatch(startFlow(selectedFlowId))}

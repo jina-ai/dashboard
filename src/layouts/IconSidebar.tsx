@@ -114,13 +114,13 @@ export const IconSidebarLayout = (props: IconSideBarLayoutProps) => {
   const { children, usesAuth, usesConnection, navigateButton } = props
   return (
     <div className="icon-sidebar-nav">
-      <div>
+      <div className="flex">
         <MainSidebar
           sidebarNavItems={sidebarNavItems}
           menuVisible={menuVisible}
           toggleSidebar={_toggleSidebar}
         />
-        <div className="main-content col">
+        <div className="w-10/12">
           <TopNavBar
             user={user}
             usesAuth={usesAuth}

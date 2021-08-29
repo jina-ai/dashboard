@@ -116,11 +116,11 @@ function LogsView() {
   return (
     <div className="main-content-container px-0">
       <div className="px-4">
-        <div noGutters className="page-header mb-4">
+        <div className="page-header mb-4">
           <PageTitle title="Log Stream" className="text-sm-left mb-3" />
         </div>
-        <div>
-          <div className="mb-4">
+        <div className="flex">
+          <div className="mb-4 w-10/12">
             <LogLevelSummaryChart
               data={logLevelCharts}
               showLog={showLog}
@@ -130,7 +130,7 @@ function LogsView() {
               timeLabels={timeSelection.chartLabels}
             />
           </div>
-          <div className="mb-4">
+          <div className="mb-4 w-2/12">
             <LogLevelPieChart data={logLevels} />
           </div>
         </div>

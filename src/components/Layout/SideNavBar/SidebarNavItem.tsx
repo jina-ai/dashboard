@@ -21,7 +21,7 @@ const NavLinkWithIcon = styled(NavLink)<NavLinkWithIconProps>`
     const {palette} = props.theme
     return props.selected ?
       `color: ${palette.primary.main};
-      background-color: ${palette.primary.light};`
+      background-color: #00919119;`
     : `color: ${palette.text.secondary};`}
   }
 `
