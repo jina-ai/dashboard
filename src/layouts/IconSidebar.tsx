@@ -114,13 +114,13 @@ export const IconSidebarLayout = (props: IconSideBarLayoutProps) => {
   const { children, usesAuth, usesConnection, navigateButton } = props
   return (
     <div className="icon-sidebar-nav">
-      <div className="flex">
+      <div className="flex h-full">
         <MainSidebar
           sidebarNavItems={sidebarNavItems}
           menuVisible={menuVisible}
           toggleSidebar={_toggleSidebar}
         />
-        <div className="w-10/12">
+        <div className="w-10/12 ">
           <TopNavBar
             user={user}
             usesAuth={usesAuth}
@@ -132,7 +132,7 @@ export const IconSidebarLayout = (props: IconSideBarLayoutProps) => {
             navigateButton={navigateButton}
           />
           {banners.map((banner, index) => (
-            <InfoToast data={banner} index={index} />
+            <InfoToast data={banner} index={index} key={index} />
           ))}
           {usesConnection && !loading && !connected && (
             <ConnectionToast reconnect={reconnect} />

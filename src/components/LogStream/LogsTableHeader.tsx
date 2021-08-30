@@ -18,9 +18,9 @@ const LogsTableHeader = ({
       }`}
       css={{ maxHeight: 84 }}
     >
-      <div>
+      <div className="flex">
         <div
-          className="log-prefix text-muted px-0 d-flex flex-row"
+          className="log-prefix text-muted px-0 flex flex-row"
           css={{ maxWidth: firstCol }}
         >
           <div className="text-bold mr-2">#</div>
@@ -39,7 +39,6 @@ const LogsTableHeader = ({
             display: "block",
             overflow: "hidden",
             textOverflow: "ellipsis",
-            // width: "1",
             whiteSpace: "nowrap",
             paddingRight: 0,
             marginRight: 0,

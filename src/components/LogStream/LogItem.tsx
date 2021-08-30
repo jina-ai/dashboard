@@ -33,9 +33,9 @@ const LogItem = memo(
         style={style}
         onClick={() => showLogDetails(logData)}
       >
-        <div>
+        <div className="flex">
           <div
-            className="log-prefix text-muted px-0 d-flex flex-row"
+            className="log-prefix text-muted px-0 flex flex-row"
             css={{ maxWidth: firstCol }}
           >
             <div className="text-bold mr-2">{idx}</div>
