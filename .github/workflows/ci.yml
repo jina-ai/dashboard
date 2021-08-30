@@ -35,7 +35,7 @@ jobs:
         with:
           start: npm run dev
           wait-on: 'http://localhost:3000'
-          command-prefix: 'percy exec -- npx'
+          command-prefix: 'npm run cy:run'
       # - name: Integration test Coverage
       #   run: |
       #     npx nyc report --reporter=text-summary
