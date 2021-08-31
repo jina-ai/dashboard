@@ -152,14 +152,14 @@ function BarChartCard(props: Props) {
   }, [chartData, chartInstance, currentTab, getChartData, getChartOptions])
 
   return (
-    <div className="h-100 mb-4">
-      <div className="border-bottom">
+    <div className="mb-4">
+      <div>
         <h6 className="m-0">Network Load</h6>
       </div>
 
       <div className="pt-0">
-        <div className="border-bottom py-2 bg-light">
-          <div className="col d-flex mb-2 mb-sm-0">
+        <div className="py-2">
+          <div className="mb-2">
             <div>
               <div
                 theme="white"
