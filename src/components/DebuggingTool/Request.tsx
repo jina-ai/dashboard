@@ -52,14 +52,22 @@ function TabPanel({ children, value, index }: TabPanelProps) {
 
 type Props = {
   requestBody: string
+  defaultRequestBody: string
   setRequestBody: (body: string) => void
 }
 
-export const DocumentRequest = ({ requestBody, setRequestBody }: Props) => {
+export const DocumentRequest = ({
+  requestBody,
+  defaultRequestBody,
+  setRequestBody,
+}: Props) => {
   const [textDocuments, setTextDocuments] = useState("")
   const [uris, setURIs] = useState<string[]>([])
   const [showCustom, setShowCustom] = useState(false)
   const [rows, setRows] = useState<string[]>([])
+  const [placeholders, setPlaceholders] = useState<{ [key: string]: string }>(
+    {}
+  )
   const [keys, setKeys] = useState<{ [key: string]: string }>({})
   const [values, setValues] = useState<{ [key: string]: string }>({})
 
@@ -72,8 +80,10 @@ export const DocumentRequest = ({ requestBody, setRequestBody }: Props) => {
       values: initialValues,
       text: initialText,
       uris: initialURIs,
-    } = parseDocumentRequest(requestBody)
+      placeholders: initialPlaceholders,
+    } = parseDocumentRequest(requestBody, defaultRequestBody)
 
+    setPlaceholders(initialPlaceholders)
     setTextDocuments(initialText)
     setRows(initialRows.length ? initialRows : [nanoid()])
     setValues(initialValues)
@@ -115,6 +125,8 @@ export const DocumentRequest = ({ requestBody, setRequestBody }: Props) => {
   }
 
   const removeRow = (rowId: string) => {
+    if (placeholders[rowId]) return setValue(rowId, "")
+
     const index = rows.indexOf(rowId)
     setRows((prev) => {
       prev.splice(index, 1)
@@ -122,16 +134,16 @@ export const DocumentRequest = ({ requestBody, setRequestBody }: Props) => {
     })
   }
 
-  const setKey = (id: string, key: string) => {
+  const setKey = (rowId: string, key: string) => {
     setKeys((prev) => {
-      prev[id] = key
+      prev[rowId] = key
       return { ...prev }
     })
   }
 
-  const setValue = (id: string, value: string) => {
+  const setValue = (rowId: string, value: string) => {
     setValues((prev) => {
-      prev[id] = value
+      prev[rowId] = value
       return { ...prev }
     })
   }
@@ -193,7 +205,7 @@ export const DocumentRequest = ({ requestBody, setRequestBody }: Props) => {
         <Grid item xs={6}>
           <Box textAlign="right" onClick={toggleShowCustom}>
             <Button size="large">
-              {showCustom ? "Hide " : "Show "}Custom Fields
+              {showCustom ? "Hide " : "Show "}Additional Fields
               {numCustomFields ? ` (${numCustomFields})` : ""}
             </Button>
           </Box>
@@ -207,9 +219,9 @@ export const DocumentRequest = ({ requestBody, setRequestBody }: Props) => {
               <Grid item xs={4}>
                 <TextInput
                   label="Key"
-                  placeholder="Text Query"
                   variant="outlined"
                   type="custom-input"
+                  disabled={typeof placeholders[id] === "string"}
                   value={keys[id] || ""}
                   onChange={(e) => setKey(id, e.target.value)}
                 />
@@ -217,17 +229,24 @@ export const DocumentRequest = ({ requestBody, setRequestBody }: Props) => {
               <Grid item xs={7}>
                 <TextInput
                   label="Value"
-                  placeholder="Text Query"
                   variant="outlined"
                   type="custom-input"
                   value={values[id] || ""}
+                  placeholder={placeholders[id] || ""}
                   onChange={(e) => setValue(id, e.target.value)}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
                 />
               </Grid>
               <Grid item xs={1}>
-                <Button size="large" onClick={() => removeRow(id)}>
-                  <Close />
-                </Button>
+                {!placeholders[id] || values[id] ? (
+                  <Button size="large" onClick={() => removeRow(id)}>
+                    <Close />
+                  </Button>
+                ) : (
+                  <></>
+                )}
               </Grid>
             </Grid>
           ))}
@@ -257,9 +276,17 @@ const DocumentCard = styled(Card)`
   textarea:focus {
     border: none;
   }
+
+  input[disabled] {
+    background-color: transparent;
+  }
 `
 
-export const DocumentRequestCard = ({ requestBody, setRequestBody }: Props) => {
+export const DocumentRequestCard = ({
+  requestBody,
+  defaultRequestBody,
+  setRequestBody,
+}: Props) => {
   let numDocuments = 0
 
   try {
@@ -275,6 +302,7 @@ export const DocumentRequestCard = ({ requestBody, setRequestBody }: Props) => {
       />
       <CardContent>
         <DocumentRequest
+          defaultRequestBody={defaultRequestBody}
           requestBody={requestBody}
           setRequestBody={setRequestBody}
         />
@@ -283,7 +311,11 @@ export const DocumentRequestCard = ({ requestBody, setRequestBody }: Props) => {
   )
 }
 
-const Request = ({ requestBody, setRequestBody }: Props) => {
+const Request = ({
+  requestBody,
+  defaultRequestBody,
+  setRequestBody,
+}: Props) => {
   const [tab, setTab] = useState(0)
 
   return (
@@ -310,6 +342,7 @@ const Request = ({ requestBody, setRequestBody }: Props) => {
           <Grid item xs={10}>
             <TabPanel value={tab} index={0}>
               <DocumentRequest
+                defaultRequestBody={defaultRequestBody}
                 requestBody={requestBody}
                 setRequestBody={setRequestBody}
               />

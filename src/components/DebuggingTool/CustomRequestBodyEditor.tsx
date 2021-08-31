@@ -11,9 +11,9 @@ type Props = {
 
 const CustomRequestBodyEditor = (props: Props) => {
   const [currentTab, setCurrentTab] = useState("raw")
-  const [value, setValue] = useState(props.value || props.defaultValue)
+  const [value, setValue] = useState(props.value)
 
-  const { errors, getComponent, onChange } = props
+  const { errors, getComponent, onChange, defaultValue } = props
 
   let isInvalid = errors.size > 0 ? true : false
   const TextArea = getComponent("TextArea")
@@ -50,11 +50,15 @@ const CustomRequestBodyEditor = (props: Props) => {
         <TextArea
           className={`body-param__text ${isInvalid ? "invalid" : ""}`}
           title={errors.size ? errors.join(", ") : ""}
-          value={value}
+          value={value || defaultValue}
           onChange={(e: any) => onDomChange(e.target.value)}
         />
       ) : (
-        <DocumentRequestCard requestBody={value} setRequestBody={onDomChange} />
+        <DocumentRequestCard
+          requestBody={value}
+          defaultRequestBody={defaultValue}
+          setRequestBody={onDomChange}
+        />
       )}
     </div>
   )

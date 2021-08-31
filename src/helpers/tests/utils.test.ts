@@ -151,10 +151,11 @@ describe(parseDocumentRequest, () => {
       uris: [],
       keys: {},
       values: {},
+      placeholders: {},
       rows: [],
     }
 
-    const result = parseDocumentRequest(JSON.stringify(input))
+    const result = parseDocumentRequest(JSON.stringify(input), "{}")
 
     expect(result).toEqual(expected)
   })
@@ -167,10 +168,11 @@ describe(parseDocumentRequest, () => {
       uris: ["Hello", "World"],
       keys: {},
       values: {},
+      placeholders: {},
       rows: [],
     }
 
-    const result = parseDocumentRequest(JSON.stringify(input))
+    const result = parseDocumentRequest(JSON.stringify(input), "{}")
 
     expect(result).toEqual(expected)
   })
@@ -178,12 +180,30 @@ describe(parseDocumentRequest, () => {
   it("should extract custom fields", () => {
     const input = { data: [], custom: "field" }
 
-    const { rows, keys, values } = parseDocumentRequest(JSON.stringify(input))
+    const { rows, keys, values } = parseDocumentRequest(
+      JSON.stringify(input),
+      "{}"
+    )
 
     expect(rows.length).toEqual(1)
     const id = rows[0]
     expect(keys[id]).toEqual("custom")
     expect(values[id]).toEqual("field")
+  })
+
+  it("should add example fields as custom fields with placeholders", () => {
+    const input = { data: [] }
+
+    const { rows, keys, values, placeholders } = parseDocumentRequest(
+      JSON.stringify(input),
+      JSON.stringify({ custom: "field" })
+    )
+
+    expect(rows.length).toEqual(1)
+    const id = rows[0]
+    expect(keys[id]).toEqual("custom")
+    expect(values[id]).toEqual(undefined)
+    expect(placeholders[id]).toEqual("field")
   })
 })
 

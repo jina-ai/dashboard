@@ -95,25 +95,60 @@ export const formatDocumentRequest = async (
   return JSON.stringify(request, null, " ")
 }
 
-export const parseDocumentRequest = (request: string) => {
+export const parseDocumentRequest = (
+  request: string,
+  exampleRequest: string
+) => {
   let text = ""
   const uris: string[] = []
   const rows: string[] = []
   const keys: { [key: string]: string } = {}
   const values: { [key: string]: string } = {}
+  const placeholders: { [key: string]: string } = {}
 
   try {
     const parsed = JSON.parse(request)
-    parsed.data.forEach((item: any) => {
-      if (item.text) text += item.text + "\n"
-      if (item.uri) uris.push(item.uri)
-    })
-    Object.entries(parsed).forEach(([key, value]) => {
+    const parsedExample = JSON.parse(exampleRequest)
+
+    if (parsed?.data)
+      parsed.data.forEach((item: any) => {
+        if (item.text) text += item.text + "\n"
+        if (item.uri) uris.push(item.uri)
+      })
+
+    Object.entries(parsedExample).forEach(([key, value]) => {
       if (key === "data") return
       const id = nanoid()
 
       rows.push(id)
       keys[id] = key
+
+      let formattedValue: any
+
+      if (typeof value === "object" && value !== null) {
+        formattedValue = JSON.stringify(value as any)
+      } else formattedValue = value
+
+      placeholders[id] = formattedValue
+    })
+
+    Object.entries(parsed).forEach(([key, value]) => {
+      if (key === "data") return
+
+      let id: any
+
+      Object.entries(keys).forEach(([k, v]) => {
+        if (v === key) {
+          id = k
+        }
+      })
+
+      if (!id) {
+        id = nanoid()
+        rows.push(id)
+        keys[id] = key
+      }
+
       let formattedValue: any
 
       if (typeof value === "object" && value !== null) {
@@ -124,5 +159,5 @@ export const parseDocumentRequest = (request: string) => {
   } catch (e) {
     console.log("ERROR:", e)
   }
-  return { text, uris, keys, values, rows }
+  return { text, uris, keys, values, rows, placeholders }
 }
