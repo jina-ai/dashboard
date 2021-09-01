@@ -1,7 +1,7 @@
 // @ts-nocheck
 import * as YAML from "yaml"
 import { getInitialLogLevel } from "../redux/logStream/logStream.constants"
-import _ from "lodash"
+import { cloneDeep } from "lodash"
 import { Level, LogLevelOccurrences } from "../redux/logStream/logStream.types"
 import {
   CustomDataObject,
@@ -146,7 +146,7 @@ export function getLogLevelCharts(
   const currentInterval = Math.ceil(currentDate / 1000 / step) * step
   const now = Math.floor(currentDate / 1000)
   for (let i = currentInterval - numSeconds; i < currentInterval; i += step) {
-    let item = _.cloneDeep(emptyItem)
+    let item = cloneDeep(emptyItem)
     for (let j = i; j < i + step; ++j) {
       const occurrence = logLevelOccurrences[j]
       if (!occurrence) continue

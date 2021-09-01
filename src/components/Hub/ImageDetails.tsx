@@ -1,6 +1,5 @@
 import React from "react"
-import Card from "@material-ui/core/Card"
-import CardContent from "@material-ui/core/CardContent"
+import { Card, CardContent } from "@material-ui/core"
 import { HubImage } from "../../redux/hub/hub.types"
 import styled from "@emotion/styled"
 import { useTheme } from "@emotion/react"

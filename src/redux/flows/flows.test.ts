@@ -33,7 +33,7 @@ import {
   selectSelectedFlow,
   selectSelectedFlowId,
 } from "./flows.selectors"
-import _ from "lodash"
+import { pickBy } from "lodash"
 
 function getFlowFromStorage(id: string): Flow | undefined {
   const userFlowsString = localStorage.getItem("userFlows")
@@ -557,7 +557,7 @@ describe("flow selectors", () => {
   it("should select example flows key entry pairs", () => {
     const { selectedWorkspaceId } = testFlowState
 
-    const workspaceFlows = _.pickBy(
+    const workspaceFlows = pickBy(
       testFlowState.flows,
       (flow) => flow.workspaceId === selectedWorkspaceId
     )

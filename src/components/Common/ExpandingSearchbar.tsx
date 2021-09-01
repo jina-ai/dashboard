@@ -1,8 +1,7 @@
 import React from "react"
 import styled from "@emotion/styled"
 import { IconButton, InputBase } from "@material-ui/core"
-import SearchIcon from "@material-ui/icons/Search"
-import CancelIcon from "@material-ui/icons/Cancel"
+import { Search as SearchIcon, Cancel as CancelIcon } from "@material-ui/icons"
 
 type Props = {
   value: string | number

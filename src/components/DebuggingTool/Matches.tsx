@@ -1,53 +1,47 @@
-import React from "react"
-import ReactFlow, {
-  Background,
-  BackgroundVariant,
-  Controls,
-  MiniMap,
-} from "react-flow-renderer"
-import { useTheme } from "@emotion/react"
-import { InputNode, ChunkNode, MatchNode } from "./FlowChartNodes"
-import { Score } from "./Scores"
+import React, { useEffect, useState } from "react"
+import ReactFlow, { Controls } from "react-flow-renderer"
+import { useTheme, Theme } from "@emotion/react"
+import { ChartNode } from "./FlowChartNodes"
+import { Doc, Chunk, Match, Score } from "../../views/DebuggingTool"
 
 const nodeTypes = {
-  inputDocument: InputNode,
-  chunk: ChunkNode,
-  match: MatchNode,
+  doc: ChartNode,
+  chunk: ChartNode,
+  match: ChartNode,
 }
-export type Match = {
-  id: string
-  mime_type: string
-  text: string
-  granularity: number
-  score: Score
-  op_name?: string
-  description?: string
-  ref_id?: string
-  adjacency: number
-  uri?: string
-}
-export type Chunk = {
-  id: string
-  matches: Match[]
-  mime_type: string
-  text: string
-  granularity: number
-  parent_id: string
-  content_hash: string
-  uri?: string
-}
-export type Doc = {
-  id: string
-  text: string
-  tags: any
-  chunks: Chunk[]
-  matches: Match[]
-  mime_type?: string
-  uri?: string
-}
+
+const ITEM_HEIGHT = 500
+
+const ITEM_WIDTH = 500
+const HORIZONTAL_SPACE = 200
+
 type MatchesProps = {
   doc: Doc
-  onMatchSelection: (score: Score) => void
+  height: number
+  onScoreClick: (score: Score) => void
+}
+
+const calculateItemHeight = (data: any) => {
+  let height = 50
+  if (data.uri) height += 5 * 60
+  if (data.text) height += 2 * 40
+  const numValidKeys = Object.values(data).reduce((acc: number, curr) => {
+    if (
+      curr !== 0 &&
+      curr !== "unset" &&
+      curr !== null &&
+      curr !== "" &&
+      curr !== {}
+    )
+      return acc + 1
+    return acc
+  }, 0)
+  return (height += numValidKeys * 50)
+}
+
+const calculateMaxItemHeight = (data: any) => {
+  const heights = Object.values(data || {}).map((v) => calculateItemHeight(v))
+  return Math.max(...heights)
 }
 
 export const getEdge = (
@@ -55,7 +49,7 @@ export const getEdge = (
   target: string,
   animated: boolean,
   label: string,
-  palette: any
+  palette: Theme["palette"]
 ) => {
   return {
     id: `edge-${source}-${target}`,
@@ -77,8 +71,10 @@ export const getEdge = (
 export const getMatchNodes = (
   matches: Match[],
   parentId: string,
-  palette: any,
-  yOffset = 0
+  palette: Theme["palette"],
+  startingIndex: number,
+  onScoreClick: (score: Score) => void,
+  name = "Match"
 ) => {
   return matches.reduce((acc, match, index) => {
     return [
@@ -86,58 +82,127 @@ export const getMatchNodes = (
       {
         id: match.id,
         type: "match",
-        data: match,
-        position: { x: 450 * index, y: 200 * (1 + yOffset) + 200 },
+        data: {
+          name,
+          item: match,
+          onScoreClick,
+          hasOutput: false,
+        },
+        position: {
+          x: (ITEM_WIDTH + HORIZONTAL_SPACE) * startingIndex,
+          y: index * ITEM_HEIGHT,
+        },
       },
       getEdge(match.id, parentId, true, "match", palette),
     ]
   }, [] as any)
 }
 
-export const getChunkNodes = (chunks: Chunk[], palette: any) => {
-  const chunkNodesAndEdges = chunks.reduce((acc, chunk, index) => {
+export const getChunkNodes = (
+  chunks: Chunk[],
+  palette: Theme["palette"],
+  startingIndex: number,
+  onScoreClick: (score: Score) => void,
+  name = "Chunk"
+) => {
+  const tallestChunk = calculateMaxItemHeight(chunks)
+
+  return chunks.reduce((acc, chunk, index) => {
     return [
       ...acc,
       {
         id: chunk.id,
         type: "chunk",
-        data: chunk,
-        position: { x: 450 * index + 50, y: 200 },
+        data: {
+          name,
+          item: chunk,
+          onScoreClick,
+        },
+        position: {
+          x: (ITEM_WIDTH + HORIZONTAL_SPACE) * startingIndex,
+          y: index * tallestChunk,
+        },
       },
       getEdge(chunk.id, "1", false, "chunk", palette),
-      ...getMatchNodes(chunk.matches, chunk.id, palette, index + 1),
+      ...(chunk.matches
+        ? getMatchNodes(
+            chunk.matches,
+            chunk.id,
+            palette,
+            startingIndex + index + 1,
+            onScoreClick,
+            "Chunk Match"
+          )
+        : []),
     ]
   }, [] as any)
-  return chunkNodesAndEdges
 }
 
-const Matches = ({ doc, onMatchSelection }: MatchesProps) => {
-  const onElementClick = (event: any, element: any) => {
-    if (element.data.score) {
-      onMatchSelection(element.data.score)
-    }
+export const getChartElements = (
+  doc: MatchesProps["doc"],
+  palette: Theme["palette"],
+  onScoreClick: MatchesProps["onScoreClick"]
+) => {
+  let docMatchesIndex = 1
+
+  if (doc.chunks?.length) docMatchesIndex++
+  doc?.chunks?.forEach((chunk) => {
+    if (chunk?.matches) docMatchesIndex++
+  })
+
+  let yOffset = 0
+
+  if (doc?.chunks?.length) {
+    const tallestChunk = calculateMaxItemHeight(doc.chunks)
+    const docHeight = calculateItemHeight(doc)
+    yOffset = (tallestChunk * doc.chunks.length) / 2 - docHeight / 2
   }
-  const { palette } = useTheme()
+
   const elements = [
     {
       id: "1",
-      type: "inputDocument",
-      data: doc,
-      position: { x: 50, y: 25 },
+      type: "doc",
+      data: {
+        name: "Document",
+        item: doc,
+        onScoreClick,
+        hasInput: false,
+      },
+      position: { x: 0, y: yOffset },
     },
-    ...getChunkNodes(doc.chunks, palette),
-    ...getMatchNodes(doc.matches, "1", palette),
+    ...(doc.chunks ? getChunkNodes(doc.chunks, palette, 1, onScoreClick) : []),
+    ...(doc.matches
+      ? getMatchNodes(
+          doc.matches,
+          "1",
+          palette,
+          docMatchesIndex,
+          onScoreClick,
+          "Document Match"
+        )
+      : []),
   ]
+  return elements
+}
+
+const Matches = ({ doc, onScoreClick, height }: MatchesProps) => {
+  const { palette } = useTheme()
+  const [elements, setElements] = useState<any[]>([])
+
+  useEffect(() => {
+    const newElements = getChartElements(doc, palette, onScoreClick)
+    setElements(newElements)
+  }, [doc, palette, onScoreClick])
 
   return (
-    <div style={{ height: 800 }}>
+    <div style={{ height, background: "white" }}>
       <ReactFlow
         elements={elements}
         nodeTypes={nodeTypes}
-        onElementClick={onElementClick}
+        minZoom={0.2}
+        defaultZoom={0.25}
+        defaultPosition={[10, 10]}
       >
-        <Background variant={BackgroundVariant.Dots} gap={20} size={0.8} />
-        <MiniMap />
         <Controls />
       </ReactFlow>
     </div>

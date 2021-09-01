@@ -1,4 +1,3 @@
-import IconSidebar from "./IconSidebar";
-import HubLayout from "./HubLayout";
-
-export { IconSidebar,HubLayout };
+export { SwaggerLayout } from "./SwaggerLayout"
+export { HubLayout } from "./HubLayout"
+export { IconSidebarLayout } from "./IconSidebar"

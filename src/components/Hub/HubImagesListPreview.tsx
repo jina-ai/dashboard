@@ -1,8 +1,7 @@
 import React from "react"
 import ImageCard from "./ImageCard"
 import styled from "@emotion/styled"
-import Card from "@material-ui/core/Card"
-import Grid from "@material-ui/core/Grid"
+import { Card, Grid } from "@material-ui/core"
 import { useSelector } from "react-redux"
 import {
   selectHubImages,

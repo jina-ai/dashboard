@@ -1,4 +1,4 @@
-import _ from "lodash"
+import { pickBy } from "lodash"
 import { State } from "../index"
 
 export const selectSelectedFlow = (state: State) => {
@@ -13,7 +13,7 @@ export const selectSelectedWorkspace = (state: State) =>
 
 export const selectFlows = (state: State) => {
   const { selectedWorkspaceId } = state.flowState
-  return _.pickBy(
+  return pickBy(
     state.flowState.flows,
     (flow) => flow.workspaceId === selectedWorkspaceId
   )
@@ -26,7 +26,7 @@ export const selectFlowArguments = (state: State) =>
 
 export const selectExampleFlowsKeyEntryPairs = (state: State) => {
   const { selectedWorkspaceId } = state.flowState
-  const workspaceFlows = _.pickBy(
+  const workspaceFlows = pickBy(
     state.flowState.flows,
     (flow) => flow.workspaceId === selectedWorkspaceId
   )

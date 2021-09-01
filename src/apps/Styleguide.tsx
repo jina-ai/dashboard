@@ -1,32 +1,45 @@
-import React from "react";
+import React from "react"
 import {
   BrowserRouter as Router,
   Switch,
   Route,
   Redirect,
-} from "react-router-dom";
-import styled from "@emotion/styled";
-import MainSidebar from "../components/Layout/MainSidebar/MainSidebar";
-import { TNavItem } from "../redux/global/global.types";
-import { styleGuideRoutes } from "../routes/Styleguide";
-import { mediaQuery } from "../styles/mediaQuery";
+} from "react-router-dom"
+import styled from "@emotion/styled"
+import MainSidebar from "../components/Layout/MainSidebar/MainSidebar"
+import { TNavItem } from "../redux/global/global.types"
+import { styleGuideRoutes } from "../routes/Styleguide"
+import { mediaQuery } from "../styles/mediaQuery"
+import { Provider } from "react-redux"
+
+import "bootstrap/dist/css/bootstrap.min.css"
+import "../styles/shards-dashboards.scss"
+import "../App.css"
+import store from "../redux"
+import { initSentry } from "./utils"
+
+initSentry()
+
+if (window.Cypress) {
+  window.store = store
+}
 
 const Container = styled.div`
   display: flex;
-`;
+`
 const Aside = styled.aside`
   width: 25%;
   ${mediaQuery("lg")} {
     width: 16.67%;
   }
-`;
+`
 const Content = styled.article`
   flex-grow: 1;
-`;
+`
 
 const Styleguide = () => {
   return (
-    <div>
+    <Provider store={store}>
       <Router>
         <Container>
           <Aside>
@@ -52,8 +65,8 @@ const Styleguide = () => {
         </Container>
         <Redirect exact from="/" to={styleGuideRoutes[0].to} />
       </Router>
-    </div>
-  );
-};
+    </Provider>
+  )
+}
 
-export { Styleguide };
+export default Styleguide

@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect, useRef } from "react"
-import _ from "lodash"
+import { countBy } from "lodash"
 import { FixedSizeList as List } from "react-window"
 import { Card, Row, Col } from "react-bootstrap"
 import AutoSizer from "react-virtualized-auto-sizer"
@@ -305,7 +305,7 @@ function LogsTable({ data, showLogDetails }: Props) {
       )
 
       if (!pod.data.length) return
-      pod.levels = _.countBy(pod.data, "level") as Levels
+      pod.levels = countBy(pod.data, "level") as Levels
       groupedData[podName] = pod as Pod
     })
   } else if (currentView === "group-level") {

@@ -19,7 +19,7 @@ jobs:
       - name: Install Packages
         run: npm ci
       - name: Create Build
-        run: npm run build-hub
+        run: npm run hub build
       - name: Deploy Build
         uses: JamesIves/github-pages-deploy-action@releases/v3
         with:

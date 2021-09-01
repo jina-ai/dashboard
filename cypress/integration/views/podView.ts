@@ -10,7 +10,7 @@ describe("The Pod View", () => {
     cy.dataName("chart-node-gateway").should("exist")
   })
 
-  it("should show 'podEditContainer' when clicking 'gateway' pod label, and hide it when pressing {esc}", () => {
+  it.skip("should show 'podEditContainer' when clicking 'gateway' pod label, and hide it when pressing {esc}", () => {
     cy.dataName("podEditContainer").should("not.exist")
     cy.dataName("chart-node-gateway").dblclick()
     cy.dataName("podEditContainer")
@@ -19,7 +19,7 @@ describe("The Pod View", () => {
       .should("not.exist")
   })
 
-  it("should set default pod's property input as checkbox whichever its type is boolean, and make it checkable", () => {
+  it.skip("should set default pod's property input as checkbox whichever its type is boolean, and make it checkable", () => {
     const booleanProperties = flowArguments.pod.filter(
       (arg) => arg.type === "boolean"
     )
