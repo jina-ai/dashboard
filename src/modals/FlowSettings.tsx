@@ -8,9 +8,9 @@ import React from "react"
 import { ModalParams } from "../redux/global/global.types"
 import ReactModal, { Styles } from "react-modal"
 import { deleteFlow, updateSelectedFlow } from "../redux/flows/flows.actions"
-import { Button } from "react-bootstrap"
 import { globalArguments } from "../data/globalArguments"
 import { FlowUpdate, With } from "../redux/flows/flows.types"
+import Button from "../components/Common/Button"
 
 const style: Styles = {
   overlay: {
@@ -232,7 +232,7 @@ function FlowSettingsComponent({ open, closeModal }: Props) {
           })}
         </PropertyTable>
 
-        <DeleteButton variant="danger" onClick={_deleteFlow}>
+        <DeleteButton variant="secondary" onClick={_deleteFlow}>
           Delete Flow
         </DeleteButton>
       </FlowSettingsContainer>

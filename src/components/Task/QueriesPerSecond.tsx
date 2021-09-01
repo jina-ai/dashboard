@@ -1,5 +1,4 @@
 import React, { useRef, useState, useCallback, useEffect } from "react"
-import { Card } from "shards-react"
 
 import ChartElement, { ChartOptions } from "chart.js"
 
@@ -130,7 +129,7 @@ function QueriesPerSecondCard({ qps }: Props) {
   }, [history, chartInstance, getChartOptions, getChartConfig])
 
   return (
-    <Card className="pt-0 h-100 stats-small">
+    <div className="pt-0 h-100 stats-small">
       <div className="stats-small__data mx-auto">
         <h6 className="stats-small__label text-uppercase text-center mb-0 pt-0 mt-0">
           <b>QPS</b>
@@ -141,7 +140,7 @@ function QueriesPerSecondCard({ qps }: Props) {
         </h6>
       </div>
       <canvas height="100" ref={canvasRef} className="stats-small-1" />
-    </Card>
+    </div>
   )
 }
 

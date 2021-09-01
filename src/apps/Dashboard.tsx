@@ -6,8 +6,6 @@ import { Provider } from "react-redux"
 import { ErrorBoundary } from "react-error-boundary"
 import { FallbackPage } from "../views/FallbackPage"
 
-import "bootstrap/dist/css/bootstrap.min.css"
-import "../styles/shards-dashboards.scss"
 import "../App.css"
 import "swagger-ui-react/swagger-ui.css"
 import store from "../redux"

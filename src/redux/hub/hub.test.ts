@@ -52,26 +52,6 @@ describe("hub actions", () => {
     })
   })
 
-  describe("on fetching images", () => {
-    it("dispatches FETCH_HUB_IMAGES_FAILURE on failed network request", () => {
-      const expectedActions = [
-        {
-          type: "FETCH_HUB_IMAGES_FAILURE",
-          payload: {
-            error: "Fetch failed",
-          },
-        },
-      ]
-
-      const store = mockStore(initialHubState)
-      mockAxios.onGet("https://hubapi.jina.ai/images").reply(400)
-
-      store.dispatch(fetchHubImages()).then(() => {
-        expect(store.getActions()).toEqual(expectedActions)
-      })
-    })
-  })
-
   describe("on selecting filters", () => {
     it("dispatches SELECT_FILTER action", () => {
       const expectedActions = [

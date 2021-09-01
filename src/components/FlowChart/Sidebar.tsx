@@ -1,9 +1,9 @@
 import React from "react"
 import SidebarItem from "./SidebarItem"
 import defaultPods from "../../data/defaultPods"
-import { Button, Card } from "react-bootstrap"
 import { FlowArgument } from "../../redux/flows/flows.types"
 import { Elements } from "react-flow-renderer"
+import Button from "../Common/Button"
 
 function ReadOnly({ duplicateFlow }: { duplicateFlow: () => void }) {
   return (
@@ -50,9 +50,9 @@ type FlowChartSidebarProps = {
 
 function FlowChartSidebar({ readonly, duplicateFlow }: FlowChartSidebarProps) {
   return (
-    <Card className="flowchart-sidebar mb-4">
+    <div className="flowchart-sidebar mb-4">
       {readonly ? <ReadOnly duplicateFlow={duplicateFlow} /> : <PodMenu />}
-    </Card>
+    </div>
   )
 }
 
