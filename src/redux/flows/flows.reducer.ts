@@ -65,7 +65,7 @@ export const saveWorkspacesToStorage = (workspaces: Workspaces) => {
 function getUserFlows(): Flows {
   const storedFlows = localStorage.getItem("userFlows")
   const userFlows = storedFlows ? JSON.parse(storedFlows) : null
-  return _.isEmpty(userFlows) ? cloneDeep(defaultFlows) : userFlows
+  return isEmpty(userFlows) ? cloneDeep(defaultFlows) : userFlows
 }
 
 function getUserWorkspaces(): Workspaces {
