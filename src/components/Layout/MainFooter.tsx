@@ -1,19 +1,28 @@
-import React from "react";
-import { Container, Row, Nav } from "shards-react";
+import React from "react"
+import styled from "@emotion/styled"
 
 type MenuItems = {
-  title: string;
-  to: string;
-};
+  title: string
+  to: string
+}
 
 type Props = {
-  menuItems: MenuItems[];
-  copyright: string;
-  loggerEnabled: boolean;
-  enableLogger: () => void;
-  disableLogger: () => void;
-  exportLogs: () => void;
-};
+  menuItems: MenuItems[]
+  copyright: string
+  loggerEnabled: boolean
+  enableLogger: () => void
+  disableLogger: () => void
+  exportLogs: () => void
+}
+const Footer = styled.footer`
+  display: flex;
+  justify-content: space-around;
+`
+const Link = styled.a`
+  text-decoration: none;
+  padding: 0.625rem;
+  color: ${(props) => props.theme.palette.success.dark};
+`
 
 const MainFooter = ({
   menuItems,
@@ -23,44 +32,17 @@ const MainFooter = ({
   disableLogger,
   exportLogs,
 }: Props) => (
-  <footer className="main-footer d-flex p-2 px-3">
-    <Container fluid>
-      <Row>
-        <Nav>
-          {menuItems.map((item, idx) => (
-            <a key={idx} href={item.to} className="nav-link">
-              {item.title}
-            </a>
-          ))}
-          {loggerEnabled ? (
-            <>
-              <span
-                className="nav-link text-warning cursor-pointer"
-                onClick={disableLogger}
-              >
-                Exit Debug Mode
-              </span>
-              <span
-                className="nav-link text-warning cursor-pointer"
-                onClick={exportLogs}
-              >
-                Export Debug Data
-              </span>
-            </>
-          ) : (
-            <span
-              className="nav-link text-warning cursor-pointer"
-              onClick={enableLogger}
-            >
-              Debug Mode
-            </span>
-          )}
-        </Nav>
-        <span className="copyright ml-auto my-auto mr-2">{copyright}</span>
-      </Row>
-    </Container>
-  </footer>
-);
+  <Footer>
+    <div>
+      {menuItems.map((item, idx) => (
+        <Link key={idx} href={item.to}>
+          {item.title}
+        </Link>
+      ))}
+    </div>
+    <span>{copyright}</span>
+  </Footer>
+)
 
 MainFooter.defaultProps = {
   contained: false,
@@ -91,6 +73,6 @@ MainFooter.defaultProps = {
       to: "https://github.com/jina-ai/legal",
     },
   ],
-};
+}
 
-export default MainFooter;
+export default MainFooter

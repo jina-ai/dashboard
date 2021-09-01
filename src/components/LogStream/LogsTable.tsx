@@ -1,7 +1,6 @@
 import React, { useState, useCallback, useEffect, useRef } from "react"
 import { countBy } from "lodash"
 import { FixedSizeList as List } from "react-window"
-import { Card, Row, Col } from "react-bootstrap"
 import AutoSizer from "react-virtualized-auto-sizer"
 import FlexSearch from "flexsearch"
 import { saveAs } from "file-saver"
@@ -24,6 +23,7 @@ import {
 } from "../../helpers"
 import { TimePreference } from "../../views/LogsView"
 import logger from "../../logger"
+import Card from "../Common/Card"
 
 const ROW_SIZE = 30
 const DEFAULT_VIEW = "table"
@@ -221,7 +221,7 @@ function GroupedLogs({
   showLogDetails,
 }: GroupedLogProps) {
   return (
-    <Card.Body
+    <div
       className="log-stream-container p-0 border-top"
       data-name="groupedLogsContainer"
     >
@@ -247,7 +247,7 @@ function GroupedLogs({
           ))}
         </div>
       )}
-    </Card.Body>
+    </div>
   )
 }
 
@@ -324,10 +324,10 @@ function LogsTable({ data, showLogDetails }: Props) {
   const secondCol = 300
 
   return (
-    <Card className="mb-4">
-      <Card.Header className="p-0">
-        <Row className="p-3">
-          <Col md="8" data-name="logStreamFilters">
+    <Card className="mb-4 flex-col">
+      <div className="p-0">
+        <div className="p-3 flex">
+          <div data-name="logStreamFilters">
             <MultiFilterSelect
               clearAfter
               options={Object.values(viewOptions)}
@@ -385,16 +385,16 @@ function LogsTable({ data, showLogDetails }: Props) {
               }
               isSearchable={false}
             />
-          </Col>
-          <Col md="4">
+          </div>
+          <div>
             <ExpandingSearchbar
               placeholder="search logs..."
               value={searchString}
               onChange={setSearchString}
             />
-          </Col>
-        </Row>
-      </Card.Header>
+          </div>
+        </div>
+      </div>
       {currentView === "table" ? (
         <LogsList
           firstCol={firstCol}

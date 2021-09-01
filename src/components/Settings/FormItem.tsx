@@ -1,5 +1,4 @@
 import React, { ChangeEvent } from "react"
-import { Col, FormInput } from "shards-react"
 import { SettingName } from "../../redux/settings/settings.types"
 
 type Props = {
@@ -18,14 +17,14 @@ export default function FormItem({
   onChange,
 }: Props) {
   return (
-    <Col md={colSpan} className="form-group">
+    <div className="form-group">
       <label>{label}</label>
-      <FormInput
+      <input
         data-name={label.replaceAll(" ", "")}
         placeholder={placeholder}
         value={value}
         onChange={onChange}
       />
-    </Col>
+    </div>
   )
 }

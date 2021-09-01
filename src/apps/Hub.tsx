@@ -8,9 +8,6 @@ import { ErrorBoundary } from "react-error-boundary"
 import { FallbackPage } from "../views/FallbackPage"
 import { HubRoute } from "../routes/Hub"
 
-// Todo: Remove shards and associated styles when we stop using it
-import "bootstrap/dist/css/bootstrap.min.css"
-import "../styles/shards-dashboards.scss"
 import "../App.css"
 import store from "../redux"
 import { initSentry } from "./utils"

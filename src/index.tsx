@@ -4,6 +4,7 @@ import { ThemeProvider } from "@emotion/react"
 import { ThemeProvider as MuiThemeProvider } from "@material-ui/core/styles"
 import { theme } from "./theme"
 import { newVersionLocalStorageReset } from "./helpers/utils"
+import "./index.css"
 
 const DEFAULT_TARGET = "Dashboard"
 

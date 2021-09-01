@@ -8,10 +8,9 @@ import React, { useEffect, useState } from "react"
 import { ModalParams } from "../redux/global/global.types"
 import ReactModal, { Styles } from "react-modal"
 import { deleteNode, updateNodeData } from "../redux/flows/flows.actions"
-import { Button } from "react-bootstrap"
-import { FormCheckbox } from "shards-react"
 import { NodeDataUpdate } from "../redux/flows/flows.types"
 import logger from "../logger"
+import Button from "../components/Common/Button"
 
 const style: Styles = {
   overlay: {
@@ -169,7 +168,8 @@ function PodEditComponent({ open, closeModal, modalParams }: Props) {
               <>
                 <Header2>{name}</Header2>
                 {type === "boolean" ? (
-                  <FormCheckbox
+                  <input
+                    type="checkbox"
                     toggle
                     checked={node?.data[name] === "true" ? true : false}
                     className="property-value-input"
@@ -182,7 +182,7 @@ function PodEditComponent({ open, closeModal, modalParams }: Props) {
                     }
                   >
                     {node?.data[name] === "true" ? "ON" : "OFF"}
-                  </FormCheckbox>
+                  </input>
                 ) : (
                   <Input
                     placeholder={type}
@@ -197,7 +197,7 @@ function PodEditComponent({ open, closeModal, modalParams }: Props) {
           })}
         </PropertyTable>
 
-        <DeleteButton variant="danger" onClick={_deleteNode}>
+        <DeleteButton variant="secondary" onClick={_deleteNode}>
           Delete Pod
         </DeleteButton>
       </PodEditContainer>

@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react"
-import { Container, Row, Col } from "react-bootstrap"
 import { LogLevelSummaryChart } from "../components/LogStream/LogLevelSummaryChart"
 import { LogLevelPieChart } from "../components/LogStream/LogLevelPieChart"
 import { PageTitle } from "../components/Common/PageTitle"
@@ -115,13 +114,13 @@ function LogsView() {
   const timeSelection = timeOptions[selectedTime]
 
   return (
-    <Container fluid className="main-content-container px-0">
+    <div className="main-content-container px-0">
       <div className="px-4">
-        <Row noGutters className="page-header mb-4">
+        <div className="page-header mb-4">
           <PageTitle title="Log Stream" className="text-sm-left mb-3" />
-        </Row>
-        <Row>
-          <Col md="10" className="mb-4">
+        </div>
+        <div className="flex">
+          <div className="mb-4 w-10/12">
             <LogLevelSummaryChart
               data={logLevelCharts}
               showLog={showLog}
@@ -130,14 +129,14 @@ function LogsView() {
               selectedTime={selectedTime}
               timeLabels={timeSelection.chartLabels}
             />
-          </Col>
-          <Col md="2" className="mb-4">
+          </div>
+          <div className="mb-4 w-2/12">
             <LogLevelPieChart data={logLevels} />
-          </Col>
-        </Row>
+          </div>
+        </div>
         <LogsTable data={logs} showLogDetails={showLogDetails} />
       </div>
-    </Container>
+    </div>
   )
 }
 

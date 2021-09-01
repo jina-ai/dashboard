@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useRef } from "react"
-import { Card } from "shards-react"
 
 import ChartElement from "chart.js"
 
@@ -56,7 +55,7 @@ function ProgressCard({ progress }: Props) {
   }, [JSON.stringify(progress), chartInstance]) // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
-    <Card className="p-3 h-100">
+    <div className="p-3 h-100">
       <h6 className="stats-small__label text-uppercase text-center">
         <b>Progress</b>
       </h6>
@@ -74,7 +73,7 @@ function ProgressCard({ progress }: Props) {
           className="my-auto"
         />
       </div>
-    </Card>
+    </div>
   )
 }
 

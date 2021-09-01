@@ -1,14 +1,4 @@
 import React, { useState } from "react"
-import {
-  Button,
-  Card,
-  CardBody,
-  CardHeader,
-  Col,
-  Form,
-  Row,
-} from "shards-react"
-import { Collapse } from "react-bootstrap"
 
 import { advancedOptions, baseOptions } from "./options"
 import FormItem from "./FormItem"
@@ -16,6 +6,7 @@ import { SettingName, SettingUpdate } from "../../redux/settings/settings.types"
 import { useDispatch, useSelector } from "react-redux"
 import { updateSettings } from "../../redux/settings/settings.actions"
 import { selectSettings } from "../../redux/settings/settings.selectors"
+import Button from "../Common/Button"
 
 function SettingsCard() {
   const [updates, setUpdates] = useState<SettingUpdate>({})
@@ -40,13 +31,13 @@ function SettingsCard() {
   }
 
   return (
-    <Card small className="mb-4">
-      <CardHeader className="border-bottom">
+    <div className="mb-4">
+      <div className="border-bottom">
         <h6 className="m-0">Connection Preferences</h6>
-      </CardHeader>
-      <CardBody>
-        <Form>
-          <Row form>
+      </div>
+      <div>
+        <div>
+          <div>
             {baseOptions.map(({ label, placeholder, value }) => (
               <FormItem
                 key={value as string}
@@ -60,9 +51,9 @@ function SettingsCard() {
                 onChange={(e) => changeSetting(value, e.target.value)}
               />
             ))}
-          </Row>
-          <Row>
-            <Col xs="6">
+          </div>
+          <div>
+            <div>
               <strong
                 aria-controls="collapsed-form"
                 aria-expanded={expanded}
@@ -74,15 +65,15 @@ function SettingsCard() {
                   {expanded ? "arrow_drop_up" : "arrow_drop_down"}
                 </i>
               </strong>
-            </Col>
-            <Col xs="6" className="text-right">
+            </div>
+            <div className="text-right">
               <Button onClick={saveChanges}>Save Changes</Button>
-            </Col>
-          </Row>
-          <Collapse in={expanded}>
+            </div>
+          </div>
+          <div>
             <div id="collapsed-form">
               <strong className="text-muted d-block mb-3">Endpoints</strong>
-              <Row form>
+              <div>
                 {advancedOptions.map(({ label, placeholder, value }) => (
                   <FormItem
                     key={value}
@@ -98,12 +89,12 @@ function SettingsCard() {
                     }
                   />
                 ))}
-              </Row>
+              </div>
             </div>
-          </Collapse>
-        </Form>
-      </CardBody>
-    </Card>
+          </div>
+        </div>
+      </div>
+    </div>
   )
 }
 

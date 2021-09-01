@@ -3,7 +3,7 @@
 exports[`Colors page 1`] = `
 <div>
   <div
-    className="text-center text-md-left mb-sm-0 col-sm-3 col-12"
+    className="text-center text-md-left mb-sm-0"
   >
     <h3
       className="page-title"

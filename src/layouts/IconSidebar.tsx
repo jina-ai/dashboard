@@ -1,8 +1,7 @@
 import React, { useState } from "react"
-import { Container, Row, Col } from "shards-react"
 
-import { MainNavbar } from "../components/Layout/MainNavbar/MainNavbar"
-import MainSidebar from "../components/Layout/MainSidebar/MainSidebar"
+import TopNavBar from "../components/Layout/TopNavBar/TopNavBar"
+import MainSidebar from "../components/Layout/SideNavBar/SideNavBar"
 import MainFooter from "../components/Layout/MainFooter"
 import { CookiesBanner } from "../components/Common/CookiesBanner"
 import { InfoToast } from "../components/Common/InfoToast"
@@ -114,15 +113,15 @@ export const IconSidebarLayout = (props: IconSideBarLayoutProps) => {
 
   const { children, usesAuth, usesConnection, navigateButton } = props
   return (
-    <Container fluid className="icon-sidebar-nav">
-      <Row>
+    <div className="icon-sidebar-nav">
+      <div className="flex h-full">
         <MainSidebar
           sidebarNavItems={sidebarNavItems}
           menuVisible={menuVisible}
           toggleSidebar={_toggleSidebar}
         />
-        <Col className="main-content col" tag="main">
-          <MainNavbar
+        <div className="w-10/12 ">
+          <TopNavBar
             user={user}
             usesAuth={usesAuth}
             usesConnection={usesConnection}
@@ -133,7 +132,7 @@ export const IconSidebarLayout = (props: IconSideBarLayoutProps) => {
             navigateButton={navigateButton}
           />
           {banners.map((banner, index) => (
-            <InfoToast data={banner} index={index} />
+            <InfoToast data={banner} index={index} key={index} />
           ))}
           {usesConnection && !loading && !connected && (
             <ConnectionToast reconnect={reconnect} />
@@ -146,8 +145,8 @@ export const IconSidebarLayout = (props: IconSideBarLayoutProps) => {
             disableLogger={disableLogger}
             exportLogs={exportLogs}
           />
-        </Col>
-      </Row>
+        </div>
+      </div>
       <LogDetails
         open={modal === "logDetails"}
         closeModal={_closeModal}
@@ -185,6 +184,6 @@ export const IconSidebarLayout = (props: IconSideBarLayoutProps) => {
           modalParams={modalParams}
         />
       )}
-    </Container>
+    </div>
   )
 }

@@ -1,7 +1,9 @@
 import React from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { selectUser } from "../../../redux/global/global.selectors"
-import { Menu, MenuItem, Avatar, IconButton } from "@material-ui/core"
+import Menu from "@material-ui/core/Menu"
+import MenuItem from "@material-ui/core/MenuItem"
+import { Avatar, IconButton } from "@material-ui/core"
 import { AccountCircle } from "@material-ui/icons"
 
 type Props = {
