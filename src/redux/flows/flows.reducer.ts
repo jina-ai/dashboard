@@ -20,12 +20,10 @@ import {
   CREATE_NEW_WORKSPACE,
   UPDATE_SELECTED_WORKSPACE,
   DELETE_WORKSPACE,
-  defaultFlow,
-  defaultJinaVersion,
-  defaultFlowArguments,
-  defaultSelectedFlowId,
   defaultWorkspaces,
   defaultFlows,
+  defaultJinaVersion,
+  defaultFlowArguments,
 } from "./flows.constants"
 import {
   Flow,
@@ -48,17 +46,16 @@ import {
 } from "../../helpers/flow-chart"
 import { Connection } from "react-flow-renderer/dist/types"
 
-export const saveFlowsToStorage = (state: FlowState) => {
+export const saveFlowsToStorage = (flows: Flows) => {
   let toSave: { [id: string]: Flow } = {}
-  Object.entries(state.flows).forEach(([id, flow]) => {
+  Object.entries(flows).forEach(([id, flow]) => {
     if (flow.type === "user-generated") toSave[id] = flow
   })
   localStorage.setItem("userFlows", JSON.stringify(toSave))
 }
 
-export const saveWorkspacesToStorage = (state: FlowState) => {
+export const saveWorkspacesToStorage = (workspaces: Workspaces) => {
   let toSave: { [id: string]: Workspace } = {}
-  const { workspaces } = state
   Object.entries(workspaces).forEach(([id, workspace]: [string, Workspace]) => {
     if (workspace.type === "user-generated") toSave[id] = workspace
   })
@@ -68,42 +65,24 @@ export const saveWorkspacesToStorage = (state: FlowState) => {
 function getUserFlows(): Flows {
   const storedFlows = localStorage.getItem("userFlows")
   const userFlows = storedFlows ? JSON.parse(storedFlows) : null
-  return isEmpty(userFlows) ? defaultFlow : userFlows
+  return isEmpty(userFlows) ? cloneDeep(defaultFlows) : userFlows
 }
 
 function getUserWorkspaces(): Workspaces {
   const storedWorkspaces = localStorage.getItem("userWorkspaces")
   const userWorkspaces = storedWorkspaces ? JSON.parse(storedWorkspaces) : null
-  return isEmpty(userWorkspaces)
-    ? {
-        _userWorkspace: {
-          name: "Workspace 1",
-          type: "user-generated",
-          daemon_endpoint: "",
-          isConnected: false,
-          workspace_id: "",
-          files: [],
-          selectedFlowId: defaultSelectedFlowId,
-          flows: {
-            ...getUserFlows(),
-          },
-          flowArguments: defaultFlowArguments,
-        },
-      }
-    : userWorkspaces
+  return isEmpty(userWorkspaces) ? cloneDeep(defaultWorkspaces) : userWorkspaces
 }
 
 function getExampleFlows() {
   const flows: Flows = {}
-
   Object.entries(exampleFlows).forEach(([id, flow]) => {
     const parsed = parseYAML(flow.yaml)
     if (parsed?.data) {
       const formatted = formatForFlowchart(parsed.data)
       flows[id] = {
         ...flow,
-        workspaceId: flow.workspaceId,
-        type: "user-generated",
+        type: "example",
         isConnected: false,
         flowChart: formatted,
       }
@@ -116,20 +95,27 @@ function getExampleWorkspaces() {
   return exampleWorkspaces
 }
 
+const initialWorkspaces = {
+  ...getUserWorkspaces(),
+  ...getExampleWorkspaces(),
+}
+
+const initialFlows = {
+  ...getUserFlows(),
+  ...getExampleFlows(),
+}
+
 const initialState: FlowState = {
-  selectedWorkspaceId: "_userWorkspace",
+  selectedWorkspaceId: Object.keys(initialWorkspaces)[0],
   workspaces: {
-    ...getExampleWorkspaces(),
-    ...getUserWorkspaces(),
+    ...initialWorkspaces,
   },
   flows: {
-    ...getExampleFlows(),
-    ...getUserFlows(),
+    ...initialFlows,
   },
 }
 
 const flowReducer = produce((draft: FlowState, action: FlowActionTypes) => {
-  console.log("REDUCER ACTION: ", action)
   switch (action.type) {
     case CREATE_NEW_FLOW: {
       draft = _createNewFlow(draft)
@@ -145,15 +131,9 @@ const flowReducer = produce((draft: FlowState, action: FlowActionTypes) => {
     }
     case DELETE_FLOW: {
       const flowId = action.payload
-      console.log("delete flowId: ", flowId)
-
-      console.log("flows before: ", JSON.parse(JSON.stringify(draft.flows)))
       draft.flows = omit(draft.flows, flowId)
-      console.log("flows after: ", JSON.parse(JSON.stringify(draft.flows)))
 
       const workspaceId = draft.selectedWorkspaceId
-
-      console.log("workspace: ", workspaceId)
 
       const { selectedFlowId } = draft.workspaces[workspaceId]
 
@@ -163,18 +143,14 @@ const flowReducer = produce((draft: FlowState, action: FlowActionTypes) => {
         }
       )
 
-      console.log("workspaceFlows:", JSON.parse(JSON.stringify(workspaceFlows)))
-
       if (selectedFlowId === flowId && workspaceFlows.length) {
         const firstFlowId = workspaceFlows[0][0]
         draft.workspaces[workspaceId].selectedFlowId = firstFlowId
-        console.log("firstFlowId:", firstFlowId)
       } else if (!workspaceFlows.length) {
         const newFlowId = nanoid()
-        _createNewFlow(draft, undefined, newFlowId)
+        _createNewFlow(draft, undefined, newFlowId, workspaceId)
         draft.workspaces[workspaceId].selectedFlowId = newFlowId
       }
-      console.log("new draft: ", JSON.parse(JSON.stringify(draft)))
       break
     }
     case UPDATE_SELECTED_FLOW: {
@@ -353,8 +329,8 @@ const flowReducer = produce((draft: FlowState, action: FlowActionTypes) => {
       break
     }
   }
-  saveFlowsToStorage(draft)
-  saveWorkspacesToStorage(draft)
+  saveFlowsToStorage(draft.flows)
+  saveWorkspacesToStorage(draft.workspaces)
 }, initialState)
 
 function _createNewFlow(
@@ -388,7 +364,7 @@ function _createNewFlow(
     isConnected: false,
     name: `${prefixString} ${largestNumber + 1}`,
     type: "user-generated",
-    workspaceId: workspaceId ? workspaceId : draft.selectedWorkspaceId,
+    workspaceId: workspaceId || draft.selectedWorkspaceId,
     flowChart,
   }
   return draft

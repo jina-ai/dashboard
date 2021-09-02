@@ -52,6 +52,26 @@ describe("hub actions", () => {
     })
   })
 
+  describe("on fetching images", () => {
+    it("dispatches FETCH_HUB_IMAGES_FAILURE on failed network request", () => {
+      const error = new Error("Request failed with status code 400")
+
+      const expectedAction = {
+        type: "FETCH_HUB_IMAGES_FAILURE",
+        payload: {
+          error,
+        },
+      }
+
+      const store = mockStore(initialHubState)
+      mockAxios.onGet("https://hubapi.jina.ai/images").reply(400)
+
+      store.dispatch(fetchHubImages()).then(() => {
+        expect(store.getActions()[1]).toEqual(expectedAction)
+      })
+    })
+  })
+
   describe("on selecting filters", () => {
     it("dispatches SELECT_FILTER action", () => {
       const expectedActions = [

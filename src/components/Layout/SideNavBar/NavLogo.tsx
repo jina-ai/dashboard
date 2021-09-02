@@ -1,8 +1,8 @@
-import React from "react";
+import React from "react"
 import styled from "@emotion/styled"
 
 const LogoContainer = styled.div`
-  padding: .5rem 1.5rem;
+  padding: 0.5rem 1.5rem;
 `
 const Logo = styled.img`
   width: 4.5rem;
@@ -10,16 +10,12 @@ const Logo = styled.img`
 
 const NavLogo = () => {
   return (
-    <a href="#">
+    <a href="/#">
       <LogoContainer>
-        <Logo
-          id="main-logo"
-          src="/jina-light.svg"
-          alt="Jina logo"
-        />
+        <Logo id="main-logo" src="/jina-light.svg" alt="Jina logo" />
       </LogoContainer>
     </a>
-  );
+  )
 }
 
 export default NavLogo

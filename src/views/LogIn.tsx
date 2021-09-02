@@ -16,7 +16,7 @@ function Login() {
 
   return (
     <div className="main-content-container px-0">
-      <div  className="h-100">
+      <div className="h-100">
         <div className="auth-form mx-auto">
           <div>
             <div>

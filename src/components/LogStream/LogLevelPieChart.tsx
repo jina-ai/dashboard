@@ -1,11 +1,11 @@
-import React from "react";
-import PieChart from "./PieChartBase";
-import { LogLevels } from "../../redux/logStream/logStream.types";
-import Card from "../Common/Card";
+import React from "react"
+import PieChart from "./PieChartBase"
+import { LogLevels } from "../../redux/logStream/logStream.types"
+import Card from "../Common/Card"
 
 type Props = {
-  data: LogLevels;
-};
+  data: LogLevels
+}
 
 function LogLevelPieChart({ data }: Props) {
   return (
@@ -15,7 +15,7 @@ function LogLevelPieChart({ data }: Props) {
         <PieChart data={data} />
       </div>
     </Card>
-  );
+  )
 }
 
-export { LogLevelPieChart };
+export { LogLevelPieChart }

@@ -88,44 +88,6 @@ export const testFlowState: FlowState = {
         ],
       },
     },
-    testFlow3: {
-      workspaceId: "testWorkspace2",
-      name: "Custom Flow 3",
-      type: "user-generated",
-      isConnected: false,
-      flowChart: {
-        elements: [
-          {
-            id: "gateway",
-            position: { x: 333, y: 312 },
-            type: "pod",
-            data: {
-              name: "gateway",
-              label: "gateway",
-            },
-          },
-        ],
-      },
-    },
-    testFlow4: {
-      workspaceId: "testWorkspace2",
-      name: "Custom Flow 4",
-      type: "user-generated",
-      isConnected: false,
-      flowChart: {
-        elements: [
-          {
-            id: "gateway",
-            position: { x: 333, y: 312 },
-            type: "pod",
-            data: {
-              name: "gateway",
-              label: "gateway",
-            },
-          },
-        ],
-      },
-    },
     flower: {
       workspaceId: "testWorkspace2",
       name: "Flower Search Query",
@@ -376,3 +338,11 @@ export const testFlowArguments: FlowArguments = {
     },
   ],
 }
+
+export const testFlowYAML = `!Flow
+pods:
+  empty_pod:
+    uses: pods/craft.yml
+`
+
+export const testFiles = [new Blob(), new Blob()]

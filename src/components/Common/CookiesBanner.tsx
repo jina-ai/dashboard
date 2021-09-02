@@ -1,9 +1,9 @@
-import React from "react";
-import Button from "./Button";
+import React from "react"
+import Button from "./Button"
 
 type Props = {
-  acceptCookies: () => void;
-};
+  acceptCookies: () => void
+}
 
 function CookiesBanner({ acceptCookies }: Props) {
   return (
@@ -22,7 +22,7 @@ function CookiesBanner({ acceptCookies }: Props) {
         I consent to cookies
       </Button>
     </div>
-  );
+  )
 }
 
-export { CookiesBanner };
+export { CookiesBanner }

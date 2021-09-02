@@ -48,31 +48,6 @@ export const defaultFlowArguments = {
   pod: [],
 }
 
-export const defaultFlow: Flows = {
-  _userFlow: {
-    name: "Custom Flow 1",
-    workspaceId: defaultSelectedWorkspaceId,
-    type: "user-generated",
-    flowChart: initialFlowChart,
-    isConnected: false,
-    daemon_id: null,
-  },
-}
-
-export const initialWorkspace: Workspaces = {
-  _userWorkspace: {
-    name: "",
-    jina_version: "latest",
-    type: "user-generated",
-    daemon_endpoint: "",
-    isConnected: false,
-    daemon_id: "",
-    files: [],
-    selectedFlowId: defaultSelectedFlowId,
-    flowArguments: defaultFlowArguments,
-  },
-}
-
 export const defaultFlows: Flows = {
   _userFlow: {
     name: "Custom Flow 1",

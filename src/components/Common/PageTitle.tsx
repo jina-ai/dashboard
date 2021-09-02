@@ -1,11 +1,11 @@
-import React from "react";
-import classNames from "classnames";
+import React from "react"
+import classNames from "classnames"
 
 type Props = {
-  title: string;
-  subtitle?: string;
-  className: string;
-};
+  title: string
+  subtitle?: string
+  className: string
+}
 
 function PageTitle({ title, subtitle, className }: Props) {
   const classes = classNames(
@@ -13,7 +13,7 @@ function PageTitle({ title, subtitle, className }: Props) {
     "text-center",
     "text-md-left",
     "mb-sm-0"
-  );
+  )
 
   return (
     <div className={classes}>
@@ -22,7 +22,7 @@ function PageTitle({ title, subtitle, className }: Props) {
       </h3>
       <p className="page-subtitle mt-2 mb-0">{subtitle}</p>
     </div>
-  );
+  )
 }
 
-export { PageTitle };
+export { PageTitle }

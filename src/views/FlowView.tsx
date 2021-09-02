@@ -14,9 +14,9 @@ import { useDispatch, useSelector } from "react-redux"
 import {
   selectFlowArguments,
   selectSelectedFlow,
-  selectSelectedFlowId,
+  selectSelectedWorkspace,
 } from "../redux/flows/flows.selectors"
-import { showModal } from "../redux/global/global.actions"
+import { showBanner, showModal } from "../redux/global/global.actions"
 import logger from "../logger"
 import { copyToClipboard, formatAsYAML } from "../helpers"
 import html2canvas from "html2canvas"
@@ -30,8 +30,8 @@ const FlowViewContainer = styled.div`
 
 export default function FlowView() {
   const dispatch = useDispatch()
-  const selectedFlowId = useSelector(selectSelectedFlowId)
   const flowArguments = useSelector(selectFlowArguments)
+  const workspace = useSelector(selectSelectedWorkspace)
   const flow = useSelector(selectSelectedFlow)
   let flowChart = flow?.flowChart
   let flowType = flow?.type
@@ -78,6 +78,21 @@ export default function FlowView() {
     })
   }
 
+  const handleStartFlow = () => {
+    const flowYAML = formatAsYAML(flowChart, flowArguments)
+    const { daemon_id, name } = workspace
+    if (!daemon_id)
+      return dispatch(showBanner(`Workspace ${name} is not deployed`, "error"))
+    dispatch(startFlow(flowYAML, daemon_id))
+  }
+
+  const handleStopFlow = () => {
+    const { daemon_id, name } = flow
+    if (!daemon_id)
+      return dispatch(showBanner(`Flow ${name} is not deployed`, "error"))
+    dispatch(stopFlow(daemon_id))
+  }
+
   const handleDuplicateFlow = () => {
     const flowYAML = formatAsYAML(flowChart, flowArguments)
     dispatch(duplicateFlow(flowYAML))
@@ -100,8 +115,8 @@ export default function FlowView() {
           <div className="chart-section-container mr-md-4 mb-4 relative">
             <FlowSelection />
             <CommandBar
-              startFlow={() => dispatch(startFlow(selectedFlowId))}
-              stopFlow={() => dispatch(stopFlow(selectedFlowId))}
+              startFlow={handleStartFlow}
+              stopFlow={handleStopFlow}
               copyChart={copyChartAsYAML}
               importChart={() => dispatch(showModal("import"))}
               exportImage={exportImage}

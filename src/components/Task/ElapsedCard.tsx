@@ -1,11 +1,11 @@
-import React from "react";
+import React from "react"
 
 type Props = {
   elapsed: {
-    task_name: string;
-    seconds: string | number;
-  };
-};
+    task_name: string
+    seconds: string | number
+  }
+}
 
 export default function ElapsedCard({ elapsed }: Props) {
   return (
@@ -18,5 +18,5 @@ export default function ElapsedCard({ elapsed }: Props) {
         Elapsed Time
       </h6>
     </div>
-  );
+  )
 }

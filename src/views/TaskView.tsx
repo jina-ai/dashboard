@@ -1,15 +1,15 @@
-import React from "react";
-import { PageTitle } from "../components/Common/PageTitle";
-import ElapsedCard from "../components/Task/ElapsedCard";
-import ProgressCard from "../components/Task/ProgressCard";
-import SpeedCard from "../components/Task/SpeedCard";
-import BarChartCard from "../components/Task/BarChartCard";
-import QueriesPerSecond from "../components/Task/QueriesPerSecond";
-import { useSelector } from "react-redux";
-import { selectTaskData } from "../redux/task/task.selectors";
+import React from "react"
+import { PageTitle } from "../components/Common/PageTitle"
+import ElapsedCard from "../components/Task/ElapsedCard"
+import ProgressCard from "../components/Task/ProgressCard"
+import SpeedCard from "../components/Task/SpeedCard"
+import BarChartCard from "../components/Task/BarChartCard"
+import QueriesPerSecond from "../components/Task/QueriesPerSecond"
+import { useSelector } from "react-redux"
+import { selectTaskData } from "../redux/task/task.selectors"
 
 function TaskView() {
-  const taskData = useSelector(selectTaskData);
+  const taskData = useSelector(selectTaskData)
 
   return (
     <div className="main-content-container px-0">
@@ -38,7 +38,7 @@ function TaskView() {
         />
       </div>
     </div>
-  );
+  )
 }
 
-export default TaskView;
+export default TaskView

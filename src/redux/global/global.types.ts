@@ -107,6 +107,8 @@ export type Modal =
   | "review"
   | "podEdit"
   | "flowSettings"
+  | "configFileUpload"
+  | "multiModalExample"
   | "QuerySearch"
 
 export type ModalParams = {

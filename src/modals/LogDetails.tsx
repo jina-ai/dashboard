@@ -60,9 +60,7 @@ const LogDetails = ({ open, closeModal, modalParams }: Props) => {
           <div className="border-bottom pb-1 px-0">
             <span className="text-bold">msg</span>
           </div>
-          <div className="border-bottom pb-1 px-0">
-            {log.message}
-          </div>
+          <div className="border-bottom pb-1 px-0">{log.message}</div>
         </div>
         {Object.entries(log)
           .filter(([key, value]) => !hiddenKeys.includes(key))

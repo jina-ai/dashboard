@@ -11,7 +11,9 @@ import {
   createNewWorkspace,
   deleteWorkspace,
   loadWorkspace,
+  uploadFilesToWorkspace,
 } from "../../redux/flows/flows.actions"
+import { showModal } from "../../redux/global/global.actions"
 import { isFeatureEnabled } from "../../helpers/featureSwitch"
 import { multiModalScript } from "../../services/multiModalScript"
 
@@ -76,6 +78,13 @@ export default function WorkspaceSelection() {
   const { palette } = useTheme()
 
   const dispatch = useDispatch()
+
+  const uploadSelectedFiles = (selectorFiles: FileList | null) => {
+    if (selectorFiles) {
+      const filesArray = Array.from(selectorFiles) as Blob[]
+      return dispatch(uploadFilesToWorkspace(filesArray))
+    }
+  }
 
   const WorkspaceSelectionMenu = styled.div`
     font-family: "Montserrat", serif;
@@ -163,6 +172,7 @@ export default function WorkspaceSelection() {
     margin-top: 0.15rem;
     margin-bottom: 0.15rem;
     position: relative;
+    white-space: nowrap;
   `
 
   const FileIcon = styled.span`
@@ -178,34 +188,49 @@ export default function WorkspaceSelection() {
     ([id, workspace]) => workspace.type === "example"
   )
 
+  const FileSelector = () => {
+    const FileLabel = styled.label`
+      float: right;
+      cursor: pointer;
+    `
+    const FileInput = styled.input`
+      display: none;
+    `
+
+    return (
+      <>
+        <FileLabel htmlFor="workspace-file-select">
+          <i className="material-icons">attach_file</i>
+        </FileLabel>
+        <FileInput
+          id="workspace-file-select"
+          type="file"
+          multiple
+          onChange={(e) => uploadSelectedFiles(e.target.files)}
+        />
+      </>
+    )
+  }
+
   const currentWorkspace = workspaces[selectedWorkspaceId]
 
   const FilesListComponent = () => (
     <FilesList>
-      {/* TODO: map over actual files, delete actual files */}
-      <FileItem>
-        <FileIcon>
-          <i className="material-icons">file_present</i>
-        </FileIcon>
-        <span>py_modules.py</span>
-        <WorkspaceTabOverflowHider />
-      </FileItem>
-
-      <FileItem>
-        <FileIcon>
-          <i className="material-icons">file_present</i>
-        </FileIcon>
-        <span>py_modules.py</span>
-        <WorkspaceTabOverflowHider />
-      </FileItem>
-
-      <FileItem>
-        <FileIcon>
-          <i className="material-icons">file_present</i>
-        </FileIcon>
-        <span>py_modules.py</span>
-        <WorkspaceTabOverflowHider />
-      </FileItem>
+      {currentWorkspace.files.length ? (
+        currentWorkspace.files.map((filename, idx) => (
+          <FileItem key={idx}>
+            <FileIcon>
+              <i className="material-icons">file_present</i>
+            </FileIcon>
+            <span>{filename}</span>
+            <WorkspaceTabOverflowHider />
+          </FileItem>
+        ))
+      ) : (
+        <span>
+          <i>none</i>
+        </span>
+      )}
     </FilesList>
   )
 
@@ -220,10 +245,7 @@ export default function WorkspaceSelection() {
       </SelectedWorkspaceHeader>
 
       <SubHeader>
-        Files{" "}
-        <AddButton onClick={() => {}}>
-          <i className="material-icons">add</i>
-        </AddButton>
+        Files <FileSelector />
       </SubHeader>
       {isFeatureEnabled("FILES") && <FilesListComponent />}
       <WorkspaceHeader>
@@ -237,11 +259,12 @@ export default function WorkspaceSelection() {
       </WorkspaceHeader>
 
       {userWorkspaces.map(([workspaceId, workspace], idx) => (
-        <WorkspaceTab selected={selectedWorkspaceId === workspaceId} key={idx}>
-          <span
-            data-name={`${workspace.name.replaceAll(" ", "")}`}
-            onClick={() => dispatch(loadWorkspace(workspaceId))}
-          >
+        <WorkspaceTab
+          data-name={`${workspace.name.replaceAll(" ", "")}`}
+          selected={selectedWorkspaceId === workspaceId}
+          key={idx}
+        >
+          <span onClick={() => dispatch(loadWorkspace(workspaceId))}>
             {workspace.name || FALLBACK_WORKSPACE_NAME}
           </span>
           <ConnectionIndicator
@@ -266,7 +289,6 @@ export default function WorkspaceSelection() {
           {workspace.name}
         </WorkspaceTab>
       ))}
-
       <WorkspaceTab selected={false} onClick={multiModalScript}>
         Multi-Modal-Example
       </WorkspaceTab>

@@ -31,7 +31,7 @@ function SettingsCard() {
   }
 
   return (
-    <div  className="mb-4">
+    <div className="mb-4">
       <div className="border-bottom">
         <h6 className="m-0">Connection Preferences</h6>
       </div>

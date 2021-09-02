@@ -1,9 +1,9 @@
-import React from "react";
-import Button from "./Button";
+import React from "react"
+import Button from "./Button"
 
 type Props = {
-  reconnect: () => void;
-};
+  reconnect: () => void
+}
 
 function ConnectionToast({ reconnect }: Props) {
   return (
@@ -41,7 +41,7 @@ function ConnectionToast({ reconnect }: Props) {
         </div>
       </div>
     </div>
-  );
+  )
 }
 
-export { ConnectionToast };
+export { ConnectionToast }

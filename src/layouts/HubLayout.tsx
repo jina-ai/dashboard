@@ -13,7 +13,7 @@ import { useDispatch, useSelector } from "react-redux"
 import store from "../redux"
 import { showBanner } from "../redux/global/global.actions"
 import { selectBanners, selectModal } from "../redux/global/global.selectors"
-import {User} from "../redux/global/global.types"
+import { User } from "../redux/global/global.types"
 
 export type HubLayoutProps = {
   children: React.ReactNode
