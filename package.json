@@ -102,7 +102,7 @@
     "fs-extra": "^9.0.1",
     "gh-pages": "^2.2.0",
     "html2canvas": "^1.0.0-rc.7",
-    "immer": "^8.0.1",
+    "immer": "^9.0.6",
     "lodash": "^4.17.15",
     "log-symbols": "^4.0.0",
     "lunr": "^2.3.8",
