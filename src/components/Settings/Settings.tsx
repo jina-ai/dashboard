@@ -10,7 +10,7 @@ import { ToggleButton } from "./ToggleButton"
 
 const SettingsCard = () => {
   const [updates, setUpdates] = useState<SettingUpdate>({})
-  const [isToggleButtonExpanded, setIsToggleButtonExpanded] = useState(false)
+  const [expanded, setExpanded] = useState(false)
   const settings = useSelector(selectSettings)
 
   const dispatch = useDispatch()
@@ -25,8 +25,8 @@ const SettingsCard = () => {
     dispatch(updateSettings(updates))
   }
 
-  function handleToggleButtonClick() {
-    setIsToggleButtonExpanded(!isToggleButtonExpanded)
+  function toggleExpand() {
+    setExpanded(!expanded)
   }
 
   const renderBaseOptions = baseOptions.map(({ label, placeholder, value }) => (
@@ -61,10 +61,7 @@ const SettingsCard = () => {
       <div className="p-4">
         <div className="grid grid-cols-2 gap-4 mb-4">{renderBaseOptions}</div>
         <div className="flex mb-4 justify-between items-center">
-          <ToggleButton
-            isExpanded={isToggleButtonExpanded}
-            onToggleButtonClick={handleToggleButtonClick}
-          />
+          <ToggleButton isExpanded={expanded} onClick={toggleExpand} />
           <button
             className="bg-primary text-white text-xs py-2 px-4 rounded hover:shadow-lg active:shadow-inner"
             onClick={saveChanges}
@@ -73,10 +70,10 @@ const SettingsCard = () => {
           </button>
         </div>
         <div
-          style={{ height: isToggleButtonExpanded ? "290px" : "0px" }}
+          style={{ height: expanded ? "290px" : "0px" }}
           className={`pb-2 relative transition transition-height overflow-hidden duration-300 ease-in-out`}
         >
-          {isToggleButtonExpanded && (
+          {expanded && (
             <>
               <strong className="font-medium inline-block text-gray-400  mb-3">
                 Endpoints

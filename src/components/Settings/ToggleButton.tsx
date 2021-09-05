@@ -2,15 +2,12 @@ import React from "react"
 
 type ToggleButtonProps = {
   isExpanded: boolean
-  onToggleButtonClick: () => void
+  onClick: () => void
 }
 
-export const ToggleButton = ({
-  isExpanded,
-  onToggleButtonClick,
-}: ToggleButtonProps) => {
+export const ToggleButton = ({ isExpanded, onClick }: ToggleButtonProps) => {
   return (
-    <button className="bg-transparent" onClick={onToggleButtonClick}>
+    <button className="bg-transparent" onClick={onClick}>
       <strong
         aria-controls="collapsed-form"
         aria-expanded={isExpanded}
