@@ -6,21 +6,25 @@ type Props = {
   label: string
   value: SettingName
   placeholder: string
-  onChange: (e: ChangeEvent<HTMLInputElement>) => void
+  onChange: (event: ChangeEvent<HTMLInputElement>) => void
 }
 
 export default function FormItem({
-  colSpan = 6,
   label,
   value,
   placeholder,
   onChange,
 }: Props) {
   return (
-    <div className="form-group">
-      <label>{label}</label>
+    <div className="form-group flex flex-col">
+      <div className="text-gray-400 mb-2" id={label}>
+        {label}
+      </div>
       <input
-        data-name={label.replaceAll(" ", "")}
+        className="border rounded-md py-2 px-3 text-gray-500 text-sm"
+        aria-labelledby={label}
+        aria-label={label}
+        data-name={label.replace(/ /g, "")}
         placeholder={placeholder}
         value={value}
         onChange={onChange}
