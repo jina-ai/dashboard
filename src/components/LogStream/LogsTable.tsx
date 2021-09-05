@@ -332,14 +332,14 @@ function LogsTable({ data, showLogDetails }: Props) {
               clearAfter
               options={Object.values(viewOptions)}
               onFilterChange={(option) => setView(option[0].value as View)}
-              className="logstream-select mb-2 mr-0 mb-md-0 mr-md-2"
+              className="logstream-select mb-2 mr-2 mb-md-0 mr-md-2"
               placeholder={
                 currentView === "table" ? (
-                  <span data-name="logStreamViewSelectedOption">
+                  <span data-name="logStreamViewSelectedOption" className="flex">
                     <i className="material-icons mr-2">table_rows</i>Table View
                   </span>
                 ) : (
-                  <span data-name="logStreamViewSelectedOption">
+                  <span data-name="logStreamViewSelectedOption" className="flex">
                     <i className="material-icons mr-2">view_list</i>
                     {viewOptions[currentView].label}
                   </span>
@@ -352,9 +352,9 @@ function LogsTable({ data, showLogDetails }: Props) {
                 isMulti
                 options={toOption(sources)}
                 onFilterChange={setSelectedSources}
-                className="logstream-select mb-2 mr-0 mb-md-0 mr-md-2"
+                className="logstream-select mb-2 mr-2 mb-md-0 mr-md-2"
                 placeholder={
-                  <span data-name="logStreamSourceSelectedOption">
+                  <span data-name="logStreamSourceSelectedOption" className="flex">
                     <i className="material-icons mr-2">mediation</i>All Sources
                   </span>
                 }
@@ -364,9 +364,9 @@ function LogsTable({ data, showLogDetails }: Props) {
               isMulti
               options={toOption(LEVELS)}
               onFilterChange={setSelectedLevels}
-              className="logstream-select mb-2 mr-0 mb-md-0 mr-md-2"
+              className="logstream-select mb-2 mr-2 mb-md-0 mr-md-2"
               placeholder={
-                <span data-name="logStreamLevelSelectedOption">
+                <span data-name="logStreamLevelSelectedOption" className="flex">
                   <i className="material-icons mr-2">bar_chart</i>All Levels
                 </span>
               }
@@ -377,9 +377,9 @@ function LogsTable({ data, showLogDetails }: Props) {
               onFilterChange={(option) => {
                 saveLogData(data, option[0].value as Format)
               }}
-              className="logstream-select mb-2 mr-0 mb-md-0 mr-md-2"
+              className="logstream-select mb-2 mr-2 mb-md-0 mr-md-2"
               placeholder={
-                <span data-name="logStreamActionsSelect">
+                <span data-name="logStreamActionsSelect" className="flex">
                   <i className="material-icons mr-2">download</i>Download Logs
                 </span>
               }
