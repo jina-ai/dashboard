@@ -5,3 +5,8 @@
 import "@testing-library/jest-dom/extend-expect"
 
 jest.mock("react-ga")
+
+beforeAll(() => {
+  const { getComputedStyle } = window
+  window.getComputedStyle = (elt) => getComputedStyle(elt)
+})
