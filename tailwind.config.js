@@ -10,6 +10,7 @@ module.exports = {
     colors: {
       ...colors,
       primary: "#009999",
+      lightGray: "#868e96"
     },
   },
   variants: {
