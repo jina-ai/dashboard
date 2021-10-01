@@ -1,26 +1,12 @@
-import ReactFlow, {
-  Background,
-  OnLoadParams,
-  ReactFlowProps,
-} from "react-flow-renderer"
-import React, { MouseEvent, useRef, useState } from "react"
-import { useDispatch, useSelector } from "react-redux"
-import {
-  addLink,
-  addNode,
-  deleteLink,
-  deleteNode,
-  updateNode,
-} from "../../redux/flows/flows.actions"
+import ReactFlow, {OnLoadParams, ReactFlowProps,} from "react-flow-renderer"
+import React, {MouseEvent, useRef, useState} from "react"
+import {useDispatch, useSelector} from "react-redux"
+import {addLink, addNode, deleteLink, deleteNode, updateNode,} from "../../redux/flows/flows.actions"
 import ChartNode from "./ChartNode"
-import { selectSelectedFlow } from "../../redux/flows/flows.selectors"
-import {
-  FlowElement,
-  FlowNode,
-  FlowEdge,
-  NodeConnection,
-} from "../../redux/flows/flows.types"
-import { isFlowNode, isFlowEdge } from "../../helpers/flow-chart"
+import {selectSelectedFlow} from "../../redux/flows/flows.selectors"
+import {FlowEdge, FlowElement, FlowNode, NodeConnection,} from "../../redux/flows/flows.types"
+import {isFlowEdge, isFlowNode} from "../../helpers/flow-chart"
+
 type Props = {
   elements: FlowElement[]
 }
@@ -51,8 +37,11 @@ export default function FlowChart(props: Props) {
     })
   }
 
-  const onLoad = (_reactFlowInstance: OnLoadParams) =>
-    setReactFlowInstance(_reactFlowInstance)
+  const onLoad = (_reactFlowInstance: OnLoadParams) => {
+    _reactFlowInstance.fitView();
+    setReactFlowInstance(_reactFlowInstance);
+    console.log(_reactFlowInstance.getElements());
+  };
 
   const onDragOver = (event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault()
@@ -61,40 +50,39 @@ export default function FlowChart(props: Props) {
   const onDrop = (event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault()
     const reactFlowBounds =
-      reactFlowWrapper?.current?.getBoundingClientRect() || new DOMRect()
+        reactFlowWrapper?.current?.getBoundingClientRect() || new DOMRect()
     const data = JSON.parse(event.dataTransfer.getData("application/reactflow"))
     const position = reactFlowInstance?.project({
       x: event.clientX - reactFlowBounds.left,
       y: event.clientY - reactFlowBounds.top,
-    }) || { x: 0, y: 0 }
+    }) || {x: 0, y: 0}
     dispatch(addNode(data.id, position, data))
   }
 
   const onNodeDragStop = (event: MouseEvent, node: FlowNode) => {
-    dispatch(updateNode(node.id, { position: node.position }))
+    dispatch(updateNode(node.id, {position: node.position}))
   }
 
   return (
-    <div
-      className="reactflow-wrapper"
-      ref={reactFlowWrapper as React.RefObject<HTMLDivElement>}
-      style={{ height: "100%", width: "100%" }}
-    >
-      <ReactFlow
-        defaultPosition={[0, 50]}
-        defaultZoom={0.5}
-        elements={props.elements}
-        onConnect={onConnect as ReactFlowProps["onConnect"]}
-        onElementsRemove={onElementsRemove}
-        onLoad={onLoad}
-        onDrop={onDrop}
-        onDragOver={onDragOver}
-        onNodeDragStop={onNodeDragStop}
-        nodeTypes={nodeTypes}
-        nodesDraggable={flow.type !== "example"}
+      <div
+          className="reactflow-wrapper"
+          ref={reactFlowWrapper as React.RefObject<HTMLDivElement>}
+          style={{height: "100%", width: "100%"}}
       >
-        <Background variant="lines" gap={35} size={1} />
-      </ReactFlow>
-    </div>
+        <ReactFlow
+            defaultPosition={[0, 50]}
+            defaultZoom={0.5}
+            elements={props.elements}
+            onConnect={onConnect as ReactFlowProps["onConnect"]}
+            onElementsRemove={onElementsRemove}
+            onLoad={onLoad}
+            onDrop={onDrop}
+            onDragOver={onDragOver}
+            onNodeDragStop={onNodeDragStop}
+            nodeTypes={nodeTypes}
+            nodesDraggable={flow.type !== "example"}
+        >
+        </ReactFlow>
+      </div>
   )
 }

@@ -89,11 +89,11 @@ export const getMatchNodes = (
           hasOutput: false,
         },
         position: {
-          x: (ITEM_WIDTH + HORIZONTAL_SPACE) * startingIndex,
-          y: index * ITEM_HEIGHT,
+          x: (ITEM_WIDTH + HORIZONTAL_SPACE) * Math.floor(index % 6) ,
+          y: Math.floor(index / 6) * ITEM_HEIGHT,
         },
       },
-      getEdge(match.id, parentId, true, "match", palette),
+      getEdge(match.id, parentId, false, "match", palette),
     ]
   }, [] as any)
 }

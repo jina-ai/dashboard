@@ -23,14 +23,13 @@ import { isEmpty } from "lodash"
 
 const NodeImagePreview = styled.img`
   display: block;
-  max-height: 20rem;
-  max-width: 100%;
+  width: 100%;
   margin-bottom: 0.5rem;
   margin-top: 0.5rem;
 `
 
 const AudioContainer = styled.audio`
-  max-width: 100%;
+  width: 100%;
   margin-bottom: 0.5rem;
   margin-top: 0.5rem;
 `
@@ -39,12 +38,11 @@ const VideoContainer = styled.video`
   display: block;
   margin-bottom: 0.5rem;
   margin-top: 0.5rem;
-  max-height: 20rem;
-  max-width: 100%;
+  width: 100%;
 `
 
 export const NodeBigText = styled.p`
-  font-size: 1.5rem;
+  font-size: 3rem;
   margin-bottom: 0.5rem;
   display: -webkit-box;
   -webkit-line-clamp: 3;
@@ -130,8 +128,6 @@ export const ChartNode = ({
       {hasInput && <Handle type="source" position={Position.Left}></Handle>}
       <Card elevation={elevation} color="red" style={style}>
         <CardHeader
-          title={name}
-          subheader={`Id: ${itemId}`}
           style={{ paddingBottom: ".5em" }}
           action={
             score && (
@@ -143,7 +139,7 @@ export const ChartNode = ({
         />
         <Box maxWidth="30rem" padding="1em" paddingTop="0em">
           {text && <NodeBigText>"{text}"</NodeBigText>}
-          {uri && <NodeMediaPreview uri={uri} />}
+          {uri && mimeTypeFromDataURI(uri) && <NodeMediaPreview uri={uri} />}
           <Grid container>
             <Grid item xs={6}>
               {mime_type && (
