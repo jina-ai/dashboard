@@ -84,9 +84,7 @@ export type DebugResponse = {
   header: {
     exec_endpoint: string
   }
-  data: {
-    docs: Doc[]
-  }
+  data: any
 }
 
 const DebuggingTool = () => {

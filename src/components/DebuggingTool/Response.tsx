@@ -24,7 +24,10 @@ const Response = ({ response }: ResponseProps) => {
     setScore(null)
     setDocIndex(0)
   }, [response])
-  const hasResponse = response !== null && response?.data?.docs?.length > 0
+  const hasResponse =
+    response !== null &&
+    (response?.data?.docs?.length > 0 || response?.data?.length > 0)
+  const docs = response?.data?.docs || response?.data
   return (
     <Card>
       <CardHeader
@@ -33,11 +36,11 @@ const Response = ({ response }: ResponseProps) => {
       />
       <CardContent>
         <Box display="flex" flexDirection="row">
-          {response?.data.docs && (
+          {docs && (
             <>
               <DocumentTabs
                 height={HEIGHT}
-                docs={response?.data.docs}
+                docs={docs}
                 docIndex={docIndex}
                 setDocIndex={setDocIndex}
               />
@@ -45,7 +48,7 @@ const Response = ({ response }: ResponseProps) => {
                 {hasResponse && (
                   <Matches
                     height={HEIGHT}
-                    doc={response.data.docs[docIndex]}
+                    doc={docs[docIndex]}
                     onScoreClick={onScoreClick}
                   />
                 )}
