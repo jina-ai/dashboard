@@ -24,10 +24,11 @@ const Response = ({ response }: ResponseProps) => {
     setScore(null)
     setDocIndex(0)
   }, [response])
-  const hasResponse =
-    response !== null &&
-    (response?.data?.docs?.length > 0 || response?.data?.length > 0)
-  const docs = response?.data?.docs || response?.data
+  const docs = Array.isArray(response?.data)
+    ? response?.data
+    : response?.data.docs
+  const hasResponse = response !== null && docs && docs?.length > 0
+
   return (
     <Card>
       <CardHeader
