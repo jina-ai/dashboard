@@ -93,7 +93,7 @@
     "csvtojson": "^2.0.10",
     "dagre": "^0.8.5",
     "date-fns": "^2.16.1",
-    "eventsource": "^1.0.7",
+    "eventsource": "^2.0.2",
     "express-session": "^1.17.1",
     "express-ws": "^4.0.0",
     "file-saver": "^2.0.2",
