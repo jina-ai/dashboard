@@ -855,3 +855,9 @@ code {
 .tooltip-text {
   width: 150px;
 }
+
+i.material-icons {
+    font-size: inherit;
+    position: relative;
+    top:2px;
+}
