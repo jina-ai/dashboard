@@ -120,7 +120,7 @@
     "react": "^17.0.0",
     "react-dom": "^17.0.0",
     "react-error-boundary": "^3.0.2",
-    "react-flow-renderer": "^8.8.0",
+    "react-flow-renderer": "^10.3.17",
     "react-ga": "^2.7.0",
     "react-grid-layout": "^1.2.4",
     "react-minisearch": "^2.6.3",
